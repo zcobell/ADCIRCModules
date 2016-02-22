@@ -47,37 +47,27 @@
 #ifndef QADCMODULES_H
 #define QADCMODULES_H
 
-#include "QADCModules_global.h"
 #include <QObject>
 #include <QVector>
 #include <QFile>
 #include <QMap>
+
+#include "QADCModules_global.h"
+#include "adcirc_mesh.h"
+
 
 class QADCMODULESSHARED_EXPORT QADCModules : public QObject
 {
     Q_OBJECT
 public:
 
-    /** Initializes the class. Takes a QObject as a
-     * parent parameter to allow Qt to handle the
-     * memory management internally
-     * @param parent [in] The QObject reference for memory management
+    /** \brief Constructor
+     *  Takes QObject reference as input
+     * @param *parent [in] reference to QObject. Enables automatic memory management to avoid memory leaks
      **/
     explicit QADCModules(QObject *parent = 0);
 
     ~QADCModules();
-
-    //...Public Functions
-    QString getErrorString(int error);
-
-private:
-
-    //...Private Variables
-    int errorLevel;  ///
-    QMap<int,QString> errorMapping;
-
-
-    int initialize_errors();
 
 
 };

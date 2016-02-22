@@ -42,6 +42,11 @@ class adcirc_node : public QObject
 {
     Q_OBJECT
 public:
+
+    /** \brief Constructor
+     *  Takes QObject reference as input
+     * @param *parent [in] reference to QObject. Enables automatic memory management to avoid memory leaks
+     **/
     explicit adcirc_node(QObject *parent = 0);
 
     ///X position of the ADCIRC node

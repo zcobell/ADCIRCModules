@@ -43,6 +43,11 @@ class adcirc_element : public QObject
 {
     Q_OBJECT
 public:
+
+    /** \brief Constructor
+     *  Takes QObject reference as input
+     * @param *parent [in] reference to QObject. Enables automatic memory management to avoid memory leaks
+     **/
     explicit adcirc_element(QObject *parent = 0);
 
     ///The ID of the element

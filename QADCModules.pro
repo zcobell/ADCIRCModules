@@ -20,7 +20,6 @@ SOURCES += QADCModules.cpp \
 HEADERS +=\
         QADCModules_global.h \
         QADCModules.h \
-    QADCModules_flags.h \
     adcirc_node.h \
     adcirc_element.h \
     adcirc_boundary.h \

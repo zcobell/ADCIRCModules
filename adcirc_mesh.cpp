@@ -18,11 +18,15 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_mesh.h"
-#include "QADCModules_flags.h"
 
 adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
 {
+    //...Initialize the errors so we can
+    //   describe what went wrong to the
+    //   user later
+    this->initializeErrors();
 
+    return;
 }
 
 //-----------------------------------------------------------------------------------------//
@@ -33,12 +37,26 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
 //
 //
 //-----------------------------------------------------------------------------------------//
+
+//...Returns the error code variable to the user
+int adcirc_mesh::getErrorCode()
+{
+    return this->errorCode;
+}
+
+//...Returns the description for an error code to the user
+QString adcirc_mesh::getErrorString()
+{
+    return this->errorMapping[this->errorCode];
+}
+
+//...The publicly exposed function to read an adcirc mesh
 int adcirc_mesh::read()
 {
     //...Check for a null string
     if(this->filename==QString())
     {
-        this->errorCode = QADCMODULES_NULLFILENAM;
+        this->errorCode = ADCMESH_NULLFILENAM;
         return this->errorCode;
     }
 
@@ -46,7 +64,7 @@ int adcirc_mesh::read()
     QFile thisFile(this->filename);
     if(!thisFile.exists())
     {
-        this->errorCode = QADCMODULES_FILENOEXIST;
+        this->errorCode = ADCMESH_FILENOEXIST;
         return this->errorCode;
     }
 
@@ -57,12 +75,12 @@ int adcirc_mesh::read()
     return ierr;
 }
 
-
+//...The publicly exposed function to write an ADCIRC mesh
 int adcirc_mesh::write(QString outputFile)
 {
     if(outputFile==QString())
     {
-        this->errorCode = QADCMODULES_NULLFILENAM;
+        this->errorCode = ADCMESH_NULLFILENAM;
         return this->errorCode;
     }
 
@@ -82,6 +100,24 @@ int adcirc_mesh::write(QString outputFile)
 //
 //
 //-----------------------------------------------------------------------------------------//
+int adcirc_mesh::initializeErrors()
+{
+    //...Generic Errors
+    this->errorMapping[ADCMESH_FILEOPENERR]     = "The specified file could not be correctly opened.";
+    this->errorMapping[ADCMESH_NULLFILENAM]     = "The filename specified is empty";
+    this->errorMapping[ADCMESH_FILENOEXIST]     = "The filename specified does not exist.";
+
+    //...Mesh Errors
+    this->errorMapping[ADCMESH_MESHREAD_HEADER] = "There was an error while reading the header from the mesh file";
+    this->errorMapping[ADCMESH_MESHREAD_NODERR] = "There was an error while reading the nodes from the mesh file.";
+    this->errorMapping[ADCMESH_MESHREAD_ELEMER] = "There was an error while reading the elements from the mesh file.";
+    this->errorMapping[ADCMESH_MESHREAD_BNDERR] = "There was an error while reading the boundary segments from the mesh file.";
+    this->errorMapping[ADCMESH_MESHREAD_NODNUM] = "The nodes in the mesh are not sequentially numbered.";
+    this->errorMapping[ADCMESH_MESHREAD_ELENUM] = "The elements in the mesh are not sequantially numbered.";
+
+    return 0;
+}
+
 int adcirc_mesh::readMesh()
 {
 
@@ -94,7 +130,7 @@ int adcirc_mesh::readMesh()
 
     if(!meshFile.open(QIODevice::ReadOnly))
     {
-        this->errorCode = QADCMODULES_FILEOPENERR;
+        this->errorCode = ADCMESH_FILEOPENERR;
         return this->errorCode;
     }
 
@@ -116,14 +152,14 @@ int adcirc_mesh::readMesh()
     this->numNodes = tempString.toInt(&err);
     if(!err)
     {
-        this->errorCode = QADCMODULES_MESHREAD_HEADER;
+        this->errorCode = ADCMESH_MESHREAD_HEADER;
         return this->errorCode;
     }
     tempString = tempList.value(1);
     this->numElements = tempString.toInt(&err);
     if(!err)
     {
-        this->errorCode = QADCMODULES_MESHREAD_HEADER;
+        this->errorCode = ADCMESH_MESHREAD_HEADER;
         return this->errorCode;
     }
 
@@ -187,25 +223,25 @@ int adcirc_mesh::readNode(QString line, int index, adcirc_node *node)
     tempString = tempList.value(0);
     tempInt    = tempString.toInt(&err);
     if(!err)
-        return QADCMODULES_MESHREAD_NODERR;
+        return ADCMESH_MESHREAD_NODERR;
     if(tempInt!=index+1)
-        return QADCMODULES_MESHREAD_NODNUM;
+        return ADCMESH_MESHREAD_NODNUM;
     node->id = tempInt;
 
     tempString = tempList.value(1);
     tempDouble = tempString.simplified().toDouble(&err);
     if(!err)
-        return QADCMODULES_MESHREAD_NODERR;
+        return ADCMESH_MESHREAD_NODERR;
     node->x = tempDouble;
     tempString = tempList.value(2);
     tempDouble = tempString.simplified().toDouble(&err);
     if(!err)
-        return QADCMODULES_MESHREAD_NODERR;
+        return ADCMESH_MESHREAD_NODERR;
     node->y = tempDouble;
     tempString = tempList.value(3);
     tempDouble = tempString.simplified().toDouble(&err);
     if(!err)
-        return QADCMODULES_MESHREAD_NODERR;
+        return ADCMESH_MESHREAD_NODERR;
     node->z = tempDouble;
 
     return 0;
@@ -222,28 +258,28 @@ int adcirc_mesh::readElement(QString line, int index, adcirc_element *element)
     tempString = tempList.value(0);
     tempInt    = tempString.toInt(&err);
     if(!err)
-        return QADCMODULES_MESHREAD_ELEMER;
+        return ADCMESH_MESHREAD_ELEMER;
     if(tempInt!=index+1)
-        return QADCMODULES_MESHREAD_ELENUM;
+        return ADCMESH_MESHREAD_ELENUM;
 
     element->id = tempInt;
 
     tempString = tempList.value(2);
     tempInt    = tempString.simplified().toInt(&err);
     if(!err)
-        return QADCMODULES_MESHREAD_ELEMER;
+        return ADCMESH_MESHREAD_ELEMER;
     element->connections[0] = tempInt;
 
     tempString = tempList.value(3);
     tempInt    = tempString.simplified().toInt(&err);
     if(!err)
-        return QADCMODULES_MESHREAD_ELEMER;
+        return ADCMESH_MESHREAD_ELEMER;
     element->connections[1] = tempInt;
 
     tempString = tempList.value(4);
     tempInt    = tempString.simplified().toInt(&err);
     if(!err)
-        return QADCMODULES_MESHREAD_ELEMER;
+        return ADCMESH_MESHREAD_ELEMER;
     element->connections[2] = tempInt;
 
     return 0;
