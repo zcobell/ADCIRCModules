@@ -45,8 +45,13 @@ class adcirc_element : public QObject
 public:
     explicit adcirc_element(QObject *parent = 0);
 
+    ///The ID of the element
     int id;
+
+    ///The number of nodes in this element. Note that only 3 connections are used for ADCIRC meshes
     int numConnections;
+
+    ///Vector containing the list of nodes that make up this element using their IDs
     QVector<int> connections;
 
 };

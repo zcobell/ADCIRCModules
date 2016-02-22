@@ -44,9 +44,16 @@ class adcirc_node : public QObject
 public:
     explicit adcirc_node(QObject *parent = 0);
 
+    ///X position of the ADCIRC node
     double x;
+
+    ///Y position of the ADCIRC node
     double y;
+
+    ///Z elevation of the ADCIRC node (positive depth)
     double z;
+
+    ///ID for the ADCIRC node
     int    id;
 
 };

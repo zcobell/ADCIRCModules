@@ -46,16 +46,35 @@ class adcirc_boundary : public QObject
 public:
     explicit adcirc_boundary(QObject *parent = 0);
 
-    int             numNodes;       ///Number of nodes on the boundary string
-    int             code;           ///ADCIRC model boundary code
-    QVector<int>    n1;             ///First node in the boundary
-    QVector<int>    n2;             ///Second node in the boundary. Used for weirs where boundary conditions have an opposite side
-    QVector<double> crest;          ///Boundary crest. Used for weir type boundaries
-    QVector<double> supercritical;  ///Coefficient of supercritical flow over a weir
-    QVector<double> subcritical;    ///Coefficient of subcritical flow over a weir
-    QVector<double> pipeHeight;     ///Height of the pipe/culvert in a weir
-    QVector<double> pipeDiam;       ///Diameter of the pipe/culvert in a weir
-    QVector<double> pipeCoef;       ///Pipe coefficient for the pipe/culvert in a weir
+    ///Number of nodes on the boundary string
+    int             numNodes;
+
+     ///ADCIRC model boundary code
+    int             code;
+
+    ///First node in the boundary
+    QVector<int>    n1;
+
+    ///Second node in the boundary. Used for weirs where boundary conditions have an opposite side
+    QVector<int>    n2;
+
+    ///Boundary crest. Used for weir type boundaries
+    QVector<double> crest;
+
+    ///Coefficient of supercritical flow over a weir
+    QVector<double> supercritical;
+
+    ///Coefficient of subcritical flow over a weir
+    QVector<double> subcritical;
+
+    ///Height of the pipe/culvert in a weir
+    QVector<double> pipeHeight;
+
+    ///Diameter of the pipe/culvert in a weir
+    QVector<double> pipeDiam;
+
+    ///Pipe coefficient for the pipe/culvert in a weir
+    QVector<double> pipeCoef;
 
 signals:
 

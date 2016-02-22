@@ -128,10 +128,10 @@ int adcirc_mesh::readMesh()
     }
 
     //...Allocate the nodes
-    this->allocateNodes(this->numNodes);
+    this->allocateNodes();
 
     //...Allocate the elements
-    this->allocateElements(this->numElements);
+    this->allocateElements();
 
     //...Loop over the nodes
     for(i=0;i<this->numNodes;i++)
@@ -158,18 +158,18 @@ int adcirc_mesh::readMesh()
     return 0;
 }
 
-int adcirc_mesh::allocateNodes(int n)
+int adcirc_mesh::allocateNodes()
 {
-    this->nodes.resize(n);
-    for(int i=0;i<n;i++)
+    this->nodes.resize(this->numNodes);
+    for(int i=0;i<this->numNodes;i++)
         this->nodes[i] = new adcirc_node(this);
     return 0;
 }
 
-int adcirc_mesh::allocateElements(int n)
+int adcirc_mesh::allocateElements()
 {
-    this->elements.resize(n);
-    for(int i=0;i<n;i++)
+    this->elements.resize(this->numElements);
+    for(int i=0;i<this->numElements;i++)
         this->elements[i] = new adcirc_element(this);
     return 0;
 }
