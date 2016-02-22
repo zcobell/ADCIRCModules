@@ -17,15 +17,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 //-----------------------------------------------------------------------*/
-#ifndef QADCMODULES_GLOBAL_H
-#define QADCMODULES_GLOBAL_H
+#include "adcirc_boundary.h"
 
-#include <QtCore/qglobal.h>
+adcirc_boundary::adcirc_boundary(QObject *parent) : QObject(parent)
+{
 
-#if defined(QADCMODULES_LIBRARY)
-#  define QADCMODULESSHARED_EXPORT Q_DECL_EXPORT
-#else
-#  define QADCMODULESSHARED_EXPORT Q_DECL_IMPORT
-#endif
+}
 
-#endif // QARCADISUTIL_GLOBAL_H

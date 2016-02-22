@@ -17,15 +17,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 //-----------------------------------------------------------------------*/
-#ifndef QADCMODULES_GLOBAL_H
-#define QADCMODULES_GLOBAL_H
+#include "adcirc_element.h"
 
-#include <QtCore/qglobal.h>
+adcirc_element::adcirc_element(QObject *parent) : QObject(parent)
+{
+    this->numConnections = 3;
+    this->connections.resize(3);
+}
 
-#if defined(QADCMODULES_LIBRARY)
-#  define QADCMODULESSHARED_EXPORT Q_DECL_EXPORT
-#else
-#  define QADCMODULESSHARED_EXPORT Q_DECL_IMPORT
-#endif
-
-#endif // QARCADISUTIL_GLOBAL_H

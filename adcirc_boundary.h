@@ -18,22 +18,11 @@
 //
 //-----------------------------------------------------------------------*/
 /**
- *
- *
- * \defgroup QADCModules Routines for use with the ADCIRC model
- *
- *
- * \class QADCModules
+ * \class adcirc_boundary
  *
  * \addtogroup QADCModules
  *
- * \brief A Qt C++ package for use with the ADCIRC model
- *
- * This class provides basic functions for working with
- * ADCIRC model data. (http://www.adcirc.org) It is written
- * in Qt C++ and has been tested with Qt version 5.5. The package
- * is provided as a dynamicly linked library (Windows)
- * or shared object file (Unix)
+ * \brief Class that describes an ADCIRC boundary
  *
  * \author Zachary Cobell
  * \version Version 0.1
@@ -44,42 +33,33 @@
  * Created on: 02/21/2016
  *
  */
-#ifndef QADCMODULES_H
-#define QADCMODULES_H
+#ifndef ADCIRC_BOUNDARY_H
+#define ADCIRC_BOUNDARY_H
 
-#include "QADCModules_global.h"
+#include <QADCModules_flags.h>
 #include <QObject>
 #include <QVector>
-#include <QFile>
-#include <QMap>
 
-class QADCMODULESSHARED_EXPORT QADCModules : public QObject
+class adcirc_boundary : public QObject
 {
     Q_OBJECT
 public:
+    explicit adcirc_boundary(QObject *parent = 0);
 
-    /** Initializes the class. Takes a QObject as a
-     * parent parameter to allow Qt to handle the
-     * memory management internally
-     * @param parent [in] The QObject reference for memory management
-     **/
-    explicit QADCModules(QObject *parent = 0);
+    int             numNodes;       ///Number of nodes on the boundary string
+    int             code;           ///ADCIRC model boundary code
+    QVector<int>    n1;             ///First node in the boundary
+    QVector<int>    n2;             ///Second node in the boundary. Used for weirs where boundary conditions have an opposite side
+    QVector<double> crest;          ///Boundary crest. Used for weir type boundaries
+    QVector<double> supercritical;  ///Coefficient of supercritical flow over a weir
+    QVector<double> subcritical;    ///Coefficient of subcritical flow over a weir
+    QVector<double> pipeHeight;     ///Height of the pipe/culvert in a weir
+    QVector<double> pipeDiam;       ///Diameter of the pipe/culvert in a weir
+    QVector<double> pipeCoef;       ///Pipe coefficient for the pipe/culvert in a weir
 
-    ~QADCModules();
+signals:
 
-    //...Public Functions
-    QString getErrorString(int error);
-
-private:
-
-    //...Private Variables
-    int errorLevel;  ///
-    QMap<int,QString> errorMapping;
-
-
-    int initialize_errors();
-
-
+public slots:
 };
 
-#endif // QARCADISUTIL_H
+#endif // ADCIRC_BOUNDARY_H

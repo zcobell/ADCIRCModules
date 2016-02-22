@@ -12,13 +12,19 @@ TEMPLATE = lib
 DEFINES += QADCMODULES_LIBRARY
 
 SOURCES += QADCModules.cpp \
-    QADCmesh.cpp
+    adcirc_node.cpp \
+    adcirc_element.cpp \
+    adcirc_boundary.cpp \
+    adcirc_mesh.cpp
 
 HEADERS +=\
         QADCModules_global.h \
         QADCModules.h \
     QADCModules_flags.h \
-    QADCmesh.h
+    adcirc_node.h \
+    adcirc_element.h \
+    adcirc_boundary.h \
+    adcirc_mesh.h
 
 unix {
     target.path = /usr/lib

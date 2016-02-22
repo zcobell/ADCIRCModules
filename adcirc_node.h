@@ -1,7 +1,7 @@
 /*-------------------------------GPL-------------------------------------//
 //
 // QADCModules - A library for working with ADCIRC models
-// Copyright (C) 2016  Zach Cobell
+// Copyright (C) 2015  Zach Cobell
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,15 +17,38 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 //-----------------------------------------------------------------------*/
-#ifndef QADCMODULES_GLOBAL_H
-#define QADCMODULES_GLOBAL_H
+/**
+ * \class adcirc_node
+ *
+ * \addtogroup QADCModules
+ *
+ * \brief Class that describes an ADCIRC node
+ *
+ * \author Zachary Cobell
+ * \version Version 0.1
+ * \date 02/21/2016
+ *
+ * Contact: zcobell@gmail.com
+ *
+ * Created on: 02/21/2016
+ *
+ */
+#ifndef ADCIRC_NODE_H
+#define ADCIRC_NODE_H
 
-#include <QtCore/qglobal.h>
+#include <QObject>
 
-#if defined(QADCMODULES_LIBRARY)
-#  define QADCMODULESSHARED_EXPORT Q_DECL_EXPORT
-#else
-#  define QADCMODULESSHARED_EXPORT Q_DECL_IMPORT
-#endif
+class adcirc_node : public QObject
+{
+    Q_OBJECT
+public:
+    explicit adcirc_node(QObject *parent = 0);
 
-#endif // QARCADISUTIL_GLOBAL_H
+    double x;
+    double y;
+    double z;
+    int    id;
+
+};
+
+#endif // ADCIRC_NODE_H

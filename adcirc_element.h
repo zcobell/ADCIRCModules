@@ -17,15 +17,38 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 //-----------------------------------------------------------------------*/
-#ifndef QADCMODULES_GLOBAL_H
-#define QADCMODULES_GLOBAL_H
+/**
+ * \class adcirc_element
+ *
+ * \addtogroup QADCModules
+ *
+ * \brief Class that describes an ADCIRC triangular element
+ *
+ * \author Zachary Cobell
+ * \version Version 0.1
+ * \date 02/21/2016
+ *
+ * Contact: zcobell@gmail.com
+ *
+ * Created on: 02/21/2016
+ *
+ */
+#ifndef ADCIRC_ELEMENT_H
+#define ADCIRC_ELEMENT_H
 
-#include <QtCore/qglobal.h>
+#include <QObject>
+#include <QVector>
 
-#if defined(QADCMODULES_LIBRARY)
-#  define QADCMODULESSHARED_EXPORT Q_DECL_EXPORT
-#else
-#  define QADCMODULESSHARED_EXPORT Q_DECL_IMPORT
-#endif
+class adcirc_element : public QObject
+{
+    Q_OBJECT
+public:
+    explicit adcirc_element(QObject *parent = 0);
 
-#endif // QARCADISUTIL_GLOBAL_H
+    int id;
+    int numConnections;
+    QVector<int> connections;
+
+};
+
+#endif // ADCIRC_ELEMENT_H
