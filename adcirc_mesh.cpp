@@ -18,6 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_mesh.h"
+#include <QDebug>
 
 adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
 {
@@ -87,7 +88,7 @@ int adcirc_mesh::write(QString outputFile)
     //...Assuming the filename is valid, write the mesh
     //int ierr = this->writeMesh();
 
-    return 0;
+    return ADCMESH_NOERROR;
 }
 
 
@@ -102,6 +103,9 @@ int adcirc_mesh::write(QString outputFile)
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::initializeErrors()
 {
+    //...No error
+    this->errorMapping[ADCMESH_NOERROR]         = "No errors detected.";
+
     //...Generic Errors
     this->errorMapping[ADCMESH_FILEOPENERR]     = "The specified file could not be correctly opened.";
     this->errorMapping[ADCMESH_NULLFILENAM]     = "The filename specified is empty";
@@ -115,7 +119,7 @@ int adcirc_mesh::initializeErrors()
     this->errorMapping[ADCMESH_MESHREAD_NODNUM] = "The nodes in the mesh are not sequentially numbered.";
     this->errorMapping[ADCMESH_MESHREAD_ELENUM] = "The elements in the mesh are not sequantially numbered.";
 
-    return 0;
+    return ADCMESH_NOERROR;
 }
 
 int adcirc_mesh::readMesh()
@@ -148,14 +152,14 @@ int adcirc_mesh::readMesh()
     //...Grab the number of elements,nodes
     tempString = meshFileList.value(1);
     tempList   = tempString.simplified().split(" ");
-    tempString = tempList.value(0);
+    tempString = tempList.value(1);
     this->numNodes = tempString.toInt(&err);
     if(!err)
     {
         this->errorCode = ADCMESH_MESHREAD_HEADER;
         return this->errorCode;
     }
-    tempString = tempList.value(1);
+    tempString = tempList.value(0);
     this->numElements = tempString.toInt(&err);
     if(!err)
     {
@@ -176,7 +180,7 @@ int adcirc_mesh::readMesh()
         if(ierr!=0)
         {
             this->errorCode = ierr;
-            return ierr;
+            return this->errorCode;
         }
     }
 
@@ -187,11 +191,11 @@ int adcirc_mesh::readMesh()
         if(ierr!=0)
         {
             this->errorCode = ierr;
-            return ierr;
+            return this->errorCode;
         }
     }
 
-    return 0;
+    return ADCMESH_NOERROR;
 }
 
 int adcirc_mesh::allocateNodes()
@@ -199,7 +203,7 @@ int adcirc_mesh::allocateNodes()
     this->nodes.resize(this->numNodes);
     for(int i=0;i<this->numNodes;i++)
         this->nodes[i] = new adcirc_node(this);
-    return 0;
+    return ADCMESH_NOERROR;
 }
 
 int adcirc_mesh::allocateElements()
@@ -207,7 +211,7 @@ int adcirc_mesh::allocateElements()
     this->elements.resize(this->numElements);
     for(int i=0;i<this->numElements;i++)
         this->elements[i] = new adcirc_element(this);
-    return 0;
+    return ADCMESH_NOERROR;
 }
 
 
@@ -224,6 +228,7 @@ int adcirc_mesh::readNode(QString line, int index, adcirc_node *node)
     tempInt    = tempString.toInt(&err);
     if(!err)
         return ADCMESH_MESHREAD_NODERR;
+
     if(tempInt!=index+1)
         return ADCMESH_MESHREAD_NODNUM;
     node->id = tempInt;
@@ -244,7 +249,7 @@ int adcirc_mesh::readNode(QString line, int index, adcirc_node *node)
         return ADCMESH_MESHREAD_NODERR;
     node->z = tempDouble;
 
-    return 0;
+    return ADCMESH_NOERROR;
 }
 
 int adcirc_mesh::readElement(QString line, int index, adcirc_element *element)
@@ -282,5 +287,5 @@ int adcirc_mesh::readElement(QString line, int index, adcirc_element *element)
         return ADCMESH_MESHREAD_ELEMER;
     element->connections[2] = tempInt;
 
-    return 0;
+    return ADCMESH_NOERROR;
 }

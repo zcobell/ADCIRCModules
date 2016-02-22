@@ -51,6 +51,7 @@
 //----------------------------------------------------//
 //...Define a set of errors for use with this
 //   class
+#define ADCMESH_NOERROR         -999900000
 #define ADCMESH_FILEOPENERR     -999901001
 #define ADCMESH_NULLFILENAM     -999901002
 #define ADCMESH_FILENOEXIST     -999901003
