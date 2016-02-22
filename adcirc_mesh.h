@@ -42,10 +42,10 @@
 #include <QFile>
 #include <QMap>
 
+#include "QADCModules_global.h"
 #include "adcirc_node.h"
 #include "adcirc_element.h"
 #include "adcirc_boundary.h"
-
 
 
 //----------------------------------------------------//
@@ -64,9 +64,7 @@
 //----------------------------------------------------//
 
 
-
-
-class adcirc_mesh : public QObject
+class QADCMODULESSHARED_EXPORT adcirc_mesh : public QObject
 {
     Q_OBJECT
 public:

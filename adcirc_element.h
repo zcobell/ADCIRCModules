@@ -38,8 +38,9 @@
 
 #include <QObject>
 #include <QVector>
+#include "QADCModules_global.h"
 
-class adcirc_element : public QObject
+class QADCMODULESSHARED_EXPORT adcirc_element : public QObject
 {
     Q_OBJECT
 public:

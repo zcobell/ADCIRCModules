@@ -38,6 +38,8 @@
 
 #include <QObject>
 
+#include "QADCModules_global.h"
+
 class adcirc_node : public QObject
 {
     Q_OBJECT
