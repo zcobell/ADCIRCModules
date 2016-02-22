@@ -131,6 +131,9 @@ public:
     ///Public function to allow the user to return the description for the current error code
     QString getErrorString();
 
+    ///Public function that sets ignoreMeshNumbering. This allows the code to continue even if mesh numbering is non-sequential
+    int setIgnoreMeshNumbering(bool value);
+
 private:
 
     //...PRIVATE VARIABLES...//
@@ -140,6 +143,9 @@ private:
 
     ///Map function between error codes and their descriptions
     QMap<int,QString> errorMapping;
+
+    ///Variable that is checked to decide if non-sequential mesh numbering is a fatal error. Default = false
+    bool ignoreMeshNumbering;
 
     //...PRIVATE FUNCTIONS...//
     /// \brief Private function that initializes the error mapping on startup

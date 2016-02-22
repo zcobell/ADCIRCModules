@@ -27,6 +27,9 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
     //   user later
     this->initializeErrors();
 
+    //...By default, we will assume that the mesh numbering should be sequential
+    this->ignoreMeshNumbering = false;
+
     return;
 }
 
@@ -91,7 +94,13 @@ int adcirc_mesh::write(QString outputFile)
     return ADCMESH_NOERROR;
 }
 
-
+//...The publicy exposed function to set the ignoreMeshnumbering variable
+int adcirc_mesh::setIgnoreMeshNumbering(bool value)
+{
+    this->ignoreMeshNumbering = value;
+    this->errorCode = ADCMESH_NOERROR;
+    return this->errorCode;
+}
 
 //-----------------------------------------------------------------------------------------//
 //
@@ -101,6 +110,9 @@ int adcirc_mesh::write(QString outputFile)
 //
 //
 //-----------------------------------------------------------------------------------------//
+
+//...Function that generates a mapping between error codes and their descriptions that can
+//   be fed to the user
 int adcirc_mesh::initializeErrors()
 {
     //...No error
@@ -111,7 +123,7 @@ int adcirc_mesh::initializeErrors()
     this->errorMapping[ADCMESH_NULLFILENAM]     = "The filename specified is empty";
     this->errorMapping[ADCMESH_FILENOEXIST]     = "The filename specified does not exist.";
 
-    //...Mesh Errors
+    //...Mesh Read Errors
     this->errorMapping[ADCMESH_MESHREAD_HEADER] = "There was an error while reading the header from the mesh file";
     this->errorMapping[ADCMESH_MESHREAD_NODERR] = "There was an error while reading the nodes from the mesh file.";
     this->errorMapping[ADCMESH_MESHREAD_ELEMER] = "There was an error while reading the elements from the mesh file.";
@@ -122,6 +134,8 @@ int adcirc_mesh::initializeErrors()
     return ADCMESH_NOERROR;
 }
 
+
+//...Function to read an ADCIRC mesh
 int adcirc_mesh::readMesh()
 {
 
@@ -198,6 +212,9 @@ int adcirc_mesh::readMesh()
     return ADCMESH_NOERROR;
 }
 
+//...Allocates an array of pointers in the ADCIRC mesh
+//   for storage of the nodes
+//   All have a QObject parent
 int adcirc_mesh::allocateNodes()
 {
     this->nodes.resize(this->numNodes);
@@ -206,6 +223,9 @@ int adcirc_mesh::allocateNodes()
     return ADCMESH_NOERROR;
 }
 
+//...Allocates an array of pointers in the ADCIRC mesh
+//   for storage of the elements
+//   All have a QObject parent
 int adcirc_mesh::allocateElements()
 {
     this->elements.resize(this->numElements);
@@ -214,7 +234,9 @@ int adcirc_mesh::allocateElements()
     return ADCMESH_NOERROR;
 }
 
-
+//...Parses a line from the ADCIRC mesh that contains a node into
+//   its poisitional information. Note that if the mesh needs re-numbering,
+//   you will need to set ignoreMeshNumbering to true
 int adcirc_mesh::readNode(QString line, int index, adcirc_node *node)
 {
     QStringList tempList;
@@ -229,7 +251,7 @@ int adcirc_mesh::readNode(QString line, int index, adcirc_node *node)
     if(!err)
         return ADCMESH_MESHREAD_NODERR;
 
-    if(tempInt!=index+1)
+    if(tempInt!=index+1 && !this->ignoreMeshNumbering)
         return ADCMESH_MESHREAD_NODNUM;
     node->id = tempInt;
 
@@ -252,6 +274,9 @@ int adcirc_mesh::readNode(QString line, int index, adcirc_node *node)
     return ADCMESH_NOERROR;
 }
 
+//...Parses a line from the ADCIRC mesh that contains an element into
+//   its connectivity information. Note that if the mesh needs re-numbering,
+//   you will need to set ignoreMeshNumbering to true;
 int adcirc_mesh::readElement(QString line, int index, adcirc_element *element)
 {
     QStringList tempList;
@@ -264,7 +289,7 @@ int adcirc_mesh::readElement(QString line, int index, adcirc_element *element)
     tempInt    = tempString.toInt(&err);
     if(!err)
         return ADCMESH_MESHREAD_ELEMER;
-    if(tempInt!=index+1)
+    if(tempInt!=index+1 && !this->ignoreMeshNumbering)
         return ADCMESH_MESHREAD_ELENUM;
 
     element->id = tempInt;
