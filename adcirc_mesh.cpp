@@ -507,7 +507,7 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
 int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
 {
     QString tempString,tempString2;
-    int ierr,i,j,tempInt;
+    int ierr,i,j;
     bool err;
 
     //...Read the header
@@ -652,14 +652,7 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
             {
                 tempString = fileData[position];
                 position = position + 1;
-                tempString = tempString.simplified().split(" ").value(0);
-                tempInt = tempString.toInt(&err);
-                if(!err)
-                {
-                    this->errorCode = ADCMESH_MESHREAD_BNDERR;
-                    return this->errorCode;
-                }
-                this->landBC[i]->n1[j] = this->nodes[this->nodeMapping[tempInt]];
+                this->readLandBoundarySingleNode(tempString,this->landBC[i],j);
             }
         }
     }
