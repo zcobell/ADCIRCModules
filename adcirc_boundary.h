@@ -39,6 +39,8 @@
 #include <QObject>
 #include <QVector>
 #include "QADCModules_global.h"
+#include "adcirc_node.h"
+
 
 class QADCMODULESSHARED_EXPORT adcirc_boundary : public QObject
 {
@@ -56,11 +58,11 @@ public:
      ///ADCIRC model boundary code
     int             code;
 
-    ///First node in the boundary
-    QVector<int>    n1;
+    ///First node in the boundary. Pointer to the node vector.
+    QVector<adcirc_node*>    n1;
 
-    ///Second node in the boundary. Used for weirs where boundary conditions have an opposite side
-    QVector<int>    n2;
+    ///Second node in the boundary. Used for weirs where boundary conditions have an opposite side. Pointer to the node vector.
+    QVector<adcirc_node*>    n2;
 
     ///Boundary crest. Used for weir type boundaries
     QVector<double> crest;

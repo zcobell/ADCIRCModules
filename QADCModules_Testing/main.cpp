@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
 
     thisMesh->filename = "C:/Users/zcobell/Documents/Codes/QADCModules/QADCModules_Testing/ms-riv.grd";
     int ierr = thisMesh->read();
+    qDebug() << thisMesh->getErrorCode();
     qDebug() << thisMesh->getErrorString();
 
     return ierr;

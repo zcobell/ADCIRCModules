@@ -39,6 +39,7 @@
 #include <QObject>
 #include <QVector>
 #include "QADCModules_global.h"
+#include "adcirc_node.h"
 
 class QADCMODULESSHARED_EXPORT adcirc_element : public QObject
 {
@@ -57,8 +58,8 @@ public:
     ///The number of nodes in this element. Note that only 3 connections are used for ADCIRC meshes
     int numConnections;
 
-    ///Vector containing the list of nodes that make up this element using their IDs
-    QVector<int> connections;
+    ///Vector containing the list of nodes that make up this element as pointers to the node array
+    QVector<adcirc_node*> connections;
 
 };
 
