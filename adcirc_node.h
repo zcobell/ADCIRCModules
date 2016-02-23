@@ -20,8 +20,6 @@
 /**
  * \class adcirc_node
  *
- * \addtogroup QADCModules
- *
  * \brief Class that describes an ADCIRC node
  *
  * \author Zachary Cobell

@@ -20,8 +20,6 @@
 /**
  * \class adcirc_mesh
  *
- * \addtogroup ADCMESH
- *
  * \brief Class that describes an ADCIRC mesh
  *
  * \author Zachary Cobell

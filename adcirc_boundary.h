@@ -20,8 +20,6 @@
 /**
  * \class adcirc_boundary
  *
- * \addtogroup QADCModules
- *
  * \brief Class that describes an ADCIRC boundary
  *
  * \author Zachary Cobell

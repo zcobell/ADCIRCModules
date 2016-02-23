@@ -20,8 +20,6 @@
 /**
  * \class adcirc_element
  *
- * \addtogroup QADCModules
- *
  * \brief Class that describes an ADCIRC triangular element
  *
  * \author Zachary Cobell

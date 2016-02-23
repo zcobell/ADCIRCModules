@@ -19,13 +19,7 @@
 //-----------------------------------------------------------------------*/
 /**
  *
- *
- * \defgroup QADCModules Routines for use with the ADCIRC model
- *
- *
  * \class QADCModules
- *
- * \addtogroup QADCModules
  *
  * \brief A Qt C++ package for use with the ADCIRC model
  *
