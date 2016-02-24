@@ -20,11 +20,18 @@
 #include "adcirc_mesh.h"
 #include <QDebug>
 
-
-
 //-----------------------------------------------------------------------------------------//
 // Initializer
 //-----------------------------------------------------------------------------------------//
+/** \brief Constructor
+ *
+ * \author Zach Cobell
+ *
+ *  Constructs an adcirc_mesh object, takes QObject reference as input
+ *
+ * @param *parent [in] reference to QObject. Enables automatic memory management to avoid memory leaks
+ *
+ **/
 adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
 {
     //...Initialize the errors so we can
@@ -56,6 +63,15 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
 //-----------------------------------------------------------------------------------------//
 //...Returns the error code variable to the user
 //-----------------------------------------------------------------------------------------//
+/** \brief Return the current error code from the class
+ *
+ * \author Zach Cobell
+ *
+ * This function returns the current error code from the class to the user. The function
+ * adcirc_mesh::getErrorString() would likely do a better job describing the error, however
+ * this function can be used to check if things have completed successfully or not
+ **/
+//-----------------------------------------------------------------------------------------//
 int adcirc_mesh::getErrorCode()
 {
     return this->errorCode;
@@ -67,6 +83,14 @@ int adcirc_mesh::getErrorCode()
 //-----------------------------------------------------------------------------------------//
 //...Returns the description for an error code to the user
 //-----------------------------------------------------------------------------------------//
+/** \brief Return the current error code description
+ *
+ * \author Zach Cobell
+ *
+ * This function uses the current error code to generate a description for the user that
+ * is meaningful and can be used to solve their issues
+ **/
+//-----------------------------------------------------------------------------------------//
 QString adcirc_mesh::getErrorString()
 {
     return this->errorMapping[this->errorCode];
@@ -76,7 +100,17 @@ QString adcirc_mesh::getErrorString()
 
 
 //-----------------------------------------------------------------------------------------//
-//...The publicly exposed function to read an adcirc mesh
+//...Public function to read an ADCIRC mesh. Assumes filename already specified
+//-----------------------------------------------------------------------------------------//
+/** \brief Read an ADCIRC mesh into the class
+ *
+ * \author Zach Cobell
+ *
+ * Function used to read the ADCIRC mesh into the class. Assumes the filename has already
+ * been specified. The mesh file will be read in after checking for some simple errors. Error codes
+ * will be returned upon any error. Any return besides ADCMESH_NOERROR is a fatal
+ * error
+ **/
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::read()
 {
@@ -106,7 +140,63 @@ int adcirc_mesh::read()
 
 
 //-----------------------------------------------------------------------------------------//
+//...Public function to read an ADCIRC mesh. Assumes filename specified in input
+//-----------------------------------------------------------------------------------------//
+/** \brief  Read an ADCIRC mesh into the class and set the filename
+ *
+ *  \author Zach Cobell
+ *
+ *   @param inputFile [in] specifies the mesh file to be read
+ *
+ * Function used to read the ADCIRC mesh into the class. Assumes the filename has not already
+ * been specified. The mesh file will be read in after checking for some simple errors.
+ * Error codes will be returned upon any error. Any return besides ADCMESH_NOERROR is a
+ * fatal error
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::read(QString inputFile)
+{
+    //...Set the filename
+    this->filename = inputFile;
+
+    //...Check for a null string
+    if(this->filename==QString())
+    {
+        this->errorCode = ADCMESH_NULLFILENAM;
+        return this->errorCode;
+    }
+
+    //...Check for file exists
+    QFile thisFile(this->filename);
+    if(!thisFile.exists())
+    {
+        this->errorCode = ADCMESH_FILENOEXIST;
+        return this->errorCode;
+    }
+
+    //...Assuming these two checks passed, we can call
+    //   the main routine
+    int ierr = this->readMesh();
+
+    return ierr;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
 //...The publicly exposed function to write an ADCIRC mesh
+//-----------------------------------------------------------------------------------------//
+/** \brief  Public function to allow user to trigger writing
+ * of the ADCIRC mesh contained within this class
+ *
+ *  \author Zach Cobell
+ *
+ *  @param  outputFile [in] Name of the file to write
+ *
+ * Function used by the user to write the ADCIRC mesh currently contained within the class.
+ * If the file already exists, it will be overwritten. Tread carefully.
+ **/
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::write(QString outputFile)
 {
@@ -117,7 +207,7 @@ int adcirc_mesh::write(QString outputFile)
     }
 
     //...Assuming the filename is valid, write the mesh
-    //int ierr = this->writeMesh();
+    //int ierr = this->writeMesh(outputFile);
 
     return ADCMESH_NOERROR;
 }
@@ -126,7 +216,20 @@ int adcirc_mesh::write(QString outputFile)
 
 
 //-----------------------------------------------------------------------------------------//
-//...The publicy exposed function to set the ignoreMeshnumbering variable
+//...The publicly exposed function to set the ignoreMeshnumbering variable
+//-----------------------------------------------------------------------------------------//
+/** \brief Public function to determine if non-sequential mesh numbering is a fatal error
+ *
+ * \author Zach Cobell
+ *
+ * @param  value [in] if true, mesh numbering is ignored.
+ * If false, mesh numbering that is nonsequential is fatal
+ *
+ * Function used by the user to set if the code will determine that non-sequantial
+ * mesh numbering is a fatal error. This applies to both the node portion of the file
+ * as well as the element lists. This code can handle misnumbered meshes, however, ADCIRC
+ * itself cannot.
+ **/
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::setIgnoreMeshNumbering(bool value)
 {
@@ -152,6 +255,14 @@ int adcirc_mesh::setIgnoreMeshNumbering(bool value)
 //-----------------------------------------------------------------------------------------//
 //...Function that generates a mapping between error codes and their descriptions that can
 //   be fed to the user
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that generates a mapping between error codes and their descriptions
+ *
+ * \author Zach Cobell
+ *
+ * This function uses a QMap to quickly turn an error code into an error description. The
+ * error mapping variable maps between an integer and a QString
+ **/
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::initializeErrors()
 {
@@ -183,6 +294,14 @@ int adcirc_mesh::initializeErrors()
 
 //-----------------------------------------------------------------------------------------//
 //...Function to read an ADCIRC mesh
+//-----------------------------------------------------------------------------------------//
+/** \brief This function is used internally to read an ADCIRC mesh
+ *
+ * \author Zach Cobell
+ *
+ * This function is used internally to read an ADCIRC mesh. The mesh will have its filename
+ * specified in the adcirc_mesh::filename variable.
+ **/
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::readMesh()
 {
@@ -286,8 +405,15 @@ int adcirc_mesh::readMesh()
 
 //-----------------------------------------------------------------------------------------//
 //...Allocates an array of pointers in the ADCIRC mesh
-//   for storage of the nodes
-//   All have a QObject parent
+//-----------------------------------------------------------------------------------------//
+/** \brief Creates a number of adcirc_node variables on the heap
+ *
+ * \author Zach Cobell
+ *
+ * This function creates a set of ADCIRC nodes on the heap. All nodes that area
+ * created are done so with a QObject reference to enable automatic memory management
+ * to avoid memory leaks
+ **/
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::allocateNodes()
 {
@@ -302,8 +428,15 @@ int adcirc_mesh::allocateNodes()
 
 //-----------------------------------------------------------------------------------------//
 //...Allocates an array of pointers in the ADCIRC mesh
-//   for storage of the elements
-//   All have a QObject parent
+//-----------------------------------------------------------------------------------------//
+/** \brief Creates a number of adcirc_element variables on the heap
+ *
+ * \author Zach Cobell
+ *
+ * This function creates a set of ADCIRC elements on the heap. All elements that area
+ * created are done so with a QObject reference to enable automatic memory management
+ * to avoid memory leaks
+ **/
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::allocateElements()
 {
@@ -318,8 +451,19 @@ int adcirc_mesh::allocateElements()
 
 //-----------------------------------------------------------------------------------------//
 //...Parses a line from the ADCIRC mesh that contains a node into
-//   its poisitional information. Note that if the mesh needs re-numbering,
+//   its positional information. Note that if the mesh needs re-numbering,
 //   you will need to set ignoreMeshNumbering to true
+//-----------------------------------------------------------------------------------------//
+/** \brief Protected function to parse the string from an ADCIRC mesh file containing nodal information
+ *
+ * \author Zach Cobell
+ *
+ * @param line  [in]    The QString with the information read from the file to be parsed into an ADCIRC node
+ * @param index [in]    An integer for the current node position in the ADCIRC file
+ * @param *node [inout] The pointer to the adcirc_node that should be created with this information
+ *
+ * This function can parse a single line from an ADCIRC mesh file to break it into the nodal information
+ **/
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::readNode(QString line, int index, adcirc_node *node)
 {
@@ -371,6 +515,18 @@ int adcirc_mesh::readNode(QString line, int index, adcirc_node *node)
 //   its connectivity information. Note that if the mesh needs re-numbering,
 //   you will need to set ignoreMeshNumbering to true;
 //-----------------------------------------------------------------------------------------//
+/** \brief Protected function to parse the string from an ADCIRC mesh file containing
+ *  elemental connectivity information
+ *
+ * \author Zach Cobell
+ *
+ * @param line     [in]    The QString with the information read from the file to be parsed into an ADCIRC element
+ * @param index    [in]    An integer for the current element position in the ADCIRC file
+ * @param *element [inout] The pointer to the adcirc_element that should be created with this information
+ *
+ * This function parses the string from the element section of the ADCIRC file
+ **/
+//-----------------------------------------------------------------------------------------//
 int adcirc_mesh::readElement(QString line, int index, adcirc_element *element)
 {
     QStringList tempList;
@@ -418,6 +574,14 @@ int adcirc_mesh::readElement(QString line, int index, adcirc_element *element)
 
 //-----------------------------------------------------------------------------------------//
 // Function to read the open boundary segmenets of the adcirc mesh file
+//-----------------------------------------------------------------------------------------//
+/** \brief Protected function to read the entire set of open boundary conditions
+ *
+ * \author Zach Cobell
+ *
+ * @param position [inout] The current file position. Returned as the new file position when the open boundary read is complete
+ * @param fileData [in]    Reference to the data read from the ADCIRC mesh file
+ */
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
 {
@@ -503,6 +667,14 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
 
 //-----------------------------------------------------------------------------------------//
 // Function to read the land boundary segments from the ADCIRC mesh file
+//-----------------------------------------------------------------------------------------//
+/** \brief Protected function to read the entire set of land boundary conditions
+ *
+ * \author Zach Cobell
+ *
+ * @param position [inout] The current file positoin. Returned as the new file position when the land boundary read is complete
+ * @param fileData [in]    Reference to the data read from the ADCIRC mesh file
+ */
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
 {
@@ -666,6 +838,15 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
 //-----------------------------------------------------------------------------------------//
 // Function to parse the data from an ADCIRC mesh file for a single node boundary
 //-----------------------------------------------------------------------------------------//
+/** \brief Protected function to read the single node data from a land boundary string (single node types)
+ *
+ * \author Zach Cobell
+ *
+ * @param data     [in]    The data found in the adcirc file to be parsed
+ * @param boundary [inout] A pointer to the boundary we are working on
+ * @param index    [in]    Location in the boundary vector for the data passed to the function
+ */
+//-----------------------------------------------------------------------------------------//
 int adcirc_mesh::readLandBoundarySingleNode(QString data, adcirc_boundary *boundary, int index)
 {
     bool    err;
@@ -688,6 +869,14 @@ int adcirc_mesh::readLandBoundarySingleNode(QString data, adcirc_boundary *bound
 
 //-----------------------------------------------------------------------------------------//
 // Function to parse a one-sided weir boundary (type 3,13)
+//-----------------------------------------------------------------------------------------//
+/** \brief Protected function to read the one sided weir data from a land boundary string (type 3,13)
+ *
+ * \author Zach Cobell
+ *
+ * @param data     [in]    The data found in the adcirc file to be parsed
+ * @param boundary [inout] A pointer to the boundary we are working on
+ * @param index    [in]    Location in the boundary vector for the data passed to the function */
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::readLandBoundaryOneSidedWeir(QString data, adcirc_boundary *boundary, int index)
 {
@@ -729,6 +918,15 @@ int adcirc_mesh::readLandBoundaryOneSidedWeir(QString data, adcirc_boundary *bou
 
 //-----------------------------------------------------------------------------------------//
 // Function to parse a two-sided weir (type 4,24)
+//-----------------------------------------------------------------------------------------//
+/** \brief Protected function to read the one sided two sided weir information from a
+ * land boundary string (type 4,24)
+ *
+ * \author Zach Cobell
+ *
+ * @param data     [in]    The data found in the adcirc file to be parsed
+ * @param boundary [inout] A pointer to the boundary we are working on
+ * @param index    [in]    Location in the boundary vector for the data passed to the function */
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::readLandBoundaryTwoSidedWeir(QString data, adcirc_boundary *boundary, int index)
 {
@@ -790,13 +988,21 @@ int adcirc_mesh::readLandBoundaryTwoSidedWeir(QString data, adcirc_boundary *bou
 //-----------------------------------------------------------------------------------------//
 // Function to parse a two-sided weir with cross-barrier pipes (type 5,25)
 //-----------------------------------------------------------------------------------------//
+/** \brief Protected function to read the so-called "leaky weir", or weir with cross
+ *  barrier pipes from a land boundary string (type 5,25)
+ *
+ * \author Zach Cobell
+ *
+ * @param data     [in]    The data found in the adcirc file to be parsed
+ * @param boundary [inout] A pointer to the boundary we are working on
+ * @param index    [in]    Location in the boundary vector for the data passed to the function */
+//-----------------------------------------------------------------------------------------//
 int adcirc_mesh::readLandBoundaryCrossBarrierPipe(QString data, adcirc_boundary *boundary, int index)
 {
     bool    err;
     QString tempString2 = data.simplified().split(" ").value(0);
     int     tempInt     = tempString2.toInt(&err);
     double  tempDouble;
-
 
     if(!err)
     {

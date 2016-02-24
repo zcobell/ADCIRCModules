@@ -23,12 +23,8 @@
  * \brief Class that describes an ADCIRC node
  *
  * \author Zachary Cobell
- * \version Version 0.1
- * \date 02/21/2016
  *
  * Contact: zcobell@gmail.com
- *
- * Created on: 02/21/2016
  *
  */
 #ifndef ADCIRC_NODE_H

@@ -30,12 +30,8 @@
  * or shared object file (Unix)
  *
  * \author Zachary Cobell
- * \version Version 0.1
- * \date 02/21/2016
  *
  * Contact: zcobell@gmail.com
- *
- * Created on: 02/21/2016
  *
  */
 #ifndef QADCMODULES_H
