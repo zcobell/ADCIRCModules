@@ -22,7 +22,7 @@
  *
  * \brief Class that describes an ADCIRC triangular element
  *
- * \author Zachary Cobell
+ * \author Zach Cobell
  *
  * Contact: zcobell@gmail.com
  *
@@ -34,6 +34,7 @@
 #include <QVector>
 #include "QADCModules_global.h"
 #include "adcirc_node.h"
+#include "adcirc_errors.h"
 
 class QADCMODULESSHARED_EXPORT adcirc_element : public QObject
 {
@@ -54,6 +55,13 @@ public:
 
     ///Vector containing the list of nodes that make up this element as pointers to the node array
     QVector<adcirc_node*> connections;
+
+
+    //...PUBLIC FUNCTIONS...//
+
+    int readElement(QString line, QVector<adcirc_node*> &nodes, QMap<int,int> &nodeMapping);
+
+    int writeElement(QString &line);
 
 };
 

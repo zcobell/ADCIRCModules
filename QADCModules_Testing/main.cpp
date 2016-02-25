@@ -10,8 +10,8 @@ int main(int argc, char *argv[])
     QPointer<adcirc_mesh> thisMesh = new adcirc_mesh();
 
     int ierr = thisMesh->read("C:/Users/zcobell/Documents/Codes/QADCModules/QADCModules_Testing/ms-riv.grd");
-    qDebug() << thisMesh->getErrorCode();
-    qDebug() << thisMesh->getErrorString();
+    qDebug() << thisMesh->error->errorCode;
+    qDebug() << thisMesh->error->getErrorString();
 
     return ierr;
 }

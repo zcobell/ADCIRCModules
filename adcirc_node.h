@@ -22,7 +22,7 @@
  *
  * \brief Class that describes an ADCIRC node
  *
- * \author Zachary Cobell
+ * \author Zach Cobell
  *
  * Contact: zcobell@gmail.com
  *
@@ -33,6 +33,7 @@
 #include <QObject>
 
 #include "QADCModules_global.h"
+#include "adcirc_errors.h"
 
 class adcirc_node : public QObject
 {
@@ -56,6 +57,13 @@ public:
 
     ///ID for the ADCIRC node
     int    id;
+
+
+    //...PUBLIC FUNCTIONS...//
+
+    int readNode(QString line);
+
+    int writeNode(QString &line);
 
 };
 

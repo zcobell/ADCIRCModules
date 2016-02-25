@@ -29,7 +29,7 @@
  * is provided as a dynamicly linked library (Windows)
  * or shared object file (Unix)
  *
- * \author Zachary Cobell
+ * \author Zach Cobell
  *
  * Contact: zcobell@gmail.com
  *

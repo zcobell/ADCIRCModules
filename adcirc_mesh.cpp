@@ -36,8 +36,8 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
 {
     //...Initialize the errors so we can
     //   describe what went wrong to the
-    //   user later
-    this->initializeErrors();
+    //   user later    
+    this->error = new adcirc_errors(this);
 
     //...By default, we will assume that the mesh numbering should be sequential
     this->ignoreMeshNumbering = false;
@@ -61,45 +61,6 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
 
 
 //-----------------------------------------------------------------------------------------//
-//...Returns the error code variable to the user
-//-----------------------------------------------------------------------------------------//
-/** \brief Return the current error code from the class
- *
- * \author Zach Cobell
- *
- * This function returns the current error code from the class to the user. The function
- * adcirc_mesh::getErrorString() would likely do a better job describing the error, however
- * this function can be used to check if things have completed successfully or not
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::getErrorCode()
-{
-    return this->errorCode;
-}
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
-//...Returns the description for an error code to the user
-//-----------------------------------------------------------------------------------------//
-/** \brief Return the current error code description
- *
- * \author Zach Cobell
- *
- * This function uses the current error code to generate a description for the user that
- * is meaningful and can be used to solve their issues
- **/
-//-----------------------------------------------------------------------------------------//
-QString adcirc_mesh::getErrorString()
-{
-    return this->errorMapping[this->errorCode];
-}
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
 //...Public function to read an ADCIRC mesh. Assumes filename already specified
 //-----------------------------------------------------------------------------------------//
 /** \brief Read an ADCIRC mesh into the class
@@ -117,16 +78,16 @@ int adcirc_mesh::read()
     //...Check for a null string
     if(this->filename==QString())
     {
-        this->errorCode = ADCMESH_NULLFILENAM;
-        return this->errorCode;
+        this->error->errorCode = ADCMESH_NULLFILENAM;
+        return this->error->errorCode;
     }
 
     //...Check for file exists
     QFile thisFile(this->filename);
     if(!thisFile.exists())
     {
-        this->errorCode = ADCMESH_FILENOEXIST;
-        return this->errorCode;
+        this->error->errorCode = ADCMESH_FILENOEXIST;
+        return this->error->errorCode;
     }
 
     //...Assuming these two checks passed, we can call
@@ -162,16 +123,16 @@ int adcirc_mesh::read(QString inputFile)
     //...Check for a null string
     if(this->filename==QString())
     {
-        this->errorCode = ADCMESH_NULLFILENAM;
-        return this->errorCode;
+        this->error->errorCode = ADCMESH_NULLFILENAM;
+        return this->error->errorCode;
     }
 
     //...Check for file exists
     QFile thisFile(this->filename);
     if(!thisFile.exists())
     {
-        this->errorCode = ADCMESH_FILENOEXIST;
-        return this->errorCode;
+        this->error->errorCode = ADCMESH_FILENOEXIST;
+        return this->error->errorCode;
     }
 
     //...Assuming these two checks passed, we can call
@@ -202,8 +163,8 @@ int adcirc_mesh::write(QString outputFile)
 {
     if(outputFile==QString())
     {
-        this->errorCode = ADCMESH_NULLFILENAM;
-        return this->errorCode;
+        this->error->errorCode = ADCMESH_NULLFILENAM;
+        return this->error->errorCode;
     }
 
     //...Assuming the filename is valid, write the mesh
@@ -234,8 +195,8 @@ int adcirc_mesh::write(QString outputFile)
 int adcirc_mesh::setIgnoreMeshNumbering(bool value)
 {
     this->ignoreMeshNumbering = value;
-    this->errorCode = ADCMESH_NOERROR;
-    return this->errorCode;
+    this->error->errorCode = ADCMESH_NOERROR;
+    return this->error->errorCode;
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -248,46 +209,6 @@ int adcirc_mesh::setIgnoreMeshNumbering(bool value)
 //             F U N C T I O N S
 //
 //
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
-//...Function that generates a mapping between error codes and their descriptions that can
-//   be fed to the user
-//-----------------------------------------------------------------------------------------//
-/** \brief Function that generates a mapping between error codes and their descriptions
- *
- * \author Zach Cobell
- *
- * This function uses a QMap to quickly turn an error code into an error description. The
- * error mapping variable maps between an integer and a QString
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::initializeErrors()
-{
-    //...Start by saying we haven't had any errors yet
-    this->errorCode = ADCMESH_NOERROR;
-
-    //...No error
-    this->errorMapping[ADCMESH_NOERROR]         = "No errors detected.";
-
-    //...Generic Errors
-    this->errorMapping[ADCMESH_FILEOPENERR]     = "The specified file could not be correctly opened.";
-    this->errorMapping[ADCMESH_NULLFILENAM]     = "The filename specified is empty";
-    this->errorMapping[ADCMESH_FILENOEXIST]     = "The filename specified does not exist.";
-
-    //...Mesh Read Errors
-    this->errorMapping[ADCMESH_MESHREAD_HEADER] = "There was an error while reading the header from the mesh file";
-    this->errorMapping[ADCMESH_MESHREAD_NODERR] = "There was an error while reading the nodes from the mesh file.";
-    this->errorMapping[ADCMESH_MESHREAD_ELEMER] = "There was an error while reading the elements from the mesh file.";
-    this->errorMapping[ADCMESH_MESHREAD_BNDERR] = "There was an error while reading the boundary segments from the mesh file.";
-    this->errorMapping[ADCMESH_MESHREAD_NODNUM] = "The nodes in the mesh are not sequentially numbered.";
-    this->errorMapping[ADCMESH_MESHREAD_ELENUM] = "The elements in the mesh are not sequantially numbered.";
-    this->errorMapping[ADCMESH_MESHREAD_BNDUNK] = "The boundary type specified is unknown";
-
-    return ADCMESH_NOERROR;
-}
 //-----------------------------------------------------------------------------------------//
 
 
@@ -315,8 +236,8 @@ int adcirc_mesh::readMesh()
 
     if(!meshFile.open(QIODevice::ReadOnly))
     {
-        this->errorCode = ADCMESH_FILEOPENERR;
-        return this->errorCode;
+        this->error->errorCode = ADCMESH_FILEOPENERR;
+        return this->error->errorCode;
     }
 
     //...Read the entire mesh file at once
@@ -337,15 +258,15 @@ int adcirc_mesh::readMesh()
     this->numNodes = tempString.toInt(&err);
     if(!err)
     {
-        this->errorCode = ADCMESH_MESHREAD_HEADER;
-        return this->errorCode;
+        this->error->errorCode = ADCMESH_MESHREAD_HEADER;
+        return this->error->errorCode;
     }
     tempString = tempList.value(0);
     this->numElements = tempString.toInt(&err);
     if(!err)
     {
-        this->errorCode = ADCMESH_MESHREAD_HEADER;
-        return this->errorCode;
+        this->error->errorCode = ADCMESH_MESHREAD_HEADER;
+        return this->error->errorCode;
     }
 
     //...Allocate the nodes
@@ -357,11 +278,25 @@ int adcirc_mesh::readMesh()
     //...Loop over the nodes
     for(i=0;i<this->numNodes;i++)
     {
-        ierr = this->readNode(meshFileList.value(i+2),i,this->nodes[i]);
+
+        ierr = this->nodes[i]->readNode(meshFileList.value(i+2));
+
         if(ierr!=ADCMESH_NOERROR)
         {
-            this->errorCode = ierr;
-            return this->errorCode;
+            this->error->errorCode = ierr;
+            return this->error->errorCode;
+        }
+
+        //...Check that the numbering is acceptable
+        if(this->nodes[i]->id != i+1)
+        {
+            if(this->ignoreMeshNumbering)
+                this->meshNeedsNumbering = true;
+            else
+            {
+                this->error->errorCode = ADCMESH_MESHREAD_NODNUM;
+                return this->error->errorCode;
+            }
         }
 
         //...Save the mapping. This is used to prevent
@@ -372,11 +307,23 @@ int adcirc_mesh::readMesh()
     //...Loop over the elements
     for(i=0;i<this->numElements;i++)
     {
-        ierr = this->readElement(meshFileList.value(this->numNodes+2+i),i,this->elements[i]);
+        ierr = this->elements[i]->readElement(meshFileList.value(this->numNodes+2+i),this->nodes,this->nodeMapping);
         if(ierr!=ADCMESH_NOERROR)
         {
-            this->errorCode = ierr;
-            return this->errorCode;
+            this->error->errorCode = ierr;
+            return this->error->errorCode;
+        }
+
+        //...Check that the numbering is acceptable
+        if(this->elements[i]->id != i+1)
+        {
+            if(this->ignoreMeshNumbering)
+                this->meshNeedsNumbering = true;
+            else
+            {
+                this->error->errorCode = ADCMESH_MESHREAD_ELENUM;
+                return this->error->errorCode;
+            }
         }
 
         //...Save the mapping. This is used to prevent
@@ -450,129 +397,6 @@ int adcirc_mesh::allocateElements()
 
 
 //-----------------------------------------------------------------------------------------//
-//...Parses a line from the ADCIRC mesh that contains a node into
-//   its positional information. Note that if the mesh needs re-numbering,
-//   you will need to set ignoreMeshNumbering to true
-//-----------------------------------------------------------------------------------------//
-/** \brief Protected function to parse the string from an ADCIRC mesh file containing nodal information
- *
- * \author Zach Cobell
- *
- * @param line  [in]    The QString with the information read from the file to be parsed into an ADCIRC node
- * @param index [in]    An integer for the current node position in the ADCIRC file
- * @param *node [inout] The pointer to the adcirc_node that should be created with this information
- *
- * This function can parse a single line from an ADCIRC mesh file to break it into the nodal information
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::readNode(QString line, int index, adcirc_node *node)
-{
-    QStringList tempList;
-    QString     tempString;
-    int         tempInt;
-    double      tempDouble;
-    bool        err;
-
-    tempList   = line.simplified().split(" ");
-    tempString = tempList.value(0);
-    tempInt    = tempString.toInt(&err);
-    if(!err)
-        return ADCMESH_MESHREAD_NODERR;
-
-    if(tempInt!=index+1)
-    {
-        if(this->ignoreMeshNumbering)
-            this->meshNeedsNumbering = true;
-        else
-            return ADCMESH_MESHREAD_ELENUM;
-    }
-    node->id = tempInt;
-
-    tempString = tempList.value(1);
-    tempDouble = tempString.simplified().toDouble(&err);
-    if(!err)
-        return ADCMESH_MESHREAD_NODERR;
-    node->x = tempDouble;
-    tempString = tempList.value(2);
-    tempDouble = tempString.simplified().toDouble(&err);
-    if(!err)
-        return ADCMESH_MESHREAD_NODERR;
-    node->y = tempDouble;
-    tempString = tempList.value(3);
-    tempDouble = tempString.simplified().toDouble(&err);
-    if(!err)
-        return ADCMESH_MESHREAD_NODERR;
-    node->z = tempDouble;
-
-    return ADCMESH_NOERROR;
-}
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
-//...Parses a line from the ADCIRC mesh that contains an element into
-//   its connectivity information. Note that if the mesh needs re-numbering,
-//   you will need to set ignoreMeshNumbering to true;
-//-----------------------------------------------------------------------------------------//
-/** \brief Protected function to parse the string from an ADCIRC mesh file containing
- *  elemental connectivity information
- *
- * \author Zach Cobell
- *
- * @param line     [in]    The QString with the information read from the file to be parsed into an ADCIRC element
- * @param index    [in]    An integer for the current element position in the ADCIRC file
- * @param *element [inout] The pointer to the adcirc_element that should be created with this information
- *
- * This function parses the string from the element section of the ADCIRC file
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::readElement(QString line, int index, adcirc_element *element)
-{
-    QStringList tempList;
-    QString     tempString;
-    int         tempInt;
-    bool        err;
-
-    tempList   = line.simplified().split(" ");
-    tempString = tempList.value(0);
-    tempInt    = tempString.toInt(&err);
-    if(!err)
-        return ADCMESH_MESHREAD_ELEMER;
-    if(tempInt!=index+1)
-    {
-        if(this->ignoreMeshNumbering)
-            this->meshNeedsNumbering = true;
-        else
-            return ADCMESH_MESHREAD_ELENUM;
-    }
-    element->id = tempInt;
-
-    tempString = tempList.value(2);
-    tempInt    = tempString.simplified().toInt(&err);
-    if(!err)
-        return ADCMESH_MESHREAD_ELEMER;
-    element->connections[0] = this->nodes[this->nodeMapping[tempInt]];
-
-    tempString = tempList.value(3);
-    tempInt    = tempString.simplified().toInt(&err);
-    if(!err)
-        return ADCMESH_MESHREAD_ELEMER;
-    element->connections[1] = this->nodes[this->nodeMapping[tempInt]];
-
-    tempString = tempList.value(4);
-    tempInt    = tempString.simplified().toInt(&err);
-    if(!err)
-        return ADCMESH_MESHREAD_ELEMER;
-    element->connections[2] = this->nodes[this->nodeMapping[tempInt]];
-
-    return ADCMESH_NOERROR;
-}
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
 // Function to read the open boundary segmenets of the adcirc mesh file
 //-----------------------------------------------------------------------------------------//
 /** \brief Protected function to read the entire set of open boundary conditions
@@ -586,7 +410,8 @@ int adcirc_mesh::readElement(QString line, int index, adcirc_element *element)
 int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
 {
     QString tempString;
-    int i,j,tempInt;
+    int i,j,ierr;
+    int boundaryCode,boundarySize;
     bool err;
 
     //...Read the header
@@ -596,8 +421,8 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
     this->numOpenBoundaries = tempString.toInt(&err);
     if(!err)
     {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
+        this->error->errorCode = ADCMESH_MESHREAD_BNDERR;
+        return this->error->errorCode;
     }
 
     tempString = fileData[position];
@@ -606,8 +431,8 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
     this->totNumOpenBoundaryNodes = tempString.toInt(&err);
     if(!err)
     {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
+        this->error->errorCode = ADCMESH_MESHREAD_BNDERR;
+        return this->error->errorCode;
     }
 
     //...Allocate the boundary array
@@ -621,40 +446,32 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
         position = position + 1;
         tempString = tempString.simplified().split(" ").value(0);
 
-        //...Create a new adcirc_boundary object on the heap
-        this->openBC[i] = new adcirc_boundary(this);
-
         //...Set a default code so we know it is an open boundary
         //   if for some reason we don't realize it
-        this->openBC[i]->code = -9999;
+        boundaryCode = -9999;
 
         //...Get the size of this open boundary
-        this->openBC[i]->numNodes = tempString.toInt(&err);
+        boundarySize = tempString.toInt(&err);
         if(!err)
         {
-            this->errorCode = ADCMESH_MESHREAD_BNDERR;
-            return this->errorCode;
+            this->error->errorCode = ADCMESH_MESHREAD_BNDERR;
+            return this->error->errorCode;
         }
 
-        //...Resize the vector
-        this->openBC[i]->n1.resize(this->openBC[i]->numNodes);
+        //...Create a new adcirc_boundary object on the heap
+        this->openBC[i] = new adcirc_boundary(boundaryCode,boundarySize,this);
 
         //...Loop over the length of the boundary
         for(j=0;j<this->openBC[i]->numNodes;j++)
         {
             tempString = fileData[position];
             position = position + 1;
-            tempString = tempString.simplified().split(" ").value(0);
-            tempInt = tempString.toInt(&err);
-            if(!err)
+            ierr = this->openBC[i]->readLandBoundaryString(tempString,j,this->nodes,this->nodeMapping);
+            if(ierr!=ADCMESH_NOERROR)
             {
-                this->errorCode = ADCMESH_MESHREAD_BNDERR;
-                return this->errorCode;
+                this->error->errorCode = ierr;
+                return this->error->errorCode;
             }
-
-            //...Use the mapping instead of a direct lookup to avoid issues
-            //   with misnumbered meshes
-            this->openBC[i]->n1[j] = this->nodes[this->nodeMapping[tempInt]];
         }
     }
 
@@ -672,7 +489,7 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
  *
  * \author Zach Cobell
  *
- * @param position [inout] The current file positoin. Returned as the new file position when the land boundary read is complete
+ * @param position [inout] The current file position. Returned as the new file position when the land boundary read is complete
  * @param fileData [in]    Reference to the data read from the ADCIRC mesh file
  */
 //-----------------------------------------------------------------------------------------//
@@ -680,6 +497,7 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
 {
     QString tempString,tempString2;
     int ierr,i,j;
+    int boundaryCode,boundarySize;
     bool err;
 
     //...Read the header
@@ -689,8 +507,8 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
     this->numLandBoundaries = tempString.toInt(&err);
     if(!err)
     {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
+        this->error->errorCode = ADCMESH_MESHREAD_BNDERR;
+        return this->error->errorCode;
     }
 
     tempString = fileData[position];
@@ -699,8 +517,8 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
     this->totNumLandBoundaryNodes = tempString.toInt(&err);
     if(!err)
     {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
+        this->error->errorCode = ADCMESH_MESHREAD_BNDERR;
+        return this->error->errorCode;
     }
 
     //...Allocate the boundary array
@@ -713,118 +531,38 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
         tempString = fileData[position];
         position   = position + 1;
 
-        //...Create a new adcirc_boundary object on the heap
-        this->landBC[i] = new adcirc_boundary(this);
-
         //...Set a default code so we know it is an open boundary
         //   if for some reason we don't realize it
         tempString2 = tempString.simplified().split(" ").value(1);
-        this->landBC[i]->code = tempString2.toInt(&err);
+        boundaryCode = tempString2.toInt(&err);
         if(!err)
         {
-            this->errorCode = ADCMESH_MESHREAD_BNDERR;
-            return this->errorCode;
+            this->error->errorCode = ADCMESH_MESHREAD_BNDERR;
+            return this->error->errorCode;
         }
 
         //...Get the size of this land boundary
         tempString2 = tempString.simplified().split(" ").value(0);
-        this->landBC[i]->numNodes = tempString2.toInt(&err);
+        boundarySize = tempString2.toInt(&err);
         if(!err)
         {
-            this->errorCode = ADCMESH_MESHREAD_BNDERR;
-            return this->errorCode;
+            this->error->errorCode = ADCMESH_MESHREAD_BNDERR;
+            return this->error->errorCode;
         }
+
+        //...Create a new adcirc_boundary object on the heap
+        this->landBC[i] = new adcirc_boundary(boundaryCode,boundarySize,this);
 
         //...Read the boundary string depending on its type
-        if(this->landBC[i]->code  == 0   ||
-            this->landBC[i]->code == 1   ||
-            this->landBC[i]->code == 2   ||
-            this->landBC[i]->code == 10  ||
-            this->landBC[i]->code == 11  ||
-            this->landBC[i]->code == 12  ||
-            this->landBC[i]->code == 20  ||
-            this->landBC[i]->code == 21  ||
-            this->landBC[i]->code == 22  ||
-            this->landBC[i]->code == 30  ||
-            this->landBC[i]->code == 52  ||
-            this->landBC[i]->code == 102 ||
-            this->landBC[i]->code == 112 ||
-            this->landBC[i]->code == 122 )
+        for(j=0;j<this->landBC[i]->numNodes;j++)
         {
-            this->landBC[i]->n1.resize(this->landBC[i]->numNodes);
-            for(j=0;j<this->landBC[i]->numNodes;j++)
+            tempString = fileData[position];
+            position = position + 1;
+            ierr = this->landBC[i]->readLandBoundaryString(tempString,j,this->nodes,this->nodeMapping);
+            if(ierr!=ADCMESH_NOERROR)
             {
-                tempString = fileData[position];
-                position = position + 1;
-                ierr = this->readLandBoundarySingleNode(tempString,this->landBC[i],j);
-                if(ierr!=ADCMESH_NOERROR)
-                {
-                    this->errorCode = ierr;
-                    return this->errorCode;
-                }
-            }
-        }
-        else if(this->landBC[i]->code == 3  ||
-                this->landBC[i]->code == 13 ||
-                this->landBC[i]->code == 23 )
-        {
-            this->landBC[i]->n1.resize(this->landBC[i]->numNodes);
-            this->landBC[i]->crest.resize(this->landBC[i]->numNodes);
-            this->landBC[i]->supercritical.resize(this->landBC[i]->numNodes);
-            for(j=0;j<this->landBC[i]->numNodes;j++)
-            {
-
-                tempString = fileData[position];
-                position   = position + 1;
-                ierr = this->readLandBoundaryOneSidedWeir(tempString,this->landBC[i],j);
-                if(ierr!=ADCMESH_NOERROR)
-                {
-                    this->errorCode = ierr;
-                    return this->errorCode;
-                }
-            }
-        }
-        else if(this->landBC[i]->code == 4  ||
-                this->landBC[i]->code == 24 )
-        {
-            this->landBC[i]->n1.resize(this->landBC[i]->numNodes);
-            this->landBC[i]->n2.resize(this->landBC[i]->numNodes);
-            this->landBC[i]->crest.resize(this->landBC[i]->numNodes);
-            this->landBC[i]->supercritical.resize(this->landBC[i]->numNodes);
-            this->landBC[i]->subcritical.resize(this->landBC[i]->numNodes);
-            for(j=0;j<this->landBC[i]->numNodes;j++)
-            {
-                tempString = fileData[position];
-                position   = position + 1;
-                ierr = this->readLandBoundaryTwoSidedWeir(tempString,this->landBC[i],j);
-            }
-        }
-        else if(this->landBC[i]->code == 5  ||
-                this->landBC[i]->code == 25 )
-        {
-            this->landBC[i]->n1.resize(this->landBC[i]->numNodes);
-            this->landBC[i]->n2.resize(this->landBC[i]->numNodes);
-            this->landBC[i]->crest.resize(this->landBC[i]->numNodes);
-            this->landBC[i]->supercritical.resize(this->landBC[i]->numNodes);
-            this->landBC[i]->subcritical.resize(this->landBC[i]->numNodes);
-            this->landBC[i]->pipeCoef.resize(this->landBC[i]->numNodes);
-            this->landBC[i]->pipeDiam.resize(this->landBC[i]->numNodes);
-            this->landBC[i]->pipeHeight.resize(this->landBC[i]->numNodes);
-            for(j=0;j<this->landBC[i]->numNodes;j++)
-            {
-                tempString = fileData[position];
-                position = position + 1;
-                this->readLandBoundaryCrossBarrierPipe(tempString,this->landBC[i],j);
-            }
-        }
-        else
-        {
-            this->landBC[i]->n1.resize(this->landBC[i]->numNodes);
-            for(j=0;j<this->landBC[i]->numNodes;j++)
-            {
-                tempString = fileData[position];
-                position = position + 1;
-                this->readLandBoundarySingleNode(tempString,this->landBC[i],j);
+                this->error->errorCode = ierr;
+                return this->error->errorCode;
             }
         }
     }
@@ -833,247 +571,3 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
 }
 //-----------------------------------------------------------------------------------------//
 
-
-
-//-----------------------------------------------------------------------------------------//
-// Function to parse the data from an ADCIRC mesh file for a single node boundary
-//-----------------------------------------------------------------------------------------//
-/** \brief Protected function to read the single node data from a land boundary string (single node types)
- *
- * \author Zach Cobell
- *
- * @param data     [in]    The data found in the adcirc file to be parsed
- * @param boundary [inout] A pointer to the boundary we are working on
- * @param index    [in]    Location in the boundary vector for the data passed to the function
- */
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::readLandBoundarySingleNode(QString data, adcirc_boundary *boundary, int index)
-{
-    bool    err;
-    QString tempString2 = data.simplified().split(" ").value(0);
-    int     tempInt     = tempString2.toInt(&err);
-
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-
-    boundary->n1[index] = this->nodes[this->nodeMapping[tempInt]];
-
-    return ADCMESH_NOERROR;
-}
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
-// Function to parse a one-sided weir boundary (type 3,13)
-//-----------------------------------------------------------------------------------------//
-/** \brief Protected function to read the one sided weir data from a land boundary string (type 3,13)
- *
- * \author Zach Cobell
- *
- * @param data     [in]    The data found in the adcirc file to be parsed
- * @param boundary [inout] A pointer to the boundary we are working on
- * @param index    [in]    Location in the boundary vector for the data passed to the function */
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::readLandBoundaryOneSidedWeir(QString data, adcirc_boundary *boundary, int index)
-{
-    bool    err;
-    QString tempString2 = data.simplified().split(" ").value(0);
-    int     tempInt     = tempString2.toInt(&err);
-    double  tempDouble;
-
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->n1[index] = this->nodes[this->nodeMapping[tempInt]];
-
-    tempString2 = data.simplified().split(" ").value(1);
-    tempDouble  = tempString2.toDouble(&err);
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->crest[index] = tempDouble;
-
-    tempString2 = data.simplified().split(" ").value(2);
-    tempDouble  = tempString2.toDouble(&err);
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->supercritical[index] = tempDouble;
-
-    return ADCMESH_NOERROR;
-}
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
-// Function to parse a two-sided weir (type 4,24)
-//-----------------------------------------------------------------------------------------//
-/** \brief Protected function to read the one sided two sided weir information from a
- * land boundary string (type 4,24)
- *
- * \author Zach Cobell
- *
- * @param data     [in]    The data found in the adcirc file to be parsed
- * @param boundary [inout] A pointer to the boundary we are working on
- * @param index    [in]    Location in the boundary vector for the data passed to the function */
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::readLandBoundaryTwoSidedWeir(QString data, adcirc_boundary *boundary, int index)
-{
-
-    bool    err;
-    QString tempString2 = data.simplified().split(" ").value(0);
-    int     tempInt     = tempString2.toInt(&err);
-    double  tempDouble;
-
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->n1[index] = this->nodes[this->nodeMapping[tempInt]];
-
-    tempString2 = data.simplified().split(" ").value(1);
-    tempInt     = tempString2.toInt(&err);
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->n2[index] = this->nodes[this->nodeMapping[tempInt]];
-
-    tempString2 = data.simplified().split(" ").value(2);
-    tempDouble  = tempString2.toDouble(&err);
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->crest[index] = tempDouble;
-
-    tempString2 = data.simplified().split(" ").value(3);
-    tempDouble  = tempString2.toDouble(&err);
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->subcritical[index] = tempDouble;
-
-    tempString2 = data.simplified().split(" ").value(4);
-    tempDouble  = tempString2.toDouble(&err);
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->supercritical[index] = tempDouble;
-
-    return ADCMESH_NOERROR;
-}
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
-// Function to parse a two-sided weir with cross-barrier pipes (type 5,25)
-//-----------------------------------------------------------------------------------------//
-/** \brief Protected function to read the so-called "leaky weir", or weir with cross
- *  barrier pipes from a land boundary string (type 5,25)
- *
- * \author Zach Cobell
- *
- * @param data     [in]    The data found in the adcirc file to be parsed
- * @param boundary [inout] A pointer to the boundary we are working on
- * @param index    [in]    Location in the boundary vector for the data passed to the function */
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::readLandBoundaryCrossBarrierPipe(QString data, adcirc_boundary *boundary, int index)
-{
-    bool    err;
-    QString tempString2 = data.simplified().split(" ").value(0);
-    int     tempInt     = tempString2.toInt(&err);
-    double  tempDouble;
-
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->n1[index] = this->nodes[this->nodeMapping[tempInt]];
-
-    tempString2 = data.simplified().split(" ").value(1);
-    tempInt     = tempString2.toInt(&err);
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->n2[index] = this->nodes[this->nodeMapping[tempInt]];
-
-    tempString2 = data.simplified().split(" ").value(2);
-    tempDouble  = tempString2.toDouble(&err);
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->crest[index] = tempDouble;
-
-    tempString2 = data.simplified().split(" ").value(3);
-    tempDouble  = tempString2.toDouble(&err);
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->subcritical[index] = tempDouble;
-
-    tempString2 = data.simplified().split(" ").value(4);
-    tempDouble  = tempString2.toDouble(&err);
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->supercritical[index] = tempDouble;
-
-    tempString2 = data.simplified().split(" ").value(5);
-    tempDouble  = tempString2.toDouble(&err);
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->pipeHeight[index] = tempDouble;
-
-    tempString2 = data.simplified().split(" ").value(6);
-    tempDouble  = tempString2.toDouble(&err);
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->pipeCoef[index] = tempDouble;
-
-    tempString2 = data.simplified().split(" ").value(7);
-    tempDouble  = tempString2.toDouble(&err);
-    if(!err)
-    {
-        this->errorCode = ADCMESH_MESHREAD_BNDERR;
-        return this->errorCode;
-    }
-    boundary->pipeDiam[index] = tempDouble;
-
-    return ADCMESH_NOERROR;
-}
-//-----------------------------------------------------------------------------------------//

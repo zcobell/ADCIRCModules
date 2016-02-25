@@ -22,7 +22,7 @@
  *
  * \brief Class that describes an ADCIRC boundary
  *
- * \author Zachary Cobell
+ * \author Zach Cobell
  *
  * Contact: zcobell@gmail.com
  *
@@ -44,7 +44,7 @@ public:
      *  Takes QObject reference as input
      * @param *parent [in] reference to QObject. Enables automatic memory management to avoid memory leaks
      **/
-    explicit adcirc_boundary(QObject *parent = 0);
+    explicit adcirc_boundary(int code, int size, QObject *parent = 0);
 
     ///Number of nodes on the boundary string
     int             numNodes;
@@ -76,9 +76,20 @@ public:
     ///Pipe coefficient for the pipe/culvert in a weir
     QVector<double> pipeCoef;
 
-signals:
+    //...PUBLIC FUNCTIONS...//
 
-public slots:
+    int readLandBoundaryString(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+
+protected:
+
+    int readLandBoundarySingleNode(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+
+    int readLandBoundaryOneSidedWeir(QString data, int index,QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+
+    int readLandBoundaryTwoSidedWeir(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+
+    int readLandBoundaryCrossBarrierPipe(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+
 };
 
 #endif // ADCIRC_BOUNDARY_H
