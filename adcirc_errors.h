@@ -66,6 +66,7 @@ public:
 
     explicit adcirc_errors(QObject *parent = 0);
 
+    ///Stores the current error code for retrieval later
     int errorCode;
 
     QString getErrorString();

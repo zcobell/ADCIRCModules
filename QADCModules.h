@@ -51,10 +51,6 @@ class QADCMODULESSHARED_EXPORT QADCModules : public QObject
     Q_OBJECT
 public:
 
-    /** \brief Constructor
-     *  Takes QObject reference as input
-     * @param *parent [in] reference to QObject. Enables automatic memory management to avoid memory leaks
-     **/
     explicit QADCModules(QObject *parent = 0);
 
     ~QADCModules();
