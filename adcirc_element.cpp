@@ -19,11 +19,27 @@
 //-----------------------------------------------------------------------*/
 #include "adcirc_element.h"
 
+//-----------------------------------------------------------------------------------------//
+// Constructor function. Initializes the adcirc_element class and sets defaults
+//-----------------------------------------------------------------------------------------//
+/** \brief Constructor function for adcirc_element class
+ *
+ * \author Zach Cobell
+ *
+ * @param parent [in] parent QObject used for memory management
+ *
+ * Constructor function for adcirc_element class. Assumes triangular elements.
+ *
+ */
+//-----------------------------------------------------------------------------------------//
 adcirc_element::adcirc_element(QObject *parent) : QObject(parent)
 {
     this->numConnections = 3;
     this->connections.resize(3);
 }
+//-----------------------------------------------------------------------------------------//
+
+
 
 //-----------------------------------------------------------------------------------------//
 //...Parses a line from the ADCIRC mesh that contains an element into
@@ -39,7 +55,8 @@ adcirc_element::adcirc_element(QObject *parent) : QObject(parent)
  * @param index    [in]    An integer for the current element position in the ADCIRC file
  * @param *element [inout] The pointer to the adcirc_element that should be created with this information
  *
- * This function parses the string from the element section of the ADCIRC file
+ * Protected function to parse the string from an ADCIRC mesh file containing
+ *  elemental connectivity information
  **/
 //-----------------------------------------------------------------------------------------//
 int adcirc_element::readElement(QString line, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping)

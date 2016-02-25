@@ -19,10 +19,21 @@
 //-----------------------------------------------------------------------*/
 #include "adcirc_node.h"
 
+//-----------------------------------------------------------------------------------------//
+// Constructor
+//-----------------------------------------------------------------------------------------//
+/** \brief Constructor function for an adcirc_node
+ *
+ * \author Zach Cobell
+ *
+ * Constructor function for an adcirc_node
+ */
+//-----------------------------------------------------------------------------------------//
 adcirc_node::adcirc_node(QObject *parent) : QObject(parent)
 {
 
 }
+//-----------------------------------------------------------------------------------------//
 
 
 //-----------------------------------------------------------------------------------------//
@@ -34,7 +45,7 @@ adcirc_node::adcirc_node(QObject *parent) : QObject(parent)
  *
  * \author Zach Cobell
  *
- * @param line  [in]    The QString with the information read from the file to be parsed into an ADCIRC node
+ * @param line [in] The QString with the information read from the file to be parsed into an ADCIRC node
  *
  * This function can parse a single line from an ADCIRC mesh file to break it into the nodal information
  **/

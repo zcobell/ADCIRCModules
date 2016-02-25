@@ -24,6 +24,10 @@
  *
  * \author Zach Cobell
  *
+ * The ADCIRC mesh class is a set of routines that is designed to read/write
+ * ADCIRC format meshes. The setup is such that it can be easily manipulated
+ * so that codes/routines can be written using this class to manipulate meshes
+ *
  * Contact: zcobell@gmail.com
  *
  */

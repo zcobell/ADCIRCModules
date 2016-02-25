@@ -132,7 +132,8 @@ int adcirc_boundary::readLandBoundaryString(QString data, int index, QVector<adc
 //-----------------------------------------------------------------------------------------//
 // Function to parse the data from an ADCIRC mesh file for a single node boundary
 //-----------------------------------------------------------------------------------------//
-/** \brief Protected function to read the single node data from a land boundary string (single node types)
+/** \brief Protected function to read the single node data from a land boundary string
+ *  (single node types)
  *
  * \author Zach Cobell
  *
@@ -140,6 +141,9 @@ int adcirc_boundary::readLandBoundaryString(QString data, int index, QVector<adc
  * @param index       [in] position in the boundary string
  * @param nodes       [in] nodal positions in the mesh
  * @param nodeMapping [in] node mapping table between the node id and node array position
+ *
+ * Protected function to read the single node data from a land boundary string
+ * (single node types)
  */
 //-----------------------------------------------------------------------------------------//
 int adcirc_boundary::readLandBoundarySingleNode(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int,int> &nodeMapping)
@@ -162,7 +166,8 @@ int adcirc_boundary::readLandBoundarySingleNode(QString data, int index, QVector
 //-----------------------------------------------------------------------------------------//
 // Function to parse a one-sided weir boundary (type 3,13)
 //-----------------------------------------------------------------------------------------//
-/** \brief Protected function to read the one sided weir data from a land boundary string (type 3,13)
+/** \brief Protected function to read the one sided weir data from a land
+ * boundary string (type 3,13)
  *
  * \author Zach Cobell
  *
@@ -170,6 +175,9 @@ int adcirc_boundary::readLandBoundarySingleNode(QString data, int index, QVector
  * @param index       [in] position in the boundary string
  * @param nodes       [in] nodal positions in the mesh
  * @param nodeMapping [in] node mapping table between the node id and node array position
+ *
+ * Protected function to read the one sided weir data from a land
+ * boundary string (type 3,13)
  */
 //-----------------------------------------------------------------------------------------//
 int adcirc_boundary::readLandBoundaryOneSidedWeir(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int,int> &nodeMapping)
@@ -214,6 +222,9 @@ int adcirc_boundary::readLandBoundaryOneSidedWeir(QString data, int index, QVect
  * @param index       [in] position in the boundary string
  * @param nodes       [in] nodal positions in the mesh
  * @param nodeMapping [in] node mapping table between the node id and node array position
+ *
+ * Protected function to read the one sided two sided weir information from a
+ * land boundary string (type 4,24)
  */
 //-----------------------------------------------------------------------------------------//
 int adcirc_boundary::readLandBoundaryTwoSidedWeir(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int,int> &nodeMapping)
@@ -275,6 +286,9 @@ int adcirc_boundary::readLandBoundaryTwoSidedWeir(QString data, int index, QVect
  * @param index       [in] position in the boundary string
  * @param nodes       [in] nodal positions in the mesh
  * @param nodeMapping [in] node mapping table between the node id and node array position
+ *
+ * Protected function to read the so-called "leaky weir", or weir with cross
+ * barrier pipes from a land boundary string (type 5,25)
  */
 //-----------------------------------------------------------------------------------------//
 int adcirc_boundary::readLandBoundaryCrossBarrierPipe(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int,int> &nodeMapping)

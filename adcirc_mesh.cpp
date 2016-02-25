@@ -23,15 +23,16 @@
 //-----------------------------------------------------------------------------------------//
 // Initializer
 //-----------------------------------------------------------------------------------------//
-/** \brief Constructor
+/** \brief Constructor for the ADCIRC mesh class
  *
  * \author Zach Cobell
  *
- *  Constructs an adcirc_mesh object, takes QObject reference as input
- *
  * @param *parent [in] reference to QObject. Enables automatic memory management to avoid memory leaks
  *
+ * Constructs an adcirc_mesh object, takes QObject reference as input
+ *
  **/
+//-----------------------------------------------------------------------------------------//
 adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
 {
     //...Initialize the errors so we can
@@ -405,6 +406,8 @@ int adcirc_mesh::allocateElements()
  *
  * @param position [inout] The current file position. Returned as the new file position when the open boundary read is complete
  * @param fileData [in]    Reference to the data read from the ADCIRC mesh file
+ *
+ * Protected function to read the entire set of open boundary conditions
  */
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
@@ -489,8 +492,11 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
  *
  * \author Zach Cobell
  *
- * @param position [inout] The current file position. Returned as the new file position when the land boundary read is complete
+ * @param position [inout] The current file position. Returned as the new file position
+ *                         when the land boundary read is complete
  * @param fileData [in]    Reference to the data read from the ADCIRC mesh file
+ *
+ * Protected function to read the entire set of land boundary conditions
  */
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
