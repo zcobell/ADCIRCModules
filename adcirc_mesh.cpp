@@ -469,7 +469,7 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
         {
             tempString = fileData[position];
             position = position + 1;
-            ierr = this->openBC[i]->readLandBoundaryString(tempString,j,this->nodes,this->nodeMapping);
+            ierr = this->openBC[i]->readBoundaryString(tempString,j,this->nodes,this->nodeMapping);
             if(ierr!=ADCMESH_NOERROR)
             {
                 this->error->errorCode = ierr;
@@ -564,7 +564,7 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
         {
             tempString = fileData[position];
             position = position + 1;
-            ierr = this->landBC[i]->readLandBoundaryString(tempString,j,this->nodes,this->nodeMapping);
+            ierr = this->landBC[i]->readBoundaryString(tempString,j,this->nodes,this->nodeMapping);
             if(ierr!=ADCMESH_NOERROR)
             {
                 this->error->errorCode = ierr;

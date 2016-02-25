@@ -78,17 +78,17 @@ public:
 
     //...PUBLIC FUNCTIONS...//
 
-    int readLandBoundaryString(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+    int readBoundaryString(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
 
 protected:
 
-    int readLandBoundarySingleNode(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+    int readBoundarySingleNode(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
 
-    int readLandBoundaryOneSidedWeir(QString data, int index,QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+    int readBoundaryOneSidedWeir(QString data, int index,QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
 
-    int readLandBoundaryTwoSidedWeir(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+    int readBoundaryTwoSidedWeir(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
 
-    int readLandBoundaryCrossBarrierPipe(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+    int readBoundaryCrossBarrierPipe(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
 
 };
 
