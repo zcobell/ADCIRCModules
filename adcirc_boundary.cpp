@@ -107,7 +107,7 @@ int adcirc_boundary::fromString(QString data, int index, QVector<adcirc_node *> 
     int ierr;
 
     if(this->code == -1)
-        return ADCMESH_MESHREAD_BNDNUL;
+        return ERROR_MESHREAD_BNDNUL;
 
     if(this->code  == 0       || this->code == 1   || this->code == 2   ||
             this->code == 10  || this->code == 11  || this->code == 12  ||
@@ -153,11 +153,11 @@ int adcirc_boundary::readBoundarySingleNode(QString data, int index, QVector<adc
     int     tempInt     = tempString2.toInt(&err);
 
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->n1[index] = nodes[nodeMapping[tempInt]];
 
-    return ADCMESH_NOERROR;
+    return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -187,23 +187,23 @@ int adcirc_boundary::readBoundaryOneSidedWeir(QString data, int index, QVector<a
     double  tempDouble;
 
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->n1[index] = nodes[nodeMapping[tempInt]];
 
     tempString2 = data.simplified().split(" ").value(1);
     tempDouble  = tempString2.toDouble(&err);
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
     this->crest[index] = tempDouble;
 
     tempString2 = data.simplified().split(" ").value(2);
     tempDouble  = tempString2.toDouble(&err);
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
     this->supercritical[index] = tempDouble;
 
-    return ADCMESH_NOERROR;
+    return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -235,39 +235,39 @@ int adcirc_boundary::readBoundaryTwoSidedWeir(QString data, int index, QVector<a
     double  tempDouble;
 
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->n1[index] = nodes[nodeMapping[tempInt]];
 
     tempString2 = data.simplified().split(" ").value(1);
     tempInt     = tempString2.toInt(&err);
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->n2[index] = nodes[nodeMapping[tempInt]];
 
     tempString2 = data.simplified().split(" ").value(2);
     tempDouble  = tempString2.toDouble(&err);
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->crest[index] = tempDouble;
 
     tempString2 = data.simplified().split(" ").value(3);
     tempDouble  = tempString2.toDouble(&err);
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->subcritical[index] = tempDouble;
 
     tempString2 = data.simplified().split(" ").value(4);
     tempDouble  = tempString2.toDouble(&err);
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->supercritical[index] = tempDouble;
 
-    return ADCMESH_NOERROR;
+    return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -298,59 +298,59 @@ int adcirc_boundary::readBoundaryCrossBarrierPipe(QString data, int index, QVect
     double  tempDouble;
 
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->n1[index] = nodes[nodeMapping[tempInt]];
 
     tempString2 = data.simplified().split(" ").value(1);
     tempInt     = tempString2.toInt(&err);
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->n2[index] = nodes[nodeMapping[tempInt]];
 
     tempString2 = data.simplified().split(" ").value(2);
     tempDouble  = tempString2.toDouble(&err);
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->crest[index] = tempDouble;
 
     tempString2 = data.simplified().split(" ").value(3);
     tempDouble  = tempString2.toDouble(&err);
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->subcritical[index] = tempDouble;
 
     tempString2 = data.simplified().split(" ").value(4);
     tempDouble  = tempString2.toDouble(&err);
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->supercritical[index] = tempDouble;
 
     tempString2 = data.simplified().split(" ").value(5);
     tempDouble  = tempString2.toDouble(&err);
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->pipeHeight[index] = tempDouble;
 
     tempString2 = data.simplified().split(" ").value(6);
     tempDouble  = tempString2.toDouble(&err);
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->pipeCoef[index] = tempDouble;
 
     tempString2 = data.simplified().split(" ").value(7);
     tempDouble  = tempString2.toDouble(&err);
     if(!err)
-        return ADCMESH_MESHREAD_BNDERR;
+        return ERROR_MESHREAD_BNDERR;
 
     this->pipeDiam[index] = tempDouble;
 
-    return ADCMESH_NOERROR;
+    return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//

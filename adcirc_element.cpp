@@ -70,28 +70,52 @@ int adcirc_element::fromString(QString line, QVector<adcirc_node *> &nodes, QMap
     tempString = tempList.value(0);
     tempInt    = tempString.toInt(&err);
     if(!err)
-        return ADCMESH_MESHREAD_ELEMER;
+        return ERROR_MESHREAD_ELEMER;
 
     this->id = tempInt;
 
     tempString = tempList.value(2);
     tempInt    = tempString.simplified().toInt(&err);
     if(!err)
-        return ADCMESH_MESHREAD_ELEMER;
+        return ERROR_MESHREAD_ELEMER;
     this->connections[0] = nodes[nodeMapping[tempInt]];
 
     tempString = tempList.value(3);
     tempInt    = tempString.simplified().toInt(&err);
     if(!err)
-        return ADCMESH_MESHREAD_ELEMER;
+        return ERROR_MESHREAD_ELEMER;
     this->connections[1] = nodes[nodeMapping[tempInt]];
 
     tempString = tempList.value(4);
     tempInt    = tempString.simplified().toInt(&err);
     if(!err)
-        return ADCMESH_MESHREAD_ELEMER;
+        return ERROR_MESHREAD_ELEMER;
     this->connections[2] = nodes[nodeMapping[tempInt]];
 
-    return ADCMESH_NOERROR;
+    return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Function that writes an ADCIRC element to a string
+//-----------------------------------------------------------------------------------------//
+/** \brief Protected function that writes an ADCIRC element in the format expected by an
+ *  ADCIRC mesh file
+ *
+ * \author Zach Cobell
+ *
+ * Protected function that writes an ADCIRC element in the format expected by an
+ * ADCIRC mesh file
+ */
+//-----------------------------------------------------------------------------------------//
+QString adcirc_element::toString()
+{
+    QString output;
+    output.sprintf("%11i %3i %11i %11i %11i",this->id,this->numConnections,
+                                        this->connections[0]->id,
+                                        this->connections[1]->id,
+                                        this->connections[2]->id);
+    return output;
+}

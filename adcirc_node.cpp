@@ -18,6 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_node.h"
+#include <QDebug>
 
 //-----------------------------------------------------------------------------------------//
 // Constructor
@@ -62,25 +63,45 @@ int adcirc_node::fromString(QString line)
     tempString = tempList.value(0);
     tempInt    = tempString.toInt(&err);
     if(!err)
-        return ADCMESH_MESHREAD_NODERR;
+        return ERROR_MESHREAD_NODERR;
     this->id = tempInt;
 
     tempString = tempList.value(1);
     tempDouble = tempString.simplified().toDouble(&err);
     if(!err)
-        return ADCMESH_MESHREAD_NODERR;
+        return ERROR_MESHREAD_NODERR;
     this->x = tempDouble;
     tempString = tempList.value(2);
     tempDouble = tempString.simplified().toDouble(&err);
     if(!err)
-        return ADCMESH_MESHREAD_NODERR;
+        return ERROR_MESHREAD_NODERR;
     this->y = tempDouble;
     tempString = tempList.value(3);
     tempDouble = tempString.simplified().toDouble(&err);
     if(!err)
-        return ADCMESH_MESHREAD_NODERR;
+        return ERROR_MESHREAD_NODERR;
     this->z = tempDouble;
 
-    return ADCMESH_NOERROR;
+    return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
+
+
+//-----------------------------------------------------------------------------------------//
+// Function that writes an ADCIRC node to a string
+//-----------------------------------------------------------------------------------------//
+/** \brief Protected function that writes an ADCIRC node in the format expected by an ADCIRC mesh
+ * file
+ *
+ * \author Zach Cobell
+ *
+ * Protected function that writes an ADCIRC node in the format expected by an ADCIRC mesh
+ * file
+ */
+//-----------------------------------------------------------------------------------------//
+QString adcirc_node::toString()
+{
+    QString output;
+    output.sprintf("%11i   %14.10f   %14.10f  %14.10f",this->id,this->x,this->y,this->z);
+    return output;
+}

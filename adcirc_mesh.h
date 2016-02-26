@@ -130,6 +130,8 @@ protected:
 
     int readMesh();
 
+    int writeMesh(QString filename);
+
     int allocateNodes();
 
     int allocateElements();

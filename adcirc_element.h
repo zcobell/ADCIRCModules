@@ -57,7 +57,7 @@ public:
 
     int fromString(QString line, QVector<adcirc_node*> &nodes, QMap<int,int> &nodeMapping);
 
-    int toString(QString &line);
+    QString toString();
 
 };
 

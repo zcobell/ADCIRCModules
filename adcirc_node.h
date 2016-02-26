@@ -35,7 +35,7 @@
 #include "QADCModules_global.h"
 #include "adcirc_errors.h"
 
-class adcirc_node : public QObject
+class QADCMODULESSHARED_EXPORT adcirc_node : public QObject
 {
     Q_OBJECT
 public:
@@ -59,7 +59,7 @@ public:
 
     int fromString(QString line);
 
-    int toString(QString &line);
+    QString toString();
 
 };
 

@@ -52,27 +52,27 @@ adcirc_errors::adcirc_errors(QObject *parent) : QObject(parent)
 int adcirc_errors::initializeErrors()
 {
     //...Initialize the error code
-    this->errorCode = ADCMESH_NOERROR;
+    this->errorCode = ERROR_NOERROR;
 
     //...No error
-    this->errorMapping[ADCMESH_NOERROR]         = "No errors detected.";
+    this->errorMapping[ERROR_NOERROR]         = "No errors detected.";
 
     //...Generic Errors
-    this->errorMapping[ADCMESH_FILEOPENERR]     = "The specified file could not be correctly opened.";
-    this->errorMapping[ADCMESH_NULLFILENAM]     = "The filename specified is empty";
-    this->errorMapping[ADCMESH_FILENOEXIST]     = "The filename specified does not exist.";
+    this->errorMapping[ERROR_FILEOPENERR]     = "The specified file could not be correctly opened.";
+    this->errorMapping[ERROR_NULLFILENAM]     = "The filename specified is empty";
+    this->errorMapping[ERROR_FILENOEXIST]     = "The filename specified does not exist.";
 
     //...Mesh Read Errors
-    this->errorMapping[ADCMESH_MESHREAD_HEADER] = "There was an error while reading the header from the mesh file";
-    this->errorMapping[ADCMESH_MESHREAD_NODERR] = "There was an error while reading the nodes from the mesh file.";
-    this->errorMapping[ADCMESH_MESHREAD_ELEMER] = "There was an error while reading the elements from the mesh file.";
-    this->errorMapping[ADCMESH_MESHREAD_BNDERR] = "There was an error while reading the boundary segments from the mesh file.";
-    this->errorMapping[ADCMESH_MESHREAD_NODNUM] = "The nodes in the mesh are not sequentially numbered.";
-    this->errorMapping[ADCMESH_MESHREAD_ELENUM] = "The elements in the mesh are not sequantially numbered.";
-    this->errorMapping[ADCMESH_MESHREAD_BNDUNK] = "The boundary type specified is unknown";
-    this->errorMapping[ADCMESH_MESHREAD_BNDNUL] = "The boundary type has not been specified.";
+    this->errorMapping[ERROR_MESHREAD_HEADER] = "There was an error while reading the header from the mesh file";
+    this->errorMapping[ERROR_MESHREAD_NODERR] = "There was an error while reading the nodes from the mesh file.";
+    this->errorMapping[ERROR_MESHREAD_ELEMER] = "There was an error while reading the elements from the mesh file.";
+    this->errorMapping[ERROR_MESHREAD_BNDERR] = "There was an error while reading the boundary segments from the mesh file.";
+    this->errorMapping[ERROR_MESHREAD_NODNUM] = "The nodes in the mesh are not sequentially numbered.";
+    this->errorMapping[ERROR_MESHREAD_ELENUM] = "The elements in the mesh are not sequantially numbered.";
+    this->errorMapping[ERROR_MESHREAD_BNDUNK] = "The boundary type specified is unknown";
+    this->errorMapping[ERROR_MESHREAD_BNDNUL] = "The boundary type has not been specified.";
 
-    return ADCMESH_NOERROR;
+    return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
 

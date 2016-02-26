@@ -13,5 +13,7 @@ int main(int argc, char *argv[])
     qDebug() << thisMesh->error->errorCode;
     qDebug() << thisMesh->error->getErrorString();
 
+    qDebug() << thisMesh->write("C:/Users/zcobell/Documents/Codes/QADCModules/QADCModules_Testing/ms-riv-me.grd");
+
     return ierr;
 }
