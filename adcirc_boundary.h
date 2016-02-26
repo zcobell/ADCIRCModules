@@ -78,7 +78,7 @@ public:
 
     //...PUBLIC FUNCTIONS...//
 
-    int readBoundaryString(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+    int fromString(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
 
 protected:
 

@@ -50,7 +50,7 @@ adcirc_node::adcirc_node(QObject *parent) : QObject(parent)
  * This function can parse a single line from an ADCIRC mesh file to break it into the nodal information
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_node::readNode(QString line)
+int adcirc_node::fromString(QString line)
 {
     QStringList tempList;
     QString     tempString;

@@ -59,7 +59,7 @@ adcirc_element::adcirc_element(QObject *parent) : QObject(parent)
  *  elemental connectivity information
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_element::readElement(QString line, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping)
+int adcirc_element::fromString(QString line, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping)
 {
     QStringList tempList;
     QString     tempString;

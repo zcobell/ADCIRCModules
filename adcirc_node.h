@@ -57,9 +57,9 @@ public:
 
     //...PUBLIC FUNCTIONS...//
 
-    int readNode(QString line);
+    int fromString(QString line);
 
-    int writeNode(QString &line);
+    int toString(QString &line);
 
 };
 

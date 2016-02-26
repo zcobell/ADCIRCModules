@@ -102,7 +102,7 @@ adcirc_boundary::adcirc_boundary(int code, int size, QObject *parent) : QObject(
  * upon the ADCIRC boundary type that is already specified.
  */
 //-----------------------------------------------------------------------------------------//
-int adcirc_boundary::readBoundaryString(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping)
+int adcirc_boundary::fromString(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping)
 {
     int ierr;
 

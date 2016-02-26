@@ -280,7 +280,7 @@ int adcirc_mesh::readMesh()
     for(i=0;i<this->numNodes;i++)
     {
 
-        ierr = this->nodes[i]->readNode(meshFileList.value(i+2));
+        ierr = this->nodes[i]->fromString(meshFileList.value(i+2));
 
         if(ierr!=ADCMESH_NOERROR)
         {
@@ -308,7 +308,7 @@ int adcirc_mesh::readMesh()
     //...Loop over the elements
     for(i=0;i<this->numElements;i++)
     {
-        ierr = this->elements[i]->readElement(meshFileList.value(this->numNodes+2+i),this->nodes,this->nodeMapping);
+        ierr = this->elements[i]->fromString(meshFileList.value(this->numNodes+2+i),this->nodes,this->nodeMapping);
         if(ierr!=ADCMESH_NOERROR)
         {
             this->error->errorCode = ierr;
@@ -469,7 +469,7 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
         {
             tempString = fileData[position];
             position = position + 1;
-            ierr = this->openBC[i]->readBoundaryString(tempString,j,this->nodes,this->nodeMapping);
+            ierr = this->openBC[i]->fromString(tempString,j,this->nodes,this->nodeMapping);
             if(ierr!=ADCMESH_NOERROR)
             {
                 this->error->errorCode = ierr;
@@ -564,7 +564,7 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
         {
             tempString = fileData[position];
             position = position + 1;
-            ierr = this->landBC[i]->readBoundaryString(tempString,j,this->nodes,this->nodeMapping);
+            ierr = this->landBC[i]->fromString(tempString,j,this->nodes,this->nodeMapping);
             if(ierr!=ADCMESH_NOERROR)
             {
                 this->error->errorCode = ierr;

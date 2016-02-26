@@ -55,9 +55,9 @@ public:
 
     //...PUBLIC FUNCTIONS...//
 
-    int readElement(QString line, QVector<adcirc_node*> &nodes, QMap<int,int> &nodeMapping);
+    int fromString(QString line, QVector<adcirc_node*> &nodes, QMap<int,int> &nodeMapping);
 
-    int writeElement(QString &line);
+    int toString(QString &line);
 
 };
 
