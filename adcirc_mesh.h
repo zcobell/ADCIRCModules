@@ -35,6 +35,7 @@
 #define ADCIRC_MESH_H
 
 
+#include <QTextStream>
 #include <QObject>
 #include <QVector>
 #include <QFile>
