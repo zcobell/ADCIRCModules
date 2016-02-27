@@ -593,32 +593,58 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::writeMesh(QString filename)
 {
-    int i;
+    int i,j;
     QString tempString;
+    QStringList boundaryList;
 
     QFile outputFile(filename);
 
+    //...Open the output file. Return with error
+    //   if any issues occur
     if(!outputFile.open(QIODevice::WriteOnly))
         return ERROR_FILEOPENERR;
 
+    //...Create a stream
     QTextStream out(&outputFile);
 
+    //...Write the header
     out << this->title << "\n";
     out << tempString.sprintf("%11i  %11i",this->numElements,this->numNodes) << "\n";
+
+    //...Write the mesh nodes
     for(i=0;i<this->numNodes;i++)
         out << this->nodes[i]->toString() << "\n";
 
+    //...Write the mesh elements
     for(i=0;i<this->numElements;i++)
         out << this->elements[i]->toString() << "\n";
 
-    out << 0 << "\n";
-    out << 0 << "\n";
-    out << 0 << "\n";
-    out << 0 << "\n";
+    //...Write the open boundary header
+    out << this->numOpenBoundaries << "\n";
+    out << this->totNumOpenBoundaryNodes << "\n";
 
+    //...Write the open boundaries
+    for(i=0;i<this->numOpenBoundaries;i++)
+    {
+        boundaryList = this->openBC[i]->toStringList(true);
+        for(j=0;j<boundaryList.length();j++)
+            out << boundaryList.value(j) << "\n";
+    }
 
+    //...Write the land boundary header
+    out << this->numLandBoundaries << "\n";
+    out << this->totNumLandBoundaryNodes << "\n";
+
+    //...Write the land boundaries
+    for(i=0;i<this->numLandBoundaries;i++)
+    {
+        boundaryList = this->landBC[i]->toStringList(false);
+        for(j=0;j<boundaryList.length();j++)
+            out << boundaryList.value(j) << "\n";
+    }
+
+    //...Close the file
     outputFile.close();
-
 
     return ERROR_NOERROR;
 

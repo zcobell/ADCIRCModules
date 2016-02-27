@@ -354,3 +354,75 @@ int adcirc_boundary::readBoundaryCrossBarrierPipe(QString data, int index, QVect
     return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Function to convert the boundary to a list of strings to be written to the mesh file
+//-----------------------------------------------------------------------------------------//
+/** \brief Public function to construct the boundary condition into a QStringList for writing
+ *
+ * \author Zach Cobell
+ *
+ * @param isOpenBC [in] if this is an open BC, the boundary code is not included
+ *                      per the ADCIRC format
+ *
+ * Public function to construct the boundary condition into a QStringList for writing
+ */
+//-----------------------------------------------------------------------------------------//
+QStringList adcirc_boundary::toStringList(bool isOpenBC)
+{
+    int         i;
+    QString     tempString;
+    QStringList outputList;
+
+    if(isOpenBC)
+        outputList.append(QString::number(this->numNodes));
+    else
+        outputList.append(tempString.sprintf("%11i  %11i",this->numNodes,this->code));
+
+    for(i=0;i<this->numNodes;i++)
+    {
+        //...Resize the vectors needed for each boundary code
+        if(this->code  == 0   || this->code == 1   || this->code == 2   ||
+            this->code == 10  || this->code == 11  || this->code == 12  ||
+            this->code == 20  || this->code == 21  || this->code == 22  ||
+            this->code == 30  || this->code == 52  || this->code == 102 ||
+            this->code == 112 || this->code == 122 )
+        {
+            tempString.sprintf("%11i",this->n1[i]->id);
+        }
+        else if(this->code == 3 || this->code == 13 || this->code == 23 )
+        {
+            tempString.sprintf("%11i %6.3f %6.3f",this->n1[i]->id,
+                                                this->crest[i],
+                                                this->supercritical[i]);
+        }
+        else if(this->code == 4 || this->code == 24 )
+        {
+            tempString.sprintf("%11i %11i %6.3f %6.3f %6.3f",this->n1[i]->id,
+                                                          this->n2[i]->id,
+                                                          this->crest[i],
+                                                          this->subcritical[i],
+                                                          this->supercritical[i]);
+        }
+        else if(this->code == 5  || this->code == 25 )
+        {
+            tempString.sprintf("%11i %11i %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f",
+                                                            this->n1[i]->id,
+                                                            this->n2[i]->id,
+                                                            this->crest[i],
+                                                            this->subcritical[i],
+                                                            this->supercritical[i],
+                                                            this->pipeHeight[i],
+                                                            this->pipeCoef[i],
+                                                            this->pipeDiam[i]);
+        }
+        else
+        {
+            tempString.sprintf("%11i",this->n1[i]->id);
+        }
+        outputList.append(tempString);
+    }
+    return outputList;
+}
