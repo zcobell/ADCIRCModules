@@ -59,7 +59,7 @@ int adcirc_errors::initializeErrors()
 
     //...Generic Errors
     this->errorMapping[ERROR_FILEOPENERR]     = "The specified file could not be correctly opened.";
-    this->errorMapping[ERROR_NULLFILENAM]     = "The filename specified is empty";
+    this->errorMapping[ERROR_NULLFILENAM]     = "The filename specified is empty.";
     this->errorMapping[ERROR_FILENOEXIST]     = "The filename specified does not exist.";
 
     //...Mesh Read Errors
@@ -69,8 +69,14 @@ int adcirc_errors::initializeErrors()
     this->errorMapping[ERROR_MESHREAD_BNDERR] = "There was an error while reading the boundary segments from the mesh file.";
     this->errorMapping[ERROR_MESHREAD_NODNUM] = "The nodes in the mesh are not sequentially numbered.";
     this->errorMapping[ERROR_MESHREAD_ELENUM] = "The elements in the mesh are not sequantially numbered.";
-    this->errorMapping[ERROR_MESHREAD_BNDUNK] = "The boundary type specified is unknown";
+    this->errorMapping[ERROR_MESHREAD_BNDUNK] = "The boundary type specified is unknown.";
     this->errorMapping[ERROR_MESHREAD_BNDNUL] = "The boundary type has not been specified.";
+
+    //...Nodal Parameter Errors
+    this->errorMapping[ERROR_NODALPARAM_DEFAULTVALUESIZE] = "The size of the default value vector does not match the expected length.";
+    this->errorMapping[ERROR_NODALPARAM_NOTENOUGHVALUES]  = "The size of the information read from the body is not the expected size for the nodal parameter.";
+    this->errorMapping[ERROR_NODALPARAM_READERROR]        = "There was an error while attempting to read the nodal parameters.";
+    this->errorMapping[ERROR_NODALPARAM_OUTOFRANGE]       = "The node number specified in the nodal parameter body is out of the acceptable range.";
 
     return ERROR_NOERROR;
 }

@@ -18,6 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_element.h"
+#include "adcirc_errors.h"
 
 //-----------------------------------------------------------------------------------------//
 // Constructor function. Initializes the adcirc_element class and sets defaults

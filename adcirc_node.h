@@ -36,7 +36,6 @@
 #include <QObject>
 
 #include "QADCModules_global.h"
-#include "adcirc_errors.h"
 
 class QADCMODULESSHARED_EXPORT adcirc_node : public QObject
 {

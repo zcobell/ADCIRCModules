@@ -73,7 +73,7 @@ public:
 
     int read();
 
-    int write(QString outputFile);
+    int write(QString outputFile, bool userSpecifiedDefaultValues = false);
 
     int locateAttribute(QString attributeName);
 
@@ -82,7 +82,7 @@ protected:
     //...PROTECTED FUNCTIONS...//
     int readNodalAttributesFile();
 
-    int writeNodalAttributesFile(QString outputFile);
+    int writeNodalAttributesFile(QString outputFile, bool userSpecifiedDefaultValues);
 
 private:
     //...PRIVATE VARIABLES...//
