@@ -16,7 +16,9 @@ SOURCES += QADCModules.cpp \
     adcirc_element.cpp \
     adcirc_boundary.cpp \
     adcirc_mesh.cpp \
-    adcirc_errors.cpp
+    adcirc_errors.cpp \
+    adcirc_nodalparameter.cpp \
+    adcirc_nodalattributes.cpp
 
 HEADERS +=\
         QADCModules_global.h \
@@ -25,7 +27,9 @@ HEADERS +=\
     adcirc_element.h \
     adcirc_boundary.h \
     adcirc_mesh.h \
-    adcirc_errors.h
+    adcirc_errors.h \
+    adcirc_nodalparameter.h \
+    adcirc_nodalattributes.h
 
 unix {
     target.path = /usr/lib
