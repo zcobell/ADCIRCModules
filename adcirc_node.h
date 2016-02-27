@@ -22,6 +22,9 @@
  *
  * \brief Class that describes an ADCIRC node
  *
+ * This class describes a single adcirc node. Functions are provided
+ * to read/write a node in the format used in an ADCIRC mesh file
+ *
  * \author Zach Cobell
  *
  * Contact: zcobell@gmail.com

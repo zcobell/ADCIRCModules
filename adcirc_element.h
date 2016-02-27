@@ -20,7 +20,11 @@
 /**
  * \class adcirc_element
  *
- * \brief Class that describes an ADCIRC triangular element
+ * \brief Class that describes an ADCIRC element
+ *
+ * This class is used to describe an ADCIRC element. For
+ * the time being, only triangular elements are considered though
+ * this class could easily be extended to accomodate quads
  *
  * \author Zach Cobell
  *

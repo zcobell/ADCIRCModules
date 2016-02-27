@@ -58,4 +58,4 @@ public:
 
 };
 
-#endif // QARCADISUTIL_H
+#endif // QADCMODULES_H

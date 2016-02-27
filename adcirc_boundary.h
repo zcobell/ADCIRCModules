@@ -22,6 +22,9 @@
  *
  * \brief Class that describes an ADCIRC boundary
  *
+ * This class handles describing ADCIRC boundary conditions. Functions
+ * are provided to read and write strings of boundary nodes
+ *
  * \author Zach Cobell
  *
  * Contact: zcobell@gmail.com
@@ -32,6 +35,7 @@
 
 #include <QObject>
 #include <QVector>
+
 #include "QADCModules_global.h"
 #include "adcirc_node.h"
 
@@ -41,7 +45,7 @@ class QADCMODULESSHARED_EXPORT adcirc_boundary : public QObject
     Q_OBJECT
 public:
     /** \brief Constructor
-     *  Takes QObject reference as input
+     *  Constructor for adcirc_boundary. Takes QObject reference as input
      * @param *parent [in] reference to QObject. Enables automatic memory management to avoid memory leaks
      **/
     explicit adcirc_boundary(int code, int size, QObject *parent = 0);
