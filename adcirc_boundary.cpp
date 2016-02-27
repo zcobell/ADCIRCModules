@@ -383,7 +383,6 @@ QStringList adcirc_boundary::toStringList(bool isOpenBC)
 
     for(i=0;i<this->numNodes;i++)
     {
-        //...Resize the vectors needed for each boundary code
         if(this->code  == 0   || this->code == 1   || this->code == 2   ||
             this->code == 10  || this->code == 11  || this->code == 12  ||
             this->code == 20  || this->code == 21  || this->code == 22  ||
