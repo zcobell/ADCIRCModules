@@ -35,6 +35,7 @@
 #define ADCIRC_NODALPARAMETER_H
 
 #include <QObject>
+#include <QVector>
 
 #include "QADCModules_global.h"
 
@@ -43,6 +44,30 @@ class QADCMODULESSHARED_EXPORT adcirc_nodalparameter : public QObject
     Q_OBJECT
 public:
     explicit adcirc_nodalparameter(QObject *parent = 0);
+
+    //...PUBLIC VARIABLES...//
+
+    ///Name of the nodal attribute
+    QString name;
+
+    ///Units for the nodal parameter
+    QString units;
+
+    ///Number of values associated with each node for this nodal attribute
+    int nValues;
+
+    ///Default value(s) to be used when writing the fort.13 file
+    QVector<double> defaultValue;
+
+    ///Values for the nodal parameter
+    QVector< QVector<double> > values;
+
+    //...PUBLIC FUNCTIONS...//
+    int read(QStringList fileData);
+
+    QStringList write();
+
+protected:
 
 };
 
