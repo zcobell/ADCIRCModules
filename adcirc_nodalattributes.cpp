@@ -352,8 +352,12 @@ int adcirc_nodalattributes::writeNodalAttributesFile(QString outputFilename, boo
 
     //...Write the header
     out << this->title << "\n";
-    out << this->numNodes << "\n";
-    out << this->numParameters << "\n";
+
+    tempString.sprintf("%11i",this->numNodes);
+    out << tempString << "\n";
+
+    tempString.sprintf("%11i",this->numParameters);
+    out << tempString << "\n";
 
     //...Write the default values for each nodal parameters
     for(i=0;i<this->numParameters;i++)
@@ -388,6 +392,8 @@ int adcirc_nodalattributes::writeNodalAttributesFile(QString outputFilename, boo
         for(j=0;j<tempStringList.length();j++)
             out << tempStringList.value(j) << "\n";
     }
+
+    outputFile.close();
 
     return ERROR_NOERROR;
 }

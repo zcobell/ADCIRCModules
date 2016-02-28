@@ -95,13 +95,20 @@ int adcirc_node::fromString(QString line)
  *
  * \author Zach Cobell
  *
+ * @param gcs [in] Determines the output format if it should be formatted for geographic
+ *                 coordinates or mercator based coordinates. Default = true
+ *
  * Protected function that writes an ADCIRC node in the format expected by an ADCIRC mesh
  * file
  */
 //-----------------------------------------------------------------------------------------//
-QString adcirc_node::toString()
+QString adcirc_node::toString(bool gcs)
 {
     QString output;
-    output.sprintf("%11i   %14.10f   %14.10f  %14.10f",this->id,this->x,this->y,this->z);
+
+    if(gcs)
+        output.sprintf("%11i   %14.10f   %14.10f  %14.10f",this->id,this->x,this->y,this->z);
+    else
+        output.sprintf("%11i   %14.4f    %14.4f   %14.4f",this->id,this->x,this->y,this->z);
     return output;
 }

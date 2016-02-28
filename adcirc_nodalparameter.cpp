@@ -292,7 +292,10 @@ int adcirc_nodalparameter::getNumNonDefault()
         for(j=0;j<this->nValues;j++)
         {
             if(this->values[j][i]!=this->defaultValue[j])
+            {
                 isNonDefault = true;
+                break;
+            }
         }
         if(isNonDefault)
             numNonDefault = numNonDefault + 1;

@@ -61,7 +61,7 @@ public:
 
     int fromString(QString line);
 
-    QString toString();
+    QString toString(bool gcs = true);
 
 };
 

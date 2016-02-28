@@ -43,6 +43,10 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
     this->ignoreMeshNumbering = false;
     this->meshNeedsNumbering  = false;
 
+    //...Assume this is a geographic coordinate system by default. After
+    //   the mesh is read, this will be checked to be sure
+    this->isGCS = true;
+
     return;
 }
 //-----------------------------------------------------------------------------------------//
@@ -350,6 +354,9 @@ int adcirc_mesh::readMesh()
     if(ierr!=ERROR_NOERROR)
         return ierr;
 
+    //...Determine how we are going to write back the coordinates
+    this->senseCoordinateSystem();
+
     //...The mesh read is now complete. We're done.
 
     return ERROR_NOERROR;
@@ -611,8 +618,9 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
 //-----------------------------------------------------------------------------------------//
 
 
+
 //-----------------------------------------------------------------------------------------//
-//...Function to read an ADCIRC mesh
+//...Function to write an ADCIRC mesh
 //-----------------------------------------------------------------------------------------//
 /** \brief This function is used internally to write an ADCIRC mesh
  *
@@ -645,7 +653,7 @@ int adcirc_mesh::writeMesh(QString filename)
 
     //...Write the mesh nodes
     for(i=0;i<this->numNodes;i++)
-        out << this->nodes[i]->toString() << "\n";
+        out << this->nodes[i]->toString(this->isGCS) << "\n";
 
     //...Write the mesh elements
     for(i=0;i<this->numElements;i++)
@@ -680,4 +688,49 @@ int adcirc_mesh::writeMesh(QString filename)
 
     return ERROR_NOERROR;
 
+}
+
+//-----------------------------------------------------------------------------------------//
+//...Function to attempt to sense the coordinate system type
+//-----------------------------------------------------------------------------------------//
+/** \brief This function is used internally sense the type of coordinate system that is used
+ *
+ * \author Zach Cobell
+ *
+ * This function is used internally sense the type of coordinate system that is used.
+ * Ultimately, it is used to format the coordinates when writing an output file so that
+ * precision is maintained. UTM or other simliar coordinate systems will have fewer decimal
+ * places than what appears to be a geographic coordinate system
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::senseCoordinateSystem()
+{
+    int i;
+    qreal avgX,avgY,m1,m2,mag,nn;
+
+    avgX = 0.0;
+    avgY = 0.0;
+
+    nn = static_cast<qreal>(this->numNodes);
+
+    for(i=0;i<this->numNodes;i++)
+    {
+        avgX = avgX + this->nodes[i]->x;
+        avgY = avgY + this->nodes[i]->y;
+    }
+
+    avgX = qAbs(avgX / nn);
+    avgY = qAbs(avgY / nn);
+
+    m1 = qAbs(qLn(avgX)/qLn(10.0));
+    m2 = qAbs(qLn(avgY)/qLn(10.0));
+
+    mag = ( m1 + m2 ) / 2.0;
+
+    if(mag>3.0)
+        this->isGCS = false;
+    else
+        this->isGCS = true;
+
+    return ERROR_NOERROR;
 }
