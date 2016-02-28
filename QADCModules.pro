@@ -25,25 +25,25 @@ TEMPLATE = lib
 
 DEFINES += QADCMODULES_LIBRARY
 
-SOURCES += QADCModules.cpp \
-    adcirc_node.cpp \
-    adcirc_element.cpp \
-    adcirc_boundary.cpp \
-    adcirc_mesh.cpp \
-    adcirc_errors.cpp \
-    adcirc_nodalparameter.cpp \
-    adcirc_nodalattributes.cpp
+SOURCES += src/QADCModules.cpp \
+    src/adcirc_node.cpp \
+    src/adcirc_element.cpp \
+    src/adcirc_boundary.cpp \
+    src/adcirc_mesh.cpp \
+    src/adcirc_errors.cpp \
+    src/adcirc_nodalparameter.cpp \
+    src/adcirc_nodalattributes.cpp
 
 HEADERS +=\
-        QADCModules_global.h \
-        QADCModules.h \
-    adcirc_node.h \
-    adcirc_element.h \
-    adcirc_boundary.h \
-    adcirc_mesh.h \
-    adcirc_errors.h \
-    adcirc_nodalparameter.h \
-    adcirc_nodalattributes.h
+        include/QADCModules_global.h \
+        include/QADCModules.h \
+    include/adcirc_node.h \
+    include/adcirc_element.h \
+    include/adcirc_boundary.h \
+    include/adcirc_mesh.h \
+    include/adcirc_errors.h \
+    include/adcirc_nodalparameter.h \
+    include/adcirc_nodalattributes.h
 
 unix {
     target.path = /usr/lib
