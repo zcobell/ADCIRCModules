@@ -270,6 +270,13 @@ int adcirc_mesh::readMesh()
         return this->error->errorCode;
     }
 
+    //...Do a quick check on the length of the file
+    if(meshFileList.length()<this->numNodes+this->numElements+2)
+    {
+        this->error->errorCode = ERROR_MESHREAD_UNEXPECTEDEND;
+        return this->error->errorCode;
+    }
+
     //...Allocate the nodes
     this->allocateNodes();
 
@@ -417,9 +424,14 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
     int boundaryCode,boundarySize;
     bool err;
 
+    if(position>fileData.length()-1)
+        return ERROR_MESHREAD_UNEXPECTEDEND;
+
     //...Read the header
     tempString = fileData[position];
+
     position = position + 1;
+
     tempString = tempString.simplified().split(" ").value(0);
     this->numOpenBoundaries = tempString.toInt(&err);
     if(!err)
@@ -427,6 +439,9 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
         this->error->errorCode = ERROR_MESHREAD_BNDERR;
         return this->error->errorCode;
     }
+
+    if(position>fileData.length()-1)
+        return ERROR_MESHREAD_UNEXPECTEDEND;
 
     tempString = fileData[position];
     position = position + 1;
@@ -444,6 +459,9 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
     //...Read the boundaries
     for(i=0;i<this->numOpenBoundaries;i++)
     {
+        if(position>fileData.length()-1)
+            return ERROR_MESHREAD_UNEXPECTEDEND;
+
         //...Read the number of nodes in the boundary
         tempString = fileData[position];
         position = position + 1;
@@ -467,6 +485,9 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
         //...Loop over the length of the boundary
         for(j=0;j<this->openBC[i]->numNodes;j++)
         {
+            if(position>fileData.length()-1)
+                return ERROR_MESHREAD_UNEXPECTEDEND;
+
             tempString = fileData[position];
             position = position + 1;
             ierr = this->openBC[i]->fromString(tempString,j,this->nodes,this->nodeMapping);
@@ -506,6 +527,9 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
     int boundaryCode,boundarySize;
     bool err;
 
+    if(position>fileData.length()-1)
+        return ERROR_MESHREAD_UNEXPECTEDEND;
+
     //...Read the header
     tempString = fileData[position];
     position = position + 1;
@@ -516,6 +540,9 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
         this->error->errorCode = ERROR_MESHREAD_BNDERR;
         return this->error->errorCode;
     }
+
+    if(position>fileData.length()-1)
+        return ERROR_MESHREAD_UNEXPECTEDEND;
 
     tempString = fileData[position];
     position = position + 1;
@@ -533,6 +560,9 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
     //...Read the boundaries
     for(i=0;i<this->numLandBoundaries;i++)
     {
+        if(position>fileData.length()-1)
+            return ERROR_MESHREAD_UNEXPECTEDEND;
+
         //...Read the number of nodes in the boundary
         tempString = fileData[position];
         position   = position + 1;
@@ -562,6 +592,9 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
         //...Read the boundary string depending on its type
         for(j=0;j<this->landBC[i]->numNodes;j++)
         {
+            if(position>fileData.length()-1)
+                return ERROR_MESHREAD_UNEXPECTEDEND;
+
             tempString = fileData[position];
             position = position + 1;
             ierr = this->landBC[i]->fromString(tempString,j,this->nodes,this->nodeMapping);
