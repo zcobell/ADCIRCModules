@@ -78,6 +78,10 @@ int adcirc_errors::initializeErrors()
     this->errorMapping[ERROR_NODALPARAM_READERROR]        = "There was an error while attempting to read the nodal parameters.";
     this->errorMapping[ERROR_NODALPARAM_OUTOFRANGE]       = "The node number specified in the nodal parameter body is out of the acceptable range.";
 
+    //...Nodal Attributes Errors
+    this->errorMapping[ERROR_NODALATT_HEADERR] = "There was an error reading the header of the nodal attributes file.";
+    this->errorMapping[ERROR_NODALATT_BODYERR] = "There was an error reading the body of the nodal attributes file.";
+
     return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//

@@ -36,6 +36,7 @@
 
 #include <QObject>
 #include <QVector>
+#include <QFile>
 
 #include "QADCModules_global.h"
 
@@ -70,7 +71,7 @@ public:
     //...PUBLIC FUNCTIONS...//
     int setDefaultValues(QVector<double> nodalParameterDefaultValues);
 
-    int read(QStringList fileData);
+    int read(QStringList &fileData);
 
     QStringList write();
 

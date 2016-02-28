@@ -63,7 +63,7 @@ public:
     int numNodes;
 
     ///Vector of objects containing the nodal parameters read from the file
-    QVector<adcirc_nodalparameter*> nodalParemeters;
+    QVector<adcirc_nodalparameter*> nodalParameters;
 
     ///adcirc_errors class to describe any errors to the user
     adcirc_errors *error;
@@ -71,7 +71,7 @@ public:
 
     //...PUBLIC FUNCTIONS...//
 
-    int read();
+    int read(QString inputFilename);
 
     int write(QString outputFile, bool userSpecifiedDefaultValues = false);
 

@@ -77,11 +77,7 @@ adcirc_nodalparameter::adcirc_nodalparameter(int numNodes, QString nodalAttribut
  * @param nodalParameterDefaultValues [in] Vector of doubles containing the default values
  *                                         to be used in each column of the fort.13 file
  *
- * Constructs an adcirc_nodalparameter object. The user should specify some of the vaues found
- * in the fort.13 header here so they are set and retained automatically. Note that this function
- * does not need to be run since the code will automatically assign the most frequently used
- * value to the fort.13 header when it is written. However, if the user wants to specify
- * the values to be used in the header manually, they can do so here.
+ * Function to assign default values that will be specified in the fort.13 header
  *
  **/
 //-----------------------------------------------------------------------------------------//
@@ -113,7 +109,7 @@ int adcirc_nodalparameter::setDefaultValues(QVector<double> nodalParameterDefaul
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_nodalparameter::read(QStringList fileData)
+int adcirc_nodalparameter::read(QStringList &fileData)
 {
     QString tempString;
     QStringList tempList;

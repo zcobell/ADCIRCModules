@@ -63,6 +63,9 @@
 #define ERROR_NODALPARAM_READERROR        -999903003
 #define ERROR_NODALPARAM_OUTOFRANGE       -999903004
 
+#define ERROR_NODALATT_HEADERR -999904001
+#define ERROR_NODALATT_BODYERR -999904002
+
 //----------------------------------------------------//
 
 
