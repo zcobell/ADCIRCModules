@@ -75,7 +75,9 @@ public:
 
     QStringList write();
 
-protected:
+    double getDefaultValue();
+
+    int getNumNonDefault();
 
 };
 

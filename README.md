@@ -36,7 +36,11 @@ Implementation of routines used for to manipulate ADCIRC model files in Qt
 3. Read the nodal attributes file
 
         thisAttributes->read("/path/to/nodalattributes/fort.13");
-        
-4. Diagnose an error while working with a nodal attributes object
+
+4. Write the nodal attributes file
+
+        thisAttributes->write("/path/to/output/fort.13");
+
+5. Diagnose an error while working with a nodal attributes object
 
         qDebug() << thisAttributes->error->getErrorString();

@@ -1,3 +1,23 @@
+/*-------------------------------GPL-------------------------------------//
+//
+// QADCModules - A library for working with ADCIRC models
+// Copyright (C) 2016  Zach Cobell
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+//-----------------------------------------------------------------------*/
+
 #include <QCoreApplication>
 #include <QPointer>
 #include <QDebug>
@@ -30,6 +50,9 @@ int main(int argc, char *argv[])
     ierr = thisNodalParam->read("C:/Users/zcobell/Documents/Codes/QADCModules/QADCModules_Testing/ms-riv.13");
     qDebug() << thisNodalParam->error->errorCode;
     qDebug() << thisNodalParam->error->getErrorString();
+
+    qDebug() << "Writing fort.13 test...";
+    qDebug() << thisNodalParam->write("C:/Users/zcobell/Documents/Codes/QADCModules/QADCModules_Testing/ms-riv-me.13");
 
     return 0;
 }

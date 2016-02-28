@@ -37,6 +37,7 @@
 #include <QObject>
 #include <QVector>
 #include <QMap>
+#include <QTextStream>
 
 #include "QADCModules_global.h"
 #include "adcirc_nodalparameter.h"
@@ -73,7 +74,7 @@ public:
 
     int read(QString inputFilename);
 
-    int write(QString outputFile, bool userSpecifiedDefaultValues = false);
+    int write(QString outputFilename, bool userSpecifiedDefaultValues = false);
 
     int locateAttribute(QString attributeName);
 
@@ -82,7 +83,7 @@ protected:
     //...PROTECTED FUNCTIONS...//
     int readNodalAttributesFile();
 
-    int writeNodalAttributesFile(QString outputFile, bool userSpecifiedDefaultValues);
+    int writeNodalAttributesFile(QString outputFilename, bool userSpecifiedDefaultValues);
 
 private:
     //...PRIVATE VARIABLES...//

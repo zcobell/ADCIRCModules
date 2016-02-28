@@ -20,6 +20,7 @@
 
 #include "adcirc_nodalparameter.h"
 #include "adcirc_errors.h"
+#include <QDebug>
 
 //-----------------------------------------------------------------------------------------//
 // Initializer
@@ -58,9 +59,9 @@ adcirc_nodalparameter::adcirc_nodalparameter(int numNodes, QString nodalAttribut
         this->defaultValue[i] = 0.0;
 
     //...Size the vectors to hold the values
-    this->values.resize(this->nNodes);
-    for(i=0;i<this->nNodes;i++)
-        this->values[i].resize(this->nValues);
+    this->values.resize(this->nValues);
+    for(i=0;i<this->nValues;i++)
+        this->values[i].resize(this->nNodes);
 
 }
 //-----------------------------------------------------------------------------------------//
@@ -117,6 +118,9 @@ int adcirc_nodalparameter::read(QStringList &fileData)
     double tempDouble;
     bool err;
 
+    for(i=0;i<this->nValues;i++)
+        this->values[i].fill(this->defaultValue[i]);
+
     for(i=0;i<fileData.length();i++)
     {
         tempString = fileData[i];
@@ -138,10 +142,162 @@ int adcirc_nodalparameter::read(QStringList &fileData)
             tempDouble             = tempString.toDouble(&err);
             if(!err)
                 return ERROR_NODALPARAM_READERROR;
-            this->values[index-1][j] = tempDouble;
+            this->values[j][index-1] = tempDouble;
         }
     }
 
     return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Function to create the text to be written to the nodal attributes file for this parameter
+//-----------------------------------------------------------------------------------------//
+/** \brief Function to create the text to be written to the nodal attributes file for this parameter
+ *
+ * \author Zach Cobell
+ *
+ * Function to create the text to be written to the nodal attributes file for this parameter
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+QStringList adcirc_nodalparameter::write()
+{
+    int i,j;
+    QString tempLine,tempLine2;
+    QStringList outputData;
+    bool isNonDefault;
+
+    //...Loop over nodes to generate the fort.13 body
+    //   for this nodal attribute
+    for(i=0;i<this->nNodes;i++)
+    {
+        tempLine = QString();
+        if(this->nValues==1)
+        {
+            if(this->values[0][i]!=this->defaultValue[0])
+            {
+                tempLine.sprintf("%11i  %12.6f",i+1,this->values[0][i]);
+                outputData.append(tempLine);
+            }
+        }
+        else
+        {
+            isNonDefault = false;
+            tempLine.sprintf("%11i",i+1);
+            for(j=0;j<this->nValues;j++)
+            {
+                tempLine2 = QString();
+                tempLine2.sprintf("%12.6f",this->values[j][i]);
+                tempLine = tempLine + "  " + tempLine2;
+
+                if(this->values[j][i]!=this->defaultValue[j])
+                    isNonDefault = true;
+            }
+
+            if(isNonDefault)
+                outputData.append(tempLine);
+        }
+    }
+
+    return outputData;
+
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Function to determine the optimum value for the fort.13 header for this parameter
+//-----------------------------------------------------------------------------------------//
+/** \brief Function to determine the optimum value for the fort.13 header for this parameter
+ *
+ * \author Zach Cobell
+ *
+ * Function to determine the optimum value for the fort.13 header for this parameter
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+double adcirc_nodalparameter::getDefaultValue()
+{
+    int i,index,maxNum;
+    double optimumValue;
+    QMap<double,int> valueMap;
+    QList<double>    valueList;
+    QVector<int>     count;
+
+    index = 0;
+    maxNum = 0;
+
+    //...Build a list of unique values
+    for(i=0;i<this->nNodes;i++)
+    {
+        if(!valueList.contains(this->values[0][i]))
+        {
+            valueList.append(this->values[0][i]);
+            valueMap[this->values[0][i]] = index;
+            index = index + 1;
+        }
+    }
+
+    //...Generate a vector to count the values
+    count.resize(valueList.length());
+
+    //...Total the hits on each value
+    for(i=0;i<this->nNodes;i++)
+        count[valueMap[this->values[0][i]]] = count[valueMap[this->values[0][i]]] + 1;
+
+    //...Find the maximum number of hits
+    for(i=0;i<count.length();i++)
+    {
+        if(count[i]>maxNum)
+        {
+            maxNum = count[i];
+            index  = i;
+        }
+    }
+
+    //...Get the determined optimium value
+    optimumValue = valueList.at(index);
+
+    return optimumValue;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Function to determine the number of non-default nodes
+//-----------------------------------------------------------------------------------------//
+/** \brief Function to determine the number of non-default nodes
+ *
+ * \author Zach Cobell
+ *
+ * Function to determine the number of non-default nodes
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_nodalparameter::getNumNonDefault()
+{
+    int i,j,numNonDefault;
+    bool isNonDefault;
+
+    numNonDefault = 0;
+
+    for(i=0;i<this->nNodes;i++)
+    {
+        isNonDefault = false;
+        for(j=0;j<this->nValues;j++)
+        {
+            if(this->values[j][i]!=this->defaultValue[j])
+                isNonDefault = true;
+        }
+        if(isNonDefault)
+            numNonDefault = numNonDefault + 1;
+    }
+
+    return numNonDefault;
 }
 //-----------------------------------------------------------------------------------------//
