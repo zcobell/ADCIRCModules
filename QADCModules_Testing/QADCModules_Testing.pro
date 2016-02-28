@@ -16,7 +16,12 @@ TEMPLATE = app
 
 INCLUDEPATH += ../.
 
-LIBS += -LC:\Users\zcobell\Documents\Codes\build-QADCModules-Desktop_Qt_5_5_0_MSVC2013_64bit-Debug\debug -lQADCModules
+debug{
+LIBS += -L$$PWD/../../build-QADCModules-Desktop_Qt_5_5_0_MSVC2013_64bit-Debug/debug -lQADCModules
+}
 
+release{
+LIBS += -L$$PWD/../../build-QADCModules-Desktop_Qt_5_5_0_MSVC2013_64bit-Release/release -lQADCModules
+}
 
 SOURCES += main.cpp
