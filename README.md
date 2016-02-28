@@ -29,7 +29,7 @@ Implementation of routines used for to manipulate ADCIRC model files in Qt
 
         QPointer<adcirc_nodalattributes> thisAttributes = new adcirc_nodalattributes();
         
-2. Create a nodal attributes object insode of a QObject
+2. Create a nodal attributes object inside of a QObject
 
         adcirc_nodalattributes *thisAttributes = new adcirc_nodalattributes(this);
         
