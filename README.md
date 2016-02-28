@@ -1,6 +1,19 @@
 # QADCModules
 Implementation of routines used for to manipulate ADCIRC model files in Qt
 
+###Including QADCModules in a Qt Project
+1. Add the path to the Library to the .pro file. For windows this will be a DLL and Unix a .so
+
+        LIBS+= -L/path/to/library -lQADCModules
+        
+2. Add the include path to the main header file to the .pro file
+
+        INCLUDEPATH+= /path/to/QADCModules
+        
+3. Include the main header for the project in the source code
+
+        #include "QADCModules.h"
+
 ## Examples (so far)
 
 ###ADCIRC Meshes (fort.14)
