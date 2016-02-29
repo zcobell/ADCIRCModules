@@ -23,6 +23,8 @@ QT       -= gui
 TARGET = QADCModules 
 TEMPLATE = lib
 
+INCLUDEPATH += include
+
 DEFINES += QADCMODULES_LIBRARY
 
 SOURCES += src/QADCModules.cpp \

@@ -35,24 +35,25 @@ int main(int argc, char *argv[])
     QPointer<adcirc_mesh> thisMesh = new adcirc_mesh();
 
     qDebug() << "Reading mesh test...";
-    ierr = thisMesh->read("C:/Users/zcobell/Documents/Codes/QADCModules/QADCModules_Testing/ms-riv.grd");
+    ierr = thisMesh->read("C:/Users/zcobell/Documents/Codes/QADCModules/testing/test_files/ms-riv.grd");
     qDebug() << thisMesh->error->errorCode;
     qDebug() << thisMesh->error->getErrorString();
 
     qDebug() << "Writing mesh test...";
-    ierr = thisMesh->write("C:/Users/zcobell/Documents/Codes/QADCModules/QADCModules_Testing/ms-riv-me.grd");
+    ierr = thisMesh->write("C:/Users/zcobell/Documents/Codes/QADCModules/testing/test_files/ms-riv-me.grd");
     qDebug() << thisMesh->error->errorCode;
     qDebug() << thisMesh->error->getErrorString();
 
     //...Fort13 Read/Write Test
     qDebug() << "Reading Fort.13 test...";
     QPointer<adcirc_nodalattributes> thisNodalParam = new adcirc_nodalattributes();
-    ierr = thisNodalParam->read("C:/Users/zcobell/Documents/Codes/QADCModules/QADCModules_Testing/ms-riv.13");
+    ierr = thisNodalParam->read("C:/Users/zcobell/Documents/Codes/QADCModules/testing/test_files/ms-riv.13");
     qDebug() << thisNodalParam->error->errorCode;
     qDebug() << thisNodalParam->error->getErrorString();
 
     qDebug() << "Writing fort.13 test...";
-    qDebug() << thisNodalParam->write("C:/Users/zcobell/Documents/Codes/QADCModules/QADCModules_Testing/ms-riv-me.13");
+    qDebug() << thisNodalParam->write("C:/Users/zcobell/Documents/Codes/QADCModules/testing/test_files/ms-riv-me.13");
+    qDebug() << thisNodalParam->error->getErrorString();
 
     return 0;
 }
