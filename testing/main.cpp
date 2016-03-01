@@ -56,6 +56,12 @@ int main(int argc, char *argv[])
         return ERROR_NOERROR;
     }
 
+    qDebug() << "Renumbering mesh test...";
+    ierr = thisMesh->renumber();
+    ierr = thisMesh->write("C:/Users/zcobell/Documents/Codes/QADCModules/testing/test_files/ms-riv-me-renumber.grd");
+    qDebug() << thisMesh->error->errorCode;
+    qDebug() << thisMesh->error->getErrorString();
+
     //...Fort13 Read/Write Test
     qDebug() << "Reading Fort.13 test...";
     QPointer<adcirc_nodalattributes> thisNodalParam = new adcirc_nodalattributes();
