@@ -11,7 +11,7 @@ install:
 - uname -a
 - which qmake
 - qmake --help
-- qmake --version
+- qmake -v
 - gcc --version
 - g++ --version
 - pwd
