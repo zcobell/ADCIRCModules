@@ -20,6 +20,16 @@
 #include "adcirc_element.h"
 #include "adcirc_errors.h"
 
+bool operator<(const adcirc_element e1,const adcirc_element e2)
+{
+    return e1.id<e2.id;
+}
+
+bool operator>(const adcirc_element e1,const adcirc_element e2)
+{
+    return e1.id>e2.id;
+}
+
 //-----------------------------------------------------------------------------------------//
 // Constructor function. Initializes the adcirc_element class and sets defaults
 //-----------------------------------------------------------------------------------------//

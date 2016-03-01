@@ -67,4 +67,9 @@ public:
 
 };
 
+
+//...OPERATORS...//
+bool operator<(const adcirc_element e1,const adcirc_element e2);
+bool operator>(const adcirc_element e1,const adcirc_element e2);
+
 #endif // ADCIRC_ELEMENT_H

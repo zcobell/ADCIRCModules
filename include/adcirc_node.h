@@ -66,4 +66,8 @@ public:
 
 };
 
+//...OPERATORS...//
+bool operator<(const adcirc_node n1,const adcirc_node n2);
+bool operator>(const adcirc_node n1,const adcirc_node n2);
+
 #endif // ADCIRC_NODE_H

@@ -20,6 +20,20 @@
 #include "adcirc_node.h"
 #include "adcirc_errors.h"
 
+
+
+bool operator<(const adcirc_node n1,const adcirc_node n2)
+{
+    return n1.id<n2.id;
+}
+
+bool operator>(const adcirc_node n1,const adcirc_node n2)
+{
+    return n1.id>n2.id;
+}
+
+
+
 //-----------------------------------------------------------------------------------------//
 // Constructor
 //-----------------------------------------------------------------------------------------//
