@@ -18,9 +18,44 @@
 #
 #-----------------------------------------------------------------------#
 
-TEMPLATE = subdirs
+QT       -= gui
 
-SUBDIRS  = QADCModules_lib \
-           tests
+SUBDIR 
 
-CONFIG += ordered           
+TARGET = QADCModules 
+TEMPLATE = lib
+VERSION = 0.1.0.0
+
+win32{
+TARGET_EXT = .dll
+}
+
+INCLUDEPATH += include
+
+DEFINES += QADCMODULES_LIBRARY
+
+SOURCES += \
+    src/QADCModules.cpp \
+    src/adcirc_node.cpp \
+    src/adcirc_element.cpp \
+    src/adcirc_boundary.cpp \
+    src/adcirc_mesh.cpp \
+    src/adcirc_errors.cpp \
+    src/adcirc_nodalparameter.cpp \
+    src/adcirc_nodalattributes.cpp
+
+HEADERS +=\
+    include/QADCModules_global.h \
+    include/QADCModules.h \
+    include/adcirc_node.h \
+    include/adcirc_element.h \
+    include/adcirc_boundary.h \
+    include/adcirc_mesh.h \
+    include/adcirc_errors.h \
+    include/adcirc_nodalparameter.h \
+    include/adcirc_nodalattributes.h
+
+unix {
+    target.path = /usr/lib
+    INSTALLS += target
+}

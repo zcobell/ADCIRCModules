@@ -12,6 +12,8 @@ script:
 - which qmake
 - gcc --version
 - g++ --version
+- cd QADCModules_lib
 - pwd
 - qmake -qt=qt5 QADCModules.pro
 - make
+- make check

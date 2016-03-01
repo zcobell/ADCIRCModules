@@ -25,12 +25,15 @@ QT       -= gui
 TARGET = QADCModules_Testing
 CONFIG   += console
 CONFIG   -= app_bundle
+CONFIG   += testcase
 
 TEMPLATE = app
 
-INCLUDEPATH += ../include
+INCLUDEPATH += ../QADCModules_lib/include
 
-CONFIG(debug, debug | release): LIBS += -L$$PWD/../../build-QADCModules-Desktop_Qt_5_5_0_MSVC2013_64bit-Debug/debug -lQADCModules
-CONFIG(release, debug | release): LIBS += -L$$PWD/../../build-QADCModules-Desktop_Qt_5_5_0_MSVC2013_64bit-Release/release -lQADCModules
+message($$OUT_PWD)
+
+CONFIG(debug, debug | release): LIBS += -L$$OUT_PWD/../QADCModules_lib/debug -lQADCModules
+CONFIG(release, debug | release): LIBS += -L$$OUT_PWD/../QADCModules_lib/release -lQADCModules
 
 SOURCES += main.cpp
