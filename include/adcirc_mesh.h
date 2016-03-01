@@ -40,7 +40,7 @@
 #include <QVector>
 #include <QFile>
 #include <QMap>
-#include <QtMath>
+#include <qmath.h>
 
 #include "QADCModules_global.h"
 #include "adcirc_node.h"
