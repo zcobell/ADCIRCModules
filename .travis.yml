@@ -10,10 +10,8 @@ before_install:
 script:
 - uname -a
 - which qmake
-- qmake -v
 - gcc --version
 - g++ --version
 - pwd
-- qmake -project
-- qmake QADCModules.pro
+- qmake -qt=qt5 QADCModules.pro
 - make
