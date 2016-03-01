@@ -734,3 +734,75 @@ int adcirc_mesh::senseCoordinateSystem()
 
     return ERROR_NOERROR;
 }
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function to renumber an adcirc mesh sequentially
+//-----------------------------------------------------------------------------------------//
+/** \brief This function is used to renumber an adcirc_mesh sequantially
+ *
+ * \author Zach Cobell
+ *
+ * This function is used to renumber an adcirc_mesh (nodes, elements) so that it is valid.
+ * Note that no attention is paid to minimizing bandwidth or providing optimal numbering.
+ * This only ensures that the mesh is valid.
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::renumber()
+{
+    int i,j;
+    int n0_new,n1_new,n2_new;
+    QMap<int,int> newNodeNumbering;
+
+    //...Renumber the nodes. No need to
+    //   reorder since the original order is maintained
+    for(i=0;i<this->numNodes;i++)
+    {
+        newNodeNumbering[this->nodes[i]->id] = i+1;
+        this->nodes[i]->id = i+1;
+    }
+
+    //...Renumber the elements. No need to
+    //   reorder since the original order is maintained
+    for(i=0;i<this->numElements;i++)
+    {
+        this->elements[i]->id = i+1;
+
+        n0_new = newNodeNumbering[this->elements[i]->connections[0]->id];
+        n1_new = newNodeNumbering[this->elements[i]->connections[1]->id];
+        n2_new = newNodeNumbering[this->elements[i]->connections[2]->id];
+
+        this->elements[i]->connections[0] = this->nodes[n0_new-1];
+        this->elements[i]->connections[1] = this->nodes[n1_new-1];
+        this->elements[i]->connections[2] = this->nodes[n2_new-1];
+    }
+
+    //...Renumber the open boundary conditions
+    for(i=0;i<this->numOpenBoundaries;i++)
+    {
+        for(j=0;j<this->openBC[i]->numNodes;j++)
+        {
+            n0_new = newNodeNumbering[this->openBC[i]->n1[j]->id];
+            this->openBC[i]->n1[j] = this->nodes[n0_new-1];
+        }
+    }
+
+    //...Renumber the land boundary conditions
+    for(i=0;i<this->numLandBoundaries;i++)
+    {
+        for(j=0;j<this->landBC[i]->numNodes;j++)
+        {
+            n0_new = newNodeNumbering[this->landBC[i]->n1[j]->id];
+            this->landBC[i]->n1[j] = this->nodes[n0_new-1];
+            if(this->landBC[i]->code==24 || this->landBC[i]->code==25)
+            {
+                n1_new = newNodeNumbering[this->landBC[i]->n2[j]->id];
+                this->landBC[i]->n2[j] = this->nodes[n1_new-1];
+            }
+        }
+    }
+
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//

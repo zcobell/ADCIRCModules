@@ -111,6 +111,8 @@ public:
 
     int setIgnoreMeshNumbering(bool value);
 
+    int renumber();
+
 
 private:
 
