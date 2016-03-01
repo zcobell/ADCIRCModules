@@ -31,8 +31,6 @@ TEMPLATE = app
 
 INCLUDEPATH += ../QADCModules_lib/include
 
-message($$OUT_PWD)
-
 CONFIG(debug, debug | release): LIBS += -L$$OUT_PWD/../QADCModules_lib/debug -lQADCModules
 CONFIG(release, debug | release): LIBS += -L$$OUT_PWD/../QADCModules_lib/release -lQADCModules
 

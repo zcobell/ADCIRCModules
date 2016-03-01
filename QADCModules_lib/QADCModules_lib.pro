@@ -20,8 +20,6 @@
 
 QT       -= gui
 
-SUBDIR 
-
 TARGET = QADCModules 
 TEMPLATE = lib
 VERSION = 0.1.0.0
