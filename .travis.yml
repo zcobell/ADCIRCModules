@@ -10,7 +10,6 @@ before_install:
 install:
 - uname -a
 - which qmake
-- qmake --help
 - qmake -v
 - gcc --version
 - g++ --version
