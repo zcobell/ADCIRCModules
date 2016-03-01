@@ -84,7 +84,7 @@ adcirc_nodalparameter::adcirc_nodalparameter(int numNodes, QString nodalAttribut
 //-----------------------------------------------------------------------------------------//
 int adcirc_nodalparameter::setDefaultValues(QVector<double> nodalParameterDefaultValues)
 {
-    if(nodalParameterDefaultValues.length()!=this->nValues)
+    if(nodalParameterDefaultValues.size()!=this->nValues)
         return ERROR_NODALPARAM_DEFAULTVALUESIZE;
 
     for(int i = 0;i<this->nValues;i++)
@@ -250,7 +250,7 @@ double adcirc_nodalparameter::getDefaultValue()
         count[valueMap[this->values[0][i]]] = count[valueMap[this->values[0][i]]] + 1;
 
     //...Find the maximum number of hits
-    for(i=0;i<count.length();i++)
+    for(i=0;i<count.size();i++)
     {
         if(count[i]>maxNum)
         {
