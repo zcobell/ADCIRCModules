@@ -22,12 +22,18 @@ QT       -= gui
 
 TARGET = QADCModules 
 TEMPLATE = lib
+VERSION = 0.1.0.0
+
+win32{
+TARGET_EXT = .dll
+}
 
 INCLUDEPATH += include
 
 DEFINES += QADCMODULES_LIBRARY
 
-SOURCES += src/QADCModules.cpp \
+SOURCES += \
+    src/QADCModules.cpp \
     src/adcirc_node.cpp \
     src/adcirc_element.cpp \
     src/adcirc_boundary.cpp \
@@ -37,8 +43,8 @@ SOURCES += src/QADCModules.cpp \
     src/adcirc_nodalattributes.cpp
 
 HEADERS +=\
-        include/QADCModules_global.h \
-        include/QADCModules.h \
+    include/QADCModules_global.h \
+    include/QADCModules.h \
     include/adcirc_node.h \
     include/adcirc_element.h \
     include/adcirc_boundary.h \
