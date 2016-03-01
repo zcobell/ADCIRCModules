@@ -34,6 +34,7 @@
 #define ADCIRC_NODE_H
 
 #include <QObject>
+#include <QStringList>
 
 #include "QADCModules_global.h"
 
