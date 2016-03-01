@@ -1,6 +1,8 @@
 # QADCModules
 Implementation of routines used for to manipulate ADCIRC model files in Qt
 
+[![Build Status](https://travis-ci.org/zcobell/QADCModules.svg?branch=master)](https://travis-ci.org/zcobell/QADCModules)
+
 ###Including QADCModules in a Qt Project
 1. Add the path to the Library to the .pro file. For windows this will be a DLL and Unix a .so
 
