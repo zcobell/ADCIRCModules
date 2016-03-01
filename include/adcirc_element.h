@@ -36,6 +36,9 @@
 
 #include <QObject>
 #include <QVector>
+#include <QMap>
+#include <QStringList>
+
 #include "QADCModules_global.h"
 #include "adcirc_node.h"
 

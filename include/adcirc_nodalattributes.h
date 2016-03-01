@@ -38,6 +38,7 @@
 #include <QVector>
 #include <QMap>
 #include <QTextStream>
+#include <QStringList>
 
 #include "QADCModules_global.h"
 #include "adcirc_nodalparameter.h"

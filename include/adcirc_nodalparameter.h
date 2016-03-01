@@ -37,6 +37,7 @@
 #include <QObject>
 #include <QVector>
 #include <QFile>
+#include <QStringList>
 
 #include "QADCModules_global.h"
 

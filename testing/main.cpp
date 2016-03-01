@@ -39,10 +39,22 @@ int main(int argc, char *argv[])
     qDebug() << thisMesh->error->errorCode;
     qDebug() << thisMesh->error->getErrorString();
 
+    if(thisMesh->error->errorCode!=ERROR_NOERROR)
+    {
+        qDebug() << "Mesh read test failed.";
+        return ERROR_NOERROR;
+    }
+
     qDebug() << "Writing mesh test...";
     ierr = thisMesh->write("C:/Users/zcobell/Documents/Codes/QADCModules/testing/test_files/ms-riv-me.grd");
     qDebug() << thisMesh->error->errorCode;
     qDebug() << thisMesh->error->getErrorString();
+
+    if(thisMesh->error->errorCode!=ERROR_NOERROR)
+    {
+        qDebug() << "Mesh write test failed.";
+        return ERROR_NOERROR;
+    }
 
     //...Fort13 Read/Write Test
     qDebug() << "Reading Fort.13 test...";
@@ -51,9 +63,21 @@ int main(int argc, char *argv[])
     qDebug() << thisNodalParam->error->errorCode;
     qDebug() << thisNodalParam->error->getErrorString();
 
+    if(thisNodalParam->error->errorCode!=ERROR_NOERROR)
+    {
+        qDebug() << "Fort13 read test failed.";
+        return ERROR_NOERROR;
+    }
+
     qDebug() << "Writing fort.13 test...";
     qDebug() << thisNodalParam->write("C:/Users/zcobell/Documents/Codes/QADCModules/testing/test_files/ms-riv-me.13");
     qDebug() << thisNodalParam->error->getErrorString();
+
+    if(thisNodalParam->error->errorCode!=ERROR_NOERROR)
+    {
+        qDebug() << "Fort13 write test failed.";
+        return ERROR_NOERROR;
+    }
 
     return 0;
 }
