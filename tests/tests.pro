@@ -18,9 +18,27 @@
 #
 #-----------------------------------------------------------------------#
 
-TEMPLATE = subdirs
+QT       += core
 
-SUBDIRS  = QADCModules_lib \
-           tests
+QT       -= gui
 
-CONFIG += ordered           
+TARGET = QADCModules_Testing
+CONFIG   += console
+CONFIG   -= app_bundle
+CONFIG   += testcase
+CONFIG   += link_QADCModules
+
+TEMPLATE = app
+
+INCLUDEPATH += ../QADCModules_lib
+
+win32{
+CONFIG(debug, debug | release): LIBS += -L$$OUT_PWD/../QADCModules_lib/debug -lQADCModules
+CONFIG(release, debug | release): LIBS += -L$$OUT_PWD/../QADCModules_lib/release -lQADCModules
+}
+
+unix{
+LIBS += -L$$OUT_PWD/../QADCModules_lib -lQADCModules
+}
+
+SOURCES += main.cpp

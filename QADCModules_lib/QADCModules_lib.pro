@@ -18,19 +18,50 @@
 #
 #-----------------------------------------------------------------------#
 
-QT       += core
-
 QT       -= gui
 
-TARGET = QADCModules_Testing
-CONFIG   += console
-CONFIG   -= app_bundle
+TARGET = QADCModules 
+TEMPLATE = lib
+VERSION = 0.1.0.0
 
-TEMPLATE = app
+win32{
+TARGET_EXT = .dll
+}
 
-INCLUDEPATH += ../include
+INCLUDEPATH += include
 
-CONFIG(debug, debug | release): LIBS += -L$$PWD/../../build-QADCModules-Desktop_Qt_5_5_0_MSVC2013_64bit-Debug/debug -lQADCModules
-CONFIG(release, debug | release): LIBS += -L$$PWD/../../build-QADCModules-Desktop_Qt_5_5_0_MSVC2013_64bit-Release/release -lQADCModules
+DEFINES += QADCMODULES_LIBRARY
 
-SOURCES += main.cpp
+SOURCES += \
+    QADCModules.cpp \
+    adcirc_node.cpp \
+    adcirc_element.cpp \
+    adcirc_boundary.cpp \
+    adcirc_mesh.cpp \
+    adcirc_errors.cpp \
+    adcirc_nodalparameter.cpp \
+    adcirc_nodalattributes.cpp
+
+HEADERS +=\
+    QADCModules_global.h \
+    QADCModules.h \
+    adcirc_node.h \
+    adcirc_element.h \
+    adcirc_boundary.h \
+    adcirc_mesh.h \
+    adcirc_errors.h \
+    adcirc_nodalparameter.h \
+    adcirc_nodalattributes.h
+
+unix {
+
+    isEmpty(PREFIX) {
+        PREFIX = /usr/local
+    }
+
+    target.path = $$PREFIX/lib
+    header_files.files = $$HEADERS
+    header_files.path = $$PREFIX/include
+    INSTALLS += header_files target
+
+}

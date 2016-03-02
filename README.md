@@ -35,7 +35,19 @@ Implementation of routines used for to manipulate ADCIRC model files in Qt
 
         thisMesh->write("/path/to/output/fort.14");
 
-5. Diagnose an error while working with a mesh object
+5. Renumber ADCIRC mesh so numbering is sequential
+
+        thisMesh->renumber();
+        
+6. Check if any levee elevations are invalid (Optional parameters not shown)
+
+        thisMesh->checkLeveeHeights();
+
+7. Raise levee elvations that are below prevailing ground (Optional parameters not shown)
+
+        thisMesh->raiseLeveeElevations(numLeveesRaised,maxAmountRaised);
+
+8. Diagnose an error while working with a mesh object
 
         qDebug() << thisMesh->error->getErrorString();
 
