@@ -71,6 +71,7 @@ int adcirc_errors::initializeErrors()
     this->errorMapping[ERROR_MESHREAD_ELENUM] = "The elements in the mesh are not sequantially numbered.";
     this->errorMapping[ERROR_MESHREAD_BNDUNK] = "The boundary type specified is unknown.";
     this->errorMapping[ERROR_MESHREAD_BNDNUL] = "The boundary type has not been specified.";
+    this->errorMapping[ERROR_LEVEE_BELOWTOPO] = "Levee heights were specified below prevailing topography";
 
     //...Nodal Parameter Errors
     this->errorMapping[ERROR_NODALPARAM_DEFAULTVALUESIZE] = "The size of the default value vector does not match the expected length.";

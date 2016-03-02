@@ -113,6 +113,12 @@ public:
 
     int renumber();
 
+    int checkLeveeHeights(double minAbovePrevailingTopo = 0.20);
+
+    int raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRaised,
+                          double minAbovePrevailingTopo = 0.20, double minRaise = 0.01,
+                          QString diagnosticFile = QString());
+
 
 private:
 

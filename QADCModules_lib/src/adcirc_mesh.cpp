@@ -765,3 +765,217 @@ int adcirc_mesh::renumber()
     return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function to check that the levee heights in the mesh are sane
+//-----------------------------------------------------------------------------------------//
+/** \brief This function is used to check if there are levee heights that need to be raised
+ *
+ * \author Zach Cobell
+ *
+ * @param minAbovePrevailingTopo [in] [optional] Elevation that a levee must be above the
+ *                                               prevailing topographic elevation.
+ *                                               Default = 0.2
+ *
+ * This function is used to check that an adcirc_mesh does not have levee heights that fall
+ * below the topography, and thus causing a fatal error when running ADCIRC
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
+{
+    int i,j;
+    double z1,z2,c;
+
+    for(i=0;i<this->numLandBoundaries;i++)
+    {
+        if(this->landBC[i]->code ==  4 || this->landBC[i]->code==24 ||
+           this->landBC[i]->code == 25 || this->landBC[i]->code==25)
+        {
+            for(j=0;j<this->landBC[i]->numNodes;j++)
+            {
+                z1 = this->landBC[i]->n1[j]->z;
+                z2 = this->landBC[i]->n2[j]->z;
+                c  = this->landBC[i]->crest[j];
+
+                if(z1 < c-minAbovePrevailingTopo || z2 < c-minAbovePrevailingTopo)
+                {
+                    this->error->errorCode = ERROR_LEVEE_BELOWTOPO;
+                    return this->error->errorCode;
+                }
+            }
+        }
+        else if(this->landBC[i]->code == 3 || this->landBC[i]->code == 13 ||
+                this->landBC[i]->code == 23)
+        {
+            for(j=0;j<this->landBC[i]->numNodes;j++)
+            {
+                z1 = this->landBC[i]->n1[j]->z;
+                c  = this->landBC[i]->crest[j];
+                if(z1 < c-minAbovePrevailingTopo)
+                {
+                    this->error->errorCode = ERROR_LEVEE_BELOWTOPO;
+                    return this->error->errorCode;
+                }
+            }
+        }
+    }
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function to raise levees that fall below prevailing topography
+//-----------------------------------------------------------------------------------------//
+/** \brief This function is used to raise levees that fall below prevailing topography
+ *
+ * \author Zach Cobell
+ *
+ * @param numLeveesRaised        [out]           Number of levees that needed to be raised
+ * @param maximumAmountRaised    [out]           Maximum amount that a levee needed to be raised
+ * @param minAbovePrevailingTopo [in] [optional] Elevation a levee must be above prevailing topography. Default = 0.2
+ * @param minRaise               [in] [optional] Minimum amount a levee may be raised. Default = 0.01
+ * @param diagnosticFile         [in] [optional] Diagnostic file to write that will show where levees have been raised
+ *                                               Output will be formatted as a csv file. Default = null
+ *
+ * This function is used to check that an adcirc_mesh does not have levee heights that fall
+ * below the topography, and thus causing a fatal error when running ADCIRC. A diagnostic file
+ * may be optionally written that shows the locations where a levee was elevated. If the diagnosticFile
+ * variable is null, the file will not be written.
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRaised,
+                                   double minAbovePrevailingTopo, double minRaise, QString diagnosticFile)
+{
+    QFile diag(diagnosticFile);
+    QTextStream diagOut(&diag);
+    int i,j;
+    double zm,c;
+    double x,y;
+    double minAllowableHeight,raiseAmount;
+    bool writeOutputFile = false;
+
+    numLeveesRaised = 0;
+    maximumAmountRaised = 0.0;
+
+    //...If the user wants a diagnostic file, prep the output
+    if(diagnosticFile!=QString())
+    {
+        writeOutputFile = true;
+
+        //...Check if we can open the file successfully
+        if(!diag.open(QIODevice::WriteOnly))
+        {
+            this->error->errorCode = ERROR_FILEOPENERR;
+            return this->error->errorCode;
+        }
+
+        //...Create an output stream
+        diagOut << "X,Y,PrevailingTopo,OriginalLeveeCrest,AmountRaised\n";
+    }
+
+    for(i=0;i<this->numLandBoundaries;i++)
+    {
+        //...Two sided weirs
+        if(this->landBC[i]->code ==  4 || this->landBC[i]->code==24 ||
+           this->landBC[i]->code == 25 || this->landBC[i]->code==25)
+        {
+            for(j=0;j<this->landBC[i]->numNodes;j++)
+            {
+
+                //...Get the max on both sides of the weir
+                zm = qMax(-this->landBC[i]->n1[j]->z,-this->landBC[i]->n2[j]->z);
+
+                //...Get the weir elevation
+                c  = this->landBC[i]->crest[j];
+
+                //...Define the minimum allowable height
+                minAllowableHeight = zm+minAbovePrevailingTopo;
+
+                //...Check if the weir is below the minimum allowable height
+                if(c < minAllowableHeight)
+                {
+                    //...Determine how much the levee needs to be raised
+                    raiseAmount = minAllowableHeight-c;
+
+                    //...Ensure it is larger than the minimum raise
+                    if(raiseAmount<minRaise)
+                        raiseAmount = minRaise;
+
+                    //...Apply the increase to the levee
+                    this->landBC[i]->crest[j] = this->landBC[i]->crest[j]+raiseAmount;
+
+                    //...Count this
+                    numLeveesRaised = numLeveesRaised + 1;
+
+                    //...Check if this is the largest amount raised
+                    if(raiseAmount>maximumAmountRaised)
+                        maximumAmountRaised = raiseAmount;
+
+                    //...Write the output file if necessary
+                    if(writeOutputFile)
+                    {
+                        x = (this->landBC[i]->n1[j]->x+this->landBC[i]->n2[j]->x)/2.0;
+                        y = (this->landBC[i]->n1[j]->y+this->landBC[i]->n2[j]->y)/2.0;
+                        diagOut << x << "," << y << "," << zm << "," << c << "," << raiseAmount << "\n";
+                    }
+                }
+
+            }
+        }
+        else if(this->landBC[i]->code == 3 || this->landBC[i]->code == 13 ||
+                this->landBC[i]->code == 23)
+        {
+            for(j=0;j<this->landBC[i]->numNodes;j++)
+            {
+
+                //...Get the prevailing ground elevation
+                zm = -this->landBC[i]->n1[j]->z;
+
+                //...Get the weir elevation
+                c  = this->landBC[i]->crest[j];
+
+                //...Define the minimum allowable height
+                minAllowableHeight = zm+minAbovePrevailingTopo;
+
+                //...Check if the weir is below the minimum allowable height
+                if(c < minAllowableHeight)
+                {
+                    //...Determine how much the levee needs to be raised
+                    raiseAmount = minAllowableHeight-c;
+
+                    //...Ensure it is larger than the minimum raise
+                    if(raiseAmount<minRaise)
+                        raiseAmount = minRaise;
+
+                    //...Apply the increase to the levee
+                    this->landBC[i]->crest[j] = this->landBC[i]->crest[j]+raiseAmount;
+
+                    //...Count this
+                    numLeveesRaised = numLeveesRaised + 1;
+
+                    //...Check if this is the largest amount raised
+                    if(raiseAmount>maximumAmountRaised)
+                        maximumAmountRaised = raiseAmount;
+
+                    //...Write the output file if necessary
+                    if(writeOutputFile)
+                    {
+                        x = this->landBC[i]->n1[j]->x;
+                        y = this->landBC[i]->n1[j]->y;
+                        diagOut << x << "," << y << "," << zm << "," << c << "," << raiseAmount << "\n";
+                    }
+                }
+
+            }
+        }
+    }
+
+    if(writeOutputFile)
+        diag.close();
+
+    return ERROR_NOERROR;
+}
