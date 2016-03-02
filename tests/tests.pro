@@ -30,7 +30,7 @@ CONFIG   += link_QADCModules
 
 TEMPLATE = app
 
-INCLUDEPATH += ../QADCModules_lib/include
+INCLUDEPATH += ../QADCModules_lib
 
 win32{
 CONFIG(debug, debug | release): LIBS += -L$$OUT_PWD/../QADCModules_lib/debug -lQADCModules

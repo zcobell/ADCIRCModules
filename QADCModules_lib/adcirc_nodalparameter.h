@@ -18,7 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 /**
- * \class adcirc_nodalparemeter
+ * \class adcirc_nodalparameter
  *
  * \brief Class that handles a single nodal attribute from an
  *        ADCIRC fort.13 file

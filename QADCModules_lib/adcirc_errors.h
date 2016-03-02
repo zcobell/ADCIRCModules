@@ -18,7 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 /**
- * \class adcirc_erros
+ * \class adcirc_errors
  *
  * \brief Class to relay error messages to the user
  *
