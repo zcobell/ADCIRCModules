@@ -75,21 +75,21 @@ int adcirc_nodalattributes::read(QString inputFilename)
 
     if(this->filename==QString())
     {
-        this->error->errorCode = ERROR_NULLFILENAM;
-        return this->error->errorCode;
+        this->error->setError(ERROR_NULLFILENAM);
+        return this->error->getError();
     }
 
     QFile nodalAttributesFile(this->filename);
 
     if(!nodalAttributesFile.exists())
     {
-        this->error->errorCode = ERROR_FILENOEXIST;
-        return this->error->errorCode;
+        this->error->setError(ERROR_FILENOEXIST);
+        return this->error->getError();
     }
 
     ierr = this->readNodalAttributesFile();
 
-    this->error->errorCode = ierr;
+    this->error->setError(ierr);
 
     return ierr;
 
@@ -117,14 +117,14 @@ int adcirc_nodalattributes::write(QString outputFilename, bool userSpecifiedDefa
 {
     if(outputFilename==QString())
     {
-        this->error->errorCode = ERROR_NULLFILENAM;
-        return this->error->errorCode;
+        this->error->setError(ERROR_NULLFILENAM);
+        return this->error->getError();
     }
 
     int ierr = this->writeNodalAttributesFile(outputFilename,userSpecifiedDefaultValues);
 
-    this->error->errorCode = ierr;
-    return this->error->errorCode;
+    this->error->setError(ierr);
+    return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -197,8 +197,8 @@ int adcirc_nodalattributes::readNodalAttributesFile()
     position = 3;
     if(position>fileStringList.length()-1)
     {
-        this->error->errorCode = ERROR_NODALATT_UNEXPECTEDEND;
-        return this->error->errorCode;
+        this->error->setError(ERROR_NODALATT_UNEXPECTEDEND);
+        return this->error->getError();
     }
     for(i=0;i<this->numParameters;i++)
     {
@@ -208,8 +208,8 @@ int adcirc_nodalattributes::readNodalAttributesFile()
         position    = position + 1;
         if(position>fileStringList.length()-1)
         {
-            this->error->errorCode = ERROR_NODALATT_UNEXPECTEDEND;
-            return this->error->errorCode;
+            this->error->setError(ERROR_NODALATT_UNEXPECTEDEND);
+            return this->error->getError();
         }
         tempString  = fileStringList.value(position);
         tempUnits   = tempString.simplified();
@@ -217,30 +217,30 @@ int adcirc_nodalattributes::readNodalAttributesFile()
         position    = position + 1;
         if(position>fileStringList.length()-1)
         {
-            this->error->errorCode = ERROR_NODALATT_UNEXPECTEDEND;
-            return this->error->errorCode;
+            this->error->setError(ERROR_NODALATT_UNEXPECTEDEND);
+            return this->error->getError();
         }
         tempString  = fileStringList.value(position);
         tempNumVals = tempString.toInt(&err);
         if(!err)
         {
-            this->error->errorCode = ERROR_NODALATT_HEADERR;
-            return this->error->errorCode;
+            this->error->setError(ERROR_NODALATT_HEADERR);
+            return this->error->getError();
         }
 
         position         = position + 1;
         if(position>fileStringList.length()-1)
         {
-            this->error->errorCode = ERROR_NODALATT_UNEXPECTEDEND;
-            return this->error->errorCode;
+            this->error->setError(ERROR_NODALATT_UNEXPECTEDEND);
+            return this->error->getError();
         }
         tempString       = fileStringList.value(position);
         tempStringList   = tempString.simplified().split(" ");
 
         if(tempNumVals!=tempStringList.length())
         {
-            this->error->errorCode = ERROR_NODALATT_HEADERR;
-            return this->error->errorCode;
+            this->error->setError(ERROR_NODALATT_HEADERR);
+            return this->error->getError();
         }
 
         tempDefaultValue.resize(tempNumVals);
@@ -252,8 +252,8 @@ int adcirc_nodalattributes::readNodalAttributesFile()
 
             if(!err)
             {
-                this->error->errorCode = ERROR_NODALATT_HEADERR;
-                return this->error->errorCode;
+                this->error->setError(ERROR_NODALATT_HEADERR);
+                return this->error->getError();
             }
         }
 
@@ -264,8 +264,8 @@ int adcirc_nodalattributes::readNodalAttributesFile()
         position = position + 1;
         if(position>fileStringList.length()-1)
         {
-            this->error->errorCode = ERROR_NODALATT_UNEXPECTEDEND;
-            return this->error->errorCode;
+            this->error->setError(ERROR_NODALATT_UNEXPECTEDEND);
+            return this->error->getError();
         }
 
     }
@@ -280,23 +280,23 @@ int adcirc_nodalattributes::readNodalAttributesFile()
         position      = position + 1;
         if(position>fileStringList.length()-1)
         {
-            this->error->errorCode = ERROR_NODALATT_UNEXPECTEDEND;
-            return this->error->errorCode;
+            this->error->setError(ERROR_NODALATT_UNEXPECTEDEND);
+            return this->error->getError();
         }
         tempString    = fileStringList.value(position);
         numNonDefault = tempString.toDouble(&err);
         if(!err)
         {
-            this->error->errorCode = ERROR_NODALATT_BODYERR;
-            return this->error->errorCode;
+            this->error->setError(ERROR_NODALATT_BODYERR);
+            return this->error->getError();
         }
 
         tempStringList = QStringList();
         position       = position + 1;
         if(position>fileStringList.length()-1)
         {
-            this->error->errorCode = ERROR_NODALATT_UNEXPECTEDEND;
-            return this->error->errorCode;
+            this->error->setError(ERROR_NODALATT_UNEXPECTEDEND);
+            return this->error->getError();
         }
 
         for(j=0;j<numNonDefault;j++)
@@ -305,16 +305,16 @@ int adcirc_nodalattributes::readNodalAttributesFile()
             position = position + 1;
             if(position>fileStringList.length()-1)
             {
-                this->error->errorCode = ERROR_NODALATT_UNEXPECTEDEND;
-                return this->error->errorCode;
+                this->error->setError(ERROR_NODALATT_UNEXPECTEDEND);
+                return this->error->getError();
             }
         }
 
         ierr = this->nodalParameters[index]->read(tempStringList);
         if(ierr!=ERROR_NOERROR)
         {
-            this->error->errorCode = ierr;
-            return this->error->errorCode;
+            this->error->setError(ierr);
+            return this->error->getError();
         }
     }
 

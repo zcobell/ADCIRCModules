@@ -106,3 +106,61 @@ QString adcirc_errors::getErrorString()
     return this->errorMapping[this->errorCode];
 }
 //-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Sets the current error code
+//-----------------------------------------------------------------------------------------//
+/** \brief Sets the current error code
+ *
+ * \author Zach Cobell
+ *
+ * @param newErrorCode [in] new error code to use
+ *
+ * Sets the current error code
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_errors::setError(int newErrorCode)
+{
+    this->errorCode = newErrorCode;
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Relays the current error code to the user
+//-----------------------------------------------------------------------------------------//
+/** \brief Returns the current error code
+ *
+ * \author Zach Cobell
+ *
+ * Returns the current error code
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_errors::getError()
+{
+    return this->errorCode;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Resets the current error to no error
+//-----------------------------------------------------------------------------------------//
+/** \brief Resets the current error to no error
+ *
+ * \author Zach Cobell
+ *
+ * Resets the current error to no error
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_errors::resetError()
+{
+    this->errorCode = ERROR_NOERROR;
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//

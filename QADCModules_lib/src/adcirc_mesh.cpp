@@ -82,16 +82,16 @@ int adcirc_mesh::read()
     //...Check for a null string
     if(this->filename==QString())
     {
-        this->error->errorCode = ERROR_NULLFILENAM;
-        return this->error->errorCode;
+        this->error->setError(ERROR_NULLFILENAM);
+        return this->error->getError();
     }
 
     //...Check for file exists
     QFile thisFile(this->filename);
     if(!thisFile.exists())
     {
-        this->error->errorCode = ERROR_FILENOEXIST;
-        return this->error->errorCode;
+        this->error->setError(ERROR_FILENOEXIST);
+        return this->error->getError();
     }
 
     //...Assuming these two checks passed, we can call
@@ -127,16 +127,16 @@ int adcirc_mesh::read(QString inputFile)
     //...Check for a null string
     if(this->filename==QString())
     {
-        this->error->errorCode = ERROR_NULLFILENAM;
-        return this->error->errorCode;
+        this->error->setError(ERROR_NULLFILENAM);
+        return this->error->getError();
     }
 
     //...Check for file exists
     QFile thisFile(this->filename);
     if(!thisFile.exists())
     {
-        this->error->errorCode = ERROR_FILENOEXIST;
-        return this->error->errorCode;
+        this->error->setError(ERROR_FILENOEXIST);
+        return this->error->getError();
     }
 
     //...Assuming these two checks passed, we can call
@@ -167,8 +167,8 @@ int adcirc_mesh::write(QString outputFile)
 {
     if(outputFile==QString())
     {
-        this->error->errorCode = ERROR_NULLFILENAM;
-        return this->error->errorCode;
+        this->error->setError(ERROR_NULLFILENAM);
+        return this->error->getError();
     }
 
     //...Assuming the filename is valid, write the mesh
@@ -199,8 +199,8 @@ int adcirc_mesh::write(QString outputFile)
 int adcirc_mesh::setIgnoreMeshNumbering(bool value)
 {
     this->ignoreMeshNumbering = value;
-    this->error->errorCode = ERROR_NOERROR;
-    return this->error->errorCode;
+    this->error->setError(ERROR_NOERROR);
+    return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -240,8 +240,8 @@ int adcirc_mesh::readMesh()
 
     if(!meshFile.open(QIODevice::ReadOnly))
     {
-        this->error->errorCode = ERROR_FILEOPENERR;
-        return this->error->errorCode;
+        this->error->setError(ERROR_FILEOPENERR);
+        return this->error->getError();
     }
 
     //...Read the entire mesh file at once
@@ -263,22 +263,22 @@ int adcirc_mesh::readMesh()
     this->numNodes = tempString.toInt(&err);
     if(!err)
     {
-        this->error->errorCode = ERROR_MESHREAD_HEADER;
-        return this->error->errorCode;
+        this->error->setError(ERROR_MESHREAD_HEADER);
+        return this->error->getError();
     }
     tempString = tempList.value(0);
     this->numElements = tempString.toInt(&err);
     if(!err)
     {
-        this->error->errorCode = ERROR_MESHREAD_HEADER;
-        return this->error->errorCode;
+        this->error->setError(ERROR_MESHREAD_HEADER);
+        return this->error->getError();
     }
 
     //...Do a quick check on the length of the file
     if(meshFileList.length()<this->numNodes+this->numElements+2)
     {
-        this->error->errorCode = ERROR_MESHREAD_UNEXPECTEDEND;
-        return this->error->errorCode;
+        this->error->setError(ERROR_MESHREAD_UNEXPECTEDEND);
+        return this->error->getError();
     }
 
     //...Allocate the nodes
@@ -295,8 +295,8 @@ int adcirc_mesh::readMesh()
 
         if(ierr!=ERROR_NOERROR)
         {
-            this->error->errorCode = ierr;
-            return this->error->errorCode;
+            this->error->setError(ierr);
+            return this->error->getError();
         }
 
         //...Check that the numbering is acceptable
@@ -306,8 +306,8 @@ int adcirc_mesh::readMesh()
                 this->meshNeedsNumbering = true;
             else
             {
-                this->error->errorCode = ERROR_MESHREAD_NODNUM;
-                return this->error->errorCode;
+                this->error->setError(ERROR_MESHREAD_NODNUM);
+                return this->error->getError();
             }
         }
 
@@ -322,8 +322,8 @@ int adcirc_mesh::readMesh()
         ierr = this->elements[i]->fromString(meshFileList.value(this->numNodes+2+i),this->nodes,this->nodeMapping);
         if(ierr!=ERROR_NOERROR)
         {
-            this->error->errorCode = ierr;
-            return this->error->errorCode;
+            this->error->setError(ierr);
+            return this->error->getError();
         }
 
         //...Check that the numbering is acceptable
@@ -333,8 +333,8 @@ int adcirc_mesh::readMesh()
                 this->meshNeedsNumbering = true;
             else
             {
-                this->error->errorCode = ERROR_MESHREAD_ELENUM;
-                return this->error->errorCode;
+                this->error->setError(ERROR_MESHREAD_ELENUM);
+                return this->error->getError();
             }
         }
 
@@ -443,8 +443,8 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
     this->numOpenBoundaries = tempString.toInt(&err);
     if(!err)
     {
-        this->error->errorCode = ERROR_MESHREAD_BNDERR;
-        return this->error->errorCode;
+        this->error->setError(ERROR_MESHREAD_BNDERR);
+        return this->error->getError();
     }
 
     if(position>fileData.length()-1)
@@ -456,8 +456,8 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
     this->totNumOpenBoundaryNodes = tempString.toInt(&err);
     if(!err)
     {
-        this->error->errorCode = ERROR_MESHREAD_BNDERR;
-        return this->error->errorCode;
+        this->error->setError(ERROR_MESHREAD_BNDERR);
+        return this->error->getError();
     }
 
     //...Allocate the boundary array
@@ -467,7 +467,10 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
     for(i=0;i<this->numOpenBoundaries;i++)
     {
         if(position>fileData.length()-1)
-            return ERROR_MESHREAD_UNEXPECTEDEND;
+        {
+            this->error->setError(ERROR_MESHREAD_UNEXPECTEDEND);
+            return this->error->getError();
+        }
 
         //...Read the number of nodes in the boundary
         tempString = fileData[position];
@@ -482,8 +485,8 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
         boundarySize = tempString.toInt(&err);
         if(!err)
         {
-            this->error->errorCode = ERROR_MESHREAD_BNDERR;
-            return this->error->errorCode;
+            this->error->setError(ERROR_MESHREAD_BNDERR);
+            return this->error->getError();
         }
 
         //...Create a new adcirc_boundary object on the heap
@@ -493,15 +496,18 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
         for(j=0;j<this->openBC[i]->numNodes;j++)
         {
             if(position>fileData.length()-1)
-                return ERROR_MESHREAD_UNEXPECTEDEND;
+            {
+                this->error->setError(ERROR_MESHREAD_UNEXPECTEDEND);
+                return this->error->getError();
+            }
 
             tempString = fileData[position];
             position = position + 1;
             ierr = this->openBC[i]->fromString(tempString,j,this->nodes,this->nodeMapping);
             if(ierr!=ERROR_NOERROR)
             {
-                this->error->errorCode = ierr;
-                return this->error->errorCode;
+                this->error->setError(ierr);
+                return this->error->getError();
             }
         }
     }
@@ -535,7 +541,10 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
     bool err;
 
     if(position>fileData.length()-1)
-        return ERROR_MESHREAD_UNEXPECTEDEND;
+    {
+        this->error->setError(ERROR_MESHREAD_UNEXPECTEDEND);
+        return this->error->getError();
+    }
 
     //...Read the header
     tempString = fileData[position];
@@ -544,12 +553,15 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
     this->numLandBoundaries = tempString.toInt(&err);
     if(!err)
     {
-        this->error->errorCode = ERROR_MESHREAD_BNDERR;
-        return this->error->errorCode;
+        this->error->setError(ERROR_MESHREAD_BNDERR);
+        return this->error->getError();
     }
 
     if(position>fileData.length()-1)
-        return ERROR_MESHREAD_UNEXPECTEDEND;
+    {
+        this->error->setError(ERROR_MESHREAD_UNEXPECTEDEND);
+        return this->error->getError();
+    }
 
     tempString = fileData[position];
     position = position + 1;
@@ -557,8 +569,8 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
     this->totNumLandBoundaryNodes = tempString.toInt(&err);
     if(!err)
     {
-        this->error->errorCode = ERROR_MESHREAD_BNDERR;
-        return this->error->errorCode;
+        this->error->setError(ERROR_MESHREAD_BNDERR);
+        return this->error->getError();
     }
 
     //...Allocate the boundary array
@@ -568,7 +580,10 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
     for(i=0;i<this->numLandBoundaries;i++)
     {
         if(position>fileData.length()-1)
-            return ERROR_MESHREAD_UNEXPECTEDEND;
+        {
+            this->error->setError(ERROR_MESHREAD_UNEXPECTEDEND);
+            return this->error->getError();
+        }
 
         //...Read the number of nodes in the boundary
         tempString = fileData[position];
@@ -580,8 +595,8 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
         boundaryCode = tempString2.toInt(&err);
         if(!err)
         {
-            this->error->errorCode = ERROR_MESHREAD_BNDERR;
-            return this->error->errorCode;
+            this->error->setError(ERROR_MESHREAD_BNDERR);
+            return this->error->getError();
         }
 
         //...Get the size of this land boundary
@@ -589,8 +604,8 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
         boundarySize = tempString2.toInt(&err);
         if(!err)
         {
-            this->error->errorCode = ERROR_MESHREAD_BNDERR;
-            return this->error->errorCode;
+            this->error->setError(ERROR_MESHREAD_BNDERR);
+            return this->error->getError();
         }
 
         //...Create a new adcirc_boundary object on the heap
@@ -600,15 +615,18 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
         for(j=0;j<this->landBC[i]->numNodes;j++)
         {
             if(position>fileData.length()-1)
-                return ERROR_MESHREAD_UNEXPECTEDEND;
+            {
+                this->error->setError(ERROR_MESHREAD_UNEXPECTEDEND);
+                return this->error->getError();
+            }
 
             tempString = fileData[position];
             position = position + 1;
             ierr = this->landBC[i]->fromString(tempString,j,this->nodes,this->nodeMapping);
             if(ierr!=ERROR_NOERROR)
             {
-                this->error->errorCode = ierr;
-                return this->error->errorCode;
+                this->error->setError(ierr);
+                return this->error->getError();
             }
         }
     }
@@ -642,7 +660,10 @@ int adcirc_mesh::writeMesh(QString filename)
     //...Open the output file. Return with error
     //   if any issues occur
     if(!outputFile.open(QIODevice::WriteOnly))
-        return ERROR_FILEOPENERR;
+    {
+        this->error->setError(ERROR_FILEOPENERR);
+        return this->error->getError();
+    }
 
     //...Create a stream
     QTextStream out(&outputFile);
@@ -801,8 +822,8 @@ int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
 
                 if(z1 < c-minAbovePrevailingTopo || z2 < c-minAbovePrevailingTopo)
                 {
-                    this->error->errorCode = ERROR_LEVEE_BELOWTOPO;
-                    return this->error->errorCode;
+                    this->error->setError(ERROR_LEVEE_BELOWTOPO);
+                    return this->error->getError();
                 }
             }
         }
@@ -815,8 +836,8 @@ int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
                 c  = this->landBC[i]->crest[j];
                 if(z1 < c-minAbovePrevailingTopo)
                 {
-                    this->error->errorCode = ERROR_LEVEE_BELOWTOPO;
-                    return this->error->errorCode;
+                    this->error->setError(ERROR_LEVEE_BELOWTOPO);
+                    return this->error->getError();
                 }
             }
         }
@@ -869,8 +890,8 @@ int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRa
         //...Check if we can open the file successfully
         if(!diag.open(QIODevice::WriteOnly))
         {
-            this->error->errorCode = ERROR_FILEOPENERR;
-            return this->error->errorCode;
+            this->error->setError(ERROR_FILEOPENERR);
+            return this->error->getError();
         }
 
         //...Create an output stream

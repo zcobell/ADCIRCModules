@@ -88,17 +88,24 @@ public:
 
     explicit adcirc_errors(QObject *parent = 0);
 
-    ///Stores the current error code for retrieval later
-    int errorCode;
+    int resetError();
+
+    int setError(int newErrorCode);
+
+    int getError();
 
     QString getErrorString();
 
 protected:
 
+    int initializeErrors();
+
+private:
+    ///Stores the current error code for retrieval later
+    int errorCode;
+
     ///Map function between error codes and their descriptions
     QMap<int,QString> errorMapping;
-
-    int initializeErrors();
 
 
 };

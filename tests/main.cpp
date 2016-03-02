@@ -28,58 +28,89 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     int ierr;
+    int numLeveesRaised;
+    double maxLeveeRaise;
 
     ierr = 0;
 
-    //...Mesh Read/Write Test
+    //...adcirc_mesh testing..//
     QPointer<adcirc_mesh> thisMesh = new adcirc_mesh();
 
     qDebug() << "Reading mesh test...";
     ierr = thisMesh->read("../../QADCModules/tests/test_files/ms-riv.grd");
-    qDebug() << thisMesh->error->errorCode;
-    qDebug() << thisMesh->error->getErrorString();
+    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
 
-    if(thisMesh->error->errorCode!=ERROR_NOERROR)
+    if(thisMesh->error->getError()!=ERROR_NOERROR)
     {
         qDebug() << "Mesh read test failed.";
         return ERROR_NOERROR;
     }
 
+    qDebug() << "\n";
     qDebug() << "Writing mesh test...";
     ierr = thisMesh->write("../../QADCModules/tests/test_files/ms-riv-me.grd");
-    qDebug() << thisMesh->error->errorCode;
-    qDebug() << thisMesh->error->getErrorString();
+    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
 
-    if(thisMesh->error->errorCode!=ERROR_NOERROR)
+    if(thisMesh->error->getError()!=ERROR_NOERROR)
     {
         qDebug() << "Mesh write test failed.";
         return ERROR_NOERROR;
     }
 
+
+    qDebug() << "\n";
+    qDebug() << "Checking levee heights test...";
+    ierr = thisMesh->checkLeveeHeights();
+    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
+
+    if(ierr!=ERROR_LEVEE_BELOWTOPO)
+    {
+        qDebug() << "ERROR: Failed to detect invalid levee height";
+        return thisMesh->error->getError();
+    }
+    else
+        qDebug() << "Low levees were correctly detected.";
+
+    //...Reset the expected error;
+    thisMesh->error->resetError();
+
+    qDebug() << "\n";
+    qDebug() << "Updating levee heights test...";
+    ierr = thisMesh->raiseLeveeHeights(numLeveesRaised,maxLeveeRaise,0.20,0.01,"../../QADCModules/tests/test_files/levee_check.txt");
+    qDebug() << "Number of levees raised: " << numLeveesRaised;
+    qDebug() << "Maximum amount levee raised: " << maxLeveeRaise;
+    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
+
+
+
+    qDebug() << "\n";
     qDebug() << "Renumbering mesh test...";
     ierr = thisMesh->renumber();
     ierr = thisMesh->write("../../QADCModules/tests/test_files/ms-riv-me-renumber.grd");
-    qDebug() << thisMesh->error->errorCode;
-    qDebug() << thisMesh->error->getErrorString();
+    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
 
-    //...Fort13 Read/Write Test
+
+
+
+    //...nodal_attributes, nodal_parameter testing...//
+    qDebug() << "\n";
     qDebug() << "Reading Fort.13 test...";
     QPointer<adcirc_nodalattributes> thisNodalParam = new adcirc_nodalattributes();
     ierr = thisNodalParam->read("../../QADCModules/tests/test_files/ms-riv.13");
-    qDebug() << thisNodalParam->error->errorCode;
-    qDebug() << thisNodalParam->error->getErrorString();
+    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
 
-    if(thisNodalParam->error->errorCode!=ERROR_NOERROR)
+    if(thisNodalParam->error->getError()!=ERROR_NOERROR)
     {
         qDebug() << "Fort13 read test failed.";
         return ERROR_NOERROR;
     }
 
+    qDebug() << "\n";
     qDebug() << "Writing fort.13 test...";
-    qDebug() << thisNodalParam->write("../../QADCModules/tests/test_files/ms-riv-me.13");
-    qDebug() << thisNodalParam->error->getErrorString();
+    ierr = thisNodalParam->write("../../QADCModules/tests/test_files/ms-riv-me.13");
+    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
 
-    if(thisNodalParam->error->errorCode!=ERROR_NOERROR)
+    if(thisNodalParam->error->getError()!=ERROR_NOERROR)
     {
         qDebug() << "Fort13 write test failed.";
         return ERROR_NOERROR;
