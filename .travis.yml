@@ -15,4 +15,4 @@ script:
 - pwd
 - qmake -qt=qt5 QADCModules.pro
 - make
-- make check
+- make check TESTRUNNER=LD_LIBRARY_PATH=../QADCModules_lib:$LD_LIBRARY_PATH

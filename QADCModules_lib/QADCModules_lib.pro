@@ -54,6 +54,14 @@ HEADERS +=\
     include/adcirc_nodalattributes.h
 
 unix {
-    target.path = /usr/lib
-    INSTALLS += target
+
+    isEmpty(PREFIX) {
+        PREFIX = /usr/local
+    }
+
+    target.path = $$PREFIX/lib
+    header_files.files = $$HEADERS
+    header_files.path = $$PREFIX/include
+    INSTALLS += header_files target
+
 }
