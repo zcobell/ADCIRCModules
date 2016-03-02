@@ -74,12 +74,18 @@ int adcirc_nodalattributes::read(QString inputFilename)
     this->filename = inputFilename;
 
     if(this->filename==QString())
-        return ERROR_NULLFILENAM;
+    {
+        this->error->errorCode = ERROR_NULLFILENAM;
+        return this->error->errorCode;
+    }
 
     QFile nodalAttributesFile(this->filename);
 
     if(!nodalAttributesFile.exists())
-        return ERROR_FILENOEXIST;
+    {
+        this->error->errorCode = ERROR_FILENOEXIST;
+        return this->error->errorCode;
+    }
 
     ierr = this->readNodalAttributesFile();
 

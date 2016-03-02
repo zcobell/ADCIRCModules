@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     //...Fort13 Read/Write Test
     qDebug() << "Reading Fort.13 test...";
     QPointer<adcirc_nodalattributes> thisNodalParam = new adcirc_nodalattributes();
-    ierr = thisNodalParam->read("../../QADCModules/tests/test_files/test_files/ms-riv.13");
+    ierr = thisNodalParam->read("../../QADCModules/tests/test_files/ms-riv.13");
     qDebug() << thisNodalParam->error->errorCode;
     qDebug() << thisNodalParam->error->getErrorString();
 
