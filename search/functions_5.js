@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['qadcmodules',['QADCModules',['../classQADCModules.html#ae88d8e37b28d6e3d0ce337f8e9dac910',1,'QADCModules']]]
+  ['initializeerrors',['initializeErrors',['../classadcirc__errors.html#ad86688f13a2ebbbaf3974305d04f54b5',1,'adcirc_errors']]]
 ];

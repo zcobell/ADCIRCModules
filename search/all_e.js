@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['title',['title',['../classadcirc__mesh.html#a94e69188a828955e74794d9a55232689',1,'adcirc_mesh::title()'],['../classadcirc__nodalattributes.html#a8230a03143884dee1270925f63bca33a',1,'adcirc_nodalattributes::title()']]],
-  ['tostring',['toString',['../classadcirc__element.html#ad6dec215d12f753f3ddd1dfa8a86903a',1,'adcirc_element::toString()'],['../classadcirc__node.html#a4b99b5156bed5ec7de0ed4466c87f3a6',1,'adcirc_node::toString()']]],
-  ['tostringlist',['toStringList',['../classadcirc__boundary.html#aa9bb421aa263be91fa0680eabe748e48',1,'adcirc_boundary']]],
-  ['totnumlandboundarynodes',['totNumLandBoundaryNodes',['../classadcirc__mesh.html#ab94fbe1c7b73729b6da91d8d52edf0e9',1,'adcirc_mesh']]],
-  ['totnumopenboundarynodes',['totNumOpenBoundaryNodes',['../classadcirc__mesh.html#a5401c22912664ed771f663b0cb1e4013',1,'adcirc_mesh']]]
+  ['sensecoordinatesystem',['senseCoordinateSystem',['../classadcirc__mesh.html#a7a0684646402d3e90282c86c4ae21ee4',1,'adcirc_mesh']]],
+  ['setdefaultvalues',['setDefaultValues',['../classadcirc__nodalparameter.html#a247e088e204fbbb514e15acfbb9a5e78',1,'adcirc_nodalparameter']]],
+  ['seterror',['setError',['../classadcirc__errors.html#aae4189ae1c12c67a370a388dc2f61b48',1,'adcirc_errors']]],
+  ['setignoremeshnumbering',['setIgnoreMeshNumbering',['../classadcirc__mesh.html#aa96e47370102299bb7e07f7ada14b377',1,'adcirc_mesh']]],
+  ['subcritical',['subcritical',['../classadcirc__boundary.html#a862e3f668de656dec759a53b55e477ea',1,'adcirc_boundary']]],
+  ['supercritical',['supercritical',['../classadcirc__boundary.html#a2e332de004aa8bead8a3fb1a246a49cd',1,'adcirc_boundary']]]
 ];

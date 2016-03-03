@@ -100,8 +100,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Inheritance diagram for adcirc_mesh:</div>
 <div class="dyncontent">
 <div class="center"><img src="classadcirc__mesh__inherit__graph.png" border="0" usemap="#adcirc__mesh_inherit__map" alt="Inheritance graph"/></div>
-<map name="adcirc__mesh_inherit__map" id="adcirc__mesh_inherit__map">
-</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for adcirc_mesh:</div>
@@ -138,6 +136,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5baa5d295d59d7160af313b48c750783"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a5baa5d295d59d7160af313b48c750783">raiseLeveeHeights</a> (int &amp;numLeveesRaised, double &amp;maximumAmountRaised, double minAbovePrevailingTopo=0.20, double minRaise=0.01, QString diagnosticFile=QString())</td></tr>
 <tr class="memdesc:a5baa5d295d59d7160af313b48c750783"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is used to raise levees that fall below prevailing topography.  <a href="#a5baa5d295d59d7160af313b48c750783">More...</a><br /></td></tr>
 <tr class="separator:a5baa5d295d59d7160af313b48c750783"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7c57b8f7e3ad817e16aad47ba0d06fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#ae7c57b8f7e3ad817e16aad47ba0d06fe">checkDisjointNodes</a> (int &amp;numDisjointNodes)</td></tr>
+<tr class="memdesc:ae7c57b8f7e3ad817e16aad47ba0d06fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function checks for nodes that are not connected to any elements.  <a href="#ae7c57b8f7e3ad817e16aad47ba0d06fe">More...</a><br /></td></tr>
+<tr class="separator:ae7c57b8f7e3ad817e16aad47ba0d06fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb4e2ea156c66ba6dfaf68fffc8fdd0a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#adb4e2ea156c66ba6dfaf68fffc8fdd0a">eliminateDisjointNodes</a> (int &amp;numDisjointNodes)</td></tr>
+<tr class="memdesc:adb4e2ea156c66ba6dfaf68fffc8fdd0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function eliminates nodes that are not connected to any elements.  <a href="#adb4e2ea156c66ba6dfaf68fffc8fdd0a">More...</a><br /></td></tr>
+<tr class="separator:adb4e2ea156c66ba6dfaf68fffc8fdd0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -310,6 +314,30 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ae7c57b8f7e3ad817e16aad47ba0d06fe"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int adcirc_mesh::checkDisjointNodes </td>
+          <td>(</td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>numDisjointNodes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">numDisjointNodes</td><td>[out] Number of nodes that are not connected to any element</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function checks for nodes that are not connected to any elements </p>
+
+</div>
+</div>
 <a class="anchor" id="a53cef74df08c5d8b7e6684088e4fa637"></a>
 <div class="memitem">
 <div class="memproto">
@@ -331,6 +359,30 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 <p>This function is used to check that an <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> does not have levee heights that fall below the topography, and thus causing a fatal error when running ADCIRC </p>
+
+</div>
+</div>
+<a class="anchor" id="adb4e2ea156c66ba6dfaf68fffc8fdd0a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int adcirc_mesh::eliminateDisjointNodes </td>
+          <td>(</td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>numDisjointNodes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">numDisjointNodes</td><td>[out] Number of nodes that were not connected to any element</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function eliminates nodes that are not connected to any elements </p>
 
 </div>
 </div>
