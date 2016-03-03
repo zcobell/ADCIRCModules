@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     int ierr;
-    int numLeveesRaised;
+    int numLeveesRaised,numDisjoint;
     double maxLeveeRaise;
 
     ierr = 0;
@@ -81,6 +81,22 @@ int main(int argc, char *argv[])
     qDebug() << "Maximum amount levee raised: " << maxLeveeRaise;
     qDebug() << "STATUS: " << thisMesh->error->getErrorString();
 
+
+    qDebug() << "\n";
+    qDebug() << "Checking disjoint nodes test...";
+    ierr = thisMesh->checkDisjointNodes(numDisjoint);
+    qDebug() << "Number of disjoint nodes: " << numDisjoint;
+    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
+    thisMesh->error->resetError();
+
+
+    qDebug() << "\n";
+    qDebug() << "Eliminating disjoint nodes test...";
+    ierr = thisMesh->eliminateDisjointNodes(numDisjoint);
+    qDebug() << "Number of disjoint nodes eliminated: " << numDisjoint;
+    ierr = thisMesh->write("../../QADCModules/tests/test_files/ms-riv-me-disjoint.grd");
+    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
+    thisMesh->error->resetError();
 
 
     qDebug() << "\n";
