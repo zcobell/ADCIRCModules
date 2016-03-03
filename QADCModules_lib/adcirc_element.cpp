@@ -37,7 +37,7 @@ bool operator>(const adcirc_element e1,const adcirc_element e2)
  *
  * \author Zach Cobell
  *
- * @param parent [in] parent QObject used for memory management
+ * @param[in] parent Parent QObject used for memory management
  *
  * Constructor function for adcirc_element class. Assumes triangular elements.
  *
@@ -62,9 +62,9 @@ adcirc_element::adcirc_element(QObject *parent) : QObject(parent)
  *
  * \author Zach Cobell
  *
- * @param line     [in]    The QString with the information read from the file to be parsed into an ADCIRC element
- * @param index    [in]    An integer for the current element position in the ADCIRC file
- * @param *element [inout] The pointer to the adcirc_element that should be created with this information
+ * @param[in]     line     The QString with the information read from the file to be parsed into an ADCIRC element
+ * @param[in]     index    An integer for the current element position in the ADCIRC file
+ * @param[in,out] *element The pointer to the adcirc_element that should be created with this information
  *
  * Protected function to parse the string from an ADCIRC mesh file containing
  *  elemental connectivity information

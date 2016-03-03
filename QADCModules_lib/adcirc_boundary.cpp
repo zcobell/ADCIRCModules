@@ -27,9 +27,9 @@
  *
  * \author Zach Cobell
  *
- * @param code   [in] ADCIRC boundary type code
- * @param size   [in] Number of nodes in the ADCIRC boundary string
- * @param parent [in] QObject parent
+ * @param[in] code   ADCIRC boundary type code
+ * @param[in] size   Number of nodes in the ADCIRC boundary string
+ * @param[in] parent QObject parent
  *
  * The adcirc_boundary constructor will allocate the memory for the boundary type
  * based upon its type and length as specified in the input to the constructor
@@ -93,10 +93,10 @@ adcirc_boundary::adcirc_boundary(int code, int size, QObject *parent) : QObject(
  *
  * \author Zach Cobell
  *
- * @param data        [in] line from the ADCIRC mesh file for this boundary type
- * @param index       [in] position in the boundary string
- * @param nodes       [in] nodal positions in the mesh
- * @param nodeMapping [in] node mapping table between the node id and node array position
+ * @param[in] data        line from the ADCIRC mesh file for this boundary type
+ * @param[in] index       position in the boundary string
+ * @param[in] nodes       nodal positions in the mesh
+ * @param[in] nodeMapping node mapping table between the node id and node array position
  *
  * This function will read the ADCIRC boundary data (single line) from the mesh file based
  * upon the ADCIRC boundary type that is already specified.
@@ -137,10 +137,10 @@ int adcirc_boundary::fromString(QString data, int index, QVector<adcirc_node *> 
  *
  * \author Zach Cobell
  *
- * @param data        [in] line from the ADCIRC mesh file for this boundary type
- * @param index       [in] position in the boundary string
- * @param nodes       [in] nodal positions in the mesh
- * @param nodeMapping [in] node mapping table between the node id and node array position
+ * @param[in] data        line from the ADCIRC mesh file for this boundary type
+ * @param[in] index       position in the boundary string
+ * @param[in] nodes       nodal positions in the mesh
+ * @param[in] nodeMapping node mapping table between the node id and node array position
  *
  * Protected function to read the single node data from a land boundary string
  * (single node types)
@@ -170,10 +170,10 @@ int adcirc_boundary::readBoundarySingleNode(QString data, int index, QVector<adc
  *
  * \author Zach Cobell
  *
- * @param data        [in] line from the ADCIRC mesh file for this boundary type
- * @param index       [in] position in the boundary string
- * @param nodes       [in] nodal positions in the mesh
- * @param nodeMapping [in] node mapping table between the node id and node array position
+ * @param[in] data        line from the ADCIRC mesh file for this boundary type
+ * @param[in] index       position in the boundary string
+ * @param[in] nodes       nodal positions in the mesh
+ * @param[in] nodeMapping node mapping table between the node id and node array position
  *
  * Protected function to read the one sided weir data from a land
  * boundary string (type 3,13)
@@ -217,10 +217,10 @@ int adcirc_boundary::readBoundaryOneSidedWeir(QString data, int index, QVector<a
  *
  * \author Zach Cobell
  *
- * @param data        [in] line from the ADCIRC mesh file for this boundary type
- * @param index       [in] position in the boundary string
- * @param nodes       [in] nodal positions in the mesh
- * @param nodeMapping [in] node mapping table between the node id and node array position
+ * @param[in] data        line from the ADCIRC mesh file for this boundary type
+ * @param[in] index       position in the boundary string
+ * @param[in] nodes       nodal positions in the mesh
+ * @param[in] nodeMapping node mapping table between the node id and node array position
  *
  * Protected function to read the one sided two sided weir information from a
  * land boundary string (type 4,24)
@@ -281,10 +281,10 @@ int adcirc_boundary::readBoundaryTwoSidedWeir(QString data, int index, QVector<a
  *
  * \author Zach Cobell
  *
- * @param data        [in] line from the ADCIRC mesh file for this boundary type
- * @param index       [in] position in the boundary string
- * @param nodes       [in] nodal positions in the mesh
- * @param nodeMapping [in] node mapping table between the node id and node array position
+ * @param[in] data        line from the ADCIRC mesh file for this boundary type
+ * @param[in] index       position in the boundary string
+ * @param[in] nodes       nodal positions in the mesh
+ * @param[in] nodeMapping node mapping table between the node id and node array position
  *
  * Protected function to read the so-called "leaky weir", or weir with cross
  * barrier pipes from a land boundary string (type 5,25)
@@ -364,8 +364,8 @@ int adcirc_boundary::readBoundaryCrossBarrierPipe(QString data, int index, QVect
  *
  * \author Zach Cobell
  *
- * @param isOpenBC [in] if this is an open BC, the boundary code is not included
- *                      per the ADCIRC format
+ * @param[in] isOpenBC If this is an open BC, the boundary code is not included
+ *                     per the ADCIRC format
  *
  * Public function to construct the boundary condition into a QStringList for writing
  */
@@ -425,3 +425,4 @@ QStringList adcirc_boundary::toStringList(bool isOpenBC)
     }
     return outputList;
 }
+//-----------------------------------------------------------------------------------------//

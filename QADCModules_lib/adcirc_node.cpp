@@ -60,7 +60,7 @@ adcirc_node::adcirc_node(QObject *parent) : QObject(parent)
  *
  * \author Zach Cobell
  *
- * @param line [in] The QString with the information read from the file to be parsed into an ADCIRC node
+ * @param[in] line The QString with the information read from the file to be parsed into an ADCIRC node
  *
  * This function can parse a single line from an ADCIRC mesh file to break it into the nodal information
  **/
@@ -101,6 +101,7 @@ int adcirc_node::fromString(QString line)
 //-----------------------------------------------------------------------------------------//
 
 
+
 //-----------------------------------------------------------------------------------------//
 // Function that writes an ADCIRC node to a string
 //-----------------------------------------------------------------------------------------//
@@ -109,7 +110,7 @@ int adcirc_node::fromString(QString line)
  *
  * \author Zach Cobell
  *
- * @param gcs [in] Determines the output format if it should be formatted for geographic
+ * @param[in] gcs  Determines the output format if it should be formatted for geographic
  *                 coordinates or mercator based coordinates. Default = true
  *
  * Protected function that writes an ADCIRC node in the format expected by an ADCIRC mesh
@@ -126,3 +127,4 @@ QString adcirc_node::toString(bool gcs)
         output.sprintf("%11i   %14.4f    %14.4f   %14.4f",this->id,this->x,this->y,this->z);
     return output;
 }
+//-----------------------------------------------------------------------------------------//
