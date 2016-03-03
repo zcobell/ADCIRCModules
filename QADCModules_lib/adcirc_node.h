@@ -57,6 +57,9 @@ public:
     ///ID for the ADCIRC node
     int    id;
 
+    ///Boolean value that can be used during checking operations
+    bool myBool;
+
 
     //...PUBLIC FUNCTIONS...//
 

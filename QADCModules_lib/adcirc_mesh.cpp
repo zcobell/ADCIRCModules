@@ -18,7 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_mesh.h"
-
+#include <QDebug>
 //-----------------------------------------------------------------------------------------//
 // Initializer
 //-----------------------------------------------------------------------------------------//
@@ -1000,3 +1000,111 @@ int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRa
 
     return ERROR_NOERROR;
 }
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that checks for nodes that are not connected to any elements
+//-----------------------------------------------------------------------------------------//
+/** \brief This function checks for nodes that are not connected to any elements
+ *
+ * \author Zach Cobell
+ *
+ * @param numDisjointNodes [out] Number of nodes that are not connected to any element
+ *
+ * This function checks for nodes that are not connected to any elements
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::checkDisjointNodes(int &numDisjointNodes)
+{
+    int i,j;
+    numDisjointNodes = 0;
+
+    //...Reset the boolean values
+    for(i=0;i<this->numNodes;i++)
+        this->nodes[i]->myBool = false;
+
+    //...Loop over the elements and reset the bool
+    for(i=0;i<this->numElements;i++)
+        for(j=0;j<this->elements[i]->numConnections;j++)
+            this->elements[i]->connections[j]->myBool = true;
+
+    //...Check to see how many nodes are considered disjoint
+    for(i=0;i<this->numNodes;i++)
+        if(!this->nodes[i]->myBool)
+            numDisjointNodes = numDisjointNodes + 1;
+
+    if(numDisjointNodes!=0)
+    {
+        this->error->setError(ERROR_DISJOINTNODES);
+        return this->error->getError();
+    }
+    else
+    {
+        this->error->setError(ERROR_NOERROR);
+        return this->error->getError();
+    }
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that eliminates nodes that are not connected to any elements
+//-----------------------------------------------------------------------------------------//
+/** \brief This function eliminates nodes that are not connected to any elements
+ *
+ * \author Zach Cobell
+ *
+ * @param numDisjointNodes [out] Number of nodes that were not connected to any element
+ *
+ * This function eliminates nodes that are not connected to any elements
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::eliminateDisjointNodes(int &numDisjointNodes)
+{
+    int i,j;
+    numDisjointNodes = 0;
+
+    //...Reset the boolean values
+    for(i=0;i<this->numNodes;i++)
+        this->nodes[i]->myBool = false;
+
+    //...Loop over the elements and reset the bool
+    for(i=0;i<this->numElements;i++)
+        for(j=0;j<this->elements[i]->numConnections;j++)
+            this->elements[i]->connections[j]->myBool = true;
+
+    //...Eliminate nodes that are considered disjoint
+    for(i=this->numNodes-1;i>=0;i--)
+    {
+        if(!this->nodes[i]->myBool)
+        {
+            numDisjointNodes = numDisjointNodes + 1;
+            this->nodes.remove(i);
+            this->numNodes = this->numNodes - 1;
+        }
+    }
+
+
+    //...If the nodes have been altered, renumber the mesh
+    //   otherwise, just return
+    if(numDisjointNodes!=0)
+    {
+        //...Renumber the mesh
+        this->renumber();
+
+        this->error->setError(ERROR_DISJOINTNODES);
+        return this->error->getError();
+    }
+    else
+    {
+        this->error->setError(ERROR_NOERROR);
+        return this->error->getError();
+    }
+
+}
+//-----------------------------------------------------------------------------------------//

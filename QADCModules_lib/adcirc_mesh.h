@@ -119,6 +119,9 @@ public:
                           double minAbovePrevailingTopo = 0.20, double minRaise = 0.01,
                           QString diagnosticFile = QString());
 
+    int checkDisjointNodes(int &numDisjointNodes);
+
+    int eliminateDisjointNodes(int &numDisjointNodes);
 
 private:
 
