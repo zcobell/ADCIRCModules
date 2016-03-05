@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['tostring',['toString',['../classadcirc__element.html#ad6dec215d12f753f3ddd1dfa8a86903a',1,'adcirc_element::toString()'],['../classadcirc__node.html#a4b99b5156bed5ec7de0ed4466c87f3a6',1,'adcirc_node::toString()']]],
-  ['tostringlist',['toStringList',['../classadcirc__boundary.html#aa9bb421aa263be91fa0680eabe748e48',1,'adcirc_boundary']]]
+  ['sensecoordinatesystem',['senseCoordinateSystem',['../classadcirc__mesh.html#a7a0684646402d3e90282c86c4ae21ee4',1,'adcirc_mesh']]],
+  ['setdefaultvalues',['setDefaultValues',['../classadcirc__nodalparameter.html#a247e088e204fbbb514e15acfbb9a5e78',1,'adcirc_nodalparameter']]],
+  ['setepsg',['setEpsg',['../classadcirc__mesh.html#a39d72670fa70e35c02c43eeeff749864',1,'adcirc_mesh']]],
+  ['seterror',['setError',['../classadcirc__errors.html#aae4189ae1c12c67a370a388dc2f61b48',1,'adcirc_errors']]],
+  ['setignoremeshnumbering',['setIgnoreMeshNumbering',['../classadcirc__mesh.html#aa96e47370102299bb7e07f7ada14b377',1,'adcirc_mesh']]]
 ];
