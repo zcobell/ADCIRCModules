@@ -100,15 +100,15 @@ int proj4::readEPSGInitializations()
                 tempString     = tempStringList.value(0);
                 tempString     = tempString.mid(1);
 
-                epsgIDs.resize(epsgIDs.length()+1);
-                epsgInitStrings.resize(epsgInitStrings.length()+1);
-                epsgIDs[epsgIDs.length()-1] = tempString.toInt();
+                epsgIDs.resize(epsgIDs.size()+1);
+                epsgInitStrings.resize(epsgInitStrings.size()+1);
+                epsgIDs[epsgIDs.size()-1] = tempString.toInt();
 
                 tempString     = tempStringList.value(1);
                 tempString     = tempString.mid(0,tempString.length()-2);
                 tempString     = tempString.simplified();
 
-                epsgInitStrings[epsgInitStrings.length()-1] = tempString;
+                epsgInitStrings[epsgInitStrings.size()-1] = tempString;
 
             }
         }
@@ -116,7 +116,7 @@ int proj4::readEPSGInitializations()
     }
 
     //...Build the map between EPSGs and their parameters
-    for(i=0;i<epsgIDs.length();i++)
+    for(i=0;i<epsgIDs.size();i++)
         this->epsgMapping[epsgIDs[i]] = epsgInitStrings[i];
 
     return ERROR_NOERROR;
