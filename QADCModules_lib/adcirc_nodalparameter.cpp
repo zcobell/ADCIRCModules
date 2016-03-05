@@ -29,11 +29,11 @@
  *
  * \author Zach Cobell
  *
- * @param numNodes            [in]            Number of nodes in the mesh so the vectors can be sized
- * @param nodalAttributeName  [in] [optional] Name of the nodal parameter we are creating (default: noName)
- * @param nodalAttributeUnits [in] [optional] Units to denote in the fort.13 file (default: none)
- * @param numValues           [in] [optional] Number of values to assign to a node (default: 1)
- * @param *parent             [in]            Reference to QObject. Enables automatic memory management to avoid memory leaks
+ * @param[in] numNodes                        Number of nodes in the mesh so the vectors can be sized
+ * @param[in] nodalAttributeName   [optional] Name of the nodal parameter we are creating (default: noName)
+ * @param[in] nodalAttributeUnits  [optional] Units to denote in the fort.13 file (default: none)
+ * @param[in] numValues            [optional] Number of values to assign to a node (default: 1)
+ * @param[in] *parent                         Reference to QObject. Enables automatic memory management to avoid memory leaks
  *
  * Constructs an adcirc_nodalparameter object. The user should specify some of the vaues found
  * in the fort.13 header here so they are set and retained automatically. This function also
@@ -75,7 +75,7 @@ adcirc_nodalparameter::adcirc_nodalparameter(int numNodes, QString nodalAttribut
  *
  * \author Zach Cobell
  *
- * @param nodalParameterDefaultValues [in] Vector of doubles containing the default values
+ * @param[in] nodalParameterDefaultValues  Vector of doubles containing the default values
  *                                         to be used in each column of the fort.13 file
  *
  * Function to assign default values that will be specified in the fort.13 header
@@ -103,7 +103,7 @@ int adcirc_nodalparameter::setDefaultValues(QVector<double> nodalParameterDefaul
  *
  * \author Zach Cobell
  *
- * @param fileData [in] Body of the fort.13 file for this nodal attribute
+ * @param[in] fileData Body of the fort.13 file for this nodal attribute
  *
  * This function reads the portion of the body of a fort.13 that contains the non-default
  * values to assign nodes in the ADCIRC mesh

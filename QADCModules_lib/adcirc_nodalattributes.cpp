@@ -29,7 +29,7 @@
  *
  * \author Zach Cobell
  *
- * @param *parent  [in] Reference to QObject. Enables automatic memory management to avoid memory leaks
+ * @param[in] *parent  Reference to QObject. Enables automatic memory management to avoid memory leaks
  *
  * Constructs an adcirc_nodalattributes object
  *
@@ -61,7 +61,7 @@ adcirc_nodalattributes::adcirc_nodalattributes(QObject *parent) : QObject(parent
  *
  * \author Zach Cobell
  *
- * @param filename [in] filename of the fort.13 file to be read
+ * @param[in] filename Filename of the fort.13 file to be read
  *
  * Publicly available function to read an ADCIRC fort.13 file
  *
@@ -105,9 +105,9 @@ int adcirc_nodalattributes::read(QString inputFilename)
  *
  * \author Zach Cobell
  *
- * @param outputFile                 [in] filename of the fort.13 file to be written
- * @param userSpecifiedDefaultValues [in] if true, the optimization of the fort.13 default value
- *                                        is not performed
+ * @param[in] outputFile                 Filename of the fort.13 file to be written
+ * @param[in] userSpecifiedDefaultValues If true, the optimization of the fort.13 default value
+ *                                       is not performed
  *
  * Publicly available function to write an ADCIRC fort.13 file
  *

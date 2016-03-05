@@ -122,7 +122,7 @@ QString adcirc_errors::getErrorString()
  *
  * \author Zach Cobell
  *
- * @param newErrorCode [in] new error code to use
+ * @param[in] newErrorCode New error code to use
  *
  * Sets the current error code
  **/

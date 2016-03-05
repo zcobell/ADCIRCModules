@@ -26,7 +26,7 @@
  *
  * \author Zach Cobell
  *
- * @param *parent [in] reference to QObject. Enables automatic memory management to avoid memory leaks
+ * @param[in] *parent reference to QObject. Enables automatic memory management to avoid memory leaks
  *
  * Constructs an adcirc_mesh object, takes QObject reference as input
  *
@@ -117,7 +117,7 @@ int adcirc_mesh::read()
  *
  *  \author Zach Cobell
  *
- *   @param inputFile [in] specifies the mesh file to be read
+ *   @param[in] inputFile Specifies the mesh file to be read
  *
  * Function used to read the ADCIRC mesh into the class. Assumes the filename has not already
  * been specified. The mesh file will be read in after checking for some simple errors.
@@ -163,7 +163,7 @@ int adcirc_mesh::read(QString inputFile)
  *
  *  \author Zach Cobell
  *
- *  @param  outputFile [in] Name of the file to write
+ *  @param[in]  outputFile Name of the file to write
  *
  * Function used by the user to write the ADCIRC mesh currently contained within the class.
  * If the file already exists, it will be overwritten. Tread carefully.
@@ -193,8 +193,7 @@ int adcirc_mesh::write(QString outputFile)
  *
  * \author Zach Cobell
  *
- * @param  value [in] if true, mesh numbering is ignored.
- * If false, mesh numbering that is nonsequential is fatal
+ * @param[in] value If true, mesh numbering is ignored. If false, mesh numbering that is nonsequential is fatal
  *
  * Function used by the user to set if the code will determine that non-sequantial
  * mesh numbering is a fatal error. This applies to both the node portion of the file
@@ -424,8 +423,8 @@ int adcirc_mesh::allocateElements()
  *
  * \author Zach Cobell
  *
- * @param position [inout] The current file position. Returned as the new file position when the open boundary read is complete
- * @param fileData [in]    Reference to the data read from the ADCIRC mesh file
+ * @param[in,out] position The current file position. Returned as the new file position when the open boundary read is complete
+ * @param[in]     fileData Reference to the data read from the ADCIRC mesh file
  *
  * Protected function to read the entire set of open boundary conditions
  */
@@ -532,9 +531,9 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
  *
  * \author Zach Cobell
  *
- * @param position [inout] The current file position. Returned as the new file position
+ * @param[in,out] position The current file position. Returned as the new file position
  *                         when the land boundary read is complete
- * @param fileData [in]    Reference to the data read from the ADCIRC mesh file
+ * @param[in]     fileData Reference to the data read from the ADCIRC mesh file
  *
  * Protected function to read the entire set of land boundary conditions
  */
@@ -650,7 +649,7 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
  *
  * \author Zach Cobell
  *
- * @param filename [in] Name of the output mesh file
+ * @param[in] filename Name of the output mesh file
  *
  * This function is used internally to write an ADCIRC mesh.
  **/
@@ -802,9 +801,9 @@ int adcirc_mesh::renumber()
  *
  * \author Zach Cobell
  *
- * @param minAbovePrevailingTopo [in] [optional] Elevation that a levee must be above the
- *                                               prevailing topographic elevation.
- *                                               Default = 0.2
+ * @param[in] minAbovePrevailingTopo [optional] Elevation that a levee must be above the
+ *                                              prevailing topographic elevation.
+ *                                              Default = 0.2
  *
  * This function is used to check that an adcirc_mesh does not have levee heights that fall
  * below the topography, and thus causing a fatal error when running ADCIRC
@@ -861,11 +860,11 @@ int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
  *
  * \author Zach Cobell
  *
- * @param numLeveesRaised        [out]           Number of levees that needed to be raised
- * @param maximumAmountRaised    [out]           Maximum amount that a levee needed to be raised
- * @param minAbovePrevailingTopo [in] [optional] Elevation a levee must be above prevailing topography. Default = 0.2
- * @param minRaise               [in] [optional] Minimum amount a levee may be raised. Default = 0.01
- * @param diagnosticFile         [in] [optional] Diagnostic file to write that will show where levees have been raised
+ * @param[out] numLeveesRaised                   Number of levees that needed to be raised
+ * @param[out] maximumAmountRaised               Maximum amount that a levee needed to be raised
+ * @param[in]  minAbovePrevailingTopo [optional] Elevation a levee must be above prevailing topography. Default = 0.2
+ * @param[in]  minRaise               [optional] Minimum amount a levee may be raised. Default = 0.01
+ * @param[in]  diagnosticFile         [optional] Diagnostic file to write that will show where levees have been raised
  *                                               Output will be formatted as a csv file. Default = null
  *
  * This function is used to check that an adcirc_mesh does not have levee heights that fall
@@ -1017,7 +1016,7 @@ int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRa
  *
  * \author Zach Cobell
  *
- * @param numDisjointNodes [out] Number of nodes that are not connected to any element
+ * @param[out] numDisjointNodes Number of nodes that are not connected to any element
  *
  * This function checks for nodes that are not connected to any elements
  *
@@ -1064,7 +1063,7 @@ int adcirc_mesh::checkDisjointNodes(int &numDisjointNodes)
  *
  * \author Zach Cobell
  *
- * @param numDisjointNodes [out] Number of nodes that were not connected to any element
+ * @param[out] numDisjointNodes Number of nodes that were not connected to any element
  *
  * This function eliminates nodes that are not connected to any elements
  *
