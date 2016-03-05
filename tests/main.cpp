@@ -106,6 +106,13 @@ int main(int argc, char *argv[])
     qDebug() << "STATUS: " << thisMesh->error->getErrorString();
 
 
+    qDebug() << "\n";
+    qDebug() << "Testing Proj4 Coordinate Transformation...";
+    ierr = thisMesh->transformCoordinates(26915);
+    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
+    if(thisMesh->error->getError()!=ERROR_NOERROR)
+        return thisMesh->error->getError();
+    ierr = thisMesh->write("../../QADCModules/tests/test_files/ms-riv-me-utm15.grd");
 
 
     //...nodal_attributes, nodal_parameter testing...//

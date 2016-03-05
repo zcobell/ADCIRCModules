@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/rsc">
+        <file>epsg</file>
+    </qresource>
+</RCC>

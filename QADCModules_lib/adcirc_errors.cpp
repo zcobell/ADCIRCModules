@@ -85,6 +85,11 @@ int adcirc_errors::initializeErrors()
     this->errorMapping[ERROR_NODALATT_BODYERR]       = "There was an error reading the body of the nodal attributes file.";
     this->errorMapping[ERROR_NODALATT_UNEXPECTEDEND] = "Unexpected end of the nodal attributes file.";
 
+    //...PROJ4 Errors
+    this->errorMapping[ERROR_PROJ4_CANNOTREADEPSGFILE] = "There was an internal error reading the EPSG initialization file";
+    this->errorMapping[ERROR_PROJ4_NOSUCHPROJECTION]   = "The specified projection was not found";
+    this->errorMapping[ERROR_PROJ4_INTERNAL]           = "There was an error internal to PROJ4";
+
     return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//

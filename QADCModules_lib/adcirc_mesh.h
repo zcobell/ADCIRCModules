@@ -47,6 +47,7 @@
 #include "adcirc_element.h"
 #include "adcirc_boundary.h"
 #include "adcirc_errors.h"
+#include "proj4.h"
 
 
 class QADCMODULESSHARED_EXPORT adcirc_mesh : public QObject
@@ -99,8 +100,10 @@ public:
     adcirc_errors*                     error;
 
     ///Variable that lets other portions of the code know if the mesh is in a geographic coordinate system
-    bool isGCS;
+    bool isLatLon;
 
+    ///Variable that determines the EPSG coordinate system reference. Default is geographic (WGS84, EPSG: 4326)
+    int epsg;
 
     //...Public functions...///
 
@@ -123,6 +126,8 @@ public:
 
     int eliminateDisjointNodes(int &numDisjointNodes);
 
+    int transformCoordinates(int epsg);
+
 private:
 
     //...PRIVATE VARIABLES...//
@@ -138,6 +143,9 @@ private:
 
     ///Map function between an element ID and its position in the element vector
     QMap<int,int> elementMapping;
+
+    ///Instance of class used for coordinate system transformation
+    proj4 *coordinateSystem;
 
 
 protected:

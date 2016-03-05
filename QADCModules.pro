@@ -22,5 +22,4 @@ TEMPLATE = subdirs
 
 SUBDIRS  = QADCModules_lib \
            tests
-
 CONFIG += ordered           

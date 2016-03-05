@@ -18,7 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_mesh.h"
-#include <QDebug>
+
 //-----------------------------------------------------------------------------------------//
 // Initializer
 //-----------------------------------------------------------------------------------------//
@@ -45,7 +45,13 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
 
     //...Assume this is a geographic coordinate system by default. After
     //   the mesh is read, this will be checked to be sure
-    this->isGCS = true;
+    this->isLatLon = true;
+
+    //...Initialize the coordinate system
+    this->coordinateSystem = new proj4(this);
+
+    //...Set the default coordinate system to WGS84
+    this->epsg = 4326;
 
     return;
 }
@@ -674,7 +680,7 @@ int adcirc_mesh::writeMesh(QString filename)
 
     //...Write the mesh nodes
     for(i=0;i<this->numNodes;i++)
-        out << this->nodes[i]->toString(this->isGCS) << "\n";
+        out << this->nodes[i]->toString(this->isLatLon) << "\n";
 
     //...Write the mesh elements
     for(i=0;i<this->numElements;i++)
@@ -749,9 +755,9 @@ int adcirc_mesh::senseCoordinateSystem()
     mag = ( m1 + m2 ) / 2.0;
 
     if(mag>3.0)
-        this->isGCS = false;
+        this->isLatLon = false;
     else
-        this->isGCS = true;
+        this->isLatLon = true;
 
     return ERROR_NOERROR;
 }
@@ -1106,5 +1112,45 @@ int adcirc_mesh::eliminateDisjointNodes(int &numDisjointNodes)
         return this->error->getError();
     }
 
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that converts an adcirc_mesh into another coordinate system
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that converts an adcirc_mesh into another coordinate system
+ *
+ * \author Zach Cobell
+ *
+ * @param[in] epsg EPSG number for the new coordinate system
+ *
+ * This function converts the coordinate system of an adcirc_mesh via the Proj4 library
+ * using EPSG numbers.
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::transformCoordinates(int epsg)
+{
+
+    QPointF inPoint,outPoint;
+    int i,ierr;
+
+    for(i=0;i<this->numNodes;i++)
+    {
+        inPoint.setX(this->nodes[i]->x);
+        inPoint.setY(this->nodes[i]->y);
+        ierr = this->coordinateSystem->transform(this->epsg,epsg,inPoint,outPoint,this->isLatLon);
+        if(ierr!=ERROR_NOERROR)
+        {
+            this->error->setError(ierr);
+            return this->error->getError();
+        }
+        this->nodes[i]->x = outPoint.x();
+        this->nodes[i]->y = outPoint.y();
+    }
+
+    return 0;
 }
 //-----------------------------------------------------------------------------------------//
