@@ -1129,7 +1129,7 @@ int adcirc_mesh::eliminateDisjointNodes(int &numDisjointNodes)
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::setEpsg(int epsg)
+int adcirc_mesh::setProjection(int epsg)
 {
     this->epsg = epsg;
     return ERROR_NOERROR;
@@ -1141,18 +1141,18 @@ int adcirc_mesh::setEpsg(int epsg)
 //-----------------------------------------------------------------------------------------//
 //...Function that converts an adcirc_mesh into another coordinate system
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that converts an adcirc_mesh into another coordinate system
+/** \brief Function that projects an adcirc_mesh into another coordinate system
  *
  * \author Zach Cobell
  *
  * @param[in] epsg EPSG number for the new coordinate system
  *
- * This function converts the coordinate system of an adcirc_mesh via the Proj4 library
- * using EPSG numbers.
+ * This function projects the coordinate system of an adcirc_mesh via the Proj4 library
+ * using EPSG IDs
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::transformCoordinates(int epsg)
+int adcirc_mesh::project(int epsg)
 {
 
     QPointF inPoint,outPoint;

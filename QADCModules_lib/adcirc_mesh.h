@@ -126,9 +126,9 @@ public:
 
     int eliminateDisjointNodes(int &numDisjointNodes);
 
-    int setEpsg(int epsg);
+    int setProjection(int epsg);
 
-    int transformCoordinates(int epsg);
+    int project(int epsg);
 
 private:
 

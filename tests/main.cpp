@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
 
     qDebug() << "\n";
     qDebug() << "Testing Proj4 Coordinate Transformation...";
-    ierr = thisMesh->transformCoordinates(26915);
+    ierr = thisMesh->project(26915);
     qDebug() << "STATUS: " << thisMesh->error->getErrorString();
     if(thisMesh->error->getError()!=ERROR_NOERROR)
         return thisMesh->error->getError();
