@@ -52,7 +52,7 @@ Detailed documentation is available [here](http://zcobell.github.io/QADCModules/
         
 8. Change the coordinate system of the mesh to EPSG 26915 (UTM Zone 15, NAD83). Any EPSG accepted by the Proj4 library can be entered here.
 
-        thisMesh->transformCoordinates(26915);
+        thisMesh->project(26915);
 
 9. Diagnose an error while working with a mesh object
 
