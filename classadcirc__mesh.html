@@ -100,8 +100,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Inheritance diagram for adcirc_mesh:</div>
 <div class="dyncontent">
 <div class="center"><img src="classadcirc__mesh__inherit__graph.png" border="0" usemap="#adcirc__mesh_inherit__map" alt="Inheritance graph"/></div>
-<map name="adcirc__mesh_inherit__map" id="adcirc__mesh_inherit__map">
-</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for adcirc_mesh:</div>
@@ -144,12 +142,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adb4e2ea156c66ba6dfaf68fffc8fdd0a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#adb4e2ea156c66ba6dfaf68fffc8fdd0a">eliminateDisjointNodes</a> (int &amp;numDisjointNodes)</td></tr>
 <tr class="memdesc:adb4e2ea156c66ba6dfaf68fffc8fdd0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function eliminates nodes that are not connected to any elements.  <a href="#adb4e2ea156c66ba6dfaf68fffc8fdd0a">More...</a><br /></td></tr>
 <tr class="separator:adb4e2ea156c66ba6dfaf68fffc8fdd0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39d72670fa70e35c02c43eeeff749864"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a39d72670fa70e35c02c43eeeff749864">setEpsg</a> (int <a class="el" href="classadcirc__mesh.html#a7778361b983b6e109de518003d2a1917">epsg</a>)</td></tr>
-<tr class="memdesc:a39d72670fa70e35c02c43eeeff749864"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that sets the current projection.  <a href="#a39d72670fa70e35c02c43eeeff749864">More...</a><br /></td></tr>
-<tr class="separator:a39d72670fa70e35c02c43eeeff749864"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26d66627c2b927ccb457b1ae5f11bfd2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a26d66627c2b927ccb457b1ae5f11bfd2">transformCoordinates</a> (int <a class="el" href="classadcirc__mesh.html#a7778361b983b6e109de518003d2a1917">epsg</a>)</td></tr>
-<tr class="memdesc:a26d66627c2b927ccb457b1ae5f11bfd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that converts an <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> into another coordinate system.  <a href="#a26d66627c2b927ccb457b1ae5f11bfd2">More...</a><br /></td></tr>
-<tr class="separator:a26d66627c2b927ccb457b1ae5f11bfd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a0079902259b68e25167d948f46471b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a6a0079902259b68e25167d948f46471b">setProjection</a> (int <a class="el" href="classadcirc__mesh.html#a7778361b983b6e109de518003d2a1917">epsg</a>)</td></tr>
+<tr class="memdesc:a6a0079902259b68e25167d948f46471b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that sets the current projection.  <a href="#a6a0079902259b68e25167d948f46471b">More...</a><br /></td></tr>
+<tr class="separator:a6a0079902259b68e25167d948f46471b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5821245c04e62bc2f4b6dfd06d183c1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#aa5821245c04e62bc2f4b6dfd06d183c1">project</a> (int <a class="el" href="classadcirc__mesh.html#a7778361b983b6e109de518003d2a1917">epsg</a>)</td></tr>
+<tr class="memdesc:aa5821245c04e62bc2f4b6dfd06d183c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that projects an <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> into another coordinate system.  <a href="#aa5821245c04e62bc2f4b6dfd06d183c1">More...</a><br /></td></tr>
+<tr class="separator:aa5821245c04e62bc2f4b6dfd06d183c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -395,6 +393,30 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 <p>This function eliminates nodes that are not connected to any elements </p>
+
+</div>
+</div>
+<a class="anchor" id="aa5821245c04e62bc2f4b6dfd06d183c1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int adcirc_mesh::project </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>epsg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">epsg</td><td>EPSG number for the new coordinate system</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function projects the coordinate system of an <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> via the Proj4 library using EPSG IDs </p>
 
 </div>
 </div>
@@ -648,30 +670,6 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a39d72670fa70e35c02c43eeeff749864"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int adcirc_mesh::setEpsg </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>epsg</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">epsg</td><td>EPSG number for the coordinate system</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Function that sets the current projection </p>
-
-</div>
-</div>
 <a class="anchor" id="aa96e47370102299bb7e07f7ada14b377"></a>
 <div class="memitem">
 <div class="memproto">
@@ -696,12 +694,12 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a26d66627c2b927ccb457b1ae5f11bfd2"></a>
+<a class="anchor" id="a6a0079902259b68e25167d948f46471b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int adcirc_mesh::transformCoordinates </td>
+          <td class="memname">int adcirc_mesh::setProjection </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>epsg</em></td><td>)</td>
@@ -712,11 +710,11 @@ Protected Member Functions</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">epsg</td><td>EPSG number for the new coordinate system</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">epsg</td><td>EPSG number for the coordinate system</td></tr>
   </table>
   </dd>
 </dl>
-<p>This function converts the coordinate system of an <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> via the Proj4 library using EPSG numbers. </p>
+<p>Function that sets the current projection </p>
 
 </div>
 </div>

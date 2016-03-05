@@ -5,6 +5,5 @@ var searchData=
   ['tostringlist',['toStringList',['../classadcirc__boundary.html#aa9bb421aa263be91fa0680eabe748e48',1,'adcirc_boundary']]],
   ['totnumlandboundarynodes',['totNumLandBoundaryNodes',['../classadcirc__mesh.html#ab94fbe1c7b73729b6da91d8d52edf0e9',1,'adcirc_mesh']]],
   ['totnumopenboundarynodes',['totNumOpenBoundaryNodes',['../classadcirc__mesh.html#a5401c22912664ed771f663b0cb1e4013',1,'adcirc_mesh']]],
-  ['transform',['transform',['../classproj4.html#adb012355fef9d78ca1c01a77864bb388',1,'proj4']]],
-  ['transformcoordinates',['transformCoordinates',['../classadcirc__mesh.html#a26d66627c2b927ccb457b1ae5f11bfd2',1,'adcirc_mesh']]]
+  ['transform',['transform',['../classproj4.html#adb012355fef9d78ca1c01a77864bb388',1,'proj4']]]
 ];
