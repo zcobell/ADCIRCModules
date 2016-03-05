@@ -20,7 +20,6 @@
 #include "proj4.h"
 #include "proj_api.h"
 
-
 //-----------------------------------------------------------------------------------------//
 // Initializer
 //-----------------------------------------------------------------------------------------//
@@ -64,6 +63,7 @@ int proj4::readEPSGInitializations()
     QString epsgString,tempString;
     QVector<int> epsgIDs;
     QVector<QString> epsgInitStrings;
+    QChar hash(35);
 
     //...Attempt to open the file
     if(!epsgFile.open(QIODevice::ReadOnly))
@@ -92,7 +92,7 @@ int proj4::readEPSGInitializations()
         //   build out the array
         if(epsgString!=QString())
         {
-            if(epsgString.at(0)=="#")
+            if(epsgString.at(0)==hash)
                 continue;
             else
             {
