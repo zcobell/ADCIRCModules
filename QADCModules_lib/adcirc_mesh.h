@@ -126,6 +126,8 @@ public:
 
     int eliminateDisjointNodes(int &numDisjointNodes);
 
+    int setEpsg(int epsg);
+
     int transformCoordinates(int epsg);
 
 private:

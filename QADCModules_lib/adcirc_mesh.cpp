@@ -1117,6 +1117,28 @@ int adcirc_mesh::eliminateDisjointNodes(int &numDisjointNodes)
 
 
 //-----------------------------------------------------------------------------------------//
+//...Function that sets the current projection
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that sets the current projection
+ *
+ * \author Zach Cobell
+ *
+ * @param[in] epsg EPSG number for the coordinate system
+ *
+ * Function that sets the current projection
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::setEpsg(int epsg)
+{
+    this->epsg = epsg;
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
 //...Function that converts an adcirc_mesh into another coordinate system
 //-----------------------------------------------------------------------------------------//
 /** \brief Function that converts an adcirc_mesh into another coordinate system
@@ -1150,6 +1172,6 @@ int adcirc_mesh::transformCoordinates(int epsg)
         this->nodes[i]->y = outPoint.y();
     }
 
-    return 0;
+    return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
