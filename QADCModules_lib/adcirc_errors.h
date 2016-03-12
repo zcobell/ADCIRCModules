@@ -1,6 +1,6 @@
 /*-------------------------------GPL-------------------------------------//
 //
-// ADCMESH - A library for working with ADCIRC models
+// QADCModules - A library for working with ADCIRC models
 // Copyright (C) 2016  Zach Cobell
 //
 // This program is free software: you can redistribute it and/or modify
@@ -65,6 +65,9 @@
 #define ERROR_MESHREAD_UNEXPECTEDEND -999902009
 #define ERROR_LEVEE_BELOWTOPO        -999902010
 #define ERROR_DISJOINTNODES          -999902011
+#define ERROR_OVERLAPPINGELEMENTS    -999902012
+#define ERROR_OVERLAPPINGBOUNDARIES  -999902013
+#define ERROR_DUPLICATEELEMENTS      -999902014
 
 
 //...ADCIRC_NODALPARAM CLASS ERRORS
@@ -78,6 +81,7 @@
 #define ERROR_NODALATT_HEADERR       -999904001
 #define ERROR_NODALATT_BODYERR       -999904002
 #define ERROR_NODALATT_UNEXPECTEDEND -999904003
+
 
 //...PROJ4 CLASS ERRORS
 #define ERROR_PROJ4_CANNOTREADEPSGFILE -999905001

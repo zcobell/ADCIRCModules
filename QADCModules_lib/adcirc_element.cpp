@@ -30,6 +30,26 @@ bool operator>(const adcirc_element e1,const adcirc_element e2)
     return e1.id>e2.id;
 }
 
+bool operator==(const adcirc_element e1,const adcirc_element e2)
+{
+    int i;
+
+    if(e1.numConnections!=e2.numConnections)
+        return false;
+
+    QList<int> l1,l2;
+    for(i=0;i<e1.numConnections;i++)
+        l1.append(e1.connections[i]->id);
+    for(i=0;i<e2.numConnections;i++)
+        l2.append(e2.connections[i]->id);
+
+    for(i=0;i<l1.length();i++)
+        if(!l2.contains(l1.at(i)))
+            return false;
+
+    return true;
+}
+
 //-----------------------------------------------------------------------------------------//
 // Constructor function. Initializes the adcirc_element class and sets defaults
 //-----------------------------------------------------------------------------------------//

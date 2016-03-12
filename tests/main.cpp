@@ -27,9 +27,11 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    int ierr;
-    int numLeveesRaised,numDisjoint;
+    int i,ierr;
+    int numLeveesRaised,numDisjoint,numDuplicates;
     double maxLeveeRaise;
+    QList<adcirc_node*> disjointList;
+    QList<adcirc_element*> duplicateElements;
 
     ierr = 0;
 
@@ -84,8 +86,10 @@ int main(int argc, char *argv[])
 
     qDebug() << "\n";
     qDebug() << "Checking disjoint nodes test...";
-    ierr = thisMesh->checkDisjointNodes(numDisjoint);
+    ierr = thisMesh->checkDisjointNodes(numDisjoint,disjointList);
     qDebug() << "Number of disjoint nodes: " << numDisjoint;
+    for(i=0;i<disjointList.size();i++)
+        qDebug() << disjointList.at(i)->toString(thisMesh->isLatLon);
     qDebug() << "STATUS: " << thisMesh->error->getErrorString();
     thisMesh->error->resetError();
 
@@ -103,6 +107,12 @@ int main(int argc, char *argv[])
     qDebug() << "Renumbering mesh test...";
     ierr = thisMesh->renumber();
     ierr = thisMesh->write("../../QADCModules/tests/test_files/ms-riv-me-renumber.grd");
+    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
+
+
+    qDebug() << "\n";
+    qDebug() << "Duplicate elements test...";
+    ierr = thisMesh->checkOverlappingElements(numDuplicates,duplicateElements);
     qDebug() << "STATUS: " << thisMesh->error->getErrorString();
 
 

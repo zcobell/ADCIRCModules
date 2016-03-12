@@ -71,6 +71,7 @@ int proj4::readEPSGInitializations()
 
     //...Read the contents of the EPSG file
     epsgByteArray = epsgFile.readAll();
+    epsgFile.close();
 
     //...Convert to string
     epsgString = QString(epsgByteArray);

@@ -18,6 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_mesh.h"
+#include <QDebug>
 
 //-----------------------------------------------------------------------------------------//
 // Initializer
@@ -212,6 +213,535 @@ int adcirc_mesh::setIgnoreMeshNumbering(bool value)
 
 
 //-----------------------------------------------------------------------------------------//
+//...Function to renumber an adcirc mesh sequentially
+//-----------------------------------------------------------------------------------------//
+/** \brief This function is used to renumber an adcirc_mesh sequantially
+ *
+ * \author Zach Cobell
+ *
+ * This function is used to renumber an adcirc_mesh (nodes, elements) so that it is valid.
+ * Note that no attention is paid to minimizing bandwidth or providing optimal numbering.
+ * This only ensures that the mesh is valid.
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::renumber()
+{
+    int i;
+
+    //...Renumber the nodes
+    for(i=0;i<this->numNodes;i++)
+        this->nodes[i]->id = i+1;
+
+    //...Renumber the elements
+    for(i=0;i<this->numElements;i++)
+        this->elements[i]->id = i+1;
+
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function to check that the levee heights in the mesh are sane
+//-----------------------------------------------------------------------------------------//
+/** \brief This function is used to check if there are levee heights that need to be raised
+ *
+ * \author Zach Cobell
+ *
+ * @param[in] minAbovePrevailingTopo [optional] Elevation that a levee must be above the
+ *                                              prevailing topographic elevation.
+ *                                              Default = 0.2
+ *
+ * This function is used to check that an adcirc_mesh does not have levee heights that fall
+ * below the topography, and thus causing a fatal error when running ADCIRC
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
+{
+    int i,j;
+    double z1,z2,c;
+
+    for(i=0;i<this->numLandBoundaries;i++)
+    {
+        if(this->landBC[i]->code ==  4 || this->landBC[i]->code==24 ||
+           this->landBC[i]->code == 25 || this->landBC[i]->code==25)
+        {
+            for(j=0;j<this->landBC[i]->numNodes;j++)
+            {
+                z1 = this->landBC[i]->n1[j]->z;
+                z2 = this->landBC[i]->n2[j]->z;
+                c  = this->landBC[i]->crest[j];
+
+                if(z1 < c-minAbovePrevailingTopo || z2 < c-minAbovePrevailingTopo)
+                {
+                    this->error->setError(ERROR_LEVEE_BELOWTOPO);
+                    return this->error->getError();
+                }
+            }
+        }
+        else if(this->landBC[i]->code == 3 || this->landBC[i]->code == 13 ||
+                this->landBC[i]->code == 23)
+        {
+            for(j=0;j<this->landBC[i]->numNodes;j++)
+            {
+                z1 = this->landBC[i]->n1[j]->z;
+                c  = this->landBC[i]->crest[j];
+                if(z1 < c-minAbovePrevailingTopo)
+                {
+                    this->error->setError(ERROR_LEVEE_BELOWTOPO);
+                    return this->error->getError();
+                }
+            }
+        }
+    }
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function to raise levees that fall below prevailing topography
+//-----------------------------------------------------------------------------------------//
+/** \brief This function is used to raise levees that fall below prevailing topography
+ *
+ * \author Zach Cobell
+ *
+ * @param[out] numLeveesRaised                   Number of levees that needed to be raised
+ * @param[out] maximumAmountRaised               Maximum amount that a levee needed to be raised
+ * @param[in]  minAbovePrevailingTopo [optional] Elevation a levee must be above prevailing topography. Default = 0.2
+ * @param[in]  minRaise               [optional] Minimum amount a levee may be raised. Default = 0.01
+ * @param[in]  diagnosticFile         [optional] Diagnostic file to write that will show where levees have been raised
+ *                                               Output will be formatted as a csv file. Default = null
+ *
+ * This function is used to check that an adcirc_mesh does not have levee heights that fall
+ * below the topography, and thus causing a fatal error when running ADCIRC. A diagnostic file
+ * may be optionally written that shows the locations where a levee was elevated. If the diagnosticFile
+ * variable is null, the file will not be written.
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRaised,
+                                   double minAbovePrevailingTopo, double minRaise, QString diagnosticFile)
+{
+    QFile diag(diagnosticFile);
+    QTextStream diagOut(&diag);
+    int i,j;
+    double zm,c;
+    double x,y;
+    double minAllowableHeight,raiseAmount;
+    bool writeOutputFile = false;
+
+    numLeveesRaised = 0;
+    maximumAmountRaised = 0.0;
+
+    //...If the user wants a diagnostic file, prep the output
+    if(diagnosticFile!=QString())
+    {
+        writeOutputFile = true;
+
+        //...Check if we can open the file successfully
+        if(!diag.open(QIODevice::WriteOnly))
+        {
+            this->error->setError(ERROR_FILEOPENERR);
+            return this->error->getError();
+        }
+
+        //...Create an output stream
+        diagOut << "X,Y,PrevailingTopo,OriginalLeveeCrest,AmountRaised\n";
+    }
+
+    for(i=0;i<this->numLandBoundaries;i++)
+    {
+        //...Two sided weirs
+        if(this->landBC[i]->code ==  4 || this->landBC[i]->code==24 ||
+           this->landBC[i]->code == 25 || this->landBC[i]->code==25)
+        {
+            for(j=0;j<this->landBC[i]->numNodes;j++)
+            {
+
+                //...Get the max on both sides of the weir
+                zm = qMax(-this->landBC[i]->n1[j]->z,-this->landBC[i]->n2[j]->z);
+
+                //...Get the weir elevation
+                c  = this->landBC[i]->crest[j];
+
+                //...Define the minimum allowable height
+                minAllowableHeight = zm+minAbovePrevailingTopo;
+
+                //...Check if the weir is below the minimum allowable height
+                if(c < minAllowableHeight)
+                {
+                    //...Determine how much the levee needs to be raised
+                    raiseAmount = minAllowableHeight-c;
+
+                    //...Ensure it is larger than the minimum raise
+                    if(raiseAmount<minRaise)
+                        raiseAmount = minRaise;
+
+                    //...Apply the increase to the levee
+                    this->landBC[i]->crest[j] = this->landBC[i]->crest[j]+raiseAmount;
+
+                    //...Count this
+                    numLeveesRaised = numLeveesRaised + 1;
+
+                    //...Check if this is the largest amount raised
+                    if(raiseAmount>maximumAmountRaised)
+                        maximumAmountRaised = raiseAmount;
+
+                    //...Write the output file if necessary
+                    if(writeOutputFile)
+                    {
+                        x = (this->landBC[i]->n1[j]->x+this->landBC[i]->n2[j]->x)/2.0;
+                        y = (this->landBC[i]->n1[j]->y+this->landBC[i]->n2[j]->y)/2.0;
+                        diagOut << x << "," << y << "," << zm << "," << c << "," << raiseAmount << "\n";
+                    }
+                }
+
+            }
+        }
+        else if(this->landBC[i]->code == 3 || this->landBC[i]->code == 13 ||
+                this->landBC[i]->code == 23)
+        {
+            for(j=0;j<this->landBC[i]->numNodes;j++)
+            {
+
+                //...Get the prevailing ground elevation
+                zm = -this->landBC[i]->n1[j]->z;
+
+                //...Get the weir elevation
+                c  = this->landBC[i]->crest[j];
+
+                //...Define the minimum allowable height
+                minAllowableHeight = zm+minAbovePrevailingTopo;
+
+                //...Check if the weir is below the minimum allowable height
+                if(c < minAllowableHeight)
+                {
+                    //...Determine how much the levee needs to be raised
+                    raiseAmount = minAllowableHeight-c;
+
+                    //...Ensure it is larger than the minimum raise
+                    if(raiseAmount<minRaise)
+                        raiseAmount = minRaise;
+
+                    //...Apply the increase to the levee
+                    this->landBC[i]->crest[j] = this->landBC[i]->crest[j]+raiseAmount;
+
+                    //...Count this
+                    numLeveesRaised = numLeveesRaised + 1;
+
+                    //...Check if this is the largest amount raised
+                    if(raiseAmount>maximumAmountRaised)
+                        maximumAmountRaised = raiseAmount;
+
+                    //...Write the output file if necessary
+                    if(writeOutputFile)
+                    {
+                        x = this->landBC[i]->n1[j]->x;
+                        y = this->landBC[i]->n1[j]->y;
+                        diagOut << x << "," << y << "," << zm << "," << c << "," << raiseAmount << "\n";
+                    }
+                }
+
+            }
+        }
+    }
+
+    if(writeOutputFile)
+        diag.close();
+
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that checks for nodes that are not connected to any elements
+//-----------------------------------------------------------------------------------------//
+/** \brief This function checks for nodes that are not connected to any elements
+ *
+ * \author Zach Cobell
+ *
+ * @param[out] numDisjointNodes Number of nodes that are not connected to any element
+ * @param[out] disjointNodeList List of adcirc_node* that are considered disjoint
+ *
+ * This function checks for nodes that are not connected to any elements
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::checkDisjointNodes(int &numDisjointNodes, QList<adcirc_node*> &disjointNodeList)
+{
+    int i,j;
+    numDisjointNodes = 0;
+
+    //...Reset the boolean values
+    for(i=0;i<this->numNodes;i++)
+        this->nodes[i]->myBool = false;
+
+    //...Loop over the elements and reset the bool
+    for(i=0;i<this->numElements;i++)
+        for(j=0;j<this->elements[i]->numConnections;j++)
+            this->elements[i]->connections[j]->myBool = true;
+
+    //...Check to see how many nodes are considered disjoint
+    for(i=0;i<this->numNodes;i++)
+    {
+        if(!this->nodes[i]->myBool)
+        {
+            disjointNodeList.append(this->nodes[i]);
+            numDisjointNodes = numDisjointNodes + 1;
+        }
+    }
+
+    if(numDisjointNodes!=0)
+    {
+        this->error->setError(ERROR_DISJOINTNODES);
+        return this->error->getError();
+    }
+    else
+    {
+        this->error->setError(ERROR_NOERROR);
+        return this->error->getError();
+    }
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that eliminates nodes that are not connected to any elements
+//-----------------------------------------------------------------------------------------//
+/** \brief This function eliminates nodes that are not connected to any elements
+ *
+ * \author Zach Cobell
+ *
+ * @param[out] numDisjointNodes Number of nodes that were not connected to any element
+ *
+ * This function eliminates nodes that are not connected to any elements
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::eliminateDisjointNodes(int &numDisjointNodes)
+{
+    int i,j;
+    numDisjointNodes = 0;
+
+    //...Reset the boolean values
+    for(i=0;i<this->numNodes;i++)
+        this->nodes[i]->myBool = false;
+
+    //...Loop over the elements and reset the bool
+    for(i=0;i<this->numElements;i++)
+        for(j=0;j<this->elements[i]->numConnections;j++)
+            this->elements[i]->connections[j]->myBool = true;
+
+    //...Eliminate nodes that are considered disjoint
+    for(i=this->numNodes-1;i>=0;i--)
+    {
+        if(!this->nodes[i]->myBool)
+        {
+            numDisjointNodes = numDisjointNodes + 1;
+            this->nodes.remove(i);
+            this->numNodes = this->numNodes - 1;
+        }
+    }
+
+
+    //...If the nodes have been altered, renumber the mesh
+    //   otherwise, just return
+    if(numDisjointNodes!=0)
+    {
+        //...Renumber the mesh
+        this->renumber();
+
+        //...Rebuild the element table
+        this->buildElementTable();
+
+        this->error->setError(ERROR_DISJOINTNODES);
+        return this->error->getError();
+    }
+    else
+    {
+        this->error->setError(ERROR_NOERROR);
+        return this->error->getError();
+    }
+
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that sets the current projection
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that sets the current projection
+ *
+ * \author Zach Cobell
+ *
+ * @param[in] epsg EPSG number for the coordinate system
+ *
+ * Function that sets the current projection
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::setProjection(int epsg)
+{
+    this->epsg = epsg;
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that converts an adcirc_mesh into another coordinate system
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that projects an adcirc_mesh into another coordinate system
+ *
+ * \author Zach Cobell
+ *
+ * @param[in] epsg EPSG number for the new coordinate system
+ *
+ * This function projects the coordinate system of an adcirc_mesh via the Proj4 library
+ * using EPSG IDs
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::project(int epsg)
+{
+
+    QPointF inPoint,outPoint;
+    int i,ierr;
+
+    for(i=0;i<this->numNodes;i++)
+    {
+        inPoint.setX(this->nodes[i]->x);
+        inPoint.setY(this->nodes[i]->y);
+        ierr = this->coordinateSystem->transform(this->epsg,epsg,inPoint,outPoint,this->isLatLon);
+        if(ierr!=ERROR_NOERROR)
+        {
+            this->error->setError(ierr);
+            return this->error->getError();
+        }
+        this->nodes[i]->x = outPoint.x();
+        this->nodes[i]->y = outPoint.y();
+    }
+
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that checks for overlapping elements
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that checks for overlapping elements in an adcirc_mesh
+ *
+ * \author Zach Cobell
+ *
+ * @param[out] numOverlappingElements Number of duplicate elements found
+ * @param[out] overlappingElementList List of duplicate elements in the mesh
+ *
+ * Function that checks for overlapping elements in an adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::checkOverlappingElements(int &numOverlappingElements, QList<adcirc_element*> &overlappingElementList)
+{
+
+    int i,j,k,l;
+    int n1,n2;
+    int m1,m2;
+    int icount;
+
+    numOverlappingElements = 0;
+    overlappingElementList.clear();
+
+    if(this->meshNeedsNumbering)
+    {
+        this->error->setError(ERROR_MESHREAD_NODNUM);
+        return this->error->getError();
+    }
+
+    if(this->node_table.size()!=this->numNodes)
+        this->buildElementTable();
+
+    for(i=0;i<this->numElements;i++)
+    {
+        for(j=0;j<this->elements[i]->numConnections;j++)
+        {
+            icount = 0;
+            if(j<this->elements[i]->numConnections-1)
+            {
+                n1 = this->elements[i]->connections[j]->id;
+                n2 = this->elements[i]->connections[j+1]->id;
+            }
+            else
+            {
+                n1 = this->elements[i]->connections[j]->id;
+                n2 = this->elements[i]->connections[0]->id;
+            }
+            for(k=0;k<this->node_table[n1-1]->elementsAroundNode.length();k++)
+            {
+                m1 = this->node_table[n1-1]->elementsAroundNode.at(k)->id;
+                for(l=0;l<this->node_table[n2-1]->elementsAroundNode.length();l++)
+                {
+                    m2 = this->node_table[n2-1]->elementsAroundNode.at(l)->id;
+                    if(m1==m2)
+                    {
+                        icount = icount + 1;
+                        break;
+                    }
+                }
+            }
+            if(icount > 2)
+                overlappingElementList.append(this->elements[i]);
+        }
+    }
+
+    numOverlappingElements = overlappingElementList.length();
+
+    if(numOverlappingElements>0)
+    {
+        this->error->setError(ERROR_DUPLICATEELEMENTS);
+        return this->error->getError();
+    }
+
+    this->error->setError(ERROR_NOERROR);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that checks for overlapping boundary conditions
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that checks for overlapping boundary conditions in an adcirc_mesh
+ *
+ * \author Zach Cobell
+ *
+ * @param[out] numOverlappingBoundaries Number of overlapping boundaries located
+ * @param[out] overlappingBoundaryNodeList List of nodes involved in overlapping boundary conditions
+ *
+ * Function that checks for overlapping boundary conditions in an adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::checkOverlappingBoundaries(int &numOverlappingBoundaries, QList<adcirc_node*> &overlappingBoundaryNodeList)
+{
+
+
+
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
 //
 //
 //   P R O T E C T E D
@@ -359,8 +889,9 @@ int adcirc_mesh::readMesh()
     if(ierr!=ERROR_NOERROR)
         return ierr;
 
-    //...Determine how we are going to write back the coordinates
-    this->senseCoordinateSystem();
+    //...Build the element table, only if nodes are sequential
+    if(!this->meshNeedsNumbering)
+        this->buildElementTable();
 
     //...The mesh read is now complete. We're done.
 
@@ -715,462 +1246,36 @@ int adcirc_mesh::writeMesh(QString filename)
     return ERROR_NOERROR;
 
 }
+//-----------------------------------------------------------------------------------------//
+
+
 
 //-----------------------------------------------------------------------------------------//
-//...Function to attempt to sense the coordinate system type
+//...Function to build the element table
 //-----------------------------------------------------------------------------------------//
-/** \brief This function is used internally sense the type of coordinate system that is used
+/** \brief This function builds a table of the elements around a node
  *
  * \author Zach Cobell
  *
- * This function is used internally sense the type of coordinate system that is used.
- * Ultimately, it is used to format the coordinates when writing an output file so that
- * precision is maintained. UTM or other simliar coordinate systems will have fewer decimal
- * places than what appears to be a geographic coordinate system
+ * This function uses the adcirc_node_table class to build a list of the elements around
+ * a specific node, which is useful for many functions
+ *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::senseCoordinateSystem()
-{
-    int i;
-    qreal avgX,avgY,m1,m2,mag,nn;
-
-    avgX = 0.0;
-    avgY = 0.0;
-
-    nn = static_cast<qreal>(this->numNodes);
-
-    for(i=0;i<this->numNodes;i++)
-    {
-        avgX = avgX + this->nodes[i]->x;
-        avgY = avgY + this->nodes[i]->y;
-    }
-
-    avgX = qAbs(avgX / nn);
-    avgY = qAbs(avgY / nn);
-
-    m1 = qAbs(qLn(avgX)/qLn(10.0));
-    m2 = qAbs(qLn(avgY)/qLn(10.0));
-
-    mag = ( m1 + m2 ) / 2.0;
-
-    if(mag>3.0)
-        this->isLatLon = false;
-    else
-        this->isLatLon = true;
-
-    return ERROR_NOERROR;
-}
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
-//...Function to renumber an adcirc mesh sequentially
-//-----------------------------------------------------------------------------------------//
-/** \brief This function is used to renumber an adcirc_mesh sequantially
- *
- * \author Zach Cobell
- *
- * This function is used to renumber an adcirc_mesh (nodes, elements) so that it is valid.
- * Note that no attention is paid to minimizing bandwidth or providing optimal numbering.
- * This only ensures that the mesh is valid.
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::renumber()
-{
-    int i;
-
-    //...Renumber the nodes
-    for(i=0;i<this->numNodes;i++)
-        this->nodes[i]->id = i+1;
-
-    //...Renumber the elements
-    for(i=0;i<this->numElements;i++)
-        this->elements[i]->id = i+1;
-
-    return ERROR_NOERROR;
-}
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
-//...Function to check that the levee heights in the mesh are sane
-//-----------------------------------------------------------------------------------------//
-/** \brief This function is used to check if there are levee heights that need to be raised
- *
- * \author Zach Cobell
- *
- * @param[in] minAbovePrevailingTopo [optional] Elevation that a levee must be above the
- *                                              prevailing topographic elevation.
- *                                              Default = 0.2
- *
- * This function is used to check that an adcirc_mesh does not have levee heights that fall
- * below the topography, and thus causing a fatal error when running ADCIRC
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
+int adcirc_mesh::buildElementTable()
 {
     int i,j;
-    double z1,z2,c;
 
-    for(i=0;i<this->numLandBoundaries;i++)
-    {
-        if(this->landBC[i]->code ==  4 || this->landBC[i]->code==24 ||
-           this->landBC[i]->code == 25 || this->landBC[i]->code==25)
-        {
-            for(j=0;j<this->landBC[i]->numNodes;j++)
-            {
-                z1 = this->landBC[i]->n1[j]->z;
-                z2 = this->landBC[i]->n2[j]->z;
-                c  = this->landBC[i]->crest[j];
+    this->node_table.clear();
 
-                if(z1 < c-minAbovePrevailingTopo || z2 < c-minAbovePrevailingTopo)
-                {
-                    this->error->setError(ERROR_LEVEE_BELOWTOPO);
-                    return this->error->getError();
-                }
-            }
-        }
-        else if(this->landBC[i]->code == 3 || this->landBC[i]->code == 13 ||
-                this->landBC[i]->code == 23)
-        {
-            for(j=0;j<this->landBC[i]->numNodes;j++)
-            {
-                z1 = this->landBC[i]->n1[j]->z;
-                c  = this->landBC[i]->crest[j];
-                if(z1 < c-minAbovePrevailingTopo)
-                {
-                    this->error->setError(ERROR_LEVEE_BELOWTOPO);
-                    return this->error->getError();
-                }
-            }
-        }
-    }
-    return ERROR_NOERROR;
-}
-//-----------------------------------------------------------------------------------------//
+    this->node_table.resize(this->numNodes);
 
-
-
-//-----------------------------------------------------------------------------------------//
-//...Function to raise levees that fall below prevailing topography
-//-----------------------------------------------------------------------------------------//
-/** \brief This function is used to raise levees that fall below prevailing topography
- *
- * \author Zach Cobell
- *
- * @param[out] numLeveesRaised                   Number of levees that needed to be raised
- * @param[out] maximumAmountRaised               Maximum amount that a levee needed to be raised
- * @param[in]  minAbovePrevailingTopo [optional] Elevation a levee must be above prevailing topography. Default = 0.2
- * @param[in]  minRaise               [optional] Minimum amount a levee may be raised. Default = 0.01
- * @param[in]  diagnosticFile         [optional] Diagnostic file to write that will show where levees have been raised
- *                                               Output will be formatted as a csv file. Default = null
- *
- * This function is used to check that an adcirc_mesh does not have levee heights that fall
- * below the topography, and thus causing a fatal error when running ADCIRC. A diagnostic file
- * may be optionally written that shows the locations where a levee was elevated. If the diagnosticFile
- * variable is null, the file will not be written.
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRaised,
-                                   double minAbovePrevailingTopo, double minRaise, QString diagnosticFile)
-{
-    QFile diag(diagnosticFile);
-    QTextStream diagOut(&diag);
-    int i,j;
-    double zm,c;
-    double x,y;
-    double minAllowableHeight,raiseAmount;
-    bool writeOutputFile = false;
-
-    numLeveesRaised = 0;
-    maximumAmountRaised = 0.0;
-
-    //...If the user wants a diagnostic file, prep the output
-    if(diagnosticFile!=QString())
-    {
-        writeOutputFile = true;
-
-        //...Check if we can open the file successfully
-        if(!diag.open(QIODevice::WriteOnly))
-        {
-            this->error->setError(ERROR_FILEOPENERR);
-            return this->error->getError();
-        }
-
-        //...Create an output stream
-        diagOut << "X,Y,PrevailingTopo,OriginalLeveeCrest,AmountRaised\n";
-    }
-
-    for(i=0;i<this->numLandBoundaries;i++)
-    {
-        //...Two sided weirs
-        if(this->landBC[i]->code ==  4 || this->landBC[i]->code==24 ||
-           this->landBC[i]->code == 25 || this->landBC[i]->code==25)
-        {
-            for(j=0;j<this->landBC[i]->numNodes;j++)
-            {
-
-                //...Get the max on both sides of the weir
-                zm = qMax(-this->landBC[i]->n1[j]->z,-this->landBC[i]->n2[j]->z);
-
-                //...Get the weir elevation
-                c  = this->landBC[i]->crest[j];
-
-                //...Define the minimum allowable height
-                minAllowableHeight = zm+minAbovePrevailingTopo;
-
-                //...Check if the weir is below the minimum allowable height
-                if(c < minAllowableHeight)
-                {
-                    //...Determine how much the levee needs to be raised
-                    raiseAmount = minAllowableHeight-c;
-
-                    //...Ensure it is larger than the minimum raise
-                    if(raiseAmount<minRaise)
-                        raiseAmount = minRaise;
-
-                    //...Apply the increase to the levee
-                    this->landBC[i]->crest[j] = this->landBC[i]->crest[j]+raiseAmount;
-
-                    //...Count this
-                    numLeveesRaised = numLeveesRaised + 1;
-
-                    //...Check if this is the largest amount raised
-                    if(raiseAmount>maximumAmountRaised)
-                        maximumAmountRaised = raiseAmount;
-
-                    //...Write the output file if necessary
-                    if(writeOutputFile)
-                    {
-                        x = (this->landBC[i]->n1[j]->x+this->landBC[i]->n2[j]->x)/2.0;
-                        y = (this->landBC[i]->n1[j]->y+this->landBC[i]->n2[j]->y)/2.0;
-                        diagOut << x << "," << y << "," << zm << "," << c << "," << raiseAmount << "\n";
-                    }
-                }
-
-            }
-        }
-        else if(this->landBC[i]->code == 3 || this->landBC[i]->code == 13 ||
-                this->landBC[i]->code == 23)
-        {
-            for(j=0;j<this->landBC[i]->numNodes;j++)
-            {
-
-                //...Get the prevailing ground elevation
-                zm = -this->landBC[i]->n1[j]->z;
-
-                //...Get the weir elevation
-                c  = this->landBC[i]->crest[j];
-
-                //...Define the minimum allowable height
-                minAllowableHeight = zm+minAbovePrevailingTopo;
-
-                //...Check if the weir is below the minimum allowable height
-                if(c < minAllowableHeight)
-                {
-                    //...Determine how much the levee needs to be raised
-                    raiseAmount = minAllowableHeight-c;
-
-                    //...Ensure it is larger than the minimum raise
-                    if(raiseAmount<minRaise)
-                        raiseAmount = minRaise;
-
-                    //...Apply the increase to the levee
-                    this->landBC[i]->crest[j] = this->landBC[i]->crest[j]+raiseAmount;
-
-                    //...Count this
-                    numLeveesRaised = numLeveesRaised + 1;
-
-                    //...Check if this is the largest amount raised
-                    if(raiseAmount>maximumAmountRaised)
-                        maximumAmountRaised = raiseAmount;
-
-                    //...Write the output file if necessary
-                    if(writeOutputFile)
-                    {
-                        x = this->landBC[i]->n1[j]->x;
-                        y = this->landBC[i]->n1[j]->y;
-                        diagOut << x << "," << y << "," << zm << "," << c << "," << raiseAmount << "\n";
-                    }
-                }
-
-            }
-        }
-    }
-
-    if(writeOutputFile)
-        diag.close();
-
-    return ERROR_NOERROR;
-}
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
-//...Function that checks for nodes that are not connected to any elements
-//-----------------------------------------------------------------------------------------//
-/** \brief This function checks for nodes that are not connected to any elements
- *
- * \author Zach Cobell
- *
- * @param[out] numDisjointNodes Number of nodes that are not connected to any element
- *
- * This function checks for nodes that are not connected to any elements
- *
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::checkDisjointNodes(int &numDisjointNodes)
-{
-    int i,j;
-    numDisjointNodes = 0;
-
-    //...Reset the boolean values
     for(i=0;i<this->numNodes;i++)
-        this->nodes[i]->myBool = false;
+        this->node_table[i] = new adcirc_node_table(this->nodes[i],this);
 
-    //...Loop over the elements and reset the bool
     for(i=0;i<this->numElements;i++)
         for(j=0;j<this->elements[i]->numConnections;j++)
-            this->elements[i]->connections[j]->myBool = true;
-
-    //...Check to see how many nodes are considered disjoint
-    for(i=0;i<this->numNodes;i++)
-        if(!this->nodes[i]->myBool)
-            numDisjointNodes = numDisjointNodes + 1;
-
-    if(numDisjointNodes!=0)
-    {
-        this->error->setError(ERROR_DISJOINTNODES);
-        return this->error->getError();
-    }
-    else
-    {
-        this->error->setError(ERROR_NOERROR);
-        return this->error->getError();
-    }
-}
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
-//...Function that eliminates nodes that are not connected to any elements
-//-----------------------------------------------------------------------------------------//
-/** \brief This function eliminates nodes that are not connected to any elements
- *
- * \author Zach Cobell
- *
- * @param[out] numDisjointNodes Number of nodes that were not connected to any element
- *
- * This function eliminates nodes that are not connected to any elements
- *
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::eliminateDisjointNodes(int &numDisjointNodes)
-{
-    int i,j;
-    numDisjointNodes = 0;
-
-    //...Reset the boolean values
-    for(i=0;i<this->numNodes;i++)
-        this->nodes[i]->myBool = false;
-
-    //...Loop over the elements and reset the bool
-    for(i=0;i<this->numElements;i++)
-        for(j=0;j<this->elements[i]->numConnections;j++)
-            this->elements[i]->connections[j]->myBool = true;
-
-    //...Eliminate nodes that are considered disjoint
-    for(i=this->numNodes-1;i>=0;i--)
-    {
-        if(!this->nodes[i]->myBool)
-        {
-            numDisjointNodes = numDisjointNodes + 1;
-            this->nodes.remove(i);
-            this->numNodes = this->numNodes - 1;
-        }
-    }
-
-
-    //...If the nodes have been altered, renumber the mesh
-    //   otherwise, just return
-    if(numDisjointNodes!=0)
-    {
-        //...Renumber the mesh
-        this->renumber();
-
-        this->error->setError(ERROR_DISJOINTNODES);
-        return this->error->getError();
-    }
-    else
-    {
-        this->error->setError(ERROR_NOERROR);
-        return this->error->getError();
-    }
-
-}
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
-//...Function that sets the current projection
-//-----------------------------------------------------------------------------------------//
-/** \brief Function that sets the current projection
- *
- * \author Zach Cobell
- *
- * @param[in] epsg EPSG number for the coordinate system
- *
- * Function that sets the current projection
- *
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::setProjection(int epsg)
-{
-    this->epsg = epsg;
-    return ERROR_NOERROR;
-}
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
-//...Function that converts an adcirc_mesh into another coordinate system
-//-----------------------------------------------------------------------------------------//
-/** \brief Function that projects an adcirc_mesh into another coordinate system
- *
- * \author Zach Cobell
- *
- * @param[in] epsg EPSG number for the new coordinate system
- *
- * This function projects the coordinate system of an adcirc_mesh via the Proj4 library
- * using EPSG IDs
- *
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::project(int epsg)
-{
-
-    QPointF inPoint,outPoint;
-    int i,ierr;
-
-    for(i=0;i<this->numNodes;i++)
-    {
-        inPoint.setX(this->nodes[i]->x);
-        inPoint.setY(this->nodes[i]->y);
-        ierr = this->coordinateSystem->transform(this->epsg,epsg,inPoint,outPoint,this->isLatLon);
-        if(ierr!=ERROR_NOERROR)
-        {
-            this->error->setError(ierr);
-            return this->error->getError();
-        }
-        this->nodes[i]->x = outPoint.x();
-        this->nodes[i]->y = outPoint.y();
-    }
+            this->node_table[this->elements[i]->connections[j]->id-1]->add(this->elements[i]);
 
     return ERROR_NOERROR;
 }

@@ -63,16 +63,18 @@ int adcirc_errors::initializeErrors()
     this->errorMapping[ERROR_FILENOEXIST]     = "The filename specified does not exist.";
 
     //...Mesh Read Errors
-    this->errorMapping[ERROR_MESHREAD_HEADER] = "There was an error while reading the header from the mesh file";
-    this->errorMapping[ERROR_MESHREAD_NODERR] = "There was an error while reading the nodes from the mesh file.";
-    this->errorMapping[ERROR_MESHREAD_ELEMER] = "There was an error while reading the elements from the mesh file.";
-    this->errorMapping[ERROR_MESHREAD_BNDERR] = "There was an error while reading the boundary segments from the mesh file.";
-    this->errorMapping[ERROR_MESHREAD_NODNUM] = "The nodes in the mesh are not sequentially numbered.";
-    this->errorMapping[ERROR_MESHREAD_ELENUM] = "The elements in the mesh are not sequantially numbered.";
-    this->errorMapping[ERROR_MESHREAD_BNDUNK] = "The boundary type specified is unknown.";
-    this->errorMapping[ERROR_MESHREAD_BNDNUL] = "The boundary type has not been specified.";
-    this->errorMapping[ERROR_LEVEE_BELOWTOPO] = "Levee heights were specified below prevailing topography";
-    this->errorMapping[ERROR_DISJOINTNODES]   = "Disjoint nodes were found";
+    this->errorMapping[ERROR_MESHREAD_HEADER]       = "There was an error while reading the header from the mesh file";
+    this->errorMapping[ERROR_MESHREAD_NODERR]       = "There was an error while reading the nodes from the mesh file.";
+    this->errorMapping[ERROR_MESHREAD_ELEMER]       = "There was an error while reading the elements from the mesh file.";
+    this->errorMapping[ERROR_MESHREAD_BNDERR]       = "There was an error while reading the boundary segments from the mesh file.";
+    this->errorMapping[ERROR_MESHREAD_NODNUM]       = "The nodes in the mesh are not sequentially numbered.";
+    this->errorMapping[ERROR_MESHREAD_ELENUM]       = "The elements in the mesh are not sequantially numbered.";
+    this->errorMapping[ERROR_MESHREAD_BNDUNK]       = "The boundary type specified is unknown.";
+    this->errorMapping[ERROR_MESHREAD_BNDNUL]       = "The boundary type has not been specified.";
+    this->errorMapping[ERROR_LEVEE_BELOWTOPO]       = "Levee heights were specified below prevailing topography.";
+    this->errorMapping[ERROR_DISJOINTNODES]         = "Disjoint nodes were detected.";
+    this->errorMapping[ERROR_OVERLAPPINGELEMENTS]   = "Overlapping elements were detected.";
+    this->errorMapping[ERROR_OVERLAPPINGBOUNDARIES] = "Overlapping boundaries were detected.";
 
     //...Nodal Parameter Errors
     this->errorMapping[ERROR_NODALPARAM_DEFAULTVALUESIZE] = "The size of the default value vector does not match the expected length.";

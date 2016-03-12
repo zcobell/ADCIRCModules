@@ -82,7 +82,8 @@ SOURCES += \
     adcirc_errors.cpp \
     adcirc_nodalparameter.cpp \
     adcirc_nodalattributes.cpp \
-    proj4.cpp
+    proj4.cpp \
+    adcirc_node_table.cpp
 
 HEADERS +=\
     QADCModules_global.h \
@@ -94,7 +95,8 @@ HEADERS +=\
     adcirc_errors.h \
     adcirc_nodalparameter.h \
     adcirc_nodalattributes.h \
-    proj4.h
+    proj4.h \
+    adcirc_node_table.h
 
 unix {
 
