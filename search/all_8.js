@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mybool',['myBool',['../classadcirc__node.html#a26e963937bf9036970c60a2c697b0c70',1,'adcirc_node']]]
+  ['landbc',['landBC',['../classadcirc__mesh.html#aa8bd7de1a79f53c1949253cf155a7dc6',1,'adcirc_mesh']]]
 ];

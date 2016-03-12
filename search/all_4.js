@@ -1,5 +1,9 @@
 var searchData=
 [
-  ['filename',['filename',['../classadcirc__mesh.html#a657d4d3f63d73e1992a6f6b866a4c95a',1,'adcirc_mesh::filename()'],['../classadcirc__nodalattributes.html#a89272ac0030e600ae77d87c6fd58a784',1,'adcirc_nodalattributes::filename()']]],
-  ['fromstring',['fromString',['../classadcirc__boundary.html#a5dfe401caf75491627301d2973ee0ac1',1,'adcirc_boundary::fromString()'],['../classadcirc__element.html#abd8d21ec51129173bbd37629dc016199',1,'adcirc_element::fromString()'],['../classadcirc__node.html#a2985afdfd363b30205d0f5e17659a560',1,'adcirc_node::fromString()']]]
+  ['elements',['elements',['../classadcirc__mesh.html#a4b4090417c5e72363b3485ec01ff18aa',1,'adcirc_mesh']]],
+  ['elementsaroundnode',['elementsAroundNode',['../classadcirc__node__table.html#abdda8a99b9384122cde716dac622164a',1,'adcirc_node_table']]],
+  ['eliminatedisjointnodes',['eliminateDisjointNodes',['../classadcirc__mesh.html#adb4e2ea156c66ba6dfaf68fffc8fdd0a',1,'adcirc_mesh']]],
+  ['epsg',['epsg',['../classadcirc__mesh.html#a7778361b983b6e109de518003d2a1917',1,'adcirc_mesh']]],
+  ['epsgmapping',['epsgMapping',['../classproj4.html#a36215ed1c041e9386cef04d98f7f14ac',1,'proj4']]],
+  ['error',['error',['../classadcirc__mesh.html#ac18b02aa3b85d390426125bf1627d22b',1,'adcirc_mesh::error()'],['../classadcirc__nodalattributes.html#a132c05b7f0513caf0b1790a000538a47',1,'adcirc_nodalattributes::error()']]]
 ];
