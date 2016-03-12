@@ -18,7 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 /**
- * \class node_table
+ * \class adcirc_node_table
  *
  * \brief Class that contains the list of elements around a node
  *
