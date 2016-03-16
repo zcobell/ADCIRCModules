@@ -612,22 +612,32 @@ int adcirc_mesh::setProjection(int epsg)
 int adcirc_mesh::project(int epsg)
 {
 
-    QPointF inPoint,outPoint;
+    QVector<QPointF> inPoint,outPoint;
     int i,ierr;
+
+    inPoint.resize(this->numNodes);
+    outPoint.resize(this->numNodes);
 
     for(i=0;i<this->numNodes;i++)
     {
-        inPoint.setX(this->nodes[i]->x);
-        inPoint.setY(this->nodes[i]->y);
-        ierr = this->coordinateSystem->transform(this->epsg,epsg,inPoint,outPoint,this->isLatLon);
-        if(ierr!=ERROR_NOERROR)
-        {
-            this->error->setError(ierr);
-            return this->error->getError();
-        }
-        this->nodes[i]->x = outPoint.x();
-        this->nodes[i]->y = outPoint.y();
+        inPoint[i].setX(this->nodes[i]->x);
+        inPoint[i].setY(this->nodes[i]->y);
     }
+
+    ierr = this->coordinateSystem->transform(this->epsg,epsg,inPoint,outPoint,this->isLatLon);
+
+    if(ierr!=ERROR_NOERROR)
+    {
+        this->error->setError(ierr);
+        return this->error->getError();
+    }
+
+    for(i=0;i<this->numNodes;i++)
+    {
+        this->nodes[i]->x = outPoint[i].x();
+        this->nodes[i]->y = outPoint[i].y();
+    }
+
 
     return ERROR_NOERROR;
 }

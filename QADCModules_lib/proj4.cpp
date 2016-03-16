@@ -200,3 +200,89 @@ int proj4::transform(int inputEPSG, int outputEPSG, QPointF &input, QPointF &out
     return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
+
+
+//-----------------------------------------------------------------------------------------//
+// Function to execute a coordinate system transformation using Proj4
+//-----------------------------------------------------------------------------------------//
+/** \brief Function to execute a coordinate system transformation using Proj4
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  inputEPSG  EPSG that coordinates are currently in
+ * @param[in]  outputEPSG EPSG that the coordinates will be converted to
+ * @param[in]  input      QVector of QPointF objects containing the locations to be converted
+ * @param[out] output     QVector of QPointF objects containing the converted coordiantes
+ * @param[out] isLatLon   Bool that determine if the coordinates are lat/lon or otherwise
+ *
+ * Function to execute a coordinate system transformation using Proj4
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int proj4::transform(int inputEPSG, int outputEPSG, QVector<QPointF> &input, QVector<QPointF> &output, bool &isLatLon)
+{
+    projPJ inputPJ,outputPJ;
+    QVector<double> x,y,z;
+    int i,ierr;
+
+    ierr = 0;
+
+    if(!this->epsgMapping.contains(inputEPSG))
+        return ERROR_PROJ4_NOSUCHPROJECTION;
+
+    if(!this->epsgMapping.contains(outputEPSG))
+        return ERROR_PROJ4_NOSUCHPROJECTION;
+
+    QString currentInitialization = this->epsgMapping[inputEPSG];
+    QString outputInitialization  = this->epsgMapping[outputEPSG];
+
+    if(!(inputPJ = pj_init_plus(currentInitialization.toLatin1().data())))
+        return ERROR_PROJ4_INTERNAL;
+
+    if(!(outputPJ = pj_init_plus(outputInitialization.toLatin1().data())))
+        return ERROR_PROJ4_INTERNAL;
+
+    x.resize(input.size());
+    y.resize(input.size());
+    z.resize(input.size());
+    z.fill(0.0);
+    output.resize(input.size());
+
+    for(i=0;i<input.size();i++)
+    {
+        if(pj_is_latlong(inputPJ))
+        {
+            x[i] = input[i].x()*DEG_TO_RAD;
+            y[i] = input[i].y()*DEG_TO_RAD;
+        }
+        else
+        {
+            x[i] = input[i].x();
+            y[i] = input[i].y();
+        }
+
+        ierr = pj_transform(inputPJ,outputPJ,1,1,&x[i],&y[i],&z[i]);
+
+        if(ierr!=0)
+            return ERROR_PROJ4_INTERNAL;
+
+        if(pj_is_latlong(outputPJ))
+        {
+            output[i].setX(x[i]*RAD_TO_DEG);
+            output[i].setY(y[i]*RAD_TO_DEG);
+        }
+        else
+        {
+            output[i].setX(x[i]);
+            output[i].setY(y[i]);
+        }
+    }
+
+    if(pj_is_latlong(outputPJ))
+        isLatLon = true;
+    else
+        isLatLon = false;
+
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
