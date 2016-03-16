@@ -29,12 +29,15 @@ TARGET_EXT = .dll
 }
 
 PROJPATH = $$PWD/../thirdparty/proj4/src
+BOOSTPATH = $$PWD/../thirdparty
+KDTREEPATH = $$PWD/../thirdparty/kdtree
 
-INCLUDEPATH += include $$PROJPATH
+INCLUDEPATH += include $$PROJPATH $$BOOSTPATH $$KDTREEPATH
 
 DEFINES += QADCMODULES_LIBRARY
 
 SOURCES += \
+    $$KDTREEPATH/kdtree2.cpp \
     $$PROJPATH/pj_list.h \
     $$PROJPATH/PJ_aeqd.c $$PROJPATH/PJ_gnom.c $$PROJPATH/PJ_laea.c $$PROJPATH/PJ_mod_ster.c \
     $$PROJPATH/PJ_nsper.c $$PROJPATH/PJ_nzmg.c $$PROJPATH/PJ_ortho.c $$PROJPATH/PJ_stere.c $$PROJPATH/PJ_sterea.c \
@@ -83,7 +86,8 @@ SOURCES += \
     adcirc_nodalparameter.cpp \
     adcirc_nodalattributes.cpp \
     proj4.cpp \
-    adcirc_node_table.cpp
+    adcirc_node_table.cpp \
+    qkdtree2.cpp
 
 HEADERS +=\
     QADCModules_global.h \
@@ -96,7 +100,10 @@ HEADERS +=\
     adcirc_nodalparameter.h \
     adcirc_nodalattributes.h \
     proj4.h \
-    adcirc_node_table.h
+    adcirc_node_table.h \
+    $$KDTREEPATH/kdtree2.hpp \
+    qkdtree2.h
+
 
 unix {
 
@@ -105,7 +112,7 @@ unix {
     }
 
     target.path = $$PREFIX/lib
-    header_files.files = $$HEADERS
+    header_files.files = $$HEADERS $$PWD/../thirdparty/boost
     header_files.path = $$PREFIX/include
     INSTALLS += header_files target
 

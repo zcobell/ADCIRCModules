@@ -750,6 +750,43 @@ int adcirc_mesh::checkOverlappingBoundaries(int &numOverlappingBoundaries, QList
 //-----------------------------------------------------------------------------------------//
 
 
+int adcirc_mesh::buildSearchTree()
+{
+    int i;
+    QVector<double> x,y;
+
+    x.resize(this->numNodes);
+    y.resize(this->numNodes);
+
+    for(i=0;i<this->numNodes;i++)
+    {
+        x[i] = this->nodes[i]->x;
+        y[i] = this->nodes[i]->y;
+    }
+
+    this->searchTree = new qKdtree2(this);
+    this->searchTree->build(x,y);
+
+    this->error->setError(ERROR_NOERROR);
+    return ERROR_NOERROR;
+}
+
+
+int adcirc_mesh::findNearestNode(double x, double y, int &index)
+{
+    this->searchTree->findNearest(x,y,index);
+    this->error->setError(ERROR_NOERROR);
+    return ERROR_NOERROR;
+}
+
+int adcirc_mesh::findXNearestNodes(double x, double y, int nn, QVector<int> &indicies)
+{
+    this->searchTree->findXNearest(x,y,nn,indicies);
+    this->error->setError(ERROR_NOERROR);
+    return ERROR_NOERROR;
+}
+
+
 
 //-----------------------------------------------------------------------------------------//
 //

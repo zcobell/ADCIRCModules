@@ -34,7 +34,7 @@
 #ifndef ADCIRC_MESH_H
 #define ADCIRC_MESH_H
 
-
+#include <QPointer>
 #include <QTextStream>
 #include <QObject>
 #include <QVector>
@@ -50,7 +50,7 @@
 #include "adcirc_errors.h"
 #include "adcirc_node_table.h"
 #include "proj4.h"
-
+#include "qkdtree2.h"
 
 class QADCMODULESSHARED_EXPORT adcirc_mesh : public QObject
 {
@@ -110,6 +110,7 @@ public:
     ///Variable that determines the EPSG coordinate system reference. Default is geographic (WGS84, EPSG: 4326)
     int epsg;
 
+
     //...Public functions...///
 
     int read();
@@ -122,6 +123,8 @@ public:
     int renumber();
 
     int buildElementTable();
+
+    int buildSearchTree();
 
     int checkLeveeHeights(double minAbovePrevailingTopo = 0.20);
 
@@ -145,6 +148,12 @@ public:
 
     int project(int epsg);
 
+    int findNearestNode(double x, double y, int &index);
+
+    int findXNearestNodes(double x, double y, int nn, QVector<int> &indicies);
+
+    int findElement(double x, double y, int &index);
+
 private:
 
     //...PRIVATE VARIABLES...//
@@ -163,6 +172,9 @@ private:
 
     ///Instance of class used for coordinate system transformation
     proj4 *coordinateSystem;
+
+    ///Pointer that holds a KDTREE2 search tree for this mesh
+    qKdtree2* searchTree;
 
 
 protected:

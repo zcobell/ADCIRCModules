@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    int i,ierr;
+    int i,ierr,nearIndex;
     int numLeveesRaised,numDisjoint,numDuplicates;
     double maxLeveeRaise;
     QList<adcirc_node*> disjointList;
@@ -123,6 +123,14 @@ int main(int argc, char *argv[])
     if(thisMesh->error->getError()!=ERROR_NOERROR)
         return thisMesh->error->getError();
     ierr = thisMesh->write("../../QADCModules/tests/test_files/ms-riv-me-utm15.grd");
+
+
+    qDebug() << "\n";
+    qDebug() << "Testing KDTREE2...";
+    ierr = thisMesh->buildSearchTree();
+    ierr = thisMesh->findNearestNode(-95.0,20.0,nearIndex);
+    qDebug() << "Nearest Location Index: " << nearIndex;
+    qDebug() << ierr;
 
 
     //...nodal_attributes, nodal_parameter testing...//
