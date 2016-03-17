@@ -121,6 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adb012355fef9d78ca1c01a77864bb388"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classproj4.html#adb012355fef9d78ca1c01a77864bb388">transform</a> (int inputEPSG, int outputEPSG, QPointF &amp;input, QPointF &amp;output, bool &amp;isLatLon)</td></tr>
 <tr class="memdesc:adb012355fef9d78ca1c01a77864bb388"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to execute a coordinate system transformation using Proj4.  <a href="#adb012355fef9d78ca1c01a77864bb388">More...</a><br /></td></tr>
 <tr class="separator:adb012355fef9d78ca1c01a77864bb388"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e3bede288281a8f58950d62d3774703"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classproj4.html#a1e3bede288281a8f58950d62d3774703">transform</a> (int inputEPSG, int outputEPSG, QVector&lt; QPointF &gt; &amp;input, QVector&lt; QPointF &gt; &amp;output, bool &amp;isLatLon)</td></tr>
+<tr class="memdesc:a1e3bede288281a8f58950d62d3774703"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to execute a coordinate system transformation using Proj4.  <a href="#a1e3bede288281a8f58950d62d3774703">More...</a><br /></td></tr>
+<tr class="separator:a1e3bede288281a8f58950d62d3774703"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -232,6 +235,62 @@ QMap&lt; int, QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a
     <tr><td class="paramdir">[in]</td><td class="paramname">outputEPSG</td><td>EPSG that the coordinates will be converted to </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>QPointF object containing the location to be converted </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">output</td><td>QPointF object containing the converted coordiantes </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">isLatLon</td><td>Bool that determine if the coordinates are lat/lon or otherwise</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Function to execute a coordinate system transformation using Proj4 </p>
+
+</div>
+</div>
+<a class="anchor" id="a1e3bede288281a8f58950d62d3774703"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int proj4::transform </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>inputEPSG</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>outputEPSG</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QVector&lt; QPointF &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QVector&lt; QPointF &gt; &amp;&#160;</td>
+          <td class="paramname"><em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &amp;&#160;</td>
+          <td class="paramname"><em>isLatLon</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">inputEPSG</td><td>EPSG that coordinates are currently in </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">outputEPSG</td><td>EPSG that the coordinates will be converted to </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>QVector of QPointF objects containing the locations to be converted </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">output</td><td>QVector of QPointF objects containing the converted coordiantes </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">isLatLon</td><td>Bool that determine if the coordinates are lat/lon or otherwise</td></tr>
   </table>
   </dd>

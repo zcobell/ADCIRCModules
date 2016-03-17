@@ -12,5 +12,5 @@ var searchData=
   ['readnodalattributesfile',['readNodalAttributesFile',['../classadcirc__nodalattributes.html#a6101a648f91be9e5943a8cfbd79e893a',1,'adcirc_nodalattributes']]],
   ['readopenboundaries',['readOpenBoundaries',['../classadcirc__mesh.html#a7ff14e93600b12719cc46feb133172b5',1,'adcirc_mesh']]],
   ['renumber',['renumber',['../classadcirc__mesh.html#ab016fa0cc2c37c673124232ddc147a21',1,'adcirc_mesh']]],
-  ['reseterror',['resetError',['../classadcirc__errors.html#a8ce1a418813737c861167824572cbbfb',1,'adcirc_errors']]]
+  ['reseterror',['resetError',['../classQADCModules__errors.html#abf5a653b54369add04619a1e27ac6369',1,'QADCModules_errors']]]
 ];
