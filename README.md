@@ -86,3 +86,11 @@ Detailed documentation is available [here](http://zcobell.github.io/QADCModules/
 5. Diagnose an error while working with a nodal attributes object
 
         qDebug() << thisAttributes->error->getErrorString();
+
+###Credits
+Library | Function | Source
+--------|----------|--------
+KDTREE2 | Used for efficient nearest neighbor searches | Matthew B. Kennel, Institute for Nonlinear Science, UCSD (2004)
+Boost   | Used as part of KDTREE2 | [Visit Website](http://www.boost.org/)
+Proj4   | Used to project to various coordinate systems |[Visit Website](https://trac.osgeo.org/proj/)
+Qt      | Core C++ library | [Visit Website](http://qt.io)
