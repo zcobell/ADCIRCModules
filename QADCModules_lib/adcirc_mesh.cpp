@@ -825,7 +825,9 @@ int adcirc_mesh::buildElementTable()
 //-----------------------------------------------------------------------------------------//
 //...Function that builds a nodal kdtree2
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that builds a kdtree2 search tree object for the nodes in the adcirc_mesh
+/**
+ * \fn adcirc_mesh::buildNodalSearchTree()
+ * \brief Function that builds a kdtree2 search tree object for the nodes in the adcirc_mesh
  *
  * \author Zach Cobell
  *
@@ -925,33 +927,6 @@ int adcirc_mesh::buildElementalSearchTree()
 //...Function that finds the nearest node
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload adcirc_mesh::findNearestNode(double x, double y, adcirc_node* &nearestNode)
- * \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
- *
- * \author Zach Cobell
- *
- * @param[in]  x       x-coordinate to use for locating nearest node
- * @param[in]  y       y-coordinate to use for locating nearest node
- * @param[out] node    Pointer to the nearest node
- *
- * Function that finds the nearest node to a specified x,y location in the adcirc_mesh
- *
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findNearestNode(double x, double y, adcirc_node* &nearestNode)
-{
-    int ierr = this->findNearestNode(QPointF(x,y),nearestNode);
-    this->error->setError(ierr);
-    return this->error->getError();
-}
-//-----------------------------------------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------------------------------------//
-//...Function that finds the nearest node
-//-----------------------------------------------------------------------------------------//
-/**
  * \fn adcirc_mesh::findNearestNode(QPointF pointLocation, adcirc_node* &nearestNode)
  * \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
  *
@@ -986,26 +961,25 @@ int adcirc_mesh::findNearestNode(QPointF pointLocation, adcirc_node* &nearestNod
 
 
 //-----------------------------------------------------------------------------------------//
-//...Function that finds the list of nn nearest nodes
+//...Function that finds the nearest node
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload adcirc_mesh::findXNearestNodes(double x, double y, int nn, QList<adcirc_node *> &nodeList)
- * \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
+ * \overload adcirc_mesh::findNearestNode(double x, double y, adcirc_node* &nearestNode)
+ * \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
  *
  * \author Zach Cobell
  *
- * @param[in]  x        x-coordinate to use for locating nearest node
- * @param[in]  y        y-coordinate to use for locating nearest node
- * @param[in]  nn       Number of nearest nodes to find
- * @param[out] nodeList QList of pointers to the nn nearest nodes
+ * @param[in]  x       x-coordinate to use for locating nearest node
+ * @param[in]  y       y-coordinate to use for locating nearest node
+ * @param[out] node    Pointer to the nearest node
  *
  * Function that finds the nearest node to a specified x,y location in the adcirc_mesh
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findXNearestNodes(double x, double y, int nn, QList<adcirc_node *> &nodeList)
+int adcirc_mesh::findNearestNode(double x, double y, adcirc_node* &nearestNode)
 {
-    int ierr = this->findXNearestNodes(QPointF(x,y),nn,nodeList);
+    int ierr = this->findNearestNode(QPointF(x,y),nearestNode);
     this->error->setError(ierr);
     return this->error->getError();
 }
@@ -1056,26 +1030,26 @@ int adcirc_mesh::findXNearestNodes(QPointF pointLocation, int nn, QList<adcirc_n
 
 
 //-----------------------------------------------------------------------------------------//
-//...Function that finds the nn nearest elements
+//...Function that finds the list of nn nearest nodes
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_element*> &elementList)
- * \brief Function that finds a list of the nearest element to a specified x,y coordinate
+ * \overload adcirc_mesh::findXNearestNodes(double x, double y, int nn, QList<adcirc_node *> &nodeList)
+ * \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
  *
  * \author Zach Cobell
  *
- * @param[in]  x           x-coordinate to use for locating nearest element
- * @param[in]  y           y-coordinate to use for locating nearest element
- * @param[in]  nn          Number of nearest elements to find
- * @param[out] elementList QList of pointers to the nn nearest elements
+ * @param[in]  x        x-coordinate to use for locating nearest node
+ * @param[in]  y        y-coordinate to use for locating nearest node
+ * @param[in]  nn       Number of nearest nodes to find
+ * @param[out] nodeList QList of pointers to the nn nearest nodes
  *
- * Function that finds the nearest element center to a specified x,y location in the adcirc_mesh
+ * Function that finds the nearest node to a specified x,y location in the adcirc_mesh
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_element*> &elementList)
+int adcirc_mesh::findXNearestNodes(double x, double y, int nn, QList<adcirc_node *> &nodeList)
 {
-    int ierr = this->findXNearestElements(QPointF(x,y),nn,elementList);
+    int ierr = this->findXNearestNodes(QPointF(x,y),nn,nodeList);
     this->error->setError(ierr);
     return this->error->getError();
 }
@@ -1126,85 +1100,26 @@ int adcirc_mesh::findXNearestElements(QPointF pointLocation, int nn, QList<adcir
 
 
 //-----------------------------------------------------------------------------------------//
-//...Function that finds the element that a given x,y resides in
+//...Function that finds the nn nearest elements
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found)
- * \brief Function that locates the element that a point resides within
+ * \overload adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_element*> &elementList)
+ * \brief Function that finds a list of the nearest element to a specified x,y coordinate
  *
  * \author Zach Cobell
  *
- * @param[in]  x               x-coordinate to use for locating the element
- * @param[in]  y               y-coordinate to use for locating the element
- * @param[out] nearestElement  pointer to element that point resides within or the nearest element
- * @param[out] found           true if the point was found within an element. false if point
- *                             not located within an element and the nearest element was returned
+ * @param[in]  x           x-coordinate to use for locating nearest element
+ * @param[in]  y           y-coordinate to use for locating nearest element
+ * @param[in]  nn          Number of nearest elements to find
+ * @param[out] elementList QList of pointers to the nn nearest elements
  *
- * Function that locates the element that a point resides within
- *
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found)
-{
-    QVector<double> dmy;
-    int ierr = this->findAdcircElement(QPointF(x,y),nearestElement,found,dmy);
-    this->error->setError(ierr);
-    return this->error->getError();
-}
-//-----------------------------------------------------------------------------------------//
-
-
-//-----------------------------------------------------------------------------------------//
-//...Function that finds the element that a given x,y resides in
-//-----------------------------------------------------------------------------------------//
-/**
- * \overload adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found)
- * \brief Function that locates the element that a point resides within
- *
- * \author Zach Cobell
- *
- * @param[in]  pointLocation   point to use for locating the element
- * @param[out] nearestElement  pointer to element that point resides within or the nearest element
- * @param[out] found           true if the point was found within an element. false if point
- *                             not located within an element and the nearest element was returned
- *
- * Function that locates the element that a point resides withinh
+ * Function that finds the nearest element center to a specified x,y location in the adcirc_mesh
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found)
+int adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_element*> &elementList)
 {
-    QVector<double> dmy;
-    int ierr = this->findAdcircElement(pointLocation,nearestElement,found,dmy);
-    this->error->setError(ierr);
-    return this->error->getError();
-}
-//-----------------------------------------------------------------------------------------//
-
-
-//-----------------------------------------------------------------------------------------//
-//...Function that finds the element that a given x,y resides in
-//-----------------------------------------------------------------------------------------//
-/**
- * \overload adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
- * \brief Function that locates the element that a point resides within
- *
- * \author Zach Cobell
- *
- * @param[in]  x               x-coordinate to use for locating the element
- * @param[in]  y               y-coordinate to use for locating the element
- * @param[out] nearestElement  pointer to element that point resides within or the nearest element
- * @param[out] found           true if the point was found within an element. false if point
- *                             not located within an element and the nearest element was returned
- * @param[out] weights         Vector of interpolation weights for the given point on the returned element
- *
- * Function that locates the element that a point resides within and returns interpolation weights
- *
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
-{
-    int ierr = this->findAdcircElement(QPointF(x,y),nearestElement,found,weights);
+    int ierr = this->findXNearestElements(QPointF(x,y),nn,elementList);
     this->error->setError(ierr);
     return this->error->getError();
 }
@@ -1238,6 +1153,96 @@ int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElem
     return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that finds the element that a given x,y resides in
+//-----------------------------------------------------------------------------------------//
+/**
+ * \overload adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found)
+ * \brief Function that locates the element that a point resides within
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  x               x-coordinate to use for locating the element
+ * @param[in]  y               y-coordinate to use for locating the element
+ * @param[out] nearestElement  pointer to element that point resides within or the nearest element
+ * @param[out] found           true if the point was found within an element. false if point
+ *                             not located within an element and the nearest element was returned
+ *
+ * Function that locates the element that a point resides within
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found)
+{
+    QVector<double> dmy;
+    int ierr = this->findAdcircElement(QPointF(x,y),nearestElement,found,dmy);
+    this->error->setError(ierr);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that finds the element that a given x,y resides in
+//-----------------------------------------------------------------------------------------//
+/**
+ * \overload adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found)
+ * \brief Function that locates the element that a point resides within
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  pointLocation   point to use for locating the element
+ * @param[out] nearestElement  pointer to element that point resides within or the nearest element
+ * @param[out] found           true if the point was found within an element. false if point
+ *                             not located within an element and the nearest element was returned
+ *
+ * Function that locates the element that a point resides withinh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found)
+{
+    QVector<double> dmy;
+    int ierr = this->findAdcircElement(pointLocation,nearestElement,found,dmy);
+    this->error->setError(ierr);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that finds the element that a given x,y resides in
+//-----------------------------------------------------------------------------------------//
+/**
+ * \overload adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
+ * \brief Function that locates the element that a point resides within
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  x               x-coordinate to use for locating the element
+ * @param[in]  y               y-coordinate to use for locating the element
+ * @param[out] nearestElement  pointer to element that point resides within or the nearest element
+ * @param[out] found           true if the point was found within an element. false if point
+ *                             not located within an element and the nearest element was returned
+ * @param[out] weights         Vector of interpolation weights for the given point on the returned element
+ *
+ * Function that locates the element that a point resides within and returns interpolation weights
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
+{
+    int ierr = this->findAdcircElement(QPointF(x,y),nearestElement,found,weights);
+    this->error->setError(ierr);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
 
 
 
