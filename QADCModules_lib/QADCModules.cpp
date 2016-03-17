@@ -26,9 +26,9 @@
  *
  * \author Zach Cobell
  *
- *  Takes QObject reference as input
+ *  Constructor
  *
- * @param *parent [in] reference to QObject. Enables automatic memory management to avoid memory leaks
+ * @param[in] *parent Pointer to a QObject
  *
  *
  **/

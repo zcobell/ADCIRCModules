@@ -804,7 +804,7 @@ int adcirc_mesh::buildElementTable()
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::buildNodalSearchTree()
 {
-    int i;
+    int i,ierr;
     QVector<double> x,y;
 
     x.resize(this->numNodes);
@@ -820,7 +820,13 @@ int adcirc_mesh::buildNodalSearchTree()
         delete this->nodalSearchTree;
 
     this->nodalSearchTree = new qKdtree2(this);
-    this->nodalSearchTree->build(x,y);
+    ierr = this->nodalSearchTree->build(x,y);
+    if(ierr!=ERROR_NOERROR)
+    {
+        this->error->setError(ierr);
+        return this->error->getError();
+    }
+
     this->nodalSearchTree->initialized = true;
 
     this->error->setError(ERROR_NOERROR);
@@ -843,7 +849,7 @@ int adcirc_mesh::buildNodalSearchTree()
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::buildElementalSearchTree()
 {
-    int i,j;
+    int i,j,ierr;
     QVector<double> x,y;
 
     x.resize(this->numElements);
@@ -866,7 +872,13 @@ int adcirc_mesh::buildElementalSearchTree()
         delete this->elementalSearchTree;
 
     this->elementalSearchTree = new qKdtree2(this);
-    this->elementalSearchTree->build(x,y);
+    ierr = this->elementalSearchTree->build(x,y);
+    if(ierr!=ERROR_NOERROR)
+    {
+        this->error->setError(ierr);
+        return this->error->getError();
+    }
+
     this->elementalSearchTree->initialized = true;
 
     this->error->setError(ERROR_NOERROR);
@@ -893,6 +905,30 @@ int adcirc_mesh::buildElementalSearchTree()
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::findNearestNode(double x, double y, adcirc_node* &nearestNode)
 {
+    int ierr = this->findNearestNode(QPointF(x,y),nearestNode);
+    this->error->setError(ierr);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that finds the nearest node
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  pointLocation Location for which the function will determine the nearest node
+ * @param[out] node          Pointer to the nearest node
+ *
+ * Function that finds the nearest node to a specified x,y location in the adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::findNearestNode(QPointF pointLocation, adcirc_node* &nearestNode)
+{
     int index;
 
     if(this->nodalSearchTree.isNull())
@@ -901,12 +937,12 @@ int adcirc_mesh::findNearestNode(double x, double y, adcirc_node* &nearestNode)
     if(!this->nodalSearchTree->initialized)
         this->buildNodalSearchTree();
 
-    this->nodalSearchTree->findNearest(x,y,index);
+    this->nodalSearchTree->findNearest(pointLocation,index);
 
     nearestNode = this->nodes[index];
 
     this->error->setError(ERROR_NOERROR);
-    return ERROR_NOERROR;
+    return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -930,7 +966,8 @@ int adcirc_mesh::findNearestNode(double x, double y, adcirc_node* &nearestNode)
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::findXNearestNodes(double x, double y, int nn, QList<adcirc_node *> &nodeList)
 {
-    this->findXNearestNodes(QPointF(x,y),nn,nodeList);
+    int ierr = this->findXNearestNodes(QPointF(x,y),nn,nodeList);
+    this->error->setError(ierr);
     return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
@@ -952,7 +989,7 @@ int adcirc_mesh::findXNearestNodes(double x, double y, int nn, QList<adcirc_node
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findXNearestNodes(QPointF location, int nn, QList<adcirc_node *> &nodeList)
+int adcirc_mesh::findXNearestNodes(QPointF pointLocation, int nn, QList<adcirc_node *> &nodeList)
 {
     int i;
     QVector<int> indicies;
@@ -963,7 +1000,7 @@ int adcirc_mesh::findXNearestNodes(QPointF location, int nn, QList<adcirc_node *
     if(!this->nodalSearchTree->initialized)
         this->buildNodalSearchTree();
 
-    this->nodalSearchTree->findXNearest(location,nn,indicies);
+    this->nodalSearchTree->findXNearest(pointLocation,nn,indicies);
 
     nodeList.clear();
 
@@ -995,7 +1032,8 @@ int adcirc_mesh::findXNearestNodes(QPointF location, int nn, QList<adcirc_node *
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_element*> &elementList)
 {
-    this->findXNearestElements(QPointF(x,y),nn,elementList);
+    int ierr = this->findXNearestElements(QPointF(x,y),nn,elementList);
+    this->error->setError(ierr);
     return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
@@ -1017,7 +1055,7 @@ int adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_e
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findXNearestElements(QPointF location, int nn, QList<adcirc_element*> &elementList)
+int adcirc_mesh::findXNearestElements(QPointF pointLocation, int nn, QList<adcirc_element*> &elementList)
 {
     int i;
     QVector<int> indicies;
@@ -1028,7 +1066,7 @@ int adcirc_mesh::findXNearestElements(QPointF location, int nn, QList<adcirc_ele
     if(!this->elementalSearchTree->initialized)
         this->buildElementalSearchTree();
 
-    this->elementalSearchTree->findXNearest(location,nn,indicies);
+    this->elementalSearchTree->findXNearest(pointLocation,nn,indicies);
 
     elementList.clear();
 
@@ -1062,8 +1100,9 @@ int adcirc_mesh::findXNearestElements(QPointF location, int nn, QList<adcirc_ele
 int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found)
 {
     QVector<double> dmy;
-    this->findAdcircElement(QPointF(x,y),nearestElement,found,dmy);
-    return ERROR_NOERROR;
+    int ierr = this->findAdcircElement(QPointF(x,y),nearestElement,found,dmy);
+    this->error->setError(ierr);
+    return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -1088,8 +1127,9 @@ int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement
 int adcirc_mesh::findElement(QPointF location, adcirc_element* &nearestElement, bool &found)
 {
     QVector<double> dmy;
-    this->findAdcircElement(location,nearestElement,found,dmy);
-    return ERROR_NOERROR;
+    int ierr = this->findAdcircElement(location,nearestElement,found,dmy);
+    this->error->setError(ierr);
+    return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -1114,9 +1154,9 @@ int adcirc_mesh::findElement(QPointF location, adcirc_element* &nearestElement, 
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
 {
-    QPointF location = QPointF(x,y);
-    this->findAdcircElement(location,nearestElement,found,weights);
-    return ERROR_NOERROR;
+    int ierr = this->findAdcircElement(QPointF(x,y),nearestElement,found,weights);
+    this->error->setError(ierr);
+    return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -1141,8 +1181,9 @@ int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
 {
-    this->findAdcircElement(pointLocation,nearestElement,found,weights);
-    return ERROR_NOERROR;
+    int ierr = this->findAdcircElement(pointLocation,nearestElement,found,weights);
+    this->error->setError(ierr);
+    return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
 

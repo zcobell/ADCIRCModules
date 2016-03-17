@@ -112,12 +112,16 @@ int main(int argc, char *argv[])
     ierr = thisMesh->renumber();
     ierr = thisMesh->write("../../QADCModules/tests/test_files/ms-riv-me-renumber.grd");
     qDebug() << "STATUS: " << thisMesh->error->getErrorString();
+    if(thisMesh->error->getError()!=ERROR_NOERROR)
+        return thisMesh->error->getError();
 
 
     qDebug() << "\n";
     qDebug() << "Duplicate elements test...";
     ierr = thisMesh->checkOverlappingElements(numDuplicates,duplicateElements);
     qDebug() << "STATUS: " << thisMesh->error->getErrorString();
+    if(thisMesh->error->getError()!=ERROR_NOERROR)
+        return thisMesh->error->getError();
 
 
     qDebug() << "\n";
@@ -130,12 +134,16 @@ int main(int argc, char *argv[])
     qDebug() << "Element Found: " << elementFound;
     qDebug() << "Weight: " << weight[0] << weight[1] << weight[2] << weight[0]+weight[1]+weight[2];
     qDebug() << "STATUS: " << thisMesh->error->getErrorString();
+    if(thisMesh->error->getError()!=ERROR_NOERROR)
+        return thisMesh->error->getError();
 
 
     qDebug() << "\n";
     qDebug() << "Testing Proj4 Coordinate Transformation...";
     ierr = thisMesh->project(26915);
     qDebug() << "STATUS: " << thisMesh->error->getErrorString();
+    if(thisMesh->error->getError()!=ERROR_NOERROR)
+        return thisMesh->error->getError();
     if(thisMesh->error->getError()!=ERROR_NOERROR)
         return thisMesh->error->getError();
     ierr = thisMesh->write("../../QADCModules/tests/test_files/ms-riv-me-utm15.grd");
