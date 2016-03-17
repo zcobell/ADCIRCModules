@@ -23,7 +23,9 @@
  * \brief Class that serves as an interface to the kdtree2 library
  *
  * This function serves as the C++ interface to the kdtree2 library. Kdtree2
- * requires the boost library headers that are included with this code
+ * requires the boost library headers that are included with this code. This implementatin
+ * currently only supports 2-dimensional searches, though the kd-tree library
+ * this interfaces with does not have such a limitation
  *
  * \author Zach Cobell
  *
@@ -37,6 +39,7 @@
 #include <QVector>
 #include <QSharedPointer>
 #include <QPointF>
+#include <QVector3D>
 
 #include "QADCModules_global.h"
 #include "QADCModules_errors.h"
@@ -55,12 +58,16 @@ public:
     bool initialized;
 
     int build(QVector<double> &x, QVector<double> &y);
+    int build(QVector<QPointF> &pointCloud);
+    int build(QVector<QVector3D> &pointCloud);
 
     int findNearest(double x, double y, int &index);
-    int findNearest(QPointF location, int &index);
+    int findNearest(QPointF pointLocation, int &index);
+    int findNearest(QVector3D pointLocation, int &index);
 
     int findXNearest(double x, double y, int nn, QVector<int> &indicies);
-    int findXNearest(QPointF location, int nn, QVector<int> &indicies);
+    int findXNearest(QPointF pointLocation, int nn, QVector<int> &indicies);
+    int findXNearest(QVector3D pointLocation, int nn, QVector<int> &indicies);
 
 private:
 

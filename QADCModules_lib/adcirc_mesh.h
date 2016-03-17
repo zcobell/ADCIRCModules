@@ -189,10 +189,10 @@ private:
     ///Instance of class used for coordinate system transformation
     proj4 *coordinateSystem;
 
-    ///Pointer that holds a KDTREE2 search tree for this mesh's nodes
+    ///Pointer that holds a kd-tree search tree for this mesh's nodes
     QPointer<qKdtree2> nodalSearchTree;
 
-    ///Pointer that holds a KDTREE2 search tree for this mesh's elements
+    ///Pointer that holds a kd-tree search tree for this mesh's elements
     QPointer<qKdtree2> elementalSearchTree;
 
 

@@ -18,12 +18,14 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_mesh.h"
-#include <QDebug>
+
 
 //-----------------------------------------------------------------------------------------//
 // Initializer
 //-----------------------------------------------------------------------------------------//
-/** \brief Constructor for the ADCIRC mesh class
+/**
+ * \fn adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
+ * \brief Constructor for the ADCIRC mesh class
  *
  * \author Zach Cobell
  *
@@ -74,7 +76,9 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
 //-----------------------------------------------------------------------------------------//
 //...Public function to read an ADCIRC mesh. Assumes filename already specified
 //-----------------------------------------------------------------------------------------//
-/** \brief Read an ADCIRC mesh into the class
+/**
+ * \fn adcirc_mesh::read()
+ * \brief Read an ADCIRC mesh into the class
  *
  * \author Zach Cobell
  *
@@ -114,7 +118,9 @@ int adcirc_mesh::read()
 //-----------------------------------------------------------------------------------------//
 //...Public function to read an ADCIRC mesh. Assumes filename specified in input
 //-----------------------------------------------------------------------------------------//
-/** \brief  Read an ADCIRC mesh into the class and set the filename
+/**
+ * \overload adcirc_mesh::read(QString inputFile)
+ * \brief  Read an ADCIRC mesh into the class and set the filename
  *
  *  \author Zach Cobell
  *
@@ -159,7 +165,10 @@ int adcirc_mesh::read(QString inputFile)
 //-----------------------------------------------------------------------------------------//
 //...The publicly exposed function to write an ADCIRC mesh
 //-----------------------------------------------------------------------------------------//
-/** \brief  Public function to allow user to trigger writing
+/**
+ * \fn adcirc_mesh::write(QString outputFile)
+ *
+ * \brief  Public function to allow user to trigger writing
  * of the ADCIRC mesh contained within this class
  *
  *  \author Zach Cobell
@@ -190,7 +199,9 @@ int adcirc_mesh::write(QString outputFile)
 //-----------------------------------------------------------------------------------------//
 //...The publicly exposed function to set the ignoreMeshnumbering variable
 //-----------------------------------------------------------------------------------------//
-/** \brief Public function to determine if non-sequential mesh numbering is a fatal error
+/**
+ * \fn adcirc_mesh::setIgnoreMeshNumbering(bool value)
+ * \brief Public function to determine if non-sequential mesh numbering is a fatal error
  *
  * \author Zach Cobell
  *
@@ -215,7 +226,9 @@ int adcirc_mesh::setIgnoreMeshNumbering(bool value)
 //-----------------------------------------------------------------------------------------//
 //...Function to renumber an adcirc mesh sequentially
 //-----------------------------------------------------------------------------------------//
-/** \brief This function is used to renumber an adcirc_mesh sequantially
+/**
+ * \fn adcirc_mesh::renumber()
+ * \brief This function is used to renumber an adcirc_mesh sequantially
  *
  * \author Zach Cobell
  *
@@ -256,7 +269,9 @@ int adcirc_mesh::renumber()
 //-----------------------------------------------------------------------------------------//
 //...Function to check that the levee heights in the mesh are sane
 //-----------------------------------------------------------------------------------------//
-/** \brief This function is used to check if there are levee heights that need to be raised
+/**
+ * \fn adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
+ * \brief This function is used to check if there are levee heights that need to be raised
  *
  * \author Zach Cobell
  *
@@ -315,7 +330,9 @@ int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
 //-----------------------------------------------------------------------------------------//
 //...Function to raise levees that fall below prevailing topography
 //-----------------------------------------------------------------------------------------//
-/** \brief This function is used to raise levees that fall below prevailing topography
+/**
+ * \fn adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRaised, double minAbovePrevailingTopo, double minRaise, QString diagnosticFile)
+ * \brief This function is used to raise levees that fall below prevailing topography
  *
  * \author Zach Cobell
  *
@@ -471,7 +488,9 @@ int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRa
 //-----------------------------------------------------------------------------------------//
 //...Function that checks for nodes that are not connected to any elements
 //-----------------------------------------------------------------------------------------//
-/** \brief This function checks for nodes that are not connected to any elements
+/**
+ * \fn adcirc_mesh::checkDisjointNodes(int &numDisjointNodes, QList<adcirc_node*> &disjointNodeList)
+ * \brief This function checks for nodes that are not connected to any elements
  *
  * \author Zach Cobell
  *
@@ -524,7 +543,9 @@ int adcirc_mesh::checkDisjointNodes(int &numDisjointNodes, QList<adcirc_node*> &
 //-----------------------------------------------------------------------------------------//
 //...Function that eliminates nodes that are not connected to any elements
 //-----------------------------------------------------------------------------------------//
-/** \brief This function eliminates nodes that are not connected to any elements
+/**
+ * \fn adcirc_mesh::eliminateDisjointNodes(int &numDisjointNodes)
+ * \brief This function eliminates nodes that are not connected to any elements
  *
  * \author Zach Cobell
  *
@@ -587,7 +608,9 @@ int adcirc_mesh::eliminateDisjointNodes(int &numDisjointNodes)
 //-----------------------------------------------------------------------------------------//
 //...Function that sets the current projection
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that sets the current projection
+/**
+ * \fn adcirc_mesh::setProjection(int epsg)
+ * \brief Function that sets the current projection
  *
  * \author Zach Cobell
  *
@@ -609,7 +632,9 @@ int adcirc_mesh::setProjection(int epsg)
 //-----------------------------------------------------------------------------------------//
 //...Function that converts an adcirc_mesh into another coordinate system
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that projects an adcirc_mesh into another coordinate system
+/**
+ * \fn adcirc_mesh::project(int epsg)
+ * \brief Function that projects an adcirc_mesh into another coordinate system
  *
  * \author Zach Cobell
  *
@@ -654,7 +679,9 @@ int adcirc_mesh::project(int epsg)
 //-----------------------------------------------------------------------------------------//
 //...Function that checks for overlapping elements
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that checks for overlapping elements in an adcirc_mesh
+/**
+ * \fn adcirc_mesh::checkOverlappingElements(int &numOverlappingElements, QList<adcirc_element*> &overlappingElementList)
+ * \brief Function that checks for overlapping elements in an adcirc_mesh
  *
  * \author Zach Cobell
  *
@@ -736,7 +763,9 @@ int adcirc_mesh::checkOverlappingElements(int &numOverlappingElements, QList<adc
 //-----------------------------------------------------------------------------------------//
 //...Function that checks for overlapping boundary conditions
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that checks for overlapping boundary conditions in an adcirc_mesh
+/**
+ * \fn adcirc_mesh::checkOverlappingBoundaries((int &numOverlappingBoundaries, QList<adcirc_node*> &overlappingBoundaryNodeList)
+ * \brief Function that checks for overlapping boundary conditions in an adcirc_mesh
  *
  * \author Zach Cobell
  *
@@ -761,7 +790,9 @@ int adcirc_mesh::checkOverlappingBoundaries(int &numOverlappingBoundaries, QList
 //-----------------------------------------------------------------------------------------//
 //...Function to build the element table
 //-----------------------------------------------------------------------------------------//
-/** \brief This function builds a table of the elements around a node
+/**
+ * \fn adcirc_mesh::buildElementTable()
+ * \brief This function builds a table of the elements around a node
  *
  * \author Zach Cobell
  *
@@ -839,7 +870,9 @@ int adcirc_mesh::buildNodalSearchTree()
 //-----------------------------------------------------------------------------------------//
 //...Function that builds a elemental kdtree2
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that builds a kdtree2 search tree object for the element centers in the adcirc_mesh
+/**
+ * \fn adcirc_mesh::buildElementalSearchTree()
+ * \brief Function that builds a kdtree2 search tree object for the element centers in the adcirc_mesh
  *
  * \author Zach Cobell
  *
@@ -891,7 +924,9 @@ int adcirc_mesh::buildElementalSearchTree()
 //-----------------------------------------------------------------------------------------//
 //...Function that finds the nearest node
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
+/**
+ * \overload adcirc_mesh::findNearestNode(double x, double y, adcirc_node* &nearestNode)
+ * \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
  *
  * \author Zach Cobell
  *
@@ -916,7 +951,9 @@ int adcirc_mesh::findNearestNode(double x, double y, adcirc_node* &nearestNode)
 //-----------------------------------------------------------------------------------------//
 //...Function that finds the nearest node
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
+/**
+ * \fn adcirc_mesh::findNearestNode(QPointF pointLocation, adcirc_node* &nearestNode)
+ * \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
  *
  * \author Zach Cobell
  *
@@ -951,7 +988,9 @@ int adcirc_mesh::findNearestNode(QPointF pointLocation, adcirc_node* &nearestNod
 //-----------------------------------------------------------------------------------------//
 //...Function that finds the list of nn nearest nodes
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
+/**
+ * \overload adcirc_mesh::findXNearestNodes(double x, double y, int nn, QList<adcirc_node *> &nodeList)
+ * \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
  *
  * \author Zach Cobell
  *
@@ -977,7 +1016,9 @@ int adcirc_mesh::findXNearestNodes(double x, double y, int nn, QList<adcirc_node
 //-----------------------------------------------------------------------------------------//
 //...Function that finds the list of nn nearest nodes
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
+/**
+ * \fn adcirc_mesh::findXNearestNodes(QPointF pointLocation, int nn, QList<adcirc_node *> &nodeList)
+ * \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
  *
  * \author Zach Cobell
  *
@@ -1017,7 +1058,9 @@ int adcirc_mesh::findXNearestNodes(QPointF pointLocation, int nn, QList<adcirc_n
 //-----------------------------------------------------------------------------------------//
 //...Function that finds the nn nearest elements
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that finds a list of the nearest element to a specified x,y coordinate
+/**
+ * \overload adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_element*> &elementList)
+ * \brief Function that finds a list of the nearest element to a specified x,y coordinate
  *
  * \author Zach Cobell
  *
@@ -1043,7 +1086,9 @@ int adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_e
 //-----------------------------------------------------------------------------------------//
 //...Function that finds the nn nearest elements
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that finds a list of the nearest element to a specified x,y coordinate
+/**
+ * \fn adcirc_mesh::findXNearestElements(QPointF pointLocation, int nn, QList<adcirc_element*> &elementList)
+ * \brief Function that finds a list of the nearest element to a specified x,y coordinate
  *
  * \author Zach Cobell
  *
@@ -1083,7 +1128,9 @@ int adcirc_mesh::findXNearestElements(QPointF pointLocation, int nn, QList<adcir
 //-----------------------------------------------------------------------------------------//
 //...Function that finds the element that a given x,y resides in
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
+/**
+ * \overload adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found)
+ * \brief Function that locates the element that a point resides within
  *
  * \author Zach Cobell
  *
@@ -1093,7 +1140,7 @@ int adcirc_mesh::findXNearestElements(QPointF pointLocation, int nn, QList<adcir
  * @param[out] found           true if the point was found within an element. false if point
  *                             not located within an element and the nearest element was returned
  *
- * Function that finds the nearest element center to a specified x,y location in the adcirc_mesh
+ * Function that locates the element that a point resides within
  *
  **/
 //-----------------------------------------------------------------------------------------//
@@ -1110,24 +1157,25 @@ int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement
 //-----------------------------------------------------------------------------------------//
 //...Function that finds the element that a given x,y resides in
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
+/**
+ * \overload adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found)
+ * \brief Function that locates the element that a point resides within
  *
  * \author Zach Cobell
  *
- * @param[in]  x               x-coordinate to use for locating the element
- * @param[in]  y               y-coordinate to use for locating the element
+ * @param[in]  pointLocation   point to use for locating the element
  * @param[out] nearestElement  pointer to element that point resides within or the nearest element
  * @param[out] found           true if the point was found within an element. false if point
  *                             not located within an element and the nearest element was returned
  *
- * Function that finds the nearest element center to a specified x,y location in the adcirc_mesh
+ * Function that locates the element that a point resides withinh
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findElement(QPointF location, adcirc_element* &nearestElement, bool &found)
+int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found)
 {
     QVector<double> dmy;
-    int ierr = this->findAdcircElement(location,nearestElement,found,dmy);
+    int ierr = this->findAdcircElement(pointLocation,nearestElement,found,dmy);
     this->error->setError(ierr);
     return this->error->getError();
 }
@@ -1137,7 +1185,9 @@ int adcirc_mesh::findElement(QPointF location, adcirc_element* &nearestElement, 
 //-----------------------------------------------------------------------------------------//
 //...Function that finds the element that a given x,y resides in
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
+/**
+ * \overload adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
+ * \brief Function that locates the element that a point resides within
  *
  * \author Zach Cobell
  *
@@ -1148,7 +1198,7 @@ int adcirc_mesh::findElement(QPointF location, adcirc_element* &nearestElement, 
  *                             not located within an element and the nearest element was returned
  * @param[out] weights         Vector of interpolation weights for the given point on the returned element
  *
- * Function that finds the nearest element center to a specified x,y location in the adcirc_mesh
+ * Function that locates the element that a point resides within and returns interpolation weights
  *
  **/
 //-----------------------------------------------------------------------------------------//
@@ -1165,7 +1215,9 @@ int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement
 //-----------------------------------------------------------------------------------------//
 //...Function that finds the element that a given x,y resides in
 //-----------------------------------------------------------------------------------------//
-/** \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
+/**
+ * \fn adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
+ * \brief Function that locates the element that a point resides within and returns interpolation weights
  *
  * \author Zach Cobell
  *
@@ -1175,7 +1227,7 @@ int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement
  *                             not located within an element and the nearest element was returned
  * @param[out] weights         Vector of interpolation weights for the given point on the returned element
  *
- * Function that finds the nearest element center to a specified x,y location in the adcirc_mesh
+ * Function that locates the element that a point resides within and returns interpolation weights
  *
  **/
 //-----------------------------------------------------------------------------------------//
@@ -1203,7 +1255,9 @@ int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElem
 //-----------------------------------------------------------------------------------------//
 //...Function to read an ADCIRC mesh
 //-----------------------------------------------------------------------------------------//
-/** \brief This function is used internally to read an ADCIRC mesh
+/**
+ * \fn adcirc_mesh::readMesh()
+ * \brief This function is used internally to read an ADCIRC mesh
  *
  * \author Zach Cobell
  *
@@ -1354,7 +1408,9 @@ int adcirc_mesh::readMesh()
 //-----------------------------------------------------------------------------------------//
 //...Allocates an array of pointers in the ADCIRC mesh
 //-----------------------------------------------------------------------------------------//
-/** \brief Creates a number of adcirc_node variables on the heap
+/**
+ * \fn adcirc_mesh::allocateNodes()
+ * \brief Creates a number of adcirc_node variables on the heap
  *
  * \author Zach Cobell
  *
@@ -1377,7 +1433,9 @@ int adcirc_mesh::allocateNodes()
 //-----------------------------------------------------------------------------------------//
 //...Allocates an array of pointers in the ADCIRC mesh
 //-----------------------------------------------------------------------------------------//
-/** \brief Creates a number of adcirc_element variables on the heap
+/**
+ * \fn adcirc_mesh::allocateElements()
+ * \brief Creates a number of adcirc_element variables on the heap
  *
  * \author Zach Cobell
  *
@@ -1400,7 +1458,9 @@ int adcirc_mesh::allocateElements()
 //-----------------------------------------------------------------------------------------//
 // Function to read the open boundary segmenets of the adcirc mesh file
 //-----------------------------------------------------------------------------------------//
-/** \brief Protected function to read the entire set of open boundary conditions
+/**
+ * \fn adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
+ * \brief Protected function to read the entire set of open boundary conditions
  *
  * \author Zach Cobell
  *
@@ -1508,7 +1568,9 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
 //-----------------------------------------------------------------------------------------//
 // Function to read the land boundary segments from the ADCIRC mesh file
 //-----------------------------------------------------------------------------------------//
-/** \brief Protected function to read the entire set of land boundary conditions
+/**
+ * \fn adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
+ * \brief Protected function to read the entire set of land boundary conditions
  *
  * \author Zach Cobell
  *
@@ -1626,7 +1688,9 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
 //-----------------------------------------------------------------------------------------//
 //...Function to write an ADCIRC mesh
 //-----------------------------------------------------------------------------------------//
-/** \brief This function is used internally to write an ADCIRC mesh
+/**
+ * \fn adcirc_mesh::writeMesh(QString filename)
+ * \brief This function is used internally to write an ADCIRC mesh
  *
  * \author Zach Cobell
  *
@@ -1703,12 +1767,13 @@ int adcirc_mesh::writeMesh(QString filename)
 //-----------------------------------------------------------------------------------------//
 //...Function to find the adcirc_element that a given x,y lies within
 //-----------------------------------------------------------------------------------------//
-/** \brief Function to find the adcirc_element that a given x,y lies within
+/**
+ * \fn adcirc_mesh::findAdcircElement(QPointF location, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
+ * \brief Function used internally to find the adcirc_element that a given x,y lies within
  *
  * \author Zach Cobell
  *
- * @param[in]  x              x-coordinate to locate inside an element
- * @param[in]  y              y-coordinate to locate inside an element
+ * @param[in]  pointLocation  point to locate inside an element
  * @param[out] nearestElement pointer to the nearest adcirc_element to the given x,y
  * @param[out] found          true if the x,y coordinate was found within an element or false
  *                            if the location is not within any adcirc_element in which case the
@@ -1716,10 +1781,10 @@ int adcirc_mesh::writeMesh(QString filename)
  * @param[out] weights        vector containing the weighting function for the given x,y inside the
  *                            adcirc_element. Used to weight interpolation functions.
  *
- * Function to find the adcirc_element that a given x,y lies within
+ * Function used internally to find the adcirc_element that a given x,y lies within and
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findAdcircElement(QPointF location, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
+int adcirc_mesh::findAdcircElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
 {
     int i;
     double x,y;
@@ -1731,10 +1796,10 @@ int adcirc_mesh::findAdcircElement(QPointF location, adcirc_element* &nearestEle
     adcirc_element *e;
     QList<adcirc_element*> elementList;
 
-    x = static_cast<double>(location.x());
-    y = static_cast<double>(location.y());
+    x = static_cast<double>(pointLocation.x());
+    y = static_cast<double>(pointLocation.y());
 
-    this->findXNearestElements(location,searchDepth,elementList);
+    this->findXNearestElements(pointLocation,searchDepth,elementList);
 
     found = false;
     weights.resize(3);
