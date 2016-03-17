@@ -115,21 +115,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0d0c2b42e8abd842e20307fae012ea33"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d0c2b42e8abd842e20307fae012ea33"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>qKdtree2</b> (QObject *parent=0)</td></tr>
 <tr class="separator:a0d0c2b42e8abd842e20307fae012ea33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00ad12fa7f400f0e4f3f369818b4a2b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a00ad12fa7f400f0e4f3f369818b4a2b8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>build</b> (QVector&lt; double &gt; &amp;x, QVector&lt; double &gt; &amp;y)</td></tr>
+<tr class="memitem:ab1b581efceb077e101273183e797dd6a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqKdtree2.html#ab1b581efceb077e101273183e797dd6a">build</a> (QVector&lt; QPointF &gt; &amp;pointCloud)</td></tr>
+<tr class="memdesc:ab1b581efceb077e101273183e797dd6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a kdtree2 search tree.  <a href="#ab1b581efceb077e101273183e797dd6a">More...</a><br /></td></tr>
+<tr class="separator:ab1b581efceb077e101273183e797dd6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00ad12fa7f400f0e4f3f369818b4a2b8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqKdtree2.html#a00ad12fa7f400f0e4f3f369818b4a2b8">build</a> (QVector&lt; double &gt; &amp;x, QVector&lt; double &gt; &amp;y)</td></tr>
 <tr class="separator:a00ad12fa7f400f0e4f3f369818b4a2b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d8aa938427d7c2a402459eb79f9301c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d8aa938427d7c2a402459eb79f9301c"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>findNearest</b> (double x, double y, int &amp;index)</td></tr>
+<tr class="memitem:a79164c995e62d66679b3f1976548d606"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqKdtree2.html#a79164c995e62d66679b3f1976548d606">build</a> (QVector&lt; QVector3D &gt; &amp;pointCloud)</td></tr>
+<tr class="separator:a79164c995e62d66679b3f1976548d606"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59ec1ed810d68b8ead080284ab306213"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqKdtree2.html#a59ec1ed810d68b8ead080284ab306213">findNearest</a> (QPointF pointLocation, int &amp;index)</td></tr>
+<tr class="memdesc:a59ec1ed810d68b8ead080284ab306213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that uses a kd-tree to find the nearest point to a given set of coordinates.  <a href="#a59ec1ed810d68b8ead080284ab306213">More...</a><br /></td></tr>
+<tr class="separator:a59ec1ed810d68b8ead080284ab306213"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d8aa938427d7c2a402459eb79f9301c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqKdtree2.html#a4d8aa938427d7c2a402459eb79f9301c">findNearest</a> (double x, double y, int &amp;index)</td></tr>
 <tr class="separator:a4d8aa938427d7c2a402459eb79f9301c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ea4d84fff6b93bb74297ee2d3421c6f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ea4d84fff6b93bb74297ee2d3421c6f"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>findNearest</b> (QPointF location, int &amp;index)</td></tr>
-<tr class="separator:a1ea4d84fff6b93bb74297ee2d3421c6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab13bc5e47a217d0c64f5f76c743586ef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab13bc5e47a217d0c64f5f76c743586ef"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>findXNearest</b> (double x, double y, int nn, QVector&lt; int &gt; &amp;indicies)</td></tr>
+<tr class="memitem:adcf82ffdca1aa845fae4ba7f2ac41fa3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqKdtree2.html#adcf82ffdca1aa845fae4ba7f2ac41fa3">findNearest</a> (QVector3D pointLocation, int &amp;index)</td></tr>
+<tr class="separator:adcf82ffdca1aa845fae4ba7f2ac41fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf9d172da793fec1a4663d6200b0b0d5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqKdtree2.html#acf9d172da793fec1a4663d6200b0b0d5">findXNearest</a> (QPointF pointLocation, int nn, QVector&lt; int &gt; &amp;indicies)</td></tr>
+<tr class="memdesc:acf9d172da793fec1a4663d6200b0b0d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that uses a kd-tree to find the N-nearest point to a given set of coordinates.  <a href="#acf9d172da793fec1a4663d6200b0b0d5">More...</a><br /></td></tr>
+<tr class="separator:acf9d172da793fec1a4663d6200b0b0d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab13bc5e47a217d0c64f5f76c743586ef"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqKdtree2.html#ab13bc5e47a217d0c64f5f76c743586ef">findXNearest</a> (double x, double y, int nn, QVector&lt; int &gt; &amp;indicies)</td></tr>
 <tr class="separator:ab13bc5e47a217d0c64f5f76c743586ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a325440b962f24e86798cde4002a90f32"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a325440b962f24e86798cde4002a90f32"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>findXNearest</b> (QPointF location, int nn, QVector&lt; int &gt; &amp;indicies)</td></tr>
-<tr class="separator:a325440b962f24e86798cde4002a90f32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b6cb6b55a314c3d3997305c351a2d28"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqKdtree2.html#a6b6cb6b55a314c3d3997305c351a2d28">findXNearest</a> (QVector3D pointLocation, int nn, QVector&lt; int &gt; &amp;indicies)</td></tr>
+<tr class="separator:a6b6cb6b55a314c3d3997305c351a2d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -143,10 +149,345 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a79815dc38e2973c75ca8e81fbbea5345"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This function serves as the C++ interface to the kdtree2 library. Kdtree2 requires the boost library headers that are included with this code</p>
+<div class="textblock"><p>This function serves as the C++ interface to the kdtree2 library. Kdtree2 requires the boost library headers that are included with this code. This implementatin currently only supports 2-dimensional searches, though the kd-tree library this interfaces with does not have such a limitation</p>
 <dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <p>Contact: <a href="#" onclick="location.href='mai'+'lto:'+'zco'+'be'+'ll@'+'gm'+'ail'+'.c'+'om'; return false;">zcobe<span style="display: none;">.nosp@m.</span>ll@g<span style="display: none;">.nosp@m.</span>mail.<span style="display: none;">.nosp@m.</span>com</a> </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ab1b581efceb077e101273183e797dd6a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int qKdtree2::build </td>
+          <td>(</td>
+          <td class="paramtype">QVector&lt; QPointF &gt; &amp;&#160;</td>
+          <td class="paramname"><em>pointCloud</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pointCloud</td><td>Vector of QPointF used to generate the search tree</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function uses the kdtree2 library to generate a search tree </p>
+
+</div>
+</div>
+<a class="anchor" id="a00ad12fa7f400f0e4f3f369818b4a2b8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int qKdtree2::build </td>
+          <td>(</td>
+          <td class="paramtype">QVector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QVector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>Vector of x-coordinates </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>Vector of y-coordinates</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function uses the kdtree2 library to generate a search tree </p>
+
+</div>
+</div>
+<a class="anchor" id="a79164c995e62d66679b3f1976548d606"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int qKdtree2::build </td>
+          <td>(</td>
+          <td class="paramtype">QVector&lt; QVector3D &gt; &amp;&#160;</td>
+          <td class="paramname"><em>pointCloud</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pointCloud</td><td>Vector of QVector3D used to generate the search tree</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function uses the kdtree2 library to generate a search tree </p>
+
+</div>
+</div>
+<a class="anchor" id="a59ec1ed810d68b8ead080284ab306213"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int qKdtree2::findNearest </td>
+          <td>(</td>
+          <td class="paramtype">QPointF&#160;</td>
+          <td class="paramname"><em>pointLocation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pointLocation</td><td>location of point to search for </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">index</td><td>location in array that created kd-tree of nearest point</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Function that uses a kd-tree to find the nearest point to a given set of coordinates </p>
+
+</div>
+</div>
+<a class="anchor" id="a4d8aa938427d7c2a402459eb79f9301c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int qKdtree2::findNearest </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate of point to search for </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>y-coordinate of point to search for </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">index</td><td>location in array that created kd-tree of nearest point</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Function that uses a kd-tree to find the nearest point to a given set of coordinates </p>
+
+</div>
+</div>
+<a class="anchor" id="adcf82ffdca1aa845fae4ba7f2ac41fa3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int qKdtree2::findNearest </td>
+          <td>(</td>
+          <td class="paramtype">QVector3D&#160;</td>
+          <td class="paramname"><em>pointLocation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pointLocation</td><td>location of point to search for </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">index</td><td>location in array that created kd-tree of nearest point</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Function that uses a kd-tree to find the nearest point to a given set of coordinates </p>
+
+</div>
+</div>
+<a class="anchor" id="acf9d172da793fec1a4663d6200b0b0d5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int qKdtree2::findXNearest </td>
+          <td>(</td>
+          <td class="paramtype">QPointF&#160;</td>
+          <td class="paramname"><em>pointLocation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QVector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>indicies</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pointLocation</td><td>location of point to search for </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nn</td><td>number of locations to find </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">indicies</td><td>vector of locations in array that created kd-tree of nearest points</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Function that uses a kd-tree to find the N-nearest point to a given set of coordinates </p>
+
+</div>
+</div>
+<a class="anchor" id="ab13bc5e47a217d0c64f5f76c743586ef"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int qKdtree2::findXNearest </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QVector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>indicies</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate of point to search for </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>y-coordinate of point to search for </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nn</td><td>number of locations to find </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">indicies</td><td>vector of locations in array that created kd-tree of nearest points</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Function that uses a kd-tree to find the N-nearest point to a given set of coordinates </p>
+
+</div>
+</div>
+<a class="anchor" id="a6b6cb6b55a314c3d3997305c351a2d28"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int qKdtree2::findXNearest </td>
+          <td>(</td>
+          <td class="paramtype">QVector3D&#160;</td>
+          <td class="paramname"><em>pointLocation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QVector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>indicies</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pointLocation</td><td>location of point to search for </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nn</td><td>number of locations to find </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">indicies</td><td>vector of locations in array that created kd-tree of nearest points</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Function that uses a kd-tree to find the N-nearest point to a given set of coordinates </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="qkdtree2_8h_source.html">qkdtree2.h</a></li>
 <li>qkdtree2.cpp</li>
 </ul>

@@ -121,7 +121,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a7f7ba2f690cb36e0bc2d4925162ab2bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read an ADCIRC mesh into the class.  <a href="#a7f7ba2f690cb36e0bc2d4925162ab2bb">More...</a><br /></td></tr>
 <tr class="separator:a7f7ba2f690cb36e0bc2d4925162ab2bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ab41860dbad284b6323273b05649661"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a6ab41860dbad284b6323273b05649661">read</a> (QString inputFile)</td></tr>
-<tr class="memdesc:a6ab41860dbad284b6323273b05649661"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read an ADCIRC mesh into the class and set the filename.  <a href="#a6ab41860dbad284b6323273b05649661">More...</a><br /></td></tr>
 <tr class="separator:a6ab41860dbad284b6323273b05649661"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b445bd07fc683c27a3caf82e5e35e97"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a8b445bd07fc683c27a3caf82e5e35e97">write</a> (QString outputFile)</td></tr>
 <tr class="memdesc:a8b445bd07fc683c27a3caf82e5e35e97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public function to allow user to trigger writing of the ADCIRC mesh contained within this class.  <a href="#a8b445bd07fc683c27a3caf82e5e35e97">More...</a><br /></td></tr>
@@ -156,8 +155,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af625c37897e617534f71b19f6d172630"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#af625c37897e617534f71b19f6d172630">checkOverlappingElements</a> (int &amp;numOverlappingElements, QList&lt; <a class="el" href="classadcirc__element.html">adcirc_element</a> * &gt; &amp;overlappingElementList)</td></tr>
 <tr class="memdesc:af625c37897e617534f71b19f6d172630"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that checks for overlapping elements in an <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a>.  <a href="#af625c37897e617534f71b19f6d172630">More...</a><br /></td></tr>
 <tr class="separator:af625c37897e617534f71b19f6d172630"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a252e649b2833ef29dc7b6d0495245577"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a252e649b2833ef29dc7b6d0495245577">checkOverlappingBoundaries</a> (int &amp;numOverlappingBoundaries, QList&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;overlappingBoundaryNodeList)</td></tr>
-<tr class="memdesc:a252e649b2833ef29dc7b6d0495245577"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that checks for overlapping boundary conditions in an <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a>.  <a href="#a252e649b2833ef29dc7b6d0495245577">More...</a><br /></td></tr>
+<tr class="memitem:a252e649b2833ef29dc7b6d0495245577"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a252e649b2833ef29dc7b6d0495245577"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>checkOverlappingBoundaries</b> (int &amp;numOverlappingBoundaries, QList&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;overlappingBoundaryNodeList)</td></tr>
 <tr class="separator:a252e649b2833ef29dc7b6d0495245577"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2161bcf279e444f82fd0f5d76b1d6f81"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2161bcf279e444f82fd0f5d76b1d6f81"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>checkBoundariesOnBoundary</b> (int &amp;numberOfBadBCs, QList&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;boundaryConditionList)</td></tr>
@@ -171,36 +170,31 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>checkClosedIslandBound
 <tr class="memitem:aa5821245c04e62bc2f4b6dfd06d183c1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#aa5821245c04e62bc2f4b6dfd06d183c1">project</a> (int <a class="el" href="classadcirc__mesh.html#a7778361b983b6e109de518003d2a1917">epsg</a>)</td></tr>
 <tr class="memdesc:aa5821245c04e62bc2f4b6dfd06d183c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that projects an <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> into another coordinate system.  <a href="#aa5821245c04e62bc2f4b6dfd06d183c1">More...</a><br /></td></tr>
 <tr class="separator:aa5821245c04e62bc2f4b6dfd06d183c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d929ea4cf1312c2f50fbb0f157a1d40"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a1d929ea4cf1312c2f50fbb0f157a1d40">findNearestNode</a> (double x, double y, <a class="el" href="classadcirc__node.html">adcirc_node</a> *&amp;nearestNode)</td></tr>
-<tr class="memdesc:a1d929ea4cf1312c2f50fbb0f157a1d40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that finds the nearest node to a specified x,y location in the <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a>.  <a href="#a1d929ea4cf1312c2f50fbb0f157a1d40">More...</a><br /></td></tr>
-<tr class="separator:a1d929ea4cf1312c2f50fbb0f157a1d40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a513b1a8e0027c24db6dbae539cdebc8f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a513b1a8e0027c24db6dbae539cdebc8f">findNearestNode</a> (QPointF pointLocation, <a class="el" href="classadcirc__node.html">adcirc_node</a> *&amp;nearestNode)</td></tr>
 <tr class="memdesc:a513b1a8e0027c24db6dbae539cdebc8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that finds the nearest node to a specified x,y location in the <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a>.  <a href="#a513b1a8e0027c24db6dbae539cdebc8f">More...</a><br /></td></tr>
 <tr class="separator:a513b1a8e0027c24db6dbae539cdebc8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd869290526a2f6acdaeaee8a52079ba"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#abd869290526a2f6acdaeaee8a52079ba">findXNearestNodes</a> (double x, double y, int nn, QList&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodeList)</td></tr>
-<tr class="memdesc:abd869290526a2f6acdaeaee8a52079ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that finds a list of the nearest nodes to a specified x,y coordinate.  <a href="#abd869290526a2f6acdaeaee8a52079ba">More...</a><br /></td></tr>
-<tr class="separator:abd869290526a2f6acdaeaee8a52079ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d929ea4cf1312c2f50fbb0f157a1d40"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a1d929ea4cf1312c2f50fbb0f157a1d40">findNearestNode</a> (double x, double y, <a class="el" href="classadcirc__node.html">adcirc_node</a> *&amp;nearestNode)</td></tr>
+<tr class="separator:a1d929ea4cf1312c2f50fbb0f157a1d40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa47090ed17886f8f77ca60f683675be4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#aa47090ed17886f8f77ca60f683675be4">findXNearestNodes</a> (QPointF pointLocation, int nn, QList&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodeList)</td></tr>
 <tr class="memdesc:aa47090ed17886f8f77ca60f683675be4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that finds a list of the nearest nodes to a specified x,y coordinate.  <a href="#aa47090ed17886f8f77ca60f683675be4">More...</a><br /></td></tr>
 <tr class="separator:aa47090ed17886f8f77ca60f683675be4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a424a60db6920321b94bf6a30be1d5880"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a424a60db6920321b94bf6a30be1d5880">findXNearestElements</a> (double x, double y, int nn, QList&lt; <a class="el" href="classadcirc__element.html">adcirc_element</a> * &gt; &amp;elementList)</td></tr>
-<tr class="memdesc:a424a60db6920321b94bf6a30be1d5880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that finds a list of the nearest element to a specified x,y coordinate.  <a href="#a424a60db6920321b94bf6a30be1d5880">More...</a><br /></td></tr>
-<tr class="separator:a424a60db6920321b94bf6a30be1d5880"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd869290526a2f6acdaeaee8a52079ba"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#abd869290526a2f6acdaeaee8a52079ba">findXNearestNodes</a> (double x, double y, int nn, QList&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodeList)</td></tr>
+<tr class="separator:abd869290526a2f6acdaeaee8a52079ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47f71377a79e793590a3a260352e0cd6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a47f71377a79e793590a3a260352e0cd6">findXNearestElements</a> (QPointF pointLocation, int nn, QList&lt; <a class="el" href="classadcirc__element.html">adcirc_element</a> * &gt; &amp;elementList)</td></tr>
 <tr class="memdesc:a47f71377a79e793590a3a260352e0cd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that finds a list of the nearest element to a specified x,y coordinate.  <a href="#a47f71377a79e793590a3a260352e0cd6">More...</a><br /></td></tr>
 <tr class="separator:a47f71377a79e793590a3a260352e0cd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50c69e6e54c2c19475682bf4f49f9034"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a50c69e6e54c2c19475682bf4f49f9034">findElement</a> (double x, double y, <a class="el" href="classadcirc__element.html">adcirc_element</a> *&amp;nearestElement, bool &amp;found)</td></tr>
-<tr class="memdesc:a50c69e6e54c2c19475682bf4f49f9034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that finds a list of the nearest nodes to a specified x,y coordinate.  <a href="#a50c69e6e54c2c19475682bf4f49f9034">More...</a><br /></td></tr>
-<tr class="separator:a50c69e6e54c2c19475682bf4f49f9034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a424a60db6920321b94bf6a30be1d5880"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a424a60db6920321b94bf6a30be1d5880">findXNearestElements</a> (double x, double y, int nn, QList&lt; <a class="el" href="classadcirc__element.html">adcirc_element</a> * &gt; &amp;elementList)</td></tr>
+<tr class="separator:a424a60db6920321b94bf6a30be1d5880"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d7aab2fd8c272c34bd64eab08e0c5e9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5d7aab2fd8c272c34bd64eab08e0c5e9"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>findElement</b> (QPointF pointLocation, <a class="el" href="classadcirc__element.html">adcirc_element</a> *&amp;nearestElement, bool &amp;found, QVector&lt; double &gt; &amp;weights)</td></tr>
+<tr class="separator:a5d7aab2fd8c272c34bd64eab08e0c5e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a975c43d93c07788c74523d5a36377d90"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a975c43d93c07788c74523d5a36377d90">findElement</a> (QPointF pointLocation, <a class="el" href="classadcirc__element.html">adcirc_element</a> *&amp;nearestElement, bool &amp;found)</td></tr>
-<tr class="memdesc:a975c43d93c07788c74523d5a36377d90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that finds a list of the nearest nodes to a specified x,y coordinate.  <a href="#a975c43d93c07788c74523d5a36377d90">More...</a><br /></td></tr>
 <tr class="separator:a975c43d93c07788c74523d5a36377d90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44b490dd02c0e63ce22446b831fd54c8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a44b490dd02c0e63ce22446b831fd54c8">findElement</a> (double x, double y, <a class="el" href="classadcirc__element.html">adcirc_element</a> *&amp;nearestElement, bool &amp;found, QVector&lt; double &gt; &amp;weights)</td></tr>
-<tr class="memdesc:a44b490dd02c0e63ce22446b831fd54c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that finds a list of the nearest nodes to a specified x,y coordinate.  <a href="#a44b490dd02c0e63ce22446b831fd54c8">More...</a><br /></td></tr>
+<tr class="memdesc:a44b490dd02c0e63ce22446b831fd54c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that locates the element that a point resides within and returns interpolation weights.  <a href="#a44b490dd02c0e63ce22446b831fd54c8">More...</a><br /></td></tr>
 <tr class="separator:a44b490dd02c0e63ce22446b831fd54c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d7aab2fd8c272c34bd64eab08e0c5e9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a5d7aab2fd8c272c34bd64eab08e0c5e9">findElement</a> (QPointF pointLocation, <a class="el" href="classadcirc__element.html">adcirc_element</a> *&amp;nearestElement, bool &amp;found, QVector&lt; double &gt; &amp;weights)</td></tr>
-<tr class="memdesc:a5d7aab2fd8c272c34bd64eab08e0c5e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that finds a list of the nearest nodes to a specified x,y coordinate.  <a href="#a5d7aab2fd8c272c34bd64eab08e0c5e9">More...</a><br /></td></tr>
-<tr class="separator:a5d7aab2fd8c272c34bd64eab08e0c5e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50c69e6e54c2c19475682bf4f49f9034"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a50c69e6e54c2c19475682bf4f49f9034">findElement</a> (double x, double y, <a class="el" href="classadcirc__element.html">adcirc_element</a> *&amp;nearestElement, bool &amp;found)</td></tr>
+<tr class="separator:a50c69e6e54c2c19475682bf4f49f9034"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -306,7 +300,7 @@ Protected Member Functions</h2></td></tr>
 <tr class="memdesc:a718d658b217443d36de92f3aaca623ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function to read the entire set of land boundary conditions.  <a href="#a718d658b217443d36de92f3aaca623ee">More...</a><br /></td></tr>
 <tr class="separator:a718d658b217443d36de92f3aaca623ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfe689e27d98d141323706e563e781e3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#adfe689e27d98d141323706e563e781e3">findAdcircElement</a> (QPointF location, <a class="el" href="classadcirc__element.html">adcirc_element</a> *&amp;nearestElement, bool &amp;found, QVector&lt; double &gt; &amp;weights)</td></tr>
-<tr class="memdesc:adfe689e27d98d141323706e563e781e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to find the <a class="el" href="classadcirc__element.html" title="Class that describes an ADCIRC element. ">adcirc_element</a> that a given x,y lies within.  <a href="#adfe689e27d98d141323706e563e781e3">More...</a><br /></td></tr>
+<tr class="memdesc:adfe689e27d98d141323706e563e781e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function used internally to find the <a class="el" href="classadcirc__element.html" title="Class that describes an ADCIRC element. ">adcirc_element</a> that a given x,y lies within.  <a href="#adfe689e27d98d141323706e563e781e3">More...</a><br /></td></tr>
 <tr class="separator:adfe689e27d98d141323706e563e781e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -507,41 +501,6 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a252e649b2833ef29dc7b6d0495245577"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int adcirc_mesh::checkOverlappingBoundaries </td>
-          <td>(</td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>numOverlappingBoundaries</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">QList&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;&#160;</td>
-          <td class="paramname"><em>overlappingBoundaryNodeList</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">numOverlappingBoundaries</td><td>Number of overlapping boundaries located </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">overlappingBoundaryNodeList</td><td>List of nodes involved in overlapping boundary conditions</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Function that checks for overlapping boundary conditions in an <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> </p>
-
-</div>
-</div>
 <a class="anchor" id="af625c37897e617534f71b19f6d172630"></a>
 <div class="memitem">
 <div class="memproto">
@@ -647,64 +606,14 @@ Protected Member Functions</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to locate inside an element </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>y-coordinate to locate inside an element </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pointLocation</td><td>point to locate inside an element </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">nearestElement</td><td>pointer to the nearest <a class="el" href="classadcirc__element.html" title="Class that describes an ADCIRC element. ">adcirc_element</a> to the given x,y </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">found</td><td>true if the x,y coordinate was found within an element or false if the location is not within any <a class="el" href="classadcirc__element.html" title="Class that describes an ADCIRC element. ">adcirc_element</a> in which case the nearest element is given </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">weights</td><td>vector containing the weighting function for the given x,y inside the <a class="el" href="classadcirc__element.html" title="Class that describes an ADCIRC element. ">adcirc_element</a>. Used to weight interpolation functions.</td></tr>
   </table>
   </dd>
 </dl>
-<p>Function to find the <a class="el" href="classadcirc__element.html" title="Class that describes an ADCIRC element. ">adcirc_element</a> that a given x,y lies within </p>
-
-</div>
-</div>
-<a class="anchor" id="a50c69e6e54c2c19475682bf4f49f9034"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int adcirc_mesh::findElement </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classadcirc__element.html">adcirc_element</a> *&amp;&#160;</td>
-          <td class="paramname"><em>nearestElement</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool &amp;&#160;</td>
-          <td class="paramname"><em>found</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating the element </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>y-coordinate to use for locating the element </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">nearestElement</td><td>pointer to element that point resides within or the nearest element </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">found</td><td>true if the point was found within an element. false if point not located within an element and the nearest element was returned</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Function that finds the nearest element center to a specified x,y location in the <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> </p>
+<p>Function used internally to find the <a class="el" href="classadcirc__element.html" title="Class that describes an ADCIRC element. ">adcirc_element</a> that a given x,y lies within and </p>
 
 </div>
 </div>
@@ -716,7 +625,7 @@ Protected Member Functions</h2></td></tr>
           <td class="memname">int adcirc_mesh::findElement </td>
           <td>(</td>
           <td class="paramtype">QPointF&#160;</td>
-          <td class="paramname"><em>location</em>, </td>
+          <td class="paramname"><em>pointLocation</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -737,17 +646,17 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
 <dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating the element </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>y-coordinate to use for locating the element </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pointLocation</td><td>point to use for locating the element </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">nearestElement</td><td>pointer to element that point resides within or the nearest element </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">found</td><td>true if the point was found within an element. false if point not located within an element and the nearest element was returned</td></tr>
   </table>
   </dd>
 </dl>
-<p>Function that finds the nearest element center to a specified x,y location in the <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> </p>
+<p>Function that locates the element that a point resides withinh </p>
 
 </div>
 </div>
@@ -795,6 +704,18 @@ Protected Member Functions</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pointLocation</td><td>point to use for locating the element </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">nearestElement</td><td>pointer to element that point resides within or the nearest element </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">found</td><td>true if the point was found within an element. false if point not located within an element and the nearest element was returned </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">weights</td><td>Vector of interpolation weights for the given point on the returned element</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Function that locates the element that a point resides within and returns interpolation weights</p>
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating the element </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>y-coordinate to use for locating the element </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">nearestElement</td><td>pointer to element that point resides within or the nearest element </td></tr>
@@ -803,65 +724,16 @@ Protected Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<p>Function that finds the nearest element center to a specified x,y location in the <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> </p>
+<p>Function that locates the element that a point resides within and returns interpolation weights </p>
 
 </div>
 </div>
-<a class="anchor" id="a5d7aab2fd8c272c34bd64eab08e0c5e9"></a>
+<a class="anchor" id="a50c69e6e54c2c19475682bf4f49f9034"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int adcirc_mesh::findElement </td>
-          <td>(</td>
-          <td class="paramtype">QPointF&#160;</td>
-          <td class="paramname"><em>pointLocation</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classadcirc__element.html">adcirc_element</a> *&amp;&#160;</td>
-          <td class="paramname"><em>nearestElement</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool &amp;&#160;</td>
-          <td class="paramname"><em>found</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">QVector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>weights</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pointLocation</td><td>point to use for locating the element </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">nearestElement</td><td>pointer to element that point resides within or the nearest element </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">found</td><td>true if the point was found within an element. false if point not located within an element and the nearest element was returned </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">weights</td><td>Vector of interpolation weights for the given point on the returned element</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Function that finds the nearest element center to a specified x,y location in the <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> </p>
-
-</div>
-</div>
-<a class="anchor" id="a1d929ea4cf1312c2f50fbb0f157a1d40"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int adcirc_mesh::findNearestNode </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>x</em>, </td>
@@ -875,8 +747,14 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classadcirc__node.html">adcirc_node</a> *&amp;&#160;</td>
-          <td class="paramname"><em>nearestNode</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="classadcirc__element.html">adcirc_element</a> *&amp;&#160;</td>
+          <td class="paramname"><em>nearestElement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &amp;&#160;</td>
+          <td class="paramname"><em>found</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -885,16 +763,18 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
 <dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating nearest node </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>y-coordinate to use for locating nearest node </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">node</td><td>Pointer to the nearest node</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating the element </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>y-coordinate to use for locating the element </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">nearestElement</td><td>pointer to element that point resides within or the nearest element </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">found</td><td>true if the point was found within an element. false if point not located within an element and the nearest element was returned</td></tr>
   </table>
   </dd>
 </dl>
-<p>Function that finds the nearest node to a specified x,y location in the <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> </p>
+<p>Function that locates the element that a point resides within </p>
 
 </div>
 </div>
@@ -933,12 +813,12 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a424a60db6920321b94bf6a30be1d5880"></a>
+<a class="anchor" id="a1d929ea4cf1312c2f50fbb0f157a1d40"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int adcirc_mesh::findXNearestElements </td>
+          <td class="memname">int adcirc_mesh::findNearestNode </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>x</em>, </td>
@@ -952,14 +832,8 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>nn</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">QList&lt; <a class="el" href="classadcirc__element.html">adcirc_element</a> * &gt; &amp;&#160;</td>
-          <td class="paramname"><em>elementList</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="classadcirc__node.html">adcirc_node</a> *&amp;&#160;</td>
+          <td class="paramname"><em>nearestNode</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -968,17 +842,17 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
 <dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating nearest element </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>y-coordinate to use for locating nearest element </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nn</td><td>Number of nearest elements to find </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">elementList</td><td>QList of pointers to the nn nearest elements</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating nearest node </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>y-coordinate to use for locating nearest node </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">node</td><td>Pointer to the nearest node</td></tr>
   </table>
   </dd>
 </dl>
-<p>Function that finds the nearest element center to a specified x,y location in the <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> </p>
+<p>Function that finds the nearest node to a specified x,y location in the <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> </p>
 
 </div>
 </div>
@@ -1024,12 +898,12 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="abd869290526a2f6acdaeaee8a52079ba"></a>
+<a class="anchor" id="a424a60db6920321b94bf6a30be1d5880"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int adcirc_mesh::findXNearestNodes </td>
+          <td class="memname">int adcirc_mesh::findXNearestElements </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>x</em>, </td>
@@ -1049,8 +923,8 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">QList&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;&#160;</td>
-          <td class="paramname"><em>nodeList</em>&#160;</td>
+          <td class="paramtype">QList&lt; <a class="el" href="classadcirc__element.html">adcirc_element</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>elementList</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1059,17 +933,18 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
 <dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating nearest node </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>y-coordinate to use for locating nearest node </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nn</td><td>Number of nearest nodes to find </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">nodeList</td><td>QList of pointers to the nn nearest nodes</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating nearest element </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>y-coordinate to use for locating nearest element </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nn</td><td>Number of nearest elements to find </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">elementList</td><td>QList of pointers to the nn nearest elements</td></tr>
   </table>
   </dd>
 </dl>
-<p>Function that finds the nearest node to a specified x,y location in the <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> </p>
+<p>Function that finds the nearest element center to a specified x,y location in the <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> </p>
 
 </div>
 </div>
@@ -1106,6 +981,56 @@ Protected Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">location</td><td>point location to use for locating the nearest node </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nn</td><td>Number of nearest nodes to find </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">nodeList</td><td>QList of pointers to the nn nearest nodes</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Function that finds the nearest node to a specified x,y location in the <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="abd869290526a2f6acdaeaee8a52079ba"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int adcirc_mesh::findXNearestNodes </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QList&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>nodeList</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
+<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating nearest node </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>y-coordinate to use for locating nearest node </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">nn</td><td>Number of nearest nodes to find </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">nodeList</td><td>QList of pointers to the nn nearest nodes</td></tr>
   </table>
@@ -1225,6 +1150,7 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
 <dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
