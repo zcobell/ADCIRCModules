@@ -84,17 +84,17 @@ int adcirc_node::fromString(QString line)
     tempDouble = tempString.simplified().toDouble(&err);
     if(!err)
         return ERROR_MESHREAD_NODERR;
-    this->x = tempDouble;
+    this->position.setX(tempDouble);
     tempString = tempList.value(2);
     tempDouble = tempString.simplified().toDouble(&err);
     if(!err)
         return ERROR_MESHREAD_NODERR;
-    this->y = tempDouble;
+    this->position.setY(tempDouble);
     tempString = tempList.value(3);
     tempDouble = tempString.simplified().toDouble(&err);
     if(!err)
         return ERROR_MESHREAD_NODERR;
-    this->z = tempDouble;
+    this->position.setZ(tempDouble);
 
     return ERROR_NOERROR;
 }
@@ -122,9 +122,9 @@ QString adcirc_node::toString(bool gcs)
     QString output;
 
     if(gcs)
-        output.sprintf("%11i   %14.10f   %14.10f  %14.10f",this->id,this->x,this->y,this->z);
+        output.sprintf("%11i   %14.10f   %14.10f  %14.10f",this->id,this->position.x(),this->position.y(),this->position.z());
     else
-        output.sprintf("%11i   %14.4f    %14.4f   %14.4f",this->id,this->x,this->y,this->z);
+        output.sprintf("%11i   %14.4f    %14.4f   %14.4f",this->id,this->position.x(),this->position.y(),this->position.z());
     return output;
 }
 //-----------------------------------------------------------------------------------------//

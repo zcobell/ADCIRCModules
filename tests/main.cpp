@@ -131,6 +131,7 @@ int main(int argc, char *argv[])
     qDebug() << "Weight: " << weight[0] << weight[1] << weight[2] << weight[0]+weight[1]+weight[2];
     qDebug() << "STATUS: " << thisMesh->error->getErrorString();
 
+
     qDebug() << "\n";
     qDebug() << "Testing Proj4 Coordinate Transformation...";
     ierr = thisMesh->project(26915);

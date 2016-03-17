@@ -35,6 +35,7 @@
 
 #include <QObject>
 #include <QStringList>
+#include <QVector3D>
 
 #include "QADCModules_global.h"
 
@@ -45,14 +46,8 @@ public:
 
     explicit adcirc_node(QObject *parent = 0);
 
-    ///X position of the ADCIRC node
-    double x;
-
-    ///Y position of the ADCIRC node
-    double y;
-
-    ///Z elevation of the ADCIRC node (positive depth)
-    double z;
+    ///Position in space of the adcirc node (x,y)
+    QVector3D position;
 
     ///ID for the ADCIRC node
     int    id;

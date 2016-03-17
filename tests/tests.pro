@@ -20,7 +20,7 @@
 
 QT       += core
 
-QT       -= gui
+QT       += gui
 
 TARGET = QADCModules_Testing
 CONFIG   += console

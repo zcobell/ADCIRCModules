@@ -280,8 +280,8 @@ int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
         {
             for(j=0;j<this->landBC[i]->numNodes;j++)
             {
-                z1 = this->landBC[i]->n1[j]->z;
-                z2 = this->landBC[i]->n2[j]->z;
+                z1 = this->landBC[i]->n1[j]->position.z();
+                z2 = this->landBC[i]->n2[j]->position.z();
                 c  = this->landBC[i]->crest[j];
 
                 if(z1 < c-minAbovePrevailingTopo || z2 < c-minAbovePrevailingTopo)
@@ -296,7 +296,7 @@ int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
         {
             for(j=0;j<this->landBC[i]->numNodes;j++)
             {
-                z1 = this->landBC[i]->n1[j]->z;
+                z1 = this->landBC[i]->n1[j]->position.z();
                 c  = this->landBC[i]->crest[j];
                 if(z1 < c-minAbovePrevailingTopo)
                 {
@@ -372,7 +372,7 @@ int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRa
             {
 
                 //...Get the max on both sides of the weir
-                zm = qMax(-this->landBC[i]->n1[j]->z,-this->landBC[i]->n2[j]->z);
+                zm = qMax(-this->landBC[i]->n1[j]->position.z(),-this->landBC[i]->n2[j]->position.z());
 
                 //...Get the weir elevation
                 c  = this->landBC[i]->crest[j];
@@ -403,8 +403,8 @@ int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRa
                     //...Write the output file if necessary
                     if(writeOutputFile)
                     {
-                        x = (this->landBC[i]->n1[j]->x+this->landBC[i]->n2[j]->x)/2.0;
-                        y = (this->landBC[i]->n1[j]->y+this->landBC[i]->n2[j]->y)/2.0;
+                        x = (this->landBC[i]->n1[j]->position.x()+this->landBC[i]->n2[j]->position.x())/2.0;
+                        y = (this->landBC[i]->n1[j]->position.y()+this->landBC[i]->n2[j]->position.y())/2.0;
                         diagOut << x << "," << y << "," << zm << "," << c << "," << raiseAmount << "\n";
                     }
                 }
@@ -418,7 +418,7 @@ int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRa
             {
 
                 //...Get the prevailing ground elevation
-                zm = -this->landBC[i]->n1[j]->z;
+                zm = -this->landBC[i]->n1[j]->position.z();
 
                 //...Get the weir elevation
                 c  = this->landBC[i]->crest[j];
@@ -449,8 +449,8 @@ int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRa
                     //...Write the output file if necessary
                     if(writeOutputFile)
                     {
-                        x = this->landBC[i]->n1[j]->x;
-                        y = this->landBC[i]->n1[j]->y;
+                        x = this->landBC[i]->n1[j]->position.x();
+                        y = this->landBC[i]->n1[j]->position.y();
                         diagOut << x << "," << y << "," << zm << "," << c << "," << raiseAmount << "\n";
                     }
                 }
@@ -630,10 +630,7 @@ int adcirc_mesh::project(int epsg)
     outPoint.resize(this->numNodes);
 
     for(i=0;i<this->numNodes;i++)
-    {
-        inPoint[i].setX(this->nodes[i]->x);
-        inPoint[i].setY(this->nodes[i]->y);
-    }
+        inPoint[i] = this->nodes[i]->position.toPointF();
 
     ierr = this->coordinateSystem->transform(this->epsg,epsg,inPoint,outPoint,this->isLatLon);
 
@@ -645,10 +642,9 @@ int adcirc_mesh::project(int epsg)
 
     for(i=0;i<this->numNodes;i++)
     {
-        this->nodes[i]->x = outPoint[i].x();
-        this->nodes[i]->y = outPoint[i].y();
+        this->nodes[i]->position.setX(outPoint[i].x());
+        this->nodes[i]->position.setY(outPoint[i].y());
     }
-
 
     return ERROR_NOERROR;
 }
@@ -816,8 +812,8 @@ int adcirc_mesh::buildNodalSearchTree()
 
     for(i=0;i<this->numNodes;i++)
     {
-        x[i] = this->nodes[i]->x;
-        y[i] = this->nodes[i]->y;
+        x[i] = this->nodes[i]->position.x();
+        y[i] = this->nodes[i]->position.y();
     }
 
     if(this->nodalSearchTree->initialized)
@@ -859,8 +855,8 @@ int adcirc_mesh::buildElementalSearchTree()
         y[i] = 0.0;
         for(j=0;j<this->elements[i]->numConnections;j++)
         {
-            x[i] = x[i] + this->elements[i]->connections[j]->x;
-            y[i] = y[i] + this->elements[i]->connections[j]->y;
+            x[i] = x[i] + this->elements[i]->connections[j]->position.x();
+            y[i] = y[i] + this->elements[i]->connections[j]->position.y();
         }
         x[i] = x[i] / static_cast<double>(this->elements[i]->numConnections);
         y[i] = y[i] / static_cast<double>(this->elements[i]->numConnections);
@@ -1708,12 +1704,12 @@ int adcirc_mesh::findAdcircElement(QPointF location, adcirc_element* &nearestEle
         n1  = e->connections[0];
         n2  = e->connections[1];
         n3  = e->connections[2];
-        x1  = n1->x;
-        x2  = n2->x;
-        x3  = n3->x;
-        y1  = n1->y;
-        y2  = n2->y;
-        y3  = n3->y;
+        x1  = n1->position.x();
+        x2  = n2->position.x();
+        x3  = n3->position.x();
+        y1  = n1->position.y();
+        y2  = n2->position.y();
+        y3  = n3->position.y();
 
         sa1 = qAbs( (x2*y3-x3*y2) - (x*y3-x3*y)   + (x*y2-x2*y)   );
         sa2 = qAbs( (x*y3-x3*y)   - (x1*y3-x3*y1) + (x1*y-x*y1)   );
