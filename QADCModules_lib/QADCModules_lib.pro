@@ -82,12 +82,12 @@ SOURCES += \
     adcirc_element.cpp \
     adcirc_boundary.cpp \
     adcirc_mesh.cpp \
-    adcirc_errors.cpp \
     adcirc_nodalparameter.cpp \
     adcirc_nodalattributes.cpp \
     proj4.cpp \
     adcirc_node_table.cpp \
-    qkdtree2.cpp
+    qkdtree2.cpp \
+    QADCModules_errors.cpp
 
 HEADERS +=\
     QADCModules_global.h \
@@ -96,13 +96,13 @@ HEADERS +=\
     adcirc_element.h \
     adcirc_boundary.h \
     adcirc_mesh.h \
-    adcirc_errors.h \
     adcirc_nodalparameter.h \
     adcirc_nodalattributes.h \
     proj4.h \
     adcirc_node_table.h \
     $$KDTREEPATH/kdtree2.hpp \
-    qkdtree2.h
+    qkdtree2.h \
+    QADCModules_errors.h
 
 
 unix {

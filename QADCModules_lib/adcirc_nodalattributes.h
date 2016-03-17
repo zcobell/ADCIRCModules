@@ -42,7 +42,7 @@
 
 #include "QADCModules_global.h"
 #include "adcirc_nodalparameter.h"
-#include "adcirc_errors.h"
+#include "QADCModules_errors.h"
 
 class QADCMODULESSHARED_EXPORT adcirc_nodalattributes : public QObject
 {
@@ -67,8 +67,8 @@ public:
     ///Vector of objects containing the nodal parameters read from the file
     QVector<adcirc_nodalparameter*> nodalParameters;
 
-    ///adcirc_errors class to describe any errors to the user
-    adcirc_errors *error;
+    ///QADCModules_errors class to describe any errors to the user
+    QADCModules_errors *error;
 
 
     //...PUBLIC FUNCTIONS...//

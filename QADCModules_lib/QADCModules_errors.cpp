@@ -17,19 +17,19 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 //-----------------------------------------------------------------------*/
-#include "adcirc_errors.h"
+#include "QADCModules_errors.h"
 
 //-----------------------------------------------------------------------------------------//
 // Constructor function. Initializes the error mapping between error codes and descriptions
 //-----------------------------------------------------------------------------------------//
-/** \brief Constructor function for adcirc_errors class
+/** \brief Constructor function for QADCModules_errors class
  *
  * \author Zach Cobell
  *
  * @param parent [in] parent QObject used for memory management
  */
 //-----------------------------------------------------------------------------------------//
-adcirc_errors::adcirc_errors(QObject *parent) : QObject(parent)
+QADCModules_errors::QADCModules_errors(QObject *parent) : QObject(parent)
 {
     this->initializeErrors();
 }
@@ -49,7 +49,7 @@ adcirc_errors::adcirc_errors(QObject *parent) : QObject(parent)
  * error mapping variable maps between an integer and a QString
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_errors::initializeErrors()
+int QADCModules_errors::initializeErrors()
 {
     //...Initialize the error code
     this->errorCode = ERROR_NOERROR;
@@ -88,9 +88,12 @@ int adcirc_errors::initializeErrors()
     this->errorMapping[ERROR_NODALATT_UNEXPECTEDEND] = "Unexpected end of the nodal attributes file.";
 
     //...PROJ4 Errors
-    this->errorMapping[ERROR_PROJ4_CANNOTREADEPSGFILE] = "There was an internal error reading the EPSG initialization file";
-    this->errorMapping[ERROR_PROJ4_NOSUCHPROJECTION]   = "The specified projection was not found";
-    this->errorMapping[ERROR_PROJ4_INTERNAL]           = "There was an error internal to PROJ4";
+    this->errorMapping[ERROR_PROJ4_CANNOTREADEPSGFILE] = "There was an internal error reading the EPSG initialization file.";
+    this->errorMapping[ERROR_PROJ4_NOSUCHPROJECTION]   = "The specified projection was not found.";
+    this->errorMapping[ERROR_PROJ4_INTERNAL]           = "There was an error internal to PROJ4.";
+
+    //...KDTREE Errors
+    this->errorMapping[ERROR_QKDTREE2_SIZEMISMATCH]    = "The x and y size vectors are not equal.";
 
     return ERROR_NOERROR;
 }
@@ -109,7 +112,7 @@ int adcirc_errors::initializeErrors()
  * is meaningful and can be used to solve their issues
  **/
 //-----------------------------------------------------------------------------------------//
-QString adcirc_errors::getErrorString()
+QString QADCModules_errors::getErrorString()
 {
     return this->errorMapping[this->errorCode];
 }
@@ -129,7 +132,7 @@ QString adcirc_errors::getErrorString()
  * Sets the current error code
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_errors::setError(int newErrorCode)
+int QADCModules_errors::setError(int newErrorCode)
 {
     this->errorCode = newErrorCode;
     return ERROR_NOERROR;
@@ -148,7 +151,7 @@ int adcirc_errors::setError(int newErrorCode)
  * Returns the current error code
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_errors::getError()
+int QADCModules_errors::getError()
 {
     return this->errorCode;
 }
@@ -166,7 +169,7 @@ int adcirc_errors::getError()
  * Resets the current error to no error
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_errors::resetError()
+int QADCModules_errors::resetError()
 {
     this->errorCode = ERROR_NOERROR;
     return ERROR_NOERROR;

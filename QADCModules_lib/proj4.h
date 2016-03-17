@@ -40,7 +40,7 @@
 #include <QStringList>
 #include <QPoint>
 
-#include "adcirc_errors.h"
+#include "QADCModules_errors.h"
 
 class proj4 : public QObject
 {

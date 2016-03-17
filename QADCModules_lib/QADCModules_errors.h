@@ -18,13 +18,13 @@
 //
 //-----------------------------------------------------------------------*/
 /**
- * \class adcirc_errors
+ * \class QADCModules_errors
  *
  * \brief Class to relay error messages to the user
  *
  * \author Zach Cobell
  *
- * The adcirc_errors class is designed to be used by all other classes
+ * The QADCModules_errors class is designed to be used by all other classes
  * in this suite of classes to relay error messages. Error messages are
  * mapped to a set of descriptions on startup so that the user can easily
  * understand where a particular function has failed. All routines must
@@ -34,8 +34,8 @@
  * Contact: zcobell@gmail.com
  *
  */
-#ifndef ADCIRC_ERRORS_H
-#define ADCIRC_ERRORS_H
+#ifndef QADCMODULES_ERRORS_H
+#define QADCMODULES_ERRORS_H
 
 #include "QADCModules_global.h"
 #include <QObject>
@@ -95,12 +95,12 @@
 //----------------------------------------------------//
 
 
-class QADCMODULESSHARED_EXPORT adcirc_errors : public QObject
+class QADCMODULESSHARED_EXPORT QADCModules_errors : public QObject
 {
     Q_OBJECT
 public:
 
-    explicit adcirc_errors(QObject *parent = 0);
+    explicit QADCModules_errors(QObject *parent = 0);
 
     int resetError();
 
@@ -124,4 +124,4 @@ private:
 
 };
 
-#endif // ADCIRC_ERRORS_H
+#endif // QADCMODULES_ERRORS_H

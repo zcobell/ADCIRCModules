@@ -39,7 +39,7 @@
 #include <QPointF>
 
 #include "QADCModules_global.h"
-#include "adcirc_errors.h"
+#include "QADCModules_errors.h"
 #include "kdtree2.hpp"
 
 class QADCMODULESSHARED_EXPORT qKdtree2 : public QObject

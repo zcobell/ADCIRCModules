@@ -38,7 +38,7 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
     //...Initialize the errors so we can
     //   describe what went wrong to the
     //   user later    
-    this->error = new adcirc_errors(this);
+    this->error = new QADCModules_errors(this);
 
     //...By default, we will assume that the mesh numbering should be sequential
     this->ignoreMeshNumbering = false;

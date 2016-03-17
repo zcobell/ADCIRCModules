@@ -18,7 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_node.h"
-#include "adcirc_errors.h"
+#include "QADCModules_errors.h"
 
 
 
