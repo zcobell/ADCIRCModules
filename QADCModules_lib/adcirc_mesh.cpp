@@ -38,7 +38,7 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
     //...Initialize the errors so we can
     //   describe what went wrong to the
     //   user later    
-    this->error = new adcirc_errors(this);
+    this->error = new QADCModules_errors(this);
 
     //...By default, we will assume that the mesh numbering should be sequential
     this->ignoreMeshNumbering = false;
@@ -228,13 +228,24 @@ int adcirc_mesh::renumber()
 {
     int i;
 
+    this->nodeToPositionMapping.clear();
+    this->elementToPositionMapping.clear();
+
     //...Renumber the nodes
     for(i=0;i<this->numNodes;i++)
+    {
         this->nodes[i]->id = i+1;
+        this->nodeToPositionMapping[this->nodes[i]->id] = i;
+        this->nodeToIdMapping[i] = this->nodes[i]->id;
+    }
 
     //...Renumber the elements
     for(i=0;i<this->numElements;i++)
+    {
         this->elements[i]->id = i+1;
+        this->elementToPositionMapping[this->elements[i]->id] = i;
+        this->elementToIdMapping[i] = this->elements[i]->id;
+    }
 
     return ERROR_NOERROR;
 }
@@ -269,8 +280,8 @@ int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
         {
             for(j=0;j<this->landBC[i]->numNodes;j++)
             {
-                z1 = this->landBC[i]->n1[j]->z;
-                z2 = this->landBC[i]->n2[j]->z;
+                z1 = this->landBC[i]->n1[j]->position.z();
+                z2 = this->landBC[i]->n2[j]->position.z();
                 c  = this->landBC[i]->crest[j];
 
                 if(z1 < c-minAbovePrevailingTopo || z2 < c-minAbovePrevailingTopo)
@@ -285,7 +296,7 @@ int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
         {
             for(j=0;j<this->landBC[i]->numNodes;j++)
             {
-                z1 = this->landBC[i]->n1[j]->z;
+                z1 = this->landBC[i]->n1[j]->position.z();
                 c  = this->landBC[i]->crest[j];
                 if(z1 < c-minAbovePrevailingTopo)
                 {
@@ -361,7 +372,7 @@ int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRa
             {
 
                 //...Get the max on both sides of the weir
-                zm = qMax(-this->landBC[i]->n1[j]->z,-this->landBC[i]->n2[j]->z);
+                zm = qMax(-this->landBC[i]->n1[j]->position.z(),-this->landBC[i]->n2[j]->position.z());
 
                 //...Get the weir elevation
                 c  = this->landBC[i]->crest[j];
@@ -392,8 +403,8 @@ int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRa
                     //...Write the output file if necessary
                     if(writeOutputFile)
                     {
-                        x = (this->landBC[i]->n1[j]->x+this->landBC[i]->n2[j]->x)/2.0;
-                        y = (this->landBC[i]->n1[j]->y+this->landBC[i]->n2[j]->y)/2.0;
+                        x = (this->landBC[i]->n1[j]->position.x()+this->landBC[i]->n2[j]->position.x())/2.0;
+                        y = (this->landBC[i]->n1[j]->position.y()+this->landBC[i]->n2[j]->position.y())/2.0;
                         diagOut << x << "," << y << "," << zm << "," << c << "," << raiseAmount << "\n";
                     }
                 }
@@ -407,7 +418,7 @@ int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRa
             {
 
                 //...Get the prevailing ground elevation
-                zm = -this->landBC[i]->n1[j]->z;
+                zm = -this->landBC[i]->n1[j]->position.z();
 
                 //...Get the weir elevation
                 c  = this->landBC[i]->crest[j];
@@ -438,8 +449,8 @@ int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRa
                     //...Write the output file if necessary
                     if(writeOutputFile)
                     {
-                        x = this->landBC[i]->n1[j]->x;
-                        y = this->landBC[i]->n1[j]->y;
+                        x = this->landBC[i]->n1[j]->position.x();
+                        y = this->landBC[i]->n1[j]->position.y();
                         diagOut << x << "," << y << "," << zm << "," << c << "," << raiseAmount << "\n";
                     }
                 }
@@ -619,10 +630,7 @@ int adcirc_mesh::project(int epsg)
     outPoint.resize(this->numNodes);
 
     for(i=0;i<this->numNodes;i++)
-    {
-        inPoint[i].setX(this->nodes[i]->x);
-        inPoint[i].setY(this->nodes[i]->y);
-    }
+        inPoint[i] = this->nodes[i]->position.toPointF();
 
     ierr = this->coordinateSystem->transform(this->epsg,epsg,inPoint,outPoint,this->isLatLon);
 
@@ -634,10 +642,9 @@ int adcirc_mesh::project(int epsg)
 
     for(i=0;i<this->numNodes;i++)
     {
-        this->nodes[i]->x = outPoint[i].x();
-        this->nodes[i]->y = outPoint[i].y();
+        this->nodes[i]->position.setX(outPoint[i].x());
+        this->nodes[i]->position.setY(outPoint[i].y());
     }
-
 
     return ERROR_NOERROR;
 }
@@ -752,6 +759,437 @@ int adcirc_mesh::checkOverlappingBoundaries(int &numOverlappingBoundaries, QList
 
 
 //-----------------------------------------------------------------------------------------//
+//...Function to build the element table
+//-----------------------------------------------------------------------------------------//
+/** \brief This function builds a table of the elements around a node
+ *
+ * \author Zach Cobell
+ *
+ * This function uses the adcirc_node_table class to build a list of the elements around
+ * a specific node, which is useful for many functions
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::buildElementTable()
+{
+    int i,j;
+
+    this->node_table.clear();
+
+    this->node_table.resize(this->numNodes);
+
+    for(i=0;i<this->numNodes;i++)
+        this->node_table[i] = new adcirc_node_table(this->nodes[i],this);
+
+    for(i=0;i<this->numElements;i++)
+        for(j=0;j<this->elements[i]->numConnections;j++)
+            this->node_table[this->elements[i]->connections[j]->id-1]->add(this->elements[i]);
+
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that builds a nodal kdtree2
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that builds a kdtree2 search tree object for the nodes in the adcirc_mesh
+ *
+ * \author Zach Cobell
+ *
+ * Function that builds a kdtree2 search tree object for the nodes in the adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::buildNodalSearchTree()
+{
+    int i,ierr;
+    QVector<double> x,y;
+
+    x.resize(this->numNodes);
+    y.resize(this->numNodes);
+
+    for(i=0;i<this->numNodes;i++)
+    {
+        x[i] = this->nodes[i]->position.x();
+        y[i] = this->nodes[i]->position.y();
+    }
+
+    if(this->nodalSearchTree->initialized)
+        delete this->nodalSearchTree;
+
+    this->nodalSearchTree = new qKdtree2(this);
+    ierr = this->nodalSearchTree->build(x,y);
+    if(ierr!=ERROR_NOERROR)
+    {
+        this->error->setError(ierr);
+        return this->error->getError();
+    }
+
+    this->nodalSearchTree->initialized = true;
+
+    this->error->setError(ERROR_NOERROR);
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that builds a elemental kdtree2
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that builds a kdtree2 search tree object for the element centers in the adcirc_mesh
+ *
+ * \author Zach Cobell
+ *
+ * Function that builds a kdtree2 search tree object for the element centers in the adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::buildElementalSearchTree()
+{
+    int i,j,ierr;
+    QVector<double> x,y;
+
+    x.resize(this->numElements);
+    y.resize(this->numElements);
+
+    for(i=0;i<this->numElements;i++)
+    {
+        x[i] = 0.0;
+        y[i] = 0.0;
+        for(j=0;j<this->elements[i]->numConnections;j++)
+        {
+            x[i] = x[i] + this->elements[i]->connections[j]->position.x();
+            y[i] = y[i] + this->elements[i]->connections[j]->position.y();
+        }
+        x[i] = x[i] / static_cast<double>(this->elements[i]->numConnections);
+        y[i] = y[i] / static_cast<double>(this->elements[i]->numConnections);
+    }
+
+    if(this->elementalSearchTree->initialized)
+        delete this->elementalSearchTree;
+
+    this->elementalSearchTree = new qKdtree2(this);
+    ierr = this->elementalSearchTree->build(x,y);
+    if(ierr!=ERROR_NOERROR)
+    {
+        this->error->setError(ierr);
+        return this->error->getError();
+    }
+
+    this->elementalSearchTree->initialized = true;
+
+    this->error->setError(ERROR_NOERROR);
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that finds the nearest node
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  x       x-coordinate to use for locating nearest node
+ * @param[in]  y       y-coordinate to use for locating nearest node
+ * @param[out] node    Pointer to the nearest node
+ *
+ * Function that finds the nearest node to a specified x,y location in the adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::findNearestNode(double x, double y, adcirc_node* &nearestNode)
+{
+    int ierr = this->findNearestNode(QPointF(x,y),nearestNode);
+    this->error->setError(ierr);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that finds the nearest node
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  pointLocation Location for which the function will determine the nearest node
+ * @param[out] node          Pointer to the nearest node
+ *
+ * Function that finds the nearest node to a specified x,y location in the adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::findNearestNode(QPointF pointLocation, adcirc_node* &nearestNode)
+{
+    int index;
+
+    if(this->nodalSearchTree.isNull())
+        this->nodalSearchTree = new qKdtree2(this);
+
+    if(!this->nodalSearchTree->initialized)
+        this->buildNodalSearchTree();
+
+    this->nodalSearchTree->findNearest(pointLocation,index);
+
+    nearestNode = this->nodes[index];
+
+    this->error->setError(ERROR_NOERROR);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that finds the list of nn nearest nodes
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  x        x-coordinate to use for locating nearest node
+ * @param[in]  y        y-coordinate to use for locating nearest node
+ * @param[in]  nn       Number of nearest nodes to find
+ * @param[out] nodeList QList of pointers to the nn nearest nodes
+ *
+ * Function that finds the nearest node to a specified x,y location in the adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::findXNearestNodes(double x, double y, int nn, QList<adcirc_node *> &nodeList)
+{
+    int ierr = this->findXNearestNodes(QPointF(x,y),nn,nodeList);
+    this->error->setError(ierr);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that finds the list of nn nearest nodes
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  location point location to use for locating the nearest node
+ * @param[in]  nn       Number of nearest nodes to find
+ * @param[out] nodeList QList of pointers to the nn nearest nodes
+ *
+ * Function that finds the nearest node to a specified x,y location in the adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::findXNearestNodes(QPointF pointLocation, int nn, QList<adcirc_node *> &nodeList)
+{
+    int i;
+    QVector<int> indicies;
+
+    if(this->nodalSearchTree.isNull())
+        this->nodalSearchTree = new qKdtree2(this);
+
+    if(!this->nodalSearchTree->initialized)
+        this->buildNodalSearchTree();
+
+    this->nodalSearchTree->findXNearest(pointLocation,nn,indicies);
+
+    nodeList.clear();
+
+    for(i=0;i<indicies.size();i++)
+        nodeList.append(this->nodes[indicies[i]]);
+
+    this->error->setError(ERROR_NOERROR);
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that finds the nn nearest elements
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that finds a list of the nearest element to a specified x,y coordinate
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  x           x-coordinate to use for locating nearest element
+ * @param[in]  y           y-coordinate to use for locating nearest element
+ * @param[in]  nn          Number of nearest elements to find
+ * @param[out] elementList QList of pointers to the nn nearest elements
+ *
+ * Function that finds the nearest element center to a specified x,y location in the adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_element*> &elementList)
+{
+    int ierr = this->findXNearestElements(QPointF(x,y),nn,elementList);
+    this->error->setError(ierr);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that finds the nn nearest elements
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that finds a list of the nearest element to a specified x,y coordinate
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  location    point location for locating the nearest element
+ * @param[in]  nn          Number of nearest elements to find
+ * @param[out] elementList QList of pointers to the nn nearest elements
+ *
+ * Function that finds the nearest element center to a specified x,y location in the adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::findXNearestElements(QPointF pointLocation, int nn, QList<adcirc_element*> &elementList)
+{
+    int i;
+    QVector<int> indicies;
+
+    if(this->elementalSearchTree.isNull())
+        this->elementalSearchTree = new qKdtree2(this);
+
+    if(!this->elementalSearchTree->initialized)
+        this->buildElementalSearchTree();
+
+    this->elementalSearchTree->findXNearest(pointLocation,nn,indicies);
+
+    elementList.clear();
+
+    for(i=0;i<indicies.size();i++)
+        elementList.append(this->elements[indicies[i]]);
+
+    this->error->setError(ERROR_NOERROR);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that finds the element that a given x,y resides in
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  x               x-coordinate to use for locating the element
+ * @param[in]  y               y-coordinate to use for locating the element
+ * @param[out] nearestElement  pointer to element that point resides within or the nearest element
+ * @param[out] found           true if the point was found within an element. false if point
+ *                             not located within an element and the nearest element was returned
+ *
+ * Function that finds the nearest element center to a specified x,y location in the adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found)
+{
+    QVector<double> dmy;
+    int ierr = this->findAdcircElement(QPointF(x,y),nearestElement,found,dmy);
+    this->error->setError(ierr);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that finds the element that a given x,y resides in
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  x               x-coordinate to use for locating the element
+ * @param[in]  y               y-coordinate to use for locating the element
+ * @param[out] nearestElement  pointer to element that point resides within or the nearest element
+ * @param[out] found           true if the point was found within an element. false if point
+ *                             not located within an element and the nearest element was returned
+ *
+ * Function that finds the nearest element center to a specified x,y location in the adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::findElement(QPointF location, adcirc_element* &nearestElement, bool &found)
+{
+    QVector<double> dmy;
+    int ierr = this->findAdcircElement(location,nearestElement,found,dmy);
+    this->error->setError(ierr);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that finds the element that a given x,y resides in
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  x               x-coordinate to use for locating the element
+ * @param[in]  y               y-coordinate to use for locating the element
+ * @param[out] nearestElement  pointer to element that point resides within or the nearest element
+ * @param[out] found           true if the point was found within an element. false if point
+ *                             not located within an element and the nearest element was returned
+ * @param[out] weights         Vector of interpolation weights for the given point on the returned element
+ *
+ * Function that finds the nearest element center to a specified x,y location in the adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
+{
+    int ierr = this->findAdcircElement(QPointF(x,y),nearestElement,found,weights);
+    this->error->setError(ierr);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that finds the element that a given x,y resides in
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
+ *
+ * \author Zach Cobell
+ *
+ * @param[in]  pointLocation   point to use for locating the element
+ * @param[out] nearestElement  pointer to element that point resides within or the nearest element
+ * @param[out] found           true if the point was found within an element. false if point
+ *                             not located within an element and the nearest element was returned
+ * @param[out] weights         Vector of interpolation weights for the given point on the returned element
+ *
+ * Function that finds the nearest element center to a specified x,y location in the adcirc_mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
+{
+    int ierr = this->findAdcircElement(pointLocation,nearestElement,found,weights);
+    this->error->setError(ierr);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
 //
 //
 //   P R O T E C T E D
@@ -858,13 +1296,14 @@ int adcirc_mesh::readMesh()
 
         //...Save the mapping. This is used to prevent
         //   issues with meshes that are not numbered sequentially
-        this->nodeMapping[this->nodes[i]->id] = i;
+        this->nodeToPositionMapping[this->nodes[i]->id] = i;
+        this->nodeToIdMapping[i] = this->nodes[i]->id;
     }
 
     //...Loop over the elements
     for(i=0;i<this->numElements;i++)
     {
-        ierr = this->elements[i]->fromString(meshFileList.value(this->numNodes+2+i),this->nodes,this->nodeMapping);
+        ierr = this->elements[i]->fromString(meshFileList.value(this->numNodes+2+i),this->nodes,this->nodeToPositionMapping);
         if(ierr!=ERROR_NOERROR)
         {
             this->error->setError(ierr);
@@ -885,7 +1324,8 @@ int adcirc_mesh::readMesh()
 
         //...Save the mapping. This is used to prevent
         //   issues with meshes that are not numbered sequentially
-        this->elementMapping[this->elements[i]->id] = i;
+        this->elementToPositionMapping[this->elements[i]->id] = i;
+        this->elementToIdMapping[i] = this->elements[i]->id;
     }
 
     //...Read the open boundary
@@ -1049,7 +1489,7 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
 
             tempString = fileData[position];
             position = position + 1;
-            ierr = this->openBC[i]->fromString(tempString,j,this->nodes,this->nodeMapping);
+            ierr = this->openBC[i]->fromString(tempString,j,this->nodes,this->nodeToPositionMapping);
             if(ierr!=ERROR_NOERROR)
             {
                 this->error->setError(ierr);
@@ -1168,7 +1608,7 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
 
             tempString = fileData[position];
             position = position + 1;
-            ierr = this->landBC[i]->fromString(tempString,j,this->nodes,this->nodeMapping);
+            ierr = this->landBC[i]->fromString(tempString,j,this->nodes,this->nodeToPositionMapping);
             if(ierr!=ERROR_NOERROR)
             {
                 this->error->setError(ierr);
@@ -1261,31 +1701,79 @@ int adcirc_mesh::writeMesh(QString filename)
 
 
 //-----------------------------------------------------------------------------------------//
-//...Function to build the element table
+//...Function to find the adcirc_element that a given x,y lies within
 //-----------------------------------------------------------------------------------------//
-/** \brief This function builds a table of the elements around a node
+/** \brief Function to find the adcirc_element that a given x,y lies within
  *
  * \author Zach Cobell
  *
- * This function uses the adcirc_node_table class to build a list of the elements around
- * a specific node, which is useful for many functions
+ * @param[in]  x              x-coordinate to locate inside an element
+ * @param[in]  y              y-coordinate to locate inside an element
+ * @param[out] nearestElement pointer to the nearest adcirc_element to the given x,y
+ * @param[out] found          true if the x,y coordinate was found within an element or false
+ *                            if the location is not within any adcirc_element in which case the
+ *                            nearest element is given
+ * @param[out] weights        vector containing the weighting function for the given x,y inside the
+ *                            adcirc_element. Used to weight interpolation functions.
  *
+ * Function to find the adcirc_element that a given x,y lies within
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::buildElementTable()
+int adcirc_mesh::findAdcircElement(QPointF location, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
 {
-    int i,j;
+    int i;
+    double x,y;
+    double x1,x2,x3;
+    double y1,y2,y3;
+    double sa1,sa2,sa3,ta;
+    int searchDepth = 20;
+    adcirc_node *n1,*n2,*n3;
+    adcirc_element *e;
+    QList<adcirc_element*> elementList;
 
-    this->node_table.clear();
+    x = static_cast<double>(location.x());
+    y = static_cast<double>(location.y());
 
-    this->node_table.resize(this->numNodes);
+    this->findXNearestElements(location,searchDepth,elementList);
 
-    for(i=0;i<this->numNodes;i++)
-        this->node_table[i] = new adcirc_node_table(this->nodes[i],this);
+    found = false;
+    weights.resize(3);
 
-    for(i=0;i<this->numElements;i++)
-        for(j=0;j<this->elements[i]->numConnections;j++)
-            this->node_table[this->elements[i]->connections[j]->id-1]->add(this->elements[i]);
+    for(i=0;i<searchDepth;i++)
+    {
+        e   = elementList.value(i);
+        n1  = e->connections[0];
+        n2  = e->connections[1];
+        n3  = e->connections[2];
+        x1  = n1->position.x();
+        x2  = n2->position.x();
+        x3  = n3->position.x();
+        y1  = n1->position.y();
+        y2  = n2->position.y();
+        y3  = n3->position.y();
+
+        sa1 = qAbs( (x2*y3-x3*y2) - (x*y3-x3*y)   + (x*y2-x2*y)   );
+        sa2 = qAbs( (x*y3-x3*y)   - (x1*y3-x3*y1) + (x1*y-x*y1)   );
+        sa3 = qAbs( (x2*y-x*y2)   - (x1*y-x*y1)   + (x1*y2-x2*y1) );
+        ta  = qAbs( (x2*y3-x3*y2) - (x1*y3-x3*y1) + (x1*y2-x2*y1) );
+
+        if(sa1+sa2+sa3 < 1.001*ta)
+        {
+            nearestElement = e;
+            found = true;
+            weights[0] = ((x-x3)*(y2-y3)+(x2-x3)*(y3-y))/ta;
+            weights[1] = ((x-x1)*(y3-y1)-(y-y1)*(x3-x1))/ta;
+            weights[2] = ((y-y1)*(x2-x1)-(x-x1)*(y2-y1))/ta;
+            return ERROR_NOERROR;
+        }
+
+    }
+
+    if(!found)
+    {
+        nearestElement = elementList.value(0);
+        weights.fill(1.0/3.0);
+    }
 
     return ERROR_NOERROR;
 }

@@ -20,7 +20,7 @@
 
 QT       += core
 
-QT       -= gui
+QT       += gui
 
 TARGET = QADCModules_Testing
 CONFIG   += console
@@ -30,7 +30,8 @@ CONFIG   += link_QADCModules
 
 TEMPLATE = app
 
-INCLUDEPATH += ../QADCModules_lib
+#...Include the headers for this library, KDTREE, and BOOST
+INCLUDEPATH += ../QADCModules_lib $$PWD/../thirdparty/kdtree $$PWD/../thirdparty
 
 win32{
 CONFIG(debug, debug | release): LIBS += -L$$OUT_PWD/../QADCModules_lib/debug -lQADCModules

@@ -18,7 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_element.h"
-#include "adcirc_errors.h"
+#include "QADCModules_errors.h"
 
 bool operator<(const adcirc_element e1,const adcirc_element e2)
 {

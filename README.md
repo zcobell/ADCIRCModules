@@ -54,7 +54,15 @@ Detailed documentation is available [here](http://zcobell.github.io/QADCModules/
 
         thisMesh->project(26915);
 
-9. Diagnose an error while working with a mesh object
+9. Use a KDTREE to locate the nearest node to a point
+
+        thisMesh->findNearestNode(-90.47,30.03,nearestNode);
+
+10. Use a KDTREE to locate the element a point lies within and determine vector of interpolation weights:
+
+        thisMesh->findElement(-90.47,30.04,nearestElement,elementFound,weight)
+
+11. Diagnose an error while working with a mesh object
 
         qDebug() << thisMesh->error->getErrorString();
 

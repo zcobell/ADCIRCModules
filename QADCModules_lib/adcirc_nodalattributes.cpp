@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------*/
 
 #include "adcirc_nodalattributes.h"
-#include "adcirc_errors.h"
+#include "QADCModules_errors.h"
 #include <QDebug>
 
 //-----------------------------------------------------------------------------------------//
@@ -37,7 +37,7 @@
 //-----------------------------------------------------------------------------------------//
 adcirc_nodalattributes::adcirc_nodalattributes(QObject *parent) : QObject(parent)
 {
-    this->error = new adcirc_errors(this);
+    this->error = new QADCModules_errors(this);
 }
 
 

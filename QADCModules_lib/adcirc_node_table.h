@@ -39,7 +39,7 @@
 #include "QADCModules_global.h"
 #include "adcirc_node.h"
 #include "adcirc_element.h"
-#include "adcirc_errors.h"
+#include "QADCModules_errors.h"
 
 class QADCMODULESSHARED_EXPORT adcirc_node_table : public QObject
 {
