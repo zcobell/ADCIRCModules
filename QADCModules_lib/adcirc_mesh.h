@@ -110,6 +110,18 @@ public:
     ///Variable that determines the EPSG coordinate system reference. Default is geographic (WGS84, EPSG: 4326)
     int epsg;
 
+    ///Map function between a node ID and its position in the node vector
+    QMap<int,int> nodeToPositionMapping;
+
+    ///Map function between array position and the node id
+    QMap<int,int> nodeToIdMapping;
+
+    ///Map function between an element ID and its position in the element vector
+    QMap<int,int> elementToPositionMapping;
+
+    ///Map function between array position and the element id
+    QMap<int,int> elementToIdMapping;
+
 
     //...Public functions...///
 
@@ -124,7 +136,9 @@ public:
 
     int buildElementTable();
 
-    int buildSearchTree();
+    int buildNodalSearchTree();
+
+    int buildElementalSearchTree();
 
     int checkLeveeHeights(double minAbovePrevailingTopo = 0.20);
 
@@ -148,11 +162,19 @@ public:
 
     int project(int epsg);
 
-    int findNearestNode(double x, double y, int &index);
+    int findNearestNode(double x, double y, adcirc_node* &nearestNode);
+    int findNearestNode(QPointF pointLocation, adcirc_node* &nearestNode);
 
-    int findXNearestNodes(double x, double y, int nn, QVector<int> &indicies);
+    int findXNearestNodes(double x, double y, int nn, QList<adcirc_node *> &nodeList);
+    int findXNearestNodes(QPointF pointLocation, int nn, QList<adcirc_node *> &nodeList);
 
-    int findElement(double x, double y, int &index);
+    int findXNearestElements(double x, double y, int nn, QList<adcirc_element *> &elementList);
+    int findXNearestElements(QPointF pointLocation, int nn, QList<adcirc_element *> &elementList);
+
+    int findElement(double x, double y, adcirc_element* &nearestElement, bool &found);
+    int findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found);
+    int findElement(double x, double y, adcirc_element *&nearestElement, bool &found, QVector<double> &weights);
+    int findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found, QVector<double> &weights);
 
 private:
 
@@ -164,17 +186,14 @@ private:
     ///Variable that lets other portions of the code know if the mesh is correctly numbered or not
     bool meshNeedsNumbering;
 
-    ///Map function between a node ID and its position in the node vector
-    QMap<int,int> nodeMapping;
-
-    ///Map function between an element ID and its position in the element vector
-    QMap<int,int> elementMapping;
-
     ///Instance of class used for coordinate system transformation
     proj4 *coordinateSystem;
 
-    ///Pointer that holds a KDTREE2 search tree for this mesh
-    qKdtree2* searchTree;
+    ///Pointer that holds a KDTREE2 search tree for this mesh's nodes
+    QPointer<qKdtree2> nodalSearchTree;
+
+    ///Pointer that holds a KDTREE2 search tree for this mesh's elements
+    QPointer<qKdtree2> elementalSearchTree;
 
 
 protected:
@@ -192,6 +211,8 @@ protected:
     int readOpenBoundaries(int &position, QStringList &fileData);
 
     int readLandBoundaries(int &position, QStringList &fileData);
+
+    int findAdcircElement(QPointF location, adcirc_element* &nearestElement, bool &found, QVector<double> &weights);
 
 };
 

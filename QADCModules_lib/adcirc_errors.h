@@ -88,6 +88,10 @@
 #define ERROR_PROJ4_NOSUCHPROJECTION   -999905002
 #define ERROR_PROJ4_INTERNAL           -999905003
 
+
+//...QKDTREE2 CLASS ERRORS
+#define ERROR_QKDTREE2_SIZEMISMATCH    -999906001
+
 //----------------------------------------------------//
 
 

@@ -27,11 +27,15 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    int i,ierr,nearIndex;
+    int i,ierr;
     int numLeveesRaised,numDisjoint,numDuplicates;
     double maxLeveeRaise;
+    adcirc_node* nearestNode;
+    adcirc_element* nearestElement;
     QList<adcirc_node*> disjointList;
     QList<adcirc_element*> duplicateElements;
+    QVector<double> weight;
+    bool elementFound;
 
     ierr = 0;
 
@@ -117,20 +121,23 @@ int main(int argc, char *argv[])
 
 
     qDebug() << "\n";
+    qDebug() << "Testing KDTREE2...";
+    ierr = thisMesh->findNearestNode(-90.478577,30.036816,nearestNode);
+    qDebug() << "Nearest Location Node Number: " << nearestNode->id;
+    qDebug() << "STATUS: " << ierr;
+    ierr = thisMesh->findElement(-90.477689,30.040329,nearestElement,elementFound,weight);
+    qDebug() << "Element ID: " << nearestElement->id;
+    qDebug() << "Element Found: " << elementFound;
+    qDebug() << "Weight: " << weight[0] << weight[1] << weight[2] << weight[0]+weight[1]+weight[2];
+    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
+
+    qDebug() << "\n";
     qDebug() << "Testing Proj4 Coordinate Transformation...";
     ierr = thisMesh->project(26915);
     qDebug() << "STATUS: " << thisMesh->error->getErrorString();
     if(thisMesh->error->getError()!=ERROR_NOERROR)
         return thisMesh->error->getError();
     ierr = thisMesh->write("../../QADCModules/tests/test_files/ms-riv-me-utm15.grd");
-
-
-    qDebug() << "\n";
-    qDebug() << "Testing KDTREE2...";
-    ierr = thisMesh->buildSearchTree();
-    ierr = thisMesh->findNearestNode(-95.0,20.0,nearIndex);
-    qDebug() << "Nearest Location Index: " << nearIndex;
-    qDebug() << ierr;
 
 
     //...nodal_attributes, nodal_parameter testing...//
