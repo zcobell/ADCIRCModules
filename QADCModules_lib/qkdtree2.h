@@ -36,6 +36,7 @@
 #include <QObject>
 #include <QVector>
 #include <QSharedPointer>
+#include <QPointF>
 
 #include "QADCModules_global.h"
 #include "adcirc_errors.h"

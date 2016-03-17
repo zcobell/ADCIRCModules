@@ -20,7 +20,6 @@
 #include "qkdtree2.h"
 #include "boost/array.hpp"
 #include "boost/multi_array.hpp"
-#include <QDebug>
 
 qKdtree2::qKdtree2(QObject *parent) : QObject(parent)
 {
