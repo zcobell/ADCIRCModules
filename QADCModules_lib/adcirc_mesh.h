@@ -162,19 +162,19 @@ public:
 
     int project(int epsg);
 
-    int findNearestNode(double x, double y, adcirc_node* &nearestNode);
     int findNearestNode(QPointF pointLocation, adcirc_node* &nearestNode);
+    int findNearestNode(double x, double y, adcirc_node* &nearestNode);
 
-    int findXNearestNodes(double x, double y, int nn, QList<adcirc_node *> &nodeList);
     int findXNearestNodes(QPointF pointLocation, int nn, QList<adcirc_node *> &nodeList);
+    int findXNearestNodes(double x, double y, int nn, QList<adcirc_node *> &nodeList);
 
-    int findXNearestElements(double x, double y, int nn, QList<adcirc_element *> &elementList);
     int findXNearestElements(QPointF pointLocation, int nn, QList<adcirc_element *> &elementList);
+    int findXNearestElements(double x, double y, int nn, QList<adcirc_element *> &elementList);
 
-    int findElement(double x, double y, adcirc_element* &nearestElement, bool &found);
+    int findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found, QVector<double> &weights);
     int findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found);
     int findElement(double x, double y, adcirc_element *&nearestElement, bool &found, QVector<double> &weights);
-    int findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found, QVector<double> &weights);
+    int findElement(double x, double y, adcirc_element* &nearestElement, bool &found);
 
 private:
 
