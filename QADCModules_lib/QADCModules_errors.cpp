@@ -95,6 +95,17 @@ int QADCModules_errors::initializeErrors()
     //...KDTREE Errors
     this->errorMapping[ERROR_QKDTREE2_SIZEMISMATCH]    = "The x and y size vectors are not equal.";
 
+    //...ADCIRC Output Errors
+    this->errorMapping[ERROR_ADCIRCOUTPUT_SIZEMISMATCH] = "The u and v components of the vector are not equally sized.";
+    this->errorMapping[ERROR_ADCIRCOUTPUT_NOVARIABLE]   = "A variable expected to reside with the ADCIRC netCDF file was not found.";
+    this->errorMapping[ERROR_ADCIRCOUTPUT_EXCEEDEDSDIM] = "The requested record is outside of the range available within the ADCIRC netCDF file.";
+
+    //...netCDF Errors
+    this->errorMapping[ERROR_NETCDF_OPEN]               = "The netCDF file could not be opened.";
+    this->errorMapping[ERROR_NETCDF_INVALIDDIM]         = "An invalid dimension was specified.";
+    this->errorMapping[ERROR_NETCDF_INVALIDVARIABLE]    = "An invalid variable was specified.";
+    this->errorMapping[ERROR_NETCDF_GENERIC]            = "This is a generic netCDF error. Check error->getCustomDescription() for details.";
+
     return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//

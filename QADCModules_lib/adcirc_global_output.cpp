@@ -1,8 +1,5 @@
 #include "adcirc_global_output.h"
 #include "netcdf.h"
-#include <QDebug>
-
-
 
 adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : QObject(parent)
 {

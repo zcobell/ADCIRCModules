@@ -8,7 +8,6 @@
 #include "adcirc_mesh.h"
 #include "adcirc_output_record.h"
 #include "QADCModules_errors.h"
-#include "netcdf_cpp.h"
 
 class QADCMODULESSHARED_EXPORT adcirc_global_output : public QObject
 {
