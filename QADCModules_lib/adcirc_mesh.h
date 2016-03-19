@@ -128,6 +128,9 @@ public:
     int read();
     int read(QString inputFile);
 
+    int readNetCDF();
+    int readNetCDF(QString inputFile);
+
     int write(QString outputFile);
 
     int setIgnoreMeshNumbering(bool value);
@@ -201,6 +204,8 @@ protected:
     //...PROTECTED FUNCTIONS...//
 
     int readMesh();
+
+    int readMeshFromNetCDF();
 
     int writeMesh(QString filename);
 

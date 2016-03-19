@@ -18,7 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_mesh.h"
-
+#include "netcdf.h"
 
 //-----------------------------------------------------------------------------------------//
 // Initializer
@@ -108,8 +108,9 @@ int adcirc_mesh::read()
     //...Assuming these two checks passed, we can call
     //   the main routine
     int ierr = this->readMesh();
+    this->error->setError(ierr);
 
-    return ierr;
+    return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -155,8 +156,101 @@ int adcirc_mesh::read(QString inputFile)
     //...Assuming these two checks passed, we can call
     //   the main routine
     int ierr = this->readMesh();
+    this->error->setError(ierr);
 
-    return ierr;
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Public function to read an ADCIRC mesh from netCDF. Assumes filename already specified
+//-----------------------------------------------------------------------------------------//
+/**
+ * \fn adcirc_mesh::readNetCDF()
+ * \brief Read an ADCIRC mesh from a netCDF file into the class
+ *
+ * \author Zach Cobell
+ *
+ * @param[in] inputFile Specifies the mesh file to be read
+ *
+ * Function used to read the ADCIRC mesh into the class. Assumes the filename has already
+ * been specified. The mesh file will be read in after checking for some simple errors. Error codes
+ * will be returned upon any error. Any return besides ERROR_NOERROR is a fatal
+ * error
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::readNetCDF(QString inputFile)
+{
+
+    //...Set the filename
+    this->filename = inputFile;
+
+    //...Check for a null string
+    if(this->filename==QString())
+    {
+        this->error->setError(ERROR_NULLFILENAM);
+        return this->error->getError();
+    }
+
+    //...Check for file exists
+    QFile thisFile(this->filename);
+    if(!thisFile.exists())
+    {
+        this->error->setError(ERROR_FILENOEXIST);
+        return this->error->getError();
+    }
+
+    //...Assuming these two checks passed, we can call
+    //   the main routine
+    int ierr = this->readMeshFromNetCDF();
+    this->error->setError(ierr);
+
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Public function to read an ADCIRC mesh from netCDF. Assumes filename has not been specified
+//-----------------------------------------------------------------------------------------//
+/**
+ * \fn adcirc_mesh::readNetCDF()
+ * \brief Read an ADCIRC mesh from a netCDF file into the class
+ *
+ * \author Zach Cobell
+ *
+ * Function used to read the ADCIRC mesh into the class. Assumes the filename has already
+ * been specified. The mesh file will be read in after checking for some simple errors. Error codes
+ * will be returned upon any error. Any return besides ERROR_NOERROR is a fatal
+ * error
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::readNetCDF()
+{
+    //...Check for a null string
+    if(this->filename==QString())
+    {
+        this->error->setError(ERROR_NULLFILENAM);
+        return this->error->getError();
+    }
+
+    //...Check for file exists
+    QFile thisFile(this->filename);
+    if(!thisFile.exists())
+    {
+        this->error->setError(ERROR_FILENOEXIST);
+        return this->error->getError();
+    }
+
+    //...Assuming these two checks passed, we can call
+    //   the main routine
+    int ierr = this->readMeshFromNetCDF();
+    this->error->setError(ierr);
+
+    return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -193,6 +287,7 @@ int adcirc_mesh::write(QString outputFile)
     return ierr;
 }
 //-----------------------------------------------------------------------------------------//
+
 
 
 
@@ -1843,6 +1938,259 @@ int adcirc_mesh::findAdcircElement(QPointF pointLocation, adcirc_element* &neare
     {
         nearestElement = elementList.value(0);
         weights.fill(1.0/3.0);
+    }
+
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function to read an ADCIRC mesh from netCDF
+//-----------------------------------------------------------------------------------------//
+/**
+ * \fn adcirc_mesh::readMeshFromNetCDF()
+ * \brief This function is used internally to read an ADCIRC mesh from a netCDF file
+ *
+ * \author Zach Cobell
+ *
+ * This function is used internally to read an ADCIRC mesh from a netCDF file. The mesh
+ * will have its filename specified in the adcirc_mesh::filename variable.
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::readMeshFromNetCDF()
+{
+    int i,ierr;
+    int n1,n2,n3;
+    int ncid,varid_x,varid_y,varid_z,varid_element;
+    int dimid_nNodes,dimid_nElements,dimid_nVertex;
+    double *node_x,*node_y,*node_z;
+    int *elem1,*elem2,*elem3;
+    size_t nNodes,nEle,nVert;
+
+    //...Open the netCDF file
+    ierr = nc_open(this->filename.toStdString().c_str(),NC_NOWRITE,&ncid);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    //...Get the variable IDs
+    ierr = nc_inq_varid(ncid,"x",&varid_x);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_varid(ncid,"y",&varid_y);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_varid(ncid,"depth",&varid_z);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_varid(ncid,"element",&varid_element);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    //...Get the variable dimensions
+    ierr = nc_inq_dimid(ncid,"node",&dimid_nNodes);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_dimid(ncid,"nele",&dimid_nElements);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_dimid(ncid,"nvertex",&dimid_nVertex);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_dimlen(ncid,dimid_nNodes,&nNodes);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_dimlen(ncid,dimid_nElements,&nEle);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_dimlen(ncid,dimid_nVertex,&nVert);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    //...Save off the dimensional information
+    this->numNodes          = static_cast<int>(nNodes);
+    this->numElements       = static_cast<int>(nEle);
+    this->numOpenBoundaries = 0;
+    this->numLandBoundaries = 0;
+    const size_t count_node = nNodes;
+
+    static size_t count_ele[]  = {nEle,1};
+    static size_t start_ele1[] = {0,0};
+    static size_t start_ele2[] = {0,1};
+    static size_t start_ele3[] = {0,2};
+
+    //...Allocate space for reading from netCDF
+    node_x = (double*)malloc(sizeof(double)*count_node);
+    node_y = (double*)malloc(sizeof(double)*count_node);
+    node_z = (double*)malloc(sizeof(double)*count_node);
+    elem1  = (int*)malloc(sizeof(int)*nEle);
+    elem2  = (int*)malloc(sizeof(int)*nEle);
+    elem3  = (int*)malloc(sizeof(int)*nEle);
+
+    //...Create the nodes
+    ierr = this->allocateNodes();
+    if(ierr!=ERROR_NOERROR)
+    {
+        this->error->setError(ierr);
+        return this->error->getError();
+    }
+
+    //...Create the elements
+    ierr = this->allocateElements();
+    if(ierr!=ERROR_NOERROR)
+    {
+        this->error->setError(ierr);
+        return this->error->getError();
+    }
+
+    //...Read the data from the netCDF file
+    ierr = nc_get_var(ncid,varid_x,node_x);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_get_var(ncid,varid_y,node_y);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_get_var(ncid,varid_z,node_z);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_get_vara_int(ncid,varid_element,start_ele1,count_ele,elem1);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_get_vara_int(ncid,varid_element,start_ele2,count_ele,elem2);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_get_vara_int(ncid,varid_element,start_ele3,count_ele,elem3);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    //...Close the netCDF file
+    ierr = nc_close(ncid);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    //...Save the information read into adcirc_node objects
+    for(i=0;i<this->numNodes;i++)
+    {
+        this->nodes[i]->id = i+1;
+        this->nodes[i]->position.setX(node_x[i]);
+        this->nodes[i]->position.setY(node_y[i]);
+        this->nodes[i]->position.setZ(node_z[i]);
+    }
+
+    //...Save the information read into adcirc_element objects
+    for(i=0;i<this->numElements;i++)
+    {
+        n1 = elem1[i]-1;
+        n2 = elem2[i]-1;
+        n3 = elem3[i]-1;
+
+        this->elements[i]->id = i+1;
+        this->elements[i]->connections[0] = this->nodes.at(n1);
+        this->elements[i]->connections[1] = this->nodes.at(n2);
+        this->elements[i]->connections[2] = this->nodes.at(n3);
+    }
+
+    //...Deallocate the memory
+    free(node_x);
+    free(node_y);
+    free(node_z);
+    free(elem1);
+    free(elem2);
+    free(elem3);
+
+    //...Build the element table
+    ierr = this->buildElementTable();
+    if(ierr!=ERROR_NOERROR)
+    {
+        this->error->setError(ierr);
+        return this->error->getError();
     }
 
     return ERROR_NOERROR;

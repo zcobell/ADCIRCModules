@@ -175,3 +175,40 @@ int QADCModules_errors::resetError()
     return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Set custom error descriptoins
+//-----------------------------------------------------------------------------------------//
+/** \brief Sets the description of the error that came from another module (i.e. netCDF)
+ *
+ * \author Zach Cobell
+ *
+ * Sets the description of the error that came from another module (i.e. netCDF)
+ **/
+//-----------------------------------------------------------------------------------------//
+int QADCModules_errors::setCustomDescription(QString description)
+{
+    this->customDescription = description;
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Return custom error descriptoins
+//-----------------------------------------------------------------------------------------//
+/** \brief Returns the description of the error that came from another module (i.e. netCDF)
+ *
+ * \author Zach Cobell
+ *
+ * Returns the description of the error that came from another module (i.e. netCDF)
+ **/
+//-----------------------------------------------------------------------------------------//
+QString QADCModules_errors::getCustomDescription()
+{
+    return this->customDescription;
+}
+//-----------------------------------------------------------------------------------------//

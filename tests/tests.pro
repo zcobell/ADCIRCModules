@@ -31,7 +31,10 @@ CONFIG   += link_QADCModules
 TEMPLATE = app
 
 #...Include the headers for this library, KDTREE, and BOOST
-INCLUDEPATH += ../QADCModules_lib $$PWD/../thirdparty/kdtree $$PWD/../thirdparty
+INCLUDEPATH += ../QADCModules_lib $$PWD/../thirdparty/kdtree \
+               $$PWD/../thirdparty/boost-library \
+               $$PWD/../thirdparty/netcdf_cxx/include \
+               $$PWD/../thirdparty/netcdf/include
 
 win32{
 CONFIG(debug, debug | release): LIBS += -L$$OUT_PWD/../QADCModules_lib/debug -lQADCModules

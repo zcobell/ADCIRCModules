@@ -84,13 +84,25 @@
 
 
 //...PROJ4 CLASS ERRORS
-#define ERROR_PROJ4_CANNOTREADEPSGFILE -999905001
-#define ERROR_PROJ4_NOSUCHPROJECTION   -999905002
-#define ERROR_PROJ4_INTERNAL           -999905003
+#define ERROR_PROJ4_CANNOTREADEPSGFILE  -999905001
+#define ERROR_PROJ4_NOSUCHPROJECTION    -999905002
+#define ERROR_PROJ4_INTERNAL            -999905003
 
 
 //...QKDTREE2 CLASS ERRORS
-#define ERROR_QKDTREE2_SIZEMISMATCH    -999906001
+#define ERROR_QKDTREE2_SIZEMISMATCH     -999906001
+
+
+//...ADCIRC OUTPUT ERRORS
+#define ERROR_ADCIRCOUTPUT_SIZEMISMATCH -999907001
+#define ERROR_ADCIRCOUTPUT_EXCEEDEDSDIM -999907002
+#define ERROR_ADCIRCOUTPUT_NOVARIABLE   -999907003
+
+//...NETCDF ERRORS
+#define ERROR_NETCDF_OPEN               -999908001
+#define ERROR_NETCDF_GENERIC            -999908002
+#define ERROR_NETCDF_INVALIDVARIABLE    -999908003
+#define ERROR_NETCDF_INVALIDDIM         -999908004
 
 //----------------------------------------------------//
 
@@ -108,6 +120,10 @@ public:
 
     int getError();
 
+    int setCustomDescription(QString description);
+
+    QString getCustomDescription();
+
     QString getErrorString();
 
 protected:
@@ -121,6 +137,8 @@ private:
     ///Map function between error codes and their descriptions
     QMap<int,QString> errorMapping;
 
+    ///Custom Description - can come from libraries used by this code
+    QString customDescription;
 
 };
 
