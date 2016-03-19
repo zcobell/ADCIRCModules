@@ -124,6 +124,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1496d1412ee60241476159680c6aa790"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQADCModules__errors.html#a1496d1412ee60241476159680c6aa790">getError</a> ()</td></tr>
 <tr class="memdesc:a1496d1412ee60241476159680c6aa790"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current error code.  <a href="#a1496d1412ee60241476159680c6aa790">More...</a><br /></td></tr>
 <tr class="separator:a1496d1412ee60241476159680c6aa790"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa47452cb12800ee95d70de8fb9579d59"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQADCModules__errors.html#aa47452cb12800ee95d70de8fb9579d59">setCustomDescription</a> (QString description)</td></tr>
+<tr class="memdesc:aa47452cb12800ee95d70de8fb9579d59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the description of the error that came from another module (i.e. netCDF)  <a href="#aa47452cb12800ee95d70de8fb9579d59">More...</a><br /></td></tr>
+<tr class="separator:aa47452cb12800ee95d70de8fb9579d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94efebe0916818d980d70f2fb9dd8792"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQADCModules__errors.html#a94efebe0916818d980d70f2fb9dd8792">getCustomDescription</a> ()</td></tr>
+<tr class="memdesc:a94efebe0916818d980d70f2fb9dd8792"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the description of the error that came from another module (i.e. netCDF)  <a href="#a94efebe0916818d980d70f2fb9dd8792">More...</a><br /></td></tr>
+<tr class="separator:a94efebe0916818d980d70f2fb9dd8792"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae14746913b0509ce712379c8de74851b"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQADCModules__errors.html#ae14746913b0509ce712379c8de74851b">getErrorString</a> ()</td></tr>
 <tr class="memdesc:ae14746913b0509ce712379c8de74851b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the current error code description.  <a href="#ae14746913b0509ce712379c8de74851b">More...</a><br /></td></tr>
 <tr class="separator:ae14746913b0509ce712379c8de74851b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,7 +166,6 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">parent</td><td>[in] parent QObject used for memory management </td></tr>
@@ -171,6 +176,22 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a94efebe0916818d980d70f2fb9dd8792"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString QADCModules_errors::getCustomDescription </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the description of the error that came from another module (i.e. netCDF) </p>
+
+</div>
+</div>
 <a class="anchor" id="a1496d1412ee60241476159680c6aa790"></a>
 <div class="memitem">
 <div class="memproto">
@@ -183,7 +204,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <p>Returns the current error code </p>
 
 </div>
@@ -200,7 +220,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <p>This function uses the current error code to generate a description for the user that is meaningful and can be used to solve their issues </p>
 
 </div>
@@ -225,7 +244,6 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <p>This function uses a QMap to quickly turn an error code into an error description. The error mapping variable maps between an integer and a QString </p>
 
 </div>
@@ -242,8 +260,24 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <p>Resets the current error to no error </p>
+
+</div>
+</div>
+<a class="anchor" id="aa47452cb12800ee95d70de8fb9579d59"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int QADCModules_errors::setCustomDescription </td>
+          <td>(</td>
+          <td class="paramtype">QString&#160;</td>
+          <td class="paramname"><em>description</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the description of the error that came from another module (i.e. netCDF) </p>
 
 </div>
 </div>
@@ -260,7 +294,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">newErrorCode</td><td>New error code to use</td></tr>

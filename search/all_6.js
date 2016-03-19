@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['getcustomdescription',['getCustomDescription',['../classQADCModules__errors.html#a94efebe0916818d980d70f2fb9dd8792',1,'QADCModules_errors']]],
   ['getdefaultvalue',['getDefaultValue',['../classadcirc__nodalparameter.html#addc08e1cf5c3b15955bd211cafbff1a3',1,'adcirc_nodalparameter']]],
   ['geterror',['getError',['../classQADCModules__errors.html#a1496d1412ee60241476159680c6aa790',1,'QADCModules_errors']]],
   ['geterrorstring',['getErrorString',['../classQADCModules__errors.html#ae14746913b0509ce712379c8de74851b',1,'QADCModules_errors']]],

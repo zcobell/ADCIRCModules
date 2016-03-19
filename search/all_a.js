@@ -10,11 +10,12 @@ var searchData=
   ['nodes',['nodes',['../classadcirc__mesh.html#a1845df6fb5852e8cc20bec2852623317',1,'adcirc_mesh']]],
   ['nodetoidmapping',['nodeToIdMapping',['../classadcirc__mesh.html#a791fb0cb00ac6870d1146f08b81db991',1,'adcirc_mesh']]],
   ['nodetopositionmapping',['nodeToPositionMapping',['../classadcirc__mesh.html#a359100eeb1bc37274f5bc9c2c44317c1',1,'adcirc_mesh']]],
+  ['numcolumns',['numColumns',['../classadcirc__global__output.html#a188d7a88f805d5819192f9b2ca985cb4',1,'adcirc_global_output']]],
   ['numconnections',['numConnections',['../classadcirc__element.html#a39be4fd249b4b4584e83752f6249bcbb',1,'adcirc_element']]],
   ['numdatapoints',['numDataPoints',['../classqKdtree2.html#adf0669490a065371dcfd047ed2678842',1,'qKdtree2']]],
   ['numelements',['numElements',['../classadcirc__mesh.html#a990c114f383dd656ba514d1f830b2543',1,'adcirc_mesh']]],
   ['numlandboundaries',['numLandBoundaries',['../classadcirc__mesh.html#a96a938b5af373d1bcc0fc76d42e15536',1,'adcirc_mesh']]],
-  ['numnodes',['numNodes',['../classadcirc__boundary.html#adc78185ae62eb390d2ba8990fa63270f',1,'adcirc_boundary::numNodes()'],['../classadcirc__mesh.html#a9654add115321fd89aea323cbab5b1ac',1,'adcirc_mesh::numNodes()'],['../classadcirc__nodalattributes.html#a9b00dd9994992a523cf6e99a7346e880',1,'adcirc_nodalattributes::numNodes()']]],
+  ['numnodes',['numNodes',['../classadcirc__boundary.html#adc78185ae62eb390d2ba8990fa63270f',1,'adcirc_boundary::numNodes()'],['../classadcirc__global__output.html#ae4f392aa7304037238aa1cbce95d82b1',1,'adcirc_global_output::numNodes()'],['../classadcirc__mesh.html#a9654add115321fd89aea323cbab5b1ac',1,'adcirc_mesh::numNodes()'],['../classadcirc__nodalattributes.html#a9b00dd9994992a523cf6e99a7346e880',1,'adcirc_nodalattributes::numNodes()'],['../classadcirc__output__record.html#a256dbf352655a3390bb4d4b6f46b9a8e',1,'adcirc_output_record::numNodes()']]],
   ['numopenboundaries',['numOpenBoundaries',['../classadcirc__mesh.html#ae8ff33dd6537c0942f038e27e60e7f8e',1,'adcirc_mesh']]],
   ['numparameters',['numParameters',['../classadcirc__nodalattributes.html#a86db7933a4e67394765edfbe7360c8e5',1,'adcirc_nodalattributes']]],
   ['nvalues',['nValues',['../classadcirc__nodalparameter.html#a1afa87326fa1bf2473c3716ea005776b',1,'adcirc_nodalparameter']]]

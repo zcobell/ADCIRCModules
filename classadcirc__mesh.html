@@ -122,6 +122,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7f7ba2f690cb36e0bc2d4925162ab2bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ab41860dbad284b6323273b05649661"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a6ab41860dbad284b6323273b05649661">read</a> (QString inputFile)</td></tr>
 <tr class="separator:a6ab41860dbad284b6323273b05649661"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab577945e75bfe7b7cf9b0bbb1d67473d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#ab577945e75bfe7b7cf9b0bbb1d67473d">readNetCDF</a> ()</td></tr>
+<tr class="memdesc:ab577945e75bfe7b7cf9b0bbb1d67473d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read an ADCIRC mesh from a netCDF file into the class.  <a href="#ab577945e75bfe7b7cf9b0bbb1d67473d">More...</a><br /></td></tr>
+<tr class="separator:ab577945e75bfe7b7cf9b0bbb1d67473d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a484dfe58e32543e782c8086421d7de55"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a484dfe58e32543e782c8086421d7de55"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>readNetCDF</b> (QString inputFile)</td></tr>
+<tr class="separator:a484dfe58e32543e782c8086421d7de55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b445bd07fc683c27a3caf82e5e35e97"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a8b445bd07fc683c27a3caf82e5e35e97">write</a> (QString outputFile)</td></tr>
 <tr class="memdesc:a8b445bd07fc683c27a3caf82e5e35e97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public function to allow user to trigger writing of the ADCIRC mesh contained within this class.  <a href="#a8b445bd07fc683c27a3caf82e5e35e97">More...</a><br /></td></tr>
 <tr class="separator:a8b445bd07fc683c27a3caf82e5e35e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -284,6 +290,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a28856b4ab8fe04126f4d99b0a0aca1b0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a28856b4ab8fe04126f4d99b0a0aca1b0">readMesh</a> ()</td></tr>
 <tr class="memdesc:a28856b4ab8fe04126f4d99b0a0aca1b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is used internally to read an ADCIRC mesh.  <a href="#a28856b4ab8fe04126f4d99b0a0aca1b0">More...</a><br /></td></tr>
 <tr class="separator:a28856b4ab8fe04126f4d99b0a0aca1b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a186577d40b4a7aad6c88d017be766b76"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a186577d40b4a7aad6c88d017be766b76">readMeshFromNetCDF</a> ()</td></tr>
+<tr class="memdesc:a186577d40b4a7aad6c88d017be766b76"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is used internally to read an ADCIRC mesh from a netCDF file.  <a href="#a186577d40b4a7aad6c88d017be766b76">More...</a><br /></td></tr>
+<tr class="separator:a186577d40b4a7aad6c88d017be766b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a0e2f9bd3a5d030920ca7be0a53f055"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__mesh.html#a4a0e2f9bd3a5d030920ca7be0a53f055">writeMesh</a> (QString <a class="el" href="classadcirc__mesh.html#a657d4d3f63d73e1992a6f6b866a4c95a">filename</a>)</td></tr>
 <tr class="memdesc:a4a0e2f9bd3a5d030920ca7be0a53f055"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is used internally to write an ADCIRC mesh.  <a href="#a4a0e2f9bd3a5d030920ca7be0a53f055">More...</a><br /></td></tr>
 <tr class="separator:a4a0e2f9bd3a5d030920ca7be0a53f055"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -329,7 +338,6 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">*parent</td><td>reference to QObject. Enables automatic memory management to avoid memory leaks</td></tr>
@@ -361,7 +369,6 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <p>This function creates a set of ADCIRC elements on the heap. All elements that area created are done so with a QObject reference to enable automatic memory management to avoid memory leaks </p>
 
 </div>
@@ -386,7 +393,6 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <p>This function creates a set of ADCIRC nodes on the heap. All nodes that area created are done so with a QObject reference to enable automatic memory management to avoid memory leaks </p>
 
 </div>
@@ -403,7 +409,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <p>Function that builds a kdtree2 search tree object for the element centers in the <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> </p>
 
 </div>
@@ -420,7 +425,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <p>This function uses the <a class="el" href="classadcirc__node__table.html" title="Class that contains the list of elements around a node. ">adcirc_node_table</a> class to build a list of the elements around a specific node, which is useful for many functions </p>
 
 </div>
@@ -437,7 +441,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <p>Function that builds a kdtree2 search tree object for the nodes in the <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> </p>
 
 </div>
@@ -465,7 +468,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">numDisjointNodes</td><td>Number of nodes that are not connected to any element </td></tr>
@@ -490,7 +492,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">minAbovePrevailingTopo</td><td>[optional] Elevation that a levee must be above the prevailing topographic elevation. Default = 0.2</td></tr>
@@ -524,7 +525,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">numOverlappingElements</td><td>Number of duplicate elements found </td></tr>
@@ -549,7 +549,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">numDisjointNodes</td><td>Number of nodes that were not connected to any element</td></tr>
@@ -603,7 +602,6 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">pointLocation</td><td>point to locate inside an element </td></tr>
@@ -647,7 +645,6 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">pointLocation</td><td>point to use for locating the element </td></tr>
@@ -701,7 +698,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">pointLocation</td><td>point to use for locating the element </td></tr>
@@ -713,7 +709,6 @@ Protected Member Functions</h2></td></tr>
 </dl>
 <p>Function that locates the element that a point resides within and returns interpolation weights</p>
 <p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating the element </td></tr>
@@ -764,7 +759,6 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating the element </td></tr>
@@ -801,7 +795,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">pointLocation</td><td>Location for which the function will determine the nearest node </td></tr>
@@ -843,7 +836,6 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating nearest node </td></tr>
@@ -885,7 +877,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">location</td><td>point location for locating the nearest element </td></tr>
@@ -934,7 +925,6 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating nearest element </td></tr>
@@ -977,7 +967,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">location</td><td>point location to use for locating the nearest node </td></tr>
@@ -1026,7 +1015,6 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>x-coordinate to use for locating nearest node </td></tr>
@@ -1053,7 +1041,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">epsg</td><td>EPSG number for the new coordinate system</td></tr>
@@ -1105,7 +1092,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">numLeveesRaised</td><td>Number of levees that needed to be raised </td></tr>
@@ -1132,7 +1118,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <p>Function used to read the ADCIRC mesh into the class. Assumes the filename has already been specified. The mesh file will be read in after checking for some simple errors. Error codes will be returned upon any error. Any return besides ERROR_NOERROR is a fatal error </p>
 
 </div>
@@ -1151,7 +1136,6 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">inputFile</td><td>Specifies the mesh file to be read</td></tr>
@@ -1193,7 +1177,6 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">position</td><td>The current file position. Returned as the new file position when the land boundary read is complete </td></tr>
@@ -1225,8 +1208,54 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <p>This function is used internally to read an ADCIRC mesh. The mesh will have its filename specified in the <a class="el" href="classadcirc__mesh.html#a657d4d3f63d73e1992a6f6b866a4c95a" title="Filename for this ADCIRC mesh. ">adcirc_mesh::filename</a> variable. </p>
+
+</div>
+</div>
+<a class="anchor" id="a186577d40b4a7aad6c88d017be766b76"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int adcirc_mesh::readMeshFromNetCDF </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function is used internally to read an ADCIRC mesh from a netCDF file. The mesh will have its filename specified in the <a class="el" href="classadcirc__mesh.html#a657d4d3f63d73e1992a6f6b866a4c95a" title="Filename for this ADCIRC mesh. ">adcirc_mesh::filename</a> variable. </p>
+
+</div>
+</div>
+<a class="anchor" id="ab577945e75bfe7b7cf9b0bbb1d67473d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int adcirc_mesh::readNetCDF </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">inputFile</td><td>Specifies the mesh file to be read</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Function used to read the ADCIRC mesh into the class. Assumes the filename has already been specified. The mesh file will be read in after checking for some simple errors. Error codes will be returned upon any error. Any return besides ERROR_NOERROR is a fatal error</p>
+<p>Function used to read the ADCIRC mesh into the class. Assumes the filename has already been specified. The mesh file will be read in after checking for some simple errors. Error codes will be returned upon any error. Any return besides ERROR_NOERROR is a fatal error </p>
 
 </div>
 </div>
@@ -1261,7 +1290,6 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">position</td><td>The current file position. Returned as the new file position when the open boundary read is complete </td></tr>
@@ -1285,7 +1313,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <p>This function is used to renumber an <a class="el" href="classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. ">adcirc_mesh</a> (nodes, elements) so that it is valid. Note that no attention is paid to minimizing bandwidth or providing optimal numbering. This only ensures that the mesh is valid. </p>
 
 </div>
@@ -1303,7 +1330,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>If true, mesh numbering is ignored. If false, mesh numbering that is nonsequential is fatal</td></tr>
@@ -1327,7 +1353,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">epsg</td><td>EPSG number for the coordinate system</td></tr>
@@ -1351,7 +1376,6 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">outputFile</td><td>Name of the file to write</td></tr>
@@ -1383,7 +1407,6 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>Name of the output mesh file</td></tr>
