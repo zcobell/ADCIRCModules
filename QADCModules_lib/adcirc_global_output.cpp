@@ -311,7 +311,7 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
     }
 
     //...Save the data into the output variable
-    if(this->outputData!=nullptr)
+    if(this->outputData!=NULL)
         delete this->outputData;
     this->outputData = new adcirc_output_record(this->mesh->numNodes,this);
     this->outputData->modelTime = timeList[record-1];
