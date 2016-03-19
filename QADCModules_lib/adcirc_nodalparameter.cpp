@@ -27,8 +27,6 @@
 //-----------------------------------------------------------------------------------------//
 /** \brief Constructor for the adcirc_nodalparameter class
  *
- * \author Zach Cobell
- *
  * @param[in] numNodes                        Number of nodes in the mesh so the vectors can be sized
  * @param[in] nodalAttributeName   [optional] Name of the nodal parameter we are creating (default: noName)
  * @param[in] nodalAttributeUnits  [optional] Units to denote in the fort.13 file (default: none)
@@ -73,8 +71,6 @@ adcirc_nodalparameter::adcirc_nodalparameter(int numNodes, QString nodalAttribut
 //-----------------------------------------------------------------------------------------//
 /** \brief Function to assign default values that will be specified in the fort.13 header
  *
- * \author Zach Cobell
- *
  * @param[in] nodalParameterDefaultValues  Vector of doubles containing the default values
  *                                         to be used in each column of the fort.13 file
  *
@@ -100,8 +96,6 @@ int adcirc_nodalparameter::setDefaultValues(QVector<double> nodalParameterDefaul
 // Function to read the body from the fort.13 file into this nodal attribute
 //-----------------------------------------------------------------------------------------//
 /** \brief Function to read and assign the body of the fort.13 file to the vectors in this class
- *
- * \author Zach Cobell
  *
  * @param[in] fileData Body of the fort.13 file for this nodal attribute
  *
@@ -157,8 +151,6 @@ int adcirc_nodalparameter::read(QStringList &fileData)
 //-----------------------------------------------------------------------------------------//
 /** \brief Function to create the text to be written to the nodal attributes file for this parameter
  *
- * \author Zach Cobell
- *
  * Function to create the text to be written to the nodal attributes file for this parameter
  *
  **/
@@ -213,8 +205,6 @@ QStringList adcirc_nodalparameter::write()
 // Function to determine the optimum value for the fort.13 header for this parameter
 //-----------------------------------------------------------------------------------------//
 /** \brief Function to determine the optimum value for the fort.13 header for this parameter
- *
- * \author Zach Cobell
  *
  * Function to determine the optimum value for the fort.13 header for this parameter
  *
@@ -272,8 +262,6 @@ double adcirc_nodalparameter::getDefaultValue()
 // Function to determine the number of non-default nodes
 //-----------------------------------------------------------------------------------------//
 /** \brief Function to determine the number of non-default nodes
- *
- * \author Zach Cobell
  *
  * Function to determine the number of non-default nodes
  *

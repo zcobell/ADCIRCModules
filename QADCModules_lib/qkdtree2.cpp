@@ -36,8 +36,6 @@ qKdtree2::qKdtree2(QObject *parent) : QObject(parent)
  * \fn qKdtree2::build(QVector<QPointF> &pointCloud)
  * \brief Generates a kdtree2 search tree
  *
- * \author Zach Cobell
- *
  * @param[in] pointCloud Vector of QPointF used to generate the search tree
  *
  * This function uses the kdtree2 library to generate a search tree
@@ -73,8 +71,6 @@ int qKdtree2::build(QVector<QPointF> &pointCloud)
 /**
  * \overload qKdtree2::build(QVector<double> &x, QVector<double> &y)
  * \brief Generates a kdtree2 search tree
- *
- * \author Zach Cobell
  *
  * @param[in] x Vector of x-coordinates
  * @param[in] y Vector of y-coordinates
@@ -116,8 +112,6 @@ int qKdtree2::build(QVector<double> &x, QVector<double> &y)
  * \overload qKdtree2::build(QVector<QVector3D> &pointCloud)
  * \brief Generates a kdtree2 search tree
  *
- * \author Zach Cobell
- *
  * @param[in] pointCloud Vector of QVector3D used to generate the search tree
  *
  * This function uses the kdtree2 library to generate a search tree
@@ -154,8 +148,6 @@ int qKdtree2::build(QVector<QVector3D> &pointCloud)
  * \fn qKdtree2::findNearest(QPointF pointLocation, int &index)
  * \brief Function that uses a kd-tree to find the nearest point to a given set of coordinates
  *
- * \author Zach Cobell
- *
  * @param[in]  pointLocation  location of point to search for
  * @param[out] index          location in array that created kd-tree of nearest point
  *
@@ -190,8 +182,6 @@ int qKdtree2::findNearest(QPointF pointLocation, int &index)
  * \overload qKdtree2::findNearest(double x, double y, int &index)
  * \brief Function that uses a kd-tree to find the nearest point to a given set of coordinates
  *
- * \author Zach Cobell
- *
  * @param[in]  x      x-coordinate of point to search for
  * @param[in]  y      y-coordinate of point to search for
  * @param[out] index  location in array that created kd-tree of nearest point
@@ -216,8 +206,6 @@ int qKdtree2::findNearest(double x, double y, int &index)
  * \overload qKdtree2::findNearest(QVector3D pointLocation, int &index)
  * \brief Function that uses a kd-tree to find the nearest point to a given set of coordinates
  *
- * \author Zach Cobell
- *
  * @param[in]  pointLocation location of point to search for
  * @param[out] index         location in array that created kd-tree of nearest point
  *
@@ -240,8 +228,6 @@ int qKdtree2::findNearest(QVector3D pointLocation, int &index)
 /**
  * \fn qKdtree2::findXNearest(QPointF pointLocation, int nn, QVector<int> &indicies)
  * \brief Function that uses a kd-tree to find the N-nearest point to a given set of coordinates
- *
- * \author Zach Cobell
  *
  * @param[in]  pointLocation  location of point to search for
  * @param[in]  nn             number of locations to find
@@ -286,8 +272,6 @@ int qKdtree2::findXNearest(QPointF pointLocation, int nn, QVector<int> &indicies
  * \overload qKdtree2::findXNearest(double x, double y, int nn, QVector<int> &indicies)
  * \brief Function that uses a kd-tree to find the N-nearest point to a given set of coordinates
  *
- * \author Zach Cobell
- *
  * @param[in]  x              x-coordinate of point to search for
  * @param[in]  y              y-coordinate of point to search for
  * @param[in]  nn             number of locations to find
@@ -312,8 +296,6 @@ int qKdtree2::findXNearest(double x, double y, int nn, QVector<int> &indicies)
 /**
  * \overload qKdtree2::findXNearest(QVector3D pointLocation, int nn, QVector<int> &indicies)
  * \brief Function that uses a kd-tree to find the N-nearest point to a given set of coordinates
- *
- * \author Zach Cobell
  *
  * @param[in]  pointLocation  location of point to search for
  * @param[in]  nn             number of locations to find

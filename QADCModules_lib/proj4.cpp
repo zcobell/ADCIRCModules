@@ -25,8 +25,6 @@
 //-----------------------------------------------------------------------------------------//
 /** \brief Constructor for the proj4 wrapper class
  *
- * \author Zach Cobell
- *
  * @param[in] *parent reference to QObject. Enables automatic memory management to avoid memory leaks
  *
  * Constructs an object used to convert coordinates. The initialization function is run at
@@ -47,8 +45,6 @@ proj4::proj4(QObject *parent) : QObject(parent)
 // Function to initialize the EPSG codes
 //-----------------------------------------------------------------------------------------//
 /** \brief Function to initlize the EPSG codes
- *
- * \author Zach Cobell
  *
  * Initizalizes the EPSG table for use with the Proj4 API
  *
@@ -132,8 +128,6 @@ int proj4::readEPSGInitializations()
 //-----------------------------------------------------------------------------------------//
 /** \brief Function to execute a coordinate system transformation using Proj4
  *
- * \author Zach Cobell
- *
  * @param[in]  inputEPSG  EPSG that coordinates are currently in
  * @param[in]  outputEPSG EPSG that the coordinates will be converted to
  * @param[in]  input      QPointF object containing the location to be converted
@@ -206,8 +200,6 @@ int proj4::transform(int inputEPSG, int outputEPSG, QPointF &input, QPointF &out
 // Function to execute a coordinate system transformation using Proj4
 //-----------------------------------------------------------------------------------------//
 /** \brief Function to execute a coordinate system transformation using Proj4
- *
- * \author Zach Cobell
  *
  * @param[in]  inputEPSG  EPSG that coordinates are currently in
  * @param[in]  outputEPSG EPSG that the coordinates will be converted to

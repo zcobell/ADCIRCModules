@@ -1,25 +1,80 @@
+/*-------------------------------GPL-------------------------------------//
+//
+// QADCModules - A library for working with ADCIRC models
+// Copyright (C) 2016  Zach Cobell
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+//-----------------------------------------------------------------------*/
 #include "adcirc_global_output.h"
 #include "netcdf.h"
 
+
+//-----------------------------------------------------------------------------------------//
+// Constructor for an adcirc_global_output object
+//-----------------------------------------------------------------------------------------//
+/** \brief Constructor for an adcirc_global_output object
+ *
+ * @param[in] filename filename of the ADCIRC output file to read
+ * @param[in] parent   QObject reference
+ *
+ * Constructor for an adcirc_global_output object
+ *
+ */
+//-----------------------------------------------------------------------------------------//
 adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : QObject(parent)
 {
     this->filename = filename;
     this->isMeshInitialized = false;
     this->initializeNetcdfVariables();
     this->error = new QADCModules_errors(this);
+    this->outputData = NULL;
 }
+//-----------------------------------------------------------------------------------------//
 
 
 
+//-----------------------------------------------------------------------------------------//
+// Public function to read an ADCIRC output file
+//-----------------------------------------------------------------------------------------//
+/** \brief Public function to read an ADCIRC output file
+ *
+ * @param[in] record Record number to read from the file. Note: first record is record 1, not 0.
+ *
+ * Public function to read an ADCIRC output file
+ *
+ */
+//-----------------------------------------------------------------------------------------//
 int adcirc_global_output::read(int record)
 {
     int ierr = this->readAdcircGlobalOutputNetCDF(record);
     this->error->setError(ierr);
     return this->error->getError();
 }
+//-----------------------------------------------------------------------------------------//
 
 
 
+//-----------------------------------------------------------------------------------------//
+// Function to set the list of netCDF variables in an ADCIRC output file
+//-----------------------------------------------------------------------------------------//
+/** \brief Function to set the list of netCDF variables in an ADCIRC output file
+ *
+ * Function to set the list of netCDF variables in an ADCIRC output file
+ *
+ */
+//-----------------------------------------------------------------------------------------//
 int adcirc_global_output::initializeNetcdfVariables()
 {
     this->netCDFVariables.clear();
@@ -63,9 +118,24 @@ int adcirc_global_output::initializeNetcdfVariables()
     this->netCDFVariables.append("swan_TMM10_max");
     return ERROR_NOERROR;
 }
+//-----------------------------------------------------------------------------------------//
 
 
 
+//-----------------------------------------------------------------------------------------//
+// Function to find the netCDF variable in an ADCIRC output file
+//-----------------------------------------------------------------------------------------//
+/** \brief Function to find the netCDF variable in an ADCIRC output file
+ *
+ * @param[in]  ncid          netCDF file identifier
+ * @param[out] numVariables  number of columns (scalar or vector) in an ADCIRC output file
+ * @param[out] variable1     netCDF variable ID for first netCDF variable
+ * @param[out] variable2     netCDF variable ID for the second netCDF variable
+ *
+ * Function to find the netCDF variable in an ADCIRC output file
+ *
+ */
+//-----------------------------------------------------------------------------------------//
 int adcirc_global_output::findNetCDFVariable(int &ncid, int &numVariables, int &variable1, int &variable2)
 {
     QString varname;
@@ -111,9 +181,21 @@ int adcirc_global_output::findNetCDFVariable(int &ncid, int &numVariables, int &
     }
     return ERROR_ADCIRCOUTPUT_NOVARIABLE;
 }
+//-----------------------------------------------------------------------------------------//
 
 
 
+//-----------------------------------------------------------------------------------------//
+// Function to read from a netCDF ADCIRC output file
+//-----------------------------------------------------------------------------------------//
+/** \brief Function to read from a netCDF ADCIRC output file
+ *
+ * @param[in]  record  record to read from the netCDF file
+ *
+ * Function to read from a netCDF ADCIRC output file
+ *
+ */
+//-----------------------------------------------------------------------------------------//
 int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
 {
     int i,ierr,numColumns;
@@ -229,25 +311,25 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
     }
 
     //...Save the data into the output variable
-    this->outputData.clear();
-    this->outputData.resize(1);
-    this->outputData[0] = new adcirc_output_record(this->mesh->numNodes,this);
-    this->outputData[0]->modelTime = timeList[record-1];
+    if(this->outputData!=nullptr)
+        delete this->outputData;
+    this->outputData = new adcirc_output_record(this->mesh->numNodes,this);
+    this->outputData->modelTime = timeList[record-1];
     this->numColumns = numColumns;
     if(numColumns==1)
     {
-        this->outputData[0]->scalar.resize(this->mesh->numNodes);
+        this->outputData->scalar.resize(this->mesh->numNodes);
         for(i=0;i<this->mesh->numNodes;i++)
-            this->outputData[0]->scalar[i] = column1[i];
+            this->outputData->scalar[i] = column1[i];
     }
     else if(numColumns==2)
     {
-        this->outputData[0]->vector_u.resize(this->mesh->numNodes);
-        this->outputData[0]->vector_v.resize(this->mesh->numNodes);
+        this->outputData->vector_u.resize(this->mesh->numNodes);
+        this->outputData->vector_v.resize(this->mesh->numNodes);
         for(i=0;i<this->mesh->numNodes;i++)
         {
-            this->outputData[0]->vector_u[i] = column1[i];
-            this->outputData[0]->vector_v[i] = column2[i];
+            this->outputData->vector_u[i] = column1[i];
+            this->outputData->vector_v[i] = column2[i];
         }
     }
 
@@ -259,3 +341,4 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
 
     return ERROR_NOERROR;
 }
+//-----------------------------------------------------------------------------------------//

@@ -24,8 +24,6 @@
 //-----------------------------------------------------------------------------------------//
 /** \brief Constructor function for QADCModules_errors class
  *
- * \author Zach Cobell
- *
  * @param parent [in] parent QObject used for memory management
  */
 //-----------------------------------------------------------------------------------------//
@@ -42,8 +40,6 @@ QADCModules_errors::QADCModules_errors(QObject *parent) : QObject(parent)
 //   be fed to the user
 //-----------------------------------------------------------------------------------------//
 /** \brief Function that generates a mapping between error codes and their descriptions
- *
- * \author Zach Cobell
  *
  * This function uses a QMap to quickly turn an error code into an error description. The
  * error mapping variable maps between an integer and a QString
@@ -117,8 +113,6 @@ int QADCModules_errors::initializeErrors()
 //-----------------------------------------------------------------------------------------//
 /** \brief Return the current error code description
  *
- * \author Zach Cobell
- *
  * This function uses the current error code to generate a description for the user that
  * is meaningful and can be used to solve their issues
  **/
@@ -135,8 +129,6 @@ QString QADCModules_errors::getErrorString()
 //...Sets the current error code
 //-----------------------------------------------------------------------------------------//
 /** \brief Sets the current error code
- *
- * \author Zach Cobell
  *
  * @param[in] newErrorCode New error code to use
  *
@@ -157,8 +149,6 @@ int QADCModules_errors::setError(int newErrorCode)
 //-----------------------------------------------------------------------------------------//
 /** \brief Returns the current error code
  *
- * \author Zach Cobell
- *
  * Returns the current error code
  **/
 //-----------------------------------------------------------------------------------------//
@@ -174,8 +164,6 @@ int QADCModules_errors::getError()
 //...Resets the current error to no error
 //-----------------------------------------------------------------------------------------//
 /** \brief Resets the current error to no error
- *
- * \author Zach Cobell
  *
  * Resets the current error to no error
  **/
@@ -194,8 +182,6 @@ int QADCModules_errors::resetError()
 //-----------------------------------------------------------------------------------------//
 /** \brief Sets the description of the error that came from another module (i.e. netCDF)
  *
- * \author Zach Cobell
- *
  * Sets the description of the error that came from another module (i.e. netCDF)
  **/
 //-----------------------------------------------------------------------------------------//
@@ -212,8 +198,6 @@ int QADCModules_errors::setCustomDescription(QString description)
 //...Return custom error descriptoins
 //-----------------------------------------------------------------------------------------//
 /** \brief Returns the description of the error that came from another module (i.e. netCDF)
- *
- * \author Zach Cobell
  *
  * Returns the description of the error that came from another module (i.e. netCDF)
  **/
