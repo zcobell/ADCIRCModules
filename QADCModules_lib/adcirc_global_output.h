@@ -34,6 +34,7 @@
 
 #include <QObject>
 #include <QSharedPointer>
+#include <QStringList>
 
 #include "QADCModules_global.h"
 #include "adcirc_mesh.h"
@@ -46,16 +47,33 @@ class QADCMODULESSHARED_EXPORT adcirc_global_output : public QObject
 public:
     explicit adcirc_global_output(QString filename, QObject *parent = 0);
 
+    explicit adcirc_global_output(QString filename, bool ignoreMesh, QObject *parent = 0);
+
     ~adcirc_global_output();
 
     ///filename of the global ADCIRC output file to read
     QString filename;
+
+    ///Title of the file found in the first line of an ascii output file
+    QString title;
 
     ///Number of nodes in the global ADCIRC output file
     int numNodes;
 
     ///Number of columns (i.e. scalar or vector data) for ths ADCIRC output file
     int numColumns;
+
+    ///Total number of output records in the file
+    int numRecords;
+
+    ///Number of model time steps between consecutive records in the output file
+    int timestepsBetweenSnaps;
+
+    ///Time (seconds) between consecutive records in the output file
+    double timeBetweenSnaps;
+
+    ///Default value (or _FillValue in netCDF)
+    double defaultValue;
 
     ///For netCDF files, the mesh information is included in the file. It will be stored here
     adcirc_mesh *mesh;
@@ -69,9 +87,15 @@ public:
     adcirc_output_record* outputData;
 
     //...Public Functions...//
-    int read(int record);
+    int readNetCDF(int record);
 
-    int write(int record, QString outputFilename);
+    int readAscii();
+
+    int readNextAscii();
+
+    int writeNetCDF(int record, QString outputFilename);
+
+    int writeAscii();
 
 protected:
 
@@ -83,11 +107,20 @@ protected:
 
     int readAdcircGlobalOutputNetCDF(int record);
 
-    int readAdcircGlobalOutputAscii(int record);
+    int readAdcircGlobalOutputAsciiHeader();
+
+    int readNextAdcircGlobalOutputAscii();
 
 private:
 
     //...Private Variables...//
+
+    ///Variable that allows the user to skip reading of the internal mesh
+    ///inside the adcirc_global_output file
+    bool dontReadMesh;
+
+    ///Variable that holds the index of the last record read from the file
+    int lastRecordRead;
 
     ///Variable describing if the adcirc_mesh was read from the netCDF file
     bool isMeshInitialized;

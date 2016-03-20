@@ -19,12 +19,14 @@
 //-----------------------------------------------------------------------*/
 #include "adcirc_global_output.h"
 #include "netcdf.h"
-
+#include <QDebug>
 
 //-----------------------------------------------------------------------------------------//
 // Constructor for an adcirc_global_output object
 //-----------------------------------------------------------------------------------------//
-/** \brief Constructor for an adcirc_global_output object
+/**
+ * \fn adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : QObject(parent)
+ * \brief Constructor for an adcirc_global_output object
  *
  * @param[in] filename filename of the ADCIRC output file to read
  * @param[in] parent   QObject reference
@@ -35,11 +37,42 @@
 //-----------------------------------------------------------------------------------------//
 adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : QObject(parent)
 {
+    this->dontReadMesh = false;
     this->filename = filename;
     this->isMeshInitialized = false;
     this->initializeNetcdfVariables();
     this->error = new QADCModules_errors(this);
     this->outputData = NULL;
+    this->lastRecordRead = 0;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Constructor for an adcirc_global_output object
+//-----------------------------------------------------------------------------------------//
+/**
+ * \fn adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : QObject(parent)
+ * \brief Constructor for an adcirc_global_output object
+ *
+ * @param[in] filename    filename of the ADCIRC output file to read
+ * @param[in] ignoreMesh  Skip reading the adcirc mesh contained within the netCDF output file
+ * @param[in] parent      QObject reference
+ *
+ * Constructor for an adcirc_global_output object
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+adcirc_global_output::adcirc_global_output(QString filename, bool ignoreMesh, QObject *parent) : QObject(parent)
+{
+    this->dontReadMesh = ignoreMesh;
+    this->filename = filename;
+    this->isMeshInitialized = false;
+    this->initializeNetcdfVariables();
+    this->error = new QADCModules_errors(this);
+    this->outputData = NULL;
+    this->lastRecordRead = 0;
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -67,7 +100,59 @@ adcirc_global_output::~adcirc_global_output()
 
 
 //-----------------------------------------------------------------------------------------//
-// Public function to read an ADCIRC output file
+// Function to read from an ascii ADCIRC output file
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that reads the header of an ascii ADCIRC global output file
+ *
+ * Function that reads opens and reads the header of an ascii ADCIRC global output file.
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+int adcirc_global_output::readAscii()
+{
+
+    int ierr;
+
+    //...Check that the filename is valid
+    if(this->filename.isEmpty() || this->filename.isNull())
+    {
+        this->error->setError(ERROR_FILENOEXIST);
+        return this->error->getError();
+    }
+
+    //...Check that the file exists
+    QFile testFile(this->filename);
+    if(!testFile.exists())
+    {
+        this->error->setError(ERROR_FILENOEXIST);
+        return this->error->getError();
+    }
+
+    //...Read the ASCII header
+    ierr = this->readAdcircGlobalOutputAsciiHeader();
+    if(ierr!=ERROR_NOERROR)
+    {
+        this->error->setError(ierr);
+        return this->error->getError();
+    }
+
+    //...Read the first record of the global output file
+    ierr = this->readNextAdcircGlobalOutputAscii();
+    if(ierr!=ERROR_NOERROR)
+    {
+        this->error->setError(ierr);
+        return this->error->getError();
+    }
+
+    return ERROR_NOERROR;
+
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Public function to read an ADCIRC netCDF output file
 //-----------------------------------------------------------------------------------------//
 /** \brief Public function to read an ADCIRC output file
  *
@@ -77,7 +162,7 @@ adcirc_global_output::~adcirc_global_output()
  *
  */
 //-----------------------------------------------------------------------------------------//
-int adcirc_global_output::read(int record)
+int adcirc_global_output::readNetCDF(int record)
 {
     int ierr,ncid;
 
@@ -111,8 +196,8 @@ int adcirc_global_output::read(int record)
     }
     else
     {
-        //...Read the file as ascii formatted
-        //ierr = this->readAdcircGlobalOutputAscii(record);
+        this->error->setError(ERROR_ADCIRCOUTPUT_NOTNETCDF);
+        return this->error->getError();
     }
 
     this->error->setError(ierr);
@@ -230,11 +315,11 @@ int adcirc_global_output::findNetCDFVariables(int &ncid, QVector<int> &varIDs)
 int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
 {
     int i,ierr,numColumns;
-    int ncid,dimid_time,varid_time;
+    int ncid,dimid_time,dimid_node,varid_time;
     int start_int,count_int;
     double *timeList,*column1,*column2;
     QVector<int> varIDs;
-    size_t nSnaps;
+    size_t nSnaps,nNodes;
 
     //...Check if the file exists
     QFile thisRegFile(this->filename);
@@ -247,15 +332,17 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
     //...First time here, we need to read the ADCIRC mesh data (nodes, elements only)
     if(!this->isMeshInitialized)
     {
-        this->mesh = new adcirc_mesh(this);
-        ierr = this->mesh->readNetCDF(this->filename);
-        this->numNodes = this->mesh->numNodes;
-        if(ierr == ERROR_NOERROR)
-            this->isMeshInitialized = true;
-        else
+        if(!this->dontReadMesh)
         {
-            this->error->setError(ierr);
-            return this->error->getError();
+            this->mesh = new adcirc_mesh(this);
+            ierr = this->mesh->readNetCDF(this->filename);
+            if(ierr == ERROR_NOERROR)
+                this->isMeshInitialized = true;
+            else
+            {
+                this->error->setError(ierr);
+                return this->error->getError();
+            }
         }
     }
 
@@ -288,11 +375,31 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
         this->error->setError(ERROR_NETCDF_GENERIC);
         return this->error->getError();
     }
-    if(record > static_cast<int>(nSnaps))
+
+    this->numRecords = static_cast<int>(nSnaps);
+    if(record > this->numRecords)
     {
         this->error->setError(ERROR_ADCIRCOUTPUT_EXCEEDEDSDIM);
         return this->error->getError();
     }
+
+    //...Get the number of nodes in the adcirc_global_output file
+    ierr = nc_inq_dimid(ncid,"node",&dimid_node);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_dimlen(ncid,dimid_node,&nNodes);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+    this->numNodes = static_cast<int>(nNodes);
 
     //...Find the netCDF variable that is present in this file
     ierr = this->findNetCDFVariables(ncid,varIDs);
@@ -303,17 +410,16 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
     }
     numColumns = varIDs.size();
 
-    start_int             = (record-1)*this->mesh->numNodes;
-    count_int             =  this->mesh->numNodes;
-    static size_t nNode   =  static_cast<size_t>(count_int);
+    start_int             = (record-1)*this->numNodes;
+    count_int             =  this->numNodes;
     static size_t start[] = {static_cast<size_t>(start_int)};
-    static size_t count[] = {nNode};
+    static size_t count[] = {nNodes};
 
     //...Allocate memory
     timeList = (double*)malloc(sizeof(double)*nSnaps);
-    column1  = (double*)malloc(sizeof(double)*nNode);
+    column1  = (double*)malloc(sizeof(double)*nNodes);
     if(numColumns==2)
-        column2 = (double*)malloc(sizeof(double)*nNode);
+        column2 = (double*)malloc(sizeof(double)*nNodes);
 
     //...Read data from netCDF file
     ierr = nc_get_var(ncid,varid_time,timeList);
@@ -346,31 +452,249 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
     //...Save the data into the output variable
     if(this->outputData!=NULL)
         delete this->outputData;
-    this->outputData = new adcirc_output_record(this->mesh->numNodes,this);
+    this->outputData = new adcirc_output_record(this->numNodes,this);
     this->outputData->modelTime = timeList[record-1];
     this->numColumns = numColumns;
     if(numColumns==1)
     {
-        this->outputData->scalar.resize(this->mesh->numNodes);
-        for(i=0;i<this->mesh->numNodes;i++)
+        this->outputData->scalar.resize(this->numNodes);
+        for(i=0;i<this->numNodes;i++)
             this->outputData->scalar[i] = column1[i];
     }
     else if(numColumns==2)
     {
-        this->outputData->vector_u.resize(this->mesh->numNodes);
-        this->outputData->vector_v.resize(this->mesh->numNodes);
-        for(i=0;i<this->mesh->numNodes;i++)
+        this->outputData->vector_u.resize(this->numNodes);
+        this->outputData->vector_v.resize(this->numNodes);
+        for(i=0;i<this->numNodes;i++)
         {
             this->outputData->vector_u[i] = column1[i];
             this->outputData->vector_v[i] = column2[i];
         }
     }
 
+    this->lastRecordRead = record;
+
     //...Deallocate memory
     free(timeList);
     free(column1);
     if(numColumns==2)
         free(column2);
+
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Function that reads the header from an ADCIRC global ASCII file
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that reads the header from an ADCIRC global ASCII file
+ *
+ * Function that reads the header from an ADCIRC global ASCII file. Uses readFID to keep
+ * the file open so that other routines can read subsequent records
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+int adcirc_global_output::readAdcircGlobalOutputAsciiHeader()
+{
+    QString fileData,tempString;
+    QStringList fileDataList;
+    bool err;
+
+    this->readFid.setFileName(this->filename);
+
+    if(!this->readFid.open(QIODevice::ReadOnly))
+    {
+        this->error->setError(ERROR_FILEOPENERR);
+        return this->error->getError();
+    }
+
+    fileData    = this->readFid.readLine().simplified();
+    this->title = fileData;
+
+    fileData     = this->readFid.readLine().simplified();
+    fileDataList = fileData.split(" ");
+
+    tempString       = fileDataList.value(0);
+    this->numRecords = tempString.toInt(&err);
+    if(!err)
+    {
+        this->error->setError(ERROR_ADCIRCOUTPUT_ASCIIREADERROR);
+        return this->error->getError();
+    }
+
+    tempString = fileDataList.value(1);
+    this->numNodes = tempString.toInt(&err);
+    if(!err)
+    {
+        this->error->setError(ERROR_ADCIRCOUTPUT_ASCIIREADERROR);
+        return this->error->getError();
+    }
+
+    tempString = fileDataList.value(2);
+    this->timeBetweenSnaps = tempString.toDouble(&err);
+    if(!err)
+    {
+        this->error->setError(ERROR_ADCIRCOUTPUT_ASCIIREADERROR);
+        return this->error->getError();
+    }
+
+    tempString = fileDataList.value(3);
+    this->timestepsBetweenSnaps = tempString.toDouble(&err);
+    if(!err)
+    {
+        this->error->setError(ERROR_ADCIRCOUTPUT_ASCIIREADERROR);
+        return this->error->getError();
+    }
+
+    tempString = fileDataList.value(4);
+    this->numColumns = tempString.toInt(&err);
+    if(!err)
+    {
+        this->error->setError(ERROR_ADCIRCOUTPUT_ASCIIREADERROR);
+        return this->error->getError();
+    }
+
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Function that reads the next record from the adcirc output file
+//-----------------------------------------------------------------------------------------//
+/** \brief Function that reads the next record from the adcirc_global_output file
+ *
+ * Function that reads the next record from the adcirc_global_output file
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+int adcirc_global_output::readNextAdcircGlobalOutputAscii()
+{
+    QString fileData,tempString;
+    QStringList fileDataList;
+    double defaultValue,value1,value2;
+    int i,numNonDefault,node;
+    bool err,sparse;
+
+    this->lastRecordRead = this->lastRecordRead + 1;
+
+    //...Read the individual record header
+    fileData     = this->readFid.readLine().simplified();
+    fileDataList = fileData.split(" ");
+
+    //...If necessary, create a new record object
+    if(this->outputData==NULL)
+        this->outputData = new adcirc_output_record(this->numNodes,this);
+
+    //...Check if the file format is sparse or full
+    if(fileDataList.size()==2)
+        sparse = false;
+    else
+        sparse = true;
+
+    //...Model time for this record
+    tempString = fileDataList.value(0);
+    this->outputData->modelTime = tempString.toDouble(&err);
+    if(!err)
+    {
+        this->error->setError(ERROR_ADCIRCOUTPUT_ASCIIREADERROR);
+        return this->error->getError();
+    }
+
+    //...Model time step for this record
+    tempString = fileDataList.value(1);
+    this->outputData->modelStep = tempString.toInt(&err);
+    if(!err)
+    {
+        this->error->setError(ERROR_ADCIRCOUTPUT_ASCIIREADERROR);
+        return this->error->getError();
+    }
+
+    //...Read the default value information for sparse formatted files
+    if(sparse)
+    {
+        tempString = fileDataList.value(2);
+        numNonDefault = tempString.toInt(&err);
+        if(!err)
+        {
+            this->error->setError(ERROR_ADCIRCOUTPUT_ASCIIREADERROR);
+            return this->error->getError();
+        }
+        tempString = fileDataList.value(3);
+        defaultValue = tempString.toInt(&err);
+        if(!err)
+        {
+            this->error->setError(ERROR_ADCIRCOUTPUT_ASCIIREADERROR);
+            return this->error->getError();
+        }
+    }
+    else
+    {
+        this->defaultValue = -99999.0;
+        numNonDefault      = this->numNodes;
+    }
+
+    //...Allocations
+    if(this->numColumns==1)
+    {
+        this->outputData->scalar.resize(this->numNodes);
+        this->outputData->scalar.fill(this->defaultValue);
+    }
+    else
+    {
+        this->outputData->vector_u.resize(this->numNodes);
+        this->outputData->vector_v.resize(this->numNodes);
+        this->outputData->vector_u.fill(this->defaultValue);
+        this->outputData->vector_v.fill(this->defaultValue);
+    }
+
+    //...Loop over the file
+    for(i=0;i<numNonDefault;i++)
+    {
+        fileData     = this->readFid.readLine().simplified();
+        fileDataList = fileData.split(" ");
+        tempString   = fileDataList.value(0);
+        node         = tempString.toInt(&err);
+        if(!err)
+        {
+            this->error->setError(ERROR_ADCIRCOUTPUT_ASCIIREADERROR);
+            return this->error->getError();
+        }
+        if(this->numColumns==1)
+        {
+            tempString = fileDataList.value(1);
+            value1     = tempString.toDouble(&err);
+            if(!err)
+            {
+                this->error->setError(ERROR_ADCIRCOUTPUT_ASCIIREADERROR);
+                return this->error->getError();
+            }
+            this->outputData->scalar[node-1] = value1;
+        }
+        else
+        {
+            tempString = fileDataList.value(1);
+            value1     = tempString.toDouble(&err);
+            if(!err)
+            {
+                this->error->setError(ERROR_ADCIRCOUTPUT_ASCIIREADERROR);
+                return this->error->getError();
+            }
+            this->outputData->vector_u[node-1] = value1;
+
+            tempString = fileDataList.value(2);
+            value2     = tempString.toDouble(&err);
+            if(!err)
+            {
+                this->error->setError(ERROR_ADCIRCOUTPUT_ASCIIREADERROR);
+                return this->error->getError();
+            }
+            this->outputData->vector_v[node-1] = value1;
+        }
+    }
 
     return ERROR_NOERROR;
 }

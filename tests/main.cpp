@@ -178,7 +178,14 @@ int main(int argc, char *argv[])
     qDebug() << "\n";
     qDebug() << "Reading adcirc global netCDF file...";
     QPointer<adcirc_global_output> adcOutput = new adcirc_global_output("../../QADCModules/tests/test_files/maxele.63.nc");
-    ierr = adcOutput->read(1);
+    ierr = adcOutput->readNetCDF(1);
+    qDebug() << "STATUS: " << adcOutput->error->getErrorString();
+
+    qDebug() << "\n";
+    qDebug() << "Reading adcirc global ascii file...";
+    adcOutput.clear();
+    adcOutput = new adcirc_global_output("../../QADCModules/tests/test_files/maxele.63");
+    ierr = adcOutput->readAscii();
     qDebug() << "STATUS: " << adcOutput->error->getErrorString();
 
 

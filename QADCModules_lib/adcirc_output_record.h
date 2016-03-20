@@ -52,6 +52,9 @@ public:
     ///Model time (seconds) when this record was written
     double modelTime;
 
+    ///Model time step
+    int modelStep;
+
     ///Vector containig the model data for this output record
     QVector<double> scalar;
 
