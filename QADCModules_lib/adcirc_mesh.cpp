@@ -21,7 +21,7 @@
 #include "netcdf.h"
 
 //-----------------------------------------------------------------------------------------//
-// Initializer
+// Initializer that creates its own error object
 //-----------------------------------------------------------------------------------------//
 /**
  * \fn adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
@@ -39,6 +39,46 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
     //   describe what went wrong to the
     //   user later    
     this->error = new QADCModules_errors(this);
+
+    //...By default, we will assume that the mesh numbering should be sequential
+    this->ignoreMeshNumbering = false;
+    this->meshNeedsNumbering  = false;
+
+    //...Assume this is a geographic coordinate system by default. After
+    //   the mesh is read, this will be checked to be sure
+    this->isLatLon = true;
+
+    //...Initialize the coordinate system
+    this->coordinateSystem = new proj4(this);
+
+    //...Set the default coordinate system to WGS84
+    this->epsg = 4326;
+
+    return;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Initializer that creates its own error object
+//-----------------------------------------------------------------------------------------//
+/**
+ * \overload adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
+ * \brief Constructor for the ADCIRC mesh class
+ *
+ * @param[in] *error  reference to an QADCModules_errors object to use for errors in this class
+ * @param[in] *parent reference to QObject. Enables automatic memory management to avoid memory leaks
+ *
+ * Constructs an adcirc_mesh object, takes QObject reference as input
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+adcirc_mesh::adcirc_mesh(QADCModules_errors *error, QObject *parent) : QObject(parent)
+{
+
+    //...Use the error pointer that was passed into this object
+    this->error = error;
 
     //...By default, we will assume that the mesh numbering should be sequential
     this->ignoreMeshNumbering = false;

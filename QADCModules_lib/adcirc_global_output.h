@@ -46,6 +46,8 @@ class QADCMODULESSHARED_EXPORT adcirc_global_output : public QObject
 public:
     explicit adcirc_global_output(QString filename, QObject *parent = 0);
 
+    ~adcirc_global_output();
+
     ///filename of the global ADCIRC output file to read
     QString filename;
 
@@ -81,7 +83,7 @@ protected:
 
     int readAdcircGlobalOutputNetCDF(int record);
 
-    int readAdcircGlobalOutputAscii();
+    int readAdcircGlobalOutputAscii(int record);
 
 private:
 

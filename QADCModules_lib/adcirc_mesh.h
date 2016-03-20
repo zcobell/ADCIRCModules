@@ -60,6 +60,8 @@ public:
 
     explicit adcirc_mesh(QObject *parent = 0);
 
+    explicit adcirc_mesh(QADCModules_errors *error, QObject *parent = 0);
+
     //...Public variables...//
 
     ///Filename for this ADCIRC mesh

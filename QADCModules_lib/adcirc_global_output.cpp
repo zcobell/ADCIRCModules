@@ -46,6 +46,27 @@ adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : 
 
 
 //-----------------------------------------------------------------------------------------//
+// Destructor for an adcirc_global_output object
+//-----------------------------------------------------------------------------------------//
+/** \brief Destructor for an adcirc_global_output object
+ *
+ * Destructor for an adcirc_global_output object
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+adcirc_global_output::~adcirc_global_output()
+{
+    if(this->readFid.isOpen())
+        this->readFid.close();
+
+    if(this->writeFid.isOpen())
+        this->writeFid.close();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
 // Public function to read an ADCIRC output file
 //-----------------------------------------------------------------------------------------//
 /** \brief Public function to read an ADCIRC output file
@@ -58,7 +79,42 @@ adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : 
 //-----------------------------------------------------------------------------------------//
 int adcirc_global_output::read(int record)
 {
-    int ierr = this->readAdcircGlobalOutputNetCDF(record);
+    int ierr,ncid;
+
+    //...Check that the filename is valid
+    if(this->filename.isEmpty() || this->filename.isNull())
+    {
+        this->error->setError(ERROR_FILENOEXIST);
+        return this->error->getError();
+    }
+
+    //...Check that the file exists
+    QFile testFile(this->filename);
+    if(!testFile.exists())
+    {
+        this->error->setError(ERROR_FILENOEXIST);
+        return this->error->getError();
+    }
+
+    //...Determine if the file is a netCDF file. Attempt to open if. If
+    //   no error is returned, then we can assume that the file is netCDF
+    //   formatted
+    ierr = nc_open(this->filename.toStdString().c_str(),NC_NOWRITE,&ncid);
+
+    if(ierr==NC_NOERR)
+    {
+        //...Close the dummy attempt to open the file
+        ierr = nc_close(ncid);
+
+        //...Call the read routine
+        ierr = this->readAdcircGlobalOutputNetCDF(record);
+    }
+    else
+    {
+        //...Read the file as ascii formatted
+        //ierr = this->readAdcircGlobalOutputAscii(record);
+    }
+
     this->error->setError(ierr);
     return this->error->getError();
 }
