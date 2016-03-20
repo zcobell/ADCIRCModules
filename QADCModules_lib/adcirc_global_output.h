@@ -79,7 +79,7 @@ protected:
 
     int initializeNetcdfVariables();
 
-    int findNetCDFVariable(int &ncid, int &numVariables, int &variable1, int &variable2);
+    int findNetCDFVariables(int &ncid, QVector<int> &varIDs);
 
     int readAdcircGlobalOutputNetCDF(int record);
 

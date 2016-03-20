@@ -192,50 +192,25 @@ int adcirc_global_output::initializeNetcdfVariables()
  *
  */
 //-----------------------------------------------------------------------------------------//
-int adcirc_global_output::findNetCDFVariable(int &ncid, int &numVariables, int &variable1, int &variable2)
+int adcirc_global_output::findNetCDFVariables(int &ncid, QVector<int> &varIDs)
 {
     QString varname;
-    int i,ierr;
+    int i,ierr,varid;
 
     for(i=0;i<this->netCDFVariables.size();i++)
     {
         varname = this->netCDFVariables.at(i);
-        ierr = nc_inq_varid(ncid,varname.toStdString().c_str(),&variable1);
+        ierr = nc_inq_varid(ncid,varname.toStdString().c_str(),&varid);
         if(ierr==NC_NOERR)
-        {
-            numVariables = 1;
-            if(varname=="u-vel")
-            {
-                numVariables = 2;
-                ierr = nc_inq_varid(ncid,"v-vel",&variable2);
-                if(ierr!=NC_NOERR)
-                    return ERROR_ADCIRCOUTPUT_NOVARIABLE;
-            }
-            else if(varname=="windx")
-            {
-                numVariables = 2;
-                ierr = nc_inq_varid(ncid,"windy",&variable2);
-                if(ierr!=NC_NOERR)
-                    return ERROR_ADCIRCOUTPUT_NOVARIABLE;
-            }
-            else if(varname=="radstress_x")
-            {
-                numVariables = 2;
-                ierr = nc_inq_varid(ncid,"radstress_y",&variable2);
-                if(ierr!=NC_NOERR)
-                    return ERROR_ADCIRCOUTPUT_NOVARIABLE;
-            }
-            else if(varname=="swan_windx")
-            {
-                numVariables = 2;
-                ierr = nc_inq_varid(ncid,"swan_windy",&variable2);
-                if(ierr!=NC_NOERR)
-                    return ERROR_ADCIRCOUTPUT_NOVARIABLE;
-            }
-            return ERROR_NOERROR;
-        }
+            varIDs.push_back(varid);
     }
-    return ERROR_ADCIRCOUTPUT_NOVARIABLE;
+
+    if(varIDs.size()==0)
+        return ERROR_ADCIRCOUTPUT_NOVARIABLE;
+    else if(varIDs.size()>2)
+        return ERROR_ADCIRCOUTPUT_TOOMANYVARS;
+    else
+        return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -255,9 +230,10 @@ int adcirc_global_output::findNetCDFVariable(int &ncid, int &numVariables, int &
 int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
 {
     int i,ierr,numColumns;
-    int ncid,varid1,varid2,dimid_time,varid_time;
+    int ncid,dimid_time,varid_time;
     int start_int,count_int;
     double *timeList,*column1,*column2;
+    QVector<int> varIDs;
     size_t nSnaps;
 
     //...Check if the file exists
@@ -319,12 +295,13 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
     }
 
     //...Find the netCDF variable that is present in this file
-    ierr = this->findNetCDFVariable(ncid,numColumns,varid1,varid2);
+    ierr = this->findNetCDFVariables(ncid,varIDs);
     if(ierr!=ERROR_NOERROR)
     {
         this->error->setError(ierr);
         return this->error->getError();
     }
+    numColumns = varIDs.size();
 
     start_int             = (record-1)*this->mesh->numNodes;
     count_int             =  this->mesh->numNodes;
@@ -347,7 +324,7 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
         return this->error->getError();
     }
 
-    ierr = nc_get_vara_double(ncid,varid1,start,count,column1);
+    ierr = nc_get_vara_double(ncid,varIDs.at(0),start,count,column1);
     if(ierr!=NC_NOERR)
     {
         this->error->setCustomDescription(nc_strerror(ierr));
@@ -357,7 +334,7 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
 
     if(numColumns==2)
     {
-        ierr = nc_get_vara_double(ncid,varid2,start,count,column2);
+        ierr = nc_get_vara_double(ncid,varIDs.at(1),start,count,column2);
         if(ierr!=NC_NOERR)
         {
             this->error->setCustomDescription(nc_strerror(ierr));

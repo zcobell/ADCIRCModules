@@ -95,6 +95,7 @@ int QADCModules_errors::initializeErrors()
     this->errorMapping[ERROR_ADCIRCOUTPUT_SIZEMISMATCH] = "The u and v components of the vector are not equally sized.";
     this->errorMapping[ERROR_ADCIRCOUTPUT_NOVARIABLE]   = "A variable expected to reside with the ADCIRC netCDF file was not found.";
     this->errorMapping[ERROR_ADCIRCOUTPUT_EXCEEDEDSDIM] = "The requested record is outside of the range available within the ADCIRC netCDF file.";
+    this->errorMapping[ERROR_ADCIRCOUTPUT_TOOMANYVARS]  = "More than two output variables were found in the netCDF output file.";
 
     //...netCDF Errors
     this->errorMapping[ERROR_NETCDF_OPEN]               = "The netCDF file could not be opened.";
