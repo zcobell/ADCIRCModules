@@ -18,5 +18,6 @@ var searchData=
   ['numnodes',['numNodes',['../classadcirc__boundary.html#adc78185ae62eb390d2ba8990fa63270f',1,'adcirc_boundary::numNodes()'],['../classadcirc__global__output.html#ae4f392aa7304037238aa1cbce95d82b1',1,'adcirc_global_output::numNodes()'],['../classadcirc__mesh.html#a9654add115321fd89aea323cbab5b1ac',1,'adcirc_mesh::numNodes()'],['../classadcirc__nodalattributes.html#a9b00dd9994992a523cf6e99a7346e880',1,'adcirc_nodalattributes::numNodes()'],['../classadcirc__output__record.html#a256dbf352655a3390bb4d4b6f46b9a8e',1,'adcirc_output_record::numNodes()']]],
   ['numopenboundaries',['numOpenBoundaries',['../classadcirc__mesh.html#ae8ff33dd6537c0942f038e27e60e7f8e',1,'adcirc_mesh']]],
   ['numparameters',['numParameters',['../classadcirc__nodalattributes.html#a86db7933a4e67394765edfbe7360c8e5',1,'adcirc_nodalattributes']]],
+  ['numrecords',['numRecords',['../classadcirc__global__output.html#a58aef41a75b30bb6e38574c5f271a281',1,'adcirc_global_output']]],
   ['nvalues',['nValues',['../classadcirc__nodalparameter.html#a1afa87326fa1bf2473c3716ea005776b',1,'adcirc_nodalparameter']]]
 ];

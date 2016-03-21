@@ -119,12 +119,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adb0cf99ad9e60511bf5e3128e727fc14"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#adb0cf99ad9e60511bf5e3128e727fc14">adcirc_global_output</a> (QString <a class="el" href="classadcirc__global__output.html#a03651581f82ba8c205ee7a13c57cece8">filename</a>, QObject *parent=0)</td></tr>
 <tr class="memdesc:adb0cf99ad9e60511bf5e3128e727fc14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for an <a class="el" href="classadcirc__global__output.html" title="Class that describes an ADCIRC global output file. ">adcirc_global_output</a> object.  <a href="#adb0cf99ad9e60511bf5e3128e727fc14">More...</a><br /></td></tr>
 <tr class="separator:adb0cf99ad9e60511bf5e3128e727fc14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc596e630c165083d6444a9a8a6ebd5a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#acc596e630c165083d6444a9a8a6ebd5a">read</a> (int record)</td></tr>
-<tr class="memdesc:acc596e630c165083d6444a9a8a6ebd5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public function to read an ADCIRC output file.  <a href="#acc596e630c165083d6444a9a8a6ebd5a">More...</a><br /></td></tr>
-<tr class="separator:acc596e630c165083d6444a9a8a6ebd5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c80dde88752586d6fc4bb3c17c8dc07"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4c80dde88752586d6fc4bb3c17c8dc07"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (int record, QString outputFilename)</td></tr>
-<tr class="separator:a4c80dde88752586d6fc4bb3c17c8dc07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d1a60195531ba6dc4e2b7976ac056d2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d1a60195531ba6dc4e2b7976ac056d2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>adcirc_global_output</b> (QString <a class="el" href="classadcirc__global__output.html#a03651581f82ba8c205ee7a13c57cece8">filename</a>, bool ignoreMesh, QObject *parent=0)</td></tr>
+<tr class="separator:a1d1a60195531ba6dc4e2b7976ac056d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaae871dab1703657f5233591cb44eba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#afaae871dab1703657f5233591cb44eba">~adcirc_global_output</a> ()</td></tr>
+<tr class="memdesc:afaae871dab1703657f5233591cb44eba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor for an <a class="el" href="classadcirc__global__output.html" title="Class that describes an ADCIRC global output file. ">adcirc_global_output</a> object.  <a href="#afaae871dab1703657f5233591cb44eba">More...</a><br /></td></tr>
+<tr class="separator:afaae871dab1703657f5233591cb44eba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8682f5df173ae28d0cc52a80b14714b1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#a8682f5df173ae28d0cc52a80b14714b1">readNetCDF</a> (int record)</td></tr>
+<tr class="memdesc:a8682f5df173ae28d0cc52a80b14714b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public function to read an ADCIRC output file.  <a href="#a8682f5df173ae28d0cc52a80b14714b1">More...</a><br /></td></tr>
+<tr class="separator:a8682f5df173ae28d0cc52a80b14714b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0558c14d746e6edce54cd99aa70fa167"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#a0558c14d746e6edce54cd99aa70fa167">readAscii</a> ()</td></tr>
+<tr class="memdesc:a0558c14d746e6edce54cd99aa70fa167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that reads the header of an ascii ADCIRC global output file.  <a href="#a0558c14d746e6edce54cd99aa70fa167">More...</a><br /></td></tr>
+<tr class="separator:a0558c14d746e6edce54cd99aa70fa167"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a898059be528522aa1e2f9b2f4bce3673"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a898059be528522aa1e2f9b2f4bce3673"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>readNextAscii</b> ()</td></tr>
+<tr class="separator:a898059be528522aa1e2f9b2f4bce3673"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac278e6112a888ded79c2e2c03a915cbc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac278e6112a888ded79c2e2c03a915cbc"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>writeNetCDF</b> (int record, QString outputFilename)</td></tr>
+<tr class="separator:ac278e6112a888ded79c2e2c03a915cbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b27231e780d8c203d97d3ea2f026387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b27231e780d8c203d97d3ea2f026387"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>writeAscii</b> ()</td></tr>
+<tr class="separator:a2b27231e780d8c203d97d3ea2f026387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -132,6 +147,10 @@ Public Attributes</h2></td></tr>
 QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#a03651581f82ba8c205ee7a13c57cece8">filename</a></td></tr>
 <tr class="memdesc:a03651581f82ba8c205ee7a13c57cece8"><td class="mdescLeft">&#160;</td><td class="mdescRight">filename of the global ADCIRC output file to read <br /></td></tr>
 <tr class="separator:a03651581f82ba8c205ee7a13c57cece8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af392fabf6cb74cef03a8d04171ea1952"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af392fabf6cb74cef03a8d04171ea1952"></a>
+QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#af392fabf6cb74cef03a8d04171ea1952">title</a></td></tr>
+<tr class="memdesc:af392fabf6cb74cef03a8d04171ea1952"><td class="mdescLeft">&#160;</td><td class="mdescRight">Title of the file found in the first line of an ascii output file. <br /></td></tr>
+<tr class="separator:af392fabf6cb74cef03a8d04171ea1952"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4f392aa7304037238aa1cbce95d82b1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae4f392aa7304037238aa1cbce95d82b1"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#ae4f392aa7304037238aa1cbce95d82b1">numNodes</a></td></tr>
 <tr class="memdesc:ae4f392aa7304037238aa1cbce95d82b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of nodes in the global ADCIRC output file. <br /></td></tr>
@@ -140,6 +159,22 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#a188d7a88f805d5819192f9b2ca985cb4">numColumns</a></td></tr>
 <tr class="memdesc:a188d7a88f805d5819192f9b2ca985cb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of columns (i.e. scalar or vector data) for ths ADCIRC output file. <br /></td></tr>
 <tr class="separator:a188d7a88f805d5819192f9b2ca985cb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58aef41a75b30bb6e38574c5f271a281"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a58aef41a75b30bb6e38574c5f271a281"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#a58aef41a75b30bb6e38574c5f271a281">numRecords</a></td></tr>
+<tr class="memdesc:a58aef41a75b30bb6e38574c5f271a281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of output records in the file. <br /></td></tr>
+<tr class="separator:a58aef41a75b30bb6e38574c5f271a281"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52468d9c6344a84203cc3c593ca0abc1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52468d9c6344a84203cc3c593ca0abc1"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#a52468d9c6344a84203cc3c593ca0abc1">timestepsBetweenSnaps</a></td></tr>
+<tr class="memdesc:a52468d9c6344a84203cc3c593ca0abc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of model time steps between consecutive records in the output file. <br /></td></tr>
+<tr class="separator:a52468d9c6344a84203cc3c593ca0abc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb0b5809895e42fb5fd34b8ced0e53dc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb0b5809895e42fb5fd34b8ced0e53dc"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#abb0b5809895e42fb5fd34b8ced0e53dc">timeBetweenSnaps</a></td></tr>
+<tr class="memdesc:abb0b5809895e42fb5fd34b8ced0e53dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time (seconds) between consecutive records in the output file. <br /></td></tr>
+<tr class="separator:abb0b5809895e42fb5fd34b8ced0e53dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcc754b752ae869599fa9d61a4234985"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abcc754b752ae869599fa9d61a4234985"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#abcc754b752ae869599fa9d61a4234985">defaultValue</a></td></tr>
+<tr class="memdesc:abcc754b752ae869599fa9d61a4234985"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value (or _FillValue in netCDF) <br /></td></tr>
+<tr class="separator:abcc754b752ae869599fa9d61a4234985"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f7b429c4e6056775d5e9f63007b69a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f7b429c4e6056775d5e9f63007b69a7"></a>
 <a class="el" href="classadcirc__mesh.html">adcirc_mesh</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#a6f7b429c4e6056775d5e9f63007b69a7">mesh</a></td></tr>
 <tr class="memdesc:a6f7b429c4e6056775d5e9f63007b69a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">For netCDF files, the mesh information is included in the file. It will be stored here. <br /></td></tr>
@@ -158,15 +193,18 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a5cd0f79dff969ab42c509c3dd008d943"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#a5cd0f79dff969ab42c509c3dd008d943">initializeNetcdfVariables</a> ()</td></tr>
 <tr class="memdesc:a5cd0f79dff969ab42c509c3dd008d943"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to set the list of netCDF variables in an ADCIRC output file.  <a href="#a5cd0f79dff969ab42c509c3dd008d943">More...</a><br /></td></tr>
 <tr class="separator:a5cd0f79dff969ab42c509c3dd008d943"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1804820bc58a5975726a8662258d7bbd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#a1804820bc58a5975726a8662258d7bbd">findNetCDFVariable</a> (int &amp;ncid, int &amp;numVariables, int &amp;variable1, int &amp;variable2)</td></tr>
-<tr class="memdesc:a1804820bc58a5975726a8662258d7bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to find the netCDF variable in an ADCIRC output file.  <a href="#a1804820bc58a5975726a8662258d7bbd">More...</a><br /></td></tr>
-<tr class="separator:a1804820bc58a5975726a8662258d7bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6b42fe0d35658798df682cb452b545e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#ac6b42fe0d35658798df682cb452b545e">findNetCDFVariables</a> (int &amp;ncid, QVector&lt; int &gt; &amp;varIDs)</td></tr>
+<tr class="memdesc:ac6b42fe0d35658798df682cb452b545e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to find the netCDF variable in an ADCIRC output file.  <a href="#ac6b42fe0d35658798df682cb452b545e">More...</a><br /></td></tr>
+<tr class="separator:ac6b42fe0d35658798df682cb452b545e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee5a5cbf43bfd4f4e563b5da35461666"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#aee5a5cbf43bfd4f4e563b5da35461666">readAdcircGlobalOutputNetCDF</a> (int record)</td></tr>
 <tr class="memdesc:aee5a5cbf43bfd4f4e563b5da35461666"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to read from a netCDF ADCIRC output file.  <a href="#aee5a5cbf43bfd4f4e563b5da35461666">More...</a><br /></td></tr>
 <tr class="separator:aee5a5cbf43bfd4f4e563b5da35461666"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac97cdfc8b5d520bb001591a7b53b1172"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac97cdfc8b5d520bb001591a7b53b1172"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>readAdcircGlobalOutputAscii</b> ()</td></tr>
-<tr class="separator:ac97cdfc8b5d520bb001591a7b53b1172"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d60c1dd08eb79f7f6c2cdbcc7f9ab33"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#a1d60c1dd08eb79f7f6c2cdbcc7f9ab33">readAdcircGlobalOutputAsciiHeader</a> ()</td></tr>
+<tr class="memdesc:a1d60c1dd08eb79f7f6c2cdbcc7f9ab33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that reads the header from an ADCIRC global ASCII file.  <a href="#a1d60c1dd08eb79f7f6c2cdbcc7f9ab33">More...</a><br /></td></tr>
+<tr class="separator:a1d60c1dd08eb79f7f6c2cdbcc7f9ab33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a136cb62a526fa30e019253a1d9929c99"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#a136cb62a526fa30e019253a1d9929c99">readNextAdcircGlobalOutputAscii</a> ()</td></tr>
+<tr class="memdesc:a136cb62a526fa30e019253a1d9929c99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that reads the next record from the <a class="el" href="classadcirc__global__output.html" title="Class that describes an ADCIRC global output file. ">adcirc_global_output</a> file.  <a href="#a136cb62a526fa30e019253a1d9929c99">More...</a><br /></td></tr>
+<tr class="separator:a136cb62a526fa30e019253a1d9929c99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
@@ -211,12 +249,37 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>readAdcircGlobalOutput
   </table>
   </dd>
 </dl>
+<p>Constructor for an <a class="el" href="classadcirc__global__output.html" title="Class that describes an ADCIRC global output file. ">adcirc_global_output</a> object</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>filename of the ADCIRC output file to read </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ignoreMesh</td><td>Skip reading the adcirc mesh contained within the netCDF output file </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">parent</td><td>QObject reference</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>Constructor for an <a class="el" href="classadcirc__global__output.html" title="Class that describes an ADCIRC global output file. ">adcirc_global_output</a> object </p>
 
 </div>
 </div>
+<a class="anchor" id="afaae871dab1703657f5233591cb44eba"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">adcirc_global_output::~adcirc_global_output </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Destructor for an <a class="el" href="classadcirc__global__output.html" title="Class that describes an ADCIRC global output file. ">adcirc_global_output</a> object </p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a1804820bc58a5975726a8662258d7bbd"></a>
+<a class="anchor" id="ac6b42fe0d35658798df682cb452b545e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -224,7 +287,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>readAdcircGlobalOutput
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int adcirc_global_output::findNetCDFVariable </td>
+          <td class="memname">int adcirc_global_output::findNetCDFVariables </td>
           <td>(</td>
           <td class="paramtype">int &amp;&#160;</td>
           <td class="paramname"><em>ncid</em>, </td>
@@ -232,20 +295,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>readAdcircGlobalOutput
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>numVariables</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>variable1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>variable2</em>&#160;</td>
+          <td class="paramtype">QVector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>varIDs</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -296,26 +347,27 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>readAdcircGlobalOutput
 
 </div>
 </div>
-<a class="anchor" id="acc596e630c165083d6444a9a8a6ebd5a"></a>
+<a class="anchor" id="a1d60c1dd08eb79f7f6c2cdbcc7f9ab33"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int adcirc_global_output::read </td>
+          <td class="memname">int adcirc_global_output::readAdcircGlobalOutputAsciiHeader </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>record</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">record</td><td>Record number to read from the file. Note: first record is record 1, not 0.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Public function to read an ADCIRC output file </p>
+<p>Function that reads the header from an ADCIRC global ASCII file. Uses readFID to keep the file open so that other routines can read subsequent records </p>
 
 </div>
 </div>
@@ -347,6 +399,69 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>readAdcircGlobalOutput
   </dd>
 </dl>
 <p>Function to read from a netCDF ADCIRC output file </p>
+
+</div>
+</div>
+<a class="anchor" id="a0558c14d746e6edce54cd99aa70fa167"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int adcirc_global_output::readAscii </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Function that reads opens and reads the header of an ascii ADCIRC global output file. </p>
+
+</div>
+</div>
+<a class="anchor" id="a8682f5df173ae28d0cc52a80b14714b1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int adcirc_global_output::readNetCDF </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>record</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">record</td><td>Record number to read from the file. Note: first record is record 1, not 0.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Public function to read an ADCIRC output file </p>
+
+</div>
+</div>
+<a class="anchor" id="a136cb62a526fa30e019253a1d9929c99"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int adcirc_global_output::readNextAdcircGlobalOutputAscii </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Function that reads the next record from the <a class="el" href="classadcirc__global__output.html" title="Class that describes an ADCIRC global output file. ">adcirc_global_output</a> file </p>
 
 </div>
 </div>
