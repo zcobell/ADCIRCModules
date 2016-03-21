@@ -87,16 +87,16 @@ Detailed documentation is available [here](http://zcobell.github.io/QADCModules/
 
         qDebug() << thisAttributes->error->getErrorString();
         
-###ADCIRC Output Files
+###ADCIRC Global Output Files (63/64/73/74)
 
 1. Read record 5 of a netCDF formatted ADCIRC output file:
 
-        QPointer<adcircOutput> = new adcirc_global_output("fort.63.nc",this);
+        QPointer<adcircOutput> = new adcirc_global_output("fort.63.nc");
         int ierr = adcircOutput->readNetCDF(5);
 
 2. Read the first record of an ASCII formatted output flie:
 
-        QPointer<adcircOutput> = new adcirc_global_output("fort.63",this);
+        QPointer<adcircOutput> = new adcirc_global_output("fort.63");
         int ierr = adcircOutput->readAscii();
 
 3. Read the next record of the ASCII file from above:
