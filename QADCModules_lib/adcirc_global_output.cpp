@@ -152,6 +152,25 @@ int adcirc_global_output::readAscii()
 
 
 //-----------------------------------------------------------------------------------------//
+// Function to read the next record from an adcirc ascii global file
+//-----------------------------------------------------------------------------------------//
+/** \brief Function to read the next record from the adcirc output file
+ *
+ * Function to read the next record from the adcirc output file
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+int adcirc_global_output::readNextAscii()
+{
+    int ierr = this->readNextAdcircGlobalOutputAscii();
+    this->error->setError(ierr);
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
 // Public function to read an ADCIRC netCDF output file
 //-----------------------------------------------------------------------------------------//
 /** \brief Public function to read an ADCIRC output file
