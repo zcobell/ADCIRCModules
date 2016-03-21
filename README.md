@@ -91,17 +91,17 @@ Detailed documentation is available [here](http://zcobell.github.io/QADCModules/
 
 1. Read record 5 of a netCDF formatted ADCIRC output file:
 
-        adcircOutput = new adcirc_global_output("fort.63.nc",this);
-        int ierr = adcircOutput.readNetCDF(5);
+        QPointer<adcircOutput> = new adcirc_global_output("fort.63.nc",this);
+        int ierr = adcircOutput->readNetCDF(5);
 
 2. Read the first record of an ASCII formatted output flie:
 
-        adcircOutput = new adcirc_global_output("fort.63",this);
-        int ierr = adcircOutput.readAscii();
+        QPointer<adcircOutput> = new adcirc_global_output("fort.63",this);
+        int ierr = adcircOutput->readAscii();
 
 3. Read the next record of the ASCII file from above:
 
-        int ierr = adcircOutput.readNextAscii();
+        int ierr = adcircOutput->readNextAscii();
 
 ###Credits
 Library | Function | Source
