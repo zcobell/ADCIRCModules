@@ -318,6 +318,7 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
     int ncid,dimid_time,dimid_node,varid_time;
     int start_int,count_int;
     double *timeList,*column1,*column2;
+    double dtdp,fillValue;
     QVector<int> varIDs;
     size_t nSnaps,nNodes;
 
@@ -453,7 +454,6 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
     if(this->outputData!=NULL)
         delete this->outputData;
     this->outputData = new adcirc_output_record(this->numNodes,this);
-    this->outputData->modelTime = timeList[record-1];
     this->numColumns = numColumns;
     if(numColumns==1)
     {
@@ -472,7 +472,31 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
         }
     }
 
+    //...Read a select set of the metadata
+    ierr = nc_get_att(ncid,NC_GLOBAL,"dt",&dtdp);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+    this->outputData->modelStep = qRound(dtdp*timeList[record-1]);
+    this->outputData->modelTime = timeList[record-1];
+
+    ierr = nc_get_att(ncid,varIDs.at(0),"_FillValue",&fillValue);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+    this->defaultValue = fillValue;
+
+    //...Save the last record read
     this->lastRecordRead = record;
+
+    //...Close the file
+    ierr = nc_close(ncid);
 
     //...Deallocate memory
     free(timeList);
