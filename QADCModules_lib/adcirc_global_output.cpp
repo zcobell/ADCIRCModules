@@ -53,7 +53,7 @@ adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : 
 // Constructor for an adcirc_global_output object
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : QObject(parent)
+ * \overload adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : QObject(parent)
  * \brief Constructor for an adcirc_global_output object
  *
  * @param[in] filename    filename of the ADCIRC output file to read

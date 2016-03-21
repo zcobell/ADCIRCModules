@@ -62,7 +62,21 @@ Detailed documentation is available [here](http://zcobell.github.io/QADCModules/
 
         thisMesh->findElement(-90.47,30.04,nearestElement,elementFound,weight)
 
-11. Diagnose an error while working with a mesh object
+11. Read record 5 of a netCDF formatted ADCIRC output file:
+
+        adcircOutput = new adcirc_global_output("fort.63.nc",this);
+        int ierr = adcircOutput.readNetCDF(5);
+
+12. Read the first record of an ASCII formatted output flie:
+
+        adcircOutput = new adcirc_global_output("fort.63",this);
+        int ierr = adcircOutput.readAscii();
+
+13. Read the next record of the ASCII file from above:
+
+        int ierr = adcircOutput.readNextAscii();
+
+14. Diagnose an error while working with a mesh object
 
         qDebug() << thisMesh->error->getErrorString();
 
