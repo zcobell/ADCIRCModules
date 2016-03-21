@@ -62,21 +62,7 @@ Detailed documentation is available [here](http://zcobell.github.io/QADCModules/
 
         thisMesh->findElement(-90.47,30.04,nearestElement,elementFound,weight)
 
-11. Read record 5 of a netCDF formatted ADCIRC output file:
-
-        adcircOutput = new adcirc_global_output("fort.63.nc",this);
-        int ierr = adcircOutput.readNetCDF(5);
-
-12. Read the first record of an ASCII formatted output flie:
-
-        adcircOutput = new adcirc_global_output("fort.63",this);
-        int ierr = adcircOutput.readAscii();
-
-13. Read the next record of the ASCII file from above:
-
-        int ierr = adcircOutput.readNextAscii();
-
-14. Diagnose an error while working with a mesh object
+11. Diagnose an error while working with a mesh object
 
         qDebug() << thisMesh->error->getErrorString();
 
@@ -100,6 +86,22 @@ Detailed documentation is available [here](http://zcobell.github.io/QADCModules/
 5. Diagnose an error while working with a nodal attributes object
 
         qDebug() << thisAttributes->error->getErrorString();
+        
+###ADCIRC Output Files
+
+1. Read record 5 of a netCDF formatted ADCIRC output file:
+
+        adcircOutput = new adcirc_global_output("fort.63.nc",this);
+        int ierr = adcircOutput.readNetCDF(5);
+
+2. Read the first record of an ASCII formatted output flie:
+
+        adcircOutput = new adcirc_global_output("fort.63",this);
+        int ierr = adcircOutput.readAscii();
+
+3. Read the next record of the ASCII file from above:
+
+        int ierr = adcircOutput.readNextAscii();
 
 ###Credits
 Library | Function | Source
@@ -107,4 +109,5 @@ Library | Function | Source
 KDTREE2 | Used for efficient nearest neighbor searches | Matthew B. Kennel, Institute for Nonlinear Science, UCSD (2004)
 Boost   | Used as part of KDTREE2 | [Visit Website](http://www.boost.org/)
 Proj4   | Used to project to various coordinate systems |[Visit Website](https://trac.osgeo.org/proj/)
+netCDF  | Used to read ADCIRC files formatted with this library | [Visit Website](http://www.unidata.ucar.edu/software/netcdf/)
 Qt      | Core C++ library | [Visit Website](http://qt.io)
