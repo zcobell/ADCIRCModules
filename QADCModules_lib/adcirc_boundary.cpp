@@ -25,8 +25,6 @@
 //-----------------------------------------------------------------------------------------//
 /** \brief Constructor for an ADCIRC boundary.
  *
- * \author Zach Cobell
- *
  * @param[in] code   ADCIRC boundary type code
  * @param[in] size   Number of nodes in the ADCIRC boundary string
  * @param[in] parent QObject parent

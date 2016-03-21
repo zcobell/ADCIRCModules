@@ -60,6 +60,8 @@ public:
 
     explicit adcirc_mesh(QObject *parent = 0);
 
+    explicit adcirc_mesh(QADCModules_errors *error, QObject *parent = 0);
+
     //...Public variables...//
 
     ///Filename for this ADCIRC mesh
@@ -127,6 +129,9 @@ public:
 
     int read();
     int read(QString inputFile);
+
+    int readNetCDF();
+    int readNetCDF(QString inputFile);
 
     int write(QString outputFile);
 
@@ -201,6 +206,8 @@ protected:
     //...PROTECTED FUNCTIONS...//
 
     int readMesh();
+
+    int readMeshFromNetCDF();
 
     int writeMesh(QString filename);
 

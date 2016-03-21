@@ -39,7 +39,7 @@ bool operator>(const adcirc_node n1,const adcirc_node n2)
 //-----------------------------------------------------------------------------------------//
 /** \brief Constructor function for an adcirc_node
  *
- * \author Zach Cobell
+ * @param[in] parent QObject reference
  *
  * Constructor function for an adcirc_node
  */
@@ -57,8 +57,6 @@ adcirc_node::adcirc_node(QObject *parent) : QObject(parent)
 //   you will need to set ignoreMeshNumbering to true
 //-----------------------------------------------------------------------------------------//
 /** \brief Protected function to parse the string from an ADCIRC mesh file containing nodal information
- *
- * \author Zach Cobell
  *
  * @param[in] line The QString with the information read from the file to be parsed into an ADCIRC node
  *
@@ -107,8 +105,6 @@ int adcirc_node::fromString(QString line)
 //-----------------------------------------------------------------------------------------//
 /** \brief Protected function that writes an ADCIRC node in the format expected by an ADCIRC mesh
  * file
- *
- * \author Zach Cobell
  *
  * @param[in] gcs  Determines the output format if it should be formatted for geographic
  *                 coordinates or mercator based coordinates. Default = true

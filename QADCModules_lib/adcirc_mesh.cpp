@@ -18,16 +18,14 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_mesh.h"
-
+#include "netcdf.h"
 
 //-----------------------------------------------------------------------------------------//
-// Initializer
+// Initializer that creates its own error object
 //-----------------------------------------------------------------------------------------//
 /**
  * \fn adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
  * \brief Constructor for the ADCIRC mesh class
- *
- * \author Zach Cobell
  *
  * @param[in] *parent reference to QObject. Enables automatic memory management to avoid memory leaks
  *
@@ -41,6 +39,46 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
     //   describe what went wrong to the
     //   user later    
     this->error = new QADCModules_errors(this);
+
+    //...By default, we will assume that the mesh numbering should be sequential
+    this->ignoreMeshNumbering = false;
+    this->meshNeedsNumbering  = false;
+
+    //...Assume this is a geographic coordinate system by default. After
+    //   the mesh is read, this will be checked to be sure
+    this->isLatLon = true;
+
+    //...Initialize the coordinate system
+    this->coordinateSystem = new proj4(this);
+
+    //...Set the default coordinate system to WGS84
+    this->epsg = 4326;
+
+    return;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Initializer that creates its own error object
+//-----------------------------------------------------------------------------------------//
+/**
+ * \overload adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
+ * \brief Constructor for the ADCIRC mesh class
+ *
+ * @param[in] *error  reference to an QADCModules_errors object to use for errors in this class
+ * @param[in] *parent reference to QObject. Enables automatic memory management to avoid memory leaks
+ *
+ * Constructs an adcirc_mesh object, takes QObject reference as input
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+adcirc_mesh::adcirc_mesh(QADCModules_errors *error, QObject *parent) : QObject(parent)
+{
+
+    //...Use the error pointer that was passed into this object
+    this->error = error;
 
     //...By default, we will assume that the mesh numbering should be sequential
     this->ignoreMeshNumbering = false;
@@ -80,8 +118,6 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
  * \fn adcirc_mesh::read()
  * \brief Read an ADCIRC mesh into the class
  *
- * \author Zach Cobell
- *
  * Function used to read the ADCIRC mesh into the class. Assumes the filename has already
  * been specified. The mesh file will be read in after checking for some simple errors. Error codes
  * will be returned upon any error. Any return besides ERROR_NOERROR is a fatal
@@ -108,8 +144,9 @@ int adcirc_mesh::read()
     //...Assuming these two checks passed, we can call
     //   the main routine
     int ierr = this->readMesh();
+    this->error->setError(ierr);
 
-    return ierr;
+    return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -121,8 +158,6 @@ int adcirc_mesh::read()
 /**
  * \overload adcirc_mesh::read(QString inputFile)
  * \brief  Read an ADCIRC mesh into the class and set the filename
- *
- *  \author Zach Cobell
  *
  *   @param[in] inputFile Specifies the mesh file to be read
  *
@@ -155,8 +190,97 @@ int adcirc_mesh::read(QString inputFile)
     //...Assuming these two checks passed, we can call
     //   the main routine
     int ierr = this->readMesh();
+    this->error->setError(ierr);
 
-    return ierr;
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Public function to read an ADCIRC mesh from netCDF. Assumes filename already specified
+//-----------------------------------------------------------------------------------------//
+/**
+ * \fn adcirc_mesh::readNetCDF()
+ * \brief Read an ADCIRC mesh from a netCDF file into the class
+ *
+ * @param[in] inputFile Specifies the mesh file to be read
+ *
+ * Function used to read the ADCIRC mesh into the class. Assumes the filename has already
+ * been specified. The mesh file will be read in after checking for some simple errors. Error codes
+ * will be returned upon any error. Any return besides ERROR_NOERROR is a fatal
+ * error
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::readNetCDF(QString inputFile)
+{
+
+    //...Set the filename
+    this->filename = inputFile;
+
+    //...Check for a null string
+    if(this->filename==QString())
+    {
+        this->error->setError(ERROR_NULLFILENAM);
+        return this->error->getError();
+    }
+
+    //...Check for file exists
+    QFile thisFile(this->filename);
+    if(!thisFile.exists())
+    {
+        this->error->setError(ERROR_FILENOEXIST);
+        return this->error->getError();
+    }
+
+    //...Assuming these two checks passed, we can call
+    //   the main routine
+    int ierr = this->readMeshFromNetCDF();
+    this->error->setError(ierr);
+
+    return this->error->getError();
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Public function to read an ADCIRC mesh from netCDF. Assumes filename has not been specified
+//-----------------------------------------------------------------------------------------//
+/**
+ * \fn adcirc_mesh::readNetCDF()
+ * \brief Read an ADCIRC mesh from a netCDF file into the class
+ *
+ * Function used to read the ADCIRC mesh into the class. Assumes the filename has already
+ * been specified. The mesh file will be read in after checking for some simple errors. Error codes
+ * will be returned upon any error. Any return besides ERROR_NOERROR is a fatal
+ * error
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::readNetCDF()
+{
+    //...Check for a null string
+    if(this->filename==QString())
+    {
+        this->error->setError(ERROR_NULLFILENAM);
+        return this->error->getError();
+    }
+
+    //...Check for file exists
+    QFile thisFile(this->filename);
+    if(!thisFile.exists())
+    {
+        this->error->setError(ERROR_FILENOEXIST);
+        return this->error->getError();
+    }
+
+    //...Assuming these two checks passed, we can call
+    //   the main routine
+    int ierr = this->readMeshFromNetCDF();
+    this->error->setError(ierr);
+
+    return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -170,8 +294,6 @@ int adcirc_mesh::read(QString inputFile)
  *
  * \brief  Public function to allow user to trigger writing
  * of the ADCIRC mesh contained within this class
- *
- *  \author Zach Cobell
  *
  *  @param[in]  outputFile Name of the file to write
  *
@@ -196,14 +318,13 @@ int adcirc_mesh::write(QString outputFile)
 
 
 
+
 //-----------------------------------------------------------------------------------------//
 //...The publicly exposed function to set the ignoreMeshnumbering variable
 //-----------------------------------------------------------------------------------------//
 /**
  * \fn adcirc_mesh::setIgnoreMeshNumbering(bool value)
  * \brief Public function to determine if non-sequential mesh numbering is a fatal error
- *
- * \author Zach Cobell
  *
  * @param[in] value If true, mesh numbering is ignored. If false, mesh numbering that is nonsequential is fatal
  *
@@ -229,8 +350,6 @@ int adcirc_mesh::setIgnoreMeshNumbering(bool value)
 /**
  * \fn adcirc_mesh::renumber()
  * \brief This function is used to renumber an adcirc_mesh sequantially
- *
- * \author Zach Cobell
  *
  * This function is used to renumber an adcirc_mesh (nodes, elements) so that it is valid.
  * Note that no attention is paid to minimizing bandwidth or providing optimal numbering.
@@ -272,8 +391,6 @@ int adcirc_mesh::renumber()
 /**
  * \fn adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
  * \brief This function is used to check if there are levee heights that need to be raised
- *
- * \author Zach Cobell
  *
  * @param[in] minAbovePrevailingTopo [optional] Elevation that a levee must be above the
  *                                              prevailing topographic elevation.
@@ -333,8 +450,6 @@ int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
 /**
  * \fn adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRaised, double minAbovePrevailingTopo, double minRaise, QString diagnosticFile)
  * \brief This function is used to raise levees that fall below prevailing topography
- *
- * \author Zach Cobell
  *
  * @param[out] numLeveesRaised                   Number of levees that needed to be raised
  * @param[out] maximumAmountRaised               Maximum amount that a levee needed to be raised
@@ -492,8 +607,6 @@ int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRa
  * \fn adcirc_mesh::checkDisjointNodes(int &numDisjointNodes, QList<adcirc_node*> &disjointNodeList)
  * \brief This function checks for nodes that are not connected to any elements
  *
- * \author Zach Cobell
- *
  * @param[out] numDisjointNodes Number of nodes that are not connected to any element
  * @param[out] disjointNodeList List of adcirc_node* that are considered disjoint
  *
@@ -546,8 +659,6 @@ int adcirc_mesh::checkDisjointNodes(int &numDisjointNodes, QList<adcirc_node*> &
 /**
  * \fn adcirc_mesh::eliminateDisjointNodes(int &numDisjointNodes)
  * \brief This function eliminates nodes that are not connected to any elements
- *
- * \author Zach Cobell
  *
  * @param[out] numDisjointNodes Number of nodes that were not connected to any element
  *
@@ -612,8 +723,6 @@ int adcirc_mesh::eliminateDisjointNodes(int &numDisjointNodes)
  * \fn adcirc_mesh::setProjection(int epsg)
  * \brief Function that sets the current projection
  *
- * \author Zach Cobell
- *
  * @param[in] epsg EPSG number for the coordinate system
  *
  * Function that sets the current projection
@@ -635,8 +744,6 @@ int adcirc_mesh::setProjection(int epsg)
 /**
  * \fn adcirc_mesh::project(int epsg)
  * \brief Function that projects an adcirc_mesh into another coordinate system
- *
- * \author Zach Cobell
  *
  * @param[in] epsg EPSG number for the new coordinate system
  *
@@ -682,8 +789,6 @@ int adcirc_mesh::project(int epsg)
 /**
  * \fn adcirc_mesh::checkOverlappingElements(int &numOverlappingElements, QList<adcirc_element*> &overlappingElementList)
  * \brief Function that checks for overlapping elements in an adcirc_mesh
- *
- * \author Zach Cobell
  *
  * @param[out] numOverlappingElements Number of duplicate elements found
  * @param[out] overlappingElementList List of duplicate elements in the mesh
@@ -767,8 +872,6 @@ int adcirc_mesh::checkOverlappingElements(int &numOverlappingElements, QList<adc
  * \fn adcirc_mesh::checkOverlappingBoundaries((int &numOverlappingBoundaries, QList<adcirc_node*> &overlappingBoundaryNodeList)
  * \brief Function that checks for overlapping boundary conditions in an adcirc_mesh
  *
- * \author Zach Cobell
- *
  * @param[out] numOverlappingBoundaries Number of overlapping boundaries located
  * @param[out] overlappingBoundaryNodeList List of nodes involved in overlapping boundary conditions
  *
@@ -793,8 +896,6 @@ int adcirc_mesh::checkOverlappingBoundaries(int &numOverlappingBoundaries, QList
 /**
  * \fn adcirc_mesh::buildElementTable()
  * \brief This function builds a table of the elements around a node
- *
- * \author Zach Cobell
  *
  * This function uses the adcirc_node_table class to build a list of the elements around
  * a specific node, which is useful for many functions
@@ -828,8 +929,6 @@ int adcirc_mesh::buildElementTable()
 /**
  * \fn adcirc_mesh::buildNodalSearchTree()
  * \brief Function that builds a kdtree2 search tree object for the nodes in the adcirc_mesh
- *
- * \author Zach Cobell
  *
  * Function that builds a kdtree2 search tree object for the nodes in the adcirc_mesh
  *
@@ -875,8 +974,6 @@ int adcirc_mesh::buildNodalSearchTree()
 /**
  * \fn adcirc_mesh::buildElementalSearchTree()
  * \brief Function that builds a kdtree2 search tree object for the element centers in the adcirc_mesh
- *
- * \author Zach Cobell
  *
  * Function that builds a kdtree2 search tree object for the element centers in the adcirc_mesh
  *
@@ -930,8 +1027,6 @@ int adcirc_mesh::buildElementalSearchTree()
  * \fn adcirc_mesh::findNearestNode(QPointF pointLocation, adcirc_node* &nearestNode)
  * \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
  *
- * \author Zach Cobell
- *
  * @param[in]  pointLocation Location for which the function will determine the nearest node
  * @param[out] node          Pointer to the nearest node
  *
@@ -967,8 +1062,6 @@ int adcirc_mesh::findNearestNode(QPointF pointLocation, adcirc_node* &nearestNod
  * \overload adcirc_mesh::findNearestNode(double x, double y, adcirc_node* &nearestNode)
  * \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
  *
- * \author Zach Cobell
- *
  * @param[in]  x       x-coordinate to use for locating nearest node
  * @param[in]  y       y-coordinate to use for locating nearest node
  * @param[out] node    Pointer to the nearest node
@@ -993,8 +1086,6 @@ int adcirc_mesh::findNearestNode(double x, double y, adcirc_node* &nearestNode)
 /**
  * \fn adcirc_mesh::findXNearestNodes(QPointF pointLocation, int nn, QList<adcirc_node *> &nodeList)
  * \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
- *
- * \author Zach Cobell
  *
  * @param[in]  location point location to use for locating the nearest node
  * @param[in]  nn       Number of nearest nodes to find
@@ -1036,8 +1127,6 @@ int adcirc_mesh::findXNearestNodes(QPointF pointLocation, int nn, QList<adcirc_n
  * \overload adcirc_mesh::findXNearestNodes(double x, double y, int nn, QList<adcirc_node *> &nodeList)
  * \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
  *
- * \author Zach Cobell
- *
  * @param[in]  x        x-coordinate to use for locating nearest node
  * @param[in]  y        y-coordinate to use for locating nearest node
  * @param[in]  nn       Number of nearest nodes to find
@@ -1063,8 +1152,6 @@ int adcirc_mesh::findXNearestNodes(double x, double y, int nn, QList<adcirc_node
 /**
  * \fn adcirc_mesh::findXNearestElements(QPointF pointLocation, int nn, QList<adcirc_element*> &elementList)
  * \brief Function that finds a list of the nearest element to a specified x,y coordinate
- *
- * \author Zach Cobell
  *
  * @param[in]  location    point location for locating the nearest element
  * @param[in]  nn          Number of nearest elements to find
@@ -1106,8 +1193,6 @@ int adcirc_mesh::findXNearestElements(QPointF pointLocation, int nn, QList<adcir
  * \overload adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_element*> &elementList)
  * \brief Function that finds a list of the nearest element to a specified x,y coordinate
  *
- * \author Zach Cobell
- *
  * @param[in]  x           x-coordinate to use for locating nearest element
  * @param[in]  y           y-coordinate to use for locating nearest element
  * @param[in]  nn          Number of nearest elements to find
@@ -1133,8 +1218,6 @@ int adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_e
 /**
  * \fn adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
  * \brief Function that locates the element that a point resides within and returns interpolation weights
- *
- * \author Zach Cobell
  *
  * @param[in]  pointLocation   point to use for locating the element
  * @param[out] nearestElement  pointer to element that point resides within or the nearest element
@@ -1162,8 +1245,6 @@ int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElem
 /**
  * \overload adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found)
  * \brief Function that locates the element that a point resides within
- *
- * \author Zach Cobell
  *
  * @param[in]  x               x-coordinate to use for locating the element
  * @param[in]  y               y-coordinate to use for locating the element
@@ -1193,8 +1274,6 @@ int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement
  * \overload adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found)
  * \brief Function that locates the element that a point resides within
  *
- * \author Zach Cobell
- *
  * @param[in]  pointLocation   point to use for locating the element
  * @param[out] nearestElement  pointer to element that point resides within or the nearest element
  * @param[out] found           true if the point was found within an element. false if point
@@ -1221,8 +1300,6 @@ int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElem
 /**
  * \overload adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
  * \brief Function that locates the element that a point resides within
- *
- * \author Zach Cobell
  *
  * @param[in]  x               x-coordinate to use for locating the element
  * @param[in]  y               y-coordinate to use for locating the element
@@ -1263,8 +1340,6 @@ int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement
 /**
  * \fn adcirc_mesh::readMesh()
  * \brief This function is used internally to read an ADCIRC mesh
- *
- * \author Zach Cobell
  *
  * This function is used internally to read an ADCIRC mesh. The mesh will have its filename
  * specified in the adcirc_mesh::filename variable.
@@ -1417,8 +1492,6 @@ int adcirc_mesh::readMesh()
  * \fn adcirc_mesh::allocateNodes()
  * \brief Creates a number of adcirc_node variables on the heap
  *
- * \author Zach Cobell
- *
  * This function creates a set of ADCIRC nodes on the heap. All nodes that area
  * created are done so with a QObject reference to enable automatic memory management
  * to avoid memory leaks
@@ -1442,8 +1515,6 @@ int adcirc_mesh::allocateNodes()
  * \fn adcirc_mesh::allocateElements()
  * \brief Creates a number of adcirc_element variables on the heap
  *
- * \author Zach Cobell
- *
  * This function creates a set of ADCIRC elements on the heap. All elements that area
  * created are done so with a QObject reference to enable automatic memory management
  * to avoid memory leaks
@@ -1466,8 +1537,6 @@ int adcirc_mesh::allocateElements()
 /**
  * \fn adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
  * \brief Protected function to read the entire set of open boundary conditions
- *
- * \author Zach Cobell
  *
  * @param[in,out] position The current file position. Returned as the new file position when the open boundary read is complete
  * @param[in]     fileData Reference to the data read from the ADCIRC mesh file
@@ -1576,8 +1645,6 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
 /**
  * \fn adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
  * \brief Protected function to read the entire set of land boundary conditions
- *
- * \author Zach Cobell
  *
  * @param[in,out] position The current file position. Returned as the new file position
  *                         when the land boundary read is complete
@@ -1697,8 +1764,6 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
  * \fn adcirc_mesh::writeMesh(QString filename)
  * \brief This function is used internally to write an ADCIRC mesh
  *
- * \author Zach Cobell
- *
  * @param[in] filename Name of the output mesh file
  *
  * This function is used internally to write an ADCIRC mesh.
@@ -1776,8 +1841,6 @@ int adcirc_mesh::writeMesh(QString filename)
  * \fn adcirc_mesh::findAdcircElement(QPointF location, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
  * \brief Function used internally to find the adcirc_element that a given x,y lies within
  *
- * \author Zach Cobell
- *
  * @param[in]  pointLocation  point to locate inside an element
  * @param[out] nearestElement pointer to the nearest adcirc_element to the given x,y
  * @param[out] found          true if the x,y coordinate was found within an element or false
@@ -1843,6 +1906,257 @@ int adcirc_mesh::findAdcircElement(QPointF pointLocation, adcirc_element* &neare
     {
         nearestElement = elementList.value(0);
         weights.fill(1.0/3.0);
+    }
+
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function to read an ADCIRC mesh from netCDF
+//-----------------------------------------------------------------------------------------//
+/**
+ * \fn adcirc_mesh::readMeshFromNetCDF()
+ * \brief This function is used internally to read an ADCIRC mesh from a netCDF file
+ *
+ * This function is used internally to read an ADCIRC mesh from a netCDF file. The mesh
+ * will have its filename specified in the adcirc_mesh::filename variable.
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::readMeshFromNetCDF()
+{
+    int i,ierr;
+    int n1,n2,n3;
+    int ncid,varid_x,varid_y,varid_z,varid_element;
+    int dimid_nNodes,dimid_nElements,dimid_nVertex;
+    double *node_x,*node_y,*node_z;
+    int *elem1,*elem2,*elem3;
+    size_t nNodes,nEle,nVert;
+
+    //...Open the netCDF file
+    ierr = nc_open(this->filename.toStdString().c_str(),NC_NOWRITE,&ncid);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    //...Get the variable IDs
+    ierr = nc_inq_varid(ncid,"x",&varid_x);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_varid(ncid,"y",&varid_y);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_varid(ncid,"depth",&varid_z);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_varid(ncid,"element",&varid_element);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    //...Get the variable dimensions
+    ierr = nc_inq_dimid(ncid,"node",&dimid_nNodes);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_dimid(ncid,"nele",&dimid_nElements);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_dimid(ncid,"nvertex",&dimid_nVertex);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_dimlen(ncid,dimid_nNodes,&nNodes);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_dimlen(ncid,dimid_nElements,&nEle);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_inq_dimlen(ncid,dimid_nVertex,&nVert);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    //...Save off the dimensional information
+    this->numNodes          = static_cast<int>(nNodes);
+    this->numElements       = static_cast<int>(nEle);
+    this->numOpenBoundaries = 0;
+    this->numLandBoundaries = 0;
+    const size_t count_node = nNodes;
+
+    static size_t count_ele[]  = {nEle,1};
+    static size_t start_ele1[] = {0,0};
+    static size_t start_ele2[] = {0,1};
+    static size_t start_ele3[] = {0,2};
+
+    //...Allocate space for reading from netCDF
+    node_x = (double*)malloc(sizeof(double)*count_node);
+    node_y = (double*)malloc(sizeof(double)*count_node);
+    node_z = (double*)malloc(sizeof(double)*count_node);
+    elem1  = (int*)malloc(sizeof(int)*nEle);
+    elem2  = (int*)malloc(sizeof(int)*nEle);
+    elem3  = (int*)malloc(sizeof(int)*nEle);
+
+    //...Create the nodes
+    ierr = this->allocateNodes();
+    if(ierr!=ERROR_NOERROR)
+    {
+        this->error->setError(ierr);
+        return this->error->getError();
+    }
+
+    //...Create the elements
+    ierr = this->allocateElements();
+    if(ierr!=ERROR_NOERROR)
+    {
+        this->error->setError(ierr);
+        return this->error->getError();
+    }
+
+    //...Read the data from the netCDF file
+    ierr = nc_get_var(ncid,varid_x,node_x);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_get_var(ncid,varid_y,node_y);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_get_var(ncid,varid_z,node_z);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_get_vara_int(ncid,varid_element,start_ele1,count_ele,elem1);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_get_vara_int(ncid,varid_element,start_ele2,count_ele,elem2);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    ierr = nc_get_vara_int(ncid,varid_element,start_ele3,count_ele,elem3);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    //...Close the netCDF file
+    ierr = nc_close(ncid);
+    if(ierr!=NC_NOERR)
+    {
+        this->error->setCustomDescription(nc_strerror(ierr));
+        this->error->setError(ERROR_NETCDF_GENERIC);
+        return this->error->getError();
+    }
+
+    //...Save the information read into adcirc_node objects
+    for(i=0;i<this->numNodes;i++)
+    {
+        this->nodes[i]->id = i+1;
+        this->nodes[i]->position.setX(node_x[i]);
+        this->nodes[i]->position.setY(node_y[i]);
+        this->nodes[i]->position.setZ(node_z[i]);
+    }
+
+    //...Save the information read into adcirc_element objects
+    for(i=0;i<this->numElements;i++)
+    {
+        n1 = elem1[i]-1;
+        n2 = elem2[i]-1;
+        n3 = elem3[i]-1;
+
+        this->elements[i]->id = i+1;
+        this->elements[i]->connections[0] = this->nodes.at(n1);
+        this->elements[i]->connections[1] = this->nodes.at(n2);
+        this->elements[i]->connections[2] = this->nodes.at(n3);
+    }
+
+    //...Deallocate the memory
+    free(node_x);
+    free(node_y);
+    free(node_z);
+    free(elem1);
+    free(elem2);
+    free(elem3);
+
+    //...Build the element table
+    ierr = this->buildElementTable();
+    if(ierr!=ERROR_NOERROR)
+    {
+        this->error->setError(ierr);
+        return this->error->getError();
     }
 
     return ERROR_NOERROR;

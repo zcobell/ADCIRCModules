@@ -24,8 +24,6 @@
 //-----------------------------------------------------------------------------------------//
 /** \brief Constructor
  *
- * \author Zach Cobell
- *
  *  Constructor
  *
  * @param[in] *parent Pointer to a QObject

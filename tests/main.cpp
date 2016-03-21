@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
     if(thisNodalParam->error->getError()!=ERROR_NOERROR)
     {
         qDebug() << "Fort13 read test failed.";
-        return ERROR_NOERROR;
+        return thisNodalParam->error->getError();
     }
 
     qDebug() << "\n";
@@ -170,8 +170,34 @@ int main(int argc, char *argv[])
     if(thisNodalParam->error->getError()!=ERROR_NOERROR)
     {
         qDebug() << "Fort13 write test failed.";
-        return ERROR_NOERROR;
+        return thisNodalParam->error->getError();
     }
+
+
+    //...adcirc_output testing...//
+    qDebug() << "\n";
+    qDebug() << "Reading adcirc global netCDF file...";
+    QPointer<adcirc_global_output> adcOutput = new adcirc_global_output("../../QADCModules/tests/test_files/maxele.63.nc");
+    ierr = adcOutput->readNetCDF(1);
+    qDebug() << "STATUS: " << adcOutput->error->getErrorString();
+    if(adcOutput->error->getError()!=ERROR_NOERROR)
+    {
+        qDebug() << "adcirc global netCDF read failed.";
+        return adcOutput->error->getError();
+    }
+
+    qDebug() << "\n";
+    qDebug() << "Reading adcirc global ascii file...";
+    adcOutput.clear();
+    adcOutput = new adcirc_global_output("../../QADCModules/tests/test_files/maxele.63");
+    ierr = adcOutput->readAscii();
+    qDebug() << "STATUS: " << adcOutput->error->getErrorString();
+    if(adcOutput->error->getError()!=ERROR_NOERROR)
+    {
+        qDebug() << "adcirc global ascii read failed.";
+        return adcOutput->error->getError();
+    }
+
 
     return 0;
 }

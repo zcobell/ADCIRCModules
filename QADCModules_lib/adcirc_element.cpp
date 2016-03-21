@@ -55,8 +55,6 @@ bool operator==(const adcirc_element e1,const adcirc_element e2)
 //-----------------------------------------------------------------------------------------//
 /** \brief Constructor function for adcirc_element class
  *
- * \author Zach Cobell
- *
  * @param[in] parent Parent QObject used for memory management
  *
  * Constructor function for adcirc_element class. Assumes triangular elements.
@@ -79,8 +77,6 @@ adcirc_element::adcirc_element(QObject *parent) : QObject(parent)
 //-----------------------------------------------------------------------------------------//
 /** \brief Protected function to parse the string from an ADCIRC mesh file containing
  *  elemental connectivity information
- *
- * \author Zach Cobell
  *
  * @param[in]     line     The QString with the information read from the file to be parsed into an ADCIRC element
  * @param[in]     index    An integer for the current element position in the ADCIRC file
@@ -135,8 +131,6 @@ int adcirc_element::fromString(QString line, QVector<adcirc_node *> &nodes, QMap
 /** \brief Protected function that writes an ADCIRC element in the format expected by an
  *  ADCIRC mesh file
  *
- * \author Zach Cobell
- *
  * Protected function that writes an ADCIRC element in the format expected by an
  * ADCIRC mesh file
  */
@@ -150,3 +144,4 @@ QString adcirc_element::toString()
                                         this->connections[2]->id);
     return output;
 }
+//-----------------------------------------------------------------------------------------//

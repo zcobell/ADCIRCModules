@@ -45,6 +45,7 @@
 #include "QADCModules_global.h"
 #include "adcirc_mesh.h"
 #include "adcirc_nodalattributes.h"
+#include "adcirc_global_output.h"
 
 
 class QADCMODULESSHARED_EXPORT QADCModules : public QObject

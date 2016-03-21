@@ -27,8 +27,6 @@
 //-----------------------------------------------------------------------------------------//
 /** \brief Constructs an adcirc_nodalattributes object
  *
- * \author Zach Cobell
- *
  * @param[in] *parent  Reference to QObject. Enables automatic memory management to avoid memory leaks
  *
  * Constructs an adcirc_nodalattributes object
@@ -58,8 +56,6 @@ adcirc_nodalattributes::adcirc_nodalattributes(QObject *parent) : QObject(parent
 // Publicly available read function
 //-----------------------------------------------------------------------------------------//
 /** \brief Publicly available function to read an ADCIRC fort.13 file
- *
- * \author Zach Cobell
  *
  * @param[in] filename Filename of the fort.13 file to be read
  *
@@ -103,8 +99,6 @@ int adcirc_nodalattributes::read(QString inputFilename)
 //-----------------------------------------------------------------------------------------//
 /** \brief Publicly available function to write an ADCIRC fort.13 file
  *
- * \author Zach Cobell
- *
  * @param[in] outputFile                 Filename of the fort.13 file to be written
  * @param[in] userSpecifiedDefaultValues If true, the optimization of the fort.13 default value
  *                                       is not performed
@@ -146,8 +140,6 @@ int adcirc_nodalattributes::write(QString outputFilename, bool userSpecifiedDefa
 // Function to do the heavy lifting to read an ADCIRC fort.13 file
 //-----------------------------------------------------------------------------------------//
 /** \brief Function used internally to read an ADCIRC nodal attributes file
- *
- * \author Zach Cobell
  *
  * Function used internally to read an ADCIRC nodal attributes file
  *
@@ -330,8 +322,6 @@ int adcirc_nodalattributes::readNodalAttributesFile()
 //-----------------------------------------------------------------------------------------//
 /** \brief Function used internally to write an ADCIRC nodal attributes file
  *
- * \author Zach Cobell
- *
  * Function used internally to write an ADCIRC nodal attributes file
  *
  **/
@@ -403,3 +393,4 @@ int adcirc_nodalattributes::writeNodalAttributesFile(QString outputFilename, boo
 
     return ERROR_NOERROR;
 }
+//-----------------------------------------------------------------------------------------//
