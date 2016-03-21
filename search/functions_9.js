@@ -15,6 +15,7 @@ var searchData=
   ['readmeshfromnetcdf',['readMeshFromNetCDF',['../classadcirc__mesh.html#a186577d40b4a7aad6c88d017be766b76',1,'adcirc_mesh']]],
   ['readnetcdf',['readNetCDF',['../classadcirc__global__output.html#a8682f5df173ae28d0cc52a80b14714b1',1,'adcirc_global_output::readNetCDF()'],['../classadcirc__mesh.html#ab577945e75bfe7b7cf9b0bbb1d67473d',1,'adcirc_mesh::readNetCDF()']]],
   ['readnextadcircglobaloutputascii',['readNextAdcircGlobalOutputAscii',['../classadcirc__global__output.html#a136cb62a526fa30e019253a1d9929c99',1,'adcirc_global_output']]],
+  ['readnextascii',['readNextAscii',['../classadcirc__global__output.html#a898059be528522aa1e2f9b2f4bce3673',1,'adcirc_global_output']]],
   ['readnodalattributesfile',['readNodalAttributesFile',['../classadcirc__nodalattributes.html#a6101a648f91be9e5943a8cfbd79e893a',1,'adcirc_nodalattributes']]],
   ['readopenboundaries',['readOpenBoundaries',['../classadcirc__mesh.html#a7ff14e93600b12719cc46feb133172b5',1,'adcirc_mesh']]],
   ['remove',['remove',['../classadcirc__node__table.html#ac55e04d38d71c8f5a753d0ea0832f3c6',1,'adcirc_node_table']]],
