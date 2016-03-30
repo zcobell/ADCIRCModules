@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------*/
 #include "adcirc_mesh.h"
 #include "netcdf.h"
+#include "shapefil.h"
 
 //-----------------------------------------------------------------------------------------//
 // Initializer that creates its own error object
@@ -1319,6 +1320,49 @@ int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement
     return this->error->getError();
 }
 //-----------------------------------------------------------------------------------------//
+
+
+int adcirc_mesh::toShapefile(QString filename)
+{
+
+    SHPHandle shpid;
+    DBFHandle dbfid;
+    SHPObject *shpobj;
+    int i,shp_index,nodeid;
+    double latitude,longitude,elevation;
+
+    shpid = SHPCreate(filename.toStdString().c_str(),SHPT_POINT);
+    dbfid = DBFCreate(filename.toStdString().c_str());
+
+    DBFAddField(dbfid,"nodeid",FTInteger,16,0);
+    DBFAddField(dbfid,"longitude",FTDouble,16,8);
+    DBFAddField(dbfid,"latitude",FTDouble,16,8);
+    DBFAddField(dbfid,"elevation",FTDouble,16,4);
+
+    for(i=0;i<this->numNodes;i++)
+    {
+
+        nodeid = this->nodes[i]->id;
+        longitude = static_cast<double>(this->nodes[i]->position.x());
+        latitude = static_cast<double>(this->nodes[i]->position.y());
+        elevation = static_cast<double>(this->nodes[i]->position.z());
+
+        shpobj = SHPCreateSimpleObject(SHPT_POINT,1,&longitude,&latitude,&elevation);
+        shp_index = SHPWriteObject(shpid,-1,shpobj);
+        SHPDestroyObject(shpobj);
+
+        DBFWriteIntegerAttribute(dbfid,shp_index,0,nodeid);
+        DBFWriteDoubleAttribute(dbfid,shp_index,1,longitude);
+        DBFWriteDoubleAttribute(dbfid,shp_index,2,latitude);
+        DBFWriteDoubleAttribute(dbfid,shp_index,3,elevation);
+
+    }
+
+    SHPClose(shpid);
+
+    return ERROR_NOERROR;
+
+}
 
 
 
