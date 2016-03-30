@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------*/
 #include "adcirc_global_output.h"
 #include "netcdf.h"
-#include <QDebug>
+#include "shapefil.h"
 
 //-----------------------------------------------------------------------------------------//
 // Constructor for an adcirc_global_output object
@@ -43,6 +43,7 @@ adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : 
     this->initializeNetcdfVariables();
     this->error = new QADCModules_errors(this);
     this->outputData = NULL;
+    this->mesh = NULL;
     this->lastRecordRead = 0;
 }
 //-----------------------------------------------------------------------------------------//
@@ -739,6 +740,121 @@ int adcirc_global_output::readNextAdcircGlobalOutputAscii()
         }
     }
 
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that writes an adcirc_mesh object in shapefile format
+//-----------------------------------------------------------------------------------------//
+/**
+ * \fn adcirc_global_output::toShapefile(QString outputFile)
+ * \brief Function that writes an adcirc_global_output object in shapefile format
+ *
+ * @param[in]  outputFile  name of output file (.shp/.shx/.dbf) to write. Extension will be handled
+ *                         automatically, so supplying a .shp extension is sufficient.
+ *
+ * Function that writes an adcirc_global_output object in shapefile format
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_global_output::toShapefile(QString outputFile)
+{
+
+    SHPHandle shpid;
+    DBFHandle dbfid;
+    SHPObject *shpobj;
+    int i,shp_index,nodeid;
+    double latitude,longitude,elevation,outputValue,vector_u,vector_v;
+
+    if(this->mesh!=NULL)
+    {
+
+        shpid = SHPCreate(outputFile.toStdString().c_str(),SHPT_POINT);
+        dbfid = DBFCreate(outputFile.toStdString().c_str());
+
+        DBFAddField(dbfid,"nodeid",FTInteger,16,0);
+        DBFAddField(dbfid,"longitude",FTDouble,16,8);
+        DBFAddField(dbfid,"latitude",FTDouble,16,8);
+        DBFAddField(dbfid,"elevation",FTDouble,16,4);
+
+        if(this->numColumns==1)
+            DBFAddField(dbfid,"outputValue",FTDouble,16,4);
+        else
+        {
+            DBFAddField(dbfid,"vector_u",FTDouble,16,4);
+            DBFAddField(dbfid,"vector_v",FTDouble,16,4);
+        }
+
+
+        for(i=0;i<this->numNodes;i++)
+        {
+
+            nodeid = this->mesh->nodes[i]->id;
+            longitude = static_cast<double>(this->mesh->nodes[i]->position.x());
+            latitude = static_cast<double>(this->mesh->nodes[i]->position.y());
+            elevation = static_cast<double>(this->mesh->nodes[i]->position.z());
+            if(this->numColumns==1)
+                outputValue = this->outputData->scalar[i];
+            else
+            {
+                vector_u = this->outputData->vector_u[i];
+                vector_v = this->outputData->vector_v[i];
+            }
+
+            shpobj = SHPCreateSimpleObject(SHPT_POINT,1,&longitude,&latitude,&elevation);
+            shp_index = SHPWriteObject(shpid,-1,shpobj);
+            SHPDestroyObject(shpobj);
+
+            DBFWriteIntegerAttribute(dbfid,shp_index,0,nodeid);
+            DBFWriteDoubleAttribute(dbfid,shp_index,1,longitude);
+            DBFWriteDoubleAttribute(dbfid,shp_index,2,latitude);
+            DBFWriteDoubleAttribute(dbfid,shp_index,3,elevation);
+
+            if(this->numColumns==1)
+                DBFWriteDoubleAttribute(dbfid,shp_index,4,outputValue);
+            else
+            {
+                DBFWriteDoubleAttribute(dbfid,shp_index,5,vector_u);
+                DBFWriteDoubleAttribute(dbfid,shp_index,5,vector_v);
+            }
+
+        }
+
+        SHPClose(shpid);
+
+        return ERROR_NOERROR;
+    }
+    else
+    {
+        this->error->setError(ERROR_ADCIRCOUTPUT_MESHNOTINIT);
+        return this->error->getError();
+    }
+
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that writes an adcirc_mesh object in shapefile format
+//-----------------------------------------------------------------------------------------//
+/**
+ * \fn adcirc_global_output::setMesh(adcirc_mesh *mesh)
+ * \brief Function that sets the underlying mesh to use for functions in this class
+ *
+ * @param[in]  *mesh the underlying mesh to use for functions in this class
+ *
+ * Function that sets the underlying mesh to use for functions in this class if it is not
+ * already defined by the netCDF read routines.
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_global_output::setMesh(adcirc_mesh *mesh)
+{
+    this->mesh = mesh;
     return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//

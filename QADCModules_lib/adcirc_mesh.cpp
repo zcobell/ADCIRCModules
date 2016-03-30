@@ -1327,17 +1327,17 @@ int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement
 //...Function that writes an adcirc_mesh object in shapefile format
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn adcirc_mesh::toShapefile(QString filename)
+ * \fn adcirc_mesh::toShapefile(QString outputFile)
  * \brief Function that writes an adcirc_mesh object in shapefile format
  *
- * @param[in]  filename  name of output file (.shp/.shx/.dbf) to write. Extension will be handled
- *                       automatically, so supplying a .shp extension is sufficient.
+ * @param[in]  outputFile  name of output file (.shp/.shx/.dbf) to write. Extension will be handled
+ *                         automatically, so supplying a .shp extension is sufficient.
  *
  * Function that writes an adcirc_mesh object in shapefile format
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::toShapefile(QString filename)
+int adcirc_mesh::toShapefile(QString outputFile)
 {
 
     SHPHandle shpid;
@@ -1346,8 +1346,8 @@ int adcirc_mesh::toShapefile(QString filename)
     int i,shp_index,nodeid;
     double latitude,longitude,elevation;
 
-    shpid = SHPCreate(filename.toStdString().c_str(),SHPT_POINT);
-    dbfid = DBFCreate(filename.toStdString().c_str());
+    shpid = SHPCreate(outputFile.toStdString().c_str(),SHPT_POINT);
+    dbfid = DBFCreate(outputFile.toStdString().c_str());
 
     DBFAddField(dbfid,"nodeid",FTInteger,16,0);
     DBFAddField(dbfid,"longitude",FTDouble,16,8);

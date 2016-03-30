@@ -181,7 +181,7 @@ public:
     int findElement(double x, double y, adcirc_element *&nearestElement, bool &found, QVector<double> &weights);
     int findElement(double x, double y, adcirc_element* &nearestElement, bool &found);
 
-    int toShapefile(QString filename);
+    int toShapefile(QString outputFile);
 
 private:
 
