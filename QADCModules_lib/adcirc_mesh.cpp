@@ -1322,6 +1322,21 @@ int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement
 //-----------------------------------------------------------------------------------------//
 
 
+
+//-----------------------------------------------------------------------------------------//
+//...Function that writes an adcirc_mesh object in shapefile format
+//-----------------------------------------------------------------------------------------//
+/**
+ * \fn adcirc_mesh::toShapefile(QString filename)
+ * \brief Function that writes an adcirc_mesh object in shapefile format
+ *
+ * @param[in]  filename  name of output file (.shp/.shx/.dbf) to write. Extension will be handled
+ *                       automatically, so supplying a .shp extension is sufficient.
+ *
+ * Function that writes an adcirc_mesh object in shapefile format
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
 int adcirc_mesh::toShapefile(QString filename)
 {
 
@@ -1363,7 +1378,7 @@ int adcirc_mesh::toShapefile(QString filename)
     return ERROR_NOERROR;
 
 }
-
+//-----------------------------------------------------------------------------------------//
 
 
 
