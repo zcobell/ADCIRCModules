@@ -68,8 +68,8 @@ BOOSTPATH     = $$PWD/../thirdparty/boost-library
 #...KDTREE
 KDTREEPATH    = $$PWD/../thirdparty/kdtree
 
-#...NetCDF C++
-NETCDFCPPPATH = $$PWD/../thirdparty/netcdf_cxx
+#...Shapelib Library
+SHAPELIBPATH  = $$PWD/../thirdparty/shapelib
 
 #...PROJ Sources
 SOURCES_PROJ4 = \
@@ -121,13 +121,15 @@ SOURCES_NETCDFCPP = $$NETCDFCPPPATH/src/ncAtt.cpp $$NETCDFCPPPATH/src/ncCheck.cp
 #...KDTREE2 Sources
 SOURCES_KDTREE2 = $$KDTREEPATH/kdtree2.cpp
 
+#...Shapelib Sources
+SOURCES_SHAPELIB = $$SHAPELIBPATH/shpopen.c $$SHAPELIBPATH/dbfopen.c $$SHAPELIBPATH/safileio.c $$SHAPELIBPATH/shptree.c
 
-INCLUDEPATH += include $$PROJPATH $$BOOSTPATH $$KDTREEPATH $$NETCDFCPPPATH/include
+INCLUDEPATH += include $$PROJPATH $$BOOSTPATH $$KDTREEPATH $$NETCDFCPPPATH/include $$SHAPELIBPATH
 
 DEFINES += QADCMODULES_LIBRARY
 
 SOURCES += \
-    $$SOURCES_PROJ4 $$SOURCES_KDTREE2 \
+    $$SOURCES_PROJ4 $$SOURCES_KDTREE2 $$SOURCES_SHAPELIB \
     QADCModules.cpp \
     adcirc_node.cpp \
     adcirc_element.cpp \
