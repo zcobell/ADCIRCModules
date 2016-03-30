@@ -139,6 +139,14 @@ int main(int argc, char *argv[])
 
 
     qDebug() << "\n";
+    qDebug() << "Testing Shapelib conversion...";
+    ierr = thisMesh->toShapefile("../../QADCModules/tests/test_files/ms-riv.shp");
+    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
+    if(thisMesh->error->getError()!=ERROR_NOERROR)
+        return thisMesh->error->getError();
+
+
+    qDebug() << "\n";
     qDebug() << "Testing Proj4 Coordinate Transformation...";
     ierr = thisMesh->project(26915);
     qDebug() << "STATUS: " << thisMesh->error->getErrorString();

@@ -97,6 +97,10 @@ public:
 
     int writeAscii();
 
+    int toShapefile(QString outputFile);
+
+    int setMesh(adcirc_mesh *mesh);
+
 protected:
 
     //...Protected Functions...//

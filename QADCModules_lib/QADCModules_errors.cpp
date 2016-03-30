@@ -99,6 +99,7 @@ int QADCModules_errors::initializeErrors()
     this->errorMapping[ERROR_ADCIRCOUTPUT_NOTASCII]       = "The output file was expected to be ascii, however, it does not appear to be.";
     this->errorMapping[ERROR_ADCIRCOUTPUT_NOTNETCDF]      = "The output file was expected to be netCDF, however, it does not appear to be.";
     this->errorMapping[ERROR_ADCIRCOUTPUT_ASCIIREADERROR] = "There was an error while reading data from the ADCIRC ascii file.";
+    this->errorMapping[ERROR_ADCIRCOUTPUT_MESHNOTINIT]    = "The ADCIRC mesh is not initialized, which is necessary for the shapefile routine.";
 
     //...netCDF Errors
     this->errorMapping[ERROR_NETCDF_OPEN]               = "The netCDF file could not be opened.";

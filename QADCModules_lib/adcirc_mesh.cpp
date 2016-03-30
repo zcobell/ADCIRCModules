@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------*/
 #include "adcirc_mesh.h"
 #include "netcdf.h"
+#include "shapefil.h"
 
 //-----------------------------------------------------------------------------------------//
 // Initializer that creates its own error object
@@ -1320,6 +1321,64 @@ int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement
 }
 //-----------------------------------------------------------------------------------------//
 
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function that writes an adcirc_mesh object in shapefile format
+//-----------------------------------------------------------------------------------------//
+/**
+ * \fn adcirc_mesh::toShapefile(QString outputFile)
+ * \brief Function that writes an adcirc_mesh object in shapefile format
+ *
+ * @param[in]  outputFile  name of output file (.shp/.shx/.dbf) to write. Extension will be handled
+ *                         automatically, so supplying a .shp extension is sufficient.
+ *
+ * Function that writes an adcirc_mesh object in shapefile format
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::toShapefile(QString outputFile)
+{
+
+    SHPHandle shpid;
+    DBFHandle dbfid;
+    SHPObject *shpobj;
+    int i,shp_index,nodeid;
+    double latitude,longitude,elevation;
+
+    shpid = SHPCreate(outputFile.toStdString().c_str(),SHPT_POINT);
+    dbfid = DBFCreate(outputFile.toStdString().c_str());
+
+    DBFAddField(dbfid,"nodeid",FTInteger,16,0);
+    DBFAddField(dbfid,"longitude",FTDouble,16,8);
+    DBFAddField(dbfid,"latitude",FTDouble,16,8);
+    DBFAddField(dbfid,"elevation",FTDouble,16,4);
+
+    for(i=0;i<this->numNodes;i++)
+    {
+
+        nodeid = this->nodes[i]->id;
+        longitude = static_cast<double>(this->nodes[i]->position.x());
+        latitude = static_cast<double>(this->nodes[i]->position.y());
+        elevation = static_cast<double>(this->nodes[i]->position.z());
+
+        shpobj = SHPCreateSimpleObject(SHPT_POINT,1,&longitude,&latitude,&elevation);
+        shp_index = SHPWriteObject(shpid,-1,shpobj);
+        SHPDestroyObject(shpobj);
+
+        DBFWriteIntegerAttribute(dbfid,shp_index,0,nodeid);
+        DBFWriteDoubleAttribute(dbfid,shp_index,1,longitude);
+        DBFWriteDoubleAttribute(dbfid,shp_index,2,latitude);
+        DBFWriteDoubleAttribute(dbfid,shp_index,3,elevation);
+
+    }
+
+    SHPClose(shpid);
+
+    return ERROR_NOERROR;
+
+}
+//-----------------------------------------------------------------------------------------//
 
 
 
