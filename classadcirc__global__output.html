@@ -140,6 +140,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>writeNetCDF</b> (int r
 <tr class="memitem:a2b27231e780d8c203d97d3ea2f026387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b27231e780d8c203d97d3ea2f026387"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>writeAscii</b> ()</td></tr>
 <tr class="separator:a2b27231e780d8c203d97d3ea2f026387"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b8572a94f8fad83f6d61d6c8cd5389d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#a0b8572a94f8fad83f6d61d6c8cd5389d">toShapefile</a> (QString outputFile)</td></tr>
+<tr class="memdesc:a0b8572a94f8fad83f6d61d6c8cd5389d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that writes an <a class="el" href="classadcirc__global__output.html" title="Class that describes an ADCIRC global output file. ">adcirc_global_output</a> object in shapefile format.  <a href="#a0b8572a94f8fad83f6d61d6c8cd5389d">More...</a><br /></td></tr>
+<tr class="separator:a0b8572a94f8fad83f6d61d6c8cd5389d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77299aede112f7ce860fde7eaa6895b8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__global__output.html#a77299aede112f7ce860fde7eaa6895b8">setMesh</a> (<a class="el" href="classadcirc__mesh.html">adcirc_mesh</a> *<a class="el" href="classadcirc__global__output.html#a6f7b429c4e6056775d5e9f63007b69a7">mesh</a>)</td></tr>
+<tr class="memdesc:a77299aede112f7ce860fde7eaa6895b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that sets the underlying mesh to use for functions in this class.  <a href="#a77299aede112f7ce860fde7eaa6895b8">More...</a><br /></td></tr>
+<tr class="separator:a77299aede112f7ce860fde7eaa6895b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -479,6 +485,52 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Function to read the next record from the adcirc output file </p>
+
+</div>
+</div>
+<a class="anchor" id="a77299aede112f7ce860fde7eaa6895b8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int adcirc_global_output::setMesh </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classadcirc__mesh.html">adcirc_mesh</a> *&#160;</td>
+          <td class="paramname"><em>mesh</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">*mesh</td><td>the underlying mesh to use for functions in this class</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Function that sets the underlying mesh to use for functions in this class if it is not already defined by the netCDF read routines. </p>
+
+</div>
+</div>
+<a class="anchor" id="a0b8572a94f8fad83f6d61d6c8cd5389d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int adcirc_global_output::toShapefile </td>
+          <td>(</td>
+          <td class="paramtype">QString&#160;</td>
+          <td class="paramname"><em>outputFile</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">outputFile</td><td>name of output file (.shp/.shx/.dbf) to write. Extension will be handled automatically, so supplying a .shp extension is sufficient.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Function that writes an <a class="el" href="classadcirc__global__output.html" title="Class that describes an ADCIRC global output file. ">adcirc_global_output</a> object in shapefile format </p>
 
 </div>
 </div>
