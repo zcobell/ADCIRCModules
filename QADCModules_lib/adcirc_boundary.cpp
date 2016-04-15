@@ -33,7 +33,12 @@
  * based upon its type and length as specified in the input to the constructor
  */
 //-----------------------------------------------------------------------------------------//
-adcirc_boundary::adcirc_boundary(int code, int size, QObject *parent) : QObject(parent)
+adcirc_boundary::adcirc_boundary(QObject *parent) : QObject(parent)
+{
+
+}
+
+int adcirc_boundary::setupBoundary(int code, int size)
 {
     this->code = code;
     this->numNodes = size;
@@ -78,7 +83,7 @@ adcirc_boundary::adcirc_boundary(int code, int size, QObject *parent) : QObject(
         this->n1.resize(this->numNodes);
     }
 
-
+    return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
 

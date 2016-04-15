@@ -1669,7 +1669,8 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
         }
 
         //...Create a new adcirc_boundary object on the heap
-        this->openBC[i] = new adcirc_boundary(boundaryCode,boundarySize,this);
+        this->openBC[i] = new adcirc_boundary(this);
+        this->openBC[i]->setupBoundary(boundaryCode,boundarySize);
 
         //...Loop over the length of the boundary
         for(j=0;j<this->openBC[i]->numNodes;j++)
@@ -1788,7 +1789,8 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
         }
 
         //...Create a new adcirc_boundary object on the heap
-        this->landBC[i] = new adcirc_boundary(boundaryCode,boundarySize,this);
+        this->landBC[i] = new adcirc_boundary(this);
+        this->landBC[i]->setupBoundary(boundaryCode,boundarySize);
 
         //...Read the boundary string depending on its type
         for(j=0;j<this->landBC[i]->numNodes;j++)

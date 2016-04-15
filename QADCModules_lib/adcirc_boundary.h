@@ -50,7 +50,7 @@ public:
      *  Constructor for adcirc_boundary. Takes QObject reference as input
      * @param *parent [in] reference to QObject. Enables automatic memory management to avoid memory leaks
      **/
-    explicit adcirc_boundary(int code, int size, QObject *parent = 0);
+    explicit adcirc_boundary(QObject *parent = 0);
 
     ///Number of nodes on the boundary string
     int             numNodes;
@@ -87,6 +87,8 @@ public:
     int fromString(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
 
     QStringList toStringList(bool isOpenBC = false);
+
+    int setupBoundary(int code, int size);
 
 protected:
 
