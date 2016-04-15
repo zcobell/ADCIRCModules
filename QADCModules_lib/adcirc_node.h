@@ -36,6 +36,7 @@
 #include <QObject>
 #include <QStringList>
 #include <QVector3D>
+#include <QCryptographicHash>
 
 #include "QADCModules_global.h"
 
@@ -55,12 +56,20 @@ public:
     ///Boolean value that can be used during checking operations
     bool myBool;
 
+    ///Cryptogrpahic hash for this adcirc node (x,y position only)
+    QString positionHash;
+
+    ///Cryptographic hash for this adcirc node (x,y and z)
+    QString fullHash;
+
 
     //...PUBLIC FUNCTIONS...//
 
     int fromString(QString line);
 
     QString toString(bool gcs = true);
+
+    int hashNode();
 
 };
 

@@ -41,6 +41,7 @@
 #include <QFile>
 #include <QMap>
 #include <QList>
+#include <QCryptographicHash>
 #include <qmath.h>
 
 #include "QADCModules_global.h"
@@ -124,6 +125,9 @@ public:
     ///Map function between array position and the element id
     QMap<int,int> elementToIdMapping;
 
+    ///Unique hash that describes the state of this mesh
+    QString hash;
+
 
     //...Public functions...///
 
@@ -182,6 +186,8 @@ public:
     int findElement(double x, double y, adcirc_element* &nearestElement, bool &found);
 
     int toShapefile(QString outputFile);
+
+    int hashMesh();
 
 private:
 
