@@ -498,10 +498,10 @@ int adcirc_boundary::hashBoundary()
             hashSeed.sprintf("%+018.12e",this->crest[i]);
             localHash.addData(hashSeed.toUtf8(),hashSeed.length());
             hashSeed = QString();
-            hashSeed.sprintf("%+018.12e",this->supercritical[i]);
+            hashSeed.sprintf("%+018.12e",this->subcritical[i]);
             localHash.addData(hashSeed.toUtf8(),hashSeed.length());
             hashSeed = QString();
-            hashSeed.sprintf("%+018.12e",this->subcritical[i]);
+            hashSeed.sprintf("%+018.12e",this->supercritical[i]);
             localHash.addData(hashSeed.toUtf8(),hashSeed.length());
         }
     }
@@ -520,19 +520,19 @@ int adcirc_boundary::hashBoundary()
             hashSeed.sprintf("%+018.12e",this->crest[i]);
             localHash.addData(hashSeed.toUtf8(),hashSeed.length());
             hashSeed = QString();
-            hashSeed.sprintf("%+018.12e",this->supercritical[i]);
-            localHash.addData(hashSeed.toUtf8(),hashSeed.length());
-            hashSeed = QString();
             hashSeed.sprintf("%+018.12e",this->subcritical[i]);
             localHash.addData(hashSeed.toUtf8(),hashSeed.length());
             hashSeed = QString();
-            hashSeed.sprintf("%+018.12e",this->pipeDiam[i]);
+            hashSeed.sprintf("%+018.12e",this->supercritical[i]);
             localHash.addData(hashSeed.toUtf8(),hashSeed.length());
             hashSeed = QString();
             hashSeed.sprintf("%+018.12e",this->pipeHeight[i]);
             localHash.addData(hashSeed.toUtf8(),hashSeed.length());
             hashSeed = QString();
             hashSeed.sprintf("%+018.12e",this->pipeCoef[i]);
+            localHash.addData(hashSeed.toUtf8(),hashSeed.length());
+            hashSeed = QString();
+            hashSeed.sprintf("%+018.12e",this->pipeDiam[i]);
             localHash.addData(hashSeed.toUtf8(),hashSeed.length());
         }
     }
