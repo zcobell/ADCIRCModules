@@ -24,7 +24,7 @@ TARGET = QADCModules
 TEMPLATE = lib
 VERSION = 0.1.0.0
 
-win32{
+win32 {
     #...Set extension for a windows dll (avoids tracking version numbering in filename)
     TARGET_EXT = .dll
 
@@ -43,7 +43,7 @@ win32{
     }
 
     #...Check for MinGW-32
-    win32-g++{
+    win32-g++ {
         LIBS += -L$$PWD/../thirdparty/netcdf/bin_32 -lnetcdf -lhdf5 -lz -lcurl
     }
 }
@@ -70,6 +70,9 @@ KDTREEPATH    = $$PWD/../thirdparty/kdtree
 
 #...Shapelib Library
 SHAPELIBPATH  = $$PWD/../thirdparty/shapelib
+
+#...netCDF Library
+NETCDFPATH    = $$PWD/../thirdparty/netcdf
 
 #...PROJ Sources
 SOURCES_PROJ4 = \
@@ -107,24 +110,13 @@ SOURCES_PROJ4 = \
     $$PROJPATH/jniproj.c $$PROJPATH/pj_mutex.c $$PROJPATH/pj_initcache.c $$PROJPATH/pj_apply_vgridshift.c $$PROJPATH/geodesic.c \
     $$PROJPATH/pj_strtod.c
 
-#...NETCDF C++ Sources
-SOURCES_NETCDFCPP = $$NETCDFCPPPATH/src/ncAtt.cpp $$NETCDFCPPPATH/src/ncCheck.cpp $$NETCDFCPPPATH/src/ncCompoundType.cpp \
-    $$NETCDFCPPPATH/src/ncDim.cpp $$NETCDFCPPPATH/src/ncEnumType.cpp $$NETCDFCPPPATH/src/ncException.cpp \
-    $$NETCDFCPPPATH/src/ncFile.cpp $$NETCDFCPPPATH/src/ncGroup.cpp $$NETCDFCPPPATH/src/ncGroupAtt.cpp \
-    $$NETCDFCPPPATH/src/ncOpaqueType.cpp $$NETCDFCPPPATH/src/ncType.cpp $$NETCDFCPPPATH/src/ncVar.cpp \
-    $$NETCDFCPPPATH/src/ncVarAtt.cpp $$NETCDFCPPPATH/src/ncVlenType.cpp $$NETCDFCPPPATH/src/ncByte.cpp \
-    $$NETCDFCPPPATH/src/ncChar.cpp $$NETCDFCPPPATH/src/ncShort.cpp $$NETCDFCPPPATH/src/ncInt.cpp \
-    $$NETCDFCPPPATH/src/ncFloat.cpp $$NETCDFCPPPATH/src/ncDouble.cpp $$NETCDFCPPPATH/src/ncUbyte.cpp \
-    $$NETCDFCPPPATH/src/ncUshort.cpp $$NETCDFCPPPATH/src/ncUint.cpp $$NETCDFCPPPATH/src/ncInt64.cpp \
-    $$NETCDFCPPPATH/src/ncUint64.cpp $$NETCDFCPPPATH/src/ncString.cpp
-
 #...KDTREE2 Sources
 SOURCES_KDTREE2 = $$KDTREEPATH/kdtree2.cpp
 
 #...Shapelib Sources
 SOURCES_SHAPELIB = $$SHAPELIBPATH/shpopen.c $$SHAPELIBPATH/dbfopen.c $$SHAPELIBPATH/safileio.c $$SHAPELIBPATH/shptree.c
 
-INCLUDEPATH += include $$PROJPATH $$BOOSTPATH $$KDTREEPATH $$NETCDFCPPPATH/include $$SHAPELIBPATH
+INCLUDEPATH += include $$PROJPATH $$BOOSTPATH $$KDTREEPATH $$SHAPELIBPATH
 
 DEFINES += QADCMODULES_LIBRARY
 
@@ -169,7 +161,7 @@ unix {
     }
 
     target.path = $$PREFIX/lib
-    header_files.files = $$HEADERS $$BOOSTPATH/boost $$NETCDFCPPPATH/include/*
+    header_files.files = $$HEADERS $$BOOSTPATH/boost $$NETCDFPATH/include/netcdf.h
     header_files.path = $$PREFIX/include
     INSTALLS += header_files target
 
