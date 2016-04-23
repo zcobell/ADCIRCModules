@@ -71,6 +71,8 @@ public:
 
     int hashNode();
 
+    QPointF toPointF();
+
 };
 
 //...OPERATORS...//
