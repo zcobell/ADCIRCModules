@@ -369,15 +369,15 @@ int adcirc_mesh::renumber()
     {
         this->nodes[i]->id = i+1;
         this->nodeToPositionMapping[this->nodes[i]->id] = i;
-        this->nodeToIdMapping[i] = this->nodes[i]->id;
+        //this->nodeToIdMapping[i] = this->nodes[i]->id;
     }
 
     //...Renumber the elements
     for(i=0;i<this->numElements;i++)
     {
         this->elements[i]->id = i+1;
-        this->elementToPositionMapping[this->elements[i]->id] = i;
-        this->elementToIdMapping[i] = this->elements[i]->id;
+        //this->elementToPositionMapping[this->elements[i]->id] = i;
+        //this->elementToIdMapping[i] = this->elements[i]->id;
     }
 
     return ERROR_NOERROR;
@@ -1490,7 +1490,7 @@ int adcirc_mesh::readMesh()
         //...Save the mapping. This is used to prevent
         //   issues with meshes that are not numbered sequentially
         this->nodeToPositionMapping[this->nodes[i]->id] = i;
-        this->nodeToIdMapping[i] = this->nodes[i]->id;
+        //this->nodeToIdMapping[i] = this->nodes[i]->id;
     }
 
     //...Loop over the elements
@@ -1517,8 +1517,8 @@ int adcirc_mesh::readMesh()
 
         //...Save the mapping. This is used to prevent
         //   issues with meshes that are not numbered sequentially
-        this->elementToPositionMapping[this->elements[i]->id] = i;
-        this->elementToIdMapping[i] = this->elements[i]->id;
+        //this->elementToPositionMapping[this->elements[i]->id] = i;
+        //this->elementToIdMapping[i] = this->elements[i]->id;
     }
 
     //...Read the open boundary
@@ -1533,8 +1533,8 @@ int adcirc_mesh::readMesh()
         return ierr;
 
     //...Build the element table, only if nodes are sequential
-    if(!this->meshNeedsNumbering)
-        this->buildElementTable();
+//    if(!this->meshNeedsNumbering)
+//        this->buildElementTable();
 
     //...The mesh read is now complete. We're done.
 
@@ -2225,6 +2225,19 @@ int adcirc_mesh::readMeshFromNetCDF()
 //-----------------------------------------------------------------------------------------//
 
 
+
+//-----------------------------------------------------------------------------------------//
+//...Function to create unique hashes for an ADCIRC mesh
+//-----------------------------------------------------------------------------------------//
+/**
+ * \fn adcirc_mesh::hashMesh
+ * \brief Function to create unique hashes for an ADCIRC mesh
+ *
+ * This function creates SHA1 hashes for ADCIRC nodes, elements, and boundary conditions
+ * which can be used to uniquely identify each
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
 int adcirc_mesh::hashMesh()
 {
     int i;
@@ -2262,6 +2275,7 @@ int adcirc_mesh::hashMesh()
 
     this->hash = localHash.result().toHex();
 
-    return 0;
+    return ERROR_NOERROR;
 
 }
+//-----------------------------------------------------------------------------------------//
