@@ -35,7 +35,7 @@
 //-----------------------------------------------------------------------------------------//
 adcirc_boundary::adcirc_boundary(QObject *parent) : QObject(parent)
 {
-
+    this->hashAlgorithm = QCryptographicHash::Sha1;
 }
 
 int adcirc_boundary::setupBoundary(int code, int size)
@@ -431,12 +431,26 @@ QStringList adcirc_boundary::toStringList(bool isOpenBC)
 //-----------------------------------------------------------------------------------------//
 
 
+
+//-----------------------------------------------------------------------------------------//
+// Function to generate a hash for an adcirc_boundary
+//-----------------------------------------------------------------------------------------//
+/** \brief Public function to generate a hash for an adcirc_boundary
+ *
+ * \author Zach Cobell
+ *
+ * Function to generate a hash for an adcirc_boundary object. The hash is accumulated
+ * along the boundary string using the hashes of the adcirc_node objects that are contained
+ * within it to generate a unique hash.
+ *
+ */
+//-----------------------------------------------------------------------------------------//
 int adcirc_boundary::hashBoundary()
 {
     QString hashSeed;
     int i;
 
-    QCryptographicHash localHash(QCryptographicHash::Sha1);
+    QCryptographicHash localHash(this->hashAlgorithm);
     localHash.reset();
 
     //...Hash the boundary code
@@ -541,3 +555,28 @@ int adcirc_boundary::hashBoundary()
 
     return 0;
 }
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Function to set the type of hash that is to be used for this class
+//-----------------------------------------------------------------------------------------//
+/** \brief Public function to set the hash algorithm to use
+ *
+ * \author Zach Cobell
+ *
+ * @param[in] hashType  The QCryptographicHash::Algorithm to use
+ *
+ * This function sets the type of hash algorithm to use for hashes constructed for this
+ * class. The hash can be MD4, MD5, SHA1, SSA256, SHA512 or any other contained with Qt
+ * The default is Sha1
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+int adcirc_boundary::setHashAlgorithm(QCryptographicHash::Algorithm hashType)
+{
+    this->hashAlgorithm = hashType;
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//

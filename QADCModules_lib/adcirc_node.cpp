@@ -46,7 +46,7 @@ bool operator>(const adcirc_node n1,const adcirc_node n2)
 //-----------------------------------------------------------------------------------------//
 adcirc_node::adcirc_node(QObject *parent) : QObject(parent)
 {
-
+    this->hashAlgorithm = QCryptographicHash::Sha1;
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -139,7 +139,7 @@ int adcirc_node::hashNode()
     QString hashSeed1,hashSeed2,hashSeed3;
 
     //...initialize the sha1 hash
-    QCryptographicHash localHash(QCryptographicHash::Sha1);
+    QCryptographicHash localHash(this->hashAlgorithm);
     localHash.reset();
 
     //...Create a formatted string for each x, y and z;
@@ -181,5 +181,29 @@ QPointF adcirc_node::toPointF()
     point.setX(this->position.x());
     point.setY(this->position.y());
     return point;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Function to set the type of hash that is to be used for this class
+//-----------------------------------------------------------------------------------------//
+/** \brief Public function to set the hash algorithm to use
+ *
+ * \author Zach Cobell
+ *
+ * @param[in] hashType  The QCryptographicHash::Algorithm to use
+ *
+ * This function sets the type of hash algorithm to use for hashes constructed for this
+ * class. The hash can be MD4, MD5, SHA1, SSA256, SHA512 or any other contained with Qt
+ * The default is Sha1
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+int adcirc_node::setHashAlgorithm(QCryptographicHash::Algorithm hashType)
+{
+    this->hashAlgorithm = hashType;
+    return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//

@@ -73,6 +73,13 @@ public:
 
     QPointF toPointF();
 
+    int setHashAlgorithm(QCryptographicHash::Algorithm hashType);
+
+private:
+
+    ///Hash algorithm to used (Default: Sha1)
+    QCryptographicHash::Algorithm hashAlgorithm;
+
 };
 
 //...OPERATORS...//

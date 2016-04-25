@@ -71,6 +71,13 @@ public:
 
     int hashElement();
 
+    int setHashAlgorithm(QCryptographicHash::Algorithm hashType);
+
+private:
+
+    ///Hash algorithm to used (Default: Sha1)
+    QCryptographicHash::Algorithm hashAlgorithm;
+
 };
 
 

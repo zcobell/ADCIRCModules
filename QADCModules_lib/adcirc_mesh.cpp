@@ -55,6 +55,9 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
     //...Set the default coordinate system to WGS84
     this->epsg = 4326;
 
+    //...Set the default hashing algorithm to use
+    this->hashAlgorithm = QCryptographicHash::Sha1;
+
     return;
 }
 //-----------------------------------------------------------------------------------------//
@@ -65,7 +68,7 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
 // Initializer that creates its own error object
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
+ * \overload adcirc_mesh::adcirc_mesh(QADCModules_errors *error, QObject *parent) : QObject(parent)
  * \brief Constructor for the ADCIRC mesh class
  *
  * @param[in] *error  reference to an QADCModules_errors object to use for errors in this class
@@ -94,6 +97,9 @@ adcirc_mesh::adcirc_mesh(QADCModules_errors *error, QObject *parent) : QObject(p
 
     //...Set the default coordinate system to WGS84
     this->epsg = 4326;
+
+    //...Set the default hashing algorithm to use
+    this->hashAlgorithm = QCryptographicHash::Sha1;
 
     return;
 }
@@ -1383,6 +1389,95 @@ int adcirc_mesh::toShapefile(QString outputFile)
 
 
 //-----------------------------------------------------------------------------------------//
+//...Function to create unique hashes for an ADCIRC mesh
+//-----------------------------------------------------------------------------------------//
+/**
+ * \fn adcirc_mesh::hashMesh
+ * \brief Function to create unique hashes for an ADCIRC mesh
+ *
+ * This function creates hashes for ADCIRC nodes, elements, and boundary conditions
+ * which can be used to uniquely identify each
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::hashMesh()
+{
+    int i;
+
+    //...Initialize the hash
+    QCryptographicHash localHash(this->hashAlgorithm);
+    localHash.reset();
+
+    //...Compute the local hashes (nodes, elements, boundaries)
+    for(i=0;i<this->numNodes;i++)
+        this->nodes[i]->hashNode();
+
+    for(i=0;i<this->numElements;i++)
+        this->elements[i]->hashElement();
+
+    for(i=0;i<this->numOpenBoundaries;i++)
+        this->openBC[i]->hashBoundary();
+
+    for(i=0;i<this->numLandBoundaries;i++)
+        this->landBC[i]->hashBoundary();
+
+    //...Now, build the global mesh hash
+    localHash.addData(this->title.toUtf8(),this->title.length());
+    for(i=0;i<this->numNodes;i++)
+        localHash.addData(this->nodes[i]->fullHash.toUtf8(),this->nodes[i]->fullHash.length());
+
+    for(i=0;i<this->numElements;i++)
+        localHash.addData(this->elements[i]->hash.toUtf8(),this->elements[i]->hash.length());
+
+    for(i=0;i<this->numOpenBoundaries;i++)
+        localHash.addData(this->openBC[i]->hash.toUtf8(),this->openBC[i]->hash.length());
+
+    for(i=0;i<this->numLandBoundaries;i++)
+        localHash.addData(this->landBC[i]->hash.toUtf8(),this->landBC[i]->hash.length());
+
+    this->hash = localHash.result().toHex();
+
+    return ERROR_NOERROR;
+
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Function to set the type of hash that is to be used for this class
+//-----------------------------------------------------------------------------------------//
+/** \brief Public function to set the hash algorithm to use
+ *
+ * \author Zach Cobell
+ *
+ * @param[in] hashType  The QCryptographicHash::Algorithm to use
+ *
+ * This function sets the type of hash algorithm to use for hashes constructed for this
+ * class. The hash can be MD4, MD5, SHA1, SSA256, SHA512 or any other contained with Qt
+ * The default is Sha1
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::setHashAlgorithm(QCryptographicHash::Algorithm hashType)
+{
+    int i;
+    this->hashAlgorithm = hashType;
+    for(i=0;i<this->numNodes;i++)
+        this->nodes[i]->setHashAlgorithm(this->hashAlgorithm);
+    for(i=0;i<this->numElements;i++)
+        this->elements[i]->setHashAlgorithm(this->hashAlgorithm);
+    for(i=0;i<this->numOpenBoundaries;i++)
+        this->openBC[i]->setHashAlgorithm(this->hashAlgorithm);
+    for(i=0;i<this->numLandBoundaries;i++)
+        this->landBC[i]->setHashAlgorithm(this->hashAlgorithm);
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
 //
 //
 //   P R O T E C T E D
@@ -2224,58 +2319,3 @@ int adcirc_mesh::readMeshFromNetCDF()
 }
 //-----------------------------------------------------------------------------------------//
 
-
-
-//-----------------------------------------------------------------------------------------//
-//...Function to create unique hashes for an ADCIRC mesh
-//-----------------------------------------------------------------------------------------//
-/**
- * \fn adcirc_mesh::hashMesh
- * \brief Function to create unique hashes for an ADCIRC mesh
- *
- * This function creates SHA1 hashes for ADCIRC nodes, elements, and boundary conditions
- * which can be used to uniquely identify each
- *
- **/
-//-----------------------------------------------------------------------------------------//
-int adcirc_mesh::hashMesh()
-{
-    int i;
-
-    //...initialize the sha1 hash
-    QCryptographicHash localHash(QCryptographicHash::Sha1);
-    localHash.reset();
-
-    //...Compute the local hashes (nodes, elements, boundaries)
-    for(i=0;i<this->numNodes;i++)
-        this->nodes[i]->hashNode();
-
-    for(i=0;i<this->numElements;i++)
-        this->elements[i]->hashElement();
-
-    for(i=0;i<this->numOpenBoundaries;i++)
-        this->openBC[i]->hashBoundary();
-
-    for(i=0;i<this->numLandBoundaries;i++)
-        this->landBC[i]->hashBoundary();
-
-    //...Now, build the global mesh hash
-    localHash.addData(this->title.toUtf8(),this->title.length());
-    for(i=0;i<this->numNodes;i++)
-        localHash.addData(this->nodes[i]->fullHash.toUtf8(),this->nodes[i]->fullHash.length());
-
-    for(i=0;i<this->numElements;i++)
-        localHash.addData(this->elements[i]->hash.toUtf8(),this->elements[i]->hash.length());
-
-    for(i=0;i<this->numOpenBoundaries;i++)
-        localHash.addData(this->openBC[i]->hash.toUtf8(),this->openBC[i]->hash.length());
-
-    for(i=0;i<this->numLandBoundaries;i++)
-        localHash.addData(this->landBC[i]->hash.toUtf8(),this->landBC[i]->hash.length());
-
-    this->hash = localHash.result().toHex();
-
-    return ERROR_NOERROR;
-
-}
-//-----------------------------------------------------------------------------------------//

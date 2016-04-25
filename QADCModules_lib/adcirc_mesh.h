@@ -187,6 +187,8 @@ public:
 
     int toShapefile(QString outputFile);
 
+    int setHashAlgorithm(QCryptographicHash::Algorithm hashType);
+
     int hashMesh();
 
 private:
@@ -207,6 +209,9 @@ private:
 
     ///Pointer that holds a kd-tree search tree for this mesh's elements
     QPointer<qKdtree2> elementalSearchTree;
+
+    ///Hash algorithm that should be used when developing any hashes for this mesh (Default: SHA1)
+    QCryptographicHash::Algorithm hashAlgorithm;
 
 
 protected:

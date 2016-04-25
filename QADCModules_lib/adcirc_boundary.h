@@ -96,6 +96,13 @@ public:
 
     int hashBoundary();
 
+    int setHashAlgorithm(QCryptographicHash::Algorithm hashType);
+
+private:
+
+    ///Hash algorithm to used (Default: Sha1)
+    QCryptographicHash::Algorithm hashAlgorithm;
+
 protected:
 
     int readBoundarySingleNode(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
