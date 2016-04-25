@@ -141,7 +141,7 @@ int proj4::readEPSGInitializations()
 int proj4::transform(int inputEPSG, int outputEPSG, QPointF &input, QPointF &output, bool &isLatLon)
 {
     projPJ inputPJ,outputPJ;
-    double x,y,z;
+    qreal x,y,z;
     int ierr;
 
     ierr = 0;
@@ -214,7 +214,7 @@ int proj4::transform(int inputEPSG, int outputEPSG, QPointF &input, QPointF &out
 int proj4::transform(int inputEPSG, int outputEPSG, QVector<QPointF> &input, QVector<QPointF> &output, bool &isLatLon)
 {
     projPJ inputPJ,outputPJ;
-    QVector<double> x,y,z;
+    QVector<qreal> x,y,z;
     int i,ierr;
 
     ierr = 0;

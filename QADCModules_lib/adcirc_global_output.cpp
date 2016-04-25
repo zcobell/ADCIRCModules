@@ -337,8 +337,8 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
     int i,ierr,numColumns;
     int ncid,dimid_time,dimid_node,varid_time;
     int start_int,count_int;
-    double *timeList,*column1,*column2;
-    double dtdp,fillValue;
+    qreal *timeList,*column1,*column2;
+    qreal dtdp,fillValue;
     QVector<int> varIDs;
     size_t nSnaps,nNodes;
 
@@ -437,10 +437,10 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
     static size_t count[] = {nNodes};
 
     //...Allocate memory
-    timeList = (double*)malloc(sizeof(double)*nSnaps);
-    column1  = (double*)malloc(sizeof(double)*nNodes);
+    timeList = (qreal*)malloc(sizeof(qreal)*nSnaps);
+    column1  = (qreal*)malloc(sizeof(qreal)*nNodes);
     if(numColumns==2)
-        column2 = (double*)malloc(sizeof(double)*nNodes);
+        column2 = (qreal*)malloc(sizeof(qreal)*nNodes);
 
     //...Read data from netCDF file
     ierr = nc_get_var(ncid,varid_time,timeList);
@@ -619,7 +619,7 @@ int adcirc_global_output::readNextAdcircGlobalOutputAscii()
 {
     QString fileData,tempString;
     QStringList fileDataList;
-    double defaultValue,value1,value2;
+    qreal defaultValue,value1,value2;
     int i,numNonDefault,node;
     bool err,sparse;
 
@@ -767,7 +767,7 @@ int adcirc_global_output::toShapefile(QString outputFile)
     DBFHandle dbfid;
     SHPObject *shpobj;
     int i,shp_index,nodeid;
-    double latitude,longitude,elevation,outputValue,vector_u,vector_v;
+    qreal latitude,longitude,elevation,outputValue,vector_u,vector_v;
 
     if(this->mesh!=NULL)
     {
@@ -793,9 +793,9 @@ int adcirc_global_output::toShapefile(QString outputFile)
         {
 
             nodeid = this->mesh->nodes[i]->id;
-            longitude = static_cast<double>(this->mesh->nodes[i]->position.x());
-            latitude = static_cast<double>(this->mesh->nodes[i]->position.y());
-            elevation = static_cast<double>(this->mesh->nodes[i]->position.z());
+            longitude = static_cast<qreal>(this->mesh->nodes[i]->position.x());
+            latitude = static_cast<qreal>(this->mesh->nodes[i]->position.y());
+            elevation = static_cast<qreal>(this->mesh->nodes[i]->position.z());
             if(this->numColumns==1)
                 outputValue = this->outputData->scalar[i];
             else

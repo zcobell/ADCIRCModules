@@ -149,10 +149,10 @@ public:
 
     int buildElementalSearchTree();
 
-    int checkLeveeHeights(double minAbovePrevailingTopo = 0.20);
+    int checkLeveeHeights(qreal minAbovePrevailingTopo = 0.20);
 
-    int raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRaised,
-                          double minAbovePrevailingTopo = 0.20, double minRaise = 0.01,
+    int raiseLeveeHeights(int &numLeveesRaised, qreal &maximumAmountRaised,
+                          qreal minAbovePrevailingTopo = 0.20, qreal minRaise = 0.01,
                           QString diagnosticFile = QString());
 
     int checkDisjointNodes(int &numDisjointNodes, QList<adcirc_node *> &disjointNodeList);
@@ -172,18 +172,18 @@ public:
     int project(int epsg);
 
     int findNearestNode(QPointF pointLocation, adcirc_node* &nearestNode);
-    int findNearestNode(double x, double y, adcirc_node* &nearestNode);
+    int findNearestNode(qreal x, qreal y, adcirc_node* &nearestNode);
 
     int findXNearestNodes(QPointF pointLocation, int nn, QList<adcirc_node *> &nodeList);
-    int findXNearestNodes(double x, double y, int nn, QList<adcirc_node *> &nodeList);
+    int findXNearestNodes(qreal x, qreal y, int nn, QList<adcirc_node *> &nodeList);
 
     int findXNearestElements(QPointF pointLocation, int nn, QList<adcirc_element *> &elementList);
-    int findXNearestElements(double x, double y, int nn, QList<adcirc_element *> &elementList);
+    int findXNearestElements(qreal x, qreal y, int nn, QList<adcirc_element *> &elementList);
 
-    int findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found, QVector<double> &weights);
+    int findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found, QVector<qreal> &weights);
     int findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found);
-    int findElement(double x, double y, adcirc_element *&nearestElement, bool &found, QVector<double> &weights);
-    int findElement(double x, double y, adcirc_element* &nearestElement, bool &found);
+    int findElement(qreal x, qreal y, adcirc_element *&nearestElement, bool &found, QVector<qreal> &weights);
+    int findElement(qreal x, qreal y, adcirc_element* &nearestElement, bool &found);
 
     int toShapefile(QString outputFile);
 
@@ -232,7 +232,7 @@ protected:
 
     int readLandBoundaries(int &position, QStringList &fileData);
 
-    int findAdcircElement(QPointF location, adcirc_element* &nearestElement, bool &found, QVector<double> &weights);
+    int findAdcircElement(QPointF location, adcirc_element* &nearestElement, bool &found, QVector<qreal> &weights);
 
 };
 

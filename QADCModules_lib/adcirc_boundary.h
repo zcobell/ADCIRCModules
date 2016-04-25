@@ -66,22 +66,22 @@ public:
     QVector<adcirc_node*>    n2;
 
     ///Boundary crest. Used for weir type boundaries
-    QVector<double> crest;
+    QVector<qreal> crest;
 
     ///Coefficient of supercritical flow over a weir
-    QVector<double> supercritical;
+    QVector<qreal> supercritical;
 
     ///Coefficient of subcritical flow over a weir
-    QVector<double> subcritical;
+    QVector<qreal> subcritical;
 
     ///Height of the pipe/culvert in a weir
-    QVector<double> pipeHeight;
+    QVector<qreal> pipeHeight;
 
     ///Diameter of the pipe/culvert in a weir
-    QVector<double> pipeDiam;
+    QVector<qreal> pipeDiam;
 
     ///Pipe coefficient for the pipe/culvert in a weir
-    QVector<double> pipeCoef;
+    QVector<qreal> pipeCoef;
 
     ///The unique hash for this boundary
     QString hash;

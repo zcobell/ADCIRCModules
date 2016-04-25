@@ -68,7 +68,7 @@ int adcirc_node::fromString(QString line)
     QStringList tempList;
     QString     tempString;
     int         tempInt;
-    double      tempDouble;
+    qreal      tempDouble;
     bool        err;
 
     tempList   = line.simplified().split(" ");

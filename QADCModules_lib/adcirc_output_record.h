@@ -50,19 +50,19 @@ public:
     int numNodes;
 
     ///Model time (seconds) when this record was written
-    double modelTime;
+    qreal modelTime;
 
     ///Model time step
     int modelStep;
 
     ///Vector containig the model data for this output record
-    QVector<double> scalar;
+    QVector<qreal> scalar;
 
     ///Vector containing the model data for this output record (u-component of the vector)
-    QVector<double> vector_u;
+    QVector<qreal> vector_u;
 
     ///Vector containing the model data for this output record (v-component of the vector)
-    QVector<double> vector_v;
+    QVector<qreal> vector_v;
 
     //...PUBLIC FUNCTIONS...//
     int toMagnitude();

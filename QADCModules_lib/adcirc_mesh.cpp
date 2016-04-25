@@ -396,7 +396,7 @@ int adcirc_mesh::renumber()
 //...Function to check that the levee heights in the mesh are sane
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
+ * \fn adcirc_mesh::checkLeveeHeights(qreal minAbovePrevailingTopo)
  * \brief This function is used to check if there are levee heights that need to be raised
  *
  * @param[in] minAbovePrevailingTopo [optional] Elevation that a levee must be above the
@@ -407,10 +407,10 @@ int adcirc_mesh::renumber()
  * below the topography, and thus causing a fatal error when running ADCIRC
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
+int adcirc_mesh::checkLeveeHeights(qreal minAbovePrevailingTopo)
 {
     int i,j;
-    double z1,z2,c;
+    qreal z1,z2,c;
 
     for(i=0;i<this->numLandBoundaries;i++)
     {
@@ -455,7 +455,7 @@ int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
 //...Function to raise levees that fall below prevailing topography
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRaised, double minAbovePrevailingTopo, double minRaise, QString diagnosticFile)
+ * \fn adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, qreal &maximumAmountRaised, qreal minAbovePrevailingTopo, qreal minRaise, QString diagnosticFile)
  * \brief This function is used to raise levees that fall below prevailing topography
  *
  * @param[out] numLeveesRaised                   Number of levees that needed to be raised
@@ -471,15 +471,15 @@ int adcirc_mesh::checkLeveeHeights(double minAbovePrevailingTopo)
  * variable is null, the file will not be written.
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, double &maximumAmountRaised,
-                                   double minAbovePrevailingTopo, double minRaise, QString diagnosticFile)
+int adcirc_mesh::raiseLeveeHeights(int &numLeveesRaised, qreal &maximumAmountRaised,
+                                   qreal minAbovePrevailingTopo, qreal minRaise, QString diagnosticFile)
 {
     QFile diag(diagnosticFile);
     QTextStream diagOut(&diag);
     int i,j;
-    double zm,c;
-    double x,y;
-    double minAllowableHeight,raiseAmount;
+    qreal zm,c;
+    qreal x,y;
+    qreal minAllowableHeight,raiseAmount;
     bool writeOutputFile = false;
 
     numLeveesRaised = 0;
@@ -944,7 +944,7 @@ int adcirc_mesh::buildElementTable()
 int adcirc_mesh::buildNodalSearchTree()
 {
     int i,ierr;
-    QVector<double> x,y;
+    QVector<qreal> x,y;
 
     x.resize(this->numNodes);
     y.resize(this->numNodes);
@@ -989,7 +989,7 @@ int adcirc_mesh::buildNodalSearchTree()
 int adcirc_mesh::buildElementalSearchTree()
 {
     int i,j,ierr;
-    QVector<double> x,y;
+    QVector<qreal> x,y;
 
     x.resize(this->numElements);
     y.resize(this->numElements);
@@ -1003,8 +1003,8 @@ int adcirc_mesh::buildElementalSearchTree()
             x[i] = x[i] + this->elements[i]->connections[j]->position.x();
             y[i] = y[i] + this->elements[i]->connections[j]->position.y();
         }
-        x[i] = x[i] / static_cast<double>(this->elements[i]->numConnections);
-        y[i] = y[i] / static_cast<double>(this->elements[i]->numConnections);
+        x[i] = x[i] / static_cast<qreal>(this->elements[i]->numConnections);
+        y[i] = y[i] / static_cast<qreal>(this->elements[i]->numConnections);
     }
 
     if(this->elementalSearchTree->initialized)
@@ -1066,7 +1066,7 @@ int adcirc_mesh::findNearestNode(QPointF pointLocation, adcirc_node* &nearestNod
 //...Function that finds the nearest node
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload adcirc_mesh::findNearestNode(double x, double y, adcirc_node* &nearestNode)
+ * \overload adcirc_mesh::findNearestNode(qreal x, qreal y, adcirc_node* &nearestNode)
  * \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
  *
  * @param[in]  x       x-coordinate to use for locating nearest node
@@ -1077,7 +1077,7 @@ int adcirc_mesh::findNearestNode(QPointF pointLocation, adcirc_node* &nearestNod
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findNearestNode(double x, double y, adcirc_node* &nearestNode)
+int adcirc_mesh::findNearestNode(qreal x, qreal y, adcirc_node* &nearestNode)
 {
     int ierr = this->findNearestNode(QPointF(x,y),nearestNode);
     this->error->setError(ierr);
@@ -1131,7 +1131,7 @@ int adcirc_mesh::findXNearestNodes(QPointF pointLocation, int nn, QList<adcirc_n
 //...Function that finds the list of nn nearest nodes
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload adcirc_mesh::findXNearestNodes(double x, double y, int nn, QList<adcirc_node *> &nodeList)
+ * \overload adcirc_mesh::findXNearestNodes(qreal x, qreal y, int nn, QList<adcirc_node *> &nodeList)
  * \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
  *
  * @param[in]  x        x-coordinate to use for locating nearest node
@@ -1143,7 +1143,7 @@ int adcirc_mesh::findXNearestNodes(QPointF pointLocation, int nn, QList<adcirc_n
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findXNearestNodes(double x, double y, int nn, QList<adcirc_node *> &nodeList)
+int adcirc_mesh::findXNearestNodes(qreal x, qreal y, int nn, QList<adcirc_node *> &nodeList)
 {
     int ierr = this->findXNearestNodes(QPointF(x,y),nn,nodeList);
     this->error->setError(ierr);
@@ -1197,7 +1197,7 @@ int adcirc_mesh::findXNearestElements(QPointF pointLocation, int nn, QList<adcir
 //...Function that finds the nn nearest elements
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_element*> &elementList)
+ * \overload adcirc_mesh::findXNearestElements(qreal x, qreal y, int nn, QList<adcirc_element*> &elementList)
  * \brief Function that finds a list of the nearest element to a specified x,y coordinate
  *
  * @param[in]  x           x-coordinate to use for locating nearest element
@@ -1209,7 +1209,7 @@ int adcirc_mesh::findXNearestElements(QPointF pointLocation, int nn, QList<adcir
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_element*> &elementList)
+int adcirc_mesh::findXNearestElements(qreal x, qreal y, int nn, QList<adcirc_element*> &elementList)
 {
     int ierr = this->findXNearestElements(QPointF(x,y),nn,elementList);
     this->error->setError(ierr);
@@ -1223,7 +1223,7 @@ int adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_e
 //...Function that finds the element that a given x,y resides in
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
+ * \fn adcirc_mesh::findElement(qreal x, qreal y, adcirc_element* &nearestElement, bool &found, QVector<qreal> &weights)
  * \brief Function that locates the element that a point resides within and returns interpolation weights
  *
  * @param[in]  pointLocation   point to use for locating the element
@@ -1236,7 +1236,7 @@ int adcirc_mesh::findXNearestElements(double x, double y, int nn, QList<adcirc_e
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
+int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found, QVector<qreal> &weights)
 {
     int ierr = this->findAdcircElement(pointLocation,nearestElement,found,weights);
     this->error->setError(ierr);
@@ -1250,7 +1250,7 @@ int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElem
 //...Function that finds the element that a given x,y resides in
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found)
+ * \overload adcirc_mesh::findElement(qreal x, qreal y, adcirc_element* &nearestElement, bool &found)
  * \brief Function that locates the element that a point resides within
  *
  * @param[in]  x               x-coordinate to use for locating the element
@@ -1263,9 +1263,9 @@ int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElem
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found)
+int adcirc_mesh::findElement(qreal x, qreal y, adcirc_element* &nearestElement, bool &found)
 {
-    QVector<double> dmy;
+    QVector<qreal> dmy;
     int ierr = this->findAdcircElement(QPointF(x,y),nearestElement,found,dmy);
     this->error->setError(ierr);
     return this->error->getError();
@@ -1292,7 +1292,7 @@ int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement
 //-----------------------------------------------------------------------------------------//
 int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found)
 {
-    QVector<double> dmy;
+    QVector<qreal> dmy;
     int ierr = this->findAdcircElement(pointLocation,nearestElement,found,dmy);
     this->error->setError(ierr);
     return this->error->getError();
@@ -1305,7 +1305,7 @@ int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElem
 //...Function that finds the element that a given x,y resides in
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
+ * \overload adcirc_mesh::findElement(qreal x, qreal y, adcirc_element* &nearestElement, bool &found, QVector<qreal> &weights)
  * \brief Function that locates the element that a point resides within
  *
  * @param[in]  x               x-coordinate to use for locating the element
@@ -1319,7 +1319,7 @@ int adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElem
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findElement(double x, double y, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
+int adcirc_mesh::findElement(qreal x, qreal y, adcirc_element* &nearestElement, bool &found, QVector<qreal> &weights)
 {
     int ierr = this->findAdcircElement(QPointF(x,y),nearestElement,found,weights);
     this->error->setError(ierr);
@@ -1350,7 +1350,7 @@ int adcirc_mesh::toShapefile(QString outputFile)
     DBFHandle dbfid;
     SHPObject *shpobj;
     int i,shp_index,nodeid;
-    double latitude,longitude,elevation;
+    qreal latitude,longitude,elevation;
 
     shpid = SHPCreate(outputFile.toStdString().c_str(),SHPT_POINT);
     dbfid = DBFCreate(outputFile.toStdString().c_str());
@@ -1364,9 +1364,9 @@ int adcirc_mesh::toShapefile(QString outputFile)
     {
 
         nodeid = this->nodes[i]->id;
-        longitude = static_cast<double>(this->nodes[i]->position.x());
-        latitude = static_cast<double>(this->nodes[i]->position.y());
-        elevation = static_cast<double>(this->nodes[i]->position.z());
+        longitude = static_cast<qreal>(this->nodes[i]->position.x());
+        latitude = static_cast<qreal>(this->nodes[i]->position.y());
+        elevation = static_cast<qreal>(this->nodes[i]->position.z());
 
         shpobj = SHPCreateSimpleObject(SHPT_POINT,1,&longitude,&latitude,&elevation);
         shp_index = SHPWriteObject(shpid,-1,shpobj);
@@ -1994,7 +1994,7 @@ int adcirc_mesh::writeMesh(QString filename)
 //...Function to find the adcirc_element that a given x,y lies within
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn adcirc_mesh::findAdcircElement(QPointF location, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
+ * \fn adcirc_mesh::findAdcircElement(QPointF location, adcirc_element* &nearestElement, bool &found, QVector<qreal> &weights)
  * \brief Function used internally to find the adcirc_element that a given x,y lies within
  *
  * @param[in]  pointLocation  point to locate inside an element
@@ -2008,20 +2008,20 @@ int adcirc_mesh::writeMesh(QString filename)
  * Function used internally to find the adcirc_element that a given x,y lies within and
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::findAdcircElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found, QVector<double> &weights)
+int adcirc_mesh::findAdcircElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found, QVector<qreal> &weights)
 {
     int i;
-    double x,y;
-    double x1,x2,x3;
-    double y1,y2,y3;
-    double sa1,sa2,sa3,ta;
+    qreal x,y;
+    qreal x1,x2,x3;
+    qreal y1,y2,y3;
+    qreal sa1,sa2,sa3,ta;
     int searchDepth = 20;
     adcirc_node *n1,*n2,*n3;
     adcirc_element *e;
     QList<adcirc_element*> elementList;
 
-    x = static_cast<double>(pointLocation.x());
-    y = static_cast<double>(pointLocation.y());
+    x = static_cast<qreal>(pointLocation.x());
+    y = static_cast<qreal>(pointLocation.y());
 
     this->findXNearestElements(pointLocation,searchDepth,elementList);
 
@@ -2088,7 +2088,7 @@ int adcirc_mesh::readMeshFromNetCDF()
     int n1,n2,n3;
     int ncid,varid_x,varid_y,varid_z,varid_element;
     int dimid_nNodes,dimid_nElements,dimid_nVertex;
-    double *node_x,*node_y,*node_z;
+    qreal *node_x,*node_y,*node_z;
     int *elem1,*elem2,*elem3;
     size_t nNodes,nEle,nVert;
 
@@ -2196,9 +2196,9 @@ int adcirc_mesh::readMeshFromNetCDF()
     static size_t start_ele3[] = {0,2};
 
     //...Allocate space for reading from netCDF
-    node_x = (double*)malloc(sizeof(double)*count_node);
-    node_y = (double*)malloc(sizeof(double)*count_node);
-    node_z = (double*)malloc(sizeof(double)*count_node);
+    node_x = (qreal*)malloc(sizeof(qreal)*count_node);
+    node_y = (qreal*)malloc(sizeof(qreal)*count_node);
+    node_z = (qreal*)malloc(sizeof(qreal)*count_node);
     elem1  = (int*)malloc(sizeof(int)*nEle);
     elem2  = (int*)malloc(sizeof(int)*nEle);
     elem3  = (int*)malloc(sizeof(int)*nEle);

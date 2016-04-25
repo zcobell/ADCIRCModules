@@ -149,7 +149,7 @@ int adcirc_nodalattributes::readNodalAttributesFile()
 {
     int ierr,i,j,index,position,tempInt;
     int tempNumVals,numNonDefault;
-    QVector<double> tempDefaultValue;
+    QVector<qreal> tempDefaultValue;
     bool err;
     QByteArray fileByteData;
     QString fileStringData,tempString,tempUnits,tempName;

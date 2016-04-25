@@ -29,12 +29,12 @@ int main(int argc, char *argv[])
 
     int i,ierr;
     int numLeveesRaised,numDisjoint,numDuplicates;
-    double maxLeveeRaise;
+    qreal maxLeveeRaise;
     adcirc_node* nearestNode;
     adcirc_element* nearestElement;
     QList<adcirc_node*> disjointList;
     QList<adcirc_element*> duplicateElements;
-    QVector<double> weight;
+    QVector<qreal> weight;
     bool elementFound;
 
     ierr = 0;

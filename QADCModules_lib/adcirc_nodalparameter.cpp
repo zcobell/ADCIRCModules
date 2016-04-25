@@ -78,7 +78,7 @@ adcirc_nodalparameter::adcirc_nodalparameter(int numNodes, QString nodalAttribut
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_nodalparameter::setDefaultValues(QVector<double> nodalParameterDefaultValues)
+int adcirc_nodalparameter::setDefaultValues(QVector<qreal> nodalParameterDefaultValues)
 {
     if(nodalParameterDefaultValues.size()!=this->nValues)
         return ERROR_NODALPARAM_DEFAULTVALUESIZE;
@@ -109,7 +109,7 @@ int adcirc_nodalparameter::read(QStringList &fileData)
     QString tempString;
     QStringList tempList;
     int i,j,index;
-    double tempDouble;
+    qreal tempDouble;
     bool err;
 
     for(i=0;i<this->nValues;i++)
@@ -210,12 +210,12 @@ QStringList adcirc_nodalparameter::write()
  *
  **/
 //-----------------------------------------------------------------------------------------//
-double adcirc_nodalparameter::getDefaultValue()
+qreal adcirc_nodalparameter::getDefaultValue()
 {
     int i,index,maxNum;
-    double optimumValue;
-    QMap<double,int> valueMap;
-    QList<double>    valueList;
+    qreal optimumValue;
+    QMap<qreal,int> valueMap;
+    QList<qreal>    valueList;
     QVector<int>     count;
 
     index = 0;

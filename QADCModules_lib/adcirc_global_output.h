@@ -70,10 +70,10 @@ public:
     int timestepsBetweenSnaps;
 
     ///Time (seconds) between consecutive records in the output file
-    double timeBetweenSnaps;
+    qreal timeBetweenSnaps;
 
     ///Default value (or _FillValue in netCDF)
-    double defaultValue;
+    qreal defaultValue;
 
     ///For netCDF files, the mesh information is included in the file. It will be stored here
     adcirc_mesh *mesh;

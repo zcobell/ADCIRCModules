@@ -58,15 +58,15 @@ public:
     bool initialized;
 
     int build(QVector<QPointF> &pointCloud);
-    int build(QVector<double> &x, QVector<double> &y);
+    int build(QVector<qreal> &x, QVector<qreal> &y);
     int build(QVector<QVector3D> &pointCloud);
 
     int findNearest(QPointF pointLocation, int &index);
-    int findNearest(double x, double y, int &index);
+    int findNearest(qreal x, qreal y, int &index);
     int findNearest(QVector3D pointLocation, int &index);
 
     int findXNearest(QPointF pointLocation, int nn, QVector<int> &indicies);
-    int findXNearest(double x, double y, int nn, QVector<int> &indicies);
+    int findXNearest(qreal x, qreal y, int nn, QVector<int> &indicies);
     int findXNearest(QVector3D pointLocation, int nn, QVector<int> &indicies);
 
 private:

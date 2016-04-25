@@ -64,19 +64,19 @@ public:
     int nNodes;
 
     ///Default value(s) to be used when writing the fort.13 file
-    QVector<double> defaultValue;
+    QVector<qreal> defaultValue;
 
     ///Values for the nodal parameter
-    QVector< QVector<double> > values;
+    QVector< QVector<qreal> > values;
 
     //...PUBLIC FUNCTIONS...//
-    int setDefaultValues(QVector<double> nodalParameterDefaultValues);
+    int setDefaultValues(QVector<qreal> nodalParameterDefaultValues);
 
     int read(QStringList &fileData);
 
     QStringList write();
 
-    double getDefaultValue();
+    qreal getDefaultValue();
 
     int getNumNonDefault();
 

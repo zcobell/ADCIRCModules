@@ -187,7 +187,7 @@ int adcirc_boundary::readBoundaryOneSidedWeir(QString data, int index, QVector<a
     bool    err;
     QString tempString2 = data.simplified().split(" ").value(0);
     int     tempInt     = tempString2.toInt(&err);
-    double  tempDouble;
+    qreal  tempDouble;
 
     if(!err)
         return ERROR_MESHREAD_BNDERR;
@@ -235,7 +235,7 @@ int adcirc_boundary::readBoundaryTwoSidedWeir(QString data, int index, QVector<a
     bool    err;
     QString tempString2 = data.simplified().split(" ").value(0);
     int     tempInt     = tempString2.toInt(&err);
-    double  tempDouble;
+    qreal  tempDouble;
 
     if(!err)
         return ERROR_MESHREAD_BNDERR;
@@ -298,7 +298,7 @@ int adcirc_boundary::readBoundaryCrossBarrierPipe(QString data, int index, QVect
     bool    err;
     QString tempString2 = data.simplified().split(" ").value(0);
     int     tempInt     = tempString2.toInt(&err);
-    double  tempDouble;
+    qreal  tempDouble;
 
     if(!err)
         return ERROR_MESHREAD_BNDERR;
