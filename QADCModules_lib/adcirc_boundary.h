@@ -37,6 +37,7 @@
 #include <QVector>
 #include <QStringList>
 #include <QMap>
+#include <QCryptographicHash>
 
 #include "QADCModules_global.h"
 #include "adcirc_node.h"
@@ -82,6 +83,9 @@ public:
     ///Pipe coefficient for the pipe/culvert in a weir
     QVector<double> pipeCoef;
 
+    ///The unique hash for this boundary
+    QString hash;
+
     //...PUBLIC FUNCTIONS...//
 
     int fromString(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
@@ -89,6 +93,8 @@ public:
     QStringList toStringList(bool isOpenBC = false);
 
     int setupBoundary(int code, int size);
+
+    int hashBoundary();
 
 protected:
 

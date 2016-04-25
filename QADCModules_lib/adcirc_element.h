@@ -38,6 +38,7 @@
 #include <QVector>
 #include <QMap>
 #include <QStringList>
+#include <QCryptographicHash>
 
 #include "QADCModules_global.h"
 #include "adcirc_node.h"
@@ -58,12 +59,17 @@ public:
     ///Vector containing the list of nodes that make up this element as pointers to the node array
     QVector<adcirc_node*> connections;
 
+    ///The unique hash for this element
+    QString hash;
+
 
     //...PUBLIC FUNCTIONS...//
 
     int fromString(QString line, QVector<adcirc_node*> &nodes, QMap<int,int> &nodeMapping);
 
     QString toString();
+
+    int hashElement();
 
 };
 

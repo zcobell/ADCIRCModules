@@ -369,15 +369,15 @@ int adcirc_mesh::renumber()
     {
         this->nodes[i]->id = i+1;
         this->nodeToPositionMapping[this->nodes[i]->id] = i;
-        this->nodeToIdMapping[i] = this->nodes[i]->id;
+        //this->nodeToIdMapping[i] = this->nodes[i]->id;
     }
 
     //...Renumber the elements
     for(i=0;i<this->numElements;i++)
     {
         this->elements[i]->id = i+1;
-        this->elementToPositionMapping[this->elements[i]->id] = i;
-        this->elementToIdMapping[i] = this->elements[i]->id;
+        //this->elementToPositionMapping[this->elements[i]->id] = i;
+        //this->elementToIdMapping[i] = this->elements[i]->id;
     }
 
     return ERROR_NOERROR;
@@ -1490,7 +1490,7 @@ int adcirc_mesh::readMesh()
         //...Save the mapping. This is used to prevent
         //   issues with meshes that are not numbered sequentially
         this->nodeToPositionMapping[this->nodes[i]->id] = i;
-        this->nodeToIdMapping[i] = this->nodes[i]->id;
+        //this->nodeToIdMapping[i] = this->nodes[i]->id;
     }
 
     //...Loop over the elements
@@ -1517,8 +1517,8 @@ int adcirc_mesh::readMesh()
 
         //...Save the mapping. This is used to prevent
         //   issues with meshes that are not numbered sequentially
-        this->elementToPositionMapping[this->elements[i]->id] = i;
-        this->elementToIdMapping[i] = this->elements[i]->id;
+        //this->elementToPositionMapping[this->elements[i]->id] = i;
+        //this->elementToIdMapping[i] = this->elements[i]->id;
     }
 
     //...Read the open boundary
@@ -1533,8 +1533,8 @@ int adcirc_mesh::readMesh()
         return ierr;
 
     //...Build the element table, only if nodes are sequential
-    if(!this->meshNeedsNumbering)
-        this->buildElementTable();
+//    if(!this->meshNeedsNumbering)
+//        this->buildElementTable();
 
     //...The mesh read is now complete. We're done.
 
@@ -2221,5 +2221,61 @@ int adcirc_mesh::readMeshFromNetCDF()
     }
 
     return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+//...Function to create unique hashes for an ADCIRC mesh
+//-----------------------------------------------------------------------------------------//
+/**
+ * \fn adcirc_mesh::hashMesh
+ * \brief Function to create unique hashes for an ADCIRC mesh
+ *
+ * This function creates SHA1 hashes for ADCIRC nodes, elements, and boundary conditions
+ * which can be used to uniquely identify each
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_mesh::hashMesh()
+{
+    int i;
+
+    //...initialize the sha1 hash
+    QCryptographicHash localHash(QCryptographicHash::Sha1);
+    localHash.reset();
+
+    //...Compute the local hashes (nodes, elements, boundaries)
+    for(i=0;i<this->numNodes;i++)
+        this->nodes[i]->hashNode();
+
+    for(i=0;i<this->numElements;i++)
+        this->elements[i]->hashElement();
+
+    for(i=0;i<this->numOpenBoundaries;i++)
+        this->openBC[i]->hashBoundary();
+
+    for(i=0;i<this->numLandBoundaries;i++)
+        this->landBC[i]->hashBoundary();
+
+    //...Now, build the global mesh hash
+    localHash.addData(this->title.toUtf8(),this->title.length());
+    for(i=0;i<this->numNodes;i++)
+        localHash.addData(this->nodes[i]->fullHash.toUtf8(),this->nodes[i]->fullHash.length());
+
+    for(i=0;i<this->numElements;i++)
+        localHash.addData(this->elements[i]->hash.toUtf8(),this->elements[i]->hash.length());
+
+    for(i=0;i<this->numOpenBoundaries;i++)
+        localHash.addData(this->openBC[i]->hash.toUtf8(),this->openBC[i]->hash.length());
+
+    for(i=0;i<this->numLandBoundaries;i++)
+        localHash.addData(this->landBC[i]->hash.toUtf8(),this->landBC[i]->hash.length());
+
+    this->hash = localHash.result().toHex();
+
+    return ERROR_NOERROR;
+
 }
 //-----------------------------------------------------------------------------------------//
