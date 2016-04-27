@@ -160,8 +160,13 @@ win32{
     }
     target.path = $$PREFIX/bin
     header_files.files = $$HEADERS $$BOOSTPATH/boost $$NETCDFPATH/include/netcdf.h
-    header_files.path = $$PREFIX/include
+    header_files.path  = $$PREFIX/include
     INSTALLS += header_files target
+    win32-msvc*{
+        lib.files = $$OUT_PWD/release/QADCModules.lib
+        lib.path  = $$PREFIX/bin
+        INSTALLS  += lib
+    }
 
 }
 unix{
