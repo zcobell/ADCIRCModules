@@ -154,18 +154,33 @@ HEADERS +=\
     adcirc_output_record.h
 
 
-unix {
+win32{
+    isEmpty(PREFIX) {
+        PREFIX = $$OUT_PWD
+    }
+    target.path = $$PREFIX/bin
+    header_files.files = $$HEADERS $$BOOSTPATH/boost $$NETCDFPATH/include/netcdf.h
+    header_files.path  = $$PREFIX/include
+    INSTALLS += header_files target
+    win32-msvc*{
+        lib.files = $$OUT_PWD/release/QADCModules.lib
+        lib.path  = $$PREFIX/bin
+        INSTALLS  += lib
+    }
 
+}
+unix{
     isEmpty(PREFIX) {
         PREFIX = /usr/local
     }
-
     target.path = $$PREFIX/lib
     header_files.files = $$HEADERS $$BOOSTPATH/boost $$NETCDFPATH/include/netcdf.h
     header_files.path = $$PREFIX/include
     INSTALLS += header_files target
 
 }
+
+
 
 DISTFILES +=
 
