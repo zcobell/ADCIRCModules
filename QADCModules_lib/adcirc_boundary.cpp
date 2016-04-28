@@ -580,3 +580,32 @@ int adcirc_boundary::setHashAlgorithm(QCryptographicHash::Algorithm hashType)
     return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Function to calculate the average longitude of a boundary
+//-----------------------------------------------------------------------------------------//
+/** \brief Function to calculate the average longitude of a boundary
+ *
+ * \author Zach Cobell
+ *
+ * Function to calculate the average longitude of a boundary. This is used to ensure that
+ * river boundaries remain in a consistent and known order for doing model runs
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+int adcirc_boundary::calculateAverageLongitude()
+{
+    int i;
+    qreal position = 0.0;
+    qreal nn = static_cast<qreal>(this->numNodes);
+
+    for(i=0;i<this->numNodes;i++)
+        position = position + this->n1[i]->position.x();
+
+    this->averageLongitude = position/nn;
+
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//

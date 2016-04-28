@@ -86,6 +86,9 @@ public:
     ///The unique hash for this boundary
     QString hash;
 
+    ///The average longitude for the boundary
+    qreal averageLongitude;
+
     //...PUBLIC FUNCTIONS...//
 
     int fromString(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
@@ -97,6 +100,8 @@ public:
     int hashBoundary();
 
     int setHashAlgorithm(QCryptographicHash::Algorithm hashType);
+
+    int calculateAverageLongitude();
 
 private:
 
