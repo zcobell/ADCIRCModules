@@ -20,7 +20,6 @@
 
 #include "adcirc_nodalattributes.h"
 #include "QADCModules_errors.h"
-#include <QDebug>
 
 //-----------------------------------------------------------------------------------------//
 // Constructor
@@ -29,6 +28,7 @@
  * \fn adcirc_nodalattributes(QObject *parent)
  * \brief Constructs an adcirc_nodalattributes object
  *
+ * @param[in] *mesh    Reference to an adcirc_mesh object
  * @param[in] *parent  Reference to QObject. Enables automatic memory management to avoid memory leaks
  *
  * Constructs an adcirc_nodalattributes object
