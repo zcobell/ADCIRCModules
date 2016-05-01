@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['timebetweensnaps',['timeBetweenSnaps',['../classadcirc__global__output.html#a5ec761cdc817ecc99f720beced03f953',1,'adcirc_global_output']]],
-  ['timestepsbetweensnaps',['timestepsBetweenSnaps',['../classadcirc__global__output.html#a52468d9c6344a84203cc3c593ca0abc1',1,'adcirc_global_output']]],
-  ['title',['title',['../classadcirc__global__output.html#af392fabf6cb74cef03a8d04171ea1952',1,'adcirc_global_output::title()'],['../classadcirc__mesh.html#a94e69188a828955e74794d9a55232689',1,'adcirc_mesh::title()'],['../classadcirc__nodalattributes.html#a8230a03143884dee1270925f63bca33a',1,'adcirc_nodalattributes::title()']]],
-  ['totnumlandboundarynodes',['totNumLandBoundaryNodes',['../classadcirc__mesh.html#ab94fbe1c7b73729b6da91d8d52edf0e9',1,'adcirc_mesh']]],
-  ['totnumopenboundarynodes',['totNumOpenBoundaryNodes',['../classadcirc__mesh.html#a5401c22912664ed771f663b0cb1e4013',1,'adcirc_mesh']]]
+  ['scalar',['scalar',['../classadcirc__output__record.html#aa6895823b3b432035c2bd693a0763295',1,'adcirc_output_record']]],
+  ['subcritical',['subcritical',['../classadcirc__boundary.html#aa21c1223272bf01617614cdca42b2106',1,'adcirc_boundary']]],
+  ['supercritical',['supercritical',['../classadcirc__boundary.html#a2a37be4322a5f22f0fd4e6b30c7d59e2',1,'adcirc_boundary']]]
 ];

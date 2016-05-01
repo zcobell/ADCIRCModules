@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['defaultvalue',['defaultValue',['../classadcirc__global__output.html#a758c7f7e35e52d44afd485310f2888e2',1,'adcirc_global_output::defaultValue()'],['../classadcirc__nodalparameter.html#aa0043104186f00da5dac1d3884bb4615',1,'adcirc_nodalparameter::defaultValue()']]]
+  ['code',['code',['../classadcirc__boundary.html#a58278a9404b6ab9d3c0937a556681d8d',1,'adcirc_boundary']]],
+  ['connections',['connections',['../classadcirc__element.html#a5d13c2389520e77261d5ddf88d59e2bf',1,'adcirc_element']]],
+  ['crest',['crest',['../classadcirc__boundary.html#ac92f154b24b317c4ee176b897806d524',1,'adcirc_boundary']]]
 ];
