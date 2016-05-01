@@ -38,16 +38,17 @@
 #include <QVector>
 #include <QFile>
 #include <QStringList>
-
+#include "adcirc_mesh.h"
 #include "QADCModules_global.h"
 
 class QADCMODULESSHARED_EXPORT adcirc_nodalparameter : public QObject
 {
     Q_OBJECT
 public:
+
     explicit adcirc_nodalparameter(int numNodes, QString nodalAttributeName = "defaultName",
                                    QString nodalAttributeUnits = "none",
-                                   int numValues = 1, QObject *parent = 0);
+                                   int numValues = 1, adcirc_mesh *mesh = NULL, QObject *parent = 0);
 
     //...PUBLIC VARIABLES...//
 
@@ -62,6 +63,9 @@ public:
 
     ///Number of nodes in the mesh that this object is tied to
     int nNodes;
+
+    ///Pointer to a node int he adcirc mesh for the values in this object
+    QVector<adcirc_node*> node;
 
     ///Default value(s) to be used when writing the fort.13 file
     QVector<qreal> defaultValue;
@@ -79,6 +83,10 @@ public:
     qreal getDefaultValue();
 
     int getNumNonDefault();
+
+private:
+
+    adcirc_mesh *mesh;
 
 };
 

@@ -41,7 +41,7 @@
 //-----------------------------------------------------------------------------------------//
 adcirc_nodalparameter::adcirc_nodalparameter(int numNodes, QString nodalAttributeName,
                                              QString nodalAttributeUnits, int numValues,
-                                             QObject *parent) : QObject(parent)
+                                             adcirc_mesh *mesh, QObject *parent) : QObject(parent)
 {
     int i;
 
@@ -51,6 +51,7 @@ adcirc_nodalparameter::adcirc_nodalparameter(int numNodes, QString nodalAttribut
     this->nValues = numValues;
     this->nNodes = numNodes;
     this->defaultValue.resize(this->nValues);
+    this->mesh = mesh;
 
     //...Set the default values
     for(i=0;i<this->nValues;i++)
@@ -115,6 +116,13 @@ int adcirc_nodalparameter::read(QStringList &fileData)
     for(i=0;i<this->nValues;i++)
         this->values[i].fill(this->defaultValue[i]);
 
+    if(!this->mesh==NULL)
+    {
+        this->node.resize(this->nNodes);
+        for(i=0;i<this->nNodes;i++)
+            this->node[i] = this->mesh->nodes[i];
+    }
+
     for(i=0;i<fileData.length();i++)
     {
         tempString = fileData[i];
@@ -138,6 +146,7 @@ int adcirc_nodalparameter::read(QStringList &fileData)
                 return ERROR_NODALPARAM_READERROR;
             this->values[j][index-1] = tempDouble;
         }
+
     }
 
     return ERROR_NOERROR;

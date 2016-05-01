@@ -42,13 +42,14 @@
 
 #include "QADCModules_global.h"
 #include "adcirc_nodalparameter.h"
+#include "adcirc_mesh.h"
 #include "QADCModules_errors.h"
 
 class QADCMODULESSHARED_EXPORT adcirc_nodalattributes : public QObject
 {
     Q_OBJECT
 public:
-    explicit adcirc_nodalattributes(QObject *parent = 0);
+    explicit adcirc_nodalattributes(adcirc_mesh *mesh = NULL, QObject *parent = 0);
 
     //...PUBLIC VARIABLES...//
 
@@ -63,6 +64,9 @@ public:
 
     ///Number of nodes in the mesh that this nodal attribute files references
     int numNodes;
+
+    ///Underlying adcirc_mesh object (if necessary)
+    adcirc_mesh *mesh;
 
     ///Vector of objects containing the nodal parameters read from the file
     QVector<adcirc_nodalparameter*> nodalParameters;

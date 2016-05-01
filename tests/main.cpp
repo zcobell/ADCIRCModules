@@ -162,7 +162,7 @@ int main(int argc, char *argv[])
     qDebug() << "Reading Fort.13 test...";
     QPointer<adcirc_nodalattributes> thisNodalParam = new adcirc_nodalattributes();
     ierr = thisNodalParam->read("../../QADCModules/tests/test_files/ms-riv.13");
-    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
+    qDebug() << "STATUS: " << thisNodalParam->error->getErrorString();
 
     if(thisNodalParam->error->getError()!=ERROR_NOERROR)
     {
@@ -173,11 +173,24 @@ int main(int argc, char *argv[])
     qDebug() << "\n";
     qDebug() << "Writing fort.13 test...";
     ierr = thisNodalParam->write("../../QADCModules/tests/test_files/ms-riv-me.13");
-    qDebug() << "STATUS: " << thisMesh->error->getErrorString();
+    qDebug() << "STATUS: " << thisNodalParam->error->getErrorString();
 
     if(thisNodalParam->error->getError()!=ERROR_NOERROR)
     {
         qDebug() << "Fort13 write test failed.";
+        return thisNodalParam->error->getError();
+    }
+
+
+    qDebug() << "\n";
+    qDebug() << "Reading fort.13 with mesh reference";
+    thisNodalParam = new adcirc_nodalattributes(thisMesh);
+    ierr = thisNodalParam->read("../../QADCModules/tests/test_files/ms-riv.13");
+    qDebug() << "STATUS: " << thisNodalParam->error->getErrorString();
+
+    if(thisNodalParam->error->getError()!=ERROR_NOERROR)
+    {
+        qDebug() << "Fort13 read with mesh test failed.";
         return thisNodalParam->error->getError();
     }
 

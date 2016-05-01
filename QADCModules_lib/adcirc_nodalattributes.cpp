@@ -25,7 +25,9 @@
 //-----------------------------------------------------------------------------------------//
 // Constructor
 //-----------------------------------------------------------------------------------------//
-/** \brief Constructs an adcirc_nodalattributes object
+/**
+ * \fn adcirc_nodalattributes(QObject *parent)
+ * \brief Constructs an adcirc_nodalattributes object
  *
  * @param[in] *parent  Reference to QObject. Enables automatic memory management to avoid memory leaks
  *
@@ -33,11 +35,11 @@
  *
  **/
 //-----------------------------------------------------------------------------------------//
-adcirc_nodalattributes::adcirc_nodalattributes(QObject *parent) : QObject(parent)
+adcirc_nodalattributes::adcirc_nodalattributes(adcirc_mesh *mesh, QObject *parent) : QObject(parent)
 {
     this->error = new QADCModules_errors(this);
+    this->mesh  = mesh;
 }
-
 
 
 
@@ -249,7 +251,7 @@ int adcirc_nodalattributes::readNodalAttributesFile()
             }
         }
 
-        this->nodalParameters[i] = new adcirc_nodalparameter(this->numNodes,tempName,tempUnits,tempNumVals,this);
+        this->nodalParameters[i] = new adcirc_nodalparameter(this->numNodes,tempName,tempUnits,tempNumVals,this->mesh,this);
         this->nodalParameters[i]->setDefaultValues(tempDefaultValue);
         this->attributeLocations[tempName] = i;
 
