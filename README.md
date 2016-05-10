@@ -1,5 +1,5 @@
 # QADCModules
-Implementation of routines used for to manipulate ADCIRC model files in Qt
+Implementation of routines used to manipulate ADCIRC model files in Qt
 
 [![Build Status](https://travis-ci.org/zcobell/QADCModules.svg?branch=master)](https://travis-ci.org/zcobell/QADCModules)
 
