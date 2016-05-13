@@ -189,12 +189,10 @@ int adcirc_element::hashElement()
     hashSeed2 = this->connections[1]->positionHash;
     hashSeed3 = this->connections[2]->positionHash;
 
-    //...Concatenate the formatted strings together
-    hashSeed = QString();
-    hashSeed = hashSeed1+hashSeed2+hashSeed3;
-
     //...Create the hash for the local node
-    localHash.addData(hashSeed.toUtf8(),hashSeed.length());
+    localHash.addData(hashSeed1.toUtf8(),hashSeed.length());
+    localHash.addData(hashSeed2.toUtf8(),hashSeed.length());
+    localHash.addData(hashSeed3.toUtf8(),hashSeed.length());
 
     //...save the element hash
     this->hash = localHash.result().toHex();
