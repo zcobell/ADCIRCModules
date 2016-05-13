@@ -1,18 +1,27 @@
+sudo: required
+
+dist: trusty
+
 language: cpp
 
 compiler: gcc
 
 before_install:
-- sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
-- sudo apt-get update -qq
-- sudo apt-get install -qq qt5-qmake qtbase5-dev qtdeclarative5-dev libqt5webkit5-dev libsqlite3-dev libnetcdf-dev
+- sudo add-apt-repository --yes ppa:beineri/opt-qt56-trusty 
+- sudo apt-get update  -qq
+- sudo apt-get install -qq libsqlite3-dev libnetcdf-dev
+- sudo apt-cache search qt56
+- sudo apt-get install -qq qt56base 
+- export PATH=/opt/qt56/bin:$PATH
+- export LD_LIBRARY_PATH=/opt/QADCModules/lib
 
 script:
 - uname -a
 - which qmake
 - gcc --version
 - g++ --version
-- pwd
-- qmake -qt=qt5 QADCModules.pro
+- . /opt/qt56/bin/qt56-env.sh
+- qmake QADCModules.pro PREFIX=/opt/QADCModules
 - make
-- make check TESTRUNNER=LD_LIBRARY_PATH=../QADCModules_lib:$LD_LIBRARY_PATH
+- sudo make install
+- make check 
