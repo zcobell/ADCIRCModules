@@ -395,11 +395,11 @@ int adcirc_fort13::writeNodalAttributesFile(QString outputFilename, bool userSpe
     {
         out << this->nodalParameters[i]->name << "\n";
 
-        //tempString.sprintf("%11i",this->nodalParameters[i]->getNumNonDefault());
+        tempString.sprintf("%11i",this->getNumNonDefault(this->nodalParameters[i],this->nodalData[i]));
         out << tempString << "\n";
 
         tempStringList = QStringList();
-        //tempStringList = this->nodalParameters[i]->write();
+        tempStringList = this->writeNodalParameter(i);
         for(j=0;j<tempStringList.length();j++)
             out << tempStringList.value(j) << "\n";
     }
@@ -423,7 +423,6 @@ int adcirc_fort13::writeNodalAttributesFile(QString outputFilename, bool userSpe
  *
  **/
 //-----------------------------------------------------------------------------------------//
-#include <QDebug>
 int adcirc_fort13::readNodalData(int nodalAttributeIndex, QStringList &data)
 {
     QString tempString;
@@ -503,6 +502,7 @@ int adcirc_fort13::mapNodalAttributesToMesh()
  *
  **/
 //-----------------------------------------------------------------------------------------//
+#include <QDebug>
 QStringList adcirc_fort13::writeNodalParameter(int index)
 {
     int i,j;
@@ -517,7 +517,7 @@ QStringList adcirc_fort13::writeNodalParameter(int index)
         tempLine = QString();
         if(this->nodalParameters[index]->nValues==1)
         {
-            if(this->nodalData[index][i]->values[0]==this->nodalParameters[index]->defaultValue[0])
+            if(this->nodalData[index][i]->values[0]!=this->nodalParameters[index]->defaultValue[0])
             {
                 tempLine.sprintf("%11i  %12.6f",i+1,this->nodalData[index][i]->values[0]);
                 outputData.append(tempLine);
