@@ -43,9 +43,15 @@
 #include <QMap>
 
 #include "QADCModules_global.h"
+#include "QADCModules_errors.h"
 #include "adcirc_mesh.h"
-#include "adcirc_nodalattributes.h"
+#include "adcirc_node.h"
+#include "adcirc_element.h"
+#include "adcirc_fort13.h"
+#include "adcirc_nodalattribute.h"
+#include "adcirc_nodalparameter.h"
 #include "adcirc_global_output.h"
+#include "adcirc_output_record.h"
 
 
 class QADCMODULESSHARED_EXPORT QADCModules : public QObject

@@ -31,8 +31,8 @@
  * Contact: zcobell@gmail.com
  *
  */
-#ifndef ADCIRC_NODALATTRIBUTES_H
-#define ADCIRC_NODALATTRIBUTES_H
+#ifndef ADCIRC_FORT13_H
+#define ADCIRC_FORT13_H
 
 #include <QObject>
 #include <QVector>
@@ -41,15 +41,13 @@
 #include <QStringList>
 
 #include "QADCModules_global.h"
-#include "adcirc_nodalparameter.h"
-#include "adcirc_mesh.h"
-#include "QADCModules_errors.h"
+#include "adcirc_forward.h"
 
-class QADCMODULESSHARED_EXPORT adcirc_nodalattributes : public QObject
+class QADCMODULESSHARED_EXPORT adcirc_fort13 : public QObject
 {
     Q_OBJECT
 public:
-    explicit adcirc_nodalattributes(adcirc_mesh *mesh = NULL, QObject *parent = 0);
+    explicit adcirc_fort13(adcirc_mesh *mesh = NULL, QObject *parent = 0);
 
     //...PUBLIC VARIABLES...//
 
@@ -71,6 +69,9 @@ public:
     ///Vector of objects containing the nodal parameters read from the file
     QVector<adcirc_nodalparameter*> nodalParameters;
 
+    ///Vector of objects for the nodal parameters
+    QVector<QVector<adcirc_nodalattribute*> > nodalData;
+
     ///QADCModules_errors class to describe any errors to the user
     QADCModules_errors *error;
 
@@ -90,6 +91,14 @@ protected:
 
     int writeNodalAttributesFile(QString outputFilename, bool userSpecifiedDefaultValues);
 
+    int readNodalData(int nodalAttributeIndex, QStringList &data);
+
+    int mapNodalAttributesToMesh();
+
+    QStringList writeNodalParameter(int index);
+
+    int getNumNonDefault(adcirc_nodalparameter *nodalParam, QVector<adcirc_nodalattribute*> nodalAtt);
+
 private:
     //...PRIVATE VARIABLES...//
 
@@ -98,4 +107,4 @@ private:
 
 };
 
-#endif // ADCIRC_NODALATTRIBUTES_H
+#endif // ADCIRC_FORT13_H

@@ -41,7 +41,12 @@
 #include <QCryptographicHash>
 
 #include "QADCModules_global.h"
-#include "adcirc_node.h"
+#include "adcirc_forward.h"
+
+//...Forward declaration of classes
+class adcirc_node;
+
+
 
 class QADCMODULESSHARED_EXPORT adcirc_element : public QObject
 {

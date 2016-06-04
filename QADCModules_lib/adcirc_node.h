@@ -33,12 +33,14 @@
 #ifndef ADCIRC_NODE_H
 #define ADCIRC_NODE_H
 
+#include <QVector>
 #include <QObject>
 #include <QStringList>
 #include <QVector3D>
 #include <QCryptographicHash>
 
 #include "QADCModules_global.h"
+#include "adcirc_forward.h"
 
 class QADCMODULESSHARED_EXPORT adcirc_node : public QObject
 {
@@ -61,6 +63,12 @@ public:
 
     ///Cryptographic hash for this adcirc node (x,y and z)
     QString fullHash;
+
+    ///Nodal Attribute data from a fort.13
+    QVector<adcirc_nodalattribute*> nodalData;
+
+    ///Nodal parameters for this node
+    //QVector<adcirc_nodalattribute*> nodalAttributes;
 
 
     //...PUBLIC FUNCTIONS...//

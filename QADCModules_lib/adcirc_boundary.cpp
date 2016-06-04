@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------*/
 #include "adcirc_boundary.h"
 #include "QADCModules_errors.h"
+#include "adcirc_node.h"
 
 //-----------------------------------------------------------------------------------------//
 // Constructor for an adcirc_boundary

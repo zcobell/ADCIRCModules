@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
     //...nodal_attributes, nodal_parameter testing...//
     qDebug() << "\n";
     qDebug() << "Reading Fort.13 test...";
-    QPointer<adcirc_nodalattributes> thisNodalParam = new adcirc_nodalattributes();
+    QPointer<adcirc_fort13> thisNodalParam = new adcirc_fort13();
     ierr = thisNodalParam->read("../../QADCModules/tests/test_files/ms-riv.13");
     qDebug() << "STATUS: " << thisNodalParam->error->getErrorString();
 
@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
 
     qDebug() << "\n";
     qDebug() << "Reading fort.13 with mesh reference";
-    thisNodalParam = new adcirc_nodalattributes(thisMesh);
+    thisNodalParam = new adcirc_fort13(thisMesh);
     ierr = thisNodalParam->read("../../QADCModules/tests/test_files/ms-riv.13");
     qDebug() << "STATUS: " << thisNodalParam->error->getErrorString();
 

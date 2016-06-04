@@ -45,13 +45,7 @@
 #include <qmath.h>
 
 #include "QADCModules_global.h"
-#include "QADCModules_errors.h"
-#include "adcirc_node.h"
-#include "adcirc_element.h"
-#include "adcirc_boundary.h"
-#include "adcirc_node_table.h"
-#include "proj4.h"
-#include "qkdtree2.h"
+#include "adcirc_forward.h"
 
 class QADCMODULESSHARED_EXPORT adcirc_mesh : public QObject
 {

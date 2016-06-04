@@ -36,7 +36,7 @@
 #include <QVector>
 
 #include "QADCModules_global.h"
-#include "QADCModules_errors.h"
+#include "adcirc_forward.h"
 
 class QADCMODULESSHARED_EXPORT adcirc_output_record : public QObject
 {
