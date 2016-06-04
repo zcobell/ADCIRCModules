@@ -18,7 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 /**
- * \class adcirc_nodalattributes
+ * \class adcirc_fort13
  *
  * \brief Class that handles an ADCIRC fort.13 file
  *
