@@ -111,24 +111,15 @@ Collaboration diagram for adcirc_nodalparameter:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0fe331e0f14956f7c07fb61c346068c8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__nodalparameter.html#a0fe331e0f14956f7c07fb61c346068c8">adcirc_nodalparameter</a> (int numNodes, QString nodalAttributeName=&quot;defaultName&quot;, QString nodalAttributeUnits=&quot;none&quot;, int numValues=1, <a class="el" href="classadcirc__mesh.html">adcirc_mesh</a> *mesh=NULL, QObject *parent=0)</td></tr>
-<tr class="memdesc:a0fe331e0f14956f7c07fb61c346068c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for the <a class="el" href="classadcirc__nodalparameter.html" title="Class that handles a single nodal attribute from an ADCIRC fort.13 file. ">adcirc_nodalparameter</a> class.  <a href="#a0fe331e0f14956f7c07fb61c346068c8">More...</a><br /></td></tr>
-<tr class="separator:a0fe331e0f14956f7c07fb61c346068c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd22c909c3b0d60e1dabaede7828e0c9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__nodalparameter.html#acd22c909c3b0d60e1dabaede7828e0c9">adcirc_nodalparameter</a> (int numNodes, QString nodalAttributeName=&quot;defaultName&quot;, QString nodalAttributeUnits=&quot;none&quot;, int numValues=1, QObject *parent=0)</td></tr>
+<tr class="memdesc:acd22c909c3b0d60e1dabaede7828e0c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for the <a class="el" href="classadcirc__nodalparameter.html" title="Class that handles a single nodal attribute from an ADCIRC fort.13 file. ">adcirc_nodalparameter</a> class.  <a href="#acd22c909c3b0d60e1dabaede7828e0c9">More...</a><br /></td></tr>
+<tr class="separator:acd22c909c3b0d60e1dabaede7828e0c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83ce72e52a11cc677bfec79140a4ac73"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__nodalparameter.html#a83ce72e52a11cc677bfec79140a4ac73">setDefaultValues</a> (QVector&lt; qreal &gt; nodalParameterDefaultValues)</td></tr>
 <tr class="memdesc:a83ce72e52a11cc677bfec79140a4ac73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to assign default values that will be specified in the fort.13 header.  <a href="#a83ce72e52a11cc677bfec79140a4ac73">More...</a><br /></td></tr>
 <tr class="separator:a83ce72e52a11cc677bfec79140a4ac73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a269df8a1d7e537c8947db7a6f24873"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__nodalparameter.html#a7a269df8a1d7e537c8947db7a6f24873">read</a> (QStringList &amp;fileData)</td></tr>
-<tr class="memdesc:a7a269df8a1d7e537c8947db7a6f24873"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to read and assign the body of the fort.13 file to the vectors in this class.  <a href="#a7a269df8a1d7e537c8947db7a6f24873">More...</a><br /></td></tr>
-<tr class="separator:a7a269df8a1d7e537c8947db7a6f24873"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00a6ee2a79e419a3b220cf51cbc9f139"><td class="memItemLeft" align="right" valign="top">QStringList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__nodalparameter.html#a00a6ee2a79e419a3b220cf51cbc9f139">write</a> ()</td></tr>
-<tr class="memdesc:a00a6ee2a79e419a3b220cf51cbc9f139"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to create the text to be written to the nodal attributes file for this parameter.  <a href="#a00a6ee2a79e419a3b220cf51cbc9f139">More...</a><br /></td></tr>
-<tr class="separator:a00a6ee2a79e419a3b220cf51cbc9f139"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeebced8d925b75307758d40d069c4a55"><td class="memItemLeft" align="right" valign="top">qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__nodalparameter.html#aeebced8d925b75307758d40d069c4a55">getDefaultValue</a> ()</td></tr>
-<tr class="memdesc:aeebced8d925b75307758d40d069c4a55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to determine the optimum value for the fort.13 header for this parameter.  <a href="#aeebced8d925b75307758d40d069c4a55">More...</a><br /></td></tr>
-<tr class="separator:aeebced8d925b75307758d40d069c4a55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ddb3085fc0a7a1aa7cf64605becd426"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__nodalparameter.html#a0ddb3085fc0a7a1aa7cf64605becd426">getNumNonDefault</a> ()</td></tr>
-<tr class="memdesc:a0ddb3085fc0a7a1aa7cf64605becd426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to determine the number of non-default nodes.  <a href="#a0ddb3085fc0a7a1aa7cf64605becd426">More...</a><br /></td></tr>
-<tr class="separator:a0ddb3085fc0a7a1aa7cf64605becd426"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74ddeedd226f707cecf45e08fae28bf3"><td class="memItemLeft" align="right" valign="top">qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__nodalparameter.html#a74ddeedd226f707cecf45e08fae28bf3">getDefaultValue</a> (QVector&lt; <a class="el" href="classadcirc__nodalattribute.html">adcirc_nodalattribute</a> * &gt; nodeData)</td></tr>
+<tr class="memdesc:a74ddeedd226f707cecf45e08fae28bf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to determine the optimum value for the fort.13 header for this parameter.  <a href="#a74ddeedd226f707cecf45e08fae28bf3">More...</a><br /></td></tr>
+<tr class="separator:a74ddeedd226f707cecf45e08fae28bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -144,29 +135,17 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__nodalparameter.html#a1afa87326fa1bf2473c3716ea005776b">nValues</a></td></tr>
 <tr class="memdesc:a1afa87326fa1bf2473c3716ea005776b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of values associated with each node for this nodal attribute. <br /></td></tr>
 <tr class="separator:a1afa87326fa1bf2473c3716ea005776b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa258828ef02060c6ec3cb040c9baae29"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa258828ef02060c6ec3cb040c9baae29"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__nodalparameter.html#aa258828ef02060c6ec3cb040c9baae29">nNodes</a></td></tr>
-<tr class="memdesc:aa258828ef02060c6ec3cb040c9baae29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of nodes in the mesh that this object is tied to. <br /></td></tr>
-<tr class="separator:aa258828ef02060c6ec3cb040c9baae29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad24ccc4f03e05a2261c30435b51dea72"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad24ccc4f03e05a2261c30435b51dea72"></a>
-QVector&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__nodalparameter.html#ad24ccc4f03e05a2261c30435b51dea72">node</a></td></tr>
-<tr class="memdesc:ad24ccc4f03e05a2261c30435b51dea72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to a node int he adcirc mesh for the values in this object. <br /></td></tr>
-<tr class="separator:ad24ccc4f03e05a2261c30435b51dea72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0043104186f00da5dac1d3884bb4615"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa0043104186f00da5dac1d3884bb4615"></a>
 QVector&lt; qreal &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__nodalparameter.html#aa0043104186f00da5dac1d3884bb4615">defaultValue</a></td></tr>
 <tr class="memdesc:aa0043104186f00da5dac1d3884bb4615"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value(s) to be used when writing the fort.13 file. <br /></td></tr>
 <tr class="separator:aa0043104186f00da5dac1d3884bb4615"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae36b8da9883718ed733265627c5f9924"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae36b8da9883718ed733265627c5f9924"></a>
-QVector&lt; QVector&lt; qreal &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__nodalparameter.html#ae36b8da9883718ed733265627c5f9924">values</a></td></tr>
-<tr class="memdesc:ae36b8da9883718ed733265627c5f9924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Values for the nodal parameter. <br /></td></tr>
-<tr class="separator:ae36b8da9883718ed733265627c5f9924"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class is designed to handle individual nodal parameters that are read from an ADCIRC fort.13 file</p>
 <dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <p>Contact: <a href="#" onclick="location.href='mai'+'lto:'+'zco'+'be'+'ll@'+'gm'+'ail'+'.c'+'om'; return false;">zcobe<span style="display: none;">.nosp@m.</span>ll@g<span style="display: none;">.nosp@m.</span>mail.<span style="display: none;">.nosp@m.</span>com</a> </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a0fe331e0f14956f7c07fb61c346068c8"></a>
+<a class="anchor" id="acd22c909c3b0d60e1dabaede7828e0c9"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -196,12 +175,6 @@ QVector&lt; QVector&lt; qreal &gt; &gt;&#160;</td><td class="memItemRight" valig
           <td></td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>numValues</em> = <code>1</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classadcirc__mesh.html">adcirc_mesh</a> *&#160;</td>
-          <td class="paramname"><em>mesh</em> = <code>NULL</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -236,58 +209,26 @@ QVector&lt; QVector&lt; qreal &gt; &gt;&#160;</td><td class="memItemRight" valig
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="aeebced8d925b75307758d40d069c4a55"></a>
+<a class="anchor" id="a74ddeedd226f707cecf45e08fae28bf3"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">qreal adcirc_nodalparameter::getDefaultValue </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Function to determine the optimum value for the fort.13 header for this parameter </p>
-
-</div>
-</div>
-<a class="anchor" id="a0ddb3085fc0a7a1aa7cf64605becd426"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int adcirc_nodalparameter::getNumNonDefault </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Function to determine the number of non-default nodes </p>
-
-</div>
-</div>
-<a class="anchor" id="a7a269df8a1d7e537c8947db7a6f24873"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int adcirc_nodalparameter::read </td>
-          <td>(</td>
-          <td class="paramtype">QStringList &amp;&#160;</td>
-          <td class="paramname"><em>fileData</em></td><td>)</td>
+          <td class="paramtype">QVector&lt; <a class="el" href="classadcirc__nodalattribute.html">adcirc_nodalattribute</a> * &gt;&#160;</td>
+          <td class="paramname"><em>nodeData</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">fileData</td><td>Body of the fort.13 file for this nodal attribute</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nodeData</td><td>vector of <a class="el" href="classadcirc__nodalattribute.html" title="Class that handles the data from an ADCIRC fort.13 file. ">adcirc_nodalattribute</a> pointers to find the default value for</td></tr>
   </table>
   </dd>
 </dl>
-<p>This function reads the portion of the body of a fort.13 that contains the non-default values to assign nodes in the ADCIRC mesh </p>
+<p>Function to determine the optimum value for the fort.13 header for this parameter </p>
 
 </div>
 </div>
@@ -311,22 +252,6 @@ QVector&lt; QVector&lt; qreal &gt; &gt;&#160;</td><td class="memItemRight" valig
   </dd>
 </dl>
 <p>Function to assign default values that will be specified in the fort.13 header </p>
-
-</div>
-</div>
-<a class="anchor" id="a00a6ee2a79e419a3b220cf51cbc9f139"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QStringList adcirc_nodalparameter::write </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Function to create the text to be written to the nodal attributes file for this parameter </p>
 
 </div>
 </div>

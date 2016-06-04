@@ -112,35 +112,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;QList&gt;</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;QADCModules_global.h&quot;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &quot;adcirc_node.h&quot;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &quot;adcirc_element.h&quot;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &quot;QADCModules_errors.h&quot;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classadcirc__node__table.html">   44</a></span>&#160;<span class="keyword">class </span>QADCMODULESSHARED_EXPORT <a class="code" href="classadcirc__node__table.html">adcirc_node_table</a> : <span class="keyword">public</span> QObject</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classadcirc__node__table.html">adcirc_node_table</a>(<a class="code" href="classadcirc__node.html">adcirc_node</a> *node, QObject *parent = 0);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classadcirc__node__table.html#a68ccc96d22e7526c6b1f667b62ad2ca5">   51</a></span>&#160;    <a class="code" href="classadcirc__node.html">adcirc_node</a>* <a class="code" href="classadcirc__node__table.html#a68ccc96d22e7526c6b1f667b62ad2ca5">node</a>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classadcirc__node__table.html#abdda8a99b9384122cde716dac622164a">   54</a></span>&#160;    QList&lt;adcirc_element*&gt; <a class="code" href="classadcirc__node__table.html#abdda8a99b9384122cde716dac622164a">elementsAroundNode</a>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">//...PUBLIC FUNCTIONS...//</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">int</span> add(<a class="code" href="classadcirc__element.html">adcirc_element</a>* addElement);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">int</span> <span class="keyword">remove</span>(<a class="code" href="classadcirc__element.html">adcirc_element</a>* removeElement);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">int</span> clear();</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif // NODE_TABLE_H</span></div>
-<div class="ttc" id="classadcirc__element_html"><div class="ttname"><a href="classadcirc__element.html">adcirc_element</a></div><div class="ttdoc">Class that describes an ADCIRC element. </div><div class="ttdef"><b>Definition:</b> adcirc_element.h:46</div></div>
-<div class="ttc" id="classadcirc__node__table_html_abdda8a99b9384122cde716dac622164a"><div class="ttname"><a href="classadcirc__node__table.html#abdda8a99b9384122cde716dac622164a">adcirc_node_table::elementsAroundNode</a></div><div class="ttdeci">QList&lt; adcirc_element * &gt; elementsAroundNode</div><div class="ttdoc">Table of elements around the node. </div><div class="ttdef"><b>Definition:</b> adcirc_node_table.h:54</div></div>
-<div class="ttc" id="classadcirc__node__table_html_a68ccc96d22e7526c6b1f667b62ad2ca5"><div class="ttname"><a href="classadcirc__node__table.html#a68ccc96d22e7526c6b1f667b62ad2ca5">adcirc_node_table::node</a></div><div class="ttdeci">adcirc_node * node</div><div class="ttdoc">Pointer to the actual adcirc_node object. </div><div class="ttdef"><b>Definition:</b> adcirc_node_table.h:51</div></div>
-<div class="ttc" id="classadcirc__node__table_html"><div class="ttname"><a href="classadcirc__node__table.html">adcirc_node_table</a></div><div class="ttdoc">Class that contains the list of elements around a node. </div><div class="ttdef"><b>Definition:</b> adcirc_node_table.h:44</div></div>
-<div class="ttc" id="classadcirc__node_html"><div class="ttname"><a href="classadcirc__node.html">adcirc_node</a></div><div class="ttdoc">Class that describes an ADCIRC node. </div><div class="ttdef"><b>Definition:</b> adcirc_node.h:43</div></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &quot;adcirc_forward.h&quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classadcirc__node__table.html">   43</a></span>&#160;<span class="keyword">class </span>QADCMODULESSHARED_EXPORT <a class="code" href="classadcirc__node__table.html">adcirc_node_table</a> : <span class="keyword">public</span> QObject</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classadcirc__node__table.html">adcirc_node_table</a>(<a class="code" href="classadcirc__node.html">adcirc_node</a> *node, QObject *parent = 0);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classadcirc__node__table.html#a68ccc96d22e7526c6b1f667b62ad2ca5">   50</a></span>&#160;    <a class="code" href="classadcirc__node.html">adcirc_node</a>* <a class="code" href="classadcirc__node__table.html#a68ccc96d22e7526c6b1f667b62ad2ca5">node</a>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classadcirc__node__table.html#abdda8a99b9384122cde716dac622164a">   53</a></span>&#160;    QList&lt;adcirc_element*&gt; <a class="code" href="classadcirc__node__table.html#abdda8a99b9384122cde716dac622164a">elementsAroundNode</a>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">//...PUBLIC FUNCTIONS...//</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">int</span> add(<a class="code" href="classadcirc__element.html">adcirc_element</a>* addElement);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">int</span> <span class="keyword">remove</span>(<a class="code" href="classadcirc__element.html">adcirc_element</a>* removeElement);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">int</span> clear();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#endif // NODE_TABLE_H</span></div>
+<div class="ttc" id="classadcirc__element_html"><div class="ttname"><a href="classadcirc__element.html">adcirc_element</a></div><div class="ttdoc">Class that describes an ADCIRC element. </div><div class="ttdef"><b>Definition:</b> adcirc_element.h:51</div></div>
+<div class="ttc" id="classadcirc__node__table_html_abdda8a99b9384122cde716dac622164a"><div class="ttname"><a href="classadcirc__node__table.html#abdda8a99b9384122cde716dac622164a">adcirc_node_table::elementsAroundNode</a></div><div class="ttdeci">QList&lt; adcirc_element * &gt; elementsAroundNode</div><div class="ttdoc">Table of elements around the node. </div><div class="ttdef"><b>Definition:</b> adcirc_node_table.h:53</div></div>
+<div class="ttc" id="classadcirc__node__table_html_a68ccc96d22e7526c6b1f667b62ad2ca5"><div class="ttname"><a href="classadcirc__node__table.html#a68ccc96d22e7526c6b1f667b62ad2ca5">adcirc_node_table::node</a></div><div class="ttdeci">adcirc_node * node</div><div class="ttdoc">Pointer to the actual adcirc_node object. </div><div class="ttdef"><b>Definition:</b> adcirc_node_table.h:50</div></div>
+<div class="ttc" id="classadcirc__node__table_html"><div class="ttname"><a href="classadcirc__node__table.html">adcirc_node_table</a></div><div class="ttdoc">Class that contains the list of elements around a node. </div><div class="ttdef"><b>Definition:</b> adcirc_node_table.h:43</div></div>
+<div class="ttc" id="classadcirc__node_html"><div class="ttname"><a href="classadcirc__node.html">adcirc_node</a></div><div class="ttdoc">Class that describes an ADCIRC node. </div><div class="ttdef"><b>Definition:</b> adcirc_node.h:45</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

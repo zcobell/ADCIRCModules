@@ -115,7 +115,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a07f19966a62edca6ec3a03715d3517e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor function for an <a class="el" href="classadcirc__node.html" title="Class that describes an ADCIRC node. ">adcirc_node</a>.  <a href="#a07f19966a62edca6ec3a03715d3517e1">More...</a><br /></td></tr>
 <tr class="separator:a07f19966a62edca6ec3a03715d3517e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2985afdfd363b30205d0f5e17659a560"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__node.html#a2985afdfd363b30205d0f5e17659a560">fromString</a> (QString line)</td></tr>
-<tr class="memdesc:a2985afdfd363b30205d0f5e17659a560"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function to parse the string from an ADCIRC mesh file containing nodal information.  <a href="#a2985afdfd363b30205d0f5e17659a560">More...</a><br /></td></tr>
+<tr class="memdesc:a2985afdfd363b30205d0f5e17659a560"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nodal parameters for this node.  <a href="#a2985afdfd363b30205d0f5e17659a560">More...</a><br /></td></tr>
 <tr class="separator:a2985afdfd363b30205d0f5e17659a560"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b99b5156bed5ec7de0ed4466c87f3a6"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__node.html#a4b99b5156bed5ec7de0ed4466c87f3a6">toString</a> (bool gcs=true)</td></tr>
 <tr class="memdesc:a4b99b5156bed5ec7de0ed4466c87f3a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function that writes an ADCIRC node in the format expected by an ADCIRC mesh file.  <a href="#a4b99b5156bed5ec7de0ed4466c87f3a6">More...</a><br /></td></tr>
@@ -152,6 +152,10 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__node.html#a79f106c60d7984f40900ef2650805eba">fullHash</a></td></tr>
 <tr class="memdesc:a79f106c60d7984f40900ef2650805eba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cryptographic hash for this adcirc node (x,y and z) <br /></td></tr>
 <tr class="separator:a79f106c60d7984f40900ef2650805eba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32e4ef20702b5e9800392eea9e58f851"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32e4ef20702b5e9800392eea9e58f851"></a>
+QVector&lt; <a class="el" href="classadcirc__nodalattribute.html">adcirc_nodalattribute</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__node.html#a32e4ef20702b5e9800392eea9e58f851">nodalData</a></td></tr>
+<tr class="memdesc:a32e4ef20702b5e9800392eea9e58f851"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nodal Attribute data from a fort.13. <br /></td></tr>
+<tr class="separator:a32e4ef20702b5e9800392eea9e58f851"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class describes a single adcirc node. Functions are provided to read/write a node in the format used in an ADCIRC mesh file</p>
@@ -203,6 +207,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Protected function to parse the string from an ADCIRC mesh file containing nodal information.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">line</td><td>The QString with the information read from the file to be parsed into an ADCIRC node</td></tr>
@@ -242,7 +247,6 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section author"><dt>Author</dt><dd>Zach Cobell</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">hashType</td><td>The QCryptographicHash::Algorithm to use</td></tr>

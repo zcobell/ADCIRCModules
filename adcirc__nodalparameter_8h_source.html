@@ -112,61 +112,42 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;QVector&gt;</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;QFile&gt;</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;QStringList&gt;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &quot;adcirc_mesh.h&quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &quot;QADCModules_global.h&quot;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classadcirc__nodalparameter.html">   44</a></span>&#160;<span class="keyword">class </span>QADCMODULESSHARED_EXPORT <a class="code" href="classadcirc__nodalparameter.html">adcirc_nodalparameter</a> : <span class="keyword">public</span> QObject</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classadcirc__nodalparameter.html">adcirc_nodalparameter</a>(<span class="keywordtype">int</span> numNodes, QString nodalAttributeName = <span class="stringliteral">&quot;defaultName&quot;</span>,</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                                   QString nodalAttributeUnits = <span class="stringliteral">&quot;none&quot;</span>,</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                                   <span class="keywordtype">int</span> numValues = 1, <a class="code" href="classadcirc__mesh.html">adcirc_mesh</a> *mesh = NULL, QObject *parent = 0);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">//...PUBLIC VARIABLES...//</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classadcirc__nodalparameter.html#a511282450efe3c8a4dd0da0eb53101e5">   56</a></span>&#160;    QString <a class="code" href="classadcirc__nodalparameter.html#a511282450efe3c8a4dd0da0eb53101e5">name</a>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classadcirc__nodalparameter.html#adc26aa812e48ea4aaf28e18d5d467e29">   59</a></span>&#160;    QString <a class="code" href="classadcirc__nodalparameter.html#adc26aa812e48ea4aaf28e18d5d467e29">units</a>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classadcirc__nodalparameter.html#a1afa87326fa1bf2473c3716ea005776b">   62</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classadcirc__nodalparameter.html#a1afa87326fa1bf2473c3716ea005776b">nValues</a>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="classadcirc__nodalparameter.html#aa258828ef02060c6ec3cb040c9baae29">   65</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classadcirc__nodalparameter.html#aa258828ef02060c6ec3cb040c9baae29">nNodes</a>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classadcirc__nodalparameter.html#ad24ccc4f03e05a2261c30435b51dea72">   68</a></span>&#160;    QVector&lt;adcirc_node*&gt; <a class="code" href="classadcirc__nodalparameter.html#ad24ccc4f03e05a2261c30435b51dea72">node</a>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classadcirc__nodalparameter.html#aa0043104186f00da5dac1d3884bb4615">   71</a></span>&#160;    QVector&lt;qreal&gt; <a class="code" href="classadcirc__nodalparameter.html#aa0043104186f00da5dac1d3884bb4615">defaultValue</a>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &quot;adcirc_forward.h&quot;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classadcirc__nodalparameter.html">   45</a></span>&#160;<span class="keyword">class </span>QADCMODULESSHARED_EXPORT <a class="code" href="classadcirc__nodalparameter.html">adcirc_nodalparameter</a> : <span class="keyword">public</span> QObject</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classadcirc__nodalparameter.html">adcirc_nodalparameter</a>(<span class="keywordtype">int</span> numNodes, QString nodalAttributeName = <span class="stringliteral">&quot;defaultName&quot;</span>,</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                                   QString nodalAttributeUnits = <span class="stringliteral">&quot;none&quot;</span>, <span class="keywordtype">int</span> numValues = 1,</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                                   QObject *parent = 0);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="comment">//...PUBLIC VARIABLES...//</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classadcirc__nodalparameter.html#a511282450efe3c8a4dd0da0eb53101e5">   57</a></span>&#160;    QString <a class="code" href="classadcirc__nodalparameter.html#a511282450efe3c8a4dd0da0eb53101e5">name</a>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="classadcirc__nodalparameter.html#adc26aa812e48ea4aaf28e18d5d467e29">   60</a></span>&#160;    QString <a class="code" href="classadcirc__nodalparameter.html#adc26aa812e48ea4aaf28e18d5d467e29">units</a>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="classadcirc__nodalparameter.html#a1afa87326fa1bf2473c3716ea005776b">   63</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classadcirc__nodalparameter.html#a1afa87326fa1bf2473c3716ea005776b">nValues</a>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="classadcirc__nodalparameter.html#aa0043104186f00da5dac1d3884bb4615">   66</a></span>&#160;    QVector&lt;qreal&gt; <a class="code" href="classadcirc__nodalparameter.html#aa0043104186f00da5dac1d3884bb4615">defaultValue</a>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">//...PUBLIC FUNCTIONS...//</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">int</span> setDefaultValues(QVector&lt;qreal&gt; nodalParameterDefaultValues);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    qreal getDefaultValue(QVector&lt;adcirc_nodalattribute*&gt; nodeData);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="classadcirc__nodalparameter.html#ae36b8da9883718ed733265627c5f9924">   74</a></span>&#160;    QVector&lt; QVector&lt;qreal&gt; &gt; <a class="code" href="classadcirc__nodalparameter.html#ae36b8da9883718ed733265627c5f9924">values</a>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">//...PUBLIC FUNCTIONS...//</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">int</span> setDefaultValues(QVector&lt;qreal&gt; nodalParameterDefaultValues);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">int</span> read(QStringList &amp;fileData);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    QStringList write();</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    qreal getDefaultValue();</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">int</span> getNumNonDefault();</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="classadcirc__mesh.html">adcirc_mesh</a> *mesh;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;};</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif // ADCIRC_NODALPARAMETER_H</span></div>
-<div class="ttc" id="classadcirc__mesh_html"><div class="ttname"><a href="classadcirc__mesh.html">adcirc_mesh</a></div><div class="ttdoc">Class that describes an ADCIRC mesh. </div><div class="ttdef"><b>Definition:</b> adcirc_mesh.h:56</div></div>
-<div class="ttc" id="classadcirc__nodalparameter_html_a511282450efe3c8a4dd0da0eb53101e5"><div class="ttname"><a href="classadcirc__nodalparameter.html#a511282450efe3c8a4dd0da0eb53101e5">adcirc_nodalparameter::name</a></div><div class="ttdeci">QString name</div><div class="ttdoc">Name of the nodal attribute. </div><div class="ttdef"><b>Definition:</b> adcirc_nodalparameter.h:56</div></div>
-<div class="ttc" id="classadcirc__nodalparameter_html_ad24ccc4f03e05a2261c30435b51dea72"><div class="ttname"><a href="classadcirc__nodalparameter.html#ad24ccc4f03e05a2261c30435b51dea72">adcirc_nodalparameter::node</a></div><div class="ttdeci">QVector&lt; adcirc_node * &gt; node</div><div class="ttdoc">Pointer to a node int he adcirc mesh for the values in this object. </div><div class="ttdef"><b>Definition:</b> adcirc_nodalparameter.h:68</div></div>
-<div class="ttc" id="classadcirc__nodalparameter_html_a1afa87326fa1bf2473c3716ea005776b"><div class="ttname"><a href="classadcirc__nodalparameter.html#a1afa87326fa1bf2473c3716ea005776b">adcirc_nodalparameter::nValues</a></div><div class="ttdeci">int nValues</div><div class="ttdoc">Number of values associated with each node for this nodal attribute. </div><div class="ttdef"><b>Definition:</b> adcirc_nodalparameter.h:62</div></div>
-<div class="ttc" id="classadcirc__nodalparameter_html"><div class="ttname"><a href="classadcirc__nodalparameter.html">adcirc_nodalparameter</a></div><div class="ttdoc">Class that handles a single nodal attribute from an ADCIRC fort.13 file. </div><div class="ttdef"><b>Definition:</b> adcirc_nodalparameter.h:44</div></div>
-<div class="ttc" id="classadcirc__nodalparameter_html_aa0043104186f00da5dac1d3884bb4615"><div class="ttname"><a href="classadcirc__nodalparameter.html#aa0043104186f00da5dac1d3884bb4615">adcirc_nodalparameter::defaultValue</a></div><div class="ttdeci">QVector&lt; qreal &gt; defaultValue</div><div class="ttdoc">Default value(s) to be used when writing the fort.13 file. </div><div class="ttdef"><b>Definition:</b> adcirc_nodalparameter.h:71</div></div>
-<div class="ttc" id="classadcirc__nodalparameter_html_aa258828ef02060c6ec3cb040c9baae29"><div class="ttname"><a href="classadcirc__nodalparameter.html#aa258828ef02060c6ec3cb040c9baae29">adcirc_nodalparameter::nNodes</a></div><div class="ttdeci">int nNodes</div><div class="ttdoc">Number of nodes in the mesh that this object is tied to. </div><div class="ttdef"><b>Definition:</b> adcirc_nodalparameter.h:65</div></div>
-<div class="ttc" id="classadcirc__nodalparameter_html_adc26aa812e48ea4aaf28e18d5d467e29"><div class="ttname"><a href="classadcirc__nodalparameter.html#adc26aa812e48ea4aaf28e18d5d467e29">adcirc_nodalparameter::units</a></div><div class="ttdeci">QString units</div><div class="ttdoc">Units for the nodal parameter. </div><div class="ttdef"><b>Definition:</b> adcirc_nodalparameter.h:59</div></div>
-<div class="ttc" id="classadcirc__nodalparameter_html_ae36b8da9883718ed733265627c5f9924"><div class="ttname"><a href="classadcirc__nodalparameter.html#ae36b8da9883718ed733265627c5f9924">adcirc_nodalparameter::values</a></div><div class="ttdeci">QVector&lt; QVector&lt; qreal &gt; &gt; values</div><div class="ttdoc">Values for the nodal parameter. </div><div class="ttdef"><b>Definition:</b> adcirc_nodalparameter.h:74</div></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;};</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif // ADCIRC_NODALPARAMETER_H</span></div>
+<div class="ttc" id="classadcirc__nodalparameter_html_a511282450efe3c8a4dd0da0eb53101e5"><div class="ttname"><a href="classadcirc__nodalparameter.html#a511282450efe3c8a4dd0da0eb53101e5">adcirc_nodalparameter::name</a></div><div class="ttdeci">QString name</div><div class="ttdoc">Name of the nodal attribute. </div><div class="ttdef"><b>Definition:</b> adcirc_nodalparameter.h:57</div></div>
+<div class="ttc" id="classadcirc__nodalparameter_html_a1afa87326fa1bf2473c3716ea005776b"><div class="ttname"><a href="classadcirc__nodalparameter.html#a1afa87326fa1bf2473c3716ea005776b">adcirc_nodalparameter::nValues</a></div><div class="ttdeci">int nValues</div><div class="ttdoc">Number of values associated with each node for this nodal attribute. </div><div class="ttdef"><b>Definition:</b> adcirc_nodalparameter.h:63</div></div>
+<div class="ttc" id="classadcirc__nodalparameter_html"><div class="ttname"><a href="classadcirc__nodalparameter.html">adcirc_nodalparameter</a></div><div class="ttdoc">Class that handles a single nodal attribute from an ADCIRC fort.13 file. </div><div class="ttdef"><b>Definition:</b> adcirc_nodalparameter.h:45</div></div>
+<div class="ttc" id="classadcirc__nodalparameter_html_aa0043104186f00da5dac1d3884bb4615"><div class="ttname"><a href="classadcirc__nodalparameter.html#aa0043104186f00da5dac1d3884bb4615">adcirc_nodalparameter::defaultValue</a></div><div class="ttdeci">QVector&lt; qreal &gt; defaultValue</div><div class="ttdoc">Default value(s) to be used when writing the fort.13 file. </div><div class="ttdef"><b>Definition:</b> adcirc_nodalparameter.h:66</div></div>
+<div class="ttc" id="classadcirc__nodalparameter_html_adc26aa812e48ea4aaf28e18d5d467e29"><div class="ttname"><a href="classadcirc__nodalparameter.html#adc26aa812e48ea4aaf28e18d5d467e29">adcirc_nodalparameter::units</a></div><div class="ttdeci">QString units</div><div class="ttdoc">Units for the nodal parameter. </div><div class="ttdef"><b>Definition:</b> adcirc_nodalparameter.h:60</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
