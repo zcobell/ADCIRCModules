@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------*/
 #include "adcirc_boundary.h"
 #include "QADCModules_errors.h"
+#include "adcirc_node.h"
 
 //-----------------------------------------------------------------------------------------//
 // Constructor for an adcirc_boundary
@@ -94,8 +95,6 @@ int adcirc_boundary::setupBoundary(int code, int size)
 //-----------------------------------------------------------------------------------------//
 /** \brief Public function to parse an adcirc boundary depending on its boundary code
  *
- * \author Zach Cobell
- *
  * @param[in] data        line from the ADCIRC mesh file for this boundary type
  * @param[in] index       position in the boundary string
  * @param[in] nodes       nodal positions in the mesh
@@ -138,8 +137,6 @@ int adcirc_boundary::fromString(QString data, int index, QVector<adcirc_node *> 
 /** \brief Protected function to read the single node data from a boundary string
  *  (single node types)
  *
- * \author Zach Cobell
- *
  * @param[in] data        line from the ADCIRC mesh file for this boundary type
  * @param[in] index       position in the boundary string
  * @param[in] nodes       nodal positions in the mesh
@@ -170,8 +167,6 @@ int adcirc_boundary::readBoundarySingleNode(QString data, int index, QVector<adc
 // Function to parse a one-sided weir boundary (type 3,13)
 //-----------------------------------------------------------------------------------------//
 /** \brief Protected function to read the one sided weir data from a boundary string (type 3,13)
- *
- * \author Zach Cobell
  *
  * @param[in] data        line from the ADCIRC mesh file for this boundary type
  * @param[in] index       position in the boundary string
@@ -217,8 +212,6 @@ int adcirc_boundary::readBoundaryOneSidedWeir(QString data, int index, QVector<a
 //-----------------------------------------------------------------------------------------//
 /** \brief Protected function to read the one sided two sided weir information from a
  * boundary string (type 4,24)
- *
- * \author Zach Cobell
  *
  * @param[in] data        line from the ADCIRC mesh file for this boundary type
  * @param[in] index       position in the boundary string
@@ -281,8 +274,6 @@ int adcirc_boundary::readBoundaryTwoSidedWeir(QString data, int index, QVector<a
 //-----------------------------------------------------------------------------------------//
 /** \brief Protected function to read the so-called "leaky weir", or weir with cross
  *  barrier pipes from a boundary string (type 5,25)
- *
- * \author Zach Cobell
  *
  * @param[in] data        line from the ADCIRC mesh file for this boundary type
  * @param[in] index       position in the boundary string
@@ -365,8 +356,6 @@ int adcirc_boundary::readBoundaryCrossBarrierPipe(QString data, int index, QVect
 //-----------------------------------------------------------------------------------------//
 /** \brief Public function to construct the boundary condition into a QStringList for writing
  *
- * \author Zach Cobell
- *
  * @param[in] isOpenBC If this is an open BC, the boundary code is not included
  *                     per the ADCIRC format
  *
@@ -436,8 +425,6 @@ QStringList adcirc_boundary::toStringList(bool isOpenBC)
 // Function to generate a hash for an adcirc_boundary
 //-----------------------------------------------------------------------------------------//
 /** \brief Public function to generate a hash for an adcirc_boundary
- *
- * \author Zach Cobell
  *
  * Function to generate a hash for an adcirc_boundary object. The hash is accumulated
  * along the boundary string using the hashes of the adcirc_node objects that are contained
@@ -564,8 +551,6 @@ int adcirc_boundary::hashBoundary()
 //-----------------------------------------------------------------------------------------//
 /** \brief Public function to set the hash algorithm to use
  *
- * \author Zach Cobell
- *
  * @param[in] hashType  The QCryptographicHash::Algorithm to use
  *
  * This function sets the type of hash algorithm to use for hashes constructed for this
@@ -587,8 +572,6 @@ int adcirc_boundary::setHashAlgorithm(QCryptographicHash::Algorithm hashType)
 // Function to calculate the average longitude of a boundary
 //-----------------------------------------------------------------------------------------//
 /** \brief Function to calculate the average longitude of a boundary
- *
- * \author Zach Cobell
  *
  * Function to calculate the average longitude of a boundary. This is used to ensure that
  * river boundaries remain in a consistent and known order for doing model runs

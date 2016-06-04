@@ -18,6 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_element.h"
+#include "adcirc_node.h"
 #include "QADCModules_errors.h"
 
 bool operator<(const adcirc_element e1,const adcirc_element e2)
@@ -154,8 +155,6 @@ QString adcirc_element::toString()
 //-----------------------------------------------------------------------------------------//
 /** \brief Public function to generate a hash for an adcirc_element
  *
- * \author Zach Cobell
- *
  * Function to generate a hash for an adcirc_element. The hash is comprised of the
  * hashes of the adcirc_node objects that make up the verticies
  *
@@ -207,8 +206,6 @@ int adcirc_element::hashElement()
 // Function to set the type of hash that is to be used for this class
 //-----------------------------------------------------------------------------------------//
 /** \brief Public function to set the hash algorithm to use
- *
- * \author Zach Cobell
  *
  * @param[in] hashType  The QCryptographicHash::Algorithm to use
  *

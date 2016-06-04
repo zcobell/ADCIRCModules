@@ -18,8 +18,15 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_mesh.h"
+#include "adcirc_node.h"
+#include "adcirc_element.h"
+#include "adcirc_boundary.h"
+#include "adcirc_node_table.h"
 #include "netcdf.h"
 #include "shapefil.h"
+#include "proj4.h"
+#include "qkdtree2.h"
+#include "QADCModules_errors.h"
 
 //-----------------------------------------------------------------------------------------//
 // Initializer that creates its own error object

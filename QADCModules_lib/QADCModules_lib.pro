@@ -53,6 +53,7 @@ win32 {
 unix:!macx{
     isEmpty(NETCDFHOME){
         LIBS += -lnetcdf
+        INCLUDEPATH += /usr/include
     }else{
         LIBS += -L$$NETCDFHOME/lib -lnetcdf
         INCLUDEPATH += $$NETCDFHOME/include 
@@ -128,13 +129,14 @@ SOURCES += \
     adcirc_boundary.cpp \
     adcirc_mesh.cpp \
     adcirc_nodalparameter.cpp \
-    adcirc_nodalattributes.cpp \
     proj4.cpp \
     adcirc_node_table.cpp \
     qkdtree2.cpp \
     QADCModules_errors.cpp \
     adcirc_output_record.cpp \
-    adcirc_global_output.cpp
+    adcirc_global_output.cpp \
+    adcirc_fort13.cpp \
+    adcirc_nodalattribute.cpp
 
 HEADERS +=\
     QADCModules_global.h \
@@ -144,14 +146,16 @@ HEADERS +=\
     adcirc_boundary.h \
     adcirc_mesh.h \
     adcirc_nodalparameter.h \
-    adcirc_nodalattributes.h \
     proj4.h \
     adcirc_node_table.h \
     $$KDTREEPATH/kdtree2.hpp \
     qkdtree2.h \
     QADCModules_errors.h \
     adcirc_global_output.h \
-    adcirc_output_record.h
+    adcirc_output_record.h \
+    adcirc_fort13.h \
+    adcirc_nodalattribute.h \
+    adcirc_forward.h
 
 
 win32{

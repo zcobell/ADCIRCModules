@@ -35,11 +35,10 @@
 #include <QObject>
 #include <QSharedPointer>
 #include <QStringList>
+#include <QFile>
 
 #include "QADCModules_global.h"
-#include "adcirc_mesh.h"
-#include "adcirc_output_record.h"
-#include "QADCModules_errors.h"
+#include "adcirc_forward.h"
 
 class QADCMODULESSHARED_EXPORT adcirc_global_output : public QObject
 {

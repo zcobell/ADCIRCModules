@@ -18,6 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 #include "adcirc_output_record.h"
+#include "QADCModules_errors.h"
 #include <qmath.h>
 
 adcirc_output_record::adcirc_output_record(int numNodes, QObject *parent) : QObject(parent)

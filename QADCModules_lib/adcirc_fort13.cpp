@@ -17,29 +17,35 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 //-----------------------------------------------------------------------*/
+#include <QFile>
 
-#include "adcirc_nodalattributes.h"
+#include "adcirc_mesh.h"
+#include "adcirc_node.h"
+#include "adcirc_fort13.h"
+#include "adcirc_nodalparameter.h"
+#include "adcirc_nodalattribute.h"
 #include "QADCModules_errors.h"
 
 //-----------------------------------------------------------------------------------------//
 // Constructor
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn adcirc_nodalattributes(QObject *parent)
- * \brief Constructs an adcirc_nodalattributes object
+ * \fn adcirc_fort13(QObject *parent)
+ * \brief Constructs an adcirc_fort13 object
  *
  * @param[in] *mesh    Reference to an adcirc_mesh object
  * @param[in] *parent  Reference to QObject. Enables automatic memory management to avoid memory leaks
  *
- * Constructs an adcirc_nodalattributes object
+ * Constructs an adcirc_fort13 object
  *
  **/
 //-----------------------------------------------------------------------------------------//
-adcirc_nodalattributes::adcirc_nodalattributes(adcirc_mesh *mesh, QObject *parent) : QObject(parent)
+adcirc_fort13::adcirc_fort13(adcirc_mesh *mesh, QObject *parent) : QObject(parent)
 {
     this->error = new QADCModules_errors(this);
     this->mesh  = mesh;
 }
+//-----------------------------------------------------------------------------------------//
 
 
 
@@ -55,17 +61,17 @@ adcirc_nodalattributes::adcirc_nodalattributes(adcirc_mesh *mesh, QObject *paren
 
 
 //-----------------------------------------------------------------------------------------//
-// Publicly available read function
+// Publicly available read method
 //-----------------------------------------------------------------------------------------//
-/** \brief Publicly available function to read an ADCIRC fort.13 file
+/** \brief Publicly available method to read an ADCIRC fort.13 file
  *
  * @param[in] filename Filename of the fort.13 file to be read
  *
- * Publicly available function to read an ADCIRC fort.13 file
+ * Publicly available method to read an ADCIRC fort.13 file
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_nodalattributes::read(QString inputFilename)
+int adcirc_fort13::read(QString inputFilename)
 {
     int ierr;
 
@@ -97,19 +103,19 @@ int adcirc_nodalattributes::read(QString inputFilename)
 
 
 //-----------------------------------------------------------------------------------------//
-// Publicly available write function
+// Publicly available write method
 //-----------------------------------------------------------------------------------------//
-/** \brief Publicly available function to write an ADCIRC fort.13 file
+/** \brief Publicly available method to write an ADCIRC fort.13 file
  *
  * @param[in] outputFile                 Filename of the fort.13 file to be written
  * @param[in] userSpecifiedDefaultValues If true, the optimization of the fort.13 default value
  *                                       is not performed
  *
- * Publicly available function to write an ADCIRC fort.13 file
+ * Publicly available method to write an ADCIRC fort.13 file
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_nodalattributes::write(QString outputFilename, bool userSpecifiedDefaultValues)
+int adcirc_fort13::write(QString outputFilename, bool userSpecifiedDefaultValues)
 {
     if(outputFilename==QString())
     {
@@ -139,15 +145,15 @@ int adcirc_nodalattributes::write(QString outputFilename, bool userSpecifiedDefa
 
 
 //-----------------------------------------------------------------------------------------//
-// Function to do the heavy lifting to read an ADCIRC fort.13 file
+// method to do the heavy lifting to read an ADCIRC fort.13 file
 //-----------------------------------------------------------------------------------------//
-/** \brief Function used internally to read an ADCIRC nodal attributes file
+/** \brief method used internally to read an ADCIRC nodal attributes file
  *
- * Function used internally to read an ADCIRC nodal attributes file
+ * method used internally to read an ADCIRC nodal attributes file
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_nodalattributes::readNodalAttributesFile()
+int adcirc_fort13::readNodalAttributesFile()
 {
     int ierr,i,j,index,position,tempInt;
     int tempNumVals,numNonDefault;
@@ -186,6 +192,7 @@ int adcirc_nodalattributes::readNodalAttributesFile()
     this->numParameters = tempInt;
 
     this->nodalParameters.resize(this->numParameters);
+    this->nodalData.resize(this->numParameters);
 
     //...Read the nodal attributes and their initialization data
     position = 3;
@@ -251,7 +258,7 @@ int adcirc_nodalattributes::readNodalAttributesFile()
             }
         }
 
-        this->nodalParameters[i] = new adcirc_nodalparameter(this->numNodes,tempName,tempUnits,tempNumVals,this->mesh,this);
+        this->nodalParameters[i] = new adcirc_nodalparameter(this->numNodes,tempName,tempUnits,tempNumVals,this);
         this->nodalParameters[i]->setDefaultValues(tempDefaultValue);
         this->attributeLocations[tempName] = i;
 
@@ -304,7 +311,11 @@ int adcirc_nodalattributes::readNodalAttributesFile()
             }
         }
 
-        ierr = this->nodalParameters[index]->read(tempStringList);
+        this->nodalData[i].resize(this->numNodes);
+        for(j=0;j<this->numNodes;j++)
+            this->nodalData[i][j] = new adcirc_nodalattribute(this->nodalParameters[index],this);
+
+        ierr = this->readNodalData(i,tempStringList);
         if(ierr!=ERROR_NOERROR)
         {
             this->error->setError(ierr);
@@ -312,23 +323,25 @@ int adcirc_nodalattributes::readNodalAttributesFile()
         }
     }
 
+    if(this->mesh!=NULL)
+        this->mapNodalAttributesToMesh();
+
     return ERROR_NOERROR;
 }
 //-----------------------------------------------------------------------------------------//
 
 
 
-
 //-----------------------------------------------------------------------------------------//
-// Function to do the heavy lifting to write an ADCIRC fort.13 file
+// method to do the heavy lifting to write an ADCIRC fort.13 file
 //-----------------------------------------------------------------------------------------//
-/** \brief Function used internally to write an ADCIRC nodal attributes file
+/** \brief method used internally to write an ADCIRC nodal attributes file
  *
- * Function used internally to write an ADCIRC nodal attributes file
+ * method used internally to write an ADCIRC nodal attributes file
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_nodalattributes::writeNodalAttributesFile(QString outputFilename, bool userSpecifiedDefaultValues)
+int adcirc_fort13::writeNodalAttributesFile(QString outputFilename, bool userSpecifiedDefaultValues)
 {
     int i,j;
     QString tempString,tempString2;
@@ -346,7 +359,7 @@ int adcirc_nodalattributes::writeNodalAttributesFile(QString outputFilename, boo
     if(!userSpecifiedDefaultValues)
         for(i=0;i<this->numParameters;i++)
             if(this->nodalParameters[i]->nValues==1)
-                this->nodalParameters[i]->defaultValue[0] = this->nodalParameters[i]->getDefaultValue();
+                this->nodalParameters[i]->defaultValue[0] = this->nodalParameters[i]->getDefaultValue(this->nodalData[i]);
 
     //...Write the header
     out << this->title << "\n";
@@ -382,11 +395,11 @@ int adcirc_nodalattributes::writeNodalAttributesFile(QString outputFilename, boo
     {
         out << this->nodalParameters[i]->name << "\n";
 
-        tempString.sprintf("%11i",this->nodalParameters[i]->getNumNonDefault());
+        tempString.sprintf("%11i",this->getNumNonDefault(this->nodalParameters[i],this->nodalData[i]));
         out << tempString << "\n";
 
         tempStringList = QStringList();
-        tempStringList = this->nodalParameters[i]->write();
+        tempStringList = this->writeNodalParameter(i);
         for(j=0;j<tempStringList.length();j++)
             out << tempStringList.value(j) << "\n";
     }
@@ -394,5 +407,184 @@ int adcirc_nodalattributes::writeNodalAttributesFile(QString outputFilename, boo
     outputFile.close();
 
     return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+//-----------------------------------------------------------------------------------------//
+// method to read the body from the fort.13 file into this nodal attribute
+//-----------------------------------------------------------------------------------------//
+/** \brief method to read and assign the body of the fort.13 file to the vectors in this class
+ *
+ * @param[in] data Body of the fort.13 file for this nodal attribute
+ *
+ * This method reads the portion of the body of a fort.13 that contains the non-default
+ * values to assign nodes in the ADCIRC mesh
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_fort13::readNodalData(int nodalAttributeIndex, QStringList &data)
+{
+    QString tempString;
+    QStringList tempList;
+    int i,j,index;
+    qreal tempDouble;
+    bool err;
+
+    for(i=0;i<this->numNodes;i++)
+        for(j=0;j<this->nodalParameters[nodalAttributeIndex]->nValues;j++)
+            this->nodalData[nodalAttributeIndex][i]->values.fill(this->nodalParameters[nodalAttributeIndex]->defaultValue[j]);
+
+    for(i=0;i<data.length();i++)
+    {
+        tempString = data[i];
+        tempList   = tempString.simplified().split(" ");
+        if(tempList.length()-1!=this->nodalParameters[nodalAttributeIndex]->nValues)
+            return ERROR_NODALPARAM_NOTENOUGHVALUES;
+
+        tempString = tempList.value(0);
+        index      = tempString.toInt(&err);
+        if(!err)
+            return ERROR_NODALPARAM_READERROR;
+
+        if(index<=0 || index>this->numNodes)
+            return ERROR_NODALPARAM_OUTOFRANGE;
+
+        for(j=0;j<nodalParameters[nodalAttributeIndex]->nValues;j++)
+        {
+            tempString             = tempList.value(j+1);
+            tempDouble             = tempString.toDouble(&err);
+            if(!err)
+                return ERROR_NODALPARAM_READERROR;
+            this->nodalData[nodalAttributeIndex][index-1]->values[j] = tempDouble;
+            this->nodalData[nodalAttributeIndex][index-1]->metadata  = this->nodalParameters[nodalAttributeIndex];
+        }
+
+    }
+
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Method to add the nodal attributes pointers to the adcirc_mesh object
+//-----------------------------------------------------------------------------------------//
+/** \brief Method to add the adcirc_nodalattribute pointers to the adcirc_mesh object
+ *
+ * Method to add the adcirc_nodalattribute pointers to the adcirc_mesh object
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_fort13::mapNodalAttributesToMesh()
+{
+    for(int i=0;i<this->mesh->numNodes;i++)
+    {
+        this->mesh->nodes[i]->nodalData.resize(this->numParameters);
+        for(int j=0;j<this->numParameters;j++)
+            this->mesh->nodes[i]->nodalData[j] = this->nodalData[j][i];
+    }
+    return ERROR_NOERROR;
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Function to create the text to be written to the nodal attributes file for this parameter
+//-----------------------------------------------------------------------------------------//
+/** \brief Function to create the text to be written to the nodal attributes file for this parameter
+ *
+ * @param[in] index
+ *
+ * Function to create the text to be written to the nodal attributes file for this parameter
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+#include <QDebug>
+QStringList adcirc_fort13::writeNodalParameter(int index)
+{
+    int i,j;
+    QString tempLine,tempLine2;
+    QStringList outputData;
+    bool isNonDefault;
+
+    //...Loop over nodes to generate the fort.13 body
+    //   for this nodal attribute
+    for(i=0;i<this->numNodes;i++)
+    {
+        tempLine = QString();
+        if(this->nodalParameters[index]->nValues==1)
+        {
+            if(this->nodalData[index][i]->values[0]!=this->nodalParameters[index]->defaultValue[0])
+            {
+                tempLine.sprintf("%11i  %12.6f",i+1,this->nodalData[index][i]->values[0]);
+                outputData.append(tempLine);
+            }
+        }
+        else
+        {
+            isNonDefault = false;
+            tempLine.sprintf("%11i",i+1);
+            for(j=0;j<this->nodalParameters[index]->nValues;j++)
+            {
+                tempLine2 = QString();
+                tempLine2.sprintf("%12.6f",this->nodalData[index][i]->values[j]);
+                tempLine = tempLine + "  " + tempLine2;
+
+                if(this->nodalData[index][i]->values[j]==this->nodalParameters[index]->defaultValue[j])
+                    isNonDefault = true;
+            }
+
+            if(isNonDefault)
+                outputData.append(tempLine);
+        }
+    }
+
+    return outputData;
+
+}
+//-----------------------------------------------------------------------------------------//
+
+
+
+
+
+//-----------------------------------------------------------------------------------------//
+// Function to determine the number of non-default nodes
+//-----------------------------------------------------------------------------------------//
+/** \brief Function to determine the number of non-default nodes
+ *
+ * @param[in] nodalParam adcirc_nodalparameter object that has the default value we are checking
+ * @param[in] nodalAtt   adcirc_nodalattribute object that we will count default values for
+ *
+ * Function to determine the number of non-default nodes
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_fort13::getNumNonDefault(adcirc_nodalparameter *nodalParam, QVector<adcirc_nodalattribute*> nodalAtt)
+{
+    int i,j,numNonDefault;
+    bool isNonDefault;
+
+    numNonDefault = 0;
+
+    for(i=0;i<this->numNodes;i++)
+    {
+        isNonDefault = false;
+        for(j=0;j<nodalParam->nValues;j++)
+        {
+            if(nodalAtt[i]->values[j]!=nodalParam->defaultValue[j])
+            {
+                isNonDefault = true;
+                break;
+            }
+        }
+        if(isNonDefault)
+            numNonDefault = numNonDefault + 1;
+    }
+
+    return numNonDefault;
 }
 //-----------------------------------------------------------------------------------------//

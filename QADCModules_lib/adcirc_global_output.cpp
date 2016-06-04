@@ -17,7 +17,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 //-----------------------------------------------------------------------*/
+#include <QVector>
+
 #include "adcirc_global_output.h"
+#include "adcirc_output_record.h"
+#include "adcirc_mesh.h"
+#include "adcirc_node.h"
+#include "QADCModules_errors.h"
 #include "netcdf.h"
 #include "shapefil.h"
 

@@ -37,9 +37,8 @@
 #include <QList>
 
 #include "QADCModules_global.h"
-#include "adcirc_node.h"
-#include "adcirc_element.h"
-#include "QADCModules_errors.h"
+#include "adcirc_forward.h"
+
 
 class QADCMODULESSHARED_EXPORT adcirc_node_table : public QObject
 {

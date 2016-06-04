@@ -17,6 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 //-----------------------------------------------------------------------*/
+#include "QADCModules_errors.h"
 #include "proj4.h"
 #include "proj_api.h"
 

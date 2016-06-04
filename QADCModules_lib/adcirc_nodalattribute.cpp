@@ -17,53 +17,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 //-----------------------------------------------------------------------*/
-/**
- *
- * \class QADCModules
- *
- * \brief A Qt C++ package for use with the ADCIRC model
- *
- * This class provides basic functions for working with
- * ADCIRC model data. (http://www.adcirc.org) It is written
- * in Qt C++ and has been tested with Qt version 5.5. The package
- * is provided as a dynamicly linked library (Windows)
- * or shared object file (Unix)
- *
- * \author Zach Cobell
- *
- * Contact: zcobell@gmail.com
- *
- */
-#ifndef QADCMODULES_H
-#define QADCMODULES_H
-
-#include <QObject>
-#include <QVector>
-#include <QFile>
-#include <QMap>
-
-#include "QADCModules_global.h"
-#include "QADCModules_errors.h"
-#include "adcirc_mesh.h"
-#include "adcirc_node.h"
-#include "adcirc_element.h"
-#include "adcirc_fort13.h"
 #include "adcirc_nodalattribute.h"
 #include "adcirc_nodalparameter.h"
-#include "adcirc_global_output.h"
-#include "adcirc_output_record.h"
 
-
-class QADCMODULESSHARED_EXPORT QADCModules : public QObject
+adcirc_nodalattribute::adcirc_nodalattribute(adcirc_nodalparameter *nodalMetadata, QObject *parent) : QObject(parent)
 {
-    Q_OBJECT
-public:
-
-    explicit QADCModules(QObject *parent = 0);
-
-    ~QADCModules();
-
-
-};
-
-#endif // QADCMODULES_H
+    this->metadata = nodalMetadata;
+    this->values.resize(this->metadata->nValues);
+}
