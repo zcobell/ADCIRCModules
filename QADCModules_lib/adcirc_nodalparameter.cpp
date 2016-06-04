@@ -92,6 +92,8 @@ int adcirc_nodalparameter::setDefaultValues(QVector<qreal> nodalParameterDefault
 //-----------------------------------------------------------------------------------------//
 /** \brief Function to determine the optimum value for the fort.13 header for this parameter
  *
+ * @param[in] nodeData vector of adcirc_nodalattribute pointers to find the default value for
+ *
  * Function to determine the optimum value for the fort.13 header for this parameter
  *
  **/

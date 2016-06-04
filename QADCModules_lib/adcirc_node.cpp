@@ -191,8 +191,6 @@ QPointF adcirc_node::toPointF()
 //-----------------------------------------------------------------------------------------//
 /** \brief Public function to set the hash algorithm to use
  *
- * \author Zach Cobell
- *
  * @param[in] hashType  The QCryptographicHash::Algorithm to use
  *
  * This function sets the type of hash algorithm to use for hashes constructed for this
