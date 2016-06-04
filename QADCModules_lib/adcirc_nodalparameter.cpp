@@ -110,10 +110,10 @@ qreal adcirc_nodalparameter::getDefaultValue(QVector<adcirc_nodalattribute*> nod
     //...Build a list of unique values
     for(i=0;i<nodeData.length();i++)
     {
-        if(!valueList.contains(nodeData[i]->values[i]))
+        if(!valueList.contains(nodeData[i]->values[0]))
         {
-            valueList.append(nodeData[i]->values[i]);
-            valueMap[nodeData[i]->values[i]] = index;
+            valueList.append(nodeData[i]->values[0]);
+            valueMap[nodeData[i]->values[0]] = index;
             index = index + 1;
         }
     }
@@ -123,7 +123,7 @@ qreal adcirc_nodalparameter::getDefaultValue(QVector<adcirc_nodalattribute*> nod
 
     //...Total the hits on each value
     for(i=0;i<nodeData.length();i++)
-        count[valueMap[nodeData[i]->values[i]]] = count[valueMap[nodeData[i]->values[i]]] + 1;
+        count[valueMap[nodeData[i]->values[0]]] = count[valueMap[nodeData[i]->values[0]]] + 1;
 
     //...Find the maximum number of hits
     for(i=0;i<count.size();i++)

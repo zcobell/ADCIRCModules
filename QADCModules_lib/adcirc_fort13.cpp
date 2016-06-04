@@ -311,7 +311,7 @@ int adcirc_fort13::readNodalAttributesFile()
             }
         }
 
-        this->nodalData.resize(this->numNodes);
+        this->nodalData[i].resize(this->numNodes);
         for(j=0;j<this->numNodes;j++)
             this->nodalData[i][j] = new adcirc_nodalattribute(this->nodalParameters[index],this);
 
@@ -423,6 +423,7 @@ int adcirc_fort13::writeNodalAttributesFile(QString outputFilename, bool userSpe
  *
  **/
 //-----------------------------------------------------------------------------------------//
+#include <QDebug>
 int adcirc_fort13::readNodalData(int nodalAttributeIndex, QStringList &data)
 {
     QString tempString;
@@ -456,8 +457,8 @@ int adcirc_fort13::readNodalData(int nodalAttributeIndex, QStringList &data)
             tempDouble             = tempString.toDouble(&err);
             if(!err)
                 return ERROR_NODALPARAM_READERROR;
-            this->nodalData[index][i]->values[j] = tempDouble;
-            this->nodalData[index][i]->metadata  = this->nodalParameters[index];
+            this->nodalData[nodalAttributeIndex][index-1]->values[j] = tempDouble;
+            this->nodalData[nodalAttributeIndex][index-1]->metadata  = this->nodalParameters[nodalAttributeIndex];
         }
 
     }
@@ -483,7 +484,7 @@ int adcirc_fort13::mapNodalAttributesToMesh()
     {
         this->mesh->nodes[i]->nodalData.resize(this->numParameters);
         for(int j=0;j<this->numParameters;j++)
-            this->mesh->nodes[i]->nodalData[j] = this->nodalData[i][j];
+            this->mesh->nodes[i]->nodalData[j] = this->nodalData[j][i];
     }
     return ERROR_NOERROR;
 }
