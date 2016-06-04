@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="node2" href="$classadcirc__boundary.html" title="Class that describes an ADCIRC boundary. " alt="" coords="144,5,261,32"/>
 <area shape="rect" id="node3" href="$classadcirc__element.html" title="Class that describes an ADCIRC element. " alt="" coords="147,56,258,83"/>
-<area shape="rect" id="node4" href="$classadcirc__fort13.html" title="adcirc_fort13" alt="" coords="154,107,251,133"/>
+<area shape="rect" id="node4" href="$classadcirc__fort13.html" title="Class that handles an ADCIRC fort.13 file. " alt="" coords="154,107,251,133"/>
 <area shape="rect" id="node5" href="$classadcirc__global__output.html" title="Class that describes an ADCIRC global output file. " alt="" coords="132,157,273,184"/>
 <area shape="rect" id="node6" href="$classadcirc__mesh.html" title="Class that describes an ADCIRC mesh. " alt="" coords="155,208,251,235"/>
 <area shape="rect" id="node7" href="$classadcirc__nodalattribute.html" title="Class that handles the data from an ADCIRC fort.13 file. " alt="" coords="131,259,274,285"/>
