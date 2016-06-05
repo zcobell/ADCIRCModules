@@ -48,6 +48,7 @@
 #include "adcirc_node.h"
 #include "adcirc_element.h"
 #include "adcirc_fort13.h"
+#include "adcirc_boundary.h"
 #include "adcirc_nodalattribute.h"
 #include "adcirc_nodalparameter.h"
 #include "adcirc_global_output.h"
