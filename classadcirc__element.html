@@ -98,11 +98,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Inheritance diagram for adcirc_element:</div>
 <div class="dyncontent">
 <div class="center"><img src="classadcirc__element__inherit__graph.png" border="0" usemap="#adcirc__element_inherit__map" alt="Inheritance graph"/></div>
+<map name="adcirc__element_inherit__map" id="adcirc__element_inherit__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for adcirc_element:</div>
 <div class="dyncontent">
 <div class="center"><img src="classadcirc__element__coll__graph.png" border="0" usemap="#adcirc__element_coll__map" alt="Collaboration graph"/></div>
+<map name="adcirc__element_coll__map" id="adcirc__element_coll__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -122,6 +126,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aac18ac939348063d73d2edc67900307b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__element.html#aac18ac939348063d73d2edc67900307b">setHashAlgorithm</a> (QCryptographicHash::Algorithm hashType)</td></tr>
 <tr class="memdesc:aac18ac939348063d73d2edc67900307b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public function to set the hash algorithm to use.  <a href="#aac18ac939348063d73d2edc67900307b">More...</a><br /></td></tr>
 <tr class="separator:aac18ac939348063d73d2edc67900307b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1daa823edbb4ed3fc26de731704f1c22"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__element.html#a1daa823edbb4ed3fc26de731704f1c22">elementLessThan</a> (const <a class="el" href="classadcirc__element.html">adcirc_element</a> e1, const <a class="el" href="classadcirc__element.html">adcirc_element</a> e2)</td></tr>
+<tr class="memdesc:a1daa823edbb4ed3fc26de731704f1c22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison operator for <a class="el" href="classadcirc__element.html" title="Class that describes an ADCIRC element. ">adcirc_element</a> object: less than.  <a href="#a1daa823edbb4ed3fc26de731704f1c22">More...</a><br /></td></tr>
+<tr class="separator:a1daa823edbb4ed3fc26de731704f1c22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ef19db23267ef6d8e06347c30952181"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__element.html#a6ef19db23267ef6d8e06347c30952181">elementGreaterThan</a> (const <a class="el" href="classadcirc__element.html">adcirc_element</a> e1, const <a class="el" href="classadcirc__element.html">adcirc_element</a> e2)</td></tr>
+<tr class="memdesc:a6ef19db23267ef6d8e06347c30952181"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison operator for <a class="el" href="classadcirc__element.html" title="Class that describes an ADCIRC element. ">adcirc_element</a> object: greater than.  <a href="#a6ef19db23267ef6d8e06347c30952181">More...</a><br /></td></tr>
+<tr class="separator:a6ef19db23267ef6d8e06347c30952181"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e141585d81d5a1a618e1903939b9803"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__element.html#a0e141585d81d5a1a618e1903939b9803">elementEqual</a> (const <a class="el" href="classadcirc__element.html">adcirc_element</a> e1, const <a class="el" href="classadcirc__element.html">adcirc_element</a> e2)</td></tr>
+<tr class="memdesc:a0e141585d81d5a1a618e1903939b9803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison operator for <a class="el" href="classadcirc__element.html" title="Class that describes an ADCIRC element. ">adcirc_element</a> object: equal to.  <a href="#a0e141585d81d5a1a618e1903939b9803">More...</a><br /></td></tr>
+<tr class="separator:a0e141585d81d5a1a618e1903939b9803"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -179,6 +192,108 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a0e141585d81d5a1a618e1903939b9803"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool adcirc_element::elementEqual </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classadcirc__element.html">adcirc_element</a>&#160;</td>
+          <td class="paramname"><em>e1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classadcirc__element.html">adcirc_element</a>&#160;</td>
+          <td class="paramname"><em>e2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">e1</td><td>element1 for the comparison </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">e2</td><td>element2 for the comparison</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Comparison operator for <a class="el" href="classadcirc__element.html" title="Class that describes an ADCIRC element. ">adcirc_element</a> object: equal to. Checks if two elements have identical nodes. True if the two elements match. False if they do not. </p>
+
+</div>
+</div>
+<a class="anchor" id="a6ef19db23267ef6d8e06347c30952181"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool adcirc_element::elementGreaterThan </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classadcirc__element.html">adcirc_element</a>&#160;</td>
+          <td class="paramname"><em>e1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classadcirc__element.html">adcirc_element</a>&#160;</td>
+          <td class="paramname"><em>e2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">e1</td><td>element1 for the comparison </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">e2</td><td>element2 for the comparison</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Comparison operator for <a class="el" href="classadcirc__element.html" title="Class that describes an ADCIRC element. ">adcirc_element</a> object: greater than. Returns true if element1 &gt; element2 </p>
+
+</div>
+</div>
+<a class="anchor" id="a1daa823edbb4ed3fc26de731704f1c22"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool adcirc_element::elementLessThan </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classadcirc__element.html">adcirc_element</a>&#160;</td>
+          <td class="paramname"><em>e1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classadcirc__element.html">adcirc_element</a>&#160;</td>
+          <td class="paramname"><em>e2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">e1</td><td>element1 for the comparison </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">e2</td><td>element2 for the comparison</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Comparison operator for <a class="el" href="classadcirc__element.html" title="Class that describes an ADCIRC element. ">adcirc_element</a> object: less than. Returns true if element1 &lt; element2 </p>
+
+</div>
+</div>
 <a class="anchor" id="abd8d21ec51129173bbd37629dc016199"></a>
 <div class="memitem">
 <div class="memproto">

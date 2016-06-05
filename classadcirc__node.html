@@ -98,11 +98,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Inheritance diagram for adcirc_node:</div>
 <div class="dyncontent">
 <div class="center"><img src="classadcirc__node__inherit__graph.png" border="0" usemap="#adcirc__node_inherit__map" alt="Inheritance graph"/></div>
+<map name="adcirc__node_inherit__map" id="adcirc__node_inherit__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for adcirc_node:</div>
 <div class="dyncontent">
 <div class="center"><img src="classadcirc__node__coll__graph.png" border="0" usemap="#adcirc__node_coll__map" alt="Collaboration graph"/></div>
+<map name="adcirc__node_coll__map" id="adcirc__node_coll__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -125,6 +129,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7a321af10616cd7efe4145e7f65718f9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__node.html#a7a321af10616cd7efe4145e7f65718f9">setHashAlgorithm</a> (QCryptographicHash::Algorithm hashType)</td></tr>
 <tr class="memdesc:a7a321af10616cd7efe4145e7f65718f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public function to set the hash algorithm to use.  <a href="#a7a321af10616cd7efe4145e7f65718f9">More...</a><br /></td></tr>
 <tr class="separator:a7a321af10616cd7efe4145e7f65718f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f84057a507264219719da7d02eda49d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__node.html#a4f84057a507264219719da7d02eda49d">nodeLessThan</a> (const <a class="el" href="classadcirc__node.html">adcirc_node</a> n1, const <a class="el" href="classadcirc__node.html">adcirc_node</a> n2)</td></tr>
+<tr class="memdesc:a4f84057a507264219719da7d02eda49d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison operator for <a class="el" href="classadcirc__node.html" title="Class that describes an ADCIRC node. ">adcirc_node</a> object: less than.  <a href="#a4f84057a507264219719da7d02eda49d">More...</a><br /></td></tr>
+<tr class="separator:a4f84057a507264219719da7d02eda49d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65fed64e085e4282fcf8368a10be00d6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__node.html#a65fed64e085e4282fcf8368a10be00d6">nodeGreaterThan</a> (const <a class="el" href="classadcirc__node.html">adcirc_node</a> n1, const <a class="el" href="classadcirc__node.html">adcirc_node</a> n2)</td></tr>
+<tr class="memdesc:a65fed64e085e4282fcf8368a10be00d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison operator for <a class="el" href="classadcirc__node.html" title="Class that describes an ADCIRC node. ">adcirc_node</a> object: greater than.  <a href="#a65fed64e085e4282fcf8368a10be00d6">More...</a><br /></td></tr>
+<tr class="separator:a65fed64e085e4282fcf8368a10be00d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -227,6 +237,74 @@ QVector&lt; <a class="el" href="classadcirc__nodalattribute.html">adcirc_nodalat
       </table>
 </div><div class="memdoc">
 <p>Function that generates a unique hash for this <a class="el" href="classadcirc__node.html" title="Class that describes an ADCIRC node. ">adcirc_node</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="a65fed64e085e4282fcf8368a10be00d6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool adcirc_node::nodeGreaterThan </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classadcirc__node.html">adcirc_node</a>&#160;</td>
+          <td class="paramname"><em>n1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classadcirc__node.html">adcirc_node</a>&#160;</td>
+          <td class="paramname"><em>n2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n1</td><td>node1 for the comparison </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n2</td><td>node2 for the comparison</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Comparison operator for <a class="el" href="classadcirc__node.html" title="Class that describes an ADCIRC node. ">adcirc_node</a> object: greater than. Checks if node ID 1 is greater than node ID 2. </p>
+
+</div>
+</div>
+<a class="anchor" id="a4f84057a507264219719da7d02eda49d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool adcirc_node::nodeLessThan </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classadcirc__node.html">adcirc_node</a>&#160;</td>
+          <td class="paramname"><em>n1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classadcirc__node.html">adcirc_node</a>&#160;</td>
+          <td class="paramname"><em>n2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n1</td><td>node1 for the comparison </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n2</td><td>node2 for the comparison</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Comparison operator for <a class="el" href="classadcirc__node.html" title="Class that describes an ADCIRC node. ">adcirc_node</a> object: less than. Checks if node ID 1 is less than node ID 2. </p>
 
 </div>
 </div>

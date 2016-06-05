@@ -1,5 +1,8 @@
 var searchData=
 [
+  ['elementequal',['elementEqual',['../classadcirc__element.html#a0e141585d81d5a1a618e1903939b9803',1,'adcirc_element']]],
+  ['elementgreaterthan',['elementGreaterThan',['../classadcirc__element.html#a6ef19db23267ef6d8e06347c30952181',1,'adcirc_element']]],
+  ['elementlessthan',['elementLessThan',['../classadcirc__element.html#a1daa823edbb4ed3fc26de731704f1c22',1,'adcirc_element']]],
   ['elements',['elements',['../classadcirc__mesh.html#a4b4090417c5e72363b3485ec01ff18aa',1,'adcirc_mesh']]],
   ['elementsaroundnode',['elementsAroundNode',['../classadcirc__node__table.html#abdda8a99b9384122cde716dac622164a',1,'adcirc_node_table']]],
   ['elementtoidmapping',['elementToIdMapping',['../classadcirc__mesh.html#ac7468201dab0c41c5641004333556ada',1,'adcirc_mesh']]],

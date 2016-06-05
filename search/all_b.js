@@ -7,6 +7,8 @@ var searchData=
   ['nodalparameters',['nodalParameters',['../classadcirc__fort13.html#a712a9be0cc8bde0a4f1f54f307d4cf33',1,'adcirc_fort13']]],
   ['node',['node',['../classadcirc__node__table.html#a68ccc96d22e7526c6b1f667b62ad2ca5',1,'adcirc_node_table']]],
   ['node_5ftable',['node_table',['../classadcirc__mesh.html#a13c2c593e442ca3dd0fa29c371b40248',1,'adcirc_mesh']]],
+  ['nodegreaterthan',['nodeGreaterThan',['../classadcirc__node.html#a65fed64e085e4282fcf8368a10be00d6',1,'adcirc_node']]],
+  ['nodelessthan',['nodeLessThan',['../classadcirc__node.html#a4f84057a507264219719da7d02eda49d',1,'adcirc_node']]],
   ['nodes',['nodes',['../classadcirc__mesh.html#a1845df6fb5852e8cc20bec2852623317',1,'adcirc_mesh']]],
   ['nodetoidmapping',['nodeToIdMapping',['../classadcirc__mesh.html#a791fb0cb00ac6870d1146f08b81db991',1,'adcirc_mesh']]],
   ['nodetopositionmapping',['nodeToPositionMapping',['../classadcirc__mesh.html#a359100eeb1bc37274f5bc9c2c44317c1',1,'adcirc_mesh']]],

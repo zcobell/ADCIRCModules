@@ -148,19 +148,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">int</span> setHashAlgorithm(QCryptographicHash::Algorithm hashType);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    QCryptographicHash::Algorithm hashAlgorithm;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;};</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">//...OPERATORS...//</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">bool</span> elementLessThan(<span class="keyword">const</span> <a class="code" href="classadcirc__element.html">adcirc_element</a> e1,<span class="keyword">const</span> <a class="code" href="classadcirc__element.html">adcirc_element</a> e2);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">bool</span> elementGreaterThan(<span class="keyword">const</span> <a class="code" href="classadcirc__element.html">adcirc_element</a> e1,<span class="keyword">const</span> <a class="code" href="classadcirc__element.html">adcirc_element</a> e2);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">bool</span> elementEqual(<span class="keyword">const</span> <a class="code" href="classadcirc__element.html">adcirc_element</a> e1,<span class="keyword">const</span> <a class="code" href="classadcirc__element.html">adcirc_element</a> e2);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">//...OPERATORS...//</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keywordtype">bool</span> operator&lt;(<span class="keyword">const</span> <a class="code" href="classadcirc__element.html">adcirc_element</a> e1,<span class="keyword">const</span> <a class="code" href="classadcirc__element.html">adcirc_element</a> e2);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keywordtype">bool</span> operator&gt;(<span class="keyword">const</span> <a class="code" href="classadcirc__element.html">adcirc_element</a> e1,<span class="keyword">const</span> <a class="code" href="classadcirc__element.html">adcirc_element</a> e2);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code" href="classadcirc__element.html">adcirc_element</a> e1,<span class="keyword">const</span> <a class="code" href="classadcirc__element.html">adcirc_element</a> e2);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    QCryptographicHash::Algorithm hashAlgorithm;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#endif // ADCIRC_ELEMENT_H</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#endif // ADCIRC_ELEMENT_H</span></div>
 <div class="ttc" id="classadcirc__element_html_a5d13c2389520e77261d5ddf88d59e2bf"><div class="ttname"><a href="classadcirc__element.html#a5d13c2389520e77261d5ddf88d59e2bf">adcirc_element::connections</a></div><div class="ttdeci">QVector&lt; adcirc_node * &gt; connections</div><div class="ttdoc">Vector containing the list of nodes that make up this element as pointers to the node array...</div><div class="ttdef"><b>Definition:</b> adcirc_element.h:65</div></div>
 <div class="ttc" id="classadcirc__element_html_a39be4fd249b4b4584e83752f6249bcbb"><div class="ttname"><a href="classadcirc__element.html#a39be4fd249b4b4584e83752f6249bcbb">adcirc_element::numConnections</a></div><div class="ttdeci">int numConnections</div><div class="ttdoc">The number of nodes in this element. Note that only 3 connections are used for ADCIRC meshes...</div><div class="ttdef"><b>Definition:</b> adcirc_element.h:62</div></div>
 <div class="ttc" id="classadcirc__element_html"><div class="ttname"><a href="classadcirc__element.html">adcirc_element</a></div><div class="ttdoc">Class that describes an ADCIRC element. </div><div class="ttdef"><b>Definition:</b> adcirc_element.h:51</div></div>
