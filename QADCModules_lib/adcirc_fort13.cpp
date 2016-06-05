@@ -132,6 +132,28 @@ int adcirc_fort13::write(QString outputFilename, bool userSpecifiedDefaultValues
 
 
 
+//-----------------------------------------------------------------------------------------//
+// Publicly available method to find a nodal attribute with the specified name
+//-----------------------------------------------------------------------------------------//
+/** \brief Publicly available method to find a nodal attribute with the specified name
+ *
+ * @param[in] attributeName   Name of the nodal attribute to locate
+ *
+ * Publicly available method to find a nodal attribute with the specified name
+ *
+ **/
+//-----------------------------------------------------------------------------------------//
+int adcirc_fort13::locateAttribute(QString attributeName)
+{
+    for(int i=0;i<this->numParameters;i++)
+        if(this->nodalParameters[i]->name==attributeName)
+            return i;
+
+    return -1;
+}
+//-----------------------------------------------------------------------------------------//
+
+
 
 //-----------------------------------------------------------------------------------------//
 //
@@ -145,7 +167,7 @@ int adcirc_fort13::write(QString outputFilename, bool userSpecifiedDefaultValues
 
 
 //-----------------------------------------------------------------------------------------//
-// method to do the heavy lifting to read an ADCIRC fort.13 file
+// Method to do the heavy lifting to read an ADCIRC fort.13 file
 //-----------------------------------------------------------------------------------------//
 /** \brief method used internally to read an ADCIRC nodal attributes file
  *
@@ -333,7 +355,7 @@ int adcirc_fort13::readNodalAttributesFile()
 
 
 //-----------------------------------------------------------------------------------------//
-// method to do the heavy lifting to write an ADCIRC fort.13 file
+// Method to do the heavy lifting to write an ADCIRC fort.13 file
 //-----------------------------------------------------------------------------------------//
 /** \brief method used internally to write an ADCIRC nodal attributes file
  *
@@ -412,7 +434,7 @@ int adcirc_fort13::writeNodalAttributesFile(QString outputFilename, bool userSpe
 
 
 //-----------------------------------------------------------------------------------------//
-// method to read the body from the fort.13 file into this nodal attribute
+// Method to read the body from the fort.13 file into this nodal attribute
 //-----------------------------------------------------------------------------------------//
 /** \brief method to read and assign the body of the fort.13 file to the vectors in this class
  *
