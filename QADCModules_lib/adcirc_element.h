@@ -78,6 +78,14 @@ public:
 
     int setHashAlgorithm(QCryptographicHash::Algorithm hashType);
 
+
+    //...OPERATORS...//
+    bool elementLessThan(const adcirc_element e1,const adcirc_element e2);
+
+    bool elementGreaterThan(const adcirc_element e1,const adcirc_element e2);
+
+    bool elementEqual(const adcirc_element e1,const adcirc_element e2);
+
 private:
 
     ///Hash algorithm to used (Default: Sha1)
@@ -85,10 +93,5 @@ private:
 
 };
 
-
-//...OPERATORS...//
-bool operator<(const adcirc_element e1,const adcirc_element e2);
-bool operator>(const adcirc_element e1,const adcirc_element e2);
-bool operator==(const adcirc_element e1,const adcirc_element e2);
 
 #endif // ADCIRC_ELEMENT_H

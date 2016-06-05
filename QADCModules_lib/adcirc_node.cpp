@@ -21,16 +21,45 @@
 #include "QADCModules_errors.h"
 
 
-
-bool operator<(const adcirc_node n1,const adcirc_node n2)
+//-----------------------------------------------------------------------------------------//
+// Comparison operator for adcirc_node object: less than
+//-----------------------------------------------------------------------------------------//
+/** \brief Comparison operator for adcirc_node object: less than
+ *
+ * @param[in] n1 node1 for the comparison
+ * @param[in] n2 node2 for the comparison
+ *
+ * Comparison operator for adcirc_node object: less than. Checks if node ID 1 is less than
+ * node ID 2.
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+bool adcirc_node::nodeLessThan(const adcirc_node n1,const adcirc_node n2)
 {
     return n1.id<n2.id;
 }
+//-----------------------------------------------------------------------------------------//
 
-bool operator>(const adcirc_node n1,const adcirc_node n2)
+
+
+//-----------------------------------------------------------------------------------------//
+// Comparison operator for adcirc_node object: greater than
+//-----------------------------------------------------------------------------------------//
+/** \brief Comparison operator for adcirc_node object: greater than
+ *
+ * @param[in] n1 node1 for the comparison
+ * @param[in] n2 node2 for the comparison
+ *
+ * Comparison operator for adcirc_node object: greater than. Checks if node ID 1 is greater than
+ * node ID 2.
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+bool adcirc_node::nodeGreaterThan(const adcirc_node n1,const adcirc_node n2)
 {
     return n1.id>n2.id;
 }
+//-----------------------------------------------------------------------------------------//
 
 
 
@@ -49,6 +78,7 @@ adcirc_node::adcirc_node(QObject *parent) : QObject(parent)
     this->hashAlgorithm = QCryptographicHash::Sha1;
 }
 //-----------------------------------------------------------------------------------------//
+
 
 
 //-----------------------------------------------------------------------------------------//

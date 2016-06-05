@@ -518,7 +518,7 @@ int adcirc_fort13::mapNodalAttributesToMesh()
 //-----------------------------------------------------------------------------------------//
 /** \brief Function to create the text to be written to the nodal attributes file for this parameter
  *
- * @param[in] index
+ * @param[in] index  Location of the nodal parameter to be written
  *
  * Function to create the text to be written to the nodal attributes file for this parameter
  *

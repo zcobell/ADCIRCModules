@@ -21,17 +21,61 @@
 #include "adcirc_node.h"
 #include "QADCModules_errors.h"
 
-bool operator<(const adcirc_element e1,const adcirc_element e2)
+
+//-----------------------------------------------------------------------------------------//
+// Comparison operator for adcirc_element object: less than
+//-----------------------------------------------------------------------------------------//
+/** \brief Comparison operator for adcirc_element object: less than
+ *
+ * @param[in] e1 element1 for the comparison
+ * @param[in] e2 element2 for the comparison
+ *
+ * Comparison operator for adcirc_element object: less than. Returns true if element1 < element2
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+bool adcirc_element::elementLessThan(const adcirc_element e1,const adcirc_element e2)
 {
     return e1.id<e2.id;
 }
+//-----------------------------------------------------------------------------------------//
 
-bool operator>(const adcirc_element e1,const adcirc_element e2)
+
+
+//-----------------------------------------------------------------------------------------//
+// Comparison operator for adcirc_element object: greater than
+//-----------------------------------------------------------------------------------------//
+/** \brief Comparison operator for adcirc_element object: greater than
+ *
+ * @param[in] e1 element1 for the comparison
+ * @param[in] e2 element2 for the comparison
+ *
+ * Comparison operator for adcirc_element object: greater than. Returns true if element1 > element2
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+bool adcirc_element::elementGreaterThan(const adcirc_element e1,const adcirc_element e2)
 {
     return e1.id>e2.id;
 }
+//-----------------------------------------------------------------------------------------//
 
-bool operator==(const adcirc_element e1,const adcirc_element e2)
+
+
+//-----------------------------------------------------------------------------------------//
+// Comparison operator for adcirc_element object: equal to
+//-----------------------------------------------------------------------------------------//
+/** \brief Comparison operator for adcirc_element object: equal to
+ *
+ * @param[in] e1 element1 for the comparison
+ * @param[in] e2 element2 for the comparison
+ *
+ * Comparison operator for adcirc_element object: equal to. Checks if two elements have
+ * identical nodes. True if the two elements match. False if they do not.
+ *
+ */
+//-----------------------------------------------------------------------------------------//
+bool adcirc_element::elementEqual(const adcirc_element e1,const adcirc_element e2)
 {
     int i;
 
@@ -50,6 +94,9 @@ bool operator==(const adcirc_element e1,const adcirc_element e2)
 
     return true;
 }
+//-----------------------------------------------------------------------------------------//
+
+
 
 //-----------------------------------------------------------------------------------------//
 // Constructor function. Initializes the adcirc_element class and sets defaults

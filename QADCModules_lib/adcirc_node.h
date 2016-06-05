@@ -83,6 +83,12 @@ public:
 
     int setHashAlgorithm(QCryptographicHash::Algorithm hashType);
 
+
+    //...Comparison operators...//
+    bool nodeLessThan(const adcirc_node n1,const adcirc_node n2);
+
+    bool nodeGreaterThan(const adcirc_node n1,const adcirc_node n2);
+
 private:
 
     ///Hash algorithm to used (Default: Sha1)
@@ -90,8 +96,6 @@ private:
 
 };
 
-//...OPERATORS...//
-bool operator<(const adcirc_node n1,const adcirc_node n2);
-bool operator>(const adcirc_node n1,const adcirc_node n2);
+
 
 #endif // ADCIRC_NODE_H
