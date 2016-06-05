@@ -524,7 +524,6 @@ int adcirc_fort13::mapNodalAttributesToMesh()
  *
  **/
 //-----------------------------------------------------------------------------------------//
-#include <QDebug>
 QStringList adcirc_fort13::writeNodalParameter(int index)
 {
     int i,j;
