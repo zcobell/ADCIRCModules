@@ -209,7 +209,7 @@ QString adcirc_element::toString()
 //-----------------------------------------------------------------------------------------//
 int adcirc_element::hashElement()
 {
-    QString hashSeed,hashSeed1,hashSeed2,hashSeed3;
+    QString hashSeed1,hashSeed2,hashSeed3;
 
     //...initialize the sha1 hash
     QCryptographicHash localHash(this->hashAlgorithm);
@@ -236,9 +236,9 @@ int adcirc_element::hashElement()
     hashSeed3 = this->connections[2]->positionHash;
 
     //...Create the hash for the local node
-    localHash.addData(hashSeed1.toUtf8(),hashSeed.length());
-    localHash.addData(hashSeed2.toUtf8(),hashSeed.length());
-    localHash.addData(hashSeed3.toUtf8(),hashSeed.length());
+    localHash.addData(hashSeed1.toUtf8(),hashSeed1.length());
+    localHash.addData(hashSeed2.toUtf8(),hashSeed2.length());
+    localHash.addData(hashSeed3.toUtf8(),hashSeed3.length());
 
     //...save the element hash
     this->hash = localHash.result().toHex();
