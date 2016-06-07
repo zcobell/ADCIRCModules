@@ -2,6 +2,7 @@
 Implementation of routines used to manipulate ADCIRC model files in Qt
 
 [![Build Status](https://travis-ci.org/zcobell/QADCModules.svg?branch=master)](https://travis-ci.org/zcobell/QADCModules)
+[![Coverity](https://scan.coverity.com/projects/9087/badge.svg)](https://scan.coverity.com/projects/zcobell-qadcmodules)
 
 ###Documentation
 Detailed documentation is available [here](http://zcobell.github.io/QADCModules/index.html).
