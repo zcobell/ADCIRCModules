@@ -2229,6 +2229,11 @@ int adcirc_mesh::readMeshFromNetCDF()
     ierr = this->allocateNodes();
     if(ierr!=ERROR_NOERROR)
     {
+        free(node_x);
+        free(node_y);
+        free(elem1);
+        free(elem2);
+        free(elem3);
         this->error->setError(ierr);
         return this->error->getError();
     }
@@ -2237,6 +2242,11 @@ int adcirc_mesh::readMeshFromNetCDF()
     ierr = this->allocateElements();
     if(ierr!=ERROR_NOERROR)
     {
+        free(node_x);
+        free(node_y);
+        free(elem1);
+        free(elem2);
+        free(elem3);
         this->error->setError(ierr);
         return this->error->getError();
     }
@@ -2245,6 +2255,11 @@ int adcirc_mesh::readMeshFromNetCDF()
     ierr = nc_get_var(ncid,varid_x,node_x);
     if(ierr!=NC_NOERR)
     {
+        free(node_x);
+        free(node_y);
+        free(elem1);
+        free(elem2);
+        free(elem3);
         this->error->setCustomDescription(nc_strerror(ierr));
         this->error->setError(ERROR_NETCDF_GENERIC);
         return this->error->getError();
@@ -2253,6 +2268,11 @@ int adcirc_mesh::readMeshFromNetCDF()
     ierr = nc_get_var(ncid,varid_y,node_y);
     if(ierr!=NC_NOERR)
     {
+        free(node_x);
+        free(node_y);
+        free(elem1);
+        free(elem2);
+        free(elem3);
         this->error->setCustomDescription(nc_strerror(ierr));
         this->error->setError(ERROR_NETCDF_GENERIC);
         return this->error->getError();
@@ -2261,6 +2281,11 @@ int adcirc_mesh::readMeshFromNetCDF()
     ierr = nc_get_var(ncid,varid_z,node_z);
     if(ierr!=NC_NOERR)
     {
+        free(node_x);
+        free(node_y);
+        free(elem1);
+        free(elem2);
+        free(elem3);
         this->error->setCustomDescription(nc_strerror(ierr));
         this->error->setError(ERROR_NETCDF_GENERIC);
         return this->error->getError();
@@ -2269,6 +2294,11 @@ int adcirc_mesh::readMeshFromNetCDF()
     ierr = nc_get_vara_int(ncid,varid_element,start_ele1,count_ele,elem1);
     if(ierr!=NC_NOERR)
     {
+        free(node_x);
+        free(node_y);
+        free(elem1);
+        free(elem2);
+        free(elem3);
         this->error->setCustomDescription(nc_strerror(ierr));
         this->error->setError(ERROR_NETCDF_GENERIC);
         return this->error->getError();
@@ -2277,6 +2307,11 @@ int adcirc_mesh::readMeshFromNetCDF()
     ierr = nc_get_vara_int(ncid,varid_element,start_ele2,count_ele,elem2);
     if(ierr!=NC_NOERR)
     {
+        free(node_x);
+        free(node_y);
+        free(elem1);
+        free(elem2);
+        free(elem3);
         this->error->setCustomDescription(nc_strerror(ierr));
         this->error->setError(ERROR_NETCDF_GENERIC);
         return this->error->getError();
@@ -2285,6 +2320,11 @@ int adcirc_mesh::readMeshFromNetCDF()
     ierr = nc_get_vara_int(ncid,varid_element,start_ele3,count_ele,elem3);
     if(ierr!=NC_NOERR)
     {
+        free(node_x);
+        free(node_y);
+        free(elem1);
+        free(elem2);
+        free(elem3);
         this->error->setCustomDescription(nc_strerror(ierr));
         this->error->setError(ERROR_NETCDF_GENERIC);
         return this->error->getError();
@@ -2294,6 +2334,11 @@ int adcirc_mesh::readMeshFromNetCDF()
     ierr = nc_close(ncid);
     if(ierr!=NC_NOERR)
     {
+        free(node_x);
+        free(node_y);
+        free(elem1);
+        free(elem2);
+        free(elem3);
         this->error->setCustomDescription(nc_strerror(ierr));
         this->error->setError(ERROR_NETCDF_GENERIC);
         return this->error->getError();
