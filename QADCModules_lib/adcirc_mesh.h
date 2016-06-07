@@ -155,11 +155,11 @@ public:
 
     int checkOverlappingElements(int &numOverlappingElements, QList<adcirc_element*> &overlappingElementList);
 
-    int checkOverlappingBoundaries(int &numOverlappingBoundaries, QList<adcirc_node *> &overlappingBoundaryNodeList);
+    //int checkOverlappingBoundaries(int &numOverlappingBoundaries, QList<adcirc_node *> &overlappingBoundaryNodeList);
 
-    int checkBoundariesOnBoundary(int &numberOfBadBCs, QList<adcirc_node *> &boundaryConditionList);
+    //int checkBoundariesOnBoundary(int &numberOfBadBCs, QList<adcirc_node *> &boundaryConditionList);
 
-    int checkClosedIslandBoundaries(int &numUnclosedIslandBoundaries);
+    //int checkClosedIslandBoundaries(int &numUnclosedIslandBoundaries);
 
     int setProjection(int epsg);
 

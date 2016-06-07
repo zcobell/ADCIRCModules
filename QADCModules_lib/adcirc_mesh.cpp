@@ -908,13 +908,13 @@ int adcirc_mesh::checkOverlappingElements(int &numOverlappingElements, QList<adc
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::checkOverlappingBoundaries(int &numOverlappingBoundaries, QList<adcirc_node*> &overlappingBoundaryNodeList)
-{
+//int adcirc_mesh::checkOverlappingBoundaries(int &numOverlappingBoundaries, QList<adcirc_node*> &overlappingBoundaryNodeList)
+//{
 
 
 
-    return ERROR_NOERROR;
-}
+//    return ERROR_NOERROR;
+//}
 //-----------------------------------------------------------------------------------------//
 
 
