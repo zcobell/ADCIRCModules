@@ -29,13 +29,13 @@
 #include "QADCModules_errors.h"
 
 //-----------------------------------------------------------------------------------------//
-// Initializer that creates its own error object
+// Constructor that creates its own error object
 //-----------------------------------------------------------------------------------------//
 /**
  * \fn adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
  * \brief Constructor for the ADCIRC mesh class
  *
- * @param[in] *parent reference to QObject. Enables automatic memory management to avoid memory leaks
+ * @param[in] *parent Pointe to a QObject. Enables automatic memory management to avoid memory leaks
  *
  * Constructs an adcirc_mesh object, takes QObject reference as input
  *
@@ -85,7 +85,7 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
  * \overload adcirc_mesh::adcirc_mesh(QADCModules_errors *error, QObject *parent) : QObject(parent)
  * \brief Constructor for the ADCIRC mesh class
  *
- * @param[in] *error  reference to an QADCModules_errors object to use for errors in this class
+ * @param[in] *error  Pointer to a QADCModules_errors object to use for errors in this class
  * @param[in] *parent reference to QObject. Enables automatic memory management to avoid memory leaks
  *
  * Constructs an adcirc_mesh object, takes QObject reference as input
@@ -231,7 +231,7 @@ int adcirc_mesh::read(QString inputFile)
 //...Public function to read an ADCIRC mesh from netCDF. Assumes filename already specified
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn adcirc_mesh::readNetCDF()
+ * \fn adcirc_mesh::readNetCDF(QString inputFile)
  * \brief Read an ADCIRC mesh from a netCDF file into the class
  *
  * @param[in] inputFile Specifies the mesh file to be read
@@ -894,6 +894,7 @@ int adcirc_mesh::checkOverlappingElements(int &numOverlappingElements, QList<adc
 
 
 
+/*
 //-----------------------------------------------------------------------------------------//
 //...Function that checks for overlapping boundary conditions
 //-----------------------------------------------------------------------------------------//
@@ -906,17 +907,17 @@ int adcirc_mesh::checkOverlappingElements(int &numOverlappingElements, QList<adc
  *
  * Function that checks for overlapping boundary conditions in an adcirc_mesh
  *
- **/
+ **
 //-----------------------------------------------------------------------------------------//
-//int adcirc_mesh::checkOverlappingBoundaries(int &numOverlappingBoundaries, QList<adcirc_node*> &overlappingBoundaryNodeList)
-//{
+int adcirc_mesh::checkOverlappingBoundaries(int &numOverlappingBoundaries, QList<adcirc_node*> &overlappingBoundaryNodeList)
+{
 
 
 
-//    return ERROR_NOERROR;
-//}
-//-----------------------------------------------------------------------------------------//
-
+    return ERROR_NOERROR;
+}
+-----------------------------------------------------------------------------------------//
+*/
 
 
 //-----------------------------------------------------------------------------------------//
@@ -1057,7 +1058,7 @@ int adcirc_mesh::buildElementalSearchTree()
  * \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
  *
  * @param[in]  pointLocation Location for which the function will determine the nearest node
- * @param[out] node          Pointer to the nearest node
+ * @param[out] nearestNode   Pointer to the nearest node
  *
  * Function that finds the nearest node to a specified x,y location in the adcirc_mesh
  *
@@ -1091,9 +1092,9 @@ int adcirc_mesh::findNearestNode(QPointF pointLocation, adcirc_node* &nearestNod
  * \overload adcirc_mesh::findNearestNode(qreal x, qreal y, adcirc_node* &nearestNode)
  * \brief Function that finds the nearest node to a specified x,y location in the adcirc_mesh
  *
- * @param[in]  x       x-coordinate to use for locating nearest node
- * @param[in]  y       y-coordinate to use for locating nearest node
- * @param[out] node    Pointer to the nearest node
+ * @param[in]  x              x-coordinate to use for locating nearest node
+ * @param[in]  y              y-coordinate to use for locating nearest node
+ * @param[out] nearestNode    Pointer to the nearest node
  *
  * Function that finds the nearest node to a specified x,y location in the adcirc_mesh
  *
@@ -1116,9 +1117,9 @@ int adcirc_mesh::findNearestNode(qreal x, qreal y, adcirc_node* &nearestNode)
  * \fn adcirc_mesh::findXNearestNodes(QPointF pointLocation, int nn, QList<adcirc_node *> &nodeList)
  * \brief Function that finds a list of the nearest nodes to a specified x,y coordinate
  *
- * @param[in]  location point location to use for locating the nearest node
- * @param[in]  nn       Number of nearest nodes to find
- * @param[out] nodeList QList of pointers to the nn nearest nodes
+ * @param[in]  pointLocation Point location to use for locating the nearest node
+ * @param[in]  nn            Number of nearest nodes to find
+ * @param[out] nodeList      QList of pointers to the nn nearest nodes
  *
  * Function that finds the nearest node to a specified x,y location in the adcirc_mesh
  *
@@ -1182,9 +1183,9 @@ int adcirc_mesh::findXNearestNodes(qreal x, qreal y, int nn, QList<adcirc_node *
  * \fn adcirc_mesh::findXNearestElements(QPointF pointLocation, int nn, QList<adcirc_element*> &elementList)
  * \brief Function that finds a list of the nearest element to a specified x,y coordinate
  *
- * @param[in]  location    point location for locating the nearest element
- * @param[in]  nn          Number of nearest elements to find
- * @param[out] elementList QList of pointers to the nn nearest elements
+ * @param[in]  pointLocation    Point location for locating the nearest element
+ * @param[in]  nn               Number of nearest elements to find
+ * @param[out] elementList      QList of pointers to the nn nearest elements
  *
  * Function that finds the nearest element center to a specified x,y location in the adcirc_mesh
  *
@@ -1245,7 +1246,7 @@ int adcirc_mesh::findXNearestElements(qreal x, qreal y, int nn, QList<adcirc_ele
 //...Function that finds the element that a given x,y resides in
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn adcirc_mesh::findElement(qreal x, qreal y, adcirc_element* &nearestElement, bool &found, QVector<qreal> &weights)
+ * \fn adcirc_mesh::findElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found, QVector<qreal> &weights)
  * \brief Function that locates the element that a point resides within and returns interpolation weights
  *
  * @param[in]  pointLocation   point to use for locating the element
@@ -2016,7 +2017,7 @@ int adcirc_mesh::writeMesh(QString filename)
 //...Function to find the adcirc_element that a given x,y lies within
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn adcirc_mesh::findAdcircElement(QPointF location, adcirc_element* &nearestElement, bool &found, QVector<qreal> &weights)
+ * \fn adcirc_mesh::findAdcircElement(QPointF pointLocation, adcirc_element* &nearestElement, bool &found, QVector<qreal> &weights)
  * \brief Function used internally to find the adcirc_element that a given x,y lies within
  *
  * @param[in]  pointLocation  point to locate inside an element

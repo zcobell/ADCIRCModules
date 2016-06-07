@@ -30,13 +30,12 @@
 // Constructor
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn adcirc_fort13(QObject *parent)
  * \brief Constructs an adcirc_fort13 object
  *
- * @param[in] *mesh    Reference to an adcirc_mesh object
- * @param[in] *parent  Reference to QObject. Enables automatic memory management to avoid memory leaks
+ * @param[in] *mesh    Pointer to an adcirc_mesh object
+ * @param[in] *parent  Pointer to a QObject. Enables automatic memory management to avoid memory leaks
  *
- * Constructs an adcirc_fort13 object
+ * Constructs an adcirc_fort13 object with pointer to an ADCIRC mesh object
  *
  **/
 //-----------------------------------------------------------------------------------------//
@@ -67,7 +66,7 @@ adcirc_fort13::adcirc_fort13(adcirc_mesh *mesh, QObject *parent) : QObject(paren
 //-----------------------------------------------------------------------------------------//
 /** \brief Publicly available method to read an ADCIRC fort.13 file
  *
- * @param[in] filename Filename of the fort.13 file to be read
+ * @param[in] inputFilename Filename of the fort.13 file to be read
  *
  * Publicly available method to read an ADCIRC fort.13 file
  *
@@ -109,7 +108,7 @@ int adcirc_fort13::read(QString inputFilename)
 //-----------------------------------------------------------------------------------------//
 /** \brief Publicly available method to write an ADCIRC fort.13 file
  *
- * @param[in] outputFile                 Filename of the fort.13 file to be written
+ * @param[in] outputFilename             Filename of the fort.13 file to be written
  * @param[in] userSpecifiedDefaultValues If true, the optimization of the fort.13 default value
  *                                       is not performed
  *
@@ -359,9 +358,12 @@ int adcirc_fort13::readNodalAttributesFile()
 //-----------------------------------------------------------------------------------------//
 // Method to do the heavy lifting to write an ADCIRC fort.13 file
 //-----------------------------------------------------------------------------------------//
-/** \brief method used internally to write an ADCIRC nodal attributes file
+/** \brief Method used internally to write an ADCIRC nodal attributes file
  *
- * method used internally to write an ADCIRC nodal attributes file
+ * @param[in] outputFilename             Name of the nodal attributes file to write
+ * @param[in] userSpecifiedDefaultValues Do not automatically determine the optimal fort.13 header value
+ *
+ * Method used internally to write an ADCIRC nodal attributes file
  *
  **/
 //-----------------------------------------------------------------------------------------//
@@ -440,7 +442,8 @@ int adcirc_fort13::writeNodalAttributesFile(QString outputFilename, bool userSpe
 //-----------------------------------------------------------------------------------------//
 /** \brief method to read and assign the body of the fort.13 file to the vectors in this class
  *
- * @param[in] data Body of the fort.13 file for this nodal attribute
+ * @param[in] nodalAttributeIndex   Location in the fort.13 file for this data to be read into
+ * @param[in] data                  Body of the fort.13 file for this nodal attribute
  *
  * This method reads the portion of the body of a fort.13 that contains the non-default
  * values to assign nodes in the ADCIRC mesh

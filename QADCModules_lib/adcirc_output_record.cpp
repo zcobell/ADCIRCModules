@@ -21,12 +21,27 @@
 #include "QADCModules_errors.h"
 #include <qmath.h>
 
+
+//-----------------------------------------------------------------------------------------//
+// Constructor function. Initializes the adcirc_element class and sets defaults
+//-----------------------------------------------------------------------------------------//
+/** \brief Constructor function for adcirc_output_record class
+ *
+ * @param[in] numNodes  Number of nodes in a single output record
+ * @param[in] parent    Parent QObject used for memory management
+ *
+ * Constructor function for adcirc_output_record class
+ *
+ */
+//-----------------------------------------------------------------------------------------//
 adcirc_output_record::adcirc_output_record(int numNodes, QObject *parent) : QObject(parent)
 {
     this->numNodes = numNodes;
     this->modelStep = 0;
     this->modelTime = 0;
 }
+//-----------------------------------------------------------------------------------------//
+
 
 
 //-----------------------------------------------------------------------------------------//

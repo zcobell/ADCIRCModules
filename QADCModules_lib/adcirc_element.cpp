@@ -128,9 +128,9 @@ adcirc_element::adcirc_element(QObject *parent) : QObject(parent)
 /** \brief Protected function to parse the string from an ADCIRC mesh file containing
  *  elemental connectivity information
  *
- * @param[in]     line     The QString with the information read from the file to be parsed into an ADCIRC element
- * @param[in]     index    An integer for the current element position in the ADCIRC file
- * @param[in,out] *element The pointer to the adcirc_element that should be created with this information
+ * @param[in]     line        The QString with the information read from the file to be parsed into an ADCIRC element
+ * @param[in]     nodes       Vector of adcirc_node objects contained within the adcirc_mesh
+ * @param[in]     nodeMapping Mapping object between adcirc_node array position and adcirc_node id
  *
  * Protected function to parse the string from an ADCIRC mesh file containing
  *  elemental connectivity information

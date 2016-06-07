@@ -26,8 +26,6 @@
 //-----------------------------------------------------------------------------------------//
 /** \brief Constructor for an ADCIRC boundary.
  *
- * @param[in] code   ADCIRC boundary type code
- * @param[in] size   Number of nodes in the ADCIRC boundary string
  * @param[in] parent QObject parent
  *
  * The adcirc_boundary constructor will allocate the memory for the boundary type
@@ -41,7 +39,21 @@ adcirc_boundary::adcirc_boundary(QObject *parent) : QObject(parent)
     this->code = -1;
     this->averageLongitude = 0.0;
 }
+//-----------------------------------------------------------------------------------------//
 
+
+
+//-----------------------------------------------------------------------------------------//
+// Sets up the adcirc_boundary object (allocations)
+//-----------------------------------------------------------------------------------------//
+/** \brief Sets up the adcirc_boundary object
+ *
+ * @param[in] code   ADCIRC boundary type code
+ * @param[in] size   Number of nodes in the ADCIRC boundary string
+ *
+ * Sets up the adcirc_boundary object
+ */
+//-----------------------------------------------------------------------------------------//
 int adcirc_boundary::setupBoundary(int code, int size)
 {
     this->code = code;

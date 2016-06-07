@@ -31,7 +31,7 @@
 // Constructor for an adcirc_global_output object
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : QObject(parent)
+ * \fn adcirc_global_output::adcirc_global_output(QString filename, QObject *parent)
  * \brief Constructor for an adcirc_global_output object
  *
  * @param[in] filename filename of the ADCIRC output file to read
@@ -66,7 +66,7 @@ adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : 
 // Constructor for an adcirc_global_output object
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : QObject(parent)
+ * \overload adcirc_global_output::adcirc_global_output(QString filename, bool ignoreMesh, QObject *parent)
  * \brief Constructor for an adcirc_global_output object
  *
  * @param[in] filename    filename of the ADCIRC output file to read
@@ -308,9 +308,7 @@ int adcirc_global_output::initializeNetcdfVariables()
 /** \brief Function to find the netCDF variable in an ADCIRC output file
  *
  * @param[in]  ncid          netCDF file identifier
- * @param[out] numVariables  number of columns (scalar or vector) in an ADCIRC output file
- * @param[out] variable1     netCDF variable ID for first netCDF variable
- * @param[out] variable2     netCDF variable ID for the second netCDF variable
+ * @param[out] varIDs        Vector of netCDF variable IDs
  *
  * Function to find the netCDF variable in an ADCIRC output file
  *

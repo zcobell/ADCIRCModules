@@ -92,9 +92,9 @@ public:
 
     int readNextAscii();
 
-    int writeNetCDF(int record, QString outputFilename);
+    //int writeNetCDF(int record, QString outputFilename);
 
-    int writeAscii();
+    //int writeAscii();
 
     int toShapefile(QString outputFile);
 

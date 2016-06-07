@@ -21,11 +21,24 @@
 #include "boost/array.hpp"
 #include "boost/multi_array.hpp"
 
+
+//-----------------------------------------------------------------------------------------//
+// Constructor function. Initializes the qKdtree2 class
+//-----------------------------------------------------------------------------------------//
+/** \brief Constructor function for qKdtree2 class
+ *
+ * @param[in] parent Parent QObject used for memory management
+ *
+ * Constructor function for qKdtree2 class
+ *
+ */
+//-----------------------------------------------------------------------------------------//
 qKdtree2::qKdtree2(QObject *parent) : QObject(parent)
 {
     this->initialized = false;
     this->numDataPoints = 0;
 }
+//-----------------------------------------------------------------------------------------//
 
 
 

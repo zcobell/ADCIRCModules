@@ -44,8 +44,10 @@ class adcirc_nodalattribute : public QObject
 public:
     explicit adcirc_nodalattribute(adcirc_nodalparameter *nodalMetadata, QObject *parent = 0);
 
+    ///Value(s) for nodal parameter at this node
     QVector<qreal> values;
 
+    ///Metadata for nodal parameters
     adcirc_nodalparameter *metadata;
 
 };
