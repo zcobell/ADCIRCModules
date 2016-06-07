@@ -37,6 +37,9 @@
 adcirc_boundary::adcirc_boundary(QObject *parent) : QObject(parent)
 {
     this->hashAlgorithm = QCryptographicHash::Sha1;
+    this->numNodes = 0;
+    this->code = -1;
+    this->averageLongitude = 0.0;
 }
 
 int adcirc_boundary::setupBoundary(int code, int size)

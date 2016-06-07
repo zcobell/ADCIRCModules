@@ -24,6 +24,8 @@
 adcirc_output_record::adcirc_output_record(int numNodes, QObject *parent) : QObject(parent)
 {
     this->numNodes = numNodes;
+    this->modelStep = 0;
+    this->modelTime = 0;
 }
 
 

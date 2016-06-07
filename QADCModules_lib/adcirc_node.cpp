@@ -76,6 +76,8 @@ bool adcirc_node::nodeGreaterThan(const adcirc_node n1,const adcirc_node n2)
 adcirc_node::adcirc_node(QObject *parent) : QObject(parent)
 {
     this->hashAlgorithm = QCryptographicHash::Sha1;
+    this->id = 0;
+    this->myBool = false;
 }
 //-----------------------------------------------------------------------------------------//
 

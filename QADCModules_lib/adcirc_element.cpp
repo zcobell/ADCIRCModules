@@ -114,6 +114,7 @@ adcirc_element::adcirc_element(QObject *parent) : QObject(parent)
     this->numConnections = 3;
     this->connections.resize(3);
     this->hashAlgorithm = QCryptographicHash::Sha1;
+    this->id = 0;
 }
 //-----------------------------------------------------------------------------------------//
 

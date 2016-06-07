@@ -65,6 +65,13 @@ adcirc_mesh::adcirc_mesh(QObject *parent) : QObject(parent)
     //...Set the default hashing algorithm to use
     this->hashAlgorithm = QCryptographicHash::Sha1;
 
+    this->numElements = 0;
+    this->numNodes = 0;
+    this->numOpenBoundaries = 0;
+    this->totNumOpenBoundaryNodes = 0;
+    this->numLandBoundaries = 0;
+    this->totNumLandBoundaryNodes = 0;
+
     return;
 }
 //-----------------------------------------------------------------------------------------//
@@ -107,6 +114,14 @@ adcirc_mesh::adcirc_mesh(QADCModules_errors *error, QObject *parent) : QObject(p
 
     //...Set the default hashing algorithm to use
     this->hashAlgorithm = QCryptographicHash::Sha1;
+
+    this->numElements = 0;
+    this->numNodes = 0;
+    this->numOpenBoundaries = 0;
+    this->totNumOpenBoundaryNodes = 0;
+    this->numLandBoundaries = 0;
+    this->totNumLandBoundaryNodes = 0;
+
 
     return;
 }
@@ -1630,7 +1645,7 @@ int adcirc_mesh::readMesh()
         return ierr;
 
     //...Read the land boundaries
-    this->readLandBoundaries(filePosition,meshFileList);
+    ierr = this->readLandBoundaries(filePosition,meshFileList);
     if(ierr!=ERROR_NOERROR)
         return ierr;
 

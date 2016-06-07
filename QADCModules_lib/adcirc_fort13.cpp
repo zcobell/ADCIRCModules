@@ -44,6 +44,8 @@ adcirc_fort13::adcirc_fort13(adcirc_mesh *mesh, QObject *parent) : QObject(paren
 {
     this->error = new QADCModules_errors(this);
     this->mesh  = mesh;
+    this->numParameters = 0;
+    this->numNodes = 0;
 }
 //-----------------------------------------------------------------------------------------//
 

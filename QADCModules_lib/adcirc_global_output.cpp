@@ -51,6 +51,12 @@ adcirc_global_output::adcirc_global_output(QString filename, QObject *parent) : 
     this->outputData = NULL;
     this->mesh = NULL;
     this->lastRecordRead = 0;
+    this->numNodes = 0;
+    this->numColumns = 0;
+    this->numRecords = 0;
+    this->timeBetweenSnaps = 0;
+    this->timestepsBetweenSnaps = 0;
+    this->defaultValue = 0;
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -79,7 +85,14 @@ adcirc_global_output::adcirc_global_output(QString filename, bool ignoreMesh, QO
     this->initializeNetcdfVariables();
     this->error = new QADCModules_errors(this);
     this->outputData = NULL;
+    this->mesh = NULL;
     this->lastRecordRead = 0;
+    this->numNodes = 0;
+    this->numColumns = 0;
+    this->numRecords = 0;
+    this->timeBetweenSnaps = 0;
+    this->timestepsBetweenSnaps = 0;
+    this->defaultValue = 0;
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -452,6 +465,12 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
     ierr = nc_get_var(ncid,varid_time,timeList);
     if(ierr!=NC_NOERR)
     {
+
+        free(timeList);
+        free(column1);
+        if(numColumns==2)
+            free(column2);
+
         this->error->setCustomDescription(nc_strerror(ierr));
         this->error->setError(ERROR_NETCDF_GENERIC);
         return this->error->getError();
@@ -460,6 +479,11 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
     ierr = nc_get_vara_double(ncid,varIDs.at(0),start,count,column1);
     if(ierr!=NC_NOERR)
     {
+        free(timeList);
+        free(column1);
+        if(numColumns==2)
+            free(column2);
+
         this->error->setCustomDescription(nc_strerror(ierr));
         this->error->setError(ERROR_NETCDF_GENERIC);
         return this->error->getError();
@@ -470,6 +494,12 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
         ierr = nc_get_vara_double(ncid,varIDs.at(1),start,count,column2);
         if(ierr!=NC_NOERR)
         {
+
+            free(timeList);
+            free(column1);
+            if(numColumns==2)
+                free(column2);
+
             this->error->setCustomDescription(nc_strerror(ierr));
             this->error->setError(ERROR_NETCDF_GENERIC);
             return this->error->getError();
@@ -502,6 +532,11 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
     ierr = nc_get_att(ncid,NC_GLOBAL,"dt",&dtdp);
     if(ierr!=NC_NOERR)
     {
+        free(timeList);
+        free(column1);
+        if(numColumns==2)
+            free(column2);
+
         this->error->setCustomDescription(nc_strerror(ierr));
         this->error->setError(ERROR_NETCDF_GENERIC);
         return this->error->getError();
@@ -512,6 +547,11 @@ int adcirc_global_output::readAdcircGlobalOutputNetCDF(int record)
     ierr = nc_get_att(ncid,varIDs.at(0),"_FillValue",&fillValue);
     if(ierr!=NC_NOERR)
     {
+        free(timeList);
+        free(column1);
+        if(numColumns==2)
+            free(column2);
+
         this->error->setCustomDescription(nc_strerror(ierr));
         this->error->setError(ERROR_NETCDF_GENERIC);
         return this->error->getError();
