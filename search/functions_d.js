@@ -13,7 +13,7 @@ var searchData=
   ['readlandboundaries',['readLandBoundaries',['../classadcirc__mesh.html#a718d658b217443d36de92f3aaca623ee',1,'adcirc_mesh']]],
   ['readmesh',['readMesh',['../classadcirc__mesh.html#a28856b4ab8fe04126f4d99b0a0aca1b0',1,'adcirc_mesh']]],
   ['readmeshfromnetcdf',['readMeshFromNetCDF',['../classadcirc__mesh.html#a186577d40b4a7aad6c88d017be766b76',1,'adcirc_mesh']]],
-  ['readnetcdf',['readNetCDF',['../classadcirc__global__output.html#a8682f5df173ae28d0cc52a80b14714b1',1,'adcirc_global_output::readNetCDF()'],['../classadcirc__mesh.html#ab577945e75bfe7b7cf9b0bbb1d67473d',1,'adcirc_mesh::readNetCDF()']]],
+  ['readnetcdf',['readNetCDF',['../classadcirc__global__output.html#a8682f5df173ae28d0cc52a80b14714b1',1,'adcirc_global_output::readNetCDF()'],['../classadcirc__mesh.html#ab577945e75bfe7b7cf9b0bbb1d67473d',1,'adcirc_mesh::readNetCDF()'],['../classadcirc__mesh.html#a484dfe58e32543e782c8086421d7de55',1,'adcirc_mesh::readNetCDF(QString inputFile)']]],
   ['readnextadcircglobaloutputascii',['readNextAdcircGlobalOutputAscii',['../classadcirc__global__output.html#a136cb62a526fa30e019253a1d9929c99',1,'adcirc_global_output']]],
   ['readnextascii',['readNextAscii',['../classadcirc__global__output.html#a898059be528522aa1e2f9b2f4bce3673',1,'adcirc_global_output']]],
   ['readnodalattributesfile',['readNodalAttributesFile',['../classadcirc__fort13.html#a1eee04898f56307b0a10f1ffd80d726c',1,'adcirc_fort13']]],

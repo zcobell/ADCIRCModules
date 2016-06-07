@@ -8,6 +8,7 @@ var searchData=
   ['setignoremeshnumbering',['setIgnoreMeshNumbering',['../classadcirc__mesh.html#aa96e47370102299bb7e07f7ada14b377',1,'adcirc_mesh']]],
   ['setmesh',['setMesh',['../classadcirc__global__output.html#a77299aede112f7ce860fde7eaa6895b8',1,'adcirc_global_output']]],
   ['setprojection',['setProjection',['../classadcirc__mesh.html#a6a0079902259b68e25167d948f46471b',1,'adcirc_mesh']]],
+  ['setupboundary',['setupBoundary',['../classadcirc__boundary.html#a842d6622cbcfb7fc2f287e2da81f9fed',1,'adcirc_boundary']]],
   ['subcritical',['subcritical',['../classadcirc__boundary.html#aa21c1223272bf01617614cdca42b2106',1,'adcirc_boundary']]],
   ['supercritical',['supercritical',['../classadcirc__boundary.html#a2a37be4322a5f22f0fd4e6b30c7d59e2',1,'adcirc_boundary']]]
 ];
