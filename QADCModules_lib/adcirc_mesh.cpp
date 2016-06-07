@@ -2231,6 +2231,7 @@ int adcirc_mesh::readMeshFromNetCDF()
     {
         free(node_x);
         free(node_y);
+        free(node_z);
         free(elem1);
         free(elem2);
         free(elem3);
@@ -2244,6 +2245,7 @@ int adcirc_mesh::readMeshFromNetCDF()
     {
         free(node_x);
         free(node_y);
+        free(node_z);
         free(elem1);
         free(elem2);
         free(elem3);
@@ -2257,6 +2259,7 @@ int adcirc_mesh::readMeshFromNetCDF()
     {
         free(node_x);
         free(node_y);
+        free(node_z);
         free(elem1);
         free(elem2);
         free(elem3);
@@ -2270,6 +2273,7 @@ int adcirc_mesh::readMeshFromNetCDF()
     {
         free(node_x);
         free(node_y);
+        free(node_z);
         free(elem1);
         free(elem2);
         free(elem3);
@@ -2283,6 +2287,7 @@ int adcirc_mesh::readMeshFromNetCDF()
     {
         free(node_x);
         free(node_y);
+        free(node_z);
         free(elem1);
         free(elem2);
         free(elem3);
@@ -2296,6 +2301,7 @@ int adcirc_mesh::readMeshFromNetCDF()
     {
         free(node_x);
         free(node_y);
+        free(node_z);
         free(elem1);
         free(elem2);
         free(elem3);
@@ -2309,6 +2315,7 @@ int adcirc_mesh::readMeshFromNetCDF()
     {
         free(node_x);
         free(node_y);
+        free(node_z);
         free(elem1);
         free(elem2);
         free(elem3);
@@ -2322,6 +2329,7 @@ int adcirc_mesh::readMeshFromNetCDF()
     {
         free(node_x);
         free(node_y);
+        free(node_z);
         free(elem1);
         free(elem2);
         free(elem3);
@@ -2336,6 +2344,7 @@ int adcirc_mesh::readMeshFromNetCDF()
     {
         free(node_x);
         free(node_y);
+        free(node_z);
         free(elem1);
         free(elem2);
         free(elem3);
