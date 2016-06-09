@@ -39,5 +39,6 @@ adcirc_nodalattribute::adcirc_nodalattribute(adcirc_nodalparameter *nodalMetadat
 {
     this->metadata = nodalMetadata;
     this->values.resize(this->metadata->nValues);
+    this->values = this->metadata->defaultValue;
 }
 //-----------------------------------------------------------------------------------------//
