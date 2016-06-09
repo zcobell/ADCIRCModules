@@ -84,6 +84,8 @@ public:
 
     int locateAttribute(QString attributeName);
 
+    int mapNodalAttributesToMesh(adcirc_mesh *inputMesh = NULL);
+
 protected:
 
     //...PROTECTED FUNCTIONS...//
@@ -92,8 +94,6 @@ protected:
     int writeNodalAttributesFile(QString outputFilename, bool userSpecifiedDefaultValues);
 
     int readNodalData(int nodalAttributeIndex, QStringList &data);
-
-    int mapNodalAttributesToMesh();
 
     QStringList writeNodalParameter(int index);
 

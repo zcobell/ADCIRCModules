@@ -437,6 +437,7 @@ int adcirc_fort13::writeNodalAttributesFile(QString outputFilename, bool userSpe
 //-----------------------------------------------------------------------------------------//
 
 
+
 //-----------------------------------------------------------------------------------------//
 // Method to read the body from the fort.13 file into this nodal attribute
 //-----------------------------------------------------------------------------------------//
@@ -500,12 +501,18 @@ int adcirc_fort13::readNodalData(int nodalAttributeIndex, QStringList &data)
 //-----------------------------------------------------------------------------------------//
 /** \brief Method to add the adcirc_nodalattribute pointers to the adcirc_mesh object
  *
+ * @param[in] mesh Optional, specify a new mesh pointer for this mapping
+ *
  * Method to add the adcirc_nodalattribute pointers to the adcirc_mesh object
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_fort13::mapNodalAttributesToMesh()
+int adcirc_fort13::mapNodalAttributesToMesh(adcirc_mesh *inputMesh)
 {
+
+    if(inputMesh!=NULL)
+        this->mesh = inputMesh;
+
     for(int i=0;i<this->mesh->numNodes;i++)
     {
         this->mesh->nodes[i]->nodalData.resize(this->numParameters);
@@ -572,8 +579,6 @@ QStringList adcirc_fort13::writeNodalParameter(int index)
 
 }
 //-----------------------------------------------------------------------------------------//
-
-
 
 
 
