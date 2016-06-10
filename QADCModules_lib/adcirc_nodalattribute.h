@@ -36,9 +36,10 @@
 #include <QObject>
 #include <QVector>
 
+#include "QADCModules_global.h"
 #include "adcirc_forward.h"
 
-class adcirc_nodalattribute : public QObject
+class QADCMODULESSHARED_EXPORT adcirc_nodalattribute : public QObject
 {
     Q_OBJECT
 public:

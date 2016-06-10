@@ -566,7 +566,7 @@ QStringList adcirc_fort13::writeNodalParameter(int index)
                 tempLine2.sprintf("%12.6f",this->nodalData[index][i]->values[j]);
                 tempLine = tempLine + "  " + tempLine2;
 
-                if(this->nodalData[index][i]->values[j]==this->nodalParameters[index]->defaultValue[j])
+                if(this->nodalData[index][i]->values[j]!=this->nodalParameters[index]->defaultValue[j])
                     isNonDefault = true;
             }
 
