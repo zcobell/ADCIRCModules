@@ -22,7 +22,7 @@ QT       += gui
 
 TARGET = QADCModules 
 TEMPLATE = lib
-VERSION = 0.1.0.0
+VERSION = 0.1.0
 
 win32 {
     #...Set extension for a windows dll (avoids tracking version numbering in filename)
