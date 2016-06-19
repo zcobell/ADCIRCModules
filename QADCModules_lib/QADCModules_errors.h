@@ -39,7 +39,7 @@
 
 #include "QADCModules_global.h"
 #include <QObject>
-#include <QMap>
+#include <QHash>
 
 //----------------------------------------------------//
 //...Define a set of errors for use with this
@@ -141,7 +141,7 @@ private:
     int errorCode;
 
     ///Map function between error codes and their descriptions
-    QMap<int,QString> errorMapping;
+    QHash<int,QString> errorMapping;
 
     ///Custom Description - can come from libraries used by this code
     QString customDescription;

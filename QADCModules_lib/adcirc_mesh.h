@@ -39,7 +39,7 @@
 #include <QObject>
 #include <QVector>
 #include <QFile>
-#include <QMap>
+#include <QHash>
 #include <QList>
 #include <QCryptographicHash>
 #include <qmath.h>
@@ -108,16 +108,16 @@ public:
     int epsg;
 
     ///Map function between a node ID and its position in the node vector
-    QMap<int,int> nodeToPositionMapping;
+    QHash<int,int> nodeToPositionMapping;
 
     ///Map function between array position and the node id
-    QMap<int,int> nodeToIdMapping;
+    QHash<int,int> nodeToIdMapping;
 
     ///Map function between an element ID and its position in the element vector
-    QMap<int,int> elementToPositionMapping;
+    QHash<int,int> elementToPositionMapping;
 
     ///Map function between array position and the element id
-    QMap<int,int> elementToIdMapping;
+    QHash<int,int> elementToIdMapping;
 
     ///Unique hash that describes the state of this mesh
     QString hash;

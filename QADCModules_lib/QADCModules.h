@@ -40,7 +40,7 @@
 #include <QObject>
 #include <QVector>
 #include <QFile>
-#include <QMap>
+#include <QHash>
 
 #include "QADCModules_global.h"
 #include "QADCModules_errors.h"
@@ -53,18 +53,5 @@
 #include "adcirc_nodalparameter.h"
 #include "adcirc_global_output.h"
 #include "adcirc_output_record.h"
-
-
-class QADCMODULESSHARED_EXPORT QADCModules : public QObject
-{
-    Q_OBJECT
-public:
-
-    explicit QADCModules(QObject *parent = 0);
-
-    ~QADCModules();
-
-
-};
 
 #endif // QADCMODULES_H

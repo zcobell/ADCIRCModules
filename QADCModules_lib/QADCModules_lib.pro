@@ -123,7 +123,6 @@ DEFINES += QADCMODULES_LIBRARY
 
 SOURCES += \
     $$SOURCES_PROJ4 $$SOURCES_KDTREE2 $$SOURCES_SHAPELIB \
-    QADCModules.cpp \
     adcirc_node.cpp \
     adcirc_element.cpp \
     adcirc_boundary.cpp \

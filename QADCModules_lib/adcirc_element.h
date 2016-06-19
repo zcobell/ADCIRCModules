@@ -36,7 +36,7 @@
 
 #include <QObject>
 #include <QVector>
-#include <QMap>
+#include <QHash>
 #include <QStringList>
 #include <QCryptographicHash>
 
@@ -70,7 +70,7 @@ public:
 
     //...PUBLIC FUNCTIONS...//
 
-    int fromString(QString line, QVector<adcirc_node*> &nodes, QMap<int,int> &nodeMapping);
+    int fromString(QString line, QVector<adcirc_node*> &nodes, QHash<int,int> &nodeMapping);
 
     QString toString();
 
