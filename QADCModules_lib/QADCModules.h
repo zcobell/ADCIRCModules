@@ -40,7 +40,7 @@
 #include <QObject>
 #include <QVector>
 #include <QFile>
-#include <QMap>
+#include <QHash>
 
 #include "QADCModules_global.h"
 #include "QADCModules_errors.h"

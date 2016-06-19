@@ -36,7 +36,7 @@
 #include <QObject>
 #include <QVector>
 #include <QStringList>
-#include <QMap>
+#include <QHash>
 #include <QCryptographicHash>
 
 #include "QADCModules_global.h"
@@ -90,7 +90,7 @@ public:
 
     //...PUBLIC FUNCTIONS...//
 
-    int fromString(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+    int fromString(QString data, int index, QVector<adcirc_node *> &nodes, QHash<int, int> &nodeMapping);
 
     QStringList toStringList(bool isOpenBC = false);
 
@@ -109,13 +109,13 @@ private:
 
 protected:
 
-    int readBoundarySingleNode(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+    int readBoundarySingleNode(QString data, int index, QVector<adcirc_node *> &nodes, QHash<int, int> &nodeMapping);
 
-    int readBoundaryOneSidedWeir(QString data, int index,QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+    int readBoundaryOneSidedWeir(QString data, int index,QVector<adcirc_node *> &nodes, QHash<int, int> &nodeMapping);
 
-    int readBoundaryTwoSidedWeir(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+    int readBoundaryTwoSidedWeir(QString data, int index, QVector<adcirc_node *> &nodes, QHash<int, int> &nodeMapping);
 
-    int readBoundaryCrossBarrierPipe(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping);
+    int readBoundaryCrossBarrierPipe(QString data, int index, QVector<adcirc_node *> &nodes, QHash<int, int> &nodeMapping);
 
 };
 

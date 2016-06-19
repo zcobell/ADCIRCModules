@@ -34,7 +34,7 @@
 #define PROJ4_H
 
 #include <QObject>
-#include <QMap>
+#include <QHash>
 #include <QFile>
 #include <QVector>
 #include <QStringList>
@@ -55,7 +55,7 @@ public:
     int transform(int inputEPSG, int outputEPSG, QVector<QPointF> &input, QVector<QPointF> &output, bool &isLatLon);
 
     ///Map between EPSG numbers and the parameters passed to the Proj4 API
-    QMap<int,QString> epsgMapping;
+    QHash<int,QString> epsgMapping;
 
 };
 

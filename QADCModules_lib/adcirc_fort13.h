@@ -36,7 +36,7 @@
 
 #include <QObject>
 #include <QVector>
-#include <QMap>
+#include <QHash>
 #include <QTextStream>
 #include <QStringList>
 
@@ -103,7 +103,7 @@ private:
     //...PRIVATE VARIABLES...//
 
     ///Mapping function between the name of a nodal parameter and its position in the nodalParameters vector
-    QMap<QString,int> attributeLocations;
+    QHash<QString,int> attributeLocations;
 
 };
 

@@ -119,7 +119,7 @@ int adcirc_boundary::setupBoundary(int code, int size)
  * upon the ADCIRC boundary type that is already specified.
  */
 //-----------------------------------------------------------------------------------------//
-int adcirc_boundary::fromString(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int, int> &nodeMapping)
+int adcirc_boundary::fromString(QString data, int index, QVector<adcirc_node *> &nodes, QHash<int, int> &nodeMapping)
 {
     int ierr;
 
@@ -161,7 +161,7 @@ int adcirc_boundary::fromString(QString data, int index, QVector<adcirc_node *> 
  * (single node types)
  */
 //-----------------------------------------------------------------------------------------//
-int adcirc_boundary::readBoundarySingleNode(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int,int> &nodeMapping)
+int adcirc_boundary::readBoundarySingleNode(QString data, int index, QVector<adcirc_node *> &nodes, QHash<int,int> &nodeMapping)
 {
     bool    err;
     QString tempString2 = data.simplified().split(" ").value(0);
@@ -192,7 +192,7 @@ int adcirc_boundary::readBoundarySingleNode(QString data, int index, QVector<adc
  * boundary string (type 3,13)
  */
 //-----------------------------------------------------------------------------------------//
-int adcirc_boundary::readBoundaryOneSidedWeir(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int,int> &nodeMapping)
+int adcirc_boundary::readBoundaryOneSidedWeir(QString data, int index, QVector<adcirc_node *> &nodes, QHash<int,int> &nodeMapping)
 {
     bool    err;
     QString tempString2 = data.simplified().split(" ").value(0);
@@ -237,7 +237,7 @@ int adcirc_boundary::readBoundaryOneSidedWeir(QString data, int index, QVector<a
  * land boundary string (type 4,24)
  */
 //-----------------------------------------------------------------------------------------//
-int adcirc_boundary::readBoundaryTwoSidedWeir(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int,int> &nodeMapping)
+int adcirc_boundary::readBoundaryTwoSidedWeir(QString data, int index, QVector<adcirc_node *> &nodes, QHash<int,int> &nodeMapping)
 {
 
     bool    err;
@@ -299,7 +299,7 @@ int adcirc_boundary::readBoundaryTwoSidedWeir(QString data, int index, QVector<a
  * barrier pipes from a land boundary string (type 5,25)
  */
 //-----------------------------------------------------------------------------------------//
-int adcirc_boundary::readBoundaryCrossBarrierPipe(QString data, int index, QVector<adcirc_node *> &nodes, QMap<int,int> &nodeMapping)
+int adcirc_boundary::readBoundaryCrossBarrierPipe(QString data, int index, QVector<adcirc_node *> &nodes, QHash<int,int> &nodeMapping)
 {
     bool    err;
     QString tempString2 = data.simplified().split(" ").value(0);

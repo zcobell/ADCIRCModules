@@ -41,7 +41,7 @@ QADCModules_errors::QADCModules_errors(QObject *parent) : QObject(parent)
 //-----------------------------------------------------------------------------------------//
 /** \brief Function that generates a mapping between error codes and their descriptions
  *
- * This function uses a QMap to quickly turn an error code into an error description. The
+ * This function uses a QHash to quickly turn an error code into an error description. The
  * error mapping variable maps between an integer and a QString
  **/
 //-----------------------------------------------------------------------------------------//

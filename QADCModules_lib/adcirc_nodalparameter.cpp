@@ -102,7 +102,7 @@ qreal adcirc_nodalparameter::getDefaultValue(QVector<adcirc_nodalattribute*> nod
 {
     int i,index,maxNum;
     qreal optimumValue;
-    QMap<qreal,int> valueMap;
+    QHash<qreal,int> valueMap;
     QList<qreal>    valueList;
     QVector<int>     count;
 
