@@ -114,17 +114,17 @@ int adcirc_node::fromString(QString line)
     tempDouble = tempString.simplified().toDouble(&err);
     if(!err)
         return ERROR_MESHREAD_NODERR;
-    this->position.setX(tempDouble);
+    this->position.x = tempDouble;
     tempString = tempList.value(2);
     tempDouble = tempString.simplified().toDouble(&err);
     if(!err)
         return ERROR_MESHREAD_NODERR;
-    this->position.setY(tempDouble);
+    this->position.y = tempDouble;
     tempString = tempList.value(3);
     tempDouble = tempString.simplified().toDouble(&err);
     if(!err)
         return ERROR_MESHREAD_NODERR;
-    this->position.setZ(tempDouble);
+    this->position.z = tempDouble;
 
     return ERROR_NOERROR;
 }
@@ -150,9 +150,9 @@ QString adcirc_node::toString(bool gcs)
     QString output;
 
     if(gcs)
-        output.sprintf("%11i   %14.10f   %14.10f  %14.10f",this->id,this->position.x(),this->position.y(),this->position.z());
+        output.sprintf("%11i   %14.10f   %14.10f  %14.10f",this->id,this->position.x,this->position.y,this->position.z);
     else
-        output.sprintf("%11i   %14.4f    %14.4f   %14.4f",this->id,this->position.x(),this->position.y(),this->position.z());
+        output.sprintf("%11i   %14.4f    %14.4f   %14.4f",this->id,this->position.x,this->position.y,this->position.z);
     return output;
 }
 //-----------------------------------------------------------------------------------------//
@@ -175,12 +175,12 @@ int adcirc_node::hashNode()
     localHash.reset();
 
     //...Create a formatted string for each x, y and z;
-    hashSeed1 = QString();
-    hashSeed2 = QString();
-    hashSeed3 = QString();
-    hashSeed1.sprintf("%+018.12e",this->position.x());
-    hashSeed2.sprintf("%+018.12e",this->position.y());
-    hashSeed3.sprintf("%+018.12e",this->position.z());
+    hashSeed1.clear();
+    hashSeed2.clear();
+    hashSeed3.clear();
+    hashSeed1.sprintf("%+018.12e",this->position.x);
+    hashSeed2.sprintf("%+018.12e",this->position.y);
+    hashSeed3.sprintf("%+018.12e",this->position.z);
 
     //...Create the hash for the local node
     localHash.addData(hashSeed1.toUtf8(),hashSeed1.length());
@@ -210,8 +210,8 @@ int adcirc_node::hashNode()
 QPointF adcirc_node::toPointF()
 {
     QPointF point;
-    point.setX(this->position.x());
-    point.setY(this->position.y());
+    point.setX(this->position.x);
+    point.setY(this->position.y);
     return point;
 }
 //-----------------------------------------------------------------------------------------//

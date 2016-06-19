@@ -600,7 +600,7 @@ int adcirc_boundary::calculateAverageLongitude()
     qreal nn = static_cast<qreal>(this->numNodes);
 
     for(i=0;i<this->numNodes;i++)
-        position = position + this->n1[i]->position.x();
+        position = position + this->n1[i]->position.x;
 
     this->averageLongitude = position/nn;
 

@@ -36,8 +36,8 @@
 #include <QVector>
 #include <QObject>
 #include <QStringList>
-#include <QVector3D>
 #include <QCryptographicHash>
+#include <QPointF>
 
 #include "QADCModules_global.h"
 #include "adcirc_forward.h"
@@ -47,10 +47,17 @@ class QADCMODULESSHARED_EXPORT adcirc_node : public QObject
     Q_OBJECT
 public:
 
+    struct location
+    {
+        qreal x;
+        qreal y;
+        qreal z;
+    };
+
     explicit adcirc_node(QObject *parent = 0);
 
     ///Position in space of the adcirc node (x,y)
-    QVector3D position;
+    location position;
 
     ///ID for the ADCIRC node
     int    id;

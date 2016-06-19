@@ -837,9 +837,9 @@ int adcirc_global_output::toShapefile(QString outputFile)
         {
 
             nodeid = this->mesh->nodes[i]->id;
-            longitude = static_cast<qreal>(this->mesh->nodes[i]->position.x());
-            latitude = static_cast<qreal>(this->mesh->nodes[i]->position.y());
-            elevation = static_cast<qreal>(this->mesh->nodes[i]->position.z());
+            longitude = this->mesh->nodes[i]->position.x;
+            latitude = this->mesh->nodes[i]->position.y;
+            elevation = this->mesh->nodes[i]->position.z;
             if(this->numColumns==1)
                 outputValue = this->outputData->scalar[i];
             else
