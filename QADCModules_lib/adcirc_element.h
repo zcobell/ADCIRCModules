@@ -65,7 +65,7 @@ public:
     QVector<adcirc_node*> connections;
 
     ///The unique hash for this element
-    QString hash;
+    QByteArray hash;
 
 
     //...PUBLIC FUNCTIONS...//

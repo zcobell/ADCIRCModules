@@ -83,7 +83,7 @@ public:
     QVector<qreal> pipeCoef;
 
     ///The unique hash for this boundary
-    QString hash;
+    QByteArray hash;
 
     ///The average longitude for the boundary
     qreal averageLongitude;

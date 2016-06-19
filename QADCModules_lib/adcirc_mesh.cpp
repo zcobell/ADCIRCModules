@@ -1447,16 +1447,16 @@ int adcirc_mesh::hashMesh()
     //...Now, build the global mesh hash
     localHash.addData(this->title.toUtf8(),this->title.length());
     for(i=0;i<this->numNodes;i++)
-        localHash.addData(this->nodes[i]->fullHash.toUtf8(),this->nodes[i]->fullHash.length());
+        localHash.addData(this->nodes[i]->fullHash,this->nodes[i]->fullHash.length());
 
     for(i=0;i<this->numElements;i++)
-        localHash.addData(this->elements[i]->hash.toUtf8(),this->elements[i]->hash.length());
+        localHash.addData(this->elements[i]->hash,this->elements[i]->hash.length());
 
     for(i=0;i<this->numOpenBoundaries;i++)
-        localHash.addData(this->openBC[i]->hash.toUtf8(),this->openBC[i]->hash.length());
+        localHash.addData(this->openBC[i]->hash,this->openBC[i]->hash.length());
 
     for(i=0;i<this->numLandBoundaries;i++)
-        localHash.addData(this->landBC[i]->hash.toUtf8(),this->landBC[i]->hash.length());
+        localHash.addData(this->landBC[i]->hash,this->landBC[i]->hash.length());
 
     this->hash = localHash.result().toHex();
 

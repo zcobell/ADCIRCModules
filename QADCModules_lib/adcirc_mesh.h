@@ -120,7 +120,7 @@ public:
     QHash<int,int> elementToIdMapping;
 
     ///Unique hash that describes the state of this mesh
-    QString hash;
+    QByteArray hash;
 
 
     //...Public functions...///

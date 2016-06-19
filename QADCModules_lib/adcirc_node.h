@@ -59,10 +59,10 @@ public:
     bool myBool;
 
     ///Cryptogrpahic hash for this adcirc node (x,y position only)
-    QString positionHash;
+    QByteArray positionHash;
 
     ///Cryptographic hash for this adcirc node (x,y and z)
-    QString fullHash;
+    QByteArray fullHash;
 
     ///Nodal Attribute data from a fort.13
     QVector<adcirc_nodalattribute*> nodalData;
