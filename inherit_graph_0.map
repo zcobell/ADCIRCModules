@@ -10,7 +10,6 @@
 <area shape="rect" id="node10" href="$classadcirc__node__table.html" title="Class that contains the list of elements around a node. " alt="" coords="137,411,264,437"/>
 <area shape="rect" id="node11" href="$classadcirc__output__record.html" title="Class to handle a single ADCIRC global output record. " alt="" coords="129,461,272,488"/>
 <area shape="rect" id="node12" href="$classproj4.html" title="Class that serves as an interface to the standard C PROJ4 library. " alt="" coords="175,512,226,539"/>
-<area shape="rect" id="node13" href="$classQADCModules.html" title="A Qt C++ package for use with the ADCIRC model. " alt="" coords="145,563,256,589"/>
-<area shape="rect" id="node14" href="$classQADCModules__errors.html" title="Class to relay error messages to the user. " alt="" coords="125,613,276,640"/>
-<area shape="rect" id="node15" href="$classqKdtree2.html" title="Class that serves as an interface to the kdtree2 library. " alt="" coords="163,664,238,691"/>
+<area shape="rect" id="node13" href="$classQADCModules__errors.html" title="Class to relay error messages to the user. " alt="" coords="125,563,276,589"/>
+<area shape="rect" id="node14" href="$classqKdtree2.html" title="Class that serves as an interface to the kdtree2 library. " alt="" coords="163,613,238,640"/>
 </map>

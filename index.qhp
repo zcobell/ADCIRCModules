@@ -11,12 +11,12 @@
             <section title="adcirc_boundary" ref="classadcirc__boundary.html">
               <section title="adcirc_boundary" ref="classadcirc__boundary.html#ad9950aa9db08a8144029d7695938ca0f" />
               <section title="calculateAverageLongitude" ref="classadcirc__boundary.html#aa432e86380b805837b56c88b8e3565c4" />
-              <section title="fromString" ref="classadcirc__boundary.html#a5dfe401caf75491627301d2973ee0ac1" />
+              <section title="fromString" ref="classadcirc__boundary.html#aad58cda6f6c60de4dfb4c02cee8c0bcb" />
               <section title="hashBoundary" ref="classadcirc__boundary.html#a451a3d00ca1cddbecc2d80d1a826e9f6" />
-              <section title="readBoundaryCrossBarrierPipe" ref="classadcirc__boundary.html#a1fabf720de3f966a1847a103b85e017d" />
-              <section title="readBoundaryOneSidedWeir" ref="classadcirc__boundary.html#a150446a0c85cd056b76a66a60d903310" />
-              <section title="readBoundarySingleNode" ref="classadcirc__boundary.html#a623362a707889723116c507b8bb2f2e3" />
-              <section title="readBoundaryTwoSidedWeir" ref="classadcirc__boundary.html#a04cbe5c6a0ee35062c4a920c8e7199e6" />
+              <section title="readBoundaryCrossBarrierPipe" ref="classadcirc__boundary.html#a37229178e9a295f8dcf4553814983544" />
+              <section title="readBoundaryOneSidedWeir" ref="classadcirc__boundary.html#aa4a3f6ee950fef48371101dbfb12b5db" />
+              <section title="readBoundarySingleNode" ref="classadcirc__boundary.html#a3c109656b043598b5e7dd7453094e308" />
+              <section title="readBoundaryTwoSidedWeir" ref="classadcirc__boundary.html#ab957af5cf54a0fc2fe1ec7458c2761df" />
               <section title="setHashAlgorithm" ref="classadcirc__boundary.html#a3e2fecbfc76bcf7971623fbcb46a9004" />
               <section title="setupBoundary" ref="classadcirc__boundary.html#a842d6622cbcfb7fc2f287e2da81f9fed" />
               <section title="toStringList" ref="classadcirc__boundary.html#aa9bb421aa263be91fa0680eabe748e48" />
@@ -38,7 +38,7 @@
               <section title="elementEqual" ref="classadcirc__element.html#a0e141585d81d5a1a618e1903939b9803" />
               <section title="elementGreaterThan" ref="classadcirc__element.html#a6ef19db23267ef6d8e06347c30952181" />
               <section title="elementLessThan" ref="classadcirc__element.html#a1daa823edbb4ed3fc26de731704f1c22" />
-              <section title="fromString" ref="classadcirc__element.html#abd8d21ec51129173bbd37629dc016199" />
+              <section title="fromString" ref="classadcirc__element.html#a80532e570a101b0180b37660be31b0cb" />
               <section title="hashElement" ref="classadcirc__element.html#a1e6cb45c10030e6adb986a6fad4ddc85" />
               <section title="setHashAlgorithm" ref="classadcirc__element.html#aac18ac939348063d73d2edc67900307b" />
               <section title="toString" ref="classadcirc__element.html#ad6dec215d12f753f3ddd1dfa8a86903a" />
@@ -135,8 +135,8 @@
               <section title="write" ref="classadcirc__mesh.html#a8b445bd07fc683c27a3caf82e5e35e97" />
               <section title="writeMesh" ref="classadcirc__mesh.html#a4a0e2f9bd3a5d030920ca7be0a53f055" />
               <section title="elements" ref="classadcirc__mesh.html#a4b4090417c5e72363b3485ec01ff18aa" />
-              <section title="elementToIdMapping" ref="classadcirc__mesh.html#ac7468201dab0c41c5641004333556ada" />
-              <section title="elementToPositionMapping" ref="classadcirc__mesh.html#a0ebedeea8063a76df670b2ec2fa06cd2" />
+              <section title="elementToIdMapping" ref="classadcirc__mesh.html#ac6813084debf357354a3f810b4296207" />
+              <section title="elementToPositionMapping" ref="classadcirc__mesh.html#a96499e1712c5687fbf103c981a91ee3d" />
               <section title="epsg" ref="classadcirc__mesh.html#a7778361b983b6e109de518003d2a1917" />
               <section title="error" ref="classadcirc__mesh.html#aeeec3cd1784feee5966f13bbf99d5487" />
               <section title="filename" ref="classadcirc__mesh.html#a657d4d3f63d73e1992a6f6b866a4c95a" />
@@ -145,8 +145,8 @@
               <section title="landBC" ref="classadcirc__mesh.html#aa8bd7de1a79f53c1949253cf155a7dc6" />
               <section title="node_table" ref="classadcirc__mesh.html#a13c2c593e442ca3dd0fa29c371b40248" />
               <section title="nodes" ref="classadcirc__mesh.html#a1845df6fb5852e8cc20bec2852623317" />
-              <section title="nodeToIdMapping" ref="classadcirc__mesh.html#a791fb0cb00ac6870d1146f08b81db991" />
-              <section title="nodeToPositionMapping" ref="classadcirc__mesh.html#a359100eeb1bc37274f5bc9c2c44317c1" />
+              <section title="nodeToIdMapping" ref="classadcirc__mesh.html#a6a10840e0e959c8b3bdff90e8694c83e" />
+              <section title="nodeToPositionMapping" ref="classadcirc__mesh.html#af3b2a373aa11ff58cdf4ee1cf3d56e0e" />
               <section title="numElements" ref="classadcirc__mesh.html#a990c114f383dd656ba514d1f830b2543" />
               <section title="numLandBoundaries" ref="classadcirc__mesh.html#a96a938b5af373d1bcc0fc76d42e15536" />
               <section title="numNodes" ref="classadcirc__mesh.html#a9654add115321fd89aea323cbab5b1ac" />
@@ -209,12 +209,9 @@
               <section title="readEPSGInitializations" ref="classproj4.html#af51e6e53c9b89ca89f34530007ef533d" />
               <section title="transform" ref="classproj4.html#adb012355fef9d78ca1c01a77864bb388" />
               <section title="transform" ref="classproj4.html#a1e3bede288281a8f58950d62d3774703" />
-              <section title="epsgMapping" ref="classproj4.html#a36215ed1c041e9386cef04d98f7f14ac" />
+              <section title="epsgMapping" ref="classproj4.html#ab82e0028f8176ad00f6e58afe0e71e85" />
             </section>
-            <section title="QADCModules" ref="classQADCModules.html">
-              <section title="QADCModules" ref="classQADCModules.html#ae88d8e37b28d6e3d0ce337f8e9dac910" />
-              <section title="~QADCModules" ref="classQADCModules.html#afd544604ee07593b3b0e98853534f99f" />
-            </section>
+            <section title="QADCModules" ref="classQADCModules.html" />
             <section title="QADCModules_errors" ref="classQADCModules__errors.html">
               <section title="QADCModules_errors" ref="classQADCModules__errors.html#a79dd5d8f400909e5b497bf092318d701" />
               <section title="getCustomDescription" ref="classQADCModules__errors.html#a94efebe0916818d980d70f2fb9dd8792" />
@@ -242,6 +239,7 @@
           </section>
           <section title="Class Index" ref="classes.html" />
           <section title="Class Hierarchy" ref="hierarchy.html">
+            <section title="QADCModules" ref="classQADCModules.html" />
             <section title="QObject">
               <section title="adcirc_boundary" ref="classadcirc__boundary.html" />
               <section title="adcirc_element" ref="classadcirc__element.html" />
@@ -254,7 +252,6 @@
               <section title="adcirc_node_table" ref="classadcirc__node__table.html" />
               <section title="adcirc_output_record" ref="classadcirc__output__record.html" />
               <section title="proj4" ref="classproj4.html" />
-              <section title="QADCModules" ref="classQADCModules.html" />
               <section title="QADCModules_errors" ref="classQADCModules__errors.html" />
               <section title="qKdtree2" ref="classqKdtree2.html" />
             </section>
@@ -313,7 +310,7 @@
     <keywords>
       <keyword name="adcirc_boundary" id="adcirc_boundary" ref="classadcirc__boundary.html" />
       <keyword name="adcirc_boundary" id="adcirc_boundary::adcirc_boundary" ref="classadcirc__boundary.html#ad9950aa9db08a8144029d7695938ca0f" />
-      <keyword name="fromString" id="adcirc_boundary::fromString" ref="classadcirc__boundary.html#a5dfe401caf75491627301d2973ee0ac1" />
+      <keyword name="fromString" id="adcirc_boundary::fromString" ref="classadcirc__boundary.html#aad58cda6f6c60de4dfb4c02cee8c0bcb" />
       <keyword name="toStringList" id="adcirc_boundary::toStringList" ref="classadcirc__boundary.html#aa9bb421aa263be91fa0680eabe748e48" />
       <keyword name="setupBoundary" id="adcirc_boundary::setupBoundary" ref="classadcirc__boundary.html#a842d6622cbcfb7fc2f287e2da81f9fed" />
       <keyword name="hashBoundary" id="adcirc_boundary::hashBoundary" ref="classadcirc__boundary.html#a451a3d00ca1cddbecc2d80d1a826e9f6" />
@@ -331,13 +328,13 @@
       <keyword name="pipeCoef" id="adcirc_boundary::pipeCoef" ref="classadcirc__boundary.html#a804b9b932a2e19614768f93bb52d6149" />
       <keyword name="hash" id="adcirc_boundary::hash" ref="classadcirc__boundary.html#ac252d22eb0b0936517a3e6eeaa45cc67" />
       <keyword name="averageLongitude" id="adcirc_boundary::averageLongitude" ref="classadcirc__boundary.html#a1da40e5ab5800a0c7d0154afef8a6682" />
-      <keyword name="readBoundarySingleNode" id="adcirc_boundary::readBoundarySingleNode" ref="classadcirc__boundary.html#a623362a707889723116c507b8bb2f2e3" />
-      <keyword name="readBoundaryOneSidedWeir" id="adcirc_boundary::readBoundaryOneSidedWeir" ref="classadcirc__boundary.html#a150446a0c85cd056b76a66a60d903310" />
-      <keyword name="readBoundaryTwoSidedWeir" id="adcirc_boundary::readBoundaryTwoSidedWeir" ref="classadcirc__boundary.html#a04cbe5c6a0ee35062c4a920c8e7199e6" />
-      <keyword name="readBoundaryCrossBarrierPipe" id="adcirc_boundary::readBoundaryCrossBarrierPipe" ref="classadcirc__boundary.html#a1fabf720de3f966a1847a103b85e017d" />
+      <keyword name="readBoundarySingleNode" id="adcirc_boundary::readBoundarySingleNode" ref="classadcirc__boundary.html#a3c109656b043598b5e7dd7453094e308" />
+      <keyword name="readBoundaryOneSidedWeir" id="adcirc_boundary::readBoundaryOneSidedWeir" ref="classadcirc__boundary.html#aa4a3f6ee950fef48371101dbfb12b5db" />
+      <keyword name="readBoundaryTwoSidedWeir" id="adcirc_boundary::readBoundaryTwoSidedWeir" ref="classadcirc__boundary.html#ab957af5cf54a0fc2fe1ec7458c2761df" />
+      <keyword name="readBoundaryCrossBarrierPipe" id="adcirc_boundary::readBoundaryCrossBarrierPipe" ref="classadcirc__boundary.html#a37229178e9a295f8dcf4553814983544" />
       <keyword name="adcirc_element" id="adcirc_element" ref="classadcirc__element.html" />
       <keyword name="adcirc_element" id="adcirc_element::adcirc_element" ref="classadcirc__element.html#a74bb27b1370affd0a8cc67ffed312553" />
-      <keyword name="fromString" id="adcirc_element::fromString" ref="classadcirc__element.html#abd8d21ec51129173bbd37629dc016199" />
+      <keyword name="fromString" id="adcirc_element::fromString" ref="classadcirc__element.html#a80532e570a101b0180b37660be31b0cb" />
       <keyword name="toString" id="adcirc_element::toString" ref="classadcirc__element.html#ad6dec215d12f753f3ddd1dfa8a86903a" />
       <keyword name="hashElement" id="adcirc_element::hashElement" ref="classadcirc__element.html#a1e6cb45c10030e6adb986a6fad4ddc85" />
       <keyword name="setHashAlgorithm" id="adcirc_element::setHashAlgorithm" ref="classadcirc__element.html#aac18ac939348063d73d2edc67900307b" />
@@ -441,10 +438,10 @@
       <keyword name="node_table" id="adcirc_mesh::node_table" ref="classadcirc__mesh.html#a13c2c593e442ca3dd0fa29c371b40248" />
       <keyword name="isLatLon" id="adcirc_mesh::isLatLon" ref="classadcirc__mesh.html#aa86245d050dce08fdc206baf9549e347" />
       <keyword name="epsg" id="adcirc_mesh::epsg" ref="classadcirc__mesh.html#a7778361b983b6e109de518003d2a1917" />
-      <keyword name="nodeToPositionMapping" id="adcirc_mesh::nodeToPositionMapping" ref="classadcirc__mesh.html#a359100eeb1bc37274f5bc9c2c44317c1" />
-      <keyword name="nodeToIdMapping" id="adcirc_mesh::nodeToIdMapping" ref="classadcirc__mesh.html#a791fb0cb00ac6870d1146f08b81db991" />
-      <keyword name="elementToPositionMapping" id="adcirc_mesh::elementToPositionMapping" ref="classadcirc__mesh.html#a0ebedeea8063a76df670b2ec2fa06cd2" />
-      <keyword name="elementToIdMapping" id="adcirc_mesh::elementToIdMapping" ref="classadcirc__mesh.html#ac7468201dab0c41c5641004333556ada" />
+      <keyword name="nodeToPositionMapping" id="adcirc_mesh::nodeToPositionMapping" ref="classadcirc__mesh.html#af3b2a373aa11ff58cdf4ee1cf3d56e0e" />
+      <keyword name="nodeToIdMapping" id="adcirc_mesh::nodeToIdMapping" ref="classadcirc__mesh.html#a6a10840e0e959c8b3bdff90e8694c83e" />
+      <keyword name="elementToPositionMapping" id="adcirc_mesh::elementToPositionMapping" ref="classadcirc__mesh.html#a96499e1712c5687fbf103c981a91ee3d" />
+      <keyword name="elementToIdMapping" id="adcirc_mesh::elementToIdMapping" ref="classadcirc__mesh.html#ac6813084debf357354a3f810b4296207" />
       <keyword name="hash" id="adcirc_mesh::hash" ref="classadcirc__mesh.html#a6ba27691c1094be2a8989a791a4e7dae" />
       <keyword name="readMesh" id="adcirc_mesh::readMesh" ref="classadcirc__mesh.html#a28856b4ab8fe04126f4d99b0a0aca1b0" />
       <keyword name="readMeshFromNetCDF" id="adcirc_mesh::readMeshFromNetCDF" ref="classadcirc__mesh.html#a186577d40b4a7aad6c88d017be766b76" />
@@ -502,9 +499,8 @@
       <keyword name="readEPSGInitializations" id="proj4::readEPSGInitializations" ref="classproj4.html#af51e6e53c9b89ca89f34530007ef533d" />
       <keyword name="transform" id="proj4::transform" ref="classproj4.html#adb012355fef9d78ca1c01a77864bb388" />
       <keyword name="transform" id="proj4::transform" ref="classproj4.html#a1e3bede288281a8f58950d62d3774703" />
-      <keyword name="epsgMapping" id="proj4::epsgMapping" ref="classproj4.html#a36215ed1c041e9386cef04d98f7f14ac" />
+      <keyword name="epsgMapping" id="proj4::epsgMapping" ref="classproj4.html#ab82e0028f8176ad00f6e58afe0e71e85" />
       <keyword name="QADCModules" id="QADCModules" ref="classQADCModules.html" />
-      <keyword name="QADCModules" id="QADCModules::QADCModules" ref="classQADCModules.html#ae88d8e37b28d6e3d0ce337f8e9dac910" />
       <keyword name="QADCModules_errors" id="QADCModules_errors" ref="classQADCModules__errors.html" />
       <keyword name="QADCModules_errors" id="QADCModules_errors::QADCModules_errors" ref="classQADCModules__errors.html#a79dd5d8f400909e5b497bf092318d701" />
       <keyword name="resetError" id="QADCModules_errors::resetError" ref="classQADCModules__errors.html#abf5a653b54369add04619a1e27ac6369" />
@@ -634,11 +630,6 @@
       <file>classproj4__coll__graph.png</file>
       <file>classproj4-members.html</file>
       <file>classQADCModules.html</file>
-      <file>classQADCModules__inherit__graph.png</file>
-      <file>classQADCModules__inherit__graph.png</file>
-      <file>classQADCModules__coll__graph.png</file>
-      <file>classQADCModules__coll__graph.png</file>
-      <file>classQADCModules-members.html</file>
       <file>classQADCModules__errors.html</file>
       <file>classQADCModules__errors__inherit__graph.png</file>
       <file>classQADCModules__errors__inherit__graph.png</file>
@@ -660,6 +651,7 @@
       <file>hierarchy.html</file>
       <file>inherits.html</file>
       <file>inherit_graph_0.png</file>
+      <file>inherit_graph_1.png</file>
       <file>functions.html</file>
       <file>functions_b.html</file>
       <file>functions_c.html</file>

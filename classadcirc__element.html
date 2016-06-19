@@ -115,9 +115,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a74bb27b1370affd0a8cc67ffed312553"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__element.html#a74bb27b1370affd0a8cc67ffed312553">adcirc_element</a> (QObject *parent=0)</td></tr>
 <tr class="memdesc:a74bb27b1370affd0a8cc67ffed312553"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor function for <a class="el" href="classadcirc__element.html" title="Class that describes an ADCIRC element. ">adcirc_element</a> class.  <a href="#a74bb27b1370affd0a8cc67ffed312553">More...</a><br /></td></tr>
 <tr class="separator:a74bb27b1370affd0a8cc67ffed312553"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd8d21ec51129173bbd37629dc016199"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__element.html#abd8d21ec51129173bbd37629dc016199">fromString</a> (QString line, QVector&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodes, QMap&lt; int, int &gt; &amp;nodeMapping)</td></tr>
-<tr class="memdesc:abd8d21ec51129173bbd37629dc016199"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function to parse the string from an ADCIRC mesh file containing elemental connectivity information.  <a href="#abd8d21ec51129173bbd37629dc016199">More...</a><br /></td></tr>
-<tr class="separator:abd8d21ec51129173bbd37629dc016199"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80532e570a101b0180b37660be31b0cb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__element.html#a80532e570a101b0180b37660be31b0cb">fromString</a> (QString line, QVector&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodes, QHash&lt; int, int &gt; &amp;nodeMapping)</td></tr>
+<tr class="memdesc:a80532e570a101b0180b37660be31b0cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function to parse the string from an ADCIRC mesh file containing elemental connectivity information.  <a href="#a80532e570a101b0180b37660be31b0cb">More...</a><br /></td></tr>
+<tr class="separator:a80532e570a101b0180b37660be31b0cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6dec215d12f753f3ddd1dfa8a86903a"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__element.html#ad6dec215d12f753f3ddd1dfa8a86903a">toString</a> ()</td></tr>
 <tr class="memdesc:ad6dec215d12f753f3ddd1dfa8a86903a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function that writes an ADCIRC element in the format expected by an ADCIRC mesh file.  <a href="#ad6dec215d12f753f3ddd1dfa8a86903a">More...</a><br /></td></tr>
 <tr class="separator:ad6dec215d12f753f3ddd1dfa8a86903a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -295,7 +295,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
-<a class="anchor" id="abd8d21ec51129173bbd37629dc016199"></a>
+<a class="anchor" id="a80532e570a101b0180b37660be31b0cb"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -314,7 +314,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">QMap&lt; int, int &gt; &amp;&#160;</td>
+          <td class="paramtype">QHash&lt; int, int &gt; &amp;&#160;</td>
           <td class="paramname"><em>nodeMapping</em>&#160;</td>
         </tr>
         <tr>

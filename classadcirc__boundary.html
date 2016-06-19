@@ -116,9 +116,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad9950aa9db08a8144029d7695938ca0f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__boundary.html#ad9950aa9db08a8144029d7695938ca0f">adcirc_boundary</a> (QObject *parent=0)</td></tr>
 <tr class="memdesc:ad9950aa9db08a8144029d7695938ca0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor Constructor for <a class="el" href="classadcirc__boundary.html" title="Class that describes an ADCIRC boundary. ">adcirc_boundary</a>. Takes QObject reference as input.  <a href="#ad9950aa9db08a8144029d7695938ca0f">More...</a><br /></td></tr>
 <tr class="separator:ad9950aa9db08a8144029d7695938ca0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5dfe401caf75491627301d2973ee0ac1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__boundary.html#a5dfe401caf75491627301d2973ee0ac1">fromString</a> (QString data, int index, QVector&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodes, QMap&lt; int, int &gt; &amp;nodeMapping)</td></tr>
-<tr class="memdesc:a5dfe401caf75491627301d2973ee0ac1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public function to parse an adcirc boundary depending on its boundary code.  <a href="#a5dfe401caf75491627301d2973ee0ac1">More...</a><br /></td></tr>
-<tr class="separator:a5dfe401caf75491627301d2973ee0ac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad58cda6f6c60de4dfb4c02cee8c0bcb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__boundary.html#aad58cda6f6c60de4dfb4c02cee8c0bcb">fromString</a> (QString data, int index, QVector&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodes, QHash&lt; int, int &gt; &amp;nodeMapping)</td></tr>
+<tr class="memdesc:aad58cda6f6c60de4dfb4c02cee8c0bcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public function to parse an adcirc boundary depending on its boundary code.  <a href="#aad58cda6f6c60de4dfb4c02cee8c0bcb">More...</a><br /></td></tr>
+<tr class="separator:aad58cda6f6c60de4dfb4c02cee8c0bcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9bb421aa263be91fa0680eabe748e48"><td class="memItemLeft" align="right" valign="top">QStringList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__boundary.html#aa9bb421aa263be91fa0680eabe748e48">toStringList</a> (bool isOpenBC=false)</td></tr>
 <tr class="memdesc:aa9bb421aa263be91fa0680eabe748e48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public function to construct the boundary condition into a QStringList for writing.  <a href="#aa9bb421aa263be91fa0680eabe748e48">More...</a><br /></td></tr>
 <tr class="separator:aa9bb421aa263be91fa0680eabe748e48"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,18 +188,18 @@ qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a623362a707889723116c507b8bb2f2e3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__boundary.html#a623362a707889723116c507b8bb2f2e3">readBoundarySingleNode</a> (QString data, int index, QVector&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodes, QMap&lt; int, int &gt; &amp;nodeMapping)</td></tr>
-<tr class="memdesc:a623362a707889723116c507b8bb2f2e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function to read the single node data from a boundary string (single node types)  <a href="#a623362a707889723116c507b8bb2f2e3">More...</a><br /></td></tr>
-<tr class="separator:a623362a707889723116c507b8bb2f2e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a150446a0c85cd056b76a66a60d903310"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__boundary.html#a150446a0c85cd056b76a66a60d903310">readBoundaryOneSidedWeir</a> (QString data, int index, QVector&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodes, QMap&lt; int, int &gt; &amp;nodeMapping)</td></tr>
-<tr class="memdesc:a150446a0c85cd056b76a66a60d903310"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function to read the one sided weir data from a boundary string (type 3,13)  <a href="#a150446a0c85cd056b76a66a60d903310">More...</a><br /></td></tr>
-<tr class="separator:a150446a0c85cd056b76a66a60d903310"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04cbe5c6a0ee35062c4a920c8e7199e6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__boundary.html#a04cbe5c6a0ee35062c4a920c8e7199e6">readBoundaryTwoSidedWeir</a> (QString data, int index, QVector&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodes, QMap&lt; int, int &gt; &amp;nodeMapping)</td></tr>
-<tr class="memdesc:a04cbe5c6a0ee35062c4a920c8e7199e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function to read the one sided two sided weir information from a boundary string (type 4,24)  <a href="#a04cbe5c6a0ee35062c4a920c8e7199e6">More...</a><br /></td></tr>
-<tr class="separator:a04cbe5c6a0ee35062c4a920c8e7199e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fabf720de3f966a1847a103b85e017d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__boundary.html#a1fabf720de3f966a1847a103b85e017d">readBoundaryCrossBarrierPipe</a> (QString data, int index, QVector&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodes, QMap&lt; int, int &gt; &amp;nodeMapping)</td></tr>
-<tr class="memdesc:a1fabf720de3f966a1847a103b85e017d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function to read the so-called "leaky weir", or weir with cross barrier pipes from a boundary string (type 5,25)  <a href="#a1fabf720de3f966a1847a103b85e017d">More...</a><br /></td></tr>
-<tr class="separator:a1fabf720de3f966a1847a103b85e017d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c109656b043598b5e7dd7453094e308"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__boundary.html#a3c109656b043598b5e7dd7453094e308">readBoundarySingleNode</a> (QString data, int index, QVector&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodes, QHash&lt; int, int &gt; &amp;nodeMapping)</td></tr>
+<tr class="memdesc:a3c109656b043598b5e7dd7453094e308"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function to read the single node data from a boundary string (single node types)  <a href="#a3c109656b043598b5e7dd7453094e308">More...</a><br /></td></tr>
+<tr class="separator:a3c109656b043598b5e7dd7453094e308"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4a3f6ee950fef48371101dbfb12b5db"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__boundary.html#aa4a3f6ee950fef48371101dbfb12b5db">readBoundaryOneSidedWeir</a> (QString data, int index, QVector&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodes, QHash&lt; int, int &gt; &amp;nodeMapping)</td></tr>
+<tr class="memdesc:aa4a3f6ee950fef48371101dbfb12b5db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function to read the one sided weir data from a boundary string (type 3,13)  <a href="#aa4a3f6ee950fef48371101dbfb12b5db">More...</a><br /></td></tr>
+<tr class="separator:aa4a3f6ee950fef48371101dbfb12b5db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab957af5cf54a0fc2fe1ec7458c2761df"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__boundary.html#ab957af5cf54a0fc2fe1ec7458c2761df">readBoundaryTwoSidedWeir</a> (QString data, int index, QVector&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodes, QHash&lt; int, int &gt; &amp;nodeMapping)</td></tr>
+<tr class="memdesc:ab957af5cf54a0fc2fe1ec7458c2761df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function to read the one sided two sided weir information from a boundary string (type 4,24)  <a href="#ab957af5cf54a0fc2fe1ec7458c2761df">More...</a><br /></td></tr>
+<tr class="separator:ab957af5cf54a0fc2fe1ec7458c2761df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37229178e9a295f8dcf4553814983544"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classadcirc__boundary.html#a37229178e9a295f8dcf4553814983544">readBoundaryCrossBarrierPipe</a> (QString data, int index, QVector&lt; <a class="el" href="classadcirc__node.html">adcirc_node</a> * &gt; &amp;nodes, QHash&lt; int, int &gt; &amp;nodeMapping)</td></tr>
+<tr class="memdesc:a37229178e9a295f8dcf4553814983544"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function to read the so-called "leaky weir", or weir with cross barrier pipes from a boundary string (type 5,25)  <a href="#a37229178e9a295f8dcf4553814983544">More...</a><br /></td></tr>
+<tr class="separator:a37229178e9a295f8dcf4553814983544"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class handles describing ADCIRC boundary conditions. Functions are provided to read and write strings of boundary nodes</p>
@@ -256,7 +256,7 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a5dfe401caf75491627301d2973ee0ac1"></a>
+<a class="anchor" id="aad58cda6f6c60de4dfb4c02cee8c0bcb"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -281,7 +281,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">QMap&lt; int, int &gt; &amp;&#160;</td>
+          <td class="paramtype">QHash&lt; int, int &gt; &amp;&#160;</td>
           <td class="paramname"><em>nodeMapping</em>&#160;</td>
         </tr>
         <tr>
@@ -320,7 +320,7 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1fabf720de3f966a1847a103b85e017d"></a>
+<a class="anchor" id="a37229178e9a295f8dcf4553814983544"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -348,7 +348,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">QMap&lt; int, int &gt; &amp;&#160;</td>
+          <td class="paramtype">QHash&lt; int, int &gt; &amp;&#160;</td>
           <td class="paramname"><em>nodeMapping</em>&#160;</td>
         </tr>
         <tr>
@@ -376,7 +376,7 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a150446a0c85cd056b76a66a60d903310"></a>
+<a class="anchor" id="aa4a3f6ee950fef48371101dbfb12b5db"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -404,7 +404,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">QMap&lt; int, int &gt; &amp;&#160;</td>
+          <td class="paramtype">QHash&lt; int, int &gt; &amp;&#160;</td>
           <td class="paramname"><em>nodeMapping</em>&#160;</td>
         </tr>
         <tr>
@@ -432,7 +432,7 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a623362a707889723116c507b8bb2f2e3"></a>
+<a class="anchor" id="a3c109656b043598b5e7dd7453094e308"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -460,7 +460,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">QMap&lt; int, int &gt; &amp;&#160;</td>
+          <td class="paramtype">QHash&lt; int, int &gt; &amp;&#160;</td>
           <td class="paramname"><em>nodeMapping</em>&#160;</td>
         </tr>
         <tr>
@@ -488,7 +488,7 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a04cbe5c6a0ee35062c4a920c8e7199e6"></a>
+<a class="anchor" id="ab957af5cf54a0fc2fe1ec7458c2761df"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -516,7 +516,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">QMap&lt; int, int &gt; &amp;&#160;</td>
+          <td class="paramtype">QHash&lt; int, int &gt; &amp;&#160;</td>
           <td class="paramname"><em>nodeMapping</em>&#160;</td>
         </tr>
         <tr>
