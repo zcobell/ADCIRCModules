@@ -47,7 +47,7 @@ class QADCMODULESSHARED_EXPORT adcirc_nodalparameter : public QObject
     Q_OBJECT
 public:
 
-    explicit adcirc_nodalparameter(int numNodes, QString nodalAttributeName = "defaultName",
+    explicit adcirc_nodalparameter(QString nodalAttributeName = "defaultName",
                                    QString nodalAttributeUnits = "none", int numValues = 1,
                                    QObject *parent = 0);
 

@@ -40,7 +40,7 @@
  *
  **/
 //-----------------------------------------------------------------------------------------//
-adcirc_nodalparameter::adcirc_nodalparameter(int numNodes, QString nodalAttributeName,
+adcirc_nodalparameter::adcirc_nodalparameter(QString nodalAttributeName,
                                              QString nodalAttributeUnits, int numValues,
                                              QObject *parent) : QObject(parent)
 {

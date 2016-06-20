@@ -281,7 +281,7 @@ int adcirc_fort13::readNodalAttributesFile()
             }
         }
 
-        this->nodalParameters[i] = new adcirc_nodalparameter(this->numNodes,tempName,tempUnits,tempNumVals,this);
+        this->nodalParameters[i] = new adcirc_nodalparameter(tempName,tempUnits,tempNumVals,this);
         this->nodalParameters[i]->setDefaultValues(tempDefaultValue);
         this->attributeLocations[tempName] = i;
 
