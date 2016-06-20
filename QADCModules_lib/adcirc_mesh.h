@@ -222,9 +222,9 @@ protected:
 
     int allocateElements();
 
-    int readOpenBoundaries(int &position, QStringList &fileData);
+    int readOpenBoundaries(int &position, QByteArrayList &fileData);
 
-    int readLandBoundaries(int &position, QStringList &fileData);
+    int readLandBoundaries(int &position, QByteArrayList &fileData);
 
     int findAdcircElement(QPointF location, adcirc_element* &nearestElement, bool &found, QVector<qreal> &weights);
 

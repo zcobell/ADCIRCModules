@@ -93,7 +93,7 @@ protected:
 
     int writeNodalAttributesFile(QString outputFilename, bool userSpecifiedDefaultValues);
 
-    int readNodalData(int nodalAttributeIndex, QStringList &data);
+    int readNodalData(int nodalAttributeIndex, QByteArrayList &data);
 
     QStringList writeNodalParameter(int index);
 

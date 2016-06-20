@@ -1526,8 +1526,8 @@ int adcirc_mesh::readMesh()
 {
 
     QFile       meshFile(this->filename);
-    QString     meshStringData,tempString;
-    QStringList meshFileList,tempList;
+    QByteArray  meshStringData,tempString;
+    QByteArrayList  meshFileList,tempList;
     QByteArray  meshByteData;
     int         i,ierr,filePosition;
     bool        err;
@@ -1538,12 +1538,8 @@ int adcirc_mesh::readMesh()
         return this->error->getError();
     }
 
-    //...Read the entire mesh file at once
-    meshByteData   = meshFile.readAll();
-    meshStringData = QString(meshByteData);
-    meshFileList   = meshStringData.split("\n");
-    meshByteData   = QByteArray();
-    meshStringData = QString();
+    while(!meshFile.atEnd())
+       meshFileList.append(meshFile.readLine().simplified());
     meshFile.close();
 
     //...Grab the header
@@ -1552,7 +1548,7 @@ int adcirc_mesh::readMesh()
 
     //...Grab the number of elements,nodes
     tempString = meshFileList.value(1);
-    tempList   = tempString.simplified().split(" ");
+    tempList   = tempString.simplified().split(' ');
     tempString = tempList.value(1);
     this->numNodes = tempString.toInt(&err);
     if(!err)
@@ -1721,9 +1717,9 @@ int adcirc_mesh::allocateElements()
  * Protected function to read the entire set of open boundary conditions
  */
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
+int adcirc_mesh::readOpenBoundaries(int &position, QByteArrayList &fileData)
 {
-    QString tempString;
+    QByteArray tempString;
     int i,j,ierr;
     int boundaryCode,boundarySize;
     bool err;
@@ -1736,7 +1732,7 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
 
     position = position + 1;
 
-    tempString = tempString.simplified().split(" ").value(0);
+    tempString = tempString.simplified().split(' ').value(0);
     this->numOpenBoundaries = tempString.toInt(&err);
     if(!err)
     {
@@ -1749,7 +1745,7 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
 
     tempString = fileData[position];
     position = position + 1;
-    tempString = tempString.simplified().split(" ").value(0);
+    tempString = tempString.simplified().split(' ').value(0);
     this->totNumOpenBoundaryNodes = tempString.toInt(&err);
     if(!err)
     {
@@ -1772,7 +1768,7 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
         //...Read the number of nodes in the boundary
         tempString = fileData[position];
         position = position + 1;
-        tempString = tempString.simplified().split(" ").value(0);
+        tempString = tempString.simplified().split(' ').value(0);
 
         //...Set a default code so we know it is an open boundary
         //   if for some reason we don't realize it
@@ -1831,9 +1827,9 @@ int adcirc_mesh::readOpenBoundaries(int &position, QStringList &fileData)
  * Protected function to read the entire set of land boundary conditions
  */
 //-----------------------------------------------------------------------------------------//
-int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
+int adcirc_mesh::readLandBoundaries(int &position, QByteArrayList &fileData)
 {
-    QString tempString,tempString2;
+    QByteArray tempString,tempString2;
     int ierr,i,j;
     int boundaryCode,boundarySize;
     bool err;
@@ -1847,7 +1843,7 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
     //...Read the header
     tempString = fileData[position];
     position = position + 1;
-    tempString = tempString.simplified().split(" ").value(0);
+    tempString = tempString.simplified().split(' ').value(0);
     this->numLandBoundaries = tempString.toInt(&err);
     if(!err)
     {
@@ -1863,7 +1859,7 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
 
     tempString = fileData[position];
     position = position + 1;
-    tempString = tempString.simplified().split(" ").value(0);
+    tempString = tempString.simplified().split(' ').value(0);
     this->totNumLandBoundaryNodes = tempString.toInt(&err);
     if(!err)
     {
@@ -1889,7 +1885,7 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
 
         //...Set a default code so we know it is an open boundary
         //   if for some reason we don't realize it
-        tempString2 = tempString.simplified().split(" ").value(1);
+        tempString2 = tempString.simplified().split(' ').value(1);
         boundaryCode = tempString2.toInt(&err);
         if(!err)
         {
@@ -1898,7 +1894,7 @@ int adcirc_mesh::readLandBoundaries(int &position, QStringList &fileData)
         }
 
         //...Get the size of this land boundary
-        tempString2 = tempString.simplified().split(" ").value(0);
+        tempString2 = tempString.simplified().split(' ').value(0);
         boundarySize = tempString2.toInt(&err);
         if(!err)
         {

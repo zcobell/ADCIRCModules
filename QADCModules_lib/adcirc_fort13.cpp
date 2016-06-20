@@ -182,21 +182,18 @@ int adcirc_fort13::readNodalAttributesFile()
     int tempNumVals,numNonDefault;
     QVector<qreal> tempDefaultValue;
     bool err;
-    QByteArray fileByteData;
-    QString fileStringData,tempString,tempUnits,tempName;
-    QStringList fileStringList,tempStringList;
+    QByteArray tempString,tempUnits,tempName;
+    QByteArrayList fileStringList,tempStringList;
     QFile nodalAttributesFile(this->filename);
 
     //...Open the file
     if(!nodalAttributesFile.open(QIODevice::ReadOnly))
         return ERROR_FILEOPENERR;
 
-    //...Read the data
-    fileByteData = nodalAttributesFile.readAll();
-    fileStringData = QString(fileByteData);
-    fileStringList = fileStringData.split("\n");
-    fileByteData = QByteArray();
-    fileStringData = QString();
+    //...Read the data    
+    while(!nodalAttributesFile.atEnd())
+        fileStringList.append(nodalAttributesFile.readLine().simplified());
+    nodalAttributesFile.close();
 
     //...Read the header
     position = 0;
@@ -259,7 +256,7 @@ int adcirc_fort13::readNodalAttributesFile()
             return this->error->getError();
         }
         tempString       = fileStringList.value(position);
-        tempStringList   = tempString.simplified().split(" ");
+        tempStringList   = tempString.simplified().split(' ');
 
         if(tempNumVals!=tempStringList.length())
         {
@@ -315,13 +312,8 @@ int adcirc_fort13::readNodalAttributesFile()
             return this->error->getError();
         }
 
-        tempStringList = QStringList();
+        tempStringList.clear();
         position       = position + 1;
-        if(position>fileStringList.length()-1)
-        {
-            this->error->setError(ERROR_NODALATT_UNEXPECTEDEND);
-            return this->error->getError();
-        }
 
         for(j=0;j<numNonDefault;j++)
         {
@@ -451,10 +443,10 @@ int adcirc_fort13::writeNodalAttributesFile(QString outputFilename, bool userSpe
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int adcirc_fort13::readNodalData(int nodalAttributeIndex, QStringList &data)
+int adcirc_fort13::readNodalData(int nodalAttributeIndex, QByteArrayList &data)
 {
-    QString tempString;
-    QStringList tempList;
+    QByteArray tempString;
+    QByteArrayList tempList;
     int i,j,index;
     qreal tempDouble;
     bool err;
@@ -466,7 +458,7 @@ int adcirc_fort13::readNodalData(int nodalAttributeIndex, QStringList &data)
     for(i=0;i<data.length();i++)
     {
         tempString = data[i];
-        tempList   = tempString.simplified().split(" ");
+        tempList   = tempString.simplified().split(' ');
         if(tempList.length()-1!=this->nodalParameters[nodalAttributeIndex]->nValues)
             return ERROR_NODALPARAM_NOTENOUGHVALUES;
 
