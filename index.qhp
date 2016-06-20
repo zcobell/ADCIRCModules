@@ -23,7 +23,7 @@
               <section title="averageLongitude" ref="classadcirc__boundary.html#a1da40e5ab5800a0c7d0154afef8a6682" />
               <section title="code" ref="classadcirc__boundary.html#a58278a9404b6ab9d3c0937a556681d8d" />
               <section title="crest" ref="classadcirc__boundary.html#ac92f154b24b317c4ee176b897806d524" />
-              <section title="hash" ref="classadcirc__boundary.html#ac252d22eb0b0936517a3e6eeaa45cc67" />
+              <section title="hash" ref="classadcirc__boundary.html#ae2213443de1eae67aef5e16f8da1d213" />
               <section title="n1" ref="classadcirc__boundary.html#ab11c230fcb0edd583f51a856b6bdc470" />
               <section title="n2" ref="classadcirc__boundary.html#a0873ba27ce90c79f3b68834496a50c65" />
               <section title="numNodes" ref="classadcirc__boundary.html#adc78185ae62eb390d2ba8990fa63270f" />
@@ -43,7 +43,7 @@
               <section title="setHashAlgorithm" ref="classadcirc__element.html#aac18ac939348063d73d2edc67900307b" />
               <section title="toString" ref="classadcirc__element.html#ad6dec215d12f753f3ddd1dfa8a86903a" />
               <section title="connections" ref="classadcirc__element.html#a5d13c2389520e77261d5ddf88d59e2bf" />
-              <section title="hash" ref="classadcirc__element.html#a1756de711ba55d1825f500f02a8a4f27" />
+              <section title="hash" ref="classadcirc__element.html#a1f809cc4e41e84d32e81ce5986c0fcc0" />
               <section title="id" ref="classadcirc__element.html#a8c7f1b39df4d9457c240cf10c704266c" />
               <section title="numConnections" ref="classadcirc__element.html#a39be4fd249b4b4584e83752f6249bcbb" />
             </section>
@@ -140,7 +140,7 @@
               <section title="epsg" ref="classadcirc__mesh.html#a7778361b983b6e109de518003d2a1917" />
               <section title="error" ref="classadcirc__mesh.html#aeeec3cd1784feee5966f13bbf99d5487" />
               <section title="filename" ref="classadcirc__mesh.html#a657d4d3f63d73e1992a6f6b866a4c95a" />
-              <section title="hash" ref="classadcirc__mesh.html#a6ba27691c1094be2a8989a791a4e7dae" />
+              <section title="hash" ref="classadcirc__mesh.html#a22a51f0891ccd9fbd235e24e21c7868d" />
               <section title="isLatLon" ref="classadcirc__mesh.html#aa86245d050dce08fdc206baf9549e347" />
               <section title="landBC" ref="classadcirc__mesh.html#aa8bd7de1a79f53c1949253cf155a7dc6" />
               <section title="node_table" ref="classadcirc__mesh.html#a13c2c593e442ca3dd0fa29c371b40248" />
@@ -171,6 +171,11 @@
               <section title="units" ref="classadcirc__nodalparameter.html#adc26aa812e48ea4aaf28e18d5d467e29" />
             </section>
             <section title="adcirc_node" ref="classadcirc__node.html">
+              <section title="location" ref="structadcirc__node_1_1location.html">
+                <section title="x" ref="structadcirc__node_1_1location.html#a6bf00b35ec0e7c4c2a39b1fa26bef87b" />
+                <section title="y" ref="structadcirc__node_1_1location.html#ad468b87917d7d62d3737c916b933bcac" />
+                <section title="z" ref="structadcirc__node_1_1location.html#a4bf81259d99b8fdd29ab2b61db665281" />
+              </section>
               <section title="adcirc_node" ref="classadcirc__node.html#a07f19966a62edca6ec3a03715d3517e1" />
               <section title="fromString" ref="classadcirc__node.html#a2985afdfd363b30205d0f5e17659a560" />
               <section title="hashNode" ref="classadcirc__node.html#ab0b300cf337e5aef2d5dea42b953865f" />
@@ -179,12 +184,12 @@
               <section title="setHashAlgorithm" ref="classadcirc__node.html#a7a321af10616cd7efe4145e7f65718f9" />
               <section title="toPointF" ref="classadcirc__node.html#aabc548d14f6df057d5e11add71e54d82" />
               <section title="toString" ref="classadcirc__node.html#a4b99b5156bed5ec7de0ed4466c87f3a6" />
-              <section title="fullHash" ref="classadcirc__node.html#a79f106c60d7984f40900ef2650805eba" />
+              <section title="fullHash" ref="classadcirc__node.html#a489e4e0262b7b879cba922645ba05880" />
               <section title="id" ref="classadcirc__node.html#aad97659333b3974344585d36d9160ff1" />
               <section title="myBool" ref="classadcirc__node.html#a26e963937bf9036970c60a2c697b0c70" />
               <section title="nodalData" ref="classadcirc__node.html#a32e4ef20702b5e9800392eea9e58f851" />
-              <section title="position" ref="classadcirc__node.html#a9fbe20377162ffc91a83758aeac0f359" />
-              <section title="positionHash" ref="classadcirc__node.html#aabe58b4756d583761056f087f091a4e4" />
+              <section title="position" ref="classadcirc__node.html#a48cad130c105dd78d8c296c022fdaa77" />
+              <section title="positionHash" ref="classadcirc__node.html#a454b96949773d4d313c39e1e117d88dc" />
             </section>
             <section title="adcirc_node_table" ref="classadcirc__node__table.html">
               <section title="adcirc_node_table" ref="classadcirc__node__table.html#afc1ea8f0c3cb25dd6d0c7077a447a9da" />
@@ -239,6 +244,7 @@
           </section>
           <section title="Class Index" ref="classes.html" />
           <section title="Class Hierarchy" ref="hierarchy.html">
+            <section title="adcirc_node::location" ref="structadcirc__node_1_1location.html" />
             <section title="QADCModules" ref="classQADCModules.html" />
             <section title="QObject">
               <section title="adcirc_boundary" ref="classadcirc__boundary.html" />
@@ -279,6 +285,9 @@
               <section title="u" ref="functions_u.html" />
               <section title="v" ref="functions_v.html" />
               <section title="w" ref="functions_w.html" />
+              <section title="x" ref="functions_x.html" />
+              <section title="y" ref="functions_y.html" />
+              <section title="z" ref="functions_z.html" />
               <section title="~" ref="functions_0x7e.html" />
             </section>
             <section title="Functions" ref="functions_func.html" />
@@ -326,7 +335,7 @@
       <keyword name="pipeHeight" id="adcirc_boundary::pipeHeight" ref="classadcirc__boundary.html#a849629bf5f1a8ddc3893c0422575be55" />
       <keyword name="pipeDiam" id="adcirc_boundary::pipeDiam" ref="classadcirc__boundary.html#ae661cda9b6c993cf676e351175b76e9b" />
       <keyword name="pipeCoef" id="adcirc_boundary::pipeCoef" ref="classadcirc__boundary.html#a804b9b932a2e19614768f93bb52d6149" />
-      <keyword name="hash" id="adcirc_boundary::hash" ref="classadcirc__boundary.html#ac252d22eb0b0936517a3e6eeaa45cc67" />
+      <keyword name="hash" id="adcirc_boundary::hash" ref="classadcirc__boundary.html#ae2213443de1eae67aef5e16f8da1d213" />
       <keyword name="averageLongitude" id="adcirc_boundary::averageLongitude" ref="classadcirc__boundary.html#a1da40e5ab5800a0c7d0154afef8a6682" />
       <keyword name="readBoundarySingleNode" id="adcirc_boundary::readBoundarySingleNode" ref="classadcirc__boundary.html#a3c109656b043598b5e7dd7453094e308" />
       <keyword name="readBoundaryOneSidedWeir" id="adcirc_boundary::readBoundaryOneSidedWeir" ref="classadcirc__boundary.html#aa4a3f6ee950fef48371101dbfb12b5db" />
@@ -344,7 +353,7 @@
       <keyword name="id" id="adcirc_element::id" ref="classadcirc__element.html#a8c7f1b39df4d9457c240cf10c704266c" />
       <keyword name="numConnections" id="adcirc_element::numConnections" ref="classadcirc__element.html#a39be4fd249b4b4584e83752f6249bcbb" />
       <keyword name="connections" id="adcirc_element::connections" ref="classadcirc__element.html#a5d13c2389520e77261d5ddf88d59e2bf" />
-      <keyword name="hash" id="adcirc_element::hash" ref="classadcirc__element.html#a1756de711ba55d1825f500f02a8a4f27" />
+      <keyword name="hash" id="adcirc_element::hash" ref="classadcirc__element.html#a1f809cc4e41e84d32e81ce5986c0fcc0" />
       <keyword name="adcirc_fort13" id="adcirc_fort13" ref="classadcirc__fort13.html" />
       <keyword name="adcirc_fort13" id="adcirc_fort13::adcirc_fort13" ref="classadcirc__fort13.html#afd6bf80423b9c6b156eb350f035c633b" />
       <keyword name="read" id="adcirc_fort13::read" ref="classadcirc__fort13.html#af88341dfcf46f6203bac4716e18d9921" />
@@ -442,7 +451,7 @@
       <keyword name="nodeToIdMapping" id="adcirc_mesh::nodeToIdMapping" ref="classadcirc__mesh.html#a6a10840e0e959c8b3bdff90e8694c83e" />
       <keyword name="elementToPositionMapping" id="adcirc_mesh::elementToPositionMapping" ref="classadcirc__mesh.html#a96499e1712c5687fbf103c981a91ee3d" />
       <keyword name="elementToIdMapping" id="adcirc_mesh::elementToIdMapping" ref="classadcirc__mesh.html#ac6813084debf357354a3f810b4296207" />
-      <keyword name="hash" id="adcirc_mesh::hash" ref="classadcirc__mesh.html#a6ba27691c1094be2a8989a791a4e7dae" />
+      <keyword name="hash" id="adcirc_mesh::hash" ref="classadcirc__mesh.html#a22a51f0891ccd9fbd235e24e21c7868d" />
       <keyword name="readMesh" id="adcirc_mesh::readMesh" ref="classadcirc__mesh.html#a28856b4ab8fe04126f4d99b0a0aca1b0" />
       <keyword name="readMeshFromNetCDF" id="adcirc_mesh::readMeshFromNetCDF" ref="classadcirc__mesh.html#a186577d40b4a7aad6c88d017be766b76" />
       <keyword name="writeMesh" id="adcirc_mesh::writeMesh" ref="classadcirc__mesh.html#a4a0e2f9bd3a5d030920ca7be0a53f055" />
@@ -472,12 +481,16 @@
       <keyword name="setHashAlgorithm" id="adcirc_node::setHashAlgorithm" ref="classadcirc__node.html#a7a321af10616cd7efe4145e7f65718f9" />
       <keyword name="nodeLessThan" id="adcirc_node::nodeLessThan" ref="classadcirc__node.html#a4f84057a507264219719da7d02eda49d" />
       <keyword name="nodeGreaterThan" id="adcirc_node::nodeGreaterThan" ref="classadcirc__node.html#a65fed64e085e4282fcf8368a10be00d6" />
-      <keyword name="position" id="adcirc_node::position" ref="classadcirc__node.html#a9fbe20377162ffc91a83758aeac0f359" />
+      <keyword name="position" id="adcirc_node::position" ref="classadcirc__node.html#a48cad130c105dd78d8c296c022fdaa77" />
       <keyword name="id" id="adcirc_node::id" ref="classadcirc__node.html#aad97659333b3974344585d36d9160ff1" />
       <keyword name="myBool" id="adcirc_node::myBool" ref="classadcirc__node.html#a26e963937bf9036970c60a2c697b0c70" />
-      <keyword name="positionHash" id="adcirc_node::positionHash" ref="classadcirc__node.html#aabe58b4756d583761056f087f091a4e4" />
-      <keyword name="fullHash" id="adcirc_node::fullHash" ref="classadcirc__node.html#a79f106c60d7984f40900ef2650805eba" />
+      <keyword name="positionHash" id="adcirc_node::positionHash" ref="classadcirc__node.html#a454b96949773d4d313c39e1e117d88dc" />
+      <keyword name="fullHash" id="adcirc_node::fullHash" ref="classadcirc__node.html#a489e4e0262b7b879cba922645ba05880" />
       <keyword name="nodalData" id="adcirc_node::nodalData" ref="classadcirc__node.html#a32e4ef20702b5e9800392eea9e58f851" />
+      <keyword name="adcirc_node::location" id="adcirc_node::location" ref="structadcirc__node_1_1location.html" />
+      <keyword name="x" id="adcirc_node::location::x" ref="structadcirc__node_1_1location.html#a6bf00b35ec0e7c4c2a39b1fa26bef87b" />
+      <keyword name="y" id="adcirc_node::location::y" ref="structadcirc__node_1_1location.html#ad468b87917d7d62d3737c916b933bcac" />
+      <keyword name="z" id="adcirc_node::location::z" ref="structadcirc__node_1_1location.html#a4bf81259d99b8fdd29ab2b61db665281" />
       <keyword name="adcirc_node_table" id="adcirc_node_table" ref="classadcirc__node__table.html" />
       <keyword name="adcirc_node_table" id="adcirc_node_table::adcirc_node_table" ref="classadcirc__node__table.html#afc1ea8f0c3cb25dd6d0c7077a447a9da" />
       <keyword name="add" id="adcirc_node_table::add" ref="classadcirc__node__table.html#a87067a822a24fb38b44b28ac7b00908c" />
@@ -611,6 +624,8 @@
       <file>classadcirc__node__coll__graph.png</file>
       <file>classadcirc__node__coll__graph.png</file>
       <file>classadcirc__node-members.html</file>
+      <file>structadcirc__node_1_1location.html</file>
+      <file>structadcirc__node_1_1location-members.html</file>
       <file>classadcirc__node__table.html</file>
       <file>classadcirc__node__table__inherit__graph.png</file>
       <file>classadcirc__node__table__inherit__graph.png</file>
@@ -652,6 +667,7 @@
       <file>inherits.html</file>
       <file>inherit_graph_0.png</file>
       <file>inherit_graph_1.png</file>
+      <file>inherit_graph_2.png</file>
       <file>functions.html</file>
       <file>functions_b.html</file>
       <file>functions_c.html</file>
@@ -673,6 +689,9 @@
       <file>functions_u.html</file>
       <file>functions_v.html</file>
       <file>functions_w.html</file>
+      <file>functions_x.html</file>
+      <file>functions_y.html</file>
+      <file>functions_z.html</file>
       <file>functions_0x7e.html</file>
       <file>functions_func.html</file>
       <file>functions_func.html</file>
@@ -692,6 +711,9 @@
       <file>functions_func.html</file>
       <file>functions_func.html</file>
       <file>functions_func.html</file>
+      <file>functions_vars.html</file>
+      <file>functions_vars.html</file>
+      <file>functions_vars.html</file>
       <file>functions_vars.html</file>
       <file>functions_vars.html</file>
       <file>functions_vars.html</file>
