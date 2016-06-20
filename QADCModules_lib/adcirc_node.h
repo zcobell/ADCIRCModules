@@ -47,6 +47,7 @@ class QADCMODULESSHARED_EXPORT adcirc_node : public QObject
     Q_OBJECT
 public:
 
+    ///Structure holding the x,y,z position of the adcirc_node object
     struct location
     {
         ///X Location of the node
