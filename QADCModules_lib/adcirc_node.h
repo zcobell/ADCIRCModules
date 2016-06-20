@@ -49,8 +49,13 @@ public:
 
     struct location
     {
+        ///X Location of the node
         qreal x;
+
+        ///Y Location of the node
         qreal y;
+
+        ///Z Elevation of the node
         qreal z;
     };
 

@@ -501,7 +501,7 @@ int adcirc_fort13::readNodalData(int nodalAttributeIndex, QStringList &data)
 //-----------------------------------------------------------------------------------------//
 /** \brief Method to add the adcirc_nodalattribute pointers to the adcirc_mesh object
  *
- * @param[in] mesh Optional, specify a new mesh pointer for this mapping
+ * @param[in] inputMesh Optional, specify a new mesh pointer for this mapping
  *
  * Method to add the adcirc_nodalattribute pointers to the adcirc_mesh object
  *
