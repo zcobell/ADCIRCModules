@@ -867,6 +867,7 @@ int adcirc_global_output::toShapefile(QString outputFile)
 
         }
 
+        DBFClose(dbfid);
         SHPClose(shpid);
 
         return ERROR_NOERROR;

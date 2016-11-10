@@ -1402,6 +1402,7 @@ int adcirc_mesh::toShapefile(QString outputFile)
 
     }
 
+    DBFClose(dbfid);
     SHPClose(shpid);
 
     return ERROR_NOERROR;
