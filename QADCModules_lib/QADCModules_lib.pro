@@ -53,7 +53,6 @@ win32 {
 unix:!macx{
     isEmpty(NETCDFHOME){
         LIBS += -lnetcdf
-        INCLUDEPATH += /usr/include
     }else{
         LIBS += -L$$NETCDFHOME/lib -lnetcdf
         INCLUDEPATH += $$NETCDFHOME/include 
@@ -187,5 +186,4 @@ unix{
 
 DISTFILES +=
 
-RESOURCES += \
-    QADCModules_resources.qrc
+RESOURCES +=
