@@ -7,12 +7,12 @@ language: cpp
 compiler: gcc
 
 before_install:
-- sudo add-apt-repository --yes ppa:beineri/opt-qt561-trusty 
+- sudo add-apt-repository --yes ppa:beineri/opt-qt58-trusty 
 - sudo apt-get update  -qq
 - sudo apt-get install -qq libsqlite3-dev libnetcdf-dev
-- sudo apt-cache search qt56
-- sudo apt-get install -qq qt56base 
-- export PATH=/opt/qt56/bin:$PATH
+- sudo apt-cache search qt58
+- sudo apt-get install -qq qt58base 
+- export PATH=/opt/qt58/bin:$PATH
 - export LD_LIBRARY_PATH=/opt/QADCModules/lib
 
 script:
@@ -20,7 +20,7 @@ script:
 - which qmake
 - gcc --version
 - g++ --version
-- . /opt/qt56/bin/qt56-env.sh
+- . /opt/qt58/bin/qt58-env.sh
 - qmake QADCModules.pro PREFIX=/opt/QADCModules
 - make
 - sudo make install
