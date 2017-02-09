@@ -16,7 +16,7 @@ addons:
       name: "zcobell/QADCModules"
       description: "Modules for Reading/Writing ADCIRC model data"
     notification_email: zachary.cobell@arcadis.com
-    build_command_prepend: "/opt/qt58/bin/qmake MetOceanViewer.pro"
+    build_command_prepend: "/opt/qt58/bin/qmake QADCModules.pro PREFIX=/opt/QADCModules"
     build_command:   "make"
     branch_pattern: master
 
