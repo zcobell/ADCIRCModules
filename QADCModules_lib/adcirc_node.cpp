@@ -78,6 +78,9 @@ adcirc_node::adcirc_node(QObject *parent) : QObject(parent)
     this->hashAlgorithm = QCryptographicHash::Sha1;
     this->id = 0;
     this->myBool = false;
+    this->position.x = 0;
+    this->position.y = 0;
+    this->position.z = 0;
 }
 //-----------------------------------------------------------------------------------------//
 
