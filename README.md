@@ -4,10 +4,10 @@ Implementation of routines used to manipulate ADCIRC model files in Qt
 [![Build Status](https://travis-ci.org/zcobell/QADCModules.svg?branch=master)](https://travis-ci.org/zcobell/QADCModules)
 [![Coverity](https://scan.coverity.com/projects/9087/badge.svg)](https://scan.coverity.com/projects/zcobell-qadcmodules)
 
-###Documentation
+### Documentation
 Detailed documentation is available [here](http://zcobell.github.io/QADCModules/index.html).
 
-###Including QADCModules in a Qt Project
+### Including QADCModules in a Qt Project
 1. Add the path to the Library to the .pro file. For windows this will be a DLL and Unix a .so
 
         LIBS+= -L/path/to/library -lQADCModules
@@ -22,7 +22,7 @@ Detailed documentation is available [here](http://zcobell.github.io/QADCModules/
 
 ## Examples (so far)
 
-###ADCIRC Meshes (fort.14)
+### ADCIRC Meshes (fort.14)
 1. Create a mesh object outside of a QObject
 
         QPointer<adcirc_mesh> thisMesh = new adcirc_mesh();
@@ -67,7 +67,7 @@ Detailed documentation is available [here](http://zcobell.github.io/QADCModules/
 
         qDebug() << thisMesh->error->getErrorString();
 
-###ADCIRC Nodal Attributes (fort.13)
+### ADCIRC Nodal Attributes (fort.13)
 1. Create a nodal attributes object outside of a QObject
 
         QPointer<adcirc_nodalattributes> thisAttributes = new adcirc_nodalattributes();
@@ -88,7 +88,7 @@ Detailed documentation is available [here](http://zcobell.github.io/QADCModules/
 
         qDebug() << thisAttributes->error->getErrorString();
         
-###ADCIRC Global Output Files (63/64/73/74)
+### ADCIRC Global Output Files (63/64/73/74)
 
 1. Read record 5 of a netCDF formatted ADCIRC output file:
 
@@ -104,11 +104,11 @@ Detailed documentation is available [here](http://zcobell.github.io/QADCModules/
 
         int ierr = adcircOutput->readNextAscii();
 
-###Credits
-Library | Function | Source
---------|----------|--------
-KDTREE2 | Used for efficient nearest neighbor searches | Matthew B. Kennel, Institute for Nonlinear Science, UCSD (2004)
-Boost   | Used as part of KDTREE2 | [Visit Website](http://www.boost.org/)
-Proj4   | Used to project to various coordinate systems |[Visit Website](https://trac.osgeo.org/proj/)
-netCDF  | Used to read ADCIRC files formatted with this library | [Visit Website](http://www.unidata.ucar.edu/software/netcdf/)
-Qt      | Core C++ library | [Visit Website](http://qt.io)
+### Credits
+| Library | Function | Source |
+|---------|----------|--------|
+| KDTREE2 | Used for efficient nearest neighbor searches | Matthew B. Kennel, Institute for Nonlinear Science, UCSD (2004) |
+| Boost   | Used as part of KDTREE2 | [Visit Website](http://www.boost.org/) |
+| Proj4   | Used to project to various coordinate systems |[Visit Website](https://trac.osgeo.org/proj/) |
+| netCDF  | Used to read ADCIRC files formatted with this library | [Visit Website](http://www.unidata.ucar.edu/software/netcdf/) |
+| Qt      | Core C++ library | [Visit Website](http://qt.io) |
