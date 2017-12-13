@@ -7,21 +7,18 @@ language: cpp
 compiler: gcc
 
 before_install:
-- sudo add-apt-repository --yes ppa:beineri/opt-qt58-trusty 
+- sudo add-apt-repository --yes ppa:beineri/opt-qt592-trusty
 - sudo apt-get update  -qq
 - sudo apt-get install -qq libsqlite3-dev libnetcdf-dev
-- sudo apt-cache search qt58
-- sudo apt-get install -qq qt58base 
-- export PATH=/opt/qt58/bin:$PATH
-- export LD_LIBRARY_PATH=/opt/QADCModules/lib
-
+- sudo apt-get install -qq qt59base 
+- export PATH=/opt/qt59/bin:$PATH
 script:
 - uname -a
 - which qmake
 - gcc --version
 - g++ --version
-- . /opt/qt58/bin/qt58-env.sh
-- qmake QADCModules.pro PREFIX=/opt/QADCModules
+- ". /opt/qt59/bin/qt59-env.sh"
+- qmake ADCIRCModules.pro PREFIX=/opt/ADCIRCModules
 - make
-- sudo make install
-- make check 
+#- sudo make install
+#- make check 
