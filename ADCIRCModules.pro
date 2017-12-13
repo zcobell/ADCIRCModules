@@ -1,6 +1,6 @@
 #-------------------------------GPL-------------------------------------#
 #
-# QADCModules - A library for working with ADCIRC models
+# ADCIRCModules - A library for working with ADCIRC models
 # Copyright (C) 2016  Zach Cobell
 #
 # This program is free software: you can redistribute it and/or modify
@@ -20,6 +20,7 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS  = QADCModules_lib \
-           tests
+SUBDIRS  = ADCIRCModules_lib \
+           testing \
+           bench
 CONFIG += ordered           

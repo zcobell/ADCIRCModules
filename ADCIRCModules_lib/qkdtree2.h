@@ -1,6 +1,6 @@
 /*-------------------------------GPL-------------------------------------//
 //
-// QADCModules - A library for working with ADCIRC models
+// adcircmodules - A library for working with ADCIRC models
 // Copyright (C) 2016  Zach Cobell
 //
 // This program is free software: you can redistribute it and/or modify
@@ -41,11 +41,11 @@
 #include <QPointF>
 #include <QVector3D>
 
-#include "QADCModules_global.h"
-#include "QADCModules_errors.h"
+#include "adcircmodules_global.h"
+#include "adcircmodules_errors.h"
 #include "kdtree2.hpp"
 
-class QADCMODULESSHARED_EXPORT qKdtree2 : public QObject
+class ADCIRCMODULESSHARED_EXPORT qKdtree2 : public QObject
 {
     Q_OBJECT
 public:

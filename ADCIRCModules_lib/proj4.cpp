@@ -1,6 +1,6 @@
 /*-------------------------------GPL-------------------------------------//
 //
-// QADCModules - A library for working with ADCIRC models
+// adcircmodules - A library for working with ADCIRC models
 // Copyright (C) 2016  Zach Cobell
 //
 // This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 //-----------------------------------------------------------------------*/
-#include "QADCModules_errors.h"
+#include "adcircmodules_errors.h"
 #include "proj4.h"
 #include "proj_api.h"
 #include "epsg.h"
