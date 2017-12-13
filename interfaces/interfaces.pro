@@ -20,8 +20,7 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS  = interfaces \
-           ADCIRCModules_lib \
-           testing \
-           bench
+SUBDIRS  = qKdtree2 \
+           qProj4 \
+           shapelib
 CONFIG += ordered           

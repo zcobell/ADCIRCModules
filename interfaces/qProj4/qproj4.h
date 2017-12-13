@@ -33,26 +33,26 @@
 #ifndef PROJ4_H
 #define PROJ4_H
 
-#include <QObject>
 #include <QFile>
-#include <QVector>
-#include <QStringList>
+#include <QObject>
 #include <QPoint>
+#include <QStringList>
+#include <QVector>
 
-#include "adcirc_forward.h"
-
-class proj4 : public QObject
-{
-    Q_OBJECT
+class proj4 : public QObject {
+  Q_OBJECT
 public:
-    explicit proj4(QObject *parent = 0);
+  enum _errors { NoError, NoSuchProjection, Proj4InternalError };
 
-    int readEPSGInitializations();
+  explicit proj4(QObject *parent = 0);
 
-    int transform(int inputEPSG, int outputEPSG, QPointF &input, QPointF &output, bool &isLatLon);
+  int readEPSGInitializations();
 
-    int transform(int inputEPSG, int outputEPSG, QVector<QPointF> &input, QVector<QPointF> &output, bool &isLatLon);
+  int transform(int inputEPSG, int outputEPSG, QPointF &input, QPointF &output,
+                bool &isLatLon);
 
+  int transform(int inputEPSG, int outputEPSG, QVector<QPointF> &input,
+                QVector<QPointF> &output, bool &isLatLon);
 };
 
 #endif // PROJ4_H
