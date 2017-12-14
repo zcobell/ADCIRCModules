@@ -24,6 +24,13 @@ AdcircMesh::AdcircMesh(std::string filename) {
   this->m_elementalSearchTree = nullptr;
 }
 
+AdcircMesh::AdcircMesh(const char *filename) {
+  this->setFilename(filename);
+  this->defineProjection(4326, true);
+  this->m_nodalSearchTree = nullptr;
+  this->m_elementalSearchTree = nullptr;
+}
+
 AdcircMesh::~AdcircMesh() {
   for (int i = 0; i < this->numNodes(); i++)
     if (this->m_nodes[i] != nullptr)
@@ -56,6 +63,10 @@ std::string AdcircMesh::filename() const { return this->m_filename; }
 
 void AdcircMesh::setFilename(const std::string &filename) {
   this->m_filename = filename;
+}
+
+void AdcircMesh::setFilename(const char *filename) {
+  this->m_filename = std::string(filename);
 }
 
 std::string AdcircMesh::meshHeaderString() const {
@@ -371,6 +382,13 @@ int AdcircMesh::reproject(int epsg) {
   }
 
   return Adcirc::NoError;
+}
+
+int AdcircMesh::toShapefile(const char *outputFile)
+{
+  std::string filename = std::string(outputFile);
+  int ierr = this->toShapefile(filename);
+  return ierr;
 }
 
 int AdcircMesh::toShapefile(std::string outputFile) {

@@ -8,8 +8,8 @@
 #include "adcircnode.h"
 #include <fstream>
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 class QKdtree2;
 
@@ -17,6 +17,7 @@ class AdcircMesh {
 public:
   explicit AdcircMesh();
   explicit AdcircMesh(std::string filename);
+  explicit AdcircMesh(const char *filename);
 
   ~AdcircMesh();
 
@@ -24,6 +25,7 @@ public:
 
   std::string filename() const;
   void setFilename(const std::string &filename);
+  void setFilename(const char *filename);
 
   std::string meshHeaderString() const;
   void setMeshHeaderString(const std::string &meshHeaderString);
@@ -52,6 +54,7 @@ public:
   bool isLatLon();
 
   int toShapefile(std::string outputFile);
+  int toShapefile(const char *outputFile);
 
   int buildNodalSearchTree();
   int buildElementalSearchTree();
