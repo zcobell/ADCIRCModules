@@ -2,6 +2,7 @@
 TARGET = shapelib
 TEMPLATE = lib
 CONFIG += static
+CONFIG -= qt
 
 #...Shapelib Library
 SHAPELIBPATH  = $$PWD/../../thirdparty/shapelib

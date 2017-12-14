@@ -9,6 +9,7 @@ QT       -= gui
 TARGET = adcircmodules
 TEMPLATE = lib
 VERSION = 0.1.0
+CONFIG -= qt
 
 DEFINES += ADCIRCMODULES_LIBRARY
 
@@ -62,7 +63,8 @@ SOURCES += \
     adcircmesh.cpp \
     adcircnode.cpp \
     adcircelement.cpp \
-    adcircboundary.cpp
+    adcircboundary.cpp \
+    split.cpp
 
 HEADERS += \
     adcircmodules_global.h \ 
@@ -70,7 +72,8 @@ HEADERS += \
     adcircnode.h \
     adcircelement.h \
     adcircboundary.h \
-    adcircenum.h
+    adcircenum.h \
+    split.h
 
 unix {
     target.path = /usr/lib
@@ -115,3 +118,16 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../inte
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/shapelib/release/shapelib.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/shapelib/debug/shapelib.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../interfaces/shapelib/libshapelib.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../interfaces/point/release/ -lpoint
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../interfaces/point/debug/ -lpoint
+else:unix: LIBS += -L$$OUT_PWD/../interfaces/point/ -lpoint
+
+INCLUDEPATH += $$PWD/../interfaces/point
+DEPENDPATH += $$PWD/../interfaces/point
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/point/release/libpoint.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/point/debug/libpoint.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/point/release/point.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/point/debug/point.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../interfaces/point/libpoint.a

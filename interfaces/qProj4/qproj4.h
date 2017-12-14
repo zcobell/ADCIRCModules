@@ -33,26 +33,29 @@
 #ifndef QPROJ4_H
 #define QPROJ4_H
 
-#include <QFile>
-#include <QObject>
-#include <QPoint>
-#include <QStringList>
-#include <QVector>
+#include <string>
+#include <vector>
+#include "point.h"
 
-class QProj4 : public QObject {
-  Q_OBJECT
+class QProj4 {
+
 public:
-  enum _errors { NoError, NoSuchProjection, Proj4InternalError };
 
-  explicit QProj4(QObject *parent = 0);
+  enum _errors {
+    NoError,
+    NoSuchProjection,
+    Proj4InternalError
+  };
+
+  explicit QProj4();
 
   int readEPSGInitializations();
 
-  int transform(int inputEPSG, int outputEPSG, QPointF &input, QPointF &output,
+  int transform(int inputEPSG, int outputEPSG, Point &input, Point &output,
                 bool &isLatLon);
 
-  int transform(int inputEPSG, int outputEPSG, QVector<QPointF> &input,
-                QVector<QPointF> &output, bool &isLatLon);
+  int transform(int inputEPSG, int outputEPSG, std::vector<Point> &input,
+                std::vector<Point> &output, bool &isLatLon);
 };
 
 #endif // QPROJ4_H

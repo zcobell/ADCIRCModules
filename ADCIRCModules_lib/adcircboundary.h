@@ -3,9 +3,9 @@
 
 #include "adcircmodules_global.h"
 #include "adcircnode.h"
-#include <QVector>
+#include <vector>
 
-class ADCIRCMODULESSHARED_EXPORT AdcircBoundary {
+class AdcircBoundary {
 public:
   explicit AdcircBoundary(int boundaryCode, int boundaryLength);
 
@@ -45,15 +45,15 @@ public:
 private:
   int m_boundaryCode;
   int m_boundaryLength;
-  QVector<double> m_crestElevation;
-  QVector<double> m_subcriticalWeirCoeffient;
-  QVector<double> m_supercriticalWeirCoefficient;
-  QVector<double> m_pipeHeight;
-  QVector<double> m_pipeDiameter;
-  QVector<double> m_pipeCoefficient;
-  QVector<double> m_averageLongitude;
-  QVector<AdcircNode *> m_node1;
-  QVector<AdcircNode *> m_node2;
+  std::vector<double> m_crestElevation;
+  std::vector<double> m_subcriticalWeirCoeffient;
+  std::vector<double> m_supercriticalWeirCoefficient;
+  std::vector<double> m_pipeHeight;
+  std::vector<double> m_pipeDiameter;
+  std::vector<double> m_pipeCoefficient;
+  std::vector<double> m_averageLongitude;
+  std::vector<AdcircNode *> m_node1;
+  std::vector<AdcircNode *> m_node2;
 };
 
 #endif // ADCIRCBOUNDARY_H

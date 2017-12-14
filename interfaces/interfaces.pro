@@ -20,7 +20,8 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS  = qKdtree2 \
+SUBDIRS  = point \
+           qKdtree2 \
            qProj4 \
            shapelib
 CONFIG += ordered           

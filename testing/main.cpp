@@ -6,8 +6,7 @@ int main(int argc, char *argv[]) {
   QCoreApplication a(argc, argv);
 
   AdcircMesh *mesh = new AdcircMesh(
-      QString("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.grd"),
-      &a);
+      std::string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.grd"));
 
   int ierr = mesh->read();
 

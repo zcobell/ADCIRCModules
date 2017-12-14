@@ -5,7 +5,7 @@
 
 static void bench_readmesh(benchmark::State &state) {
   AdcircMesh *mesh = new AdcircMesh(
-      QString("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.grd"));
+      std::string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.grd"));
   while (state.KeepRunning()) {
     mesh->read();
   }

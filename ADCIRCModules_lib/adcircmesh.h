@@ -6,30 +6,27 @@
 #include "adcircenum.h"
 #include "adcircmodules_global.h"
 #include "adcircnode.h"
-#include <QFile>
-#include <QHash>
-#include <QObject>
-#include <QVector>
+#include <fstream>
 #include <string>
+#include <vector>
+#include <unordered_map>
 
 class QKdtree2;
 
-class ADCIRCMODULESSHARED_EXPORT AdcircMesh : public QObject {
-  Q_OBJECT
+class AdcircMesh {
 public:
-  explicit AdcircMesh(QObject *parent = nullptr);
-  explicit AdcircMesh(QString filename, QObject *parent = nullptr);
-  explicit AdcircMesh(std::string filename, QObject *parent = nullptr);
+  explicit AdcircMesh();
+  explicit AdcircMesh(std::string filename);
 
   ~AdcircMesh();
 
   int read();
 
-  QString filename() const;
-  void setFilename(const QString &filename);
+  std::string filename() const;
+  void setFilename(const std::string &filename);
 
-  QString meshHeaderString() const;
-  void setMeshHeaderString(const QString &meshHeaderString);
+  std::string meshHeaderString() const;
+  void setMeshHeaderString(const std::string &meshHeaderString);
 
   int numNodes() const;
   void setNumNodes(int numNodes);
@@ -54,7 +51,7 @@ public:
   int reproject(int epsg);
   bool isLatLon();
 
-  int toShapefile(QString outputFile);
+  int toShapefile(std::string outputFile);
 
   int buildNodalSearchTree();
   int buildElementalSearchTree();
@@ -75,18 +72,18 @@ public:
   void deleteElement(int index);
 
 private:
-  int _readNodes(QFile &fid);
-  int _readElements(QFile &fid);
-  int _readOpenBoundaries(QFile &fid);
-  int _readLandBoundaries(QFile &fid);
+  int _readNodes(std::fstream &fid);
+  int _readElements(std::fstream &fid);
+  int _readOpenBoundaries(std::fstream &fid);
+  int _readLandBoundaries(std::fstream &fid);
 
-  QString m_filename;
-  QString m_meshHeaderString;
-  QVector<AdcircNode *> m_nodes;
-  QVector<AdcircElement *> m_elements;
-  QVector<AdcircBoundary *> m_openBoundaries;
-  QVector<AdcircBoundary *> m_landBoundaries;
-  QHash<int, int> m_nodeLookup;
+  std::string m_filename;
+  std::string m_meshHeaderString;
+  std::vector<AdcircNode *> m_nodes;
+  std::vector<AdcircElement *> m_elements;
+  std::vector<AdcircBoundary *> m_openBoundaries;
+  std::vector<AdcircBoundary *> m_landBoundaries;
+  std::unordered_map<int, int> m_nodeLookup;
   int m_numNodes;
   int m_numElements;
   int m_numOpenBoundaries;

@@ -2,26 +2,26 @@
 #include "qkdtree2.h"
 #include "qproj4.h"
 #include "shapefil.h"
-#include <QString>
-#include <QStringList>
+#include "split.h"
+#include <fstream>
+#include <string>
 
 #define CHECK_FILEREAD_RETURN(ok)                                              \
   if (!ok)                                                                     \
     return Adcirc::FileReadError;
 
-AdcircMesh::AdcircMesh(QObject *parent) : QObject(parent) {
-  this->setFilename(QString());
+AdcircMesh::AdcircMesh() {
+  this->setFilename(std::string());
   this->defineProjection(4326, true);
+  this->m_nodalSearchTree = nullptr;
+  this->m_elementalSearchTree = nullptr;
 }
 
-AdcircMesh::AdcircMesh(QString filename, QObject *parent) : QObject(parent) {
+AdcircMesh::AdcircMesh(std::string filename) {
   this->setFilename(filename);
   this->defineProjection(4326, true);
-}
-
-AdcircMesh::AdcircMesh(std::string filename, QObject *parent) {
-  this->setFilename(QString::fromStdString(filename));
-  this->defineProjection(4326, true);
+  this->m_nodalSearchTree = nullptr;
+  this->m_elementalSearchTree = nullptr;
 }
 
 AdcircMesh::~AdcircMesh() {
@@ -44,19 +44,25 @@ AdcircMesh::~AdcircMesh() {
     if (this->m_landBoundaries[i] != nullptr)
       delete this->m_landBoundaries[i];
   this->m_landBoundaries.clear();
+
+  if (this->m_nodalSearchTree != nullptr)
+    delete this->m_nodalSearchTree;
+
+  if (this->m_elementalSearchTree != nullptr)
+    delete this->m_elementalSearchTree;
 }
 
-QString AdcircMesh::filename() const { return this->m_filename; }
+std::string AdcircMesh::filename() const { return this->m_filename; }
 
-void AdcircMesh::setFilename(const QString &filename) {
+void AdcircMesh::setFilename(const std::string &filename) {
   this->m_filename = filename;
 }
 
-QString AdcircMesh::meshHeaderString() const {
+std::string AdcircMesh::meshHeaderString() const {
   return this->m_meshHeaderString;
 }
 
-void AdcircMesh::setMeshHeaderString(const QString &meshHeaderString) {
+void AdcircMesh::setMeshHeaderString(const std::string &meshHeaderString) {
   this->m_meshHeaderString = meshHeaderString;
 }
 
@@ -84,35 +90,27 @@ void AdcircMesh::setNumLandBoundaries(int numLandBoundaries) {
 
 int AdcircMesh::read() {
 
-  bool ok;
   int ierr;
   int tempInt;
-  QString tempLine;
-  QStringList tempList;
+  std::string tempLine;
+  std::vector<std::string> tempList;
 
-  QFile fid(this->filename());
-  if (!fid.open(QIODevice::ReadOnly))
-    return Adcirc::FileOpenError;
+  std::fstream fid(this->filename());
 
   //...Reading the header
-  this->setMeshHeaderString(fid.readLine().simplified());
+  std::getline(fid, tempLine);
+  this->setMeshHeaderString(tempLine);
 
   //...Reading the mesh size
-  tempLine = fid.readLine();
-  tempList = tempLine.split(" ", QString::SkipEmptyParts);
-  tempLine = tempList.value(0);
-  tempInt = tempLine.toInt(&ok);
-  if (ok)
-    this->setNumElements(tempInt);
-  else
-    return Adcirc::FileReadError;
+  std::getline(fid, tempLine);
+  tempList = split::stringSplitToVector(tempLine, ' ');
+  tempLine = tempList[0];
+  tempInt = stoi(tempLine);
+  this->setNumElements(tempInt);
 
-  tempLine = tempList.value(1);
-  tempInt = tempLine.toInt(&ok);
-  if (ok)
-    this->setNumNodes(tempInt);
-  else
-    return Adcirc::FileReadError;
+  tempLine = tempList[1];
+  tempInt = stoi(tempLine);
+  this->setNumNodes(tempInt);
 
   //...Read the node table
   ierr = this->_readNodes(fid);
@@ -147,31 +145,23 @@ int AdcircMesh::read() {
   return Adcirc::NoError;
 }
 
-int AdcircMesh::_readNodes(QFile &fid) {
+int AdcircMesh::_readNodes(std::fstream &fid) {
 
-  bool ok;
   int id;
   double x, y, z;
-  QString tempLine;
-  QStringList tempList;
+  std::string tempLine;
+  std::vector<std::string> tempList;
 
   this->m_nodes.resize(this->numNodes());
 
   for (int i = 0; i < this->numNodes(); i++) {
-    tempLine = fid.readLine();
-    tempList = tempLine.split(" ", QString::SkipEmptyParts);
+    std::getline(fid, tempLine);
+    tempList = split::stringSplitToVector(tempLine, ' ');
 
-    id = tempList.value(0).toInt(&ok);
-    CHECK_FILEREAD_RETURN(ok);
-
-    x = tempList.value(1).toDouble(&ok);
-    CHECK_FILEREAD_RETURN(ok);
-
-    y = tempList.value(2).toDouble(&ok);
-    CHECK_FILEREAD_RETURN(ok);
-
-    z = tempList.value(3).toDouble(&ok);
-    CHECK_FILEREAD_RETURN(ok);
+    id = stoi(tempList[0]);
+    x = stod(tempList[1]);
+    y = stod(tempList[2]);
+    z = stod(tempList[3]);
 
     this->m_nodes[i] = new AdcircNode(id, x, y, z);
     this->m_nodeLookup[id] = i;
@@ -180,29 +170,22 @@ int AdcircMesh::_readNodes(QFile &fid) {
   return Adcirc::NoError;
 }
 
-int AdcircMesh::_readElements(QFile &fid) {
+int AdcircMesh::_readElements(std::fstream &fid) {
 
   bool ok;
   int id, e1, e2, e3;
-  QString tempLine;
-  QStringList tempList;
+  std::string tempLine;
+  std::vector<std::string> tempList;
 
   this->m_elements.resize(this->numElements());
 
   for (int i = 0; i < this->numElements(); i++) {
-    tempLine = fid.readLine();
-    tempList = tempLine.split(" ", QString::SkipEmptyParts);
-    id = tempList.value(0).toInt(&ok);
-    CHECK_FILEREAD_RETURN(ok);
-
-    e1 = tempList.value(1).toInt(&ok);
-    CHECK_FILEREAD_RETURN(ok);
-
-    e2 = tempList.value(2).toInt(&ok);
-    CHECK_FILEREAD_RETURN(ok);
-
-    e3 = tempList.value(3).toInt(&ok);
-    CHECK_FILEREAD_RETURN(ok);
+    std::getline(fid, tempLine);
+    tempList = split::stringSplitToVector(tempLine, ' ');
+    id = stoi(tempList[0]);
+    e1 = stod(tempList[2]);
+    e2 = stod(tempList[3]);
+    e3 = stod(tempList[4]);
 
     this->m_elements[i] =
         new AdcircElement(id, this->m_nodes[this->m_nodeLookup[e1]],
@@ -213,37 +196,34 @@ int AdcircMesh::_readElements(QFile &fid) {
   return Adcirc::NoError;
 }
 
-int AdcircMesh::_readOpenBoundaries(QFile &fid) {
-  QString tempLine;
-  QStringList tempList;
+int AdcircMesh::_readOpenBoundaries(std::fstream &fid) {
+  std::string tempLine;
+  std::vector<std::string> tempList;
   int length, nid;
   bool ok;
 
-  tempLine = fid.readLine();
-  tempList = tempLine.split(" ", QString::SkipEmptyParts);
-  this->setNumOpenBoundaries(tempList.value(0).toInt(&ok));
-  CHECK_FILEREAD_RETURN(ok);
+  std::getline(fid, tempLine);
+  tempList = split::stringSplitToVector(tempLine, ' ');
+  this->setNumOpenBoundaries(stoi(tempList[0]));
 
   this->m_openBoundaries.resize(this->numOpenBoundaries());
 
-  tempLine = fid.readLine().simplified().split(' ').value(0);
-  tempList = tempLine.split(" ", QString::SkipEmptyParts);
-  this->setTotalOpenBoundaryNodes(tempList.value(0).toInt(&ok));
-  CHECK_FILEREAD_RETURN(ok);
+  std::getline(fid, tempLine);
+  tempList = split::stringSplitToVector(tempLine, ' ');
+  tempLine = tempList[0];
+  this->setTotalOpenBoundaryNodes(stoi(tempLine));
 
   for (int i = 0; i < this->numOpenBoundaries(); i++) {
-    tempLine = fid.readLine();
-    tempList = tempLine.split(" ", QString::SkipEmptyParts);
-    length = tempList.value(0).toInt(&ok);
-    CHECK_FILEREAD_RETURN(ok);
+    std::getline(fid, tempLine);
+    tempList = split::stringSplitToVector(tempLine, ' ');
+    length = stoi(tempList[0]);
 
     this->m_openBoundaries[i] = new AdcircBoundary(-1, length);
 
     for (int j = 0; j < this->m_openBoundaries[i]->length(); j++) {
-      tempLine = fid.readLine();
-      tempList = tempLine.split(" ", QString::SkipEmptyParts);
-      nid = tempList.value(0).toInt(&ok);
-      CHECK_FILEREAD_RETURN(ok);
+      std::getline(fid, tempLine);
+      tempList = split::stringSplitToVector(tempLine, ' ');
+      nid = stoi(tempList[0]);
       this->m_openBoundaries[i]->setNode1(
           j, this->m_nodes[this->m_nodeLookup[nid]]);
     }
@@ -251,86 +231,77 @@ int AdcircMesh::_readOpenBoundaries(QFile &fid) {
   return Adcirc::NoError;
 }
 
-int AdcircMesh::_readLandBoundaries(QFile &fid) {
+int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
 
-  QString tempLine;
-  QStringList tempList;
+  std::string tempLine;
+  std::vector<std::string> tempList;
   int length, nid, code;
   bool ok;
 
-  tempLine = fid.readLine();
-  tempList = tempLine.split(" ", QString::SkipEmptyParts);
-  this->setNumLandBoundaries(tempList.value(0).toInt(&ok));
-  CHECK_FILEREAD_RETURN(ok);
+  std::getline(fid, tempLine);
+  tempList = split::stringSplitToVector(tempLine, ' ');
+  this->setNumLandBoundaries(stoi(tempList[0]));
 
   this->m_landBoundaries.resize(this->numLandBoundaries());
 
-  tempLine = fid.readLine();
-  tempList = tempLine.split(" ", QString::SkipEmptyParts);
-  this->setTotalLandBoundaryNodes(tempList.value(0).toInt(&ok));
-  CHECK_FILEREAD_RETURN(ok);
+  std::getline(fid, tempLine);
+  tempList = split::stringSplitToVector(tempLine, ' ');
+  this->setTotalLandBoundaryNodes(stoi(tempList[0]));
 
   for (int i = 0; i < this->numLandBoundaries(); i++) {
-    tempLine = fid.readLine();
-    tempList = tempLine.split(" ", QString::SkipEmptyParts);
-    length = tempList.value(0).toInt(&ok);
-    CHECK_FILEREAD_RETURN(ok);
-    code = tempList.value(1).toInt(&ok);
-    CHECK_FILEREAD_RETURN(ok);
+    std::getline(fid, tempLine);
+    tempList = split::stringSplitToVector(tempLine, ' ');
+    length = stoi(tempList[0]);
+    code = stoi(tempList[1]);
 
     this->m_landBoundaries[i] = new AdcircBoundary(code, length);
 
     for (int j = 0; j < this->m_landBoundaries[i]->length(); j++) {
-      tempLine = fid.readLine();
-      tempList = tempLine.split(" ", QString::SkipEmptyParts);
-      nid = tempList.value(0).toInt(&ok);
-      CHECK_FILEREAD_RETURN(ok);
+      std::getline(fid, tempLine);
+      tempList = split::stringSplitToVector(tempLine, ' ');
+      nid = stoi(tempList[0]);
+
       this->m_landBoundaries[i]->setNode1(
           j, this->m_nodes[this->m_nodeLookup[nid]]);
       if (code == 3 || code == 13 || code == 23) {
-        this->m_landBoundaries[i]->setCrestElevation(
-            j, tempList.value(1).toDouble(&ok));
-        CHECK_FILEREAD_RETURN(ok);
+
+        this->m_landBoundaries[i]->setCrestElevation(j, stod(tempList[1]));
+
         this->m_landBoundaries[i]->setSupercriticalWeirCoefficient(
-            j, tempList.value(2).toDouble(&ok));
-        CHECK_FILEREAD_RETURN(ok);
+            j, stod(tempList[2]));
+
       } else if (code == 4 || code == 24) {
-        nid = tempList.value(1).toInt(&ok);
-        CHECK_FILEREAD_RETURN(ok);
+        nid = stoi(tempList[1]);
+
         this->m_landBoundaries[i]->setNode2(
             j, this->m_nodes[this->m_nodeLookup[nid]]);
-        this->m_landBoundaries[i]->setCrestElevation(
-            j, tempList.value(2).toDouble(&ok));
-        CHECK_FILEREAD_RETURN(ok);
+        this->m_landBoundaries[i]->setCrestElevation(j, stod(tempList[2]));
+
         this->m_landBoundaries[i]->setSubcriticalWeirCoeffient(
-            j, tempList.value(3).toDouble(&ok));
-        CHECK_FILEREAD_RETURN(ok);
+            j, stod(tempList[3]));
+
         this->m_landBoundaries[i]->setSupercriticalWeirCoefficient(
-            j, tempList.value(4).toDouble(&ok));
-        CHECK_FILEREAD_RETURN(ok);
+            j, stod(tempList[4]));
+
       } else if (code == 5 || code == 25) {
-        nid = tempList.value(1).toInt(&ok);
-        CHECK_FILEREAD_RETURN(ok);
+        nid = stoi(tempList[1]);
+
         this->m_landBoundaries[i]->setNode2(
             j, this->m_nodes[this->m_nodeLookup[nid]]);
-        this->m_landBoundaries[i]->setCrestElevation(
-            j, tempList.value(2).toDouble(&ok));
-        CHECK_FILEREAD_RETURN(ok);
+
+        this->m_landBoundaries[i]->setCrestElevation(j, stod(tempList[2]));
+
         this->m_landBoundaries[i]->setSubcriticalWeirCoeffient(
-            j, tempList.value(3).toDouble(&ok));
-        CHECK_FILEREAD_RETURN(ok);
+            j, stod(tempList[3]));
+
         this->m_landBoundaries[i]->setSupercriticalWeirCoefficient(
-            j, tempList.value(4).toDouble(&ok));
-        CHECK_FILEREAD_RETURN(ok);
-        this->m_landBoundaries[i]->setPipeHeight(
-            j, tempList.value(5).toDouble(&ok));
-        CHECK_FILEREAD_RETURN(ok);
-        this->m_landBoundaries[i]->setPipeCoefficient(
-            j, tempList.value(6).toDouble(&ok));
-        CHECK_FILEREAD_RETURN(ok);
-        this->m_landBoundaries[i]->setPipeDiameter(
-            j, tempList.value(7).toDouble(&ok));
-        CHECK_FILEREAD_RETURN(ok);
+            j, stod(tempList[4]));
+
+        this->m_landBoundaries[i]->setPipeHeight(j, stod(tempList[5]));
+
+        this->m_landBoundaries[i]->setPipeCoefficient(j, stod(tempList[6]));
+
+        this->m_landBoundaries[i]->setPipeDiameter(j, stod(tempList[7]));
       }
     }
   }
@@ -380,12 +351,12 @@ bool AdcircMesh::isLatLon() { return this->m_isLatLon; }
 int AdcircMesh::reproject(int epsg) {
 
   QProj4 proj;
-  QVector<QPointF> inPoint, outPoint;
+  std::vector<Point> inPoint, outPoint;
   inPoint.resize(this->numNodes());
   outPoint.resize(this->numNodes());
 
   for (int i = 0; i < this->numNodes(); i++) {
-    inPoint[i] = QPointF(this->node(i)->x(), this->node(i)->y());
+    inPoint[i] = Point(this->node(i)->x(), this->node(i)->y());
   }
 
   int ierr = proj.transform(this->projection(), epsg, inPoint, outPoint,
@@ -402,16 +373,16 @@ int AdcircMesh::reproject(int epsg) {
   return Adcirc::NoError;
 }
 
-int AdcircMesh::toShapefile(QString outputFile) {
+int AdcircMesh::toShapefile(std::string outputFile) {
 
   SHPHandle shpid;
   DBFHandle dbfid;
   SHPObject *shpobj;
   int i, shp_index, nodeid;
-  qreal latitude, longitude, elevation;
+  double latitude, longitude, elevation;
 
-  shpid = SHPCreate(outputFile.toStdString().c_str(), SHPT_POINT);
-  dbfid = DBFCreate(outputFile.toStdString().c_str());
+  shpid = SHPCreate(outputFile.c_str(), SHPT_POINT);
+  dbfid = DBFCreate(outputFile.c_str());
 
   DBFAddField(dbfid, "nodeid", FTInteger, 16, 0);
   DBFAddField(dbfid, "longitude", FTDouble, 16, 8);
@@ -444,7 +415,7 @@ int AdcircMesh::toShapefile(QString outputFile) {
 
 int AdcircMesh::buildNodalSearchTree() {
   int i, ierr;
-  QVector<qreal> x, y;
+  std::vector<double> x, y;
 
   x.resize(this->numNodes());
   y.resize(this->numNodes());
@@ -457,7 +428,7 @@ int AdcircMesh::buildNodalSearchTree() {
   if (this->m_nodalSearchTree->isInitialized())
     delete this->m_nodalSearchTree;
 
-  this->m_nodalSearchTree = new QKdtree2(this);
+  this->m_nodalSearchTree = new QKdtree2();
   ierr = this->m_nodalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
     return Adcirc::KdtreeError;
@@ -467,7 +438,7 @@ int AdcircMesh::buildNodalSearchTree() {
 }
 
 int AdcircMesh::buildElementalSearchTree() {
-  QVector<qreal> x, y;
+  std::vector<double> x, y;
   double tempX, tempY;
 
   x.resize(this->numElements());
@@ -487,7 +458,7 @@ int AdcircMesh::buildElementalSearchTree() {
   if (this->m_elementalSearchTree->isInitialized())
     delete this->m_elementalSearchTree;
 
-  this->m_elementalSearchTree = new QKdtree2(this);
+  this->m_elementalSearchTree = new QKdtree2();
   int ierr = this->m_elementalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
     return Adcirc::KdtreeError;
@@ -566,8 +537,8 @@ void AdcircMesh::deleteNode(int index) {
   if (index < this->numNodes()) {
     if (this->m_nodes[index] != nullptr)
       delete this->m_nodes[index];
-    this->m_nodes.removeAt(index);
-    this->setNumNodes(this->m_nodes.length());
+    this->m_nodes.erase(this->m_nodes.begin() + index);
+    this->setNumNodes(this->m_nodes.size());
   }
   return;
 }
@@ -585,8 +556,8 @@ void AdcircMesh::deleteElement(int index) {
   if (index < this->numElements()) {
     if (this->m_elements[index] != nullptr)
       delete this->m_elements[index];
-    this->m_elements.removeAt(index);
-    this->setNumNodes(this->m_nodes.length());
+    this->m_elements.erase(this->m_elements.begin() + index);
+    this->setNumNodes(this->m_nodes.size());
   }
   return;
 }

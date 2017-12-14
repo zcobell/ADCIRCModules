@@ -3,7 +3,7 @@
 
 #include "adcircmodules_global.h"
 
-class ADCIRCMODULESSHARED_EXPORT AdcircNode {
+class AdcircNode {
 
 public:
   explicit AdcircNode();

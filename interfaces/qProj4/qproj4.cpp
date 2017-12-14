@@ -37,7 +37,7 @@
  *
  **/
 //-----------------------------------------------------------------------------------------//
-QProj4::QProj4(QObject *parent) : QObject(parent) {}
+QProj4::QProj4() {}
 //-----------------------------------------------------------------------------------------//
 
 //-----------------------------------------------------------------------------------------//
@@ -47,8 +47,8 @@ QProj4::QProj4(QObject *parent) : QObject(parent) {}
  *
  * @param[in]  inputEPSG  EPSG that coordinates are currently in
  * @param[in]  outputEPSG EPSG that the coordinates will be converted to
- * @param[in]  input      QPointF object containing the location to be converted
- * @param[out] output     QPointF object containing the converted coordiantes
+ * @param[in]  input      Point object containing the location to be converted
+ * @param[out] output     Point object containing the converted coordiantes
  * @param[out] isLatLon   Bool that determine if the coordinates are lat/lon or
  *otherwise
  *
@@ -56,28 +56,28 @@ QProj4::QProj4(QObject *parent) : QObject(parent) {}
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int QProj4::transform(int inputEPSG, int outputEPSG, QPointF &input,
-                      QPointF &output, bool &isLatLon) {
+int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
+                      Point &output, bool &isLatLon) {
   projPJ inputPJ, outputPJ;
-  qreal x, y, z;
+  double x, y, z;
   int ierr;
 
   ierr = 0;
   z = 0.0;
 
-  if (!epsgMapping.contains(inputEPSG))
+  if (epsgMapping.find(inputEPSG) != epsgMapping.end())
     return NoSuchProjection;
 
-  if (!epsgMapping.contains(outputEPSG))
+  if (epsgMapping.find(outputEPSG) != epsgMapping.end())
     return NoSuchProjection;
 
-  QString currentInitialization = epsgMapping[inputEPSG];
-  QString outputInitialization = epsgMapping[outputEPSG];
+  std::string currentInitialization = epsgMapping[inputEPSG];
+  std::string outputInitialization = epsgMapping[outputEPSG];
 
-  if (!(inputPJ = pj_init_plus(currentInitialization.toLatin1().data())))
+  if (!(inputPJ = pj_init_plus(currentInitialization.c_str())))
     return Proj4InternalError;
 
-  if (!(outputPJ = pj_init_plus(outputInitialization.toLatin1().data())))
+  if (!(outputPJ = pj_init_plus(outputInitialization.c_str())))
     return Proj4InternalError;
 
   if (pj_is_latlong(inputPJ)) {
@@ -114,9 +114,10 @@ int QProj4::transform(int inputEPSG, int outputEPSG, QPointF &input,
  *
  * @param[in]  inputEPSG  EPSG that coordinates are currently in
  * @param[in]  outputEPSG EPSG that the coordinates will be converted to
- * @param[in]  input      QVector of QPointF objects containing the locations to
+ * @param[in]  input      std::vector of Point objects containing the locations
+ *to
  *be converted
- * @param[out] output     QVector of QPointF objects containing the converted
+ * @param[out] output     std::vector of Point objects containing the converted
  *coordiantes
  * @param[out] isLatLon   Bool that determine if the coordinates are lat/lon or
  *otherwise
@@ -125,33 +126,33 @@ int QProj4::transform(int inputEPSG, int outputEPSG, QPointF &input,
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int QProj4::transform(int inputEPSG, int outputEPSG, QVector<QPointF> &input,
-                      QVector<QPointF> &output, bool &isLatLon) {
+int QProj4::transform(int inputEPSG, int outputEPSG, std::vector<Point> &input,
+                      std::vector<Point> &output, bool &isLatLon) {
   projPJ inputPJ, outputPJ;
-  QVector<qreal> x, y, z;
+  std::vector<double> x, y, z;
   int i, ierr;
 
   ierr = 0;
 
-  if (!epsgMapping.contains(inputEPSG))
+  if (epsgMapping.find(inputEPSG) != epsgMapping.end())
     return NoSuchProjection;
 
-  if (!epsgMapping.contains(outputEPSG))
+  if (epsgMapping.find(outputEPSG) != epsgMapping.end())
     return NoSuchProjection;
 
-  QString currentInitialization = epsgMapping[inputEPSG];
-  QString outputInitialization = epsgMapping[outputEPSG];
+  std::string currentInitialization = epsgMapping[inputEPSG];
+  std::string outputInitialization = epsgMapping[outputEPSG];
 
-  if (!(inputPJ = pj_init_plus(currentInitialization.toLatin1().data())))
+  if (!(inputPJ = pj_init_plus(currentInitialization.c_str())))
     return Proj4InternalError;
 
-  if (!(outputPJ = pj_init_plus(outputInitialization.toLatin1().data())))
+  if (!(outputPJ = pj_init_plus(outputInitialization.c_str())))
     return Proj4InternalError;
 
   x.resize(input.size());
   y.resize(input.size());
   z.resize(input.size());
-  z.fill(0.0);
+  std::fill(z.begin(), z.end(), 0.0);
   output.resize(input.size());
 
   for (i = 0; i < input.size(); i++) {

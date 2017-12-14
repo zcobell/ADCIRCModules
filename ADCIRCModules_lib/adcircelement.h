@@ -3,9 +3,9 @@
 
 #include "adcircmodules_global.h"
 #include "adcircnode.h"
-#include <QVector>
+#include <vector>
 
-class ADCIRCMODULESSHARED_EXPORT AdcircElement {
+class AdcircElement {
 public:
   explicit AdcircElement();
   explicit AdcircElement(int id, AdcircNode *n1, AdcircNode *n2,
@@ -23,7 +23,7 @@ private:
   const int m_n = 3;
 
   int m_id;
-  QVector<AdcircNode *> m_nodes;
+  std::vector<AdcircNode *> m_nodes;
 };
 
 #endif // ADCIRCELEMENT_H

@@ -36,43 +36,28 @@
 #ifndef QKDTREE2_H
 #define QKDTREE2_H
 
-#include <QObject>
-#include <QPointF>
-#include <QSharedPointer>
-#include <QVector>
-
-#ifdef QT_GUI_LIB
-#include <QVector3D>
-#endif
+#include <vector>
+#include "point.h"
 
 class kdtree2;
 
-class QKdtree2 : public QObject {
-  Q_OBJECT
+class QKdtree2  {
+
 public:
   enum _errors { NoError, SizeMismatch };
 
-  explicit QKdtree2(QObject *parent = 0);
+  explicit QKdtree2();
 
-  int build(QVector<QPointF> &pointCloud);
-  int build(QVector<qreal> &x, QVector<qreal> &y);
-#ifdef QT_GUI_LIB
-  int build(QVector<QVector3D> &pointCloud);
-#endif
+  ~QKdtree2();
 
-  int findNearest(QPointF pointLocation, int &index);
-  int findNearest(qreal x, qreal y, int &index);
+  int build(std::vector<Point> &pointCloud);
+  int build(std::vector<double> &x, std::vector<double> &y);
 
-#ifdef QT_GUI_LIB
-  int findNearest(QVector3D pointLocation, int &index);
-#endif
+  int findNearest(Point pointLocation, int &index);
+  int findNearest(double x, double y, int &index);
 
-  int findXNearest(QPointF pointLocation, int nn, QVector<int> &indicies);
-  int findXNearest(qreal x, qreal y, int nn, QVector<int> &indicies);
-
-#ifdef QT_GUI_LIB
-  int findXNearest(QVector3D pointLocation, int nn, QVector<int> &indicies);
-#endif
+  int findXNearest(Point pointLocation, int nn, std::vector<int> &indicies);
+  int findXNearest(double x, double y, int nn, std::vector<int> &indicies);
 
   int size() const;
 
@@ -86,7 +71,7 @@ private:
   bool m_initialized;
 
   /// Pointer to variable holding the kdtree search tree
-  QSharedPointer<kdtree2> m_tree;
+  kdtree2 *m_tree;
 };
 
 #endif // QKDTREE2_H
