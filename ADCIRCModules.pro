@@ -23,5 +23,5 @@ TEMPLATE = subdirs
 SUBDIRS  = interfaces \
            ADCIRCModules_lib \
            testing \
-           bench
+           bench  
 CONFIG += ordered           

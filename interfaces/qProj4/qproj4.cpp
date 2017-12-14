@@ -37,7 +37,7 @@
  *
  **/
 //-----------------------------------------------------------------------------------------//
-proj4::proj4(QObject *parent) : QObject(parent) {}
+QProj4::QProj4(QObject *parent) : QObject(parent) {}
 //-----------------------------------------------------------------------------------------//
 
 //-----------------------------------------------------------------------------------------//
@@ -56,8 +56,8 @@ proj4::proj4(QObject *parent) : QObject(parent) {}
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int proj4::transform(int inputEPSG, int outputEPSG, QPointF &input,
-                     QPointF &output, bool &isLatLon) {
+int QProj4::transform(int inputEPSG, int outputEPSG, QPointF &input,
+                      QPointF &output, bool &isLatLon) {
   projPJ inputPJ, outputPJ;
   qreal x, y, z;
   int ierr;
@@ -125,8 +125,8 @@ int proj4::transform(int inputEPSG, int outputEPSG, QPointF &input,
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int proj4::transform(int inputEPSG, int outputEPSG, QVector<QPointF> &input,
-                     QVector<QPointF> &output, bool &isLatLon) {
+int QProj4::transform(int inputEPSG, int outputEPSG, QVector<QPointF> &input,
+                      QVector<QPointF> &output, bool &isLatLon) {
   projPJ inputPJ, outputPJ;
   QVector<qreal> x, y, z;
   int i, ierr;

@@ -7,7 +7,9 @@ namespace Adcirc{
     NoError         = 0x0000000,
     MissingFile     = 0x0000001,
     FileOpenError   = 0x0000002,
-    FileReadError   = 0x0000003
+    FileReadError   = 0x0000003,
+    Proj4Error      = 0x0000004,
+    KdtreeError     = 0x0000005
   };
 
   namespace Mesh{

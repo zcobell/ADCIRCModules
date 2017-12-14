@@ -10,16 +10,19 @@
 #include <QHash>
 #include <QObject>
 #include <QVector>
+#include <string>
+
+class QKdtree2;
 
 class ADCIRCMODULESSHARED_EXPORT AdcircMesh : public QObject {
   Q_OBJECT
 public:
   explicit AdcircMesh(QObject *parent = nullptr);
   explicit AdcircMesh(QString filename, QObject *parent = nullptr);
+  explicit AdcircMesh(std::string filename, QObject *parent = nullptr);
 
   ~AdcircMesh();
 
-  int read(QString filename);
   int read();
 
   QString filename() const;
@@ -46,25 +49,54 @@ public:
   int totalLandBoundaryNodes() const;
   void setTotalLandBoundaryNodes(int totalLandBoundaryNodes);
 
+  int projection();
+  void defineProjection(int epsg, bool isLatLon);
+  int reproject(int epsg);
+  bool isLatLon();
+
+  int toShapefile(QString outputFile);
+
+  int buildNodalSearchTree();
+  int buildElementalSearchTree();
+
+  bool nodalSearchTreeInitialized();
+  bool elementalSearchTreeInitialized();
+
+  AdcircNode *node(int index);
+  AdcircElement *element(int index);
+
+  void resizeMesh(int numNodes, int numElements, int numOpenBoundaries,
+                  int numLandBoundaries);
+
+  void addNode(int index, AdcircNode *node);
+  void deleteNode(int index);
+
+  void addElement(int index, AdcircElement *element);
+  void deleteElement(int index);
+
 private:
   int _readNodes(QFile &fid);
   int _readElements(QFile &fid);
   int _readOpenBoundaries(QFile &fid);
   int _readLandBoundaries(QFile &fid);
 
-  QString _filename;
-  QString _meshHeaderString;
-  QVector<AdcircNode *> _nodes;
-  QVector<AdcircElement *> _elements;
-  QVector<AdcircBoundary *> _openBoundaries;
-  QVector<AdcircBoundary *> _landBoundaries;
-  QHash<int, int> _nodeLookup;
-  int _numNodes;
-  int _numElements;
-  int _numOpenBoundaries;
-  int _numLandBoundaries;
-  int _totalOpenBoundaryNodes;
-  int _totalLandBoundaryNodes;
+  QString m_filename;
+  QString m_meshHeaderString;
+  QVector<AdcircNode *> m_nodes;
+  QVector<AdcircElement *> m_elements;
+  QVector<AdcircBoundary *> m_openBoundaries;
+  QVector<AdcircBoundary *> m_landBoundaries;
+  QHash<int, int> m_nodeLookup;
+  int m_numNodes;
+  int m_numElements;
+  int m_numOpenBoundaries;
+  int m_numLandBoundaries;
+  int m_totalOpenBoundaryNodes;
+  int m_totalLandBoundaryNodes;
+  int m_epsg;
+  bool m_isLatLon;
+  QKdtree2 *m_nodalSearchTree;
+  QKdtree2 *m_elementalSearchTree;
 };
 
 #endif // ADCIRCMESH_H

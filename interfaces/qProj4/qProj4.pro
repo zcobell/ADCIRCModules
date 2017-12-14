@@ -1,5 +1,5 @@
 
-TARGET = qProj4
+TARGET = qproj4
 TEMPLATE = lib
 CONFIG += static
 

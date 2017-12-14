@@ -77,37 +77,37 @@ unix {
     INSTALLS += target
 }
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/release/ -lqKdtree2
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/debug/ -lqKdtree2
-else:unix: LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/ -lqKdtree2
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/release/ -lqkdtree2
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/debug/ -lqkdtree2
+else:unix: LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/ -lqkdtree2
 
 INCLUDEPATH += $$PWD/../interfaces/qKdtree2
 DEPENDPATH += $$PWD/../interfaces/qKdtree2
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qKdtree2/release/libqKdtree2.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qKdtree2/debug/libqKdtree2.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qKdtree2/release/qKdtree2.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qKdtree2/debug/qKdtree2.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qKdtree2/libqKdtree2.a
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qKdtree2/release/libqkdtree2.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qKdtree2/debug/libqkdtree2.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qKdtree2/release/qkdtree2.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qKdtree2/debug/qkdtree2.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qKdtree2/libqkdtree2.a
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qProj4/release/ -lqProj4
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qProj4/debug/ -lqProj4
-else:unix: LIBS += -L$$OUT_PWD/../interfaces/qProj4/ -lqProj4
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qProj4/release/ -lqproj4
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qProj4/debug/ -lqproj4
+else:unix: LIBS += -L$$OUT_PWD/../interfaces/qProj4/ -lqproj4
 
 INCLUDEPATH += $$PWD/../interfaces/qProj4
 DEPENDPATH += $$PWD/../interfaces/qProj4
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qProj4/release/libqProj4.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qProj4/debug/libqProj4.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qProj4/release/qProj4.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qProj4/debug/qProj4.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qProj4/libqProj4.a
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qProj4/release/libqproj4.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qProj4/debug/libqproj4.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qProj4/release/qproj4.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qProj4/debug/qproj4.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../interfaces/qProj4/libqproj4.a
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../interfaces/shapelib/release/ -lshapelib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../interfaces/shapelib/debug/ -lshapelib
 else:unix: LIBS += -L$$OUT_PWD/../interfaces/shapelib/ -lshapelib
 
-INCLUDEPATH += $$PWD/../interfaces/shapelib
+INCLUDEPATH += $$PWD/../interfaces/shapelib $$PWD/../thirdparty/shapelib
 DEPENDPATH += $$PWD/../interfaces/shapelib
 
 win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../interfaces/shapelib/release/libshapelib.a

@@ -18,7 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 /**
- * \class proj4
+ * \class QProj4
  *
  * \brief Class that serves as an interface to the standard C PROJ4 library
  *
@@ -30,8 +30,8 @@
  * Contact: zcobell@gmail.com
  *
  */
-#ifndef PROJ4_H
-#define PROJ4_H
+#ifndef QPROJ4_H
+#define QPROJ4_H
 
 #include <QFile>
 #include <QObject>
@@ -39,12 +39,12 @@
 #include <QStringList>
 #include <QVector>
 
-class proj4 : public QObject {
+class QProj4 : public QObject {
   Q_OBJECT
 public:
   enum _errors { NoError, NoSuchProjection, Proj4InternalError };
 
-  explicit proj4(QObject *parent = 0);
+  explicit QProj4(QObject *parent = 0);
 
   int readEPSGInitializations();
 
@@ -55,4 +55,4 @@ public:
                 QVector<QPointF> &output, bool &isLatLon);
 };
 
-#endif // PROJ4_H
+#endif // QPROJ4_H

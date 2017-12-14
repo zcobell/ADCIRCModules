@@ -1,5 +1,5 @@
 
-TARGET = qKdtree2
+TARGET = qkdtree2
 TEMPLATE = lib
 CONFIG += static
 

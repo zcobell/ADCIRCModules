@@ -20,21 +20,22 @@
 #include "qkdtree2.h"
 #include "boost/array.hpp"
 #include "boost/multi_array.hpp"
+#include "kdtree2.hpp"
 
 //-----------------------------------------------------------------------------------------//
-// Constructor function. Initializes the qKdtree2 class
+// Constructor function. Initializes the QKdtree2 class
 //-----------------------------------------------------------------------------------------//
-/** \brief Constructor function for qKdtree2 class
+/** \brief Constructor function for QKdtree2 class
  *
  * @param[in] parent Parent QObject used for memory management
  *
- * Constructor function for qKdtree2 class
+ * Constructor function for QKdtree2 class
  *
  */
 //-----------------------------------------------------------------------------------------//
-qKdtree2::qKdtree2(QObject *parent) : QObject(parent) {
-  this->initialized = false;
-  this->numDataPoints = 0;
+QKdtree2::QKdtree2(QObject *parent) : QObject(parent) {
+  this->m_initialized = false;
+  this->m_numDataPoints = 0;
 }
 //-----------------------------------------------------------------------------------------//
 
@@ -42,7 +43,7 @@ qKdtree2::qKdtree2(QObject *parent) : QObject(parent) {
 //...Function that constructs a kd-tree for a given X/Y pair
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn qKdtree2::build(QVector<QPointF> &pointCloud)
+ * \fn QKdtree2::build(QVector<QPointF> &pointCloud)
  * \brief Generates a kdtree2 search tree
  *
  * @param[in] pointCloud Vector of QPointF used to generate the search tree
@@ -51,11 +52,11 @@ qKdtree2::qKdtree2(QObject *parent) : QObject(parent) {
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int qKdtree2::build(QVector<QPointF> &pointCloud) {
+int QKdtree2::build(QVector<QPointF> &pointCloud) {
   int i;
   typedef boost::multi_array<float, 2> array2d;
 
-  this->numDataPoints = pointCloud.size();
+  this->m_numDataPoints = pointCloud.size();
 
   array2d data(boost::extents[pointCloud.size()][2]);
 
@@ -64,7 +65,9 @@ int qKdtree2::build(QVector<QPointF> &pointCloud) {
     data[i][1] = static_cast<float>(pointCloud[i].y());
   }
 
-  this->tree = QSharedPointer<kdtree2>(new kdtree2(data, true));
+  this->m_tree = QSharedPointer<kdtree2>(new kdtree2(data, true));
+
+  this->m_initialized = true;
 
   return NoError;
 }
@@ -74,7 +77,7 @@ int qKdtree2::build(QVector<QPointF> &pointCloud) {
 //...Function that constructs a kd-tree for a given X/Y pair
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload qKdtree2::build(QVector<qreal> &x, QVector<qreal> &y)
+ * \overload QKdtree2::build(QVector<qreal> &x, QVector<qreal> &y)
  * \brief Generates a kdtree2 search tree
  *
  * @param[in] x Vector of x-coordinates
@@ -84,14 +87,14 @@ int qKdtree2::build(QVector<QPointF> &pointCloud) {
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int qKdtree2::build(QVector<qreal> &x, QVector<qreal> &y) {
+int QKdtree2::build(QVector<qreal> &x, QVector<qreal> &y) {
   int i;
   typedef boost::multi_array<float, 2> array2d;
 
   if (x.size() != y.size())
     return SizeMismatch;
 
-  this->numDataPoints = x.size();
+  this->m_numDataPoints = x.size();
 
   array2d data(boost::extents[x.size()][2]);
 
@@ -100,7 +103,8 @@ int qKdtree2::build(QVector<qreal> &x, QVector<qreal> &y) {
     data[i][1] = static_cast<float>(y[i]);
   }
 
-  this->tree = QSharedPointer<kdtree2>(new kdtree2(data, true));
+  this->m_tree = QSharedPointer<kdtree2>(new kdtree2(data, true));
+  this->m_initialized = true;
 
   return NoError;
 }
@@ -110,7 +114,7 @@ int qKdtree2::build(QVector<qreal> &x, QVector<qreal> &y) {
 //...Function that constructs a kd-tree for a given X/Y pair
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload qKdtree2::build(QVector<QVector3D> &pointCloud)
+ * \overload QKdtree2::build(QVector<QVector3D> &pointCloud)
  * \brief Generates a kdtree2 search tree
  *
  * @param[in] pointCloud Vector of QVector3D used to generate the search tree
@@ -119,11 +123,12 @@ int qKdtree2::build(QVector<qreal> &x, QVector<qreal> &y) {
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int qKdtree2::build(QVector<QVector3D> &pointCloud) {
+#ifdef QT_GUI_LIB
+int QKdtree2::build(QVector<QVector3D> &pointCloud) {
   int i;
   typedef boost::multi_array<float, 2> array2d;
 
-  this->numDataPoints = pointCloud.size();
+  this->m_numDataPoints = pointCloud.size();
 
   array2d data(boost::extents[pointCloud.size()][2]);
 
@@ -132,18 +137,20 @@ int qKdtree2::build(QVector<QVector3D> &pointCloud) {
     data[i][1] = pointCloud[i].y();
   }
 
-  this->tree = QSharedPointer<kdtree2>(new kdtree2(data, true));
+  this->m_tree = QSharedPointer<kdtree2>(new kdtree2(data, true));
+  this->m_initialized = true;
 
   return NoError;
 }
+#endif
 //-----------------------------------------------------------------------------------------//
 
 //-----------------------------------------------------------------------------------------//
 //...Function that uses a kd-tree to find the nearest point to a given set of
-//coordinates
+// coordinates
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn qKdtree2::findNearest(QPointF pointLocation, int &index)
+ * \fn QKdtree2::findNearest(QPointF pointLocation, int &index)
  * \brief Function that uses a kd-tree to find the nearest point to a given set
  *of coordinates
  *
@@ -156,7 +163,7 @@ int qKdtree2::build(QVector<QVector3D> &pointCloud) {
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int qKdtree2::findNearest(QPointF pointLocation, int &index) {
+int QKdtree2::findNearest(QPointF pointLocation, int &index) {
   kdtree2_result_vector result_vector;
   kdtree2_result result;
   vector<float> query(2);
@@ -164,7 +171,7 @@ int qKdtree2::findNearest(QPointF pointLocation, int &index) {
   query[0] = static_cast<float>(pointLocation.x());
   query[1] = static_cast<float>(pointLocation.y());
 
-  this->tree->n_nearest(query, 1, result_vector);
+  this->m_tree->n_nearest(query, 1, result_vector);
 
   result = result_vector.at(0);
   index = result.idx;
@@ -175,10 +182,10 @@ int qKdtree2::findNearest(QPointF pointLocation, int &index) {
 
 //-----------------------------------------------------------------------------------------//
 //...Function that uses a kd-tree to find the nearest point to a given set of
-//coordinates
+// coordinates
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload qKdtree2::findNearest(qreal x, qreal y, int &index)
+ * \overload QKdtree2::findNearest(qreal x, qreal y, int &index)
  * \brief Function that uses a kd-tree to find the nearest point to a given set
  *of coordinates
  *
@@ -191,7 +198,7 @@ int qKdtree2::findNearest(QPointF pointLocation, int &index) {
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int qKdtree2::findNearest(qreal x, qreal y, int &index) {
+int QKdtree2::findNearest(qreal x, qreal y, int &index) {
   int ierr = this->findNearest(QPointF(x, y), index);
   return ierr;
 }
@@ -199,10 +206,10 @@ int qKdtree2::findNearest(qreal x, qreal y, int &index) {
 
 //-----------------------------------------------------------------------------------------//
 //...Function that uses a kd-tree to find the nearest point to a given set of
-//coordinates
+// coordinates
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload qKdtree2::findNearest(QVector3D pointLocation, int &index)
+ * \overload QKdtree2::findNearest(QVector3D pointLocation, int &index)
  * \brief Function that uses a kd-tree to find the nearest point to a given set
  *of coordinates
  *
@@ -214,19 +221,21 @@ int qKdtree2::findNearest(qreal x, qreal y, int &index) {
  *coordinates
  *
  **/
+#ifdef QT_GUI_LIB
 //-----------------------------------------------------------------------------------------//
-int qKdtree2::findNearest(QVector3D pointLocation, int &index) {
+int QKdtree2::findNearest(QVector3D pointLocation, int &index) {
   int ierr = this->findNearest(pointLocation.toPointF(), index);
   return ierr;
 }
+#endif
 //-----------------------------------------------------------------------------------------//
 
 //-----------------------------------------------------------------------------------------//
 //...Function that uses a kd-tree to find the nearest point to a given set of
-//coordinates
+// coordinates
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn qKdtree2::findXNearest(QPointF pointLocation, int nn, QVector<int>
+ * \fn QKdtree2::findXNearest(QPointF pointLocation, int nn, QVector<int>
  *&indicies)
  * \brief Function that uses a kd-tree to find the N-nearest point to a given
  *set of coordinates
@@ -241,20 +250,20 @@ int qKdtree2::findNearest(QVector3D pointLocation, int &index) {
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int qKdtree2::findXNearest(QPointF pointLocation, int nn,
+int QKdtree2::findXNearest(QPointF pointLocation, int nn,
                            QVector<int> &indicies) {
   int i;
   kdtree2_result_vector result_vector;
   kdtree2_result result;
   vector<float> query(2);
 
-  if (nn > this->numDataPoints)
-    nn = this->numDataPoints;
+  if (nn > this->m_numDataPoints)
+    nn = this->m_numDataPoints;
 
   query[0] = static_cast<float>(pointLocation.x());
   query[1] = static_cast<float>(pointLocation.y());
 
-  this->tree->n_nearest(query, nn, result_vector);
+  this->m_tree->n_nearest(query, nn, result_vector);
 
   indicies.resize(nn);
 
@@ -269,10 +278,10 @@ int qKdtree2::findXNearest(QPointF pointLocation, int nn,
 
 //-----------------------------------------------------------------------------------------//
 //...Function that uses a kd-tree to find the nearest point to a given set of
-//coordinates
+// coordinates
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload qKdtree2::findXNearest(qreal x, qreal y, int nn, QVector<int>
+ * \overload QKdtree2::findXNearest(qreal x, qreal y, int nn, QVector<int>
  *&indicies)
  * \brief Function that uses a kd-tree to find the N-nearest point to a given
  *set of coordinates
@@ -288,7 +297,7 @@ int qKdtree2::findXNearest(QPointF pointLocation, int nn,
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int qKdtree2::findXNearest(qreal x, qreal y, int nn, QVector<int> &indicies) {
+int QKdtree2::findXNearest(qreal x, qreal y, int nn, QVector<int> &indicies) {
   int ierr = this->findXNearest(QPointF(x, y), nn, indicies);
   return ierr;
 }
@@ -296,10 +305,10 @@ int qKdtree2::findXNearest(qreal x, qreal y, int nn, QVector<int> &indicies) {
 
 //-----------------------------------------------------------------------------------------//
 //...Function that uses a kd-tree to find the nearest point to a given set of
-//coordinates
+// coordinates
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload qKdtree2::findXNearest(QVector3D pointLocation, int nn,
+ * \overload QKdtree2::findXNearest(QVector3D pointLocation, int nn,
  *QVector<int> &indicies)
  * \brief Function that uses a kd-tree to find the N-nearest point to a given
  *set of coordinates
@@ -313,10 +322,16 @@ int qKdtree2::findXNearest(qreal x, qreal y, int nn, QVector<int> &indicies) {
  *coordinates
  *
  **/
+#ifdef QT_GUI_LIB
 //-----------------------------------------------------------------------------------------//
-int qKdtree2::findXNearest(QVector3D pointLocation, int nn,
+int QKdtree2::findXNearest(QVector3D pointLocation, int nn,
                            QVector<int> &indicies) {
   int ierr = this->findXNearest(pointLocation.toPointF(), nn, indicies);
   return ierr;
 }
 //-----------------------------------------------------------------------------------------//
+#endif
+
+int QKdtree2::size() const { return this->m_numDataPoints; }
+
+bool QKdtree2::isInitialized() const { return this->m_initialized; }
