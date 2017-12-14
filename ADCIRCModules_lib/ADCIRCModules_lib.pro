@@ -66,8 +66,7 @@ SOURCES += \
     adcircnode.cpp \
     adcircelement.cpp \
     adcircboundary.cpp \
-    split.cpp \
-    pyadcirc_wrap.cxx
+    split.cpp 
 
 HEADERS += \
     adcircmodules_global.h \ 
@@ -136,3 +135,26 @@ else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../interfaces/point/libpoint.a
 
 INCLUDEPATH += /usr/include/python2.7 /usr/include/tcl8.5
+
+
+win32{
+    isEmpty(PREFIX) {
+        PREFIX = $$OUT_PWD
+    }
+    target.path = $$PREFIX/bin
+    INSTALLS += target
+    win32-msvc*{
+        lib.files = $$OUT_PWD/release/QADCModules.lib
+        lib.path  = $$PREFIX/bin
+        INSTALLS  += lib
+    }
+
+}
+unix{
+    isEmpty(PREFIX) {
+        PREFIX = /usr/local
+    }
+    target.path = $$PREFIX/lib
+    INSTALLS += target
+
+}

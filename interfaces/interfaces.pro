@@ -23,5 +23,5 @@ TEMPLATE = subdirs
 SUBDIRS  = point \
            qKdtree2 \
            qProj4 \
-           shapelib
+           shapelib 
 CONFIG += ordered           
