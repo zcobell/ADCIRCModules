@@ -16,7 +16,7 @@ DEFINES += ADCIRCMODULES_LIBRARY
 QMAKE_CXXFLAGS = -fPIC
 
 #...Boost Library
-BOOSTPATH     = $$PWD/../../thirdparty/boost-library
+BOOSTPATH     = $$PWD/../thirdparty/boost-library
 
 win32 {
     #...Set extension for a windows dll (avoids tracking version numbering in filename)
@@ -79,11 +79,6 @@ HEADERS += \
     adcircboundary.h \
     adcircenum.h \
     split.h
-
-unix {
-    target.path = /usr/lib
-    INSTALLS += target
-}
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/release/ -lqkdtree2
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/debug/ -lqkdtree2
@@ -152,11 +147,11 @@ win32{
     }
 
 }
+
 unix{
     isEmpty(PREFIX) {
         PREFIX = /usr/local
     }
     target.path = $$PREFIX/lib
     INSTALLS += target
-
 }
