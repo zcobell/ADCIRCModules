@@ -1,4 +1,5 @@
 #include "adcircboundary.h"
+#include "boost/format.hpp"
 
 AdcircBoundary::AdcircBoundary(int boundaryCode, int boundaryLength) {
   this->setBoundaryCode(boundaryCode);
@@ -44,8 +45,9 @@ void AdcircBoundary::setBoundaryCode(int boundaryCode) {
 
 double AdcircBoundary::crestElevation(int index) const {
   if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
-      this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
-      this->boundaryCode() == 5 || this->boundaryCode() == 25)
+      this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
+      this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
+      this->boundaryCode() == 25)
     if (index < this->boundaryLength() || index >= 0)
       return this->m_crestElevation[index];
   return -9999.0;
@@ -53,8 +55,9 @@ double AdcircBoundary::crestElevation(int index) const {
 
 void AdcircBoundary::setCrestElevation(int index, double crestElevation) {
   if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
-      this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
-      this->boundaryCode() == 5 || this->boundaryCode() == 25)
+      this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
+      this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
+      this->boundaryCode() == 25)
     if (index < this->boundaryLength() || index >= 0)
       this->m_crestElevation[index] = crestElevation;
 }
@@ -77,8 +80,9 @@ void AdcircBoundary::setSubcriticalWeirCoeffient(
 
 double AdcircBoundary::supercriticalWeirCoefficient(int index) const {
   if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
-      this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
-      this->boundaryCode() == 5 || this->boundaryCode() == 25)
+      this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
+      this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
+      this->boundaryCode() == 25)
     if (index < this->boundaryLength() || index >= 0)
       return this->m_supercriticalWeirCoefficient[index];
   return -9999.0;
@@ -87,8 +91,9 @@ double AdcircBoundary::supercriticalWeirCoefficient(int index) const {
 void AdcircBoundary::setSupercriticalWeirCoefficient(
     int index, double supercriticalWeirCoefficient) {
   if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
-      this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
-      this->boundaryCode() == 5 || this->boundaryCode() == 25)
+      this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
+      this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
+      this->boundaryCode() == 25)
     if (index < this->boundaryLength() || index >= 0)
       this->m_supercriticalWeirCoefficient[index] =
           supercriticalWeirCoefficient;
@@ -157,4 +162,49 @@ void AdcircBoundary::setNode2(int index, AdcircNode *node2) {
       this->boundaryCode() == 5 || this->boundaryCode() == 25)
     if (index < this->boundaryLength() || index >= 0)
       this->m_node2[index] = node2;
+}
+
+std::vector<std::string> AdcircBoundary::toStringList() {
+  std::vector<std::string> outputList;
+
+  if (this->boundaryCode() == -1)
+    outputList.push_back(boost::str(boost::format("%11i") % this->length()));
+  else
+    outputList.push_back(boost::str(boost::format("%11i %11i") %
+                                    this->length() % this->boundaryCode()));
+
+  for (int i = 0; i < this->length(); i++) {
+    if (this->boundaryCode() == 0 || this->boundaryCode() == 1 ||
+        this->boundaryCode() == 2 || this->boundaryCode() == 10 ||
+        this->boundaryCode() == 11 || this->boundaryCode() == 12 ||
+        this->boundaryCode() == 20 || this->boundaryCode() == 21 ||
+        this->boundaryCode() == 22 || this->boundaryCode() == 30 ||
+        this->boundaryCode() == 52 || this->boundaryCode() == 102 ||
+        this->boundaryCode() == 112 || this->boundaryCode() == 122) {
+      outputList.push_back(
+          boost::str(boost::format("%11i") % this->node1(i)->id()));
+    } else if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
+               this->boundaryCode() == 23) {
+      outputList.push_back(boost::str(
+          boost::format("%11i %6.3f %6.3f") % this->node1(i)->id() %
+          this->crestElevation(i) % this->supercriticalWeirCoefficient(i)));
+    } else if (this->boundaryCode() == 4 || this->boundaryCode() == 24) {
+      outputList.push_back(boost::str(
+          boost::format("%11i %11i %6.3f %6.3f %6.3f") % this->node1(i)->id() %
+          this->node2(i)->id() % this->crestElevation(i) %
+          this->subcriticalWeirCoeffient(i) %
+          this->supercriticalWeirCoefficient(i)));
+    } else if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+      outputList.push_back(boost::str(
+          boost::format("%11i %11i %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f") %
+          this->node1(i)->id() % this->node2(i)->id() %
+          this->crestElevation(i) % this->subcriticalWeirCoeffient(i) %
+          this->supercriticalWeirCoefficient(i) % this->pipeHeight(i) %
+          this->pipeCoefficient(i) % this->pipeDiameter(i)));
+    } else {
+      outputList.push_back(
+          boost::str(boost::format("%11i") % this->node1(i)->id()));
+    }
+  }
+  return outputList;
 }

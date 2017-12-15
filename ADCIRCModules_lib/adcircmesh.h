@@ -23,6 +23,9 @@ public:
 
   int read();
 
+  int write(std::string outputFile);
+  int write(const char *outputFile);
+
   std::string filename() const;
   void setFilename(const std::string &filename);
   void setFilename(const char *filename);
@@ -64,6 +67,8 @@ public:
 
   AdcircNode *node(int index);
   AdcircElement *element(int index);
+  AdcircBoundary *openBoundary(int index);
+  AdcircBoundary *landBoundary(int index);
 
   void resizeMesh(int numNodes, int numElements, int numOpenBoundaries,
                   int numLandBoundaries);
@@ -73,6 +78,9 @@ public:
 
   void addElement(int index, AdcircElement *element);
   void deleteElement(int index);
+
+  QKdtree2 *nodalSearchTree() const;
+  QKdtree2 *elementalSearchTree() const;
 
 private:
   int _readNodes(std::fstream &fid);

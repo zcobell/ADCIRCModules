@@ -53,11 +53,11 @@ public:
   int build(std::vector<Point> &pointCloud);
   int build(std::vector<double> &x, std::vector<double> &y);
 
-  int findNearest(Point pointLocation, int &index);
-  int findNearest(double x, double y, int &index);
+  int findNearest(Point pointLocation);
+  int findNearest(double x, double y);
 
-  int findXNearest(Point pointLocation, int nn, std::vector<int> &indicies);
-  int findXNearest(double x, double y, int nn, std::vector<int> &indicies);
+  std::vector<int> findXNearest(Point pointLocation, int nn);
+  std::vector<int> findXNearest(double x, double y, int nn);
 
   int size() const;
 

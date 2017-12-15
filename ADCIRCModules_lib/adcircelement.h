@@ -4,6 +4,7 @@
 #include "adcircmodules_global.h"
 #include "adcircnode.h"
 #include <vector>
+#include <string>
 
 class AdcircElement {
 public:
@@ -18,6 +19,8 @@ public:
 
   int id() const;
   void setId(int id);
+
+  std::string toString();
 
 private:
   const int m_n = 3;

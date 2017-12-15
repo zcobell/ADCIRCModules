@@ -1,4 +1,5 @@
 #include "adcircelement.h"
+#include "boost/format.hpp"
 
 AdcircElement::AdcircElement() { this->m_nodes.resize(this->n()); }
 
@@ -27,4 +28,10 @@ AdcircNode *AdcircElement::node(int i) {
   if (i < this->n())
     return this->m_nodes.at(i);
   return nullptr;
+}
+
+std::string AdcircElement::toString() {
+  return boost::str(boost::format("%11i %3i %11i %11i %11i") % this->id() %
+                    this->n() % this->node(0)->id() % this->node(1)->id() %
+                    this->node(2)->id());
 }

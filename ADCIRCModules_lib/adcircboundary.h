@@ -3,6 +3,7 @@
 
 #include "adcircmodules_global.h"
 #include "adcircnode.h"
+#include <string>
 #include <vector>
 
 class AdcircBoundary {
@@ -41,6 +42,8 @@ public:
 
   AdcircNode *node2(int index) const;
   void setNode2(int index, AdcircNode *node2);
+
+  std::vector<std::string> toStringList();
 
 private:
   int m_boundaryCode;

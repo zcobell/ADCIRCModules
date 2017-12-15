@@ -1,4 +1,5 @@
 #include "adcircnode.h"
+#include "boost/format.hpp"
 
 AdcircNode::AdcircNode() {}
 
@@ -32,3 +33,12 @@ void AdcircNode::setZ(double z) { this->m_z = z; }
 int AdcircNode::id() const { return this->m_id; }
 
 void AdcircNode::setId(int id) { this->m_id = id; }
+
+std::string AdcircNode::toString(bool geographicCoordinates) {
+  if (geographicCoordinates)
+    return boost::str(boost::format("%11i   %14.10f   %14.10f  %14.10f") %
+                      this->id() % this->x() % this->y() % this->z());
+  else
+    return boost::str(boost::format("%11i   %14.4f   %14.4f  %14.4f") %
+                      this->id() % this->x() % this->y() % this->z());
+}

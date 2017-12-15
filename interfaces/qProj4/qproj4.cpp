@@ -65,10 +65,10 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
   ierr = 0;
   z = 0.0;
 
-  if (epsgMapping.find(inputEPSG) != epsgMapping.end())
+  if (epsgMapping.find(inputEPSG) == epsgMapping.end())
     return NoSuchProjection;
 
-  if (epsgMapping.find(outputEPSG) != epsgMapping.end())
+  if (epsgMapping.find(outputEPSG) == epsgMapping.end())
     return NoSuchProjection;
 
   std::string currentInitialization = epsgMapping[inputEPSG];
@@ -134,10 +134,10 @@ int QProj4::transform(int inputEPSG, int outputEPSG, std::vector<Point> &input,
 
   ierr = 0;
 
-  if (epsgMapping.find(inputEPSG) != epsgMapping.end())
+  if (epsgMapping.find(inputEPSG) == epsgMapping.end())
     return NoSuchProjection;
 
-  if (epsgMapping.find(outputEPSG) != epsgMapping.end())
+  if (epsgMapping.find(outputEPSG) == epsgMapping.end())
     return NoSuchProjection;
 
   std::string currentInitialization = epsgMapping[inputEPSG];

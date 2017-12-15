@@ -2,6 +2,7 @@
 #define ADCIRCNODE_H
 
 #include "adcircmodules_global.h"
+#include <string>
 
 class AdcircNode {
 
@@ -22,6 +23,8 @@ public:
 
   int id() const;
   void setId(int id);
+
+  std::string toString(bool geographicCoordinates);
 
 private:
   int m_id;

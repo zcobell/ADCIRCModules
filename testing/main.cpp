@@ -10,6 +10,12 @@ int main(int argc, char *argv[]) {
 
   int ierr = mesh->read();
 
+  ierr = mesh->reproject(26915);
+
+  ierr = mesh->write("ms-riv-utm15.grd");
+
+  ierr = mesh->buildNodalSearchTree();
+
   qDebug() << "Return: " << ierr;
 
   return 0;

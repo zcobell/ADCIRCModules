@@ -1,4 +1,5 @@
 #include "adcircmesh.h"
+#include "boost/format.hpp"
 #include "qkdtree2.h"
 #include "qproj4.h"
 #include "shapefil.h"
@@ -319,6 +320,16 @@ int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
   return Adcirc::NoError;
 }
 
+QKdtree2 *AdcircMesh::elementalSearchTree() const
+{
+  return m_elementalSearchTree;
+}
+
+QKdtree2 *AdcircMesh::nodalSearchTree() const
+{
+  return m_nodalSearchTree;
+}
+
 int AdcircMesh::totalLandBoundaryNodes() const {
   return m_totalLandBoundaryNodes;
 }
@@ -345,6 +356,20 @@ AdcircNode *AdcircMesh::node(int index) {
 AdcircElement *AdcircMesh::element(int index) {
   if (index >= 0 && index < this->numElements())
     return this->m_elements[index];
+  else
+    return nullptr;
+}
+
+AdcircBoundary *AdcircMesh::openBoundary(int index) {
+  if (index >= 0 && index < this->numOpenBoundaries())
+    return this->m_openBoundaries[index];
+  else
+    return nullptr;
+}
+
+AdcircBoundary *AdcircMesh::landBoundary(int index) {
+  if (index >= 0 && index < this->numLandBoundaries())
+    return this->m_landBoundaries[index];
   else
     return nullptr;
 }
@@ -384,8 +409,7 @@ int AdcircMesh::reproject(int epsg) {
   return Adcirc::NoError;
 }
 
-int AdcircMesh::toShapefile(const char *outputFile)
-{
+int AdcircMesh::toShapefile(const char *outputFile) {
   std::string filename = std::string(outputFile);
   int ierr = this->toShapefile(filename);
   return ierr;
@@ -443,8 +467,9 @@ int AdcircMesh::buildNodalSearchTree() {
     y[i] = this->node(i)->y();
   }
 
-  if (this->m_nodalSearchTree->isInitialized())
-    delete this->m_nodalSearchTree;
+  if (this->m_nodalSearchTree != nullptr)
+    if (this->m_nodalSearchTree->isInitialized())
+      delete this->m_nodalSearchTree;
 
   this->m_nodalSearchTree = new QKdtree2();
   ierr = this->m_nodalSearchTree->build(x, y);
@@ -473,8 +498,9 @@ int AdcircMesh::buildElementalSearchTree() {
     y[i] = tempY / this->element(i)->n();
   }
 
-  if (this->m_elementalSearchTree->isInitialized())
-    delete this->m_elementalSearchTree;
+  if (this->m_elementalSearchTree != nullptr)
+    if (this->m_elementalSearchTree->isInitialized())
+      delete this->m_elementalSearchTree;
 
   this->m_elementalSearchTree = new QKdtree2();
   int ierr = this->m_elementalSearchTree->build(x, y);
@@ -578,4 +604,58 @@ void AdcircMesh::deleteElement(int index) {
     this->setNumNodes(this->m_nodes.size());
   }
   return;
+}
+
+int AdcircMesh::write(const char *filename) {
+  return this->write(std::string(filename));
+}
+
+int AdcircMesh::write(std::string filename) {
+  int i, j;
+  std::string tempString;
+  std::vector<std::string> boundaryList;
+  std::ofstream outputFile;
+
+  outputFile.open(filename);
+
+  //...Write the header
+  outputFile << this->meshHeaderString() << "\n";
+  tempString = boost::str(boost::format("%11i %11i") % this->numElements() %
+                          this->numNodes());
+  outputFile << tempString << "\n";
+
+  //...Write the mesh nodes
+  for (i = 0; i < this->numNodes(); i++)
+    outputFile << this->node(i)->toString(this->isLatLon()) << "\n";
+
+  //...Write the mesh elements
+  for (i = 0; i < this->numElements(); i++)
+    outputFile << this->element(i)->toString() << "\n";
+
+  //...Write the open boundary header
+  outputFile << this->numOpenBoundaries() << "\n";
+  outputFile << this->totalOpenBoundaryNodes() << "\n";
+
+  //...Write the open boundaries
+  for (i = 0; i < this->numOpenBoundaries(); i++) {
+    boundaryList = this->openBoundary(i)->toStringList();
+    for (j = 0; j < boundaryList.size(); j++)
+      outputFile << boundaryList[j] << "\n";
+  }
+
+  //...Write the land boundary header
+  outputFile << this->numLandBoundaries() << "\n";
+  outputFile << this->totalLandBoundaryNodes() << "\n";
+
+  //...Write the land boundaries
+  for (i = 0; i < this->numLandBoundaries(); i++) {
+    boundaryList = this->landBoundary(i)->toStringList();
+    for (j = 0; j < boundaryList.size(); j++)
+      outputFile << boundaryList[j] << "\n";
+  }
+
+  //...Close the file
+  outputFile.close();
+
+  return Adcirc::NoError;
 }

@@ -8,9 +8,13 @@
 #include "adcircnode.h"
 #include "adcircelement.h"
 #include "adcircboundary.h"
+#include "qkdtree2.h"
+#include "point.h"
 %}
 
 %include "adcircmesh.h"
 %include "adcircnode.h"
 %include "adcircelement.h"
 %include "adcircboundary.h"
+%include "qkdtree2.h"
+%include "point.h"
