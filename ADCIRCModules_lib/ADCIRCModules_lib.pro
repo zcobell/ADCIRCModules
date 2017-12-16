@@ -69,7 +69,11 @@ SOURCES += \
     adcircnode.cpp \
     adcircelement.cpp \
     adcircboundary.cpp \
-    split.cpp 
+    split.cpp \ 
+    stringconversion.cpp \
+    adcircnodalattribute.cpp \
+    adcircnodalattributemetadata.cpp \
+    adcircnodalparameters.cpp
 
 HEADERS += \
     adcircmodules_global.h \ 
@@ -78,7 +82,11 @@ HEADERS += \
     adcircelement.h \
     adcircboundary.h \
     adcircenum.h \
-    split.h
+    split.h \
+    stringconversion.h \
+    adcircnodalattribute.h \
+    adcircnodalattributemetadata.h \
+    adcircnodalparameters.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/release/ -lqkdtree2
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/debug/ -lqkdtree2

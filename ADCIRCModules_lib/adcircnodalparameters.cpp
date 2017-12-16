@@ -1,6 +1,3 @@
-#include "adcircnodalattributes.h"
+#include "adcircnodalparameters.h"
 
-AdcircNodalAttributes::AdcircNodalAttributes()
-{
-
-}
+AdcircNodalParameters::AdcircNodalParameters() {}
