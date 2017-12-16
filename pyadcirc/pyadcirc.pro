@@ -21,11 +21,6 @@ QMAKE_EXTRA_TARGETS += pyadcircTarget
 
 SOURCES += pyadcirc_wrap.cxx
 
-unix {
-    target.path = /usr/lib
-    INSTALLS += target
-}
-
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ADCIRCModules_lib/release/ -ladcircmodules
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ADCIRCModules_lib/debug/ -ladcircmodules
 else:unix: LIBS += -L$$OUT_PWD/../ADCIRCModules_lib/ -ladcircmodules
