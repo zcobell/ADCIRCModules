@@ -359,7 +359,7 @@ int kdtree2::select_on_coordinate_value(int c, float alpha, int l, int u) {
 
 
 
-static const float infinity = 1.0e38;
+static const float fl_infinity = 1.0e38;
 
 class searchrecord {
 
@@ -389,7 +389,7 @@ public:
   {
     dim = tree_in.dim;
     rearrange = tree_in.rearrange;
-    ballsize = infinity; 
+    ballsize = fl_infinity; 
     nn = 0; 
   };
 
