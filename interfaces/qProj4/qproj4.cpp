@@ -18,7 +18,6 @@
 //
 //-----------------------------------------------------------------------*/
 #include "qproj4.h"
-#include "epsg.h"
 #include "proj_api.h"
 
 //-----------------------------------------------------------------------------------------//
@@ -37,7 +36,7 @@
  *
  **/
 //-----------------------------------------------------------------------------------------//
-QProj4::QProj4() {}
+QProj4::QProj4() {this->_initialize();}
 //-----------------------------------------------------------------------------------------//
 
 //-----------------------------------------------------------------------------------------//
@@ -65,14 +64,14 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
   ierr = 0;
   z = 0.0;
 
-  if (epsgMapping.find(inputEPSG) == epsgMapping.end())
+  if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end())
     return NoSuchProjection;
 
-  if (epsgMapping.find(outputEPSG) == epsgMapping.end())
+  if (this->m_epsgMapping.find(outputEPSG) == this->m_epsgMapping.end())
     return NoSuchProjection;
 
-  std::string currentInitialization = epsgMapping[inputEPSG];
-  std::string outputInitialization = epsgMapping[outputEPSG];
+  std::string currentInitialization = this->m_epsgMapping[inputEPSG];
+  std::string outputInitialization = this->m_epsgMapping[outputEPSG];
 
   if (!(inputPJ = pj_init_plus(currentInitialization.c_str())))
     return Proj4InternalError;
@@ -134,14 +133,14 @@ int QProj4::transform(int inputEPSG, int outputEPSG, std::vector<Point> &input,
 
   ierr = 0;
 
-  if (epsgMapping.find(inputEPSG) == epsgMapping.end())
+  if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end())
     return NoSuchProjection;
 
-  if (epsgMapping.find(outputEPSG) == epsgMapping.end())
+  if (this->m_epsgMapping.find(outputEPSG) == this->m_epsgMapping.end())
     return NoSuchProjection;
 
-  std::string currentInitialization = epsgMapping[inputEPSG];
-  std::string outputInitialization = epsgMapping[outputEPSG];
+  std::string currentInitialization = this->m_epsgMapping[inputEPSG];
+  std::string outputInitialization = this->m_epsgMapping[outputEPSG];
 
   if (!(inputPJ = pj_init_plus(currentInitialization.c_str())))
     return Proj4InternalError;
@@ -186,3 +185,4 @@ int QProj4::transform(int inputEPSG, int outputEPSG, std::vector<Point> &input,
   return NoError;
 }
 //-----------------------------------------------------------------------------------------//
+

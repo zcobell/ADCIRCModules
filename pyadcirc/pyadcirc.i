@@ -9,6 +9,7 @@
 #include "adcircelement.h"
 #include "adcircboundary.h"
 #include "qkdtree2.h"
+#include "qproj4.h"
 #include "point.h"
 %}
 
@@ -17,4 +18,5 @@
 %include "adcircelement.h"
 %include "adcircboundary.h"
 %include "qkdtree2.h"
+%include "qproj4.h"
 %include "point.h"

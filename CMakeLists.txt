@@ -47,6 +47,12 @@ endif()
 
 
 ###########################################################################
+#  Compiler flags 
+###########################################################################
+SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
+###########################################################################
+
+###########################################################################
 #  LIBRARY VERSION
 ###########################################################################
 set(ADCIRCMODULES_VERSION_MAJOR 0)
@@ -89,7 +95,7 @@ TARGET_INCLUDE_DIRECTORIES( point PRIVATE ${CMAKE_SOURCE_DIR}/interfaces/point )
 ###########################################################################
 #  KDTREE2 Library
 ###########################################################################
-ADD_LIBRARY( kdtree2 STATIC ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2/qKdtree2.cpp 
+ADD_LIBRARY( kdtree2 STATIC ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2/qkdtree2.cpp 
                 ${CMAKE_SOURCE_DIR}/thirdparty/kdtree/kdtree2.cpp )
 TARGET_INCLUDE_DIRECTORIES( kdtree2 PRIVATE ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2
                                 ${CMAKE_SOURCE_DIR}/interfaces/point
@@ -103,7 +109,8 @@ TARGET_LINK_LIBRARIES( kdtree2 point )
 ###########################################################################
 #  PROJ4 Library
 ###########################################################################
-ADD_LIBRARY( proj4 STATIC ${CMAKE_SOURCE_DIR}/interfaces/qProj4/qProj4.cpp 
+ADD_LIBRARY( proj4 STATIC ${CMAKE_SOURCE_DIR}/interfaces/qProj4/qproj4.cpp 
+        ${CMAKE_SOURCE_DIR}/interfaces/qProj4/epsg.cpp 
         ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/aasincos.c ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/adjlon.c
         ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/bch2bps.c ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/bchgen.c
         ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/biveval.c ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/cs2cs.c

@@ -7,18 +7,14 @@ language: cpp
 compiler: gcc
 
 before_install:
-- sudo add-apt-repository --yes ppa:beineri/opt-qt592-trusty
 - sudo apt-get update  -qq
 - sudo apt-get install -qq libsqlite3-dev libnetcdf-dev python python-dev swig tcl8.5-dev
-- sudo apt-get install -qq qt59base 
-- export PATH=/opt/qt59/bin:$PATH
 script:
 - uname -a
 - which qmake
 - gcc --version
 - g++ --version
-- ". /opt/qt59/bin/qt59-env.sh"
-- qmake ADCIRCModules.pro PREFIX=/opt/ADCIRCModules
-- make
+- mkdir build
+- cd build ; cmake .. ; make
 #- sudo make install
 #- make check 

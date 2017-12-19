@@ -36,6 +36,8 @@
 #include <string>
 #include <vector>
 #include "point.h"
+#include <map>
+#include <string>
 
 class QProj4 {
 
@@ -49,13 +51,15 @@ public:
 
   explicit QProj4();
 
-  int readEPSGInitializations();
-
   int transform(int inputEPSG, int outputEPSG, Point &input, Point &output,
                 bool &isLatLon);
 
   int transform(int inputEPSG, int outputEPSG, std::vector<Point> &input,
                 std::vector<Point> &output, bool &isLatLon);
+
+private:
+  void _initialize();
+  std::map<int,std::string> m_epsgMapping;
 };
 
 #endif // QPROJ4_H
