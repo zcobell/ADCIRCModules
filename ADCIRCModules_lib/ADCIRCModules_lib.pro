@@ -16,7 +16,7 @@ DEFINES += ADCIRCMODULES_LIBRARY
 QMAKE_CXXFLAGS = -fPIC
 
 #...Boost Library
-BOOSTPATH     = $$PWD/../thirdparty/boost-library
+BOOSTPATH     = $$PWD/../thirdparty/boost_1_66_0
 
 win32 {
     #...Set extension for a windows dll (avoids tracking version numbering in filename)

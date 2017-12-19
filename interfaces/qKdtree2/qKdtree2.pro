@@ -5,7 +5,7 @@ CONFIG += static
 CONFIG -= qt
 
 #...Boost Library
-BOOSTPATH     = $$PWD/../../thirdparty/boost-library
+BOOSTPATH     = $$PWD/../../thirdparty/boost_1_66_0
 
 #...KDTREE
 KDTREEPATH    = $$PWD/../../thirdparty/kdtree

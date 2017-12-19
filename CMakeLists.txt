@@ -94,7 +94,7 @@ ADD_LIBRARY( kdtree2 STATIC ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2/qKdtree2.cpp
 TARGET_INCLUDE_DIRECTORIES( kdtree2 PRIVATE ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2
                                 ${CMAKE_SOURCE_DIR}/interfaces/point
                                 ${CMAKE_SOURCE_DIR}/thirdparty/kdtree
-                                ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_65_1 )
+                                ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 )
 ADD_DEPENDENCIES( kdtree2 point)
 TARGET_LINK_LIBRARIES( kdtree2 point )
 ###########################################################################
@@ -223,7 +223,7 @@ TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/ADCIRCModu
                                 ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2
                                 ${CMAKE_SOURCE_DIR}/interfaces/qProj4
                                 ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
-                                ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_65_1 
+                                ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 
                                 ${CMAKE_SOURCE_DIR}/thirdparty/kdtree )
 ADD_DEPENDENCIES( adcircmodules point proj4 kdtree2 shapelib )
 TARGET_LINK_LIBRARIES( adcircmodules proj4 point kdtree2 shapelib )
