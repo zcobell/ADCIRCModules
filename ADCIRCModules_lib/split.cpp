@@ -15,21 +15,13 @@
 // along with Vortex.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 #include "split.h"
+#include "boost/algorithm/string/split.hpp"
+#include "boost/algorithm/string/trim.hpp"
 
-void split::stringSplit(const std::string &s, char delim,
-                        std::vector<std::string> &elems) {
-  std::stringstream ss;
-  ss.str(s);
-  std::string item;
-  while (getline(ss, item, delim)) {
-    if (item != "" && item != " " && item != "\r")
-      elems.push_back(item);
-  }
-}
-
-std::vector<std::string> split::stringSplitToVector(const std::string &s,
+std::vector<std::string> split::stringSplitToVector(std::string s,
                                                     char delim) {
   std::vector<std::string> elems;
-  split::stringSplit(s, delim, elems);
+  boost::trim_if(s, boost::is_any_of(" "));
+  boost::algorithm::split(elems, s, boost::is_any_of(" "), boost::token_compress_on);
   return elems;
 }

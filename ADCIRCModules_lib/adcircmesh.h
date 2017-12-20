@@ -103,6 +103,7 @@ private:
   int m_totalLandBoundaryNodes;
   int m_epsg;
   bool m_isLatLon;
+  const bool m_nodeOrderingLogical = false;
   QKdtree2 *m_nodalSearchTree;
   QKdtree2 *m_elementalSearchTree;
 };

@@ -23,10 +23,7 @@
 
 class split {
  public:
-  static void stringSplit(const std::string &s, char delim,
-                          std::vector<std::string> &elems);
-
-  static std::vector<std::string> stringSplitToVector(const std::string &s,
+  static std::vector<std::string> stringSplitToVector(std::string s,
                                                       char delim);
 };
 

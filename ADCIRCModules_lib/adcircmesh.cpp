@@ -3,10 +3,11 @@
 #include "qkdtree2.h"
 #include "qproj4.h"
 #include "shapefil.h"
-#include "split.h"
 #include "stringconversion.h"
 #include <fstream>
 #include <string>
+#include "boost/algorithm/string/split.hpp"
+#include "boost/algorithm/string/trim.hpp"
 
 #define CHECK_FILEREAD_RETURN(ok)                                              \
   if (!ok)                                                                     \
@@ -116,7 +117,10 @@ int AdcircMesh::read() {
 
   //...Reading the mesh size
   std::getline(fid, tempLine);
-  tempList = split::stringSplitToVector(tempLine, ' ');
+  
+  boost::trim_if(tempLine,boost::is_any_of(" "));
+  boost::algorithm::split(tempList,tempLine,boost::is_any_of(" "),boost::token_compress_on);
+  
   tempLine = tempList[0];
   tempInt = StringConversion::stringToInt(tempLine, ok);
   CHECK_FILEREAD_RETURN(ok);
@@ -168,10 +172,15 @@ int AdcircMesh::_readNodes(std::fstream &fid) {
   std::vector<std::string> tempList;
 
   this->m_nodes.resize(this->numNodes());
+  
+  if(!this->m_nodeOrderingLogical)
+    this->m_nodeLookup.reserve(this->numNodes());
 
   for (int i = 0; i < this->numNodes(); i++) {
     std::getline(fid, tempLine);
-    tempList = split::stringSplitToVector(tempLine, ' ');
+    
+    boost::trim_if(tempLine,boost::is_any_of(" "));
+    boost::algorithm::split(tempList,tempLine,boost::is_any_of(" "),boost::token_compress_on);
 
     id = StringConversion::stringToInt(tempList[0], ok);
     CHECK_FILEREAD_RETURN(ok);
@@ -183,7 +192,8 @@ int AdcircMesh::_readNodes(std::fstream &fid) {
     CHECK_FILEREAD_RETURN(ok);
 
     this->m_nodes[i] = new AdcircNode(id, x, y, z);
-    this->m_nodeLookup[id] = i;
+    if(!this->m_nodeOrderingLogical)
+        this->m_nodeLookup[id] = i;
   }
 
   return Adcirc::NoError;
@@ -200,7 +210,10 @@ int AdcircMesh::_readElements(std::fstream &fid) {
 
   for (int i = 0; i < this->numElements(); i++) {
     std::getline(fid, tempLine);
-    tempList = split::stringSplitToVector(tempLine, ' ');
+   
+    boost::trim_if(tempLine,boost::is_any_of(" "));
+    boost::algorithm::split(tempList,tempLine,boost::is_any_of(" "),boost::token_compress_on);
+    
     id = StringConversion::stringToInt(tempList[0], ok);
     CHECK_FILEREAD_RETURN(ok);
     e1 = StringConversion::stringToDouble(tempList[2], ok);
@@ -210,10 +223,15 @@ int AdcircMesh::_readElements(std::fstream &fid) {
     e3 = StringConversion::stringToDouble(tempList[4], ok);
     CHECK_FILEREAD_RETURN(ok);
 
-    this->m_elements[i] =
-        new AdcircElement(id, this->m_nodes[this->m_nodeLookup[e1]],
+    if(this->m_nodeOrderingLogical)
+        this->m_elements[i] = new AdcircElement(id,this->m_nodes[e1-1],
+                            this->m_nodes[e2-1],this->m_nodes[e3-1]);
+    else
+        this->m_elements[i] =
+            new AdcircElement(id, this->m_nodes[this->m_nodeLookup[e1]],
                           this->m_nodes[this->m_nodeLookup[e2]],
                           this->m_nodes[this->m_nodeLookup[e3]]);
+
   }
 
   return Adcirc::NoError;
@@ -226,21 +244,28 @@ int AdcircMesh::_readOpenBoundaries(std::fstream &fid) {
   bool ok;
 
   std::getline(fid, tempLine);
-  tempList = split::stringSplitToVector(tempLine, ' ');
+  
+  boost::trim_if(tempLine,boost::is_any_of(" "));
+  boost::algorithm::split(tempList,tempLine,boost::is_any_of(" "),boost::token_compress_on);
+  
   this->setNumOpenBoundaries(StringConversion::stringToInt(tempList[0], ok));
   CHECK_FILEREAD_RETURN(ok);
 
   this->m_openBoundaries.resize(this->numOpenBoundaries());
 
   std::getline(fid, tempLine);
-  tempList = split::stringSplitToVector(tempLine, ' ');
+  boost::trim_if(tempLine,boost::is_any_of(" "));
+  boost::algorithm::split(tempList,tempLine,boost::is_any_of(" "),boost::token_compress_on);
   tempLine = tempList[0];
   this->setTotalOpenBoundaryNodes(StringConversion::stringToInt(tempLine, ok));
   CHECK_FILEREAD_RETURN(ok);
 
   for (int i = 0; i < this->numOpenBoundaries(); i++) {
     std::getline(fid, tempLine);
-    tempList = split::stringSplitToVector(tempLine, ' ');
+    
+    boost::trim_if(tempLine,boost::is_any_of(" "));
+    boost::algorithm::split(tempList,tempLine,boost::is_any_of(" "),boost::token_compress_on);
+    
     length = StringConversion::stringToInt(tempList[0], ok);
     CHECK_FILEREAD_RETURN(ok);
 
@@ -248,7 +273,10 @@ int AdcircMesh::_readOpenBoundaries(std::fstream &fid) {
 
     for (int j = 0; j < this->m_openBoundaries[i]->length(); j++) {
       std::getline(fid, tempLine);
-      tempList = split::stringSplitToVector(tempLine, ' ');
+      
+      boost::trim_if(tempLine,boost::is_any_of(" "));
+      boost::algorithm::split(tempList,tempLine,boost::is_any_of(" "),boost::token_compress_on);
+      
       nid = StringConversion::stringToInt(tempList[0], ok);
       CHECK_FILEREAD_RETURN(ok);
       this->m_openBoundaries[i]->setNode1(
@@ -266,21 +294,30 @@ int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
   bool ok;
 
   std::getline(fid, tempLine);
-  tempList = split::stringSplitToVector(tempLine, ' ');
+  
+  boost::trim_if(tempLine,boost::is_any_of(" "));
+  boost::algorithm::split(tempList,tempLine,boost::is_any_of(" "),boost::token_compress_on);
+  
   this->setNumLandBoundaries(StringConversion::stringToInt(tempList[0], ok));
   CHECK_FILEREAD_RETURN(ok);
 
   this->m_landBoundaries.resize(this->numLandBoundaries());
 
   std::getline(fid, tempLine);
-  tempList = split::stringSplitToVector(tempLine, ' ');
+  
+  boost::trim_if(tempLine,boost::is_any_of(" "));
+  boost::algorithm::split(tempList,tempLine,boost::is_any_of(" "),boost::token_compress_on);
+  
   this->setTotalLandBoundaryNodes(
       StringConversion::stringToInt(tempList[0], ok));
   CHECK_FILEREAD_RETURN(ok);
 
   for (int i = 0; i < this->numLandBoundaries(); i++) {
     std::getline(fid, tempLine);
-    tempList = split::stringSplitToVector(tempLine, ' ');
+    
+    boost::trim_if(tempLine,boost::is_any_of(" "));
+    boost::algorithm::split(tempList,tempLine,boost::is_any_of(" "),boost::token_compress_on);
+    
     length = StringConversion::stringToInt(tempList[0], ok);
     CHECK_FILEREAD_RETURN(ok);
     code = StringConversion::stringToInt(tempList[1], ok);
@@ -290,7 +327,10 @@ int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
 
     for (int j = 0; j < this->m_landBoundaries[i]->length(); j++) {
       std::getline(fid, tempLine);
-      tempList = split::stringSplitToVector(tempLine, ' ');
+      
+      boost::trim_if(tempLine,boost::is_any_of(" "));
+      boost::algorithm::split(tempList,tempLine,boost::is_any_of(" "),boost::token_compress_on);
+      
       nid = StringConversion::stringToInt(tempList[0], ok);
       CHECK_FILEREAD_RETURN(ok);
 
