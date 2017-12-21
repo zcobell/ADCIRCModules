@@ -13,8 +13,6 @@ CONFIG -= qt
 
 DEFINES += ADCIRCMODULES_LIBRARY
 
-QMAKE_CXXFLAGS = -fPIC
-
 #...Boost Library
 BOOSTPATH     = $$PWD/../thirdparty/boost_1_66_0
 
@@ -73,7 +71,8 @@ SOURCES += \
     stringconversion.cpp \
     adcircnodalattribute.cpp \
     adcircnodalattributemetadata.cpp \
-    adcircnodalparameters.cpp
+    adcircnodalparameters.cpp \
+    io.cpp
 
 HEADERS += \
     adcircmodules_global.h \ 
@@ -86,7 +85,8 @@ HEADERS += \
     stringconversion.h \
     adcircnodalattribute.h \
     adcircnodalattributemetadata.h \
-    adcircnodalparameters.h
+    adcircnodalparameters.h \
+    io.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/release/ -lqkdtree2
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/debug/ -lqkdtree2
