@@ -83,10 +83,11 @@ public:
   QKdtree2 *elementalSearchTree() const;
 
 private:
-  int _readNodes(std::vector<std::string> &data);
-  int _readElements(std::vector<std::string> &data);
-  int _readOpenBoundaries(std::vector<std::string> &data, int &filePos);
-  int _readLandBoundaries(std::vector<std::string> &data, int &filePos);
+  int _readMeshHeader(std::fstream &fid);
+  int _readNodes(std::fstream &fid);
+  int _readElements(std::fstream &fid);
+  int _readOpenBoundaries(std::fstream &fid);
+  int _readLandBoundaries(std::fstream &fid);
 
   std::string m_filename;
   std::string m_meshHeaderString;

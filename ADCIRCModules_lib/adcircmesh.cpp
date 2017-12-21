@@ -11,6 +11,18 @@
   if (!ok)                                                                     \
     return FileIO::GenericFileReadError;
 
+#define CHECK_FILEREAD_RETURN_AND_CLOSE(ok)                                    \
+  if(!ok){                                                                     \
+      fid.close();                                                             \
+      return FileIO::GenericFileReadError;                                     \
+  }                                           
+  
+#define CHECK_RETURN_AND_CLOSE(ierr)                                           \  
+  if (ierr != Adcirc::NoError) {                                               \
+    fid.close();                                                               \
+    return ierr;                                                               \
+  }
+
 AdcircMesh::AdcircMesh() {
   this->setFilename(std::string());
   this->defineProjection(4326, true);
@@ -101,65 +113,66 @@ void AdcircMesh::setNumLandBoundaries(int numLandBoundaries) {
 }
 
 int AdcircMesh::read() {
-  bool ok;
+  
   int ierr;
-  int tempInt;
-  int filePos;
-  std::string tempLine;
-  std::vector<std::string> tempList;
-  std::vector<std::string> fileData;
 
-  //...Read the data out of the mesh file
-  ierr = IO::readFileData(this->filename(),fileData);
-  if(ierr!=FileIO::NoError)
-      return ierr;
-
-  //...Set the mesh file header
-  this->setMeshHeaderString(fileData[0]);
-
-  //..Get the size of the mesh 
-  IO::splitString(fileData[1],tempList);
-  tempLine = tempList[0];
-  tempInt = StringConversion::stringToInt(tempLine, ok);
-  CHECK_FILEREAD_RETURN(ok);
-  this->setNumElements(tempInt);
-
-  tempLine = tempList[1];
-  tempInt = StringConversion::stringToInt(tempLine, ok);
-  CHECK_FILEREAD_RETURN(ok);
-  this->setNumNodes(tempInt);
+  std::fstream fid(this->filename());
+  
+  this->_readMeshHeader(fid);
 
   //...Read the node table
-  ierr = this->_readNodes(fileData);
-  if (ierr != Adcirc::NoError) {
-    return ierr;
-  }
+  ierr = this->_readNodes(fid);
+  CHECK_RETURN_AND_CLOSE(ierr);
   
   //...Read the element table
-  ierr = this->_readElements(fileData);
-  if (ierr != Adcirc::NoError) {
-    return ierr;
-  }
+  ierr = this->_readElements(fid);
+  CHECK_RETURN_AND_CLOSE(ierr);
 
   //...Read the open boundaries
-  ierr = this->_readOpenBoundaries(fileData,filePos);
-  if (ierr != Adcirc::NoError) {
-    return ierr;
-  }
+  ierr = this->_readOpenBoundaries(fid);
+  CHECK_RETURN_AND_CLOSE(ierr);
 
   //...Read the land boundaries
-  ierr = this->_readLandBoundaries(fileData,filePos);
-  if (ierr != Adcirc::NoError) {
-    return ierr;
-  }
+  ierr = this->_readLandBoundaries(fid);
+  CHECK_RETURN_AND_CLOSE(ierr);
 
-
-  fileData.clear();
+  fid.close();
 
   return Adcirc::NoError;
 }
 
-int AdcircMesh::_readNodes(std::vector<std::string> &data) {
+int AdcircMesh::_readMeshHeader(std::fstream &fid) {
+  
+  bool ok;
+  int tempInt;
+  int filePos;
+  std::string tempLine;
+  std::vector<std::string> tempList;
+  
+  //...Read mesh header
+  std::getline(fid, tempLine);
+
+  //...Set the mesh file header
+  this->setMeshHeaderString(tempLine);
+
+  //..Get the size of the mesh 
+  std::getline(fid, tempLine);
+  IO::splitString(tempLine,tempList);
+  tempLine = tempList[0];
+  tempInt = StringConversion::stringToInt(tempLine, ok);
+  CHECK_FILEREAD_RETURN_AND_CLOSE(ok);
+  this->setNumElements(tempInt);
+
+  tempLine = tempList[1];
+  tempInt = StringConversion::stringToInt(tempLine, ok);
+  CHECK_FILEREAD_RETURN_AND_CLOSE(ok);
+  this->setNumNodes(tempInt);
+
+  return Adcirc::NoError;
+}
+
+
+int AdcircMesh::_readNodes(std::fstream &fid) {
   bool ok;
   int id;
   double x, y, z;
@@ -172,7 +185,8 @@ int AdcircMesh::_readNodes(std::vector<std::string> &data) {
     this->m_nodeLookup.reserve(this->numNodes());
 
   for (int i = 0; i < this->numNodes(); i++) {
-    int ierr = IO::splitStringNodeFormat(data[2+i],id,x,y,z);
+    std::getline(fid, tempLine);
+    int ierr = IO::splitStringNodeFormat(tempLine,id,x,y,z);
     if(ierr!=FileIO::NoError)
         return Adcirc::FileReadError;
     this->m_nodes[i] = new AdcircNode(id, x, y, z);
@@ -183,7 +197,7 @@ int AdcircMesh::_readNodes(std::vector<std::string> &data) {
   return Adcirc::NoError;
 }
 
-int AdcircMesh::_readElements(std::vector<std::string> &data) {
+int AdcircMesh::_readElements(std::fstream &fid) {
 
   bool ok;
   int id, e1, e2, e3;
@@ -194,7 +208,8 @@ int AdcircMesh::_readElements(std::vector<std::string> &data) {
 
   if(this->m_nodeOrderingLogical){
     for (int i = 0; i < this->numElements(); i++) {
-      int ierr = IO::splitStringElemFormat(data[this->numNodes()+2+i],id,e1,e2,e3);
+      std::getline(fid, tempLine);
+      int ierr = IO::splitStringElemFormat(tempLine,id,e1,e2,e3);
       
       if(ierr!=FileIO::NoError)
           return Adcirc::FileReadError;
@@ -204,7 +219,8 @@ int AdcircMesh::_readElements(std::vector<std::string> &data) {
     }
   }else{
     for (int i = 0; i < this->numElements(); i++) {
-        int ierr = IO::splitStringElemFormat(data[this->numNodes()+2+i],id,e1,e2,e3);
+        std::getline(fid, tempLine);
+        int ierr = IO::splitStringElemFormat(tempLine,id,e1,e2,e3);
 
         if(ierr!=0)
             return Adcirc::FileReadError;
@@ -218,31 +234,30 @@ int AdcircMesh::_readElements(std::vector<std::string> &data) {
   return Adcirc::NoError;
 }
 
-int AdcircMesh::_readOpenBoundaries(std::vector<std::string> &data, int &filePos) {
+int AdcircMesh::_readOpenBoundaries(std::fstream &fid) {
   std::string tempLine;
   std::vector<std::string> tempList;
   int length, nid;
   bool ok;
 
-  filePos = 2 + this->numNodes() + this->numElements();
-
-  IO::splitString(data[filePos],tempList);
+  std::getline(fid, tempLine);
+  IO::splitString(tempLine,tempList);
   
   this->setNumOpenBoundaries(StringConversion::stringToInt(tempList[0], ok));
   CHECK_FILEREAD_RETURN(ok);
 
   this->m_openBoundaries.resize(this->numOpenBoundaries());
 
-  filePos++;
-  IO::splitString(data[filePos],tempList);
+  std::getline(fid, tempLine);
+  IO::splitString(tempLine,tempList);
   tempLine = tempList[0];
   this->setTotalOpenBoundaryNodes(StringConversion::stringToInt(tempLine, ok));
   CHECK_FILEREAD_RETURN(ok);
 
   for (int i = 0; i < this->numOpenBoundaries(); i++) {
-    filePos++;
     
-    IO::splitString(data[filePos],tempList);
+    std::getline(fid, tempLine);
+    IO::splitString(tempLine,tempList);
     
     length = StringConversion::stringToInt(tempList[0], ok);
     CHECK_FILEREAD_RETURN(ok);
@@ -250,9 +265,9 @@ int AdcircMesh::_readOpenBoundaries(std::vector<std::string> &data, int &filePos
     this->m_openBoundaries[i] = new AdcircBoundary(-1, length);
 
     for (int j = 0; j < this->m_openBoundaries[i]->length(); j++) {
-      filePos++;
 
-      IO::splitString(data[filePos],tempList);
+      std::getline(fid, tempLine);
+      IO::splitString(tempLine,tempList);
 
       nid = StringConversion::stringToInt(tempList[0], ok);
       CHECK_FILEREAD_RETURN(ok);
@@ -263,34 +278,34 @@ int AdcircMesh::_readOpenBoundaries(std::vector<std::string> &data, int &filePos
   return Adcirc::NoError;
 }
 
-int AdcircMesh::_readLandBoundaries(std::vector<std::string> &data, int &filePos) {
+int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
 
   std::string tempLine;
   std::vector<std::string> tempList;
   int length, nid, code;
   bool ok;
 
-  filePos++;
+  std::getline(fid, tempLine);
 
-  IO::splitString(data[filePos],tempList);
+  IO::splitString(tempLine,tempList);
   
   this->setNumLandBoundaries(StringConversion::stringToInt(tempList[0], ok));
   CHECK_FILEREAD_RETURN(ok);
 
   this->m_landBoundaries.resize(this->numLandBoundaries());
-
-  filePos++;
   
-  IO::splitString(data[filePos],tempList);
+  std::getline(fid, tempLine);
+
+  IO::splitString(tempLine,tempList);
 
   this->setTotalLandBoundaryNodes(
       StringConversion::stringToInt(tempList[0], ok));
   CHECK_FILEREAD_RETURN(ok);
 
   for (int i = 0; i < this->numLandBoundaries(); i++) {
-    filePos++;
 
-    IO::splitString(data[filePos],tempList);
+    std::getline(fid, tempLine);
+    IO::splitString(tempLine,tempList);
     
     length = StringConversion::stringToInt(tempList[0], ok);
     CHECK_FILEREAD_RETURN(ok);
@@ -300,9 +315,9 @@ int AdcircMesh::_readLandBoundaries(std::vector<std::string> &data, int &filePos
     this->m_landBoundaries[i] = new AdcircBoundary(code, length);
 
     for (int j = 0; j < this->m_landBoundaries[i]->length(); j++) {
-      filePos++;
 
-      IO::splitString(data[filePos],tempList);
+      std::getline(fid, tempLine);
+      IO::splitString(tempLine,tempList);
       
       nid = StringConversion::stringToInt(tempList[0], ok);
       CHECK_FILEREAD_RETURN(ok);
