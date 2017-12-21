@@ -33,16 +33,18 @@ PROJECT(ADCIRCModules)
 ###########################################################################
 # C++ 11 Check
 ###########################################################################
-include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-if(COMPILER_SUPPORTS_CXX11)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-elseif(COMPILER_SUPPORTS_CXX0X)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-else()
-    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
-endif()
+#include(CheckCXXCompilerFlag)
+#CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+#CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+#if(COMPILER_SUPPORTS_CXX11)
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+#elseif(COMPILER_SUPPORTS_CXX0X)
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+#else()
+#    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+#endif()
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 ###########################################################################
 
 
@@ -221,6 +223,7 @@ ADD_LIBRARY( adcircmodules SHARED ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircme
                 ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircelement.cpp
                 ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircboundary.cpp
                 ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/split.cpp
+                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/io.cpp
                 ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/stringconversion.cpp
                 ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattribute.cpp
                 ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattributemetadata.cpp
@@ -236,6 +239,15 @@ ADD_DEPENDENCIES( adcircmodules point proj4 kdtree2 shapelib )
 TARGET_LINK_LIBRARIES( adcircmodules proj4 point kdtree2 shapelib )
 ###########################################################################
 
+
+###########################################################################
+# Test case
+###########################################################################
+ADD_EXECUTABLE( test_case ${CMAKE_SOURCE_DIR}/testing/main.cpp )
+ADD_DEPENDENCIES( test_case adcircmodules )
+TARGET_INCLUDE_DIRECTORIES( test_case PRIVATE ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib )
+TARGET_LINK_LIBRARIES( test_case adcircmodules )
+###########################################################################
 
 ###########################################################################
 #  PyAdcirc Library

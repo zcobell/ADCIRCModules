@@ -1,22 +1,18 @@
 #include "adcircmesh.h"
-#include <QCoreApplication>
-#include <QDebug>
+#include <iostream>
 
 int main(int argc, char *argv[]) {
-  QCoreApplication a(argc, argv);
-
   AdcircMesh *mesh = new AdcircMesh(
-      std::string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.grd"));
+      std::string("tx2008_r35a_GCCPRD_v04c_Alt16_SecondAlternative_v01a_chk.grd"));
 
   int ierr = mesh->read();
-
+  std::cout << "Return Code: " << ierr << "\n";
+/*
   ierr = mesh->reproject(26915);
 
   ierr = mesh->write("ms-riv-utm15.grd");
 
   ierr = mesh->buildNodalSearchTree();
-
-  qDebug() << "Return: " << ierr;
-
+*/
   return 0;
 }
