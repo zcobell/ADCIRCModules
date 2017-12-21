@@ -46,7 +46,7 @@ SOURCES_PROJ4 = \
 HEADERS += epsg.h \
            qproj4.h
 
-SOURCES += $$SOURCES_PROJ4 qproj4.cpp
+SOURCES += $$SOURCES_PROJ4 qproj4.cpp epsg.cpp
 
 INCLUDEPATH += $$PROJPATH
 

@@ -18,10 +18,10 @@
 #include "boost/algorithm/string/split.hpp"
 #include "boost/algorithm/string/trim.hpp"
 
-std::vector<std::string> split::stringSplitToVector(std::string s,
-                                                    char delim) {
+std::vector<std::string> split::stringSplitToVector(std::string s, char delim) {
   std::vector<std::string> elems;
   boost::trim_if(s, boost::is_any_of(" "));
-  boost::algorithm::split(elems, s, boost::is_any_of(" "), boost::token_compress_on);
+  boost::algorithm::split(elems, s, boost::is_any_of(" "),
+                          boost::token_compress_on);
   return elems;
 }
