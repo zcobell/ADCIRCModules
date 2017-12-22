@@ -16,7 +16,7 @@ addons:
       name: "zcobell/QADCModules"
       description: "Modules for Reading/Writing ADCIRC model data"
     notification_email: zachary.cobell@arcadis.com
-    build_command_prepend: "mkdir build; cd build; cmake .."
+    build_command_prepend: "mkdir -p build; cd build; cmake .."
     build_command:   "cd build; make"
     branch_pattern: optimized
 
@@ -28,7 +28,7 @@ script:
 - which qmake
 - gcc --version
 - g++ --version
-- mkdir build
+- mkdir -p build
 - cd build ; cmake .. ; make
 #- sudo make install
 #- make check 
