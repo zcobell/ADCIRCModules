@@ -1,34 +1,32 @@
 sudo: required
-
 dist: trusty
-
 language: cpp
-
 compiler: gcc
 
 env:
   global:
-   - secure: "gFCFefPykIowlpdF1ydqH/T3ajp6NrOhKLeeBruIfu9BF7NMsqt0u7ezbok2wh20PJJPCa5ypb+8CgUDskM+pMC4rlNu6MjPP7b7BsTg7ntwmT/yA8W+KI2WM0FGgkVNzMxJe4/9ZtONvSjswWdghGKmOFUBGSdy4GkqhMI3th3HEfF/gP9YGa4VCXstRuB+NroXFh0gxFNd2yHXbECC6+DtfuokfPSFccztPUoxByC315AmrvUeTwoL1daVIUO9n4i9jpszpcY3qDebfJ97JORjpFOQxnJwkX7lXaoEa100ZW7VHlf83pWYq6vuYGv7PQAbhxg7TOAGQ67QHl2UkdBBiJQDC7cUT8mE9cs2J0yY1lK2h721KhUs0vlAbmgJIei8z+fKyXOUGMO0bHvlaQM1GUUWU4QPSAPjmcNEPWFnR3S21HnCtEIuNiUme6bWu3kBvWZPnfMHUcTZHGW+p5fpJRMGjAvu7/PE0dv6k6U7h0XxX4NuNq/aiTnIb6/3oWz5uI/b7l90ejq2GrqCAevqFb4Lm8CWeVdbm50Y0uRCLjFGfEAK5/AI3U73FGRrHc0Zf8GCOlkzhrw1vOAom8OncFDvHQsUYZ+hxYq9EptO0unJA4nw8rmnXWyLbNtuUTnPk0lcyqEGsNVJfa8bxk+7xv3tg08z0ykkCNAh9/c="
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "MNqRhCRIm2h/MlXmLHNOnecun4+5sFwWT9gmN0ec6BMsDiBozzCnogVgt7qpkpNZkK5aTzHcltBKC2ZUpT3QAGIRpol/QLuHl15QoypwasD60QuVk05rmTRJ3+xNyfLaEZ7tbuwkQdSVyUmBAL3dhDQrR4QNk9o0hK/aqymzI8wZmd3C0bCIlPbYVrougdBJ2UPxCdJ/e7YrY9oYh7saxYWvLVhKsbfAF7RQAqDU4qfoOsT08sbY4N4wKLu9c//0WtCiqm/bE7fYV05++E58IpCi04o3con5XWnN7veiwergp/M8lfnpcryuCI/2L0C8Mnlud3820Q55ETNadJePFFOE813QSUiXqwPcl9T6kbdMaWtnaBdNlTCHgoznKSKxZ4xcxndkVBtkiyEhuBWYtpy2p45luQaURuNtLCe8Bi2AM34qevD0LzbSms6lUVGGaDeORBbcXn05Vmvlq111gUNvDvyI8bL6MPUy/duwyRr8c+U2BDwxl3iHF5xXKAW0QhXnzB65EfB7UgmnPvRQ5YH0H1xjRTRW+Vm2SGy+668GQhsA9FI8iuuq/0aJe8OEfuDV8Dz7IuYyuL4xrzJfx6m9yP/QUDEaxDfT780Soq/Nhzh20E34UZuofA6F7dkzR0/4n8JL2B7WAp/GVcAuYwrx+hsBwYe6CB5VFmWa3R8="
+
+before_install:
+      - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+      - sudo apt-get update  -qq
+      - sudo apt-get install -qq libsqlite3-dev libnetcdf-dev python python-dev swig tcl8.5-dev
 
 addons:
   coverity_scan:
     project:
-      name: "zcobell/QADCModules"
-      description: "Modules for Reading/Writing ADCIRC model data"
+      name: "zcobell/ADCModules"
+      description: "Build submitted via Travis CI"
     notification_email: zachary.cobell@arcadis.com
-    build_command_prepend: "mkdir -p build; cd build; cmake .."
-    build_command:   "cd build; make"
+    build_command_prepend: "cmake ."
+    build_command:   "make -j 4"
     branch_pattern: optimized
 
 before_install:
-- sudo apt-get update  -qq
-- sudo apt-get install -qq libsqlite3-dev libnetcdf-dev python python-dev swig tcl8.5-dev
+- echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
 script:
-- uname -a
-- which qmake
-- gcc --version
-- g++ --version
-- mkdir -p build
-- cd build ; cmake .. ; make
-#- sudo make install
-#- make check 
+- cmake .
+- make -j 4
