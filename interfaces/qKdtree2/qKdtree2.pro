@@ -3,6 +3,7 @@ TARGET = qkdtree2
 TEMPLATE = lib
 CONFIG += static
 CONFIG -= qt
+CONFIG += c++11
 
 #...Boost Library
 BOOSTPATH     = $$PWD/../../thirdparty/boost_1_66_0

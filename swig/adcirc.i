@@ -1,6 +1,12 @@
 
-/* PyAdcirc Interface File */
+/* Adcirc Interface File */
+#if defined(SWIGPYTHON)
 %module pyadcirc
+#endif
+
+#if defined(SWIGPERL)
+%module perladcirc
+#endif
 
 %{
 #define SWIG_FILE_WITH_INIT

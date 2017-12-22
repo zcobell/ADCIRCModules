@@ -12,7 +12,7 @@ CONFIG += no_plugin_name_prefix
 
 pyadcircTarget.target = pyadcirc_wrap.cxx
 pyadcircTarget.depends = FORCE
-pyadcircTarget.commands = swig -I$$PWD/../ADCIRCModules_lib -I$$PWD/../interfaces/qKdtree2 -I$$PWD/../interfaces/point -c++ -python $$PWD/pyadcirc.i
+pyadcircTarget.commands = swig -I$$PWD/../ADCIRCModules_lib -I$$PWD/../interfaces/qKdtree2 -I$$PWD/../interfaces/point -c++ -python $$PWD/adcirc.i
 
 INCLUDEPATH += /usr/include/python2.7 /usr/include/tcl8.5
 

@@ -22,7 +22,7 @@ TEMPLATE = subdirs
 
 SUBDIRS  = interfaces \
            ADCIRCModules_lib \
-           pyadcirc \
+           swig \
            testing 
 #           bench  
 CONFIG += ordered           

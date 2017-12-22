@@ -6,6 +6,20 @@ language: cpp
 
 compiler: gcc
 
+env:
+  global:
+   - secure: "gFCFefPykIowlpdF1ydqH/T3ajp6NrOhKLeeBruIfu9BF7NMsqt0u7ezbok2wh20PJJPCa5ypb+8CgUDskM+pMC4rlNu6MjPP7b7BsTg7ntwmT/yA8W+KI2WM0FGgkVNzMxJe4/9ZtONvSjswWdghGKmOFUBGSdy4GkqhMI3th3HEfF/gP9YGa4VCXstRuB+NroXFh0gxFNd2yHXbECC6+DtfuokfPSFccztPUoxByC315AmrvUeTwoL1daVIUO9n4i9jpszpcY3qDebfJ97JORjpFOQxnJwkX7lXaoEa100ZW7VHlf83pWYq6vuYGv7PQAbhxg7TOAGQ67QHl2UkdBBiJQDC7cUT8mE9cs2J0yY1lK2h721KhUs0vlAbmgJIei8z+fKyXOUGMO0bHvlaQM1GUUWU4QPSAPjmcNEPWFnR3S21HnCtEIuNiUme6bWu3kBvWZPnfMHUcTZHGW+p5fpJRMGjAvu7/PE0dv6k6U7h0XxX4NuNq/aiTnIb6/3oWz5uI/b7l90ejq2GrqCAevqFb4Lm8CWeVdbm50Y0uRCLjFGfEAK5/AI3U73FGRrHc0Zf8GCOlkzhrw1vOAom8OncFDvHQsUYZ+hxYq9EptO0unJA4nw8rmnXWyLbNtuUTnPk0lcyqEGsNVJfa8bxk+7xv3tg08z0ykkCNAh9/c="
+
+addons:
+  coverity_scan:
+    project:
+      name: "zcobell/QADCModules"
+      description: "Modules for Reading/Writing ADCIRC model data"
+    notification_email: zachary.cobell@arcadis.com
+    build_command_prepend: "mkdir build; cd build; cmake .."
+    build_command:   "cd build; make"
+    branch_pattern: optimized
+
 before_install:
 - sudo apt-get update  -qq
 - sudo apt-get install -qq libsqlite3-dev libnetcdf-dev python python-dev swig tcl8.5-dev

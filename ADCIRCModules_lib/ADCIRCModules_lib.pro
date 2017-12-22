@@ -10,6 +10,7 @@ TARGET = adcircmodules
 TEMPLATE = lib
 VERSION = 0.1.0
 CONFIG -= qt
+CONFIG += c++11
 
 DEFINES += ADCIRCMODULES_LIBRARY
 

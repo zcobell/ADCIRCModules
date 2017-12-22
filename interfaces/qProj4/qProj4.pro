@@ -3,6 +3,7 @@ TARGET = qproj4
 TEMPLATE = lib
 CONFIG += static
 CONFIG -= qt
+CONFIG += c++11
 
 #...PROJ4 Library
 PROJPATH      = $$PWD/../../thirdparty/proj4/src
