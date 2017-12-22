@@ -63,6 +63,13 @@ set(ADCIRCMODULES_VERSION_STRING ${ADCIRCMODULES_VERSION_MAJOR}.${ADCIRCMDULES_V
 
 
 ###########################################################################
+#  SET THE LOCATION OF TEMPORARY STATIC LIBS
+###########################################################################
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/CMakeFiles)
+###########################################################################
+
+
+###########################################################################
 #  SWIG/PYTHON
 ###########################################################################
 FIND_PACKAGE(SWIG)
@@ -254,6 +261,10 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
     IF(WIN32)
 
         #...Builds a dummy cmake project
+        #   Which will add some windows specific include
+        #   files not required by Unix/Cygwin [mingw64]
+        #   Further testing required to see if this is 
+        #   required by MSVC compilers
         FILE(WRITE ${CMAKE_BINARY_DIR}/CMakeFiles/pywrapper.cmake "
             FILE(READ \${SRC} DATA)
             FILE(WRITE \${DST} \"#include <math.h>\")
@@ -261,36 +272,36 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
             FILE(APPEND \${DST} \"\${DATA}\")
         ")
 
-        ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/pyadcirc_wrap.cxx
+        ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/pyadcirc_wrap.cxx
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/ADCIRCModules_lib 
                     -I${CMAKE_SOURCE_DIR}/interfaces/point 
                     -I${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
                     -I${CMAKE_SOURCE_DIR}/interfaces/qProj4 
                     -I${PYTHON_INCLUDE_PATH} 
-                    -o ${CMAKE_BINARY_DIR}/pyadcirc_wrap.cxx.1
+                    -o ${CMAKE_BINARY_DIR}/CMakeFiles/pyadcirc_wrap.cxx.1
                     ${CMAKE_SOURCE_DIR}/pyadcirc/pyadcirc.i
-            COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_BINARY_DIR}/pyadcirc_wrap.cxx.1 
-                                     -DDST=${CMAKE_BINARY_DIR}/pyadcirc_wrap.cxx
+            COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_BINARY_DIR}/CMakeFiles/pyadcirc_wrap.cxx.1 
+                                     -DDST=${CMAKE_BINARY_DIR}/CMakeFiles/pyadcirc_wrap.cxx
                                      -P ${CMAKE_BINARY_DIR}/CMakeFiles/pywrapper.cmake
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
             COMMENT "Generating SWIG interface to Python..."
         )
 
     ELSE(WIN32)
-        ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/pyadcirc_wrap.cxx
+        ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/pyadcirc_wrap.cxx
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/ADCIRCModules_lib 
                     -I${CMAKE_SOURCE_DIR}/interfaces/point 
                     -I${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
                     -I${CMAKE_SOURCE_DIR}/interfaces/qProj4 
                     -I${PYTHON_INCLUDE_PATH} 
-                    -o ${CMAKE_BINARY_DIR}/pyadcirc_wrap.cxx
+                    -o ${CMAKE_BINARY_DIR}/CMakeFiles/pyadcirc_wrap.cxx
                     ${CMAKE_SOURCE_DIR}/pyadcirc/pyadcirc.i
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
             COMMENT "Generating SWIG interface to Python..."
         )
     ENDIF(WIN32)
 
-    ADD_LIBRARY( pyadcirc SHARED ${CMAKE_BINARY_DIR}/pyadcirc_wrap.cxx )
+    ADD_LIBRARY( pyadcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/pyadcirc_wrap.cxx )
     TARGET_INCLUDE_DIRECTORIES( pyadcirc PRIVATE ${PYTHON_INCLUDE_DIRECTORIES} 
             ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib 
             ${CMAKE_SOURCE_DIR}/interfaces/point 
