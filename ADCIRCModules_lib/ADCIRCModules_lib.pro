@@ -87,7 +87,8 @@ HEADERS += \
     adcircnodalattribute.h \
     adcircnodalattributemetadata.h \
     adcircnodalparameters.h \
-    io.h
+    io.h \
+    parsers.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/release/ -lqkdtree2
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/debug/ -lqkdtree2

@@ -61,7 +61,6 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
   double x, y, z;
   int ierr;
 
-  ierr = 0;
   z = 0.0;
 
   if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end())
@@ -130,8 +129,6 @@ int QProj4::transform(int inputEPSG, int outputEPSG, std::vector<Point> &input,
   projPJ inputPJ, outputPJ;
   std::vector<double> x, y, z;
   int i, ierr;
-
-  ierr = 0;
 
   if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end())
     return NoSuchProjection;
