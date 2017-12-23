@@ -1,23 +1,27 @@
 #include "adcircmesh.h"
 #include "boost/format.hpp"
+#include "io.h"
 #include "qkdtree2.h"
 #include "qproj4.h"
 #include "shapefil.h"
 #include "stringconversion.h"
 #include <string>
-#include "io.h"
 
 #define CHECK_FILEREAD_RETURN(ok)                                              \
   if (!ok)                                                                     \
     return FileIO::GenericFileReadError;
 
 #define CHECK_FILEREAD_RETURN_AND_CLOSE(ok)                                    \
-  if(!ok){                                                                     \
-      fid.close();                                                             \
-      return FileIO::GenericFileReadError;                                     \
-  }                                           
-  
-#define CHECK_RETURN_AND_CLOSE(ierr)                                           \  
+  if (!ok) {                                                                   \
+    fid.close();                                                               \
+    return FileIO::GenericFileReadError;                                       \
+  }
+
+#define CHECK_FILEREAD_RETURN_INT(ierr)                                        \
+  if (ierr != FileIO::NoError)                                                 \
+    return ierr;
+
+#define CHECK_RETURN_AND_CLOSE(ierr)                                           \
   if (ierr != Adcirc::NoError) {                                               \
     fid.close();                                                               \
     return ierr;                                                               \
@@ -113,17 +117,17 @@ void AdcircMesh::setNumLandBoundaries(int numLandBoundaries) {
 }
 
 int AdcircMesh::read() {
-  
+
   int ierr;
 
   std::fstream fid(this->filename());
-  
+
   this->_readMeshHeader(fid);
 
   //...Read the node table
   ierr = this->_readNodes(fid);
   CHECK_RETURN_AND_CLOSE(ierr);
-  
+
   //...Read the element table
   ierr = this->_readElements(fid);
   CHECK_RETURN_AND_CLOSE(ierr);
@@ -142,22 +146,21 @@ int AdcircMesh::read() {
 }
 
 int AdcircMesh::_readMeshHeader(std::fstream &fid) {
-  
+
   bool ok;
   int tempInt;
-  int filePos;
   std::string tempLine;
   std::vector<std::string> tempList;
-  
+
   //...Read mesh header
   std::getline(fid, tempLine);
 
   //...Set the mesh file header
   this->setMeshHeaderString(tempLine);
 
-  //..Get the size of the mesh 
+  //..Get the size of the mesh
   std::getline(fid, tempLine);
-  IO::splitString(tempLine,tempList);
+  IO::splitString(tempLine, tempList);
   tempLine = tempList[0];
   tempInt = StringConversion::stringToInt(tempLine, ok);
   CHECK_FILEREAD_RETURN_AND_CLOSE(ok);
@@ -171,27 +174,24 @@ int AdcircMesh::_readMeshHeader(std::fstream &fid) {
   return Adcirc::NoError;
 }
 
-
 int AdcircMesh::_readNodes(std::fstream &fid) {
-  bool ok;
   int id;
   double x, y, z;
   std::string tempLine;
-  std::vector<std::string> tempList;
 
   this->m_nodes.resize(this->numNodes());
-  
-  if(!this->m_nodeOrderingLogical)
+
+  if (!this->m_nodeOrderingLogical)
     this->m_nodeLookup.reserve(this->numNodes());
 
   for (int i = 0; i < this->numNodes(); i++) {
     std::getline(fid, tempLine);
-    int ierr = IO::splitStringNodeFormat(tempLine,id,x,y,z);
-    if(ierr!=FileIO::NoError)
-        return Adcirc::FileReadError;
+    int ierr = IO::splitStringNodeFormat(tempLine, id, x, y, z);
+    CHECK_FILEREAD_RETURN_INT(ierr);
+
     this->m_nodes[i] = new AdcircNode(id, x, y, z);
-    if(!this->m_nodeOrderingLogical)
-        this->m_nodeLookup[id] = i;
+    if (!this->m_nodeOrderingLogical)
+      this->m_nodeLookup[id] = i;
   }
 
   return Adcirc::NoError;
@@ -199,36 +199,31 @@ int AdcircMesh::_readNodes(std::fstream &fid) {
 
 int AdcircMesh::_readElements(std::fstream &fid) {
 
-  bool ok;
   int id, e1, e2, e3;
   std::string tempLine;
-  std::vector<std::string> tempList;
 
   this->m_elements.resize(this->numElements());
 
-  if(this->m_nodeOrderingLogical){
+  if (this->m_nodeOrderingLogical) {
     for (int i = 0; i < this->numElements(); i++) {
       std::getline(fid, tempLine);
-      int ierr = IO::splitStringElemFormat(tempLine,id,e1,e2,e3);
-      
-      if(ierr!=FileIO::NoError)
-          return Adcirc::FileReadError;
+      int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
+      CHECK_FILEREAD_RETURN_INT(ierr);
 
-      this->m_elements[i] = new AdcircElement(id,this->m_nodes[e1-1],
-                          this->m_nodes[e2-1],this->m_nodes[e3-1]);
+      this->m_elements[i] =
+          new AdcircElement(id, this->m_nodes[e1 - 1], this->m_nodes[e2 - 1],
+                            this->m_nodes[e3 - 1]);
     }
-  }else{
+  } else {
     for (int i = 0; i < this->numElements(); i++) {
-        std::getline(fid, tempLine);
-        int ierr = IO::splitStringElemFormat(tempLine,id,e1,e2,e3);
+      std::getline(fid, tempLine);
+      int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
+      CHECK_FILEREAD_RETURN_INT(ierr);
 
-        if(ierr!=0)
-            return Adcirc::FileReadError;
-
-        this->m_elements[i] =
-            new AdcircElement(id, this->m_nodes[this->m_nodeLookup[e1]],
-                          this->m_nodes[this->m_nodeLookup[e2]],
-                          this->m_nodes[this->m_nodeLookup[e3]]);
+      this->m_elements[i] =
+          new AdcircElement(id, this->m_nodes[this->m_nodeLookup[e1]],
+                            this->m_nodes[this->m_nodeLookup[e2]],
+                            this->m_nodes[this->m_nodeLookup[e3]]);
     }
   }
   return Adcirc::NoError;
@@ -237,28 +232,28 @@ int AdcircMesh::_readElements(std::fstream &fid) {
 int AdcircMesh::_readOpenBoundaries(std::fstream &fid) {
   std::string tempLine;
   std::vector<std::string> tempList;
-  int length, nid;
+  int length, nid, ierr;
   bool ok;
 
   std::getline(fid, tempLine);
-  IO::splitString(tempLine,tempList);
-  
+  IO::splitString(tempLine, tempList);
+
   this->setNumOpenBoundaries(StringConversion::stringToInt(tempList[0], ok));
   CHECK_FILEREAD_RETURN(ok);
 
   this->m_openBoundaries.resize(this->numOpenBoundaries());
 
   std::getline(fid, tempLine);
-  IO::splitString(tempLine,tempList);
+  IO::splitString(tempLine, tempList);
   tempLine = tempList[0];
   this->setTotalOpenBoundaryNodes(StringConversion::stringToInt(tempLine, ok));
   CHECK_FILEREAD_RETURN(ok);
 
   for (int i = 0; i < this->numOpenBoundaries(); i++) {
-    
+
     std::getline(fid, tempLine);
-    IO::splitString(tempLine,tempList);
-    
+    IO::splitString(tempLine, tempList);
+
     length = StringConversion::stringToInt(tempList[0], ok);
     CHECK_FILEREAD_RETURN(ok);
 
@@ -267,12 +262,14 @@ int AdcircMesh::_readOpenBoundaries(std::fstream &fid) {
     for (int j = 0; j < this->m_openBoundaries[i]->length(); j++) {
 
       std::getline(fid, tempLine);
-      IO::splitString(tempLine,tempList);
+      ierr = IO::splitStringBoundary0Format(tempLine, nid);
+      CHECK_FILEREAD_RETURN_INT(ierr);
 
-      nid = StringConversion::stringToInt(tempList[0], ok);
-      CHECK_FILEREAD_RETURN(ok);
-      this->m_openBoundaries[i]->setNode1(
-          j, this->m_nodes[this->m_nodeLookup[nid]]);
+      if (this->m_nodeOrderingLogical)
+        this->m_openBoundaries[i]->setNode1(j, this->m_nodes[nid - 1]);
+      else
+        this->m_openBoundaries[i]->setNode1(
+            j, this->m_nodes[this->m_nodeLookup[nid]]);
     }
   }
   return Adcirc::NoError;
@@ -282,21 +279,22 @@ int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
 
   std::string tempLine;
   std::vector<std::string> tempList;
-  int length, nid, code;
+  int length, n1, n2, code, ierr;
+  double supercritical, subcritical, crest, pipeheight, pipediam, pipecoef;
   bool ok;
 
   std::getline(fid, tempLine);
 
-  IO::splitString(tempLine,tempList);
-  
+  IO::splitString(tempLine, tempList);
+
   this->setNumLandBoundaries(StringConversion::stringToInt(tempList[0], ok));
   CHECK_FILEREAD_RETURN(ok);
 
   this->m_landBoundaries.resize(this->numLandBoundaries());
-  
+
   std::getline(fid, tempLine);
 
-  IO::splitString(tempLine,tempList);
+  IO::splitString(tempLine, tempList);
 
   this->setTotalLandBoundaryNodes(
       StringConversion::stringToInt(tempList[0], ok));
@@ -305,8 +303,8 @@ int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
   for (int i = 0; i < this->numLandBoundaries(); i++) {
 
     std::getline(fid, tempLine);
-    IO::splitString(tempLine,tempList);
-    
+    IO::splitString(tempLine, tempList);
+
     length = StringConversion::stringToInt(tempList[0], ok);
     CHECK_FILEREAD_RETURN(ok);
     code = StringConversion::stringToInt(tempList[1], ok);
@@ -317,71 +315,74 @@ int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
     for (int j = 0; j < this->m_landBoundaries[i]->length(); j++) {
 
       std::getline(fid, tempLine);
-      IO::splitString(tempLine,tempList);
-      
-      nid = StringConversion::stringToInt(tempList[0], ok);
-      CHECK_FILEREAD_RETURN(ok);
 
-      this->m_landBoundaries[i]->setNode1(
-          j, this->m_nodes[this->m_nodeLookup[nid]]);
       if (code == 3 || code == 13 || code == 23) {
 
-        this->m_landBoundaries[i]->setCrestElevation(
-            j, StringConversion::stringToDouble(tempList[1], ok));
-        CHECK_FILEREAD_RETURN(ok);
+        ierr =
+            IO::splitStringBoundary23Format(tempLine, n1, crest, supercritical);
+        CHECK_FILEREAD_RETURN_INT(ierr);
+        if (this->m_nodeOrderingLogical) {
+          this->m_landBoundaries[i]->setNode1(j, this->m_nodes[n1 - 1]);
+        } else {
+          this->m_landBoundaries[i]->setNode1(
+              j, this->m_nodes[this->m_nodeLookup[n1]]);
+        }
 
+        this->m_landBoundaries[i]->setCrestElevation(j, crest);
         this->m_landBoundaries[i]->setSupercriticalWeirCoefficient(
-            j, StringConversion::stringToDouble(tempList[2], ok));
-        CHECK_FILEREAD_RETURN(ok);
+            j, supercritical);
 
       } else if (code == 4 || code == 24) {
-        nid = StringConversion::stringToInt(tempList[1], ok);
-        CHECK_FILEREAD_RETURN(ok);
+        ierr = IO::splitStringBoundary24Format(tempLine, n1, n2, crest,
+                                               subcritical, supercritical);
+        CHECK_FILEREAD_RETURN_INT(ierr);
 
-        this->m_landBoundaries[i]->setNode2(
-            j, this->m_nodes[this->m_nodeLookup[nid]]);
-        this->m_landBoundaries[i]->setCrestElevation(
-            j, StringConversion::stringToDouble(tempList[2], ok));
-        CHECK_FILEREAD_RETURN(ok);
+        if (this->m_nodeOrderingLogical) {
+          this->m_landBoundaries[i]->setNode1(j, this->m_nodes[n1 - 1]);
+          this->m_landBoundaries[i]->setNode2(j, this->m_nodes[n2 - 1]);
+        } else {
+          this->m_landBoundaries[i]->setNode1(
+              j, this->m_nodes[this->m_nodeLookup[n1]]);
+          this->m_landBoundaries[i]->setNode2(
+              j, this->m_nodes[this->m_nodeLookup[n2]]);
+        }
 
-        this->m_landBoundaries[i]->setSubcriticalWeirCoeffient(
-            j, StringConversion::stringToDouble(tempList[3], ok));
-        CHECK_FILEREAD_RETURN(ok);
-
+        this->m_landBoundaries[i]->setCrestElevation(j, crest);
+        this->m_landBoundaries[i]->setSubcriticalWeirCoeffient(j, subcritical);
         this->m_landBoundaries[i]->setSupercriticalWeirCoefficient(
-            j, StringConversion::stringToDouble(tempList[4], ok));
-        CHECK_FILEREAD_RETURN(ok);
+            j, supercritical);
 
       } else if (code == 5 || code == 25) {
-        nid = StringConversion::stringToInt(tempList[1], ok);
-        CHECK_FILEREAD_RETURN(ok);
+        ierr = IO::splitStringBoundary25Format(tempLine, n1, n2, crest,
+                                               subcritical, supercritical,
+                                               pipeheight, pipecoef, pipediam);
+        CHECK_FILEREAD_RETURN_INT(ierr);
 
-        this->m_landBoundaries[i]->setNode2(
-            j, this->m_nodes[this->m_nodeLookup[nid]]);
+        if (this->m_nodeOrderingLogical) {
+          this->m_landBoundaries[i]->setNode1(j, this->m_nodes[n1 - 1]);
+          this->m_landBoundaries[i]->setNode2(j, this->m_nodes[n2 - 1]);
+        } else {
+          this->m_landBoundaries[i]->setNode1(
+              j, this->m_nodes[this->m_nodeLookup[n1]]);
+          this->m_landBoundaries[i]->setNode2(
+              j, this->m_nodes[this->m_nodeLookup[n2]]);
+        }
 
-        this->m_landBoundaries[i]->setCrestElevation(
-            j, StringConversion::stringToDouble(tempList[2], ok));
-        CHECK_FILEREAD_RETURN(ok);
-
-        this->m_landBoundaries[i]->setSubcriticalWeirCoeffient(
-            j, StringConversion::stringToDouble(tempList[3], ok));
-        CHECK_FILEREAD_RETURN(ok);
-
+        this->m_landBoundaries[i]->setCrestElevation(j, crest);
+        this->m_landBoundaries[i]->setSubcriticalWeirCoeffient(j, subcritical);
         this->m_landBoundaries[i]->setSupercriticalWeirCoefficient(
-            j, StringConversion::stringToDouble(tempList[4], ok));
-        CHECK_FILEREAD_RETURN(ok);
-
-        this->m_landBoundaries[i]->setPipeHeight(
-            j, StringConversion::stringToDouble(tempList[5], ok));
-        CHECK_FILEREAD_RETURN(ok);
-
-        this->m_landBoundaries[i]->setPipeCoefficient(
-            j, StringConversion::stringToDouble(tempList[6], ok));
-        CHECK_FILEREAD_RETURN(ok);
-
-        this->m_landBoundaries[i]->setPipeDiameter(
-            j, StringConversion::stringToDouble(tempList[7], ok));
-        CHECK_FILEREAD_RETURN(ok);
+            j, supercritical);
+        this->m_landBoundaries[i]->setPipeHeight(j, pipeheight);
+        this->m_landBoundaries[i]->setPipeCoefficient(j, pipecoef);
+        this->m_landBoundaries[i]->setPipeDiameter(j, pipediam);
+      } else {
+        ierr = IO::splitStringBoundary0Format(tempLine, n1);
+        CHECK_FILEREAD_RETURN_INT(ierr);
+        if (this->m_nodeOrderingLogical)
+          this->m_landBoundaries[i]->setNode1(j, this->m_nodes[n1 - 1]);
+        else
+          this->m_landBoundaries[i]->setNode1(
+              j, this->m_nodes[this->m_nodeLookup[n1]]);
       }
     }
   }
@@ -633,39 +634,44 @@ void AdcircMesh::resizeMesh(int numNodes, int numElements,
 }
 
 void AdcircMesh::addNode(int index, AdcircNode *node) {
+  unsigned long long index2 = static_cast<unsigned long long>(index);
   if (index < this->numNodes()) {
-    if (this->m_nodes[index] != nullptr)
-      delete this->m_nodes[index];
-    this->m_nodes[index] = node;
+    if (this->m_nodes[index2] != nullptr)
+      delete this->m_nodes[index2];
+    this->m_nodes[index2] = node;
   }
   return;
 }
 
 void AdcircMesh::deleteNode(int index) {
+  unsigned long long index2 = static_cast<unsigned long long>(index);
   if (index < this->numNodes()) {
-    if (this->m_nodes[index] != nullptr)
-      delete this->m_nodes[index];
+    if (this->m_nodes[index2] != nullptr)
+      delete this->m_nodes[index2];
     this->m_nodes.erase(this->m_nodes.begin() + index);
-    this->setNumNodes(this->m_nodes.size());
+    this->setNumNodes(static_cast<int>(this->m_nodes.size()));
   }
   return;
 }
 
 void AdcircMesh::addElement(int index, AdcircElement *element) {
+  unsigned long long index2 = static_cast<unsigned long long>(index);
   if (index < this->numElements()) {
-    if (this->m_elements[index] != nullptr)
-      delete this->m_elements[index];
-    this->m_elements[index] = element;
+    if (this->m_elements[index2] != nullptr)
+      delete this->m_elements[index2];
+    this->m_elements[index2] = element;
   }
   return;
 }
 
 void AdcircMesh::deleteElement(int index) {
+  unsigned long long index2 = static_cast<unsigned long long>(index);
   if (index < this->numElements()) {
-    if (this->m_elements[index] != nullptr)
-      delete this->m_elements[index];
-    this->m_elements.erase(this->m_elements.begin() + index);
-    this->setNumNodes(this->m_nodes.size());
+    if (this->m_elements[index2] != nullptr)
+      delete this->m_elements[index2];
+    this->m_elements.erase(this->m_elements.begin() +
+                           static_cast<long long>(index));
+    this->setNumNodes(static_cast<int>(this->m_nodes.size()));
   }
   return;
 }

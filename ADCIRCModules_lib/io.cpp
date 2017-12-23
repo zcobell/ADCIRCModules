@@ -2,69 +2,13 @@
 #include "io.h"
 #include "boost/algorithm/string/split.hpp"
 #include "boost/algorithm/string/trim.hpp"
-#include <boost/config/warning_disable.hpp>
-#include <boost/fusion/include/adapt_struct.hpp>
-#include <boost/fusion/include/io.hpp>
-#include <boost/spirit/include/phoenix_core.hpp>
-#include <boost/spirit/include/phoenix_object.hpp>
-#include <boost/spirit/include/phoenix_operator.hpp>
-#include <boost/spirit/include/qi.hpp>
+#include "parsers.h"
 #include <complex>
 #include <fstream>
 #include <iostream>
 #include <string>
 
 IO::IO() {}
-
-namespace parse {
-
-namespace qi = boost::spirit::qi;
-namespace ascii = boost::spirit::ascii;
-
-struct node {
-  int id;
-  double x;
-  double y;
-  double z;
-};
-
-struct elem {
-  int id;
-  int n;
-  int n1;
-  int n2;
-  int n3;
-};
-
-} // namespace parse
-
-BOOST_FUSION_ADAPT_STRUCT(parse::node,
-                          (int, id)(double, x)(double, y)(double, z))
-
-BOOST_FUSION_ADAPT_STRUCT(parse::elem,
-                          (int, id)(int, n)(int, n1)(int, n2)(int, n3))
-
-namespace parse {
-template <typename Iterator>
-struct node_parser : qi::grammar<Iterator, node(), ascii::space_type> {
-  node_parser() : node_parser::base_type(start) {
-    using qi::double_;
-    using qi::int_;
-    start %= int_ >> double_ >> double_ >> double_;
-  }
-  qi::rule<Iterator, node(), ascii::space_type> start;
-};
-
-template <typename Iterator>
-struct elem_parser : qi::grammar<Iterator, elem(), ascii::space_type> {
-  elem_parser() : elem_parser::base_type(start) {
-    using qi::double_;
-    using qi::int_;
-    start %= int_ >> int_ >> int_ >> int_ >> int_;
-  }
-  qi::rule<Iterator, elem(), ascii::space_type> start;
-};
-} // namespace parse
 
 int IO::readFileData(std::string filename, std::vector<std::string> &data) {
   std::ifstream t(filename.c_str());
@@ -127,6 +71,105 @@ int IO::splitStringElemFormat(std::string &data, int &id, int &n1, int &n2,
     n1 = e.n1;
     n2 = e.n2;
     n3 = e.n3;
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
+int IO::splitStringBoundary0Format(std::string &data, int &node1) {
+
+  using boost::spirit::ascii::space;
+  typedef std::string::const_iterator iterator_type;
+  typedef parse::boundary0_parser<iterator_type> boundary0_parser;
+
+  boundary0_parser bp;
+  parse::boundary0 b;
+  std::string::const_iterator iter = data.begin();
+  std::string::const_iterator end = data.end();
+
+  bool r = phrase_parse(iter, end, bp, space, b);
+  if (r) {
+    node1 = b.node1;
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
+int IO::splitStringBoundary23Format(std::string &data, int &node1,
+                                    double &crest, double &supercritical) {
+
+  using boost::spirit::ascii::space;
+  typedef std::string::const_iterator iterator_type;
+  typedef parse::boundary23_parser<iterator_type> boundary23_parser;
+
+  boundary23_parser bp;
+  parse::boundary23 b;
+  std::string::const_iterator iter = data.begin();
+  std::string::const_iterator end = data.end();
+
+  bool r = phrase_parse(iter, end, bp, space, b);
+  if (r) {
+    node1 = b.node1;
+    crest = b.crest;
+    supercritical = b.supercritical;
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
+int IO::splitStringBoundary24Format(std::string &data, int &node1, int &node2,
+                                    double &crest, double &subcritical,
+                                    double &supercritical) {
+
+  using boost::spirit::ascii::space;
+  typedef std::string::const_iterator iterator_type;
+  typedef parse::boundary24_parser<iterator_type> boundary24_parser;
+
+  boundary24_parser bp;
+  parse::boundary24 b;
+  std::string::const_iterator iter = data.begin();
+  std::string::const_iterator end = data.end();
+
+  bool r = phrase_parse(iter, end, bp, space, b);
+  if (r) {
+    node1 = b.node1;
+    node2 = b.node2;
+    crest = b.crest;
+    subcritical = b.subcritical;
+    supercritical = b.supercritical;
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
+int IO::splitStringBoundary25Format(std::string &data, int &node1, int &node2,
+                                    double &crest, double &subcritical,
+                                    double &supercritical, double &pipeheight,
+                                    double &pipecoef, double &pipediam) {
+
+  using boost::spirit::ascii::space;
+  typedef std::string::const_iterator iterator_type;
+  typedef parse::boundary25_parser<iterator_type> boundary25_parser;
+
+  boundary25_parser bp;
+  parse::boundary25 b;
+  std::string::const_iterator iter = data.begin();
+  std::string::const_iterator end = data.end();
+
+  bool r = phrase_parse(iter, end, bp, space, b);
+  if (r) {
+    node1 = b.node1;
+    node2 = b.node2;
+    crest = b.crest;
+    subcritical = b.subcritical;
+    supercritical = b.supercritical;
+    pipeheight = b.pipeheight;
+    pipecoef = b.pipecoef;
+    pipediam = b.pipediam;
     return 0;
   } else {
     return 1;
