@@ -16,6 +16,31 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
+/**
+ * @class AdcircMesh
+ * @author Zachary Cobell
+ * @brief Class that handles operations using Adcirc mesh files
+ *
+ * The AdcircMesh class handles functions related to reading an
+ * adcirc mesh into memory and provides some facilities for
+ * manipulation. The code is designed to be functional
+ * with the python interface to the code.
+ *
+ * The code is able to handle meshes that are traditional, that
+ * is they contained order indicies. When the code detects unordered
+ * indicies, a translation table is automatically generated that allows
+ * the code to continue to function appropriately and the id column of
+ * the mesh will be considered a label.
+ *
+ * Performance is considered to be of the greatest importance and
+ * therefore the Boost libraries have been utilized for reading
+ * and writing of mesh data over the standard C++ functions.
+ * All edits to this code should be benchmarked against a prior
+ * version to ensure that memory usage and cpu time is not adversely
+ * affected.
+ *
+ *
+ */
 #ifndef ADCIRCMESH_H
 #define ADCIRCMESH_H
 
@@ -50,6 +75,7 @@ public:
 
   std::string meshHeaderString() const;
   void setMeshHeaderString(const std::string &meshHeaderString);
+  void setMeshHeaderString(const char *meshHeaderString);
 
   int numNodes() const;
   void setNumNodes(int numNodes);
@@ -63,11 +89,9 @@ public:
   int numLandBoundaries() const;
   void setNumLandBoundaries(int numLandBoundaries);
 
-  int totalOpenBoundaryNodes() const;
-  void setTotalOpenBoundaryNodes(int totalOpenBoundaryNodes);
+  int totalOpenBoundaryNodes();
 
-  int totalLandBoundaryNodes() const;
-  void setTotalLandBoundaryNodes(int totalLandBoundaryNodes);
+  int totalLandBoundaryNodes();
 
   int projection();
   void defineProjection(int epsg, bool isLatLon);
@@ -87,6 +111,9 @@ public:
   AdcircElement *element(int index);
   AdcircBoundary *openBoundary(int index);
   AdcircBoundary *landBoundary(int index);
+
+  AdcircNode *nodeById(int id);
+  AdcircElement *elementById(int id);
 
   void resizeMesh(int numNodes, int numElements, int numOpenBoundaries,
                   int numLandBoundaries);

@@ -45,18 +45,37 @@
     return ierr;                                                               \
   }
 
+/**
+ * @name AdcircMesh::AdcircMesh
+ * @brief Default Constructor
+ */
 AdcircMesh::AdcircMesh() { this->_init(); }
 
+/**
+ * @overload AdcircMesh::AdcircMesh
+ * @brief Default constructor with filename parameter
+ * @param filename name of the mesh to read
+ */
 AdcircMesh::AdcircMesh(std::string filename) {
   this->_init();
   this->setFilename(filename);
 }
 
+/**
+ * @overload AdcircMesh::AdcircMesh
+ * @brief Default constructor with filename as a char
+ * (for python)
+ * @param filename name of the mesh to read
+ */
 AdcircMesh::AdcircMesh(const char *filename) {
   this->_init();
   this->setFilename(filename);
 }
 
+/**
+ * @name Adcircmesh::_init
+ * @brief Initialization routine called by all constructors
+ */
 void AdcircMesh::_init() {
   this->setFilename(std::string());
   this->defineProjection(4326, true);
@@ -72,12 +91,17 @@ void AdcircMesh::_init() {
   this->m_elementOrderingLogical = true;
 }
 
+/**
+ * @brief AdcircMesh::~AdcircMesh Destructor
+ */
 AdcircMesh::~AdcircMesh() {
 
   this->m_nodes.clear();
   this->m_elements.clear();
   this->m_openBoundaries.clear();
   this->m_landBoundaries.clear();
+  this->m_nodeLookup.clear();
+  this->m_elementLookup.clear();
 
   if (this->m_nodalSearchTree != nullptr)
     delete this->m_nodalSearchTree;
@@ -86,46 +110,131 @@ AdcircMesh::~AdcircMesh() {
     delete this->m_elementalSearchTree;
 }
 
+/**
+ * @name AdcircMesh::filename
+ * @brief Filename of the mesh to be read
+ * @return Return the name of the mesh to be read
+ */
 std::string AdcircMesh::filename() const { return this->m_filename; }
 
+/**
+ * @name AdcircMesh::setFilename
+ * @brief Sets the name of the mesh to be read
+ * @param filename Name of the mesh
+ */
 void AdcircMesh::setFilename(const std::string &filename) {
   this->m_filename = filename;
 }
 
+/**
+ * @overload AdcircMesh::setFilename
+ * @brief Sets the name of the mesh to be read
+ * @param filename Name of the mesh
+ */
 void AdcircMesh::setFilename(const char *filename) {
   this->m_filename = std::string(filename);
 }
 
+/**
+ * @name AdcircMesh::meshHeaderString
+ * @brief Returns the mesh header from the processed mesh
+ * @return mesh header
+ */
 std::string AdcircMesh::meshHeaderString() const {
   return this->m_meshHeaderString;
 }
 
+/**
+ * @name AdcircMesh::setMeshHeaderString
+ * @brief Sets the header for the mesh
+ * @param mesh header
+ */
 void AdcircMesh::setMeshHeaderString(const std::string &meshHeaderString) {
   this->m_meshHeaderString = meshHeaderString;
 }
 
+/**
+ * @overload AdcircMesh::setMeshHeaderString
+ * @brief Sets the header for the mesh
+ * @param mesh header
+ */
+void AdcircMesh::setMeshHeaderString(const char *meshHeaderString) {
+  this->m_meshHeaderString = std::string(meshHeaderString);
+}
+
+/**
+ * @name AdcircMesh::numNodes
+ * @brief Returns the number of nodes currently in the mesh
+ * @return number of nodes
+ */
 int AdcircMesh::numNodes() const { return this->m_numNodes; }
 
+/**
+ * @name Adcircmesh::setNumNodes
+ * @brief Sets the number of nodes in the mesh. Note this does not resize the
+ * mesh
+ * @param numNodes number of nodes
+ */
 void AdcircMesh::setNumNodes(int numNodes) { this->m_numNodes = numNodes; }
 
+/**
+ * @name AdcircMesh::numElements
+ * @brief Returns the number of elements in the mesh
+ * @return number of elements
+ */
 int AdcircMesh::numElements() const { return this->m_numElements; }
 
+/**
+ * @name Adcircmesh::setNumElements
+ * @brief Sets the number of elements in the mesh. Note: This does not resize
+ * the mesh
+ * @param numElements Number of elements
+ */
 void AdcircMesh::setNumElements(int numElements) {
   this->m_numElements = numElements;
 }
 
+/**
+ * @name AdcircMesh::numOpenBonudaries
+ * @brief Returns the number of open boundaries in the model
+ * @return number of open boundaries
+ */
 int AdcircMesh::numOpenBoundaries() const { return this->m_numOpenBoundaries; }
 
+/**
+ * @name AdcircMesh::setNumOpenBoundaries
+ * @brief Sets the number of open boundaries in the model. Note this does not
+ * resize the boundary array
+ * @param numOpenBoundaries Number of open boundaries
+ */
 void AdcircMesh::setNumOpenBoundaries(int numOpenBoundaries) {
   this->m_numOpenBoundaries = numOpenBoundaries;
 }
 
+/**
+ * @name AdcircMesh::numLandBoundaries
+ * @brief Returns the number of land boundaries in the model
+ * @return number of land boundaries
+ */
 int AdcircMesh::numLandBoundaries() const { return this->m_numLandBoundaries; }
 
+/**
+ * @name AdcircMesh::setNumLandBoundaries
+ * @brief Sets the number of land boundaries in the model. Note this does not
+ * resize the boundary array
+ * @param numLandBoundaries Number of land boundaries
+ */
 void AdcircMesh::setNumLandBoundaries(int numLandBoundaries) {
   this->m_numLandBoundaries = numLandBoundaries;
 }
 
+/**
+ * @name Adcircmesh::read
+ * @brief Reads an ASCII formatted ADCIRC mesh. Note this will be extended in
+ * the future to netCDF formatted meshes
+ * @return error code. If error code does not equal Adcirc::NoError, an error
+ * occured
+ */
 int AdcircMesh::read() {
 
   int ierr;
@@ -155,6 +264,12 @@ int AdcircMesh::read() {
   return Adcirc::NoError;
 }
 
+/**
+ * @name Adcircmesh::_readMeshHeader
+ * @brief Reads the mesh title line and node/element dimensional data
+ * @param fid std::fstream reference for the currently opened mesh
+ * @return error code
+ */
 int AdcircMesh::_readMeshHeader(std::fstream &fid) {
 
   bool ok;
@@ -184,15 +299,18 @@ int AdcircMesh::_readMeshHeader(std::fstream &fid) {
   return Adcirc::NoError;
 }
 
+/**
+ * @name AdcircMesh::_readNodes
+ * @brief Reads the node section of the ASCII formatted mesh
+ * @param fid std::fstream reference for the currently opened mesh
+ * @return error code
+ */
 int AdcircMesh::_readNodes(std::fstream &fid) {
   int id;
   double x, y, z;
   std::string tempLine;
 
   this->m_nodes.resize(this->numNodes());
-
-  if (!this->m_nodeOrderingLogical)
-    this->m_nodeLookup.reserve(this->numNodes());
 
   for (int i = 0; i < this->numNodes(); i++) {
     std::getline(fid, tempLine);
@@ -205,13 +323,22 @@ int AdcircMesh::_readNodes(std::fstream &fid) {
     this->m_nodes[i] = AdcircNode(id, x, y, z);
   }
 
-  if (!this->m_nodeOrderingLogical)
+  if (!this->m_nodeOrderingLogical) {
+    this->m_nodeLookup.reserve(this->numNodes());
+
     for (int i = 0; i < this->m_numNodes; i++)
       this->m_nodeLookup[this->m_nodes[i].id()] = i;
+  }
 
   return Adcirc::NoError;
 }
 
+/**
+ * @name AdcircMesh::_readElements
+ * @brief Reads the elements section of the ASCII mesh
+ * @param fid std::fstream reference for the currently opened mesh
+ * @return error code
+ */
 int AdcircMesh::_readElements(std::fstream &fid) {
 
   int id, e1, e2, e3;
@@ -244,13 +371,21 @@ int AdcircMesh::_readElements(std::fstream &fid) {
     }
   }
 
-  if (!this->m_elementOrderingLogical)
+  if (!this->m_elementOrderingLogical) {
+    this->m_elementLookup.reserve(this->m_numElements);
     for (int i = 0; i < this->m_numElements; i++)
       this->m_elementLookup[this->m_elements[i].id()] = i;
+  }
 
   return Adcirc::NoError;
 }
 
+/**
+ * @name AdcircMesh::_readOpenBoundaries
+ * @brief Reads the open boundaries section of the ASCII formatted mesh file
+ * @param fid std::fstream reference for the currently opened mesh
+ * @return error code
+ */
 int AdcircMesh::_readOpenBoundaries(std::fstream &fid) {
   std::string tempLine;
   std::vector<std::string> tempList;
@@ -266,10 +401,10 @@ int AdcircMesh::_readOpenBoundaries(std::fstream &fid) {
   this->m_openBoundaries.resize(this->numOpenBoundaries());
 
   std::getline(fid, tempLine);
-  IO::splitString(tempLine, tempList);
-  tempLine = tempList[0];
-  this->setTotalOpenBoundaryNodes(StringConversion::stringToInt(tempLine, ok));
-  CHECK_FILEREAD_RETURN(ok);
+  // IO::splitString(tempLine, tempList);
+  // tempLine = tempList[0];
+  // this->setTotalOpenBoundaryNodes(StringConversion::stringToInt(tempLine,
+  // ok));  CHECK_FILEREAD_RETURN(ok);
 
   for (int i = 0; i < this->numOpenBoundaries(); i++) {
 
@@ -297,6 +432,12 @@ int AdcircMesh::_readOpenBoundaries(std::fstream &fid) {
   return Adcirc::NoError;
 }
 
+/**
+ * @name AdcircMesh::_readLandBoundaries
+ * @brief Reads the land boundaries section of the ASCII formatted mesh file
+ * @param fid std::fstream reference for the currently opened mesh
+ * @return error code
+ */
 int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
 
   std::string tempLine;
@@ -316,11 +457,10 @@ int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
 
   std::getline(fid, tempLine);
 
-  IO::splitString(tempLine, tempList);
-
-  this->setTotalLandBoundaryNodes(
-      StringConversion::stringToInt(tempList[0], ok));
-  CHECK_FILEREAD_RETURN(ok);
+  // IO::splitString(tempLine, tempList);
+  // this->setTotalLandBoundaryNodes(
+  //    StringConversion::stringToInt(tempList[0], ok));
+  // CHECK_FILEREAD_RETURN(ok);
 
   for (int i = 0; i < this->numLandBoundaries(); i++) {
 
@@ -370,7 +510,7 @@ int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
         }
 
         this->m_landBoundaries[i].setCrestElevation(j, crest);
-        this->m_landBoundaries[i].setSubcriticalWeirCoeffient(j, subcritical);
+        this->m_landBoundaries[i].setSubcriticalWeirCoefficient(j, subcritical);
         this->m_landBoundaries[i].setSupercriticalWeirCoefficient(
             j, supercritical);
 
@@ -391,7 +531,7 @@ int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
         }
 
         this->m_landBoundaries[i].setCrestElevation(j, crest);
-        this->m_landBoundaries[i].setSubcriticalWeirCoeffient(j, subcritical);
+        this->m_landBoundaries[i].setSubcriticalWeirCoefficient(j, subcritical);
         this->m_landBoundaries[i].setSupercriticalWeirCoefficient(
             j, supercritical);
         this->m_landBoundaries[i].setPipeHeight(j, pipeheight);
@@ -411,28 +551,52 @@ int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
   return Adcirc::NoError;
 }
 
+/**
+ * @name AdcircMesh::elementalSearchTree
+ * @brief Returns a reference to the elemental search kd-tree
+ * @return kd-tree object with element centers as search locations
+ */
 QKdtree2 *AdcircMesh::elementalSearchTree() const {
   return m_elementalSearchTree;
 }
 
+/**
+ * @name AdcircMesh::nodalSearchTree
+ * @brief Returns a refrence to the nodal search kd-tree
+ * @return kd-tree object with mesh nodes as serch locations
+ */
 QKdtree2 *AdcircMesh::nodalSearchTree() const { return m_nodalSearchTree; }
 
-int AdcircMesh::totalLandBoundaryNodes() const {
-  return m_totalLandBoundaryNodes;
+/**
+ * @name AdcircMesh::totalLandBonudaryNodes
+ * @brief Returns the number of land boundary nodes in the mesh
+ * @return Number of nodes that fall on a land boundary
+ */
+int AdcircMesh::totalLandBoundaryNodes() {
+  this->m_totalLandBoundaryNodes = 0;
+  for (size_t i = 0; i < this->m_landBoundaries.size(); i++)
+    this->m_totalLandBoundaryNodes += this->m_landBoundaries[i].length();
+  return this->m_totalLandBoundaryNodes;
 }
 
-void AdcircMesh::setTotalLandBoundaryNodes(int totalLandBoundaryNodes) {
-  m_totalLandBoundaryNodes = totalLandBoundaryNodes;
+/**
+ * @name AdcircMesh::totalOpenBoundaryNodes
+ * @brief Returns the number of open boundary nodes in the mesh
+ * @return Number of open boundary nodes
+ */
+int AdcircMesh::totalOpenBoundaryNodes() {
+  this->m_totalOpenBoundaryNodes = 0;
+  for (size_t i = 0; i < this->m_openBoundaries.size(); i++)
+    this->m_totalOpenBoundaryNodes += this->m_openBoundaries[i].length();
+  return this->m_totalOpenBoundaryNodes;
 }
 
-int AdcircMesh::totalOpenBoundaryNodes() const {
-  return m_totalOpenBoundaryNodes;
-}
-
-void AdcircMesh::setTotalOpenBoundaryNodes(int totalOpenBoundaryNodes) {
-  m_totalOpenBoundaryNodes = totalOpenBoundaryNodes;
-}
-
+/**
+ * @name AdcircMesh::node
+ * @brief Returns a pointer to the requested node in the internal node vector
+ * @param index location of the node in the vector
+ * @return AdcircNode pointer
+ */
 AdcircNode *AdcircMesh::node(int index) {
   if (index >= 0 && index < this->numNodes())
     return &this->m_nodes[index];
@@ -440,6 +604,13 @@ AdcircNode *AdcircMesh::node(int index) {
     return nullptr;
 }
 
+/**
+ * @name AdcircMesh::element
+ * @brief Returns a pointer to the requested element in the internal element
+ * vector
+ * @param index location of the node in the vector
+ * @return AdcircElement pointer
+ */
 AdcircElement *AdcircMesh::element(int index) {
   if (index >= 0 && index < this->numElements())
     return &this->m_elements[index];
@@ -447,6 +618,44 @@ AdcircElement *AdcircMesh::element(int index) {
     return nullptr;
 }
 
+/**
+ * @name AdcircMesh::nodeById
+ * @brief Returns a pointer to the requested node by its ID
+ * @param id Nodal ID to return a reference to
+ * @return AdcircNode pointer
+ */
+AdcircNode *AdcircMesh::nodeById(int id) {
+  if (this->m_nodeOrderingLogical)
+    if (id > 0 && id <= this->numNodes())
+      return &this->m_nodes[id - 1];
+    else
+      return nullptr;
+  else
+    return &this->m_nodes[this->m_nodeLookup[id]];
+}
+
+/**
+ * @name AdcircMesh::elementById
+ * @brief Returns an pointer to the requested element by its ID
+ * @param id Elemental ID to return a reference to
+ * @return AdcircElement pointer
+ */
+AdcircElement *AdcircMesh::elementById(int id) {
+  if (this->m_elementOrderingLogical)
+    if (id > 0 && id <= this->numElements())
+      return &this->m_elements[id - 1];
+    else
+      return nullptr;
+  else
+    return &this->m_elements[this->m_elementLookup[id]];
+}
+
+/**
+ * @name AdcircMesh::openBoundary
+ * @brief Returns a pointer to an open boundary by index
+ * @param index index in the open boundary array
+ * @return AdcircBoundary pointer
+ */
 AdcircBoundary *AdcircMesh::openBoundary(int index) {
   if (index >= 0 && index < this->numOpenBoundaries())
     return &this->m_openBoundaries[index];
@@ -454,6 +663,12 @@ AdcircBoundary *AdcircMesh::openBoundary(int index) {
     return nullptr;
 }
 
+/**
+ * @name AdcircMesh::landBoundary
+ * @brief Returns a pointer to a land boundary by index
+ * @param index index in the land boundary array
+ * @return AdcircBoundary pointer
+ */
 AdcircBoundary *AdcircMesh::landBoundary(int index) {
   if (index >= 0 && index < this->numLandBoundaries())
     return &this->m_landBoundaries[index];
@@ -461,16 +676,40 @@ AdcircBoundary *AdcircMesh::landBoundary(int index) {
     return nullptr;
 }
 
+/**
+ * @name AdcircMesh::defineProjection
+ * @brief Sets the mesh projection using an EPSG code. Note this does not
+ * reproject the mesh.
+ * @param epsg EPSG code for the mesh
+ * @param isLatLon defines if the current projection is a lat/lon projection.
+ * This helps define the significant digits when writing the mesh file
+ */
 void AdcircMesh::defineProjection(int epsg, bool isLatLon) {
   this->m_epsg = epsg;
   this->m_isLatLon = isLatLon;
   return;
 }
 
+/**
+ * @name AdcircMesh::projection
+ * @brief Returns the EPSG code for the current mesh projection
+ * @return EPSG code
+ */
 int AdcircMesh::projection() { return this->m_epsg; }
 
+/**
+ * @name AdcircMesh::isLatLon
+ * @brief Returns true if the mesh is in a geographic projection
+ * @return boolean value for mesh projection type
+ */
 bool AdcircMesh::isLatLon() { return this->m_isLatLon; }
 
+/**
+ * @name AdcircMesh::reproject
+ * @brief Reprojects a mesh into the specified projection
+ * @param epsg EPSG coordinate system to convert the mesh into
+ * @return error code
+ */
 int AdcircMesh::reproject(int epsg) {
 
   QProj4 proj;
@@ -496,12 +735,12 @@ int AdcircMesh::reproject(int epsg) {
   return Adcirc::NoError;
 }
 
-int AdcircMesh::toShapefile(const char *outputFile) {
-  std::string filename = std::string(outputFile);
-  int ierr = this->toShapefile(filename);
-  return ierr;
-}
-
+/**
+ * @name AdcircMesh::toShapefile
+ * @brief Writes the mesh nodes into ESRI shapefile format
+ * @param outputFile output file with .shp extension
+ * @return error code
+ */
 int AdcircMesh::toShapefile(std::string outputFile) {
 
   SHPHandle shpid;
@@ -542,6 +781,23 @@ int AdcircMesh::toShapefile(std::string outputFile) {
   return Adcirc::NoError;
 }
 
+/**
+ * @overload AdcircMesh::toShapefile
+ * @brief Writes the mesh nodes into ESRI shapefile format
+ * @param outputFile output file with .shp extension
+ * @return error code
+ */
+int AdcircMesh::toShapefile(const char *outputFile) {
+  std::string filename = std::string(outputFile);
+  int ierr = this->toShapefile(filename);
+  return ierr;
+}
+
+/**
+ * @name AdcircMesh::buildNodalSearchTree
+ * @brief Builds a kd-tree object with the mesh nodes as the search locations
+ * @return error code
+ */
 int AdcircMesh::buildNodalSearchTree() {
   int i, ierr;
   std::vector<double> x, y;
@@ -567,6 +823,12 @@ int AdcircMesh::buildNodalSearchTree() {
   return Adcirc::NoError;
 }
 
+/**
+ * @name AdcircMesh::buildElementalSearchTree
+ * @brief Builds a kd-tree object with the element centers as the search
+ * locations
+ * @return error code
+ */
 int AdcircMesh::buildElementalSearchTree() {
   std::vector<double> x, y;
   double tempX, tempY;
@@ -598,14 +860,34 @@ int AdcircMesh::buildElementalSearchTree() {
   return Adcirc::NoError;
 }
 
+/**
+ * @name AdcircMesh::nodalSearchTreeInitialized
+ * @brief Returns a boolean value determining if the nodal search tree has been
+ * initialized
+ * @return true if the search tree is initialized
+ */
 bool AdcircMesh::nodalSearchTreeInitialized() {
   return this->m_nodalSearchTree->isInitialized();
 }
 
+/**
+ * @name AdcircMesh::elementalSearchTreeInitialized
+ * @brief Returns a boolean value determining if the elemental search tree has
+ * been initialized
+ * @return true of the search tree is initialized
+ */
 bool AdcircMesh::elementalSearchTreeInitialized() {
   return this->m_elementalSearchTree->isInitialized();
 }
 
+/**
+ * @name AdcircMesh::resizeMesh
+ * @brief Resizes the vectors within the mesh
+ * @param numNodes Number of nodes
+ * @param numElements Number of elements
+ * @param numOpenBoundaries Number of open boundaries
+ * @param numLandBoundaries Number of land boundaries
+ */
 void AdcircMesh::resizeMesh(int numNodes, int numElements,
                             int numOpenBoundaries, int numLandBoundaries) {
   if (numNodes != this->numNodes()) {
@@ -631,6 +913,12 @@ void AdcircMesh::resizeMesh(int numNodes, int numElements,
   return;
 }
 
+/**
+ * @name AdcircMesh::addNode
+ * @brief Adds a node at the specified index in the node vector
+ * @param index location where the node should be added
+ * @param node Reference to an AdcircNode object
+ */
 void AdcircMesh::addNode(int index, AdcircNode &node) {
   unsigned long long index2 = static_cast<unsigned long long>(index);
   if (index < this->numNodes()) {
@@ -639,6 +927,12 @@ void AdcircMesh::addNode(int index, AdcircNode &node) {
   return;
 }
 
+/**
+ * @name AdcircMesh::deleteNode
+ * @brief Deletes an AdcircNode object at the specified index and shifts the
+ * remaining nodes forward in the vector
+ * @param index location where the node should be deleted from
+ */
 void AdcircMesh::deleteNode(int index) {
   if (index < this->numNodes()) {
     this->m_nodes.erase(this->m_nodes.begin() + index);
@@ -647,6 +941,12 @@ void AdcircMesh::deleteNode(int index) {
   return;
 }
 
+/**
+ * @name AdcircMesh::addElement
+ * @brief Adds an AdcircElement at the specified position in the element vector
+ * @param index location where the element should be added
+ * @param element reference to the AdcircElement to add
+ */
 void AdcircMesh::addElement(int index, AdcircElement &element) {
   if (index < this->numElements()) {
     this->m_elements[index] = element;
@@ -654,6 +954,12 @@ void AdcircMesh::addElement(int index, AdcircElement &element) {
   return;
 }
 
+/**
+ * @name AdcircMesh::deleteElement
+ * @brief Deletes an AdcircElement object at the specified index and shifts the
+ * remaining elements forward in the vector
+ * @param index location where the element should be deleted from
+ */
 void AdcircMesh::deleteElement(int index) {
   if (index < this->numElements()) {
     this->m_elements.erase(this->m_elements.begin() +
@@ -663,10 +969,12 @@ void AdcircMesh::deleteElement(int index) {
   return;
 }
 
-int AdcircMesh::write(const char *filename) {
-  return this->write(std::string(filename));
-}
-
+/**
+ * @name AdcircMesh::write
+ * @brief Writes an AdcircMesh object to disk in ASCII format
+ * @param filename name of the output file to write
+ * @return error code
+ */
 int AdcircMesh::write(std::string filename) {
   int i, j;
   std::string tempString;
@@ -715,4 +1023,14 @@ int AdcircMesh::write(std::string filename) {
   outputFile.close();
 
   return Adcirc::NoError;
+}
+
+/**
+ * @overload AdcircMesh::write
+ * @brief Writes an AdcircMesh object to disk in ASCII format
+ * @param filename name of the output file to write
+ * @return error code
+ */
+int AdcircMesh::write(const char *filename) {
+  return this->write(std::string(filename));
 }

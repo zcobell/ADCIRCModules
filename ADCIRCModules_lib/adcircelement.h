@@ -16,6 +16,13 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
+/**
+ * @class AdcircElement
+ * @author Zachary Cobell
+ * @brief The AdcircElement class describes an AdcircElement as an array
+ * of AdcircNode pointers
+ *
+ */
 #ifndef ADCIRCELEMENT_H
 #define ADCIRCELEMENT_H
 

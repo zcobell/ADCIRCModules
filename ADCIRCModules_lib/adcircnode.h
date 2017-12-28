@@ -16,6 +16,13 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
+/**
+ * @class AdcircNode
+ * @author Zachary Cobell
+ * @brief The AdcircNode class describes the x, y, z position of a single mesh
+ * node
+ *
+ */
 #ifndef ADCIRCNODE_H
 #define ADCIRCNODE_H
 

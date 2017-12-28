@@ -16,6 +16,15 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
+/**
+ * @class AdcircBoundary
+ * @author Zachary Cobell
+ *
+ * The AdcircBoundary class handles the interpretation of boundary
+ * conditions used within the Adcirc model. The class is designed so that
+ * it is generic and can handle both open and land boundaries.
+ *
+ */
 #ifndef ADCIRCBOUNDARY_H
 #define ADCIRCBOUNDARY_H
 
@@ -43,8 +52,9 @@ public:
   double crestElevation(int index) const;
   void setCrestElevation(int index, double crestElevation);
 
-  double subcriticalWeirCoeffient(int index) const;
-  void setSubcriticalWeirCoeffient(int index, double subcriticalWeirCoeffient);
+  double subcriticalWeirCoefficient(int index) const;
+  void setSubcriticalWeirCoefficient(int index,
+                                     double subcriticalWeirCoefficient);
 
   double supercriticalWeirCoefficient(int index) const;
   void setSupercriticalWeirCoefficient(int index,
@@ -71,7 +81,7 @@ private:
   int m_boundaryCode;
   int m_boundaryLength;
   std::vector<double> m_crestElevation;
-  std::vector<double> m_subcriticalWeirCoeffient;
+  std::vector<double> m_subcriticalWeirCoefficient;
   std::vector<double> m_supercriticalWeirCoefficient;
   std::vector<double> m_pipeHeight;
   std::vector<double> m_pipeDiameter;
