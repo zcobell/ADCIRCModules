@@ -91,10 +91,10 @@ public:
   void resizeMesh(int numNodes, int numElements, int numOpenBoundaries,
                   int numLandBoundaries);
 
-  void addNode(int index, AdcircNode *node);
+  void addNode(int index, AdcircNode &node);
   void deleteNode(int index);
 
-  void addElement(int index, AdcircElement *element);
+  void addElement(int index, AdcircElement &element);
   void deleteElement(int index);
 
   QKdtree2 *nodalSearchTree() const;
@@ -109,10 +109,10 @@ private:
 
   std::string m_filename;
   std::string m_meshHeaderString;
-  std::vector<AdcircNode *> m_nodes;
-  std::vector<AdcircElement *> m_elements;
-  std::vector<AdcircBoundary *> m_openBoundaries;
-  std::vector<AdcircBoundary *> m_landBoundaries;
+  std::vector<AdcircNode> m_nodes;
+  std::vector<AdcircElement> m_elements;
+  std::vector<AdcircBoundary> m_openBoundaries;
+  std::vector<AdcircBoundary> m_landBoundaries;
   std::unordered_map<int, int> m_nodeLookup;
   int m_numNodes;
   int m_numElements;
@@ -122,7 +122,9 @@ private:
   int m_totalLandBoundaryNodes;
   int m_epsg;
   bool m_isLatLon;
-  const bool m_nodeOrderingLogical = false;
+
+  const bool m_nodeOrderingLogical = true;
+
   QKdtree2 *m_nodalSearchTree;
   QKdtree2 *m_elementalSearchTree;
 };

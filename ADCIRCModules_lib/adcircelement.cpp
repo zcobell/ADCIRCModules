@@ -30,6 +30,14 @@ AdcircElement::AdcircElement(int id, AdcircNode *n1, AdcircNode *n2,
   this->m_nodes[2] = n3;
 }
 
+void AdcircElement::setElement(int id, AdcircNode *n1, AdcircNode *n2, AdcircNode *n3)
+{
+  this->m_id = id;
+  this->m_nodes[0] = n1;
+  this->m_nodes[1] = n2;
+  this->m_nodes[2] = n3;
+}
+
 int AdcircElement::n() const { return this->m_n; }
 
 void AdcircElement::setNode(int i, AdcircNode *node) {

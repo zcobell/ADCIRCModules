@@ -26,7 +26,11 @@
 
 class AdcircBoundary {
 public:
+  explicit AdcircBoundary();
+
   explicit AdcircBoundary(int boundaryCode, int boundaryLength);
+
+  void setBoundary(int boundaryCode, int boundaryLength);
 
   int boundaryCode() const;
   void setBoundaryCode(int boundaryCode);

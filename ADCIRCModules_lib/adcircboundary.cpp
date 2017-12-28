@@ -19,7 +19,14 @@
 #include "adcircboundary.h"
 #include "boost/format.hpp"
 
+AdcircBoundary::AdcircBoundary() { this->setBoundary(0, 0); }
+
 AdcircBoundary::AdcircBoundary(int boundaryCode, int boundaryLength) {
+  this->setBoundaryCode(boundaryCode);
+  this->setBoundaryLength(boundaryLength);
+}
+
+void AdcircBoundary::setBoundary(int boundaryCode, int boundaryLength) {
   this->setBoundaryCode(boundaryCode);
   this->setBoundaryLength(boundaryLength);
 }

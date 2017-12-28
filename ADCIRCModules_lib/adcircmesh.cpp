@@ -67,24 +67,10 @@ AdcircMesh::AdcircMesh(const char *filename) {
 }
 
 AdcircMesh::~AdcircMesh() {
-  for (int i = 0; i < this->numNodes(); i++)
-    if (this->m_nodes[i] != nullptr)
-      delete this->m_nodes[i];
+
   this->m_nodes.clear();
-
-  for (int i = 0; i < this->numElements(); i++)
-    if (this->m_elements[i] != nullptr)
-      delete this->m_elements[i];
   this->m_elements.clear();
-
-  for (int i = 0; i < this->numOpenBoundaries(); i++)
-    if (this->m_openBoundaries[i] != nullptr)
-      delete this->m_openBoundaries[i];
   this->m_openBoundaries.clear();
-
-  for (int i = 0; i < this->numLandBoundaries(); i++)
-    if (this->m_landBoundaries[i] != nullptr)
-      delete this->m_landBoundaries[i];
   this->m_landBoundaries.clear();
 
   if (this->m_nodalSearchTree != nullptr)
@@ -207,7 +193,7 @@ int AdcircMesh::_readNodes(std::fstream &fid) {
     int ierr = IO::splitStringNodeFormat(tempLine, id, x, y, z);
     CHECK_FILEREAD_RETURN_INT(ierr);
 
-    this->m_nodes[i] = new AdcircNode(id, x, y, z);
+    this->m_nodes[i] = AdcircNode(id, x, y, z);
     if (!this->m_nodeOrderingLogical)
       this->m_nodeLookup[id] = i;
   }
@@ -228,9 +214,9 @@ int AdcircMesh::_readElements(std::fstream &fid) {
       int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
       CHECK_FILEREAD_RETURN_INT(ierr);
 
-      this->m_elements[i] =
-          new AdcircElement(id, this->m_nodes[e1 - 1], this->m_nodes[e2 - 1],
-                            this->m_nodes[e3 - 1]);
+      this->m_elements[i].setElement(id, &this->m_nodes[e1 - 1],
+                                     &this->m_nodes[e2 - 1],
+                                     &this->m_nodes[e3 - 1]);
     }
   } else {
     for (int i = 0; i < this->numElements(); i++) {
@@ -238,10 +224,9 @@ int AdcircMesh::_readElements(std::fstream &fid) {
       int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
       CHECK_FILEREAD_RETURN_INT(ierr);
 
-      this->m_elements[i] =
-          new AdcircElement(id, this->m_nodes[this->m_nodeLookup[e1]],
-                            this->m_nodes[this->m_nodeLookup[e2]],
-                            this->m_nodes[this->m_nodeLookup[e3]]);
+      this->m_elements[i].setElement(id, &this->m_nodes[this->m_nodeLookup[e1]],
+                                     &this->m_nodes[this->m_nodeLookup[e2]],
+                                     &this->m_nodes[this->m_nodeLookup[e3]]);
     }
   }
   return Adcirc::NoError;
@@ -275,19 +260,19 @@ int AdcircMesh::_readOpenBoundaries(std::fstream &fid) {
     length = StringConversion::stringToInt(tempList[0], ok);
     CHECK_FILEREAD_RETURN(ok);
 
-    this->m_openBoundaries[i] = new AdcircBoundary(-1, length);
+    this->m_openBoundaries[i].setBoundary(-1, length);
 
-    for (int j = 0; j < this->m_openBoundaries[i]->length(); j++) {
+    for (int j = 0; j < this->m_openBoundaries[i].length(); j++) {
 
       std::getline(fid, tempLine);
       ierr = IO::splitStringBoundary0Format(tempLine, nid);
       CHECK_FILEREAD_RETURN_INT(ierr);
 
       if (this->m_nodeOrderingLogical)
-        this->m_openBoundaries[i]->setNode1(j, this->m_nodes[nid - 1]);
+        this->m_openBoundaries[i].setNode1(j, &this->m_nodes[nid - 1]);
       else
-        this->m_openBoundaries[i]->setNode1(
-            j, this->m_nodes[this->m_nodeLookup[nid]]);
+        this->m_openBoundaries[i].setNode1(
+            j, &this->m_nodes[this->m_nodeLookup[nid]]);
     }
   }
   return Adcirc::NoError;
@@ -328,9 +313,9 @@ int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
     code = StringConversion::stringToInt(tempList[1], ok);
     CHECK_FILEREAD_RETURN(ok);
 
-    this->m_landBoundaries[i] = new AdcircBoundary(code, length);
+    this->m_landBoundaries[i].setBoundary(code, length);
 
-    for (int j = 0; j < this->m_landBoundaries[i]->length(); j++) {
+    for (int j = 0; j < this->m_landBoundaries[i].length(); j++) {
 
       std::getline(fid, tempLine);
 
@@ -340,14 +325,14 @@ int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
             IO::splitStringBoundary23Format(tempLine, n1, crest, supercritical);
         CHECK_FILEREAD_RETURN_INT(ierr);
         if (this->m_nodeOrderingLogical) {
-          this->m_landBoundaries[i]->setNode1(j, this->m_nodes[n1 - 1]);
+          this->m_landBoundaries[i].setNode1(j, &this->m_nodes[n1 - 1]);
         } else {
-          this->m_landBoundaries[i]->setNode1(
-              j, this->m_nodes[this->m_nodeLookup[n1]]);
+          this->m_landBoundaries[i].setNode1(
+              j, &this->m_nodes[this->m_nodeLookup[n1]]);
         }
 
-        this->m_landBoundaries[i]->setCrestElevation(j, crest);
-        this->m_landBoundaries[i]->setSupercriticalWeirCoefficient(
+        this->m_landBoundaries[i].setCrestElevation(j, crest);
+        this->m_landBoundaries[i].setSupercriticalWeirCoefficient(
             j, supercritical);
 
       } else if (code == 4 || code == 24) {
@@ -356,18 +341,18 @@ int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
         CHECK_FILEREAD_RETURN_INT(ierr);
 
         if (this->m_nodeOrderingLogical) {
-          this->m_landBoundaries[i]->setNode1(j, this->m_nodes[n1 - 1]);
-          this->m_landBoundaries[i]->setNode2(j, this->m_nodes[n2 - 1]);
+          this->m_landBoundaries[i].setNode1(j, &this->m_nodes[n1 - 1]);
+          this->m_landBoundaries[i].setNode2(j, &this->m_nodes[n2 - 1]);
         } else {
-          this->m_landBoundaries[i]->setNode1(
-              j, this->m_nodes[this->m_nodeLookup[n1]]);
-          this->m_landBoundaries[i]->setNode2(
-              j, this->m_nodes[this->m_nodeLookup[n2]]);
+          this->m_landBoundaries[i].setNode1(
+              j, &this->m_nodes[this->m_nodeLookup[n1]]);
+          this->m_landBoundaries[i].setNode2(
+              j, &this->m_nodes[this->m_nodeLookup[n2]]);
         }
 
-        this->m_landBoundaries[i]->setCrestElevation(j, crest);
-        this->m_landBoundaries[i]->setSubcriticalWeirCoeffient(j, subcritical);
-        this->m_landBoundaries[i]->setSupercriticalWeirCoefficient(
+        this->m_landBoundaries[i].setCrestElevation(j, crest);
+        this->m_landBoundaries[i].setSubcriticalWeirCoeffient(j, subcritical);
+        this->m_landBoundaries[i].setSupercriticalWeirCoefficient(
             j, supercritical);
 
       } else if (code == 5 || code == 25) {
@@ -377,30 +362,30 @@ int AdcircMesh::_readLandBoundaries(std::fstream &fid) {
         CHECK_FILEREAD_RETURN_INT(ierr);
 
         if (this->m_nodeOrderingLogical) {
-          this->m_landBoundaries[i]->setNode1(j, this->m_nodes[n1 - 1]);
-          this->m_landBoundaries[i]->setNode2(j, this->m_nodes[n2 - 1]);
+          this->m_landBoundaries[i].setNode1(j, &this->m_nodes[n1 - 1]);
+          this->m_landBoundaries[i].setNode2(j, &this->m_nodes[n2 - 1]);
         } else {
-          this->m_landBoundaries[i]->setNode1(
-              j, this->m_nodes[this->m_nodeLookup[n1]]);
-          this->m_landBoundaries[i]->setNode2(
-              j, this->m_nodes[this->m_nodeLookup[n2]]);
+          this->m_landBoundaries[i].setNode1(
+              j, &this->m_nodes[this->m_nodeLookup[n1]]);
+          this->m_landBoundaries[i].setNode2(
+              j, &this->m_nodes[this->m_nodeLookup[n2]]);
         }
 
-        this->m_landBoundaries[i]->setCrestElevation(j, crest);
-        this->m_landBoundaries[i]->setSubcriticalWeirCoeffient(j, subcritical);
-        this->m_landBoundaries[i]->setSupercriticalWeirCoefficient(
+        this->m_landBoundaries[i].setCrestElevation(j, crest);
+        this->m_landBoundaries[i].setSubcriticalWeirCoeffient(j, subcritical);
+        this->m_landBoundaries[i].setSupercriticalWeirCoefficient(
             j, supercritical);
-        this->m_landBoundaries[i]->setPipeHeight(j, pipeheight);
-        this->m_landBoundaries[i]->setPipeCoefficient(j, pipecoef);
-        this->m_landBoundaries[i]->setPipeDiameter(j, pipediam);
+        this->m_landBoundaries[i].setPipeHeight(j, pipeheight);
+        this->m_landBoundaries[i].setPipeCoefficient(j, pipecoef);
+        this->m_landBoundaries[i].setPipeDiameter(j, pipediam);
       } else {
         ierr = IO::splitStringBoundary0Format(tempLine, n1);
         CHECK_FILEREAD_RETURN_INT(ierr);
         if (this->m_nodeOrderingLogical)
-          this->m_landBoundaries[i]->setNode1(j, this->m_nodes[n1 - 1]);
+          this->m_landBoundaries[i].setNode1(j, &this->m_nodes[n1 - 1]);
         else
-          this->m_landBoundaries[i]->setNode1(
-              j, this->m_nodes[this->m_nodeLookup[n1]]);
+          this->m_landBoundaries[i].setNode1(
+              j, &this->m_nodes[this->m_nodeLookup[n1]]);
       }
     }
   }
@@ -431,28 +416,28 @@ void AdcircMesh::setTotalOpenBoundaryNodes(int totalOpenBoundaryNodes) {
 
 AdcircNode *AdcircMesh::node(int index) {
   if (index >= 0 && index < this->numNodes())
-    return this->m_nodes[index];
+    return &this->m_nodes[index];
   else
     return nullptr;
 }
 
 AdcircElement *AdcircMesh::element(int index) {
   if (index >= 0 && index < this->numElements())
-    return this->m_elements[index];
+    return &this->m_elements[index];
   else
     return nullptr;
 }
 
 AdcircBoundary *AdcircMesh::openBoundary(int index) {
   if (index >= 0 && index < this->numOpenBoundaries())
-    return this->m_openBoundaries[index];
+    return &this->m_openBoundaries[index];
   else
     return nullptr;
 }
 
 AdcircBoundary *AdcircMesh::landBoundary(int index) {
   if (index >= 0 && index < this->numLandBoundaries())
-    return this->m_landBoundaries[index];
+    return &this->m_landBoundaries[index];
   else
     return nullptr;
 }
@@ -605,45 +590,21 @@ bool AdcircMesh::elementalSearchTreeInitialized() {
 void AdcircMesh::resizeMesh(int numNodes, int numElements,
                             int numOpenBoundaries, int numLandBoundaries) {
   if (numNodes != this->numNodes()) {
-    if (numNodes < this->numNodes()) {
-      for (int i = numNodes; i < this->numNodes(); i++) {
-        if (this->m_nodes[i] != nullptr)
-          delete this->m_nodes[i];
-      }
-    }
     this->m_nodes.resize(numNodes);
     this->setNumNodes(numNodes);
   }
 
   if (numElements != this->numElements()) {
-    if (numElements < this->numElements()) {
-      for (int i = numElements; i < this->numElements(); i++) {
-        if (this->m_elements[i] != nullptr)
-          delete this->m_elements[i];
-      }
-    }
     this->m_elements.resize(numElements);
     this->setNumElements(numElements);
   }
 
   if (numOpenBoundaries != this->numOpenBoundaries()) {
-    if (numOpenBoundaries < this->numOpenBoundaries()) {
-      for (int i = numOpenBoundaries; i < this->numOpenBoundaries(); i++) {
-        if (this->m_openBoundaries[i] != nullptr)
-          delete this->m_openBoundaries[i];
-      }
-    }
     this->m_openBoundaries.resize(numOpenBoundaries);
     this->setNumOpenBoundaries(numOpenBoundaries);
   }
 
   if (numLandBoundaries != this->numLandBoundaries()) {
-    if (numLandBoundaries < this->numLandBoundaries()) {
-      for (int i = numLandBoundaries; i < this->numLandBoundaries(); i++) {
-        if (this->m_landBoundaries[i] != nullptr)
-          delete this->m_landBoundaries[i];
-      }
-    }
     this->m_landBoundaries.resize(numLandBoundaries);
     this->setNumLandBoundaries(numLandBoundaries);
   }
@@ -651,45 +612,34 @@ void AdcircMesh::resizeMesh(int numNodes, int numElements,
   return;
 }
 
-void AdcircMesh::addNode(int index, AdcircNode *node) {
+void AdcircMesh::addNode(int index, AdcircNode &node) {
   unsigned long long index2 = static_cast<unsigned long long>(index);
   if (index < this->numNodes()) {
-    if (this->m_nodes[index2] != nullptr)
-      delete this->m_nodes[index2];
     this->m_nodes[index2] = node;
   }
   return;
 }
 
 void AdcircMesh::deleteNode(int index) {
-  unsigned long long index2 = static_cast<unsigned long long>(index);
   if (index < this->numNodes()) {
-    if (this->m_nodes[index2] != nullptr)
-      delete this->m_nodes[index2];
     this->m_nodes.erase(this->m_nodes.begin() + index);
     this->setNumNodes(static_cast<int>(this->m_nodes.size()));
   }
   return;
 }
 
-void AdcircMesh::addElement(int index, AdcircElement *element) {
-  unsigned long long index2 = static_cast<unsigned long long>(index);
+void AdcircMesh::addElement(int index, AdcircElement &element) {
   if (index < this->numElements()) {
-    if (this->m_elements[index2] != nullptr)
-      delete this->m_elements[index2];
-    this->m_elements[index2] = element;
+    this->m_elements[index] = element;
   }
   return;
 }
 
 void AdcircMesh::deleteElement(int index) {
-  unsigned long long index2 = static_cast<unsigned long long>(index);
   if (index < this->numElements()) {
-    if (this->m_elements[index2] != nullptr)
-      delete this->m_elements[index2];
     this->m_elements.erase(this->m_elements.begin() +
                            static_cast<long long>(index));
-    this->setNumNodes(static_cast<int>(this->m_nodes.size()));
+    this->setNumElements(static_cast<int>(this->m_elements.size()));
   }
   return;
 }

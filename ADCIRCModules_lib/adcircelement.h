@@ -21,14 +21,16 @@
 
 #include "adcircmodules_global.h"
 #include "adcircnode.h"
-#include <vector>
 #include <string>
+#include <vector>
 
 class AdcircElement {
 public:
   explicit AdcircElement();
   explicit AdcircElement(int id, AdcircNode *n1, AdcircNode *n2,
                          AdcircNode *n3);
+
+  void setElement(int id, AdcircNode *n1, AdcircNode *n2, AdcircNode *n3);
 
   int n() const;
 
@@ -41,7 +43,7 @@ public:
   std::string toString();
 
 private:
-  const int m_n = 3;
+  int m_n = 3;
 
   int m_id;
   std::vector<AdcircNode *> m_nodes;
