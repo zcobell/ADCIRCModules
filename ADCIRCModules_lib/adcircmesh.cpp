@@ -45,25 +45,31 @@
     return ierr;                                                               \
   }
 
-AdcircMesh::AdcircMesh() {
+AdcircMesh::AdcircMesh() { this->_init(); }
+
+AdcircMesh::AdcircMesh(std::string filename) {
+  this->_init();
+  this->setFilename(filename);
+}
+
+AdcircMesh::AdcircMesh(const char *filename) {
+  this->_init();
+  this->setFilename(filename);
+}
+
+void AdcircMesh::_init() {
   this->setFilename(std::string());
   this->defineProjection(4326, true);
   this->m_nodalSearchTree = nullptr;
   this->m_elementalSearchTree = nullptr;
-}
-
-AdcircMesh::AdcircMesh(std::string filename) {
-  this->setFilename(filename);
-  this->defineProjection(4326, true);
-  this->m_nodalSearchTree = nullptr;
-  this->m_elementalSearchTree = nullptr;
-}
-
-AdcircMesh::AdcircMesh(const char *filename) {
-  this->setFilename(filename);
-  this->defineProjection(4326, true);
-  this->m_nodalSearchTree = nullptr;
-  this->m_elementalSearchTree = nullptr;
+  this->m_numNodes = 0;
+  this->m_numElements = 0;
+  this->m_numLandBoundaries = 0;
+  this->m_numOpenBoundaries = 0;
+  this->m_totalOpenBoundaryNodes = 0;
+  this->m_totalLandBoundaryNodes = 0;
+  this->m_nodeOrderingLogical = true;
+  this->m_elementOrderingLogical = true;
 }
 
 AdcircMesh::~AdcircMesh() {
@@ -193,10 +199,15 @@ int AdcircMesh::_readNodes(std::fstream &fid) {
     int ierr = IO::splitStringNodeFormat(tempLine, id, x, y, z);
     CHECK_FILEREAD_RETURN_INT(ierr);
 
+    if (i != id - 1)
+      this->m_nodeOrderingLogical = false;
+
     this->m_nodes[i] = AdcircNode(id, x, y, z);
-    if (!this->m_nodeOrderingLogical)
-      this->m_nodeLookup[id] = i;
   }
+
+  if (!this->m_nodeOrderingLogical)
+    for (int i = 0; i < this->m_numNodes; i++)
+      this->m_nodeLookup[this->m_nodes[i].id()] = i;
 
   return Adcirc::NoError;
 }
@@ -224,11 +235,19 @@ int AdcircMesh::_readElements(std::fstream &fid) {
       int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
       CHECK_FILEREAD_RETURN_INT(ierr);
 
+      if (i != id - 1)
+        this->m_elementOrderingLogical = false;
+
       this->m_elements[i].setElement(id, &this->m_nodes[this->m_nodeLookup[e1]],
                                      &this->m_nodes[this->m_nodeLookup[e2]],
                                      &this->m_nodes[this->m_nodeLookup[e3]]);
     }
   }
+
+  if (!this->m_elementOrderingLogical)
+    for (int i = 0; i < this->m_numElements; i++)
+      this->m_elementLookup[this->m_elements[i].id()] = i;
+
   return Adcirc::NoError;
 }
 

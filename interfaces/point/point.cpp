@@ -18,17 +18,20 @@
 //------------------------------------------------------------------------//
 #include "point.h"
 
-Point::Point(){}
+Point::Point() {
+  this->m_x = -9999.0;
+  this->m_y = -9999.0;
+}
 
 Point::Point(double x, double y) {
   this->setX(x);
   this->setY(y);
 }
 
-double Point::x() const { return _x; }
+double Point::x() const { return this->m_x; }
 
-void Point::setX(double x) { _x = x; }
+void Point::setX(double x) { this->m_x = x; }
 
-double Point::y() const { return _y; }
+double Point::y() const { return this->m_y; }
 
-void Point::setY(double y) { _y = y; }
+void Point::setY(double y) { this->m_y = y; }

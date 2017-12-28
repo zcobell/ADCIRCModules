@@ -106,6 +106,7 @@ private:
   int _readElements(std::fstream &fid);
   int _readOpenBoundaries(std::fstream &fid);
   int _readLandBoundaries(std::fstream &fid);
+  void _init();
 
   std::string m_filename;
   std::string m_meshHeaderString;
@@ -114,6 +115,7 @@ private:
   std::vector<AdcircBoundary> m_openBoundaries;
   std::vector<AdcircBoundary> m_landBoundaries;
   std::unordered_map<int, int> m_nodeLookup;
+  std::unordered_map<int, int> m_elementLookup;
   int m_numNodes;
   int m_numElements;
   int m_numOpenBoundaries;
@@ -123,7 +125,8 @@ private:
   int m_epsg;
   bool m_isLatLon;
 
-  const bool m_nodeOrderingLogical = true;
+  bool m_nodeOrderingLogical;
+  bool m_elementOrderingLogical;
 
   QKdtree2 *m_nodalSearchTree;
   QKdtree2 *m_elementalSearchTree;

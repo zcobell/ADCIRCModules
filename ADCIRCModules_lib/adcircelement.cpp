@@ -19,7 +19,10 @@
 #include "adcircelement.h"
 #include "boost/format.hpp"
 
-AdcircElement::AdcircElement() { this->m_nodes.resize(this->n()); }
+AdcircElement::AdcircElement() {
+  this->m_id = 0;
+  this->m_nodes.resize(this->n());
+}
 
 AdcircElement::AdcircElement(int id, AdcircNode *n1, AdcircNode *n2,
                              AdcircNode *n3) {
@@ -30,8 +33,8 @@ AdcircElement::AdcircElement(int id, AdcircNode *n1, AdcircNode *n2,
   this->m_nodes[2] = n3;
 }
 
-void AdcircElement::setElement(int id, AdcircNode *n1, AdcircNode *n2, AdcircNode *n3)
-{
+void AdcircElement::setElement(int id, AdcircNode *n1, AdcircNode *n2,
+                               AdcircNode *n3) {
   this->m_id = id;
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;

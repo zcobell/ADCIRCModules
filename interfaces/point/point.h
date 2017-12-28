@@ -32,8 +32,8 @@ public:
   void setY(double y);
 
 private:
-  double _x;
-  double _y;
+  double m_x;
+  double m_y;
 };
 
 #endif // POINT_H

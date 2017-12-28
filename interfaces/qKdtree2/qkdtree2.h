@@ -35,12 +35,13 @@
 #ifndef QKDTREE2_H
 #define QKDTREE2_H
 
-#include <vector>
 #include "point.h"
+#include <cstddef>
+#include <vector>
 
 class kdtree2;
 
-class QKdtree2  {
+class QKdtree2 {
 
 public:
   enum _errors { NoError, SizeMismatch };
@@ -52,19 +53,19 @@ public:
   int build(std::vector<Point> &pointCloud);
   int build(std::vector<double> &x, std::vector<double> &y);
 
-  int findNearest(Point pointLocation);
-  int findNearest(double x, double y);
+  size_t findNearest(Point pointLocation);
+  size_t findNearest(double x, double y);
 
   std::vector<int> findXNearest(Point pointLocation, int nn);
   std::vector<int> findXNearest(double x, double y, int nn);
 
-  int size() const;
+  size_t size() const;
 
   bool isInitialized() const;
 
 private:
   /// Variable holding the total number of points in the search tree
-  int m_numDataPoints;
+  size_t m_numDataPoints;
 
   /// Variable that ensures the search tree is initialized
   bool m_initialized;

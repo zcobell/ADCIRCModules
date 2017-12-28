@@ -19,7 +19,12 @@
 #include "adcircnode.h"
 #include "boost/format.hpp"
 
-AdcircNode::AdcircNode() {}
+AdcircNode::AdcircNode() {
+  this->m_id = 0;
+  this->m_x = -9999.0;
+  this->m_y = -9999.0;
+  this->m_z = -9999.0;
+}
 
 AdcircNode::AdcircNode(int id, double x, double y, double z) {
   this->m_id = id;
