@@ -20,6 +20,8 @@
  * @class AdcircMesh
  * @author Zachary Cobell
  * @brief Class that handles operations using Adcirc mesh files
+ * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved.
+ * @license This project is released under the terms of the GNU General Public License v3
  *
  * The AdcircMesh class handles functions related to reading an
  * adcirc mesh into memory and provides some facilities for
@@ -107,6 +109,9 @@ public:
   bool nodalSearchTreeInitialized();
   bool elementalSearchTreeInitialized();
 
+  bool nodeOrderingIsLogical();
+  bool elementOrderingIsLogical();
+
   AdcircNode *node(int index);
   AdcircElement *element(int index);
   AdcircBoundary *openBoundary(int index);
@@ -114,6 +119,9 @@ public:
 
   AdcircNode *nodeById(int id);
   AdcircElement *elementById(int id);
+
+  int nodeIndexById(int id);
+  int elementIndexById(int id);
 
   void resizeMesh(int numNodes, int numElements, int numOpenBoundaries,
                   int numLandBoundaries);

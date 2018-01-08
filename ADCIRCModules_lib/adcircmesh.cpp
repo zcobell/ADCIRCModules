@@ -1034,3 +1034,47 @@ int AdcircMesh::write(std::string filename) {
 int AdcircMesh::write(const char *filename) {
   return this->write(std::string(filename));
 }
+
+/**
+ * @name AdcircMesh::nodeOrderingIsLogical
+ * @brief Allows the user to know if the code has determined that the node
+ * ordering is logcical (i.e. sequential) or not
+ * @return true if node ordering is sequential
+ */
+bool AdcircMesh::nodeOrderingIsLogical() { return this->m_nodeOrderingLogical; }
+
+/**
+ * @name AdcircMesh::elementOrderingIsLogical
+ * @brief Allows the user to know if the code has determined that the element
+ * ordering is logcical (i.e. sequential) or not
+ * @return true if element ordering is sequential
+ */
+bool AdcircMesh::elementOrderingIsLogical() {
+  return this->m_elementOrderingLogical;
+}
+
+/**
+ * @name AdcircMesh::nodeIndexById
+ * @brief Returns the position in the array by node id
+ * @param id nodal id
+ * @return array position
+ */
+int AdcircMesh::nodeIndexById(int id){
+  if(this->m_nodeOrderingLogical)
+    return id;
+  else
+    return this->m_nodeLookup[id];
+}
+
+/**
+ * @name AdcircMesh::elementIndexById
+ * @brief Returns the position in the array by element id
+ * @param id element id
+ * @return array position
+ */
+int AdcircMesh::elementIndexById(int id){
+  if(this->m_elementOrderingLogical)
+    return id;
+  else
+    return this->m_elementLookup[id];
+}

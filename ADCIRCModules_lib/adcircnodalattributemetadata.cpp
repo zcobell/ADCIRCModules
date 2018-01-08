@@ -17,12 +17,14 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 #include "adcircnodalattributemetadata.h"
+#include <assert.h>
 
-AdcircNodalAttributeMetadata::AdcircNodalAttributeMetadata(std::string name, std::string units,
-                                           int numValues) {
+AdcircNodalAttributeMetadata::AdcircNodalAttributeMetadata(std::string name,
+                                                           std::string units,
+                                                           int numValues) {
   this->setName(name);
   this->setUnits(units);
-  this->setNumValues(numValues);
+  this->setNumberOfValues(numValues);
 }
 
 std::string AdcircNodalAttributeMetadata::name() const { return this->m_name; }
@@ -31,22 +33,43 @@ void AdcircNodalAttributeMetadata::setName(const std::string &name) {
   this->m_name = name;
 }
 
-std::string AdcircNodalAttributeMetadata::units() const { return this->m_units; }
+std::string AdcircNodalAttributeMetadata::units() const {
+  return this->m_units;
+}
 
 void AdcircNodalAttributeMetadata::setUnits(const std::string &units) {
   this->m_units = units;
 }
 
-int AdcircNodalAttributeMetadata::numValues() const { return this->m_numValues; }
-
-void AdcircNodalAttributeMetadata::setNumValues(int numValues) {
-  this->m_numValues = numValues;
+int AdcircNodalAttributeMetadata::numberOfValues() const {
+  return this->m_numValues;
 }
 
-std::vector<double> AdcircNodalAttributeMetadata::getDefaultValue() const {
+void AdcircNodalAttributeMetadata::setNumberOfValues(int numValues) {
+  this->m_numValues = numValues;
+  this->m_defaultValue.resize(this->numberOfValues());
+}
+
+std::vector<double> AdcircNodalAttributeMetadata::getDefaultValues() const {
   return this->m_defaultValue;
 }
 
-void AdcircNodalAttributeMetadata::setDefaultValue(const std::vector<double> &value) {
+double AdcircNodalAttributeMetadata::getDefaultValue(int index) const {
+
+  assert(index >= 0 && index < this->m_numValues);
+
+  if (index >= 0 || index < this->m_numValues)
+    return this->m_defaultValue[index];
+  else
+    return this->m_defaultValue[0];
+}
+
+void AdcircNodalAttributeMetadata::setDefaultValue(
+    const std::vector<double> &value) {
+  assert(value.size() == this->m_numValues);
   this->m_defaultValue = value;
+}
+
+void AdcircNodalAttributeMetadata::setDefaultValue(const double &value) {
+  std::fill(this->m_defaultValue.begin(), this->m_defaultValue.end(), value);
 }

@@ -33,10 +33,12 @@ public:
   std::string units() const;
   void setUnits(const std::string &units);
 
-  int numValues() const;
-  void setNumValues(int numValues);
+  int numberOfValues() const;
+  void setNumberOfValues(int numValues);
 
-  std::vector<double> getDefaultValue() const;
+  std::vector<double> getDefaultValues() const;
+  double getDefaultValue(int index = 0) const;
+  void setDefaultValue(const double &value);
   void setDefaultValue(const std::vector<double> &value);
 
 private:

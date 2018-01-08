@@ -20,8 +20,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS  = interfaces \
-           ADCIRCModules_lib
-#           swig \
-#           testing
+           ADCIRCModules_lib \
+           testing
 #           bench  
 CONFIG += ordered           

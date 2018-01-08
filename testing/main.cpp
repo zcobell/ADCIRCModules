@@ -17,14 +17,22 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 #include "adcircmesh.h"
+#include "adcircnodalparameters.h"
 #include <iostream>
 
 int main(int argc, char *argv[]) {
   AdcircMesh *mesh = new AdcircMesh(
-      std::string("tx2008_r35a_GCCPRD_v04c_Alt16_SecondAlternative_v01a_chk.grd"));
+      std::string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.grd"));
 
   int ierr = mesh->read();
-  std::cout << "Return Code: " << ierr << "\n";
+  std::cout << "Mesh Read Return Code: " << ierr << "\n";
+
+  AdcircNodalParameters *f13 = new AdcircNodalParameters(std::string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.13"),mesh);
+  //AdcircNodalParameters *f13 = new AdcircNodalParameters(std::string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.13"));
+  ierr = f13->read();
+  std::cout << "Fort13 Read Return Code: " << ierr << "\n";
+  std::cout << f13->nodalAttribute(0,0)->node() << "\n";
+
 /*
   ierr = mesh->reproject(26915);
 

@@ -51,7 +51,6 @@ namespace Adcirc{
 
   namespace NodalParameters{
     enum _nodalParamErrorCodes{
-      NoError       = 0x0400000,
       MeshMismatch  = 0x0400001
     };
   }

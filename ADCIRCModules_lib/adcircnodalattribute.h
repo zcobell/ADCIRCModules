@@ -20,26 +20,44 @@
 #define ADCIRCNODALATTRIBUTE_H
 
 #include "adcircnodalattributemetadata.h"
+#include "adcircnode.h"
 #include <vector>
 
 class AdcircNodalAttribute {
 public:
   explicit AdcircNodalAttribute();
-  explicit AdcircNodalAttribute(AdcircNodalAttributeMetadata *metadata);
 
-  AdcircNodalAttributeMetadata *metadata() const;
+  explicit AdcircNodalAttribute(int size);
 
-  void setMetadata(AdcircNodalAttributeMetadata *metadata);
+  void resize(int size);
 
   double value(int index) const;
-  void setValues(const std::vector<double> &values);
+  std::vector<double> values() const;
+
+  void setValue(const double &value);
+  void setValue(int index, const double &value);
+  void setValue(const std::vector<double> &values);
+
+  AdcircNode *node();
+  void setNode(AdcircNode *node);
+
+  int size() const;
+
+  int id() const;
+  void setId(int id);
 
 private:
+  /// Number of values in this dataset
+  int m_size;
+
+  /// ID number in the Adcirc Nodal Attributes file
+  int m_id;
+
   /// Value(s) for nodal parameter at this node
   std::vector<double> m_values;
 
-  /// Metadata for nodal parameters
-  AdcircNodalAttributeMetadata *m_metadata;
+  /// Node that this value applies to
+  AdcircNode *m_node;
 };
 
 #endif // ADCIRCNODALATTRIBUTE_H

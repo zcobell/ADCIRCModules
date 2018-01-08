@@ -19,7 +19,7 @@
 
 /* Adcirc Interface File */
 #if defined(SWIGPYTHON)
-%module pyadcirc
+%module PyAdcirc
 #endif
 
 #if defined(SWIGPERL)
@@ -32,6 +32,9 @@
 #include "adcircnode.h"
 #include "adcircelement.h"
 #include "adcircboundary.h"
+#include "adcircnodalattribute.h"
+#include "adcircnodalattributemetadata.h"
+#include "adcircnodalparameters.h"
 #include "qkdtree2.h"
 #include "qproj4.h"
 #include "point.h"
@@ -41,6 +44,9 @@
 %include "adcircnode.h"
 %include "adcircelement.h"
 %include "adcircboundary.h"
+%include "adcircnodalattribute.h"
+%include "adcircnodalattributemetadata.h"
+%include "adcircnodalparameters.h"
 %include "qkdtree2.h"
 %include "qproj4.h"
 %include "point.h"

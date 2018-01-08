@@ -62,6 +62,12 @@ public:
                                          double &supercritical,
                                          double &pipeheight, double &pipecoef,
                                          double &pipediam);
+
+  static int splitStringNodalAttribute1Format(std::string &data, int &node,
+                                              double &value);
+
+  static int splitStringNodalAttribute12Format(std::string &data, int &node,
+                                               std::vector<double> &values);
 };
 
 #endif // IO_H

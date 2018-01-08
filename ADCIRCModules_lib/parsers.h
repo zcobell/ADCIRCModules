@@ -27,6 +27,8 @@
 #include "boost/spirit/include/phoenix_operator.hpp"
 #include "boost/spirit/include/qi.hpp"
 
+using boost::spirit::ascii::space;
+
 namespace parse {
 
 namespace qi = boost::spirit::qi;
@@ -76,6 +78,27 @@ struct boundary25 {
   double pipediam;
 };
 
+struct nodalAttribute1 {
+  int node;
+  double value;
+};
+
+struct nodalAttribute12 {
+  int node;
+  double value1;
+  double value2;
+  double value3;
+  double value4;
+  double value5;
+  double value6;
+  double value7;
+  double value8;
+  double value9;
+  double value10;
+  double value11;
+  double value12;
+};
+
 } // namespace parse
 
 BOOST_FUSION_ADAPT_STRUCT(parse::node,
@@ -98,6 +121,14 @@ BOOST_FUSION_ADAPT_STRUCT(
     (int, node1)(int, node2)(double, crest)(double, subcritical)(
         double, supercritical)(double, pipeheight)(double, pipecoef)(double,
                                                                      pipediam))
+
+BOOST_FUSION_ADAPT_STRUCT(parse::nodalAttribute1, (int, node)(double, value))
+
+BOOST_FUSION_ADAPT_STRUCT(
+    parse::nodalAttribute12,
+    (int, node)(double, value1)(double, value2)(double, value3)(double, value4)(
+        double, value5)(double, value6)(double, value7)(double, value8)(
+        double, value9)(double, value10)(double, value11)(double, value12))
 
 namespace parse {
 template <typename Iterator>
@@ -164,6 +195,31 @@ struct boundary25_parser
   qi::rule<Iterator, boundary25(), ascii::space_type> start;
 };
 
+template <typename Iterator>
+struct nodalAttribute1_parser
+    : qi::grammar<Iterator, nodalAttribute1(), ascii::space_type> {
+  nodalAttribute1_parser() : nodalAttribute1_parser::base_type(start) {
+    using qi::double_;
+    using qi::int_;
+    start %= int_ >> double_;
+  }
+  qi::rule<Iterator, nodalAttribute1(), ascii::space_type> start;
+};
+
+template <typename Iterator>
+struct nodalAttribute12_parser
+    : qi::grammar<Iterator, nodalAttribute12(), ascii::space_type> {
+  nodalAttribute12_parser() : nodalAttribute12_parser::base_type(start) {
+    using qi::double_;
+    using qi::int_;
+    start %= int_ >> double_ >> double_ >> double_ >> double_ >> double_ >>
+             double_ >> double_ >> double_ >> double_ >> double_ >> double_ >>
+             double_;
+  }
+  qi::rule<Iterator, nodalAttribute12(), ascii::space_type> start;
+};
+
 } // namespace parse
+
 
 #endif // PARSERS_H

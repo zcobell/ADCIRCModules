@@ -77,7 +77,7 @@ IF(SWIG_FOUND)
     INCLUDE(${SWIG_USE_FILE})
 ENDIF(SWIG_FOUND)
 
-FIND_PACKAGE(PythonLibs)
+FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
 IF(PythonLibs_FOUND)
     INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH})
 ENDIF(PythonLibs_FOUND)
@@ -237,7 +237,10 @@ ADD_LIBRARY( adcircmodules SHARED ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircme
                 ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/stringconversion.cpp
                 ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattribute.cpp
                 ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattributemetadata.cpp
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalparameters.cpp )
+                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalparameters.cpp 
+                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalparameters.cpp
+                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattributemetadata.cpp
+                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattribute.cpp )
 TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib
                                 ${CMAKE_SOURCE_DIR}/interfaces/point
                                 ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2
@@ -306,25 +309,25 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
         )
     ENDIF(WIN32)
 
-    ADD_LIBRARY( pyadcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx )
-    TARGET_INCLUDE_DIRECTORIES( pyadcirc PRIVATE ${PYTHON_INCLUDE_DIRECTORIES} 
+    ADD_LIBRARY( PyAdcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx )
+    TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_DIRECTORIES} 
             ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib 
             ${CMAKE_SOURCE_DIR}/interfaces/point 
             ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
             ${CMAKE_SOURCE_DIR}/interfaces/qProj4 )
-    TARGET_LINK_LIBRARIES( pyadcirc PRIVATE adcircmodules ${PYTHON_LIBRARY} )
-    SET_TARGET_PROPERTIES( pyadcirc PROPERTIES PREFIX "_")
+    TARGET_LINK_LIBRARIES( PyAdcirc PRIVATE adcircmodules ${PYTHON_LIBRARY} )
+    SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES PREFIX "_")
     SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES pyadcirc.py CMakeFiles/python_adcirc_wrap.cxx )
-    ADD_DEPENDENCIES( pyadcirc adcircmodules )
+    ADD_DEPENDENCIES( PyAdcirc adcircmodules )
     
     IF(WIN32)
-        SET_TARGET_PROPERTIES( pyadcirc PROPERTIES SUFFIX ".pyd")
+        SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES SUFFIX ".pyd")
         IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
             # 64 bits
-            TARGET_COMPILE_DEFINITIONS(pyadcirc PRIVATE "MS_WIN64")
+            TARGET_COMPILE_DEFINITIONS(PyAdcirc PRIVATE "MS_WIN64")
         ELSEIF(CMAKE_SIZEOF_VOID_P EQUAL 4)
             # 32 bits
-            TARGET_COMPILE_DEFINITIONS(pyadcirc PRIVATE "MS_WIN32")
+            TARGET_COMPILE_DEFINITIONS(PyAdcirc PRIVATE "MS_WIN32")
         ENDIF()
     ENDIF(WIN32)
 ENDIF(PythonLibs_FOUND AND SWIG_FOUND)
