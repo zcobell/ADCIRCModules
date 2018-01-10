@@ -58,7 +58,7 @@ SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(ADCIRCMODULES_VERSION_MAJOR 0)
 set(ADCIRCMODULES_VERSION_MINOR 1)
 set(ADCIRCMODULES_VERSION_PATCH 0)
-set(ADCIRCMODULES_VERSION_STRING ${ADCIRCMODULES_VERSION_MAJOR}.${ADCIRCMDULES_VERSION_MINOR}.${ADCIRCMODULES_VERSION_PATCH})
+set(ADCIRCMODULES_VERSION_STRING ${ADCIRCMODULES_VERSION_MAJOR}.${ADCIRCMODULES_VERSION_MINOR}.${ADCIRCMODULES_VERSION_PATCH})
 ###########################################################################
 
 
@@ -237,10 +237,7 @@ ADD_LIBRARY( adcircmodules SHARED ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircme
                 ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/stringconversion.cpp
                 ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattribute.cpp
                 ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattributemetadata.cpp
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalparameters.cpp 
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalparameters.cpp
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattributemetadata.cpp
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattribute.cpp )
+                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalparameters.cpp ) 
 TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib
                                 ${CMAKE_SOURCE_DIR}/interfaces/point
                                 ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2
@@ -248,7 +245,24 @@ TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/ADCIRCModu
                                 ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
                                 ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 
                                 ${CMAKE_SOURCE_DIR}/thirdparty/kdtree )
+
 ADD_DEPENDENCIES( adcircmodules point proj4 kdtree2 shapelib )
+
+SET_TARGET_PROPERTIES( adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING} SOVERSION ${ADCIRCMODULES_VERSION_MAJOR} )
+
+IF(WIN32)
+    INSTALL(TARGETS adcircmodules LIBRARY DESTINATION bin)
+ELSE(WIN32)
+    INSTALL( TARGETS adcircmodules LIBRARY DESTINATION lib )
+ENDIF(WIN32)
+
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnode.h DESTINATION include)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircelement.h DESTINATION include)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircmesh.h DESTINATION include)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattribute.h DESTINATION include)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattributemetadata.h DESTINATION include)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalparameters.h DESTINATION include)
+
 TARGET_LINK_LIBRARIES( adcircmodules proj4 point kdtree2 shapelib )
 ###########################################################################
 
@@ -317,8 +331,16 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
             ${CMAKE_SOURCE_DIR}/interfaces/qProj4 )
     TARGET_LINK_LIBRARIES( PyAdcirc PRIVATE adcircmodules ${PYTHON_LIBRARY} )
     SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES PREFIX "_")
-    SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES pyadcirc.py CMakeFiles/python_adcirc_wrap.cxx )
+    SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES PyAdcirc.py CMakeFiles/python_adcirc_wrap.cxx )
     ADD_DEPENDENCIES( PyAdcirc adcircmodules )
+
+    IF(WIN32)
+        INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION bin)
+    ELSE(WIN32)
+        INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION lib)
+    ENDIF(WIN32)
+    
+    INSTALL(FILES ${CMAKE_BINARY_DIR}/PyAdcirc.py DESTINATION python)
     
     IF(WIN32)
         SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES SUFFIX ".pyd")
