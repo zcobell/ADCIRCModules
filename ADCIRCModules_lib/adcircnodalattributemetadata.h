@@ -39,6 +39,7 @@ public:
   std::vector<double> getDefaultValues() const;
   double getDefaultValue(int index = 0) const;
   void setDefaultValue(const double &value);
+  void setDefaultValue(int index, const double &value);
   void setDefaultValue(const std::vector<double> &value);
 
 private:

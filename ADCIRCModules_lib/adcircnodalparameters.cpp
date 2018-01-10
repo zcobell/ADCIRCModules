@@ -184,9 +184,9 @@ int AdcircNodalParameters::_readFort13Defaults(std::fstream &fid) {
         return FileIO::GenericFileReadError;
 
       defaultValueVector.resize(nValues);
-      for (int i = 0; i < nValues; i++) {
-        defaultValueVector[i] =
-            StringConversion::stringToDouble(tempList[i], ok);
+      for (int j = 0; j < nValues; j++) {
+        defaultValueVector[j] =
+            StringConversion::stringToDouble(tempList[j], ok);
         assert(ok);
         if (!ok)
           return FileIO::GenericFileReadError;

@@ -94,7 +94,7 @@ private:
   std::vector<AdcircNodalAttributeMetadata> m_nodalParameters;
 
   /// Vector of objects for the nodal parameters
-  std::vector<std::vector<AdcircNodalAttribute>> m_nodalData;
+  std::vector<std::vector<AdcircNodalAttribute> > m_nodalData;
 };
 
 #endif // ADCIRCNODALPARAMETERS_H

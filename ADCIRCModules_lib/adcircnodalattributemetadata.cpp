@@ -73,3 +73,9 @@ void AdcircNodalAttributeMetadata::setDefaultValue(
 void AdcircNodalAttributeMetadata::setDefaultValue(const double &value) {
   std::fill(this->m_defaultValue.begin(), this->m_defaultValue.end(), value);
 }
+
+void AdcircNodalAttributeMetadata::setDefaultValue(int index, const double &value) {
+    assert(index >= 0 && index < this->m_numValues);
+    this->m_defaultValue[index] = value;
+}
+
