@@ -23,10 +23,11 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+
 class split {
- public:
-  static std::vector<std::string> stringSplitToVector(std::string s,
-                                                      char delim);
+public:
+  static vector<string> stringSplitToVector(string s, char delim);
 };
 
-#endif  // SPLIT_H
+#endif // SPLIT_H

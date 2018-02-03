@@ -26,7 +26,7 @@
 #include <string>
 
 //...Typedefs for boost parsers used in I/O
-typedef std::string::const_iterator iterator_type;
+typedef string::const_iterator iterator_type;
 typedef parse::node_parser<iterator_type> node_parser;
 typedef parse::elem_parser<iterator_type> elem_parser;
 typedef parse::boundary0_parser<iterator_type> boundary0_parser;
@@ -38,11 +38,11 @@ typedef parse::nodalAttribute12_parser<iterator_type> nodalattribute12_parser;
 
 IO::IO() {}
 
-int IO::readFileData(std::string filename, std::vector<std::string> &data) {
+int IO::readFileData(string filename, vector<string> &data) {
   std::ifstream t(filename.c_str());
   t.seekg(0, std::ios::end);
   size_t size = t.tellg();
-  std::string buffer(size, ' ');
+  string buffer(size, ' ');
   t.seekg(0);
   t.read(&buffer[0], size);
   boost::algorithm::split(data, buffer, boost::is_any_of("\n"));
@@ -50,19 +50,19 @@ int IO::readFileData(std::string filename, std::vector<std::string> &data) {
   return FileIO::NoError;
 }
 
-int IO::splitString(std::string &data, std::vector<std::string> &result) {
+int IO::splitString(string &data, vector<string> &result) {
   boost::trim_if(data, boost::is_any_of(" "));
   boost::algorithm::split(result, data, boost::is_any_of(" "),
                           boost::token_compress_on);
   return FileIO::NoError;
 }
 
-int IO::splitStringNodeFormat(std::string &data, int &id, double &x, double &y,
+int IO::splitStringNodeFormat(string &data, int &id, double &x, double &y,
                               double &z) {
   node_parser np;
   parse::node n;
-  std::string::const_iterator iter = data.begin();
-  std::string::const_iterator end = data.end();
+  string::const_iterator iter = data.begin();
+  string::const_iterator end = data.end();
 
   bool r = phrase_parse(iter, end, np, space, n);
   if (r) {
@@ -76,12 +76,12 @@ int IO::splitStringNodeFormat(std::string &data, int &id, double &x, double &y,
   }
 }
 
-int IO::splitStringElemFormat(std::string &data, int &id, int &n1, int &n2,
+int IO::splitStringElemFormat(string &data, int &id, int &n1, int &n2,
                               int &n3) {
   elem_parser ep;
   parse::elem e;
-  std::string::const_iterator iter = data.begin();
-  std::string::const_iterator end = data.end();
+  string::const_iterator iter = data.begin();
+  string::const_iterator end = data.end();
 
   bool r = phrase_parse(iter, end, ep, space, e);
   if (r) {
@@ -95,12 +95,12 @@ int IO::splitStringElemFormat(std::string &data, int &id, int &n1, int &n2,
   }
 }
 
-int IO::splitStringBoundary0Format(std::string &data, int &node1) {
+int IO::splitStringBoundary0Format(string &data, int &node1) {
 
   boundary0_parser bp;
   parse::boundary0 b;
-  std::string::const_iterator iter = data.begin();
-  std::string::const_iterator end = data.end();
+  string::const_iterator iter = data.begin();
+  string::const_iterator end = data.end();
 
   bool r = phrase_parse(iter, end, bp, space, b);
   if (r) {
@@ -111,13 +111,13 @@ int IO::splitStringBoundary0Format(std::string &data, int &node1) {
   }
 }
 
-int IO::splitStringBoundary23Format(std::string &data, int &node1,
-                                    double &crest, double &supercritical) {
+int IO::splitStringBoundary23Format(string &data, int &node1, double &crest,
+                                    double &supercritical) {
 
   boundary23_parser bp;
   parse::boundary23 b;
-  std::string::const_iterator iter = data.begin();
-  std::string::const_iterator end = data.end();
+  string::const_iterator iter = data.begin();
+  string::const_iterator end = data.end();
 
   bool r = phrase_parse(iter, end, bp, space, b);
   if (r) {
@@ -130,14 +130,14 @@ int IO::splitStringBoundary23Format(std::string &data, int &node1,
   }
 }
 
-int IO::splitStringBoundary24Format(std::string &data, int &node1, int &node2,
+int IO::splitStringBoundary24Format(string &data, int &node1, int &node2,
                                     double &crest, double &subcritical,
                                     double &supercritical) {
 
   boundary24_parser bp;
   parse::boundary24 b;
-  std::string::const_iterator iter = data.begin();
-  std::string::const_iterator end = data.end();
+  string::const_iterator iter = data.begin();
+  string::const_iterator end = data.end();
 
   bool r = phrase_parse(iter, end, bp, space, b);
   if (r) {
@@ -152,15 +152,15 @@ int IO::splitStringBoundary24Format(std::string &data, int &node1, int &node2,
   }
 }
 
-int IO::splitStringBoundary25Format(std::string &data, int &node1, int &node2,
+int IO::splitStringBoundary25Format(string &data, int &node1, int &node2,
                                     double &crest, double &subcritical,
                                     double &supercritical, double &pipeheight,
                                     double &pipecoef, double &pipediam) {
 
   boundary25_parser bp;
   parse::boundary25 b;
-  std::string::const_iterator iter = data.begin();
-  std::string::const_iterator end = data.end();
+  string::const_iterator iter = data.begin();
+  string::const_iterator end = data.end();
 
   bool r = phrase_parse(iter, end, bp, space, b);
   if (r) {
@@ -178,13 +178,12 @@ int IO::splitStringBoundary25Format(std::string &data, int &node1, int &node2,
   }
 }
 
-int IO::splitStringNodalAttribute1Format(std::string &data, int &node,
-                                         double &value) {
+int IO::splitStringAttribute1Format(string &data, int &node, double &value) {
 
   nodalattribute1_parser nap;
   parse::nodalAttribute1 na;
-  std::string::const_iterator iter = data.begin();
-  std::string::const_iterator end = data.end();
+  string::const_iterator iter = data.begin();
+  string::const_iterator end = data.end();
 
   bool r = phrase_parse(iter, end, nap, space, na);
   if (r) {
@@ -196,13 +195,13 @@ int IO::splitStringNodalAttribute1Format(std::string &data, int &node,
   }
 }
 
-int IO::splitStringNodalAttribute12Format(std::string &data, int &node,
-                                          std::vector<double> &values) {
+int IO::splitStringAttribute12Format(string &data, int &node,
+                                     vector<double> &values) {
 
   nodalattribute12_parser nap;
   parse::nodalAttribute12 na;
-  std::string::const_iterator iter = data.begin();
-  std::string::const_iterator end = data.end();
+  string::const_iterator iter = data.begin();
+  string::const_iterator end = data.end();
 
   bool r = phrase_parse(iter, end, nap, space, na);
   if (r) {

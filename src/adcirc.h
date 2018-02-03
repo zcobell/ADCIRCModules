@@ -16,18 +16,11 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#ifndef STRINGCONVERSION_H
-#define STRINGCONVERSION_H
+#ifndef ADCIRC_H
+#define ADCIRC_H
 
-#include <string>
+#include "adcirc/adcirc_errors.h"
+#include "adcirc/geometry/mesh.h"
+#include "adcirc/modelparameters/nodalattributes.h"
 
-class StringConversion {
-public:
-  StringConversion();
-
-  static int stringToInt(std::string a, bool &ok);
-  static float stringToFloat(std::string a, bool &ok);
-  static double stringToDouble(std::string a, bool &ok);
-};
-
-#endif // STRINGCONVERSION_H
+#endif // ADCIRC_H

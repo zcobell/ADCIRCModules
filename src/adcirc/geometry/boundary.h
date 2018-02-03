@@ -28,16 +28,21 @@
 #ifndef ADCIRCBOUNDARY_H
 #define ADCIRCBOUNDARY_H
 
-#include "adcircmodules_global.h"
-#include "adcircnode.h"
+#include "adcirc/adcircmodules_global.h"
+#include "adcirc/geometry/node.h"
 #include <string>
 #include <vector>
 
-class AdcircBoundary {
-public:
-  explicit AdcircBoundary();
+using namespace std;
 
-  explicit AdcircBoundary(int boundaryCode, int boundaryLength);
+namespace Adcirc {
+namespace Geometry {
+
+class Boundary {
+public:
+  explicit Boundary();
+
+  explicit Boundary(int boundaryCode, int boundaryLength);
 
   void setBoundary(int boundaryCode, int boundaryLength);
 
@@ -69,26 +74,27 @@ public:
   double pipeCoefficient(int index) const;
   void setPipeCoefficient(int index, double pipeCoefficient);
 
-  AdcircNode *node1(int index) const;
-  void setNode1(int index, AdcircNode *node1);
+  Adcirc::Geometry::Node *node1(int index) const;
+  void setNode1(int index, Adcirc::Geometry::Node *node1);
 
-  AdcircNode *node2(int index) const;
-  void setNode2(int index, AdcircNode *node2);
+  Adcirc::Geometry::Node *node2(int index) const;
+  void setNode2(int index, Adcirc::Geometry::Node *node2);
 
-  std::vector<std::string> toStringList();
+  vector<string> toStringList();
 
 private:
   int m_boundaryCode;
   int m_boundaryLength;
-  std::vector<double> m_crestElevation;
-  std::vector<double> m_subcriticalWeirCoefficient;
-  std::vector<double> m_supercriticalWeirCoefficient;
-  std::vector<double> m_pipeHeight;
-  std::vector<double> m_pipeDiameter;
-  std::vector<double> m_pipeCoefficient;
-  std::vector<double> m_averageLongitude;
-  std::vector<AdcircNode *> m_node1;
-  std::vector<AdcircNode *> m_node2;
+  vector<double> m_crestElevation;
+  vector<double> m_subcriticalWeirCoefficient;
+  vector<double> m_supercriticalWeirCoefficient;
+  vector<double> m_pipeHeight;
+  vector<double> m_pipeDiameter;
+  vector<double> m_pipeCoefficient;
+  vector<double> m_averageLongitude;
+  vector<Adcirc::Geometry::Node *> m_node1;
+  vector<Adcirc::Geometry::Node *> m_node2;
 };
-
+}
+}
 #endif // ADCIRCBOUNDARY_H

@@ -16,43 +16,46 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#ifndef ADCIRCNODALPARAMETERS_H
-#define ADCIRCNODALPARAMETERS_H
+#ifndef NODALATTRIBUTES_H
+#define NODALATTRIBUTES_H
 
-#include "adcircenum.h"
-#include "adcircmesh.h"
-#include "adcircnodalattribute.h"
-#include "adcircnodalattributemetadata.h"
+#include "adcirc/geometry/mesh.h"
+#include "adcirc/modelparameters/attribute.h"
+#include "adcirc/modelparameters/attributemetadata.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-class AdcircNodalParameters {
-public:
-  AdcircNodalParameters();
+namespace Adcirc {
 
-  explicit AdcircNodalParameters(std::string filename,
-                                 AdcircMesh *mesh = nullptr);
-  explicit AdcircNodalParameters(const char *filename,
-                                 AdcircMesh *mesh = nullptr);
+namespace ModelParameters {
+
+class NodalAttributes {
+public:
+  explicit NodalAttributes();
+
+  explicit NodalAttributes(string filename,
+                           Adcirc::Geometry::Mesh *mesh = nullptr);
+  explicit NodalAttributes(const char *filename,
+                           Adcirc::Geometry::Mesh *mesh = nullptr);
 
   int read();
 
-  void setFilename(std::string filename);
+  void setFilename(string filename);
   void setFilename(const char *filename);
-  std::string filename();
+  string filename();
 
-  void setMesh(AdcircMesh *mesh);
-  AdcircMesh *mesh();
+  void setMesh(Adcirc::Geometry::Mesh *mesh);
+  Adcirc::Geometry::Mesh *mesh();
 
-  int write(std::string outputFilename);
+  int write(string outputFilename);
   int write(const char *filename);
 
-  int locateAttribute(std::string attributeName);
+  int locateAttribute(string attributeName);
   int locateAttribute(const char *attributeName);
 
-  std::string header() const;
-  void setHeader(const std::string &title);
+  string header() const;
+  void setHeader(const string &title);
 
   int numParameters() const;
   void setNumParameters(int numParameters);
@@ -60,9 +63,9 @@ public:
   int numNodes() const;
   void setNumNodes(int numNodes);
 
-  AdcircNodalAttribute *nodalAttribute(int parameter, int node);
-  AdcircNodalAttribute *nodalAttribute(std::string parameter, int node);
-  AdcircNodalAttribute *nodalAttribute(const char* parameter, int node);
+  Attribute *attribute(int parameter, int node);
+  Attribute *attribute(string parameter, int node);
+  Attribute *attribute(const char *parameter, int node);
 
 private:
   int _readFort13Header(std::fstream &fid);
@@ -73,13 +76,13 @@ private:
 
   /// Mapping function between the name of a nodal parameter and its position in
   /// the nodalParameters vector
-  std::unordered_map<std::string, int> m_attributeLocations;
+  std::unordered_map<string, int> m_attributeLocations;
 
   /// Filename of the file that will be read or was read
-  std::string m_filename;
+  string m_filename;
 
   /// Title/header found at the beginning of the nodal attributes file
-  std::string m_header;
+  string m_header;
 
   /// Number of nodal attributes found within this file
   int m_numParameters;
@@ -88,13 +91,14 @@ private:
   int m_numNodes;
 
   /// Underlying adcirc_mesh object (if necessary)
-  AdcircMesh *m_mesh;
+  Adcirc::Geometry::Mesh *m_mesh;
 
   /// Vector of objects containing the nodal parameters read from the file
-  std::vector<AdcircNodalAttributeMetadata> m_nodalParameters;
+  vector<AttributeMetadata> m_nodalParameters;
 
   /// Vector of objects for the nodal parameters
-  std::vector<std::vector<AdcircNodalAttribute> > m_nodalData;
+  vector<vector<Attribute>> m_nodalData;
 };
-
-#endif // ADCIRCNODALPARAMETERS_H
+}
+}
+#endif // NODALATTRIBUTES_H

@@ -16,46 +16,53 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-/**
- * @class AdcircNode
- * @author Zachary Cobell
- * @brief The AdcircNode class describes the x, y, z position of a single mesh
- * node
- *
- */
-#ifndef ADCIRCNODE_H
-#define ADCIRCNODE_H
+#ifndef ATTRIBUTE_H
+#define ATTRIBUTE_H
 
-#include "adcircmodules_global.h"
-#include <string>
+#include "adcirc/geometry/node.h"
+#include "adcirc/modelparameters/attribute.h"
+#include <vector>
 
-class AdcircNode {
+namespace Adcirc {
 
+namespace ModelParameters {
+
+class Attribute {
 public:
-  explicit AdcircNode();
-  explicit AdcircNode(int id, double x, double y, double z);
+  explicit Attribute();
 
-  void setNode(int id, double x, double y, double z);
+  explicit Attribute(int size);
 
-  double x() const;
-  void setX(double x);
+  void resize(int size);
 
-  double y() const;
-  void setY(double y);
+  double value(int index) const;
+  vector<double> values() const;
 
-  double z() const;
-  void setZ(double z);
+  void setValue(const double &value);
+  void setValue(int index, const double &value);
+  void setValue(const vector<double> &values);
+
+  Adcirc::Geometry::Node *node();
+  void setNode(Adcirc::Geometry::Node *node);
+
+  int size() const;
 
   int id() const;
   void setId(int id);
 
-  std::string toString(bool geographicCoordinates);
-
 private:
-  int m_id;
-  double m_x;
-  double m_y;
-  double m_z;
-};
+  /// Number of values in this dataset
+  int m_size;
 
-#endif // ADCIRCNODE_H
+  /// ID number in the Adcirc Nodal Attributes file
+  int m_id;
+
+  /// Value(s) for nodal parameter at this node
+  vector<double> m_values;
+
+  /// Node that this value applies to
+  Adcirc::Geometry::Node *m_node;
+};
+}
+}
+#endif // ATTRIBUTE_H

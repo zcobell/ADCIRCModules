@@ -68,8 +68,8 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
   if (this->m_epsgMapping.find(outputEPSG) == this->m_epsgMapping.end())
     return NoSuchProjection;
 
-  std::string currentInitialization = this->m_epsgMapping[inputEPSG];
-  std::string outputInitialization = this->m_epsgMapping[outputEPSG];
+  string currentInitialization = this->m_epsgMapping[inputEPSG];
+  string outputInitialization = this->m_epsgMapping[outputEPSG];
 
   if (!(inputPJ = pj_init_plus(currentInitialization.c_str())))
     return Proj4InternalError;
@@ -111,10 +111,10 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
  *
  * @param[in]  inputEPSG  EPSG that coordinates are currently in
  * @param[in]  outputEPSG EPSG that the coordinates will be converted to
- * @param[in]  input      std::vector of Point objects containing the locations
+ * @param[in]  input      vector of Point objects containing the locations
  *to
  *be converted
- * @param[out] output     std::vector of Point objects containing the converted
+ * @param[out] output     vector of Point objects containing the converted
  *coordiantes
  * @param[out] isLatLon   Bool that determine if the coordinates are lat/lon or
  *otherwise
@@ -123,10 +123,10 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int QProj4::transform(int inputEPSG, int outputEPSG, std::vector<Point> &input,
-                      std::vector<Point> &output, bool &isLatLon) {
+int QProj4::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
+                      vector<Point> &output, bool &isLatLon) {
   projPJ inputPJ, outputPJ;
-  std::vector<double> x, y, z;
+  vector<double> x, y, z;
   int i, ierr;
 
   if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end())
@@ -135,8 +135,8 @@ int QProj4::transform(int inputEPSG, int outputEPSG, std::vector<Point> &input,
   if (this->m_epsgMapping.find(outputEPSG) == this->m_epsgMapping.end())
     return NoSuchProjection;
 
-  std::string currentInitialization = this->m_epsgMapping[inputEPSG];
-  std::string outputInitialization = this->m_epsgMapping[outputEPSG];
+  string currentInitialization = this->m_epsgMapping[inputEPSG];
+  string outputInitialization = this->m_epsgMapping[outputEPSG];
 
   if (!(inputPJ = pj_init_plus(currentInitialization.c_str())))
     return Proj4InternalError;

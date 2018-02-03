@@ -16,45 +16,20 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#ifndef ADCIRCENUM_H
-#define ADCIRCENUM_H
+#ifndef STRINGCONVERSION_H
+#define STRINGCONVERSION_H
 
-namespace Adcirc{
+#include <string>
 
-  enum _genericErrorCodes{
-    NoError         = 0x0000000,
-    MissingFile     = 0x0000001,
-    FileOpenError   = 0x0000002,
-    FileReadError   = 0x0000003,
-    Proj4Error      = 0x0000004,
-    KdtreeError     = 0x0000005
-  };
+using namespace std;
 
-  namespace Mesh{
-    enum _meshErrorCodes{
-      InvalidFormat = 0x0100001,
-      UnknownError  = 0x0100002
-    };
-  }
+class StringConversion {
+public:
+  StringConversion();
 
-  namespace Node{
-    enum _nodeErrorCodes{
-      NoError       = 0x0200000
-    };
-  }
+  static int stringToInt(string a, bool &ok);
+  static float stringToFloat(string a, bool &ok);
+  static double stringToDouble(string a, bool &ok);
+};
 
-  namespace Element{
-    enum _elementErrorCodes{
-      NoError       = 0x0300000
-    };
-  }
-
-  namespace NodalParameters{
-    enum _nodalParamErrorCodes{
-      MeshMismatch  = 0x0400001
-    };
-  }
-
-}
-
-#endif // ADCIRCENUM_H
+#endif // STRINGCONVERSION_H

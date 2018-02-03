@@ -34,9 +34,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ADCIRCModules_lib/release/ -ladcircmodules
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ADCIRCModules_lib/debug/ -ladcircmodules
-else:unix: LIBS += -L$$OUT_PWD/../ADCIRCModules_lib/ -ladcircmodules
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../src/release/ -ladcircmodules
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../src/debug/ -ladcircmodules
+else:unix: LIBS += -L$$OUT_PWD/../src/ -ladcircmodules
 
-INCLUDEPATH += $$PWD/../ADCIRCModules_lib
-DEPENDPATH += $$PWD/../ADCIRCModules_lib
+INCLUDEPATH += $$PWD/../src
+DEPENDPATH += $$PWD/../src

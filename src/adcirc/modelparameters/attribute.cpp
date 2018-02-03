@@ -16,27 +16,29 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "adcircnodalattribute.h"
+#include "attribute.h"
 #include <assert.h>
 
-AdcircNodalAttribute::AdcircNodalAttribute() {
+using namespace Adcirc::ModelParameters;
+
+Attribute::Attribute() {
   this->m_node = nullptr;
   this->resize(1);
 }
 
-AdcircNodalAttribute::AdcircNodalAttribute(int size) {
+Attribute::Attribute(int size) {
   this->m_node = nullptr;
   this->resize(size);
 }
 
-void AdcircNodalAttribute::resize(int size) {
+void Attribute::resize(int size) {
   if (size != this->m_size) {
     this->m_values.resize(size);
     this->m_size = size;
   }
 }
 
-double AdcircNodalAttribute::value(int index) const {
+double Attribute::value(int index) const {
   assert(index >= 0 && index < this->m_size);
 
   if (index >= 0 && index < this->m_size)
@@ -45,34 +47,32 @@ double AdcircNodalAttribute::value(int index) const {
     return -9999.0;
 }
 
-std::vector<double> AdcircNodalAttribute::values() const {
-  return this->m_values;
-}
+vector<double> Attribute::values() const { return this->m_values; }
 
-void AdcircNodalAttribute::setValue(const double &value) {
+void Attribute::setValue(const double &value) {
   std::fill(this->m_values.begin(), this->m_values.end(), value);
 }
 
-void AdcircNodalAttribute::setValue(int index, const double &value) {
+void Attribute::setValue(int index, const double &value) {
   assert(index >= 0 && index < this->m_size);
 
   if (index >= 0 && index < this->m_size)
     this->m_values[index] = value;
 }
 
-void AdcircNodalAttribute::setValue(const std::vector<double> &values) {
+void Attribute::setValue(const vector<double> &values) {
   assert(values.size() == this->m_size);
 
   if (values.size() == this->m_size)
     this->m_values = values;
 }
 
-AdcircNode *AdcircNodalAttribute::node() { return this->m_node; }
+Adcirc::Geometry::Node *Attribute::node() { return this->m_node; }
 
-void AdcircNodalAttribute::setNode(AdcircNode *node) { this->m_node = node; }
+void Attribute::setNode(Adcirc::Geometry::Node *node) { this->m_node = node; }
 
-int AdcircNodalAttribute::size() const { return this->m_size; }
+int Attribute::size() const { return this->m_size; }
 
-int AdcircNodalAttribute::id() const { return this->m_id; }
+int Attribute::id() const { return this->m_id; }
 
-void AdcircNodalAttribute::setId(int id) { this->m_id = id; }
+void Attribute::setId(int id) { this->m_id = id; }

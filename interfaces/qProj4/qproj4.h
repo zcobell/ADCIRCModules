@@ -35,8 +35,10 @@
 #include <string>
 #include <vector>
 #include "point.h"
-#include <map>
+#include <unordered_map>
 #include <string>
+
+using namespace std;
 
 class QProj4 {
 
@@ -53,12 +55,12 @@ public:
   int transform(int inputEPSG, int outputEPSG, Point &input, Point &output,
                 bool &isLatLon);
 
-  int transform(int inputEPSG, int outputEPSG, std::vector<Point> &input,
-                std::vector<Point> &output, bool &isLatLon);
+  int transform(int inputEPSG, int outputEPSG, vector<Point> &input,
+                vector<Point> &output, bool &isLatLon);
 
 private:
   void _initialize();
-  std::map<int,std::string> m_epsgMapping;
+  unordered_map<int,string> m_epsgMapping;
 };
 
 #endif // QPROJ4_H

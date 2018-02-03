@@ -228,17 +228,19 @@ TARGET_INCLUDE_DIRECTORIES( shapelib PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/shap
 ###########################################################################
 #  ADCIRCModules Library
 ###########################################################################
-ADD_LIBRARY( adcircmodules SHARED ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircmesh.cpp 
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnode.cpp
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircelement.cpp
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircboundary.cpp
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/split.cpp
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/io.cpp
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/stringconversion.cpp
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattribute.cpp
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattributemetadata.cpp
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalparameters.cpp ) 
-TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib
+ADD_LIBRARY( adcircmodules SHARED 
+                ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/mesh.cpp 
+                ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/node.cpp
+                ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/element.cpp
+                ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/boundary.cpp
+                ${CMAKE_SOURCE_DIR}/src/adcirc/io/split.cpp
+                ${CMAKE_SOURCE_DIR}/src/adcirc/io/io.cpp
+                ${CMAKE_SOURCE_DIR}/src/adcirc/io/stringconversion.cpp
+                ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/attribute.cpp
+                ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/attributemetadata.cpp
+                ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/nodalattributes.cpp )
+
+TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/interfaces/point
                                 ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2
                                 ${CMAKE_SOURCE_DIR}/interfaces/qProj4
@@ -256,12 +258,15 @@ ELSE(WIN32)
     INSTALL( TARGETS adcircmodules LIBRARY DESTINATION lib )
 ENDIF(WIN32)
 
-INSTALL( FILES ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnode.h DESTINATION include)
-INSTALL( FILES ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircelement.h DESTINATION include)
-INSTALL( FILES ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircmesh.h DESTINATION include)
-INSTALL( FILES ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattribute.h DESTINATION include)
-INSTALL( FILES ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalattributemetadata.h DESTINATION include)
-INSTALL( FILES ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib/adcircnodalparameters.h DESTINATION include)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc.h DESTINATION include)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/adcirc_errors.h DESTINATION include/adcirc)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/node.h DESTINATION include/adcirc/geometry)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/element.h DESTINATION include/adcirc/geometry)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/boundary.h DESTINATION include/adcirc/geometry)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/mesh.h DESTINATION include/adcirc/geometry)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/attribute.h DESTINATION include/adcirc/modelparameters)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/attributemetadata.h DESTINATION include/adcirc/modelparameters)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/nodalattributes.h DESTINATION include/adcirc/modelparameters)
 
 TARGET_LINK_LIBRARIES( adcircmodules proj4 point kdtree2 shapelib )
 ###########################################################################
@@ -272,7 +277,7 @@ TARGET_LINK_LIBRARIES( adcircmodules proj4 point kdtree2 shapelib )
 ###########################################################################
 ADD_EXECUTABLE( test_case ${CMAKE_SOURCE_DIR}/testing/main.cpp )
 ADD_DEPENDENCIES( test_case adcircmodules )
-TARGET_INCLUDE_DIRECTORIES( test_case PRIVATE ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib )
+TARGET_INCLUDE_DIRECTORIES( test_case PRIVATE ${CMAKE_SOURCE_DIR}/src )
 TARGET_LINK_LIBRARIES( test_case adcircmodules )
 ###########################################################################
 
@@ -295,7 +300,7 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
         ")
 
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
-            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/ADCIRCModules_lib 
+            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/src 
                     -I${CMAKE_SOURCE_DIR}/interfaces/point 
                     -I${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
                     -I${CMAKE_SOURCE_DIR}/interfaces/qProj4 
@@ -311,7 +316,7 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
 
     ELSE(WIN32)
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
-            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/ADCIRCModules_lib 
+            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/src 
                     -I${CMAKE_SOURCE_DIR}/interfaces/point 
                     -I${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
                     -I${CMAKE_SOURCE_DIR}/interfaces/qProj4 
@@ -325,7 +330,7 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
 
     ADD_LIBRARY( PyAdcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx )
     TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_DIRECTORIES} 
-            ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib 
+            ${CMAKE_SOURCE_DIR}/src 
             ${CMAKE_SOURCE_DIR}/interfaces/point 
             ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
             ${CMAKE_SOURCE_DIR}/interfaces/qProj4 )
@@ -375,7 +380,7 @@ IF(TEST_PERL)
             ")
     
             ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
-                COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/ADCIRCModules_lib 
+                COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src
                         -I${CMAKE_SOURCE_DIR}/interfaces/point 
                         -I${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
                         -I${CMAKE_SOURCE_DIR}/interfaces/qProj4 
@@ -391,7 +396,7 @@ IF(TEST_PERL)
     
         ELSE(WIN32)
             ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
-                COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/ADCIRCModules_lib 
+                COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src 
                         -I${CMAKE_SOURCE_DIR}/interfaces/point 
                         -I${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
                         -I${CMAKE_SOURCE_DIR}/interfaces/qProj4 
@@ -405,7 +410,7 @@ IF(TEST_PERL)
     
         ADD_LIBRARY( perladcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx )
         TARGET_INCLUDE_DIRECTORIES( perladcirc PRIVATE ${PERL_INCLUDE_PATH} 
-                ${CMAKE_SOURCE_DIR}/ADCIRCModules_lib 
+                ${CMAKE_SOURCE_DIR}/src
                 ${CMAKE_SOURCE_DIR}/interfaces/point 
                 ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
                 ${CMAKE_SOURCE_DIR}/interfaces/qProj4 )

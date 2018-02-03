@@ -16,36 +16,52 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "stringconversion.h"
+/**
+ * @class AdcircNode
+ * @author Zachary Cobell
+ * @brief The AdcircNode class describes the x, y, z position of a single mesh
+ * node
+ *
+ */
+#ifndef NODE_H
+#define NODE_H
 
-StringConversion::StringConversion() {}
+#include "adcirc/adcircmodules_global.h"
+#include <string>
 
-double StringConversion::stringToDouble(std::string a, bool &ok) {
-  ok = true;
-  try {
-    return std::stod(a);
-  } catch (...) {
-    ok = false;
-    return 0.0;
-  }
+using namespace std;
+
+namespace Adcirc {
+namespace Geometry {
+
+class Node {
+
+public:
+  explicit Node();
+  explicit Node(int id, double x, double y, double z);
+
+  void setNode(int id, double x, double y, double z);
+
+  double x() const;
+  void setX(double x);
+
+  double y() const;
+  void setY(double y);
+
+  double z() const;
+  void setZ(double z);
+
+  int id() const;
+  void setId(int id);
+
+  string toString(bool geographicCoordinates);
+
+private:
+  int m_id;
+  double m_x;
+  double m_y;
+  double m_z;
+};
 }
-
-float StringConversion::stringToFloat(std::string a, bool &ok) {
-  ok = true;
-  try {
-    return std::stof(a);
-  } catch (...) {
-    ok = false;
-    return 0.0f;
-  }
 }
-
-int StringConversion::stringToInt(std::string a, bool &ok) {
-  ok = true;
-  try {
-    return std::stoi(a);
-  } catch (...) {
-    ok = false;
-    return 0;
-  }
-}
+#endif // NODE_H

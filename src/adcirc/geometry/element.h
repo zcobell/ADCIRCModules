@@ -16,48 +16,51 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#ifndef ADCIRCNODALATTRIBUTE_H
-#define ADCIRCNODALATTRIBUTE_H
+/**
+ * @class AdcircElement
+ * @author Zachary Cobell
+ * @brief The AdcircElement class describes an AdcircElement as an array
+ * of Node pointers
+ *
+ */
+#ifndef ADCIRCELEMENT_H
+#define ADCIRCELEMENT_H
 
-#include "adcircnodalattributemetadata.h"
-#include "adcircnode.h"
+#include "adcirc/adcircmodules_global.h"
+#include "adcirc/geometry/element.h"
+#include "adcirc/geometry/node.h"
+#include <string>
 #include <vector>
 
-class AdcircNodalAttribute {
+namespace Adcirc {
+namespace Geometry {
+
+class Element {
 public:
-  explicit AdcircNodalAttribute();
+  explicit Element();
+  explicit Element(int id, Adcirc::Geometry::Node *n1,
+                   Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3);
 
-  explicit AdcircNodalAttribute(int size);
+  void setElement(int id, Adcirc::Geometry::Node *n1,
+                  Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3);
 
-  void resize(int size);
+  int n() const;
 
-  double value(int index) const;
-  std::vector<double> values() const;
-
-  void setValue(const double &value);
-  void setValue(int index, const double &value);
-  void setValue(const std::vector<double> &values);
-
-  AdcircNode *node();
-  void setNode(AdcircNode *node);
-
-  int size() const;
+  Adcirc::Geometry::Node *node(int i);
+  void setNode(int i, Adcirc::Geometry::Node *node);
 
   int id() const;
   void setId(int id);
 
+  string toString();
+
 private:
-  /// Number of values in this dataset
-  int m_size;
+  int m_n = 3;
 
-  /// ID number in the Adcirc Nodal Attributes file
   int m_id;
-
-  /// Value(s) for nodal parameter at this node
-  std::vector<double> m_values;
-
-  /// Node that this value applies to
-  AdcircNode *m_node;
+  vector<Adcirc::Geometry::Node *> m_nodes;
 };
+}
+}
 
-#endif // ADCIRCNODALATTRIBUTE_H
+#endif // ADCIRCELEMENT_H

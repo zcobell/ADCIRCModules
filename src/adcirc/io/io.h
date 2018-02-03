@@ -22,6 +22,8 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+
 namespace FileIO {
 enum _fileio {
   NoError,
@@ -36,38 +38,36 @@ class IO {
 public:
   explicit IO();
 
-  static int readFileData(std::string filename, std::vector<std::string> &data);
+  static int readFileData(string filename, vector<string> &data);
 
-  static int splitString(std::string &data, std::vector<std::string> &result);
+  static int splitString(string &data, vector<string> &result);
 
-  static int splitStringNodeFormat(std::string &data, int &id, double &x,
-                                   double &y, double &z);
+  static int splitStringNodeFormat(string &data, int &id, double &x, double &y,
+                                   double &z);
 
-  static int splitStringElemFormat(std::string &data, int &id, int &n1, int &n2,
+  static int splitStringElemFormat(string &data, int &id, int &n1, int &n2,
                                    int &n3);
 
-  static int splitStringBoundary0Format(std::string &data, int &node1);
+  static int splitStringBoundary0Format(string &data, int &node1);
 
-  static int splitStringBoundary23Format(std::string &data, int &node1,
+  static int splitStringBoundary23Format(string &data, int &node1,
                                          double &crest, double &supercritical);
 
-  static int splitStringBoundary24Format(std::string &data, int &node1,
-                                         int &node2, double &crest,
-                                         double &subcritical,
+  static int splitStringBoundary24Format(string &data, int &node1, int &node2,
+                                         double &crest, double &subcritical,
                                          double &supercritical);
 
-  static int splitStringBoundary25Format(std::string &data, int &node1,
-                                         int &node2, double &crest,
-                                         double &subcritical,
+  static int splitStringBoundary25Format(string &data, int &node1, int &node2,
+                                         double &crest, double &subcritical,
                                          double &supercritical,
                                          double &pipeheight, double &pipecoef,
                                          double &pipediam);
 
-  static int splitStringNodalAttribute1Format(std::string &data, int &node,
-                                              double &value);
+  static int splitStringAttribute1Format(string &data, int &node,
+                                         double &value);
 
-  static int splitStringNodalAttribute12Format(std::string &data, int &node,
-                                               std::vector<double> &values);
+  static int splitStringAttribute12Format(string &data, int &node,
+                                          vector<double> &values);
 };
 
 #endif // IO_H

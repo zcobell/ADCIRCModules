@@ -16,22 +16,22 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "adcircmesh.h"
-#include "adcircnodalparameters.h"
+#include "adcirc.h"
 #include <iostream>
 
 int main(int argc, char *argv[]) {
-  AdcircMesh *mesh = new AdcircMesh(
-      std::string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.grd"));
+  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(
+      string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.grd"));
 
   int ierr = mesh->read();
   std::cout << "Mesh Read Return Code: " << ierr << "\n";
 
-  AdcircNodalParameters *f13 = new AdcircNodalParameters(std::string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.13"),mesh);
-  //AdcircNodalParameters *f13 = new AdcircNodalParameters(std::string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.13"));
+  Adcirc::ModelParameters::NodalAttributes *f13 = new Adcirc::ModelParameters::NodalAttributes(string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.13"),mesh);
+  //AdcircNodalParameters *f13 = new AdcircNodalParameters(string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.13"));
   ierr = f13->read();
   std::cout << "Fort13 Read Return Code: " << ierr << "\n";
-  std::cout << f13->nodalAttribute(0,0)->node() << "\n";
+  std::cout << f13->attribute(0,0)->node()->id() << "\n";
+  std::cout << f13->attribute("mannings_n_at_sea_floor",0)->value(0) << "\n";
 
 /*
   ierr = mesh->reproject(26915);

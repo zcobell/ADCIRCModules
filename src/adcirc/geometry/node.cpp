@@ -16,14 +16,16 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "adcircnode.h"
+#include "adcirc/geometry/node.h"
 #include "boost/format.hpp"
 
+using namespace Adcirc::Geometry;
+
 /**
- * @name AdcircNode::AdcircNode
+ * @name Node::Node
  * @brief Default constructor
  */
-AdcircNode::AdcircNode() {
+Node::Node() {
   this->m_id = 0;
   this->m_x = -9999.0;
   this->m_y = -9999.0;
@@ -31,14 +33,14 @@ AdcircNode::AdcircNode() {
 }
 
 /**
- * @overload AdcircNode::AdcircNode
+ * @overload Node::Node
  * @brief Constructor taking the id, x, y, and z for the node
  * @param id nodal identifier. Can be either array index or label
  * @param x x positoin
  * @param y y position
  * @param z z elevation
  */
-AdcircNode::AdcircNode(int id, double x, double y, double z) {
+Node::Node(int id, double x, double y, double z) {
   this->m_id = id;
   this->m_x = x;
   this->m_y = y;
@@ -46,14 +48,14 @@ AdcircNode::AdcircNode(int id, double x, double y, double z) {
 }
 
 /**
- * @name AdcircNode::setNode
+ * @name Node::setNode
  * @brief Function taking the id, x, y, and z for the node
  * @param id nodal identifier. Can be either array index or label
  * @param x x positoin
  * @param y y position
  * @param z z elevation
  */
-void AdcircNode::setNode(int id, double x, double y, double z) {
+void Node::setNode(int id, double x, double y, double z) {
   this->m_id = id;
   this->m_x = x;
   this->m_y = y;
@@ -62,69 +64,69 @@ void AdcircNode::setNode(int id, double x, double y, double z) {
 }
 
 /**
- * @name AdcircNode::x
+ * @name Node::x
  * @brief Returns the x-location of the node
  * @return x-location
  */
-double AdcircNode::x() const { return this->m_x; }
+double Node::x() const { return this->m_x; }
 
 /**
- * @name AdcircNode::setX
+ * @name Node::setX
  * @brief Sets the x-location of the node
  * @param x x-location
  */
-void AdcircNode::setX(double x) { this->m_x = x; }
+void Node::setX(double x) { this->m_x = x; }
 
 /**
- * @name AdcircNode::y
+ * @name Node::y
  * @brief Returns the y-location of the node
  * @return y-location
  */
-double AdcircNode::y() const { return this->m_y; }
+double Node::y() const { return this->m_y; }
 
 /**
- * @name AdcircNode::setY
+ * @name Node::setY
  * @brief Sets the y-location of the node
  * @param y y-location
  */
-void AdcircNode::setY(double y) { this->m_y = y; }
+void Node::setY(double y) { this->m_y = y; }
 
 /**
- * @name AdcircNode::z
+ * @name Node::z
  * @brief Returns the z-elevation of the node
  * @return y-elevation
  */
-double AdcircNode::z() const { return this->m_z; }
+double Node::z() const { return this->m_z; }
 
 /**
- * @name AdcircNode::setZ
+ * @name Node::setZ
  * @brief Sets the z-elevation of the node
  * @param z z-location
  */
-void AdcircNode::setZ(double z) { this->m_z = z; }
+void Node::setZ(double z) { this->m_z = z; }
 
 /**
- * @name AdcircNode::id
+ * @name Node::id
  * @brief Returns the nodal id/label
  * @return nodal id/label
  */
-int AdcircNode::id() const { return this->m_id; }
+int Node::id() const { return this->m_id; }
 
 /**
- * @name AdcircNode::setId
+ * @name Node::setId
  * @brief Sets the nodal id/label
  * @param id nodal id/label
  */
-void AdcircNode::setId(int id) { this->m_id = id; }
+void Node::setId(int id) { this->m_id = id; }
 
 /**
- * @name AdcircNode::toString
+ * @name Node::toString
  * @brief Formats the node for writing into an Adcirc ASCII mesh file
  * @param geographicCoordinates determins if the node is in geographic or
  * cartesian coordinate for significant figures
  * @return formatted string
  */
-std::string AdcircNode::toString(bool geographicCoordinates) {
+string Node::toString(bool geographicCoordinates) {
   if (geographicCoordinates)
     return boost::str(boost::format("%11i   %14.10f   %14.10f  %14.10f") %
                       this->id() % this->x() % this->y() % this->z());

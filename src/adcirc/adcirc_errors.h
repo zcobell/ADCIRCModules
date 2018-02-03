@@ -16,14 +16,28 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "split.h"
-#include "boost/algorithm/string/split.hpp"
-#include "boost/algorithm/string/trim.hpp"
+#ifndef ADCIRCERRORS_H
+#define ADCIRCERRORS_H
+namespace Adcirc {
 
-std::vector<std::string> split::stringSplitToVector(std::string s, char delim) {
-  std::vector<std::string> elems;
-  boost::trim_if(s, boost::is_any_of(" "));
-  boost::algorithm::split(elems, s, boost::is_any_of(" "),
-                          boost::token_compress_on);
-  return elems;
+enum _genericErrorCodes {
+  NoError = 0x0000000,
+  MissingFile = 0x0000001,
+  FileOpenError = 0x0000002,
+  FileReadError = 0x0000003,
+  Proj4Error = 0x0000004,
+  KdtreeError = 0x0000005
+};
+
+namespace Geometry {
+enum _GeometryErrorCodes {
+  InvalidFormat = 0x0100001,
+  UnknownError = 0x0100002
+};
 }
+
+namespace ModelParameters {
+enum _modelParamErrorCodes { MeshMismatch = 0x0400001 };
+}
+}
+#endif // ADCIRCERRORS_H

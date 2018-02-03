@@ -16,44 +16,51 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#ifndef ADCIRCNODALATTRIBUTEMETADATA_H
-#define ADCIRCNODALATTRIBUTEMETADATA_H
+#ifndef ATTRIBUTEMETADATA_H
+#define ATTRIBUTEMETADATA_H
 
 #include <string>
 #include <vector>
 
-class AdcircNodalAttributeMetadata {
+using namespace std;
+
+namespace Adcirc {
+
+namespace ModelParameters {
+
+class AttributeMetadata {
 public:
-  explicit AdcircNodalAttributeMetadata(std::string name = "defaultName",
-                                std::string units = "none", int numValues = 1);
+  explicit AttributeMetadata(string name = "defaultName", string units = "none",
+                             int numValues = 1);
 
-  std::string name() const;
-  void setName(const std::string &name);
+  string name() const;
+  void setName(const string &name);
 
-  std::string units() const;
-  void setUnits(const std::string &units);
+  string units() const;
+  void setUnits(const string &units);
 
   int numberOfValues() const;
   void setNumberOfValues(int numValues);
 
-  std::vector<double> getDefaultValues() const;
+  vector<double> getDefaultValues() const;
   double getDefaultValue(int index = 0) const;
   void setDefaultValue(const double &value);
   void setDefaultValue(int index, const double &value);
-  void setDefaultValue(const std::vector<double> &value);
+  void setDefaultValue(const vector<double> &value);
 
 private:
   /// Name of the nodal attribute
-  std::string m_name;
+  string m_name;
 
   /// Units for the nodal parameter
-  std::string m_units;
+  string m_units;
 
   /// Number of values associated with each node for this nodal attribute
   int m_numValues;
 
   /// Default value(s) to be used when writing the fort.13 file
-  std::vector<double> m_defaultValue;
+  vector<double> m_defaultValue;
 };
-
-#endif // ADCIRCNODALATTRIBUTEMETADATA_H
+}
+}
+#endif // ATTRIBUTEMETADATA_H

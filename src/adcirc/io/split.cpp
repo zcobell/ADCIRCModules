@@ -16,44 +16,14 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-/**
- * @class AdcircElement
- * @author Zachary Cobell
- * @brief The AdcircElement class describes an AdcircElement as an array
- * of AdcircNode pointers
- *
- */
-#ifndef ADCIRCELEMENT_H
-#define ADCIRCELEMENT_H
+#include "split.h"
+#include "boost/algorithm/string/split.hpp"
+#include "boost/algorithm/string/trim.hpp"
 
-#include "adcircmodules_global.h"
-#include "adcircnode.h"
-#include <string>
-#include <vector>
-
-class AdcircElement {
-public:
-  explicit AdcircElement();
-  explicit AdcircElement(int id, AdcircNode *n1, AdcircNode *n2,
-                         AdcircNode *n3);
-
-  void setElement(int id, AdcircNode *n1, AdcircNode *n2, AdcircNode *n3);
-
-  int n() const;
-
-  AdcircNode *node(int i);
-  void setNode(int i, AdcircNode *node);
-
-  int id() const;
-  void setId(int id);
-
-  std::string toString();
-
-private:
-  int m_n = 3;
-
-  int m_id;
-  std::vector<AdcircNode *> m_nodes;
-};
-
-#endif // ADCIRCELEMENT_H
+vector<string> split::stringSplitToVector(string s, char delim) {
+  vector<string> elems;
+  boost::trim_if(s, boost::is_any_of(" "));
+  boost::algorithm::split(elems, s, boost::is_any_of(" "),
+                          boost::token_compress_on);
+  return elems;
+}

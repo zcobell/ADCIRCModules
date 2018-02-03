@@ -49,7 +49,7 @@ QKdtree2::~QKdtree2() {
 //...Function that constructs a kd-tree for a given X/Y pair
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn QKdtree2::build(std::vector<Point> &pointCloud)
+ * \fn QKdtree2::build(vector<Point> &pointCloud)
  * \brief Generates a kdtree2 search tree
  *
  * @param[in] pointCloud Vector of Point used to generate the search tree
@@ -58,7 +58,7 @@ QKdtree2::~QKdtree2() {
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int QKdtree2::build(std::vector<Point> &pointCloud) {
+int QKdtree2::build(vector<Point> &pointCloud) {
   int i;
   typedef boost::multi_array<float, 2> array2d;
 
@@ -83,7 +83,7 @@ int QKdtree2::build(std::vector<Point> &pointCloud) {
 //...Function that constructs a kd-tree for a given X/Y pair
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload QKdtree2::build(std::vector<double> &x, std::vector<double> &y)
+ * \overload QKdtree2::build(vector<double> &x, vector<double> &y)
  * \brief Generates a kdtree2 search tree
  *
  * @param[in] x Vector of x-coordinates
@@ -93,7 +93,7 @@ int QKdtree2::build(std::vector<Point> &pointCloud) {
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int QKdtree2::build(std::vector<double> &x, std::vector<double> &y) {
+int QKdtree2::build(vector<double> &x, vector<double> &y) {
   int i;
   typedef boost::multi_array<float, 2> array2d;
 
@@ -177,7 +177,7 @@ size_t QKdtree2::findNearest(double x, double y) {
 // coordinates
 //-----------------------------------------------------------------------------------------//
 /**
- * \fn QKdtree2::findXNearest(Point pointLocation, int nn, std::vector<int>
+ * \fn QKdtree2::findXNearest(Point pointLocation, int nn, vector<int>
  *&indicies)
  * \brief Function that uses a kd-tree to find the N-nearest point to a given
  *set of coordinates
@@ -192,7 +192,7 @@ size_t QKdtree2::findNearest(double x, double y) {
  *
  **/
 //-----------------------------------------------------------------------------------------//
-std::vector<int> QKdtree2::findXNearest(Point pointLocation, int nn) {
+vector<int> QKdtree2::findXNearest(Point pointLocation, int nn) {
   int i;
   kdtree2_result_vector result_vector;
   kdtree2_result result;
@@ -223,7 +223,7 @@ std::vector<int> QKdtree2::findXNearest(Point pointLocation, int nn) {
 // coordinates
 //-----------------------------------------------------------------------------------------//
 /**
- * \overload QKdtree2::findXNearest(double x, double y, int nn, std::vector<int>
+ * \overload QKdtree2::findXNearest(double x, double y, int nn, vector<int>
  *&indicies)
  * \brief Function that uses a kd-tree to find the N-nearest point to a given
  *set of coordinates
@@ -239,7 +239,7 @@ std::vector<int> QKdtree2::findXNearest(Point pointLocation, int nn) {
  *
  **/
 //-----------------------------------------------------------------------------------------//
-std::vector<int> QKdtree2::findXNearest(double x, double y, int nn) {
+vector<int> QKdtree2::findXNearest(double x, double y, int nn) {
   return this->findXNearest(Point(x, y), nn);
 }
 //-----------------------------------------------------------------------------------------//
