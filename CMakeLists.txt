@@ -330,7 +330,7 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
         #   files not required by Unix/Cygwin [mingw64]
         #   Further testing required to see if this is 
         #   required by MSVC compilers
-        FILE(WRITE ${CMAKE_BINARY_DIR}/CMakeFiles/pywrapper.cmake "
+        FILE(WRITE ${CMAKE_BINARY_DIR}/CMakeFiles/python_wrapper.cmake "
             FILE(READ \${SRC} DATA)
             FILE(WRITE \${DST} \"#include <math.h>\")
             FILE(APPEND \${DST} \"\\n\\n\")
@@ -342,8 +342,8 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
                     -I${PYTHON_INCLUDE_PATH} 
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
-            COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1 
-                                     -DDST=${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
+            COMMAND ${CMAKE_COMMAND} -DSRC=\"${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1\" 
+                                     -DDST=\"${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx\"
                                      -P ${CMAKE_BINARY_DIR}/CMakeFiles/python_wrapper.cmake
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
             COMMENT "Generating SWIG interface to Python..."
