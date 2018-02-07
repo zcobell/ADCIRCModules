@@ -23,11 +23,11 @@ CONFIG -= qt
 CONFIG += c++11
 
 #...PROJ4 Library
-PROJPATH      = $$PWD/../../thirdparty/proj4/src
+PROJPATH      = $$PWD/../../../thirdparty/proj4/src
 
 #...PROJ Sources
 SOURCES_PROJ4 = \
-    $$PROJPATH/pj_list.h $$PROJPATH/PJ_aeqd.c $$PROJPATH/PJ_gnom.c $$PROJPATH/PJ_laea.c $$PROJPATH/PJ_mod_ster.c \
+    $$PROJPATH/PJ_aeqd.c $$PROJPATH/PJ_gnom.c $$PROJPATH/PJ_laea.c $$PROJPATH/PJ_mod_ster.c \
     $$PROJPATH/PJ_nsper.c $$PROJPATH/PJ_nzmg.c $$PROJPATH/PJ_ortho.c $$PROJPATH/PJ_stere.c $$PROJPATH/PJ_sterea.c \
     $$PROJPATH/PJ_aea.c $$PROJPATH/PJ_bipc.c $$PROJPATH/PJ_bonne.c $$PROJPATH/PJ_eqdc.c $$PROJPATH/PJ_isea.c \
     $$PROJPATH/PJ_imw_p.c $$PROJPATH/PJ_krovak.c $$PROJPATH/PJ_lcc.c $$PROJPATH/PJ_poly.c $$PROJPATH/PJ_rpoly.c \
@@ -55,9 +55,9 @@ SOURCES_PROJ4 = \
     $$PROJPATH/pj_units.c $$PROJPATH/pj_ctx.c $$PROJPATH/pj_log.c $$PROJPATH/pj_zpoly1.c $$PROJPATH/rtodms.c \
     $$PROJPATH/vector1.c $$PROJPATH/pj_release.c $$PROJPATH/pj_gauss.c $$PROJPATH/PJ_healpix.c $$PROJPATH/PJ_natearth.c \
     $$PROJPATH/PJ_calcofi.c $$PROJPATH/pj_fileapi.c $$PROJPATH/pj_gc_reader.c $$PROJPATH/pj_gridcatalog.c \
-    $$PROJPATH/nad_cvt.c $$PROJPATH/nad_init.c $$PROJPATH/nad_intr.c $$PROJPATH/emess.c $$PROJPATH/emess.h \
+    $$PROJPATH/nad_cvt.c $$PROJPATH/nad_init.c $$PROJPATH/nad_intr.c $$PROJPATH/emess.c  \
     $$PROJPATH/pj_apply_gridshift.c $$PROJPATH/pj_datums.c $$PROJPATH/pj_datum_set.c $$PROJPATH/pj_transform.c \
-    $$PROJPATH/geocent.c $$PROJPATH/geocent.h $$PROJPATH/pj_utils.c $$PROJPATH/pj_gridinfo.c $$PROJPATH/pj_gridlist.c \
+    $$PROJPATH/geocent.c $$PROJPATH/pj_utils.c $$PROJPATH/pj_gridinfo.c $$PROJPATH/pj_gridlist.c \
     $$PROJPATH/jniproj.c $$PROJPATH/pj_mutex.c $$PROJPATH/pj_initcache.c $$PROJPATH/pj_apply_vgridshift.c $$PROJPATH/geodesic.c \
     $$PROJPATH/pj_strtod.c
 

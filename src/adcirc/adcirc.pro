@@ -19,5 +19,5 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS  = src
+SUBDIRS  = point qKdtree2 qProj4 shapelib adcircmodules
 CONFIG += ordered           

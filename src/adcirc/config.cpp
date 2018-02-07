@@ -19,6 +19,10 @@
 #include "adcirc/config.h"
 #include <string>
 
+#ifndef GIT_VERSION
+# define GIT_VERSION "unknown"
+#endif
+
 namespace Adcirc{
     const char *version() { return std::string(GIT_VERSION).c_str(); }
 }

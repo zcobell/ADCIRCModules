@@ -23,10 +23,10 @@ CONFIG -= qt
 CONFIG += c++11
 
 #...Boost Library
-BOOSTPATH     = $$PWD/../../thirdparty/boost_1_66_0
+BOOSTPATH     = $$PWD/../../../thirdparty/boost_1_66_0
 
 #...KDTREE
-KDTREEPATH    = $$PWD/../../thirdparty/kdtree
+KDTREEPATH    = $$PWD/../../../thirdparty/kdtree
 
 #...KDTREE2 Sources
 SOURCES_KDTREE2 = $$KDTREEPATH/kdtree2.cpp

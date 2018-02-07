@@ -74,7 +74,7 @@ void NodalAttributes::setFilename(string filename) {
 
 string NodalAttributes::filename() { return this->m_filename; }
 
-void NodalAttributes::setMesh(Geometry::Mesh *mesh) { this->m_mesh = mesh; }
+void NodalAttributes::setMesh(Adcirc::Geometry::Mesh *mesh) { this->m_mesh = mesh; }
 
 Adcirc::Geometry::Mesh *NodalAttributes::mesh() { return this->m_mesh; }
 
