@@ -100,7 +100,7 @@ private:
   vector<AttributeMetadata> m_nodalParameters;
 
   /// Vector of objects for the nodal parameters
-  vector<vector<Attribute>> m_nodalData;
+  vector<vector<Attribute> > m_nodalData;
 };
 } // namespace ModelParameters
 } // namespace Adcirc
