@@ -20,13 +20,14 @@ addons:
       name: "zcobell/ADCModules"
       description: "Build submitted via Travis CI"
     notification_email: zachary.cobell@arcadis.com
-    build_command_prepend: "cmake ."
-    build_command:   "make -j 4"
+    build_command_prepend: "mkdir build; cd build; cmake .."
+    build_command:   "cd build; make -j 4"
     branch_pattern: coverty_scan
 
 before_install:
 - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
 script:
-- cmake .
-- make -j 4
+- mkdir build; cd build; cmake ..
+- cd build; make -j 4
+- cd build; CTEST_OUTPUT_ON_FAILURE=1 make test

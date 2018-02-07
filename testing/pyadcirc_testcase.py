@@ -1,11 +1,4 @@
 #!/bin/python
-import sys
-
-print "Current Python search path:"
-for line in sys.path: print line
-
-
-#...Start with PyAdcirc
 import PyAdcirc
 
 print "Reading a mesh"

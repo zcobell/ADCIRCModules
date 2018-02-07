@@ -33,7 +33,9 @@ PROJECT(ADCIRCModules)
 ###########################################################################
 # Enable running tests
 ###########################################################################
-enable_testing()
+IF(UNIX OR CYGWIN)
+    enable_testing()
+ENDIF(UNIX OR CYGWIN)
 ###########################################################################
 
 
@@ -370,11 +372,15 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
     ADD_DEPENDENCIES( PyAdcirc adcircmodules )
 
     IF(WIN32)
-        INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION bin RUNTIME DESTINATION bin)
+        SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/pyadcirc
+                                                   RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/pyadcirc )
+        INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION bin RUNTIME DESTINATION pyadcirc)
     ELSEIF(CYGWIN)
-        INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION lib RUNTIME DESTINATION lib)
+        SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/pyadcirc)
+        INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION lib RUNTIME DESTINATION pyadcirc)
     ELSE(WIN32)
-        INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION lib)
+        SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/pyadcirc)
+        INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION pyadcirc)
     ENDIF(WIN32)
     
     INSTALL(FILES ${CMAKE_BINARY_DIR}/pyadcirc/PyAdcirc.py DESTINATION pyadcirc)
@@ -471,15 +477,16 @@ ENDIF(TEST_PERL)
 ###########################################################################
 # Test Cases
 ###########################################################################
-
-#...C++ Test
-ADD_TEST( NAME CXX_Test COMMAND ${CMAKE_BINARY_DIR}/test_case.exe 
+IF(UNIX OR CYGWIN)
+    #...C++ Test
+    ADD_TEST( NAME CXX_Test COMMAND ${CMAKE_BINARY_DIR}/test_case 
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/testing )
-SET_TESTS_PROPERTIES( CXX_Test PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}")
-
-#...Python Test
-ADD_TEST( NAME Python_Test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/testing/pyadcirc_testcase.py
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/testing )
-SET_PROPERTY( TEST Python_Test PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}")
-SET_PROPERTY( TEST Python_Test APPEND PROPERTY ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/pyadcirc")
+    SET_TESTS_PROPERTIES( CXX_Test PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
+    
+    #...Python Test
+    ADD_TEST( NAME Python_Test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/testing/pyadcirc_testcase.py
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR} )
+    SET_PROPERTY( TEST Python_Test PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
+    SET_PROPERTY( TEST Python_Test APPEND PROPERTY ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/pyadcirc")
+ENDIF(UNIX OR CYGWIN)
 ###########################################################################
