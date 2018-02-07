@@ -18,6 +18,7 @@
 //
 //-----------------------------------------------------------------------*/
 #include "qkdtree2.h"
+#include "point.h"
 #include "boost/array.hpp"
 #include "boost/multi_array.hpp"
 #include "kdtree2.hpp"

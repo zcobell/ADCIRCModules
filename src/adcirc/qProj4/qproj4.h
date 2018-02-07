@@ -34,9 +34,10 @@
 
 #include <string>
 #include <vector>
-#include "point.h"
 #include <unordered_map>
 #include <string>
+
+class Point;
 
 using namespace std;
 

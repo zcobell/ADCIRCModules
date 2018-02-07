@@ -16,13 +16,21 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#ifndef CONFIG_H
-#define CONFIG_H
+#include "adcirc.h"
+#include <iostream>
 
-namespace Adcirc {
+int main(int argc, char *argv[]) {
+  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(string("test_files/ms-riv.grd"));
+  int ierr = mesh->read();
+  std::cout << "Mesh Read Return Code: " << ierr << "\n";
+  if(ierr!=Adcirc::NoError)
+      return ierr;
 
-const char *version();
+  Adcirc::ModelParameters::NodalAttributes *fort13 = new Adcirc::ModelParameters::NodalAttributes("test_files/ms-riv.13",mesh);
+  ierr = fort13->read();
+  if(ierr!=Adcirc::NoError)
+      return ierr;
+  else
+      return 0;
 
-} // namespace Adcirc
-
-#endif // CONFIG_H
+}

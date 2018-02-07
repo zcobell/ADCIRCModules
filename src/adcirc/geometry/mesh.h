@@ -51,6 +51,7 @@
 #include "adcirc/geometry/boundary.h"
 #include "adcirc/geometry/element.h"
 #include "adcirc/geometry/node.h"
+#include "adcirc/point/point.h"
 #include <fstream>
 #include <string>
 #include <unordered_map>

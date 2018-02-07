@@ -68,7 +68,6 @@ EXECUTE_PROCESS( COMMAND git describe --always --tags
                     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                     OUTPUT_VARIABLE GIT_VERSION
                     OUTPUT_STRIP_TRAILING_WHITESPACE )
-STRING(TIMESTAMP BUILD_TIME "[%Y-%m-%d %H:%M:%S UTC]" UTC)
 ###########################################################################
 
 ###########################################################################
@@ -100,6 +99,7 @@ FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
 IF(PythonLibs_FOUND)
     FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
     INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH})
+    OPTION(PYTHON_TESTING "Test the Python Libraries with CTest" OFF)
 ENDIF(PythonLibs_FOUND)
 
 FIND_PACKAGE(PerlLibs)
@@ -119,18 +119,18 @@ ENDIF(PerlLibs_FOUND)
 ###########################################################################
 #  POINT Library
 ###########################################################################
-ADD_LIBRARY( point STATIC ${CMAKE_SOURCE_DIR}/interfaces/point/point.cpp )
-TARGET_INCLUDE_DIRECTORIES( point PRIVATE ${CMAKE_SOURCE_DIR}/interfaces/point )
+ADD_LIBRARY( point STATIC ${CMAKE_SOURCE_DIR}/src/adcirc/point/point.cpp )
+TARGET_INCLUDE_DIRECTORIES( point PRIVATE ${CMAKE_SOURCE_DIR}/src/adcirc/point )
 ###########################################################################
 
 
 ###########################################################################
 #  KDTREE2 Library
 ###########################################################################
-ADD_LIBRARY( kdtree2 STATIC ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2/qkdtree2.cpp 
+ADD_LIBRARY( kdtree2 STATIC ${CMAKE_SOURCE_DIR}/src/adcirc/qKdtree2/qkdtree2.cpp 
                 ${CMAKE_SOURCE_DIR}/thirdparty/kdtree/kdtree2.cpp )
-TARGET_INCLUDE_DIRECTORIES( kdtree2 PRIVATE ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2
-                                ${CMAKE_SOURCE_DIR}/interfaces/point
+TARGET_INCLUDE_DIRECTORIES( kdtree2 PRIVATE ${CMAKE_SOURCE_DIR}/src/adcirc/qKdtree2
+                                ${CMAKE_SOURCE_DIR}/src/adcirc/point
                                 ${CMAKE_SOURCE_DIR}/thirdparty/kdtree
                                 ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 )
 ADD_DEPENDENCIES( kdtree2 point)
@@ -141,8 +141,8 @@ TARGET_LINK_LIBRARIES( kdtree2 point )
 ###########################################################################
 #  PROJ4 Library
 ###########################################################################
-ADD_LIBRARY( proj4 STATIC ${CMAKE_SOURCE_DIR}/interfaces/qProj4/qproj4.cpp 
-        ${CMAKE_SOURCE_DIR}/interfaces/qProj4/epsg.cpp 
+ADD_LIBRARY( proj4 STATIC ${CMAKE_SOURCE_DIR}/src/adcirc/qProj4/qproj4.cpp 
+        ${CMAKE_SOURCE_DIR}/src/adcirc/qProj4/epsg.cpp 
         ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/aasincos.c ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/adjlon.c
         ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/bch2bps.c ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/bchgen.c
         ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/biveval.c ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/cs2cs.c
@@ -227,8 +227,8 @@ ADD_LIBRARY( proj4 STATIC ${CMAKE_SOURCE_DIR}/interfaces/qProj4/qproj4.cpp
         ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/proj_mdist.c ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/proj_rouss.c
         ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/rtodms.c ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src/vector1.c )
 TARGET_INCLUDE_DIRECTORIES( proj4 PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/proj4/src
-                                ${CMAKE_SOURCE_DIR}/interfaces/point 
-                                ${CMAKE_SOURCE_DIR}/interfaces/qProj4 )
+                                ${CMAKE_SOURCE_DIR}/src/adcirc/point 
+                                ${CMAKE_SOURCE_DIR}/src/adcirc/qProj4 )
 TARGET_LINK_LIBRARIES( proj4 point )
 ADD_DEPENDENCIES( proj4 point )
 ###########################################################################
@@ -262,9 +262,9 @@ ADD_LIBRARY( adcircmodules SHARED
                 ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/nodalattributes.cpp )
 
 TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
-                                ${CMAKE_SOURCE_DIR}/interfaces/point
-                                ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2
-                                ${CMAKE_SOURCE_DIR}/interfaces/qProj4
+                                ${CMAKE_SOURCE_DIR}/src/adcirc/point
+                                ${CMAKE_SOURCE_DIR}/src/adcirc/qKdtree2
+                                ${CMAKE_SOURCE_DIR}/src/adcirc/qProj4
                                 ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
                                 ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 
                                 ${CMAKE_SOURCE_DIR}/thirdparty/kdtree )
@@ -287,6 +287,9 @@ ENDIF(WIN32)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc.h DESTINATION include)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/adcirc_errors.h DESTINATION include/adcirc)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/config.h DESTINATION include/adcirc)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/qKdtree2/qkdtree2.h DESTINATION include/adcirc/qKdtree2)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/qProj4/qproj4.h DESTINATION include/adcirc/qProj4)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/point/point.h DESTINATION include/adcirc/point)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/node.h DESTINATION include/adcirc/geometry)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/element.h DESTINATION include/adcirc/geometry)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/boundary.h DESTINATION include/adcirc/geometry)
@@ -302,10 +305,6 @@ TARGET_LINK_LIBRARIES( adcircmodules proj4 point kdtree2 shapelib )
 ###########################################################################
 # Test case
 ###########################################################################
-ADD_EXECUTABLE( test_case ${CMAKE_SOURCE_DIR}/testing/main.cpp )
-ADD_DEPENDENCIES( test_case adcircmodules )
-TARGET_INCLUDE_DIRECTORIES( test_case PRIVATE ${CMAKE_SOURCE_DIR}/src )
-TARGET_LINK_LIBRARIES( test_case adcircmodules )
 ###########################################################################
 
 ###########################################################################
@@ -314,8 +313,8 @@ TARGET_LINK_LIBRARIES( test_case adcircmodules )
 IF(PythonLibs_FOUND AND SWIG_FOUND)
     
     FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/pyadcirc)
+    
     CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/swig/__init__.py ${CMAKE_BINARY_DIR}/pyadcirc COPYONLY )
-
 
     IF(WIN32)
 
@@ -333,9 +332,6 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
 
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR}/pyadcirc -c++ -python -I${CMAKE_SOURCE_DIR}/src 
-                    -I${CMAKE_SOURCE_DIR}/interfaces/point 
-                    -I${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
-                    -I${CMAKE_SOURCE_DIR}/interfaces/qProj4 
                     -I${PYTHON_INCLUDE_PATH} 
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -349,9 +345,6 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
     ELSE(WIN32)
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR}/pyadcirc -c++ -python -I${CMAKE_SOURCE_DIR}/src 
-                    -I${CMAKE_SOURCE_DIR}/interfaces/point 
-                    -I${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
-                    -I${CMAKE_SOURCE_DIR}/interfaces/qProj4 
                     -I${PYTHON_INCLUDE_PATH} 
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -361,14 +354,10 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
     ENDIF(WIN32)
 
     ADD_LIBRARY( PyAdcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx )
-    TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_DIRECTORIES} 
-            ${CMAKE_SOURCE_DIR}/src 
-            ${CMAKE_SOURCE_DIR}/interfaces/point 
-            ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
-            ${CMAKE_SOURCE_DIR}/interfaces/qProj4 )
+    TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_DIRECTORIES} ${CMAKE_SOURCE_DIR}/src )
     TARGET_LINK_LIBRARIES( PyAdcirc PRIVATE adcircmodules ${PYTHON_LIBRARY} )
     SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES PREFIX "_")
-    SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES PyAdcirc.py CMakeFiles/python_adcirc_wrap.cxx )
+    SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES pyadcirc/PyAdcirc.py pyadcirc/__init__.py CMakeFiles/python_adcirc_wrap.cxx )
     ADD_DEPENDENCIES( PyAdcirc adcircmodules )
 
     IF(WIN32)
@@ -420,9 +409,6 @@ IF(TEST_PERL)
     
             ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
                 COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src
-                        -I${CMAKE_SOURCE_DIR}/interfaces/point 
-                        -I${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
-                        -I${CMAKE_SOURCE_DIR}/interfaces/qProj4 
                         -I${PYTHON_INCLUDE_PATH} 
                         -o ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx.1
                         ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -436,9 +422,6 @@ IF(TEST_PERL)
         ELSE(WIN32)
             ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
                 COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src 
-                        -I${CMAKE_SOURCE_DIR}/interfaces/point 
-                        -I${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
-                        -I${CMAKE_SOURCE_DIR}/interfaces/qProj4 
                         -I${PERL_INCLUDE_PATH} 
                         -o ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
                         ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -448,11 +431,7 @@ IF(TEST_PERL)
         ENDIF(WIN32)
     
         ADD_LIBRARY( perladcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx )
-        TARGET_INCLUDE_DIRECTORIES( perladcirc PRIVATE ${PERL_INCLUDE_PATH} 
-                ${CMAKE_SOURCE_DIR}/src
-                ${CMAKE_SOURCE_DIR}/interfaces/point 
-                ${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
-                ${CMAKE_SOURCE_DIR}/interfaces/qProj4 )
+        TARGET_INCLUDE_DIRECTORIES( perladcirc PRIVATE ${PERL_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src )
         TARGET_LINK_LIBRARIES( perladcirc PRIVATE adcircmodules ${PERL_LIBRARY} )
         SET_TARGET_PROPERTIES( perladcirc PROPERTIES PREFIX "")
         SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES perladcirc.pm CMakeFiles/perl_adcirc_wrap.cxx )
@@ -478,15 +457,30 @@ ENDIF(TEST_PERL)
 # Test Cases
 ###########################################################################
 IF(UNIX OR CYGWIN)
-    #...C++ Test
-    ADD_TEST( NAME CXX_Test COMMAND ${CMAKE_BINARY_DIR}/test_case 
+    #...C++ Testing
+    FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases)
+
+    FOREACH(TESTFILE cxx_readmesh.cpp cxx_writemesh.cpp cxx_writeshapefile.cpp
+                     cxx_projectmesh.cpp cxx_nodalSearchTree.cpp cxx_readfort13_wmesh.cpp 
+                     cxx_readfort13_womesh.cpp cxx_fort13findatt.cpp )
+        GET_FILENAME_COMPONENT( TESTNAME ${TESTFILE} NAME_WE )
+        ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
+        ADD_DEPENDENCIES( ${TESTNAME} adcircmodules )
+        TARGET_INCLUDE_DIRECTORIES( ${TESTNAME} PRIVATE ${CMAKE_SOURCE_DIR}/src )
+        TARGET_LINK_LIBRARIES( ${TESTNAME} adcircmodules )
+        SET_TARGET_PROPERTIES( ${TESTNAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases )
+
+        ADD_TEST( NAME TEST_${TESTNAME} COMMAND ${CMAKE_BINARY_DIR}/cxx_testcases/${TESTNAME}
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/testing )
-    SET_TESTS_PROPERTIES( CXX_Test PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
+        SET_TESTS_PROPERTIES( TEST_${TESTNAME} PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
+    ENDFOREACH()
     
     #...Python Test
-    ADD_TEST( NAME Python_Test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/testing/pyadcirc_testcase.py
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR} )
-    SET_PROPERTY( TEST Python_Test PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
-    SET_PROPERTY( TEST Python_Test APPEND PROPERTY ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/pyadcirc")
+    IF(PYTHON_TESTING)
+        ADD_TEST( NAME Python_Test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/testing/pyadcirc_testcase.py
+                WORKING_DIRECTORY ${CMAKE_BINARY_DIR} )
+        SET_PROPERTY( TEST Python_Test PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
+        SET_PROPERTY( TEST Python_Test APPEND PROPERTY ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/pyadcirc")
+    ENDIF(PYTHON_TESTING)
 ENDIF(UNIX OR CYGWIN)
 ###########################################################################

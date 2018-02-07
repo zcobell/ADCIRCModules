@@ -21,5 +21,4 @@
 
 namespace Adcirc{
     const char *version() { return std::string(GIT_VERSION).c_str(); }
-    const char *timestamp() { return std::string(BUILD_TIME).c_str(); }
 }

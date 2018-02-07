@@ -36,9 +36,9 @@
 #include "adcirc/modelparameters/attribute.h"
 #include "adcirc/modelparameters/attributemetadata.h"
 #include "adcirc/modelparameters/nodalattributes.h"
-#include "qkdtree2.h"
-#include "qproj4.h"
-#include "point.h"
+#include "adcirc/qKdtree2/qkdtree2.h"
+#include "adcirc/qProj4/qproj4.h"
+#include "adcirc/point/point.h"
 %}
 
 %include "adcirc/config.h"
@@ -49,6 +49,6 @@
 %include "adcirc/modelparameters/attribute.h"
 %include "adcirc/modelparameters/attributemetadata.h"
 %include "adcirc/modelparameters/nodalattributes.h"
-%include "qkdtree2.h"
-%include "qproj4.h"
-%include "point.h"
+%include "adcirc/qKdtree2/qkdtree2.h"
+%include "adcirc/qProj4/qproj4.h"
+%include "adcirc/point/point.h"

@@ -35,13 +35,13 @@
 #ifndef QKDTREE2_H
 #define QKDTREE2_H
 
-#include "point.h"
 #include <cstddef>
 #include <vector>
 
 using namespace std;
 
 class kdtree2;
+class Point;
 
 class QKdtree2 {
 
