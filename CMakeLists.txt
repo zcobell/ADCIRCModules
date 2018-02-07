@@ -53,6 +53,16 @@ SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 ###########################################################################
 
 ###########################################################################
+# CODE VERSION (GIT)
+###########################################################################
+EXECUTE_PROCESS( COMMAND git describe --always --tags
+                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                    OUTPUT_VARIABLE GIT_VERSION
+                    OUTPUT_STRIP_TRAILING_WHITESPACE )
+STRING(TIMESTAMP BUILD_TIME "[%Y-%m-%d %H:%M:%S UTC]" UTC)
+###########################################################################
+
+###########################################################################
 #  LIBRARY VERSION
 ###########################################################################
 set(ADCIRCMODULES_VERSION_MAJOR 0)
@@ -229,6 +239,7 @@ TARGET_INCLUDE_DIRECTORIES( shapelib PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/shap
 #  ADCIRCModules Library
 ###########################################################################
 ADD_LIBRARY( adcircmodules SHARED 
+                ${CMAKE_SOURCE_DIR}/src/adcirc/config.cpp
                 ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/mesh.cpp 
                 ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/node.cpp
                 ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/element.cpp
@@ -250,6 +261,9 @@ TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
 
 ADD_DEPENDENCIES( adcircmodules point proj4 kdtree2 shapelib )
 
+TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE GIT_VERSION="${GIT_VERSION}")
+TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE BUILD_TIME="${BUILD_TIME}")
+
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING} SOVERSION ${ADCIRCMODULES_VERSION_MAJOR} )
 
 IF(WIN32)
@@ -262,6 +276,7 @@ ENDIF(WIN32)
 
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc.h DESTINATION include)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/adcirc_errors.h DESTINATION include/adcirc)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/config.h DESTINATION include/adcirc)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/node.h DESTINATION include/adcirc/geometry)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/element.h DESTINATION include/adcirc/geometry)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/boundary.h DESTINATION include/adcirc/geometry)

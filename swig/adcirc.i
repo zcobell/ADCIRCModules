@@ -28,6 +28,7 @@
 
 %{
 #define SWIG_FILE_WITH_INIT
+#include "adcirc/config.h"
 #include "adcirc/geometry/mesh.h"
 #include "adcirc/geometry/node.h"
 #include "adcirc/geometry/element.h"
@@ -40,6 +41,7 @@
 #include "point.h"
 %}
 
+%include "adcirc/config.h"
 %include "adcirc/geometry/mesh.h"
 %include "adcirc/geometry/node.h"
 %include "adcirc/geometry/element.h"

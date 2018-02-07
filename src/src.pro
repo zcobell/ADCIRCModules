@@ -85,7 +85,8 @@ SOURCES += \
     adcirc/geometry/node.cpp \
     adcirc/modelparameters/attribute.cpp \
     adcirc/modelparameters/attributemetadata.cpp \
-    adcirc/modelparameters/nodalattributes.cpp
+    adcirc/modelparameters/nodalattributes.cpp \
+    adcirc/config.cpp
 
 HEADERS += \
     adcirc/adcircmodules_global.h \ 
@@ -101,7 +102,8 @@ HEADERS += \
     adcirc/modelparameters/attribute.h \
     adcirc/modelparameters/attributemetadata.h \
     adcirc/modelparameters/nodalattributes.h \
-    adcirc/adcirc_errors.h
+    adcirc/adcirc_errors.h \
+    adcirc/config.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/release/ -lqkdtree2
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../interfaces/qKdtree2/debug/ -lqkdtree2

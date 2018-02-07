@@ -16,12 +16,14 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#ifndef ADCIRC_H
-#define ADCIRC_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
-#include "adcirc/config.h"
-#include "adcirc/adcirc_errors.h"
-#include "adcirc/geometry/mesh.h"
-#include "adcirc/modelparameters/nodalattributes.h"
+namespace Adcirc {
 
-#endif // ADCIRC_H
+const char *version();
+const char *timestamp();
+
+} // namespace Adcirc
+
+#endif // CONFIG_H
