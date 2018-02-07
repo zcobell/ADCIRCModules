@@ -21,14 +21,17 @@
 
 int main(int argc, char *argv[]) {
   Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(
-      string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.grd"));
+      string("test_files/ms-riv.grd"));
 
   int ierr = mesh->read();
   std::cout << "Mesh Read Return Code: " << ierr << "\n";
+  if(ierr!=Adcirc::NoError)
+      return ierr;
 
-  Adcirc::ModelParameters::NodalAttributes *f13 = new Adcirc::ModelParameters::NodalAttributes(string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.13"),mesh);
-  //AdcircNodalParameters *f13 = new AdcircNodalParameters(string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.13"));
+  Adcirc::ModelParameters::NodalAttributes *f13 = new Adcirc::ModelParameters::NodalAttributes(string("test_files/ms-riv.13"),mesh);
   ierr = f13->read();
+  if(ierr!=Adcirc::NoError)
+      return ierr;
   std::cout << "Fort13 Read Return Code: " << ierr << "\n";
   std::cout << f13->attribute(0,0)->node()->id() << "\n";
   std::cout << f13->attribute("mannings_n_at_sea_floor",0)->value(0) << "\n";

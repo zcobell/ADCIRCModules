@@ -31,6 +31,13 @@ PROJECT(ADCIRCModules)
 
 
 ###########################################################################
+# Enable running tests
+###########################################################################
+enable_testing()
+###########################################################################
+
+
+###########################################################################
 # C++ 11 Check
 ###########################################################################
 include(CheckCXXCompilerFlag)
@@ -89,6 +96,7 @@ ENDIF(SWIG_FOUND)
 
 FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
 IF(PythonLibs_FOUND)
+    FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
     INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH})
 ENDIF(PythonLibs_FOUND)
 
@@ -302,6 +310,11 @@ TARGET_LINK_LIBRARIES( test_case adcircmodules )
 #  PyAdcirc Library
 ###########################################################################
 IF(PythonLibs_FOUND AND SWIG_FOUND)
+    
+    FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/pyadcirc)
+    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/swig/__init__.py ${CMAKE_BINARY_DIR}/pyadcirc COPYONLY )
+
+
     IF(WIN32)
 
         #...Builds a dummy cmake project
@@ -317,7 +330,7 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
         ")
 
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
-            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/src 
+            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR}/pyadcirc -c++ -python -I${CMAKE_SOURCE_DIR}/src 
                     -I${CMAKE_SOURCE_DIR}/interfaces/point 
                     -I${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
                     -I${CMAKE_SOURCE_DIR}/interfaces/qProj4 
@@ -333,7 +346,7 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
 
     ELSE(WIN32)
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
-            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/src 
+            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR}/pyadcirc -c++ -python -I${CMAKE_SOURCE_DIR}/src 
                     -I${CMAKE_SOURCE_DIR}/interfaces/point 
                     -I${CMAKE_SOURCE_DIR}/interfaces/qKdtree2 
                     -I${CMAKE_SOURCE_DIR}/interfaces/qProj4 
@@ -364,7 +377,8 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
         INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION lib)
     ENDIF(WIN32)
     
-    INSTALL(FILES ${CMAKE_BINARY_DIR}/PyAdcirc.py DESTINATION python)
+    INSTALL(FILES ${CMAKE_BINARY_DIR}/pyadcirc/PyAdcirc.py DESTINATION pyadcirc)
+    INSTALL(FILES ${CMAKE_BINARY_DIR}/pyadcirc/__init__.py DESTINATION pyadcirc)
     
     IF(WIN32)
         SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES SUFFIX ".pyd")
@@ -451,4 +465,21 @@ IF(TEST_PERL)
         ENDIF(WIN32)
     ENDIF(Perl_FOUND AND SWIG_FOUND)
 ENDIF(TEST_PERL)
+###########################################################################
+
+
+###########################################################################
+# Test Cases
+###########################################################################
+
+#...C++ Test
+ADD_TEST( NAME CXX_Test COMMAND ${CMAKE_BINARY_DIR}/test_case.exe 
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/testing )
+SET_TESTS_PROPERTIES( CXX_Test PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}")
+
+#...Python Test
+ADD_TEST( NAME Python_Test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/testing/pyadcirc_testcase.py
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/testing )
+SET_PROPERTY( TEST Python_Test PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}")
+SET_PROPERTY( TEST Python_Test APPEND PROPERTY ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/pyadcirc")
 ###########################################################################
