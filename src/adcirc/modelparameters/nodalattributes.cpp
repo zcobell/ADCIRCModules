@@ -163,7 +163,7 @@ int NodalAttributes::_readFort13Defaults(std::fstream &fid) {
 
   for (int i = 0; i < this->numParameters(); i++) {
     std::getline(fid, name);
-    name.erase(std::remove(name.begin(), name.end(), ' '), name.end());
+    name = StringConversion::sanitizeString(name);
 
     std::getline(fid, units);
 
@@ -249,7 +249,7 @@ int NodalAttributes::_readFort13Body(std::fstream &fid) {
 
   for (int i = 0; i < this->numParameters(); i++) {
     std::getline(fid, name);
-    name.erase(std::remove(name.begin(), name.end(), ' '), name.end());
+    name = StringConversion::sanitizeString(name);
     index = this->m_attributeLocations[name];
 
     std::getline(fid, tempLine);
@@ -362,3 +362,15 @@ int NodalAttributes::write(const char *filename) {
 }
 
 int NodalAttributes::write(string outputFilename) { return Adcirc::NoError; }
+
+string NodalAttributes::attributeNames(int index) {
+  assert(index >= 0 && index < this->m_nodalParameters.size());
+  if (index >= 0 && index < this->m_nodalParameters.size())
+    return this->m_nodalParameters[index].name();
+  else
+    return string("Request out of bounds.");
+}
+
+const char *NodalAttributes::attributeNamesChar(int index) {
+  return this->attributeNames(index).c_str();
+}

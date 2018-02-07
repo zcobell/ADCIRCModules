@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 #include "stringconversion.h"
+#include "boost/algorithm/string.hpp"
 
 StringConversion::StringConversion() {}
 
@@ -48,4 +49,11 @@ int StringConversion::stringToInt(string a, bool &ok) {
     ok = false;
     return 0;
   }
+}
+
+string StringConversion::sanitizeString(string a) {
+  string b = a;
+  boost::algorithm::trim(b);
+  b.erase(std::remove(b.begin(), b.end(), '\r'), b.end());
+  return b;
 }

@@ -30,6 +30,8 @@ public:
   static int stringToInt(string a, bool &ok);
   static float stringToFloat(string a, bool &ok);
   static double stringToDouble(string a, bool &ok);
+  static string sanitizeString(string a);
+
 };
 
 #endif // STRINGCONVERSION_H

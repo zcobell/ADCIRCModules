@@ -51,6 +51,9 @@ public:
   int write(string outputFilename);
   int write(const char *filename);
 
+  string attributeNames(int index);
+  const char *attributeNamesChar(int index);
+
   int locateAttribute(string attributeName);
   int locateAttribute(const char *attributeName);
 
@@ -99,6 +102,6 @@ private:
   /// Vector of objects for the nodal parameters
   vector<vector<Attribute>> m_nodalData;
 };
-}
-}
+} // namespace ModelParameters
+} // namespace Adcirc
 #endif // NODALATTRIBUTES_H
