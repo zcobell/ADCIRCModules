@@ -34,7 +34,7 @@ PROJECT(ADCIRCModules)
 # Enable running tests
 ###########################################################################
 IF(UNIX OR CYGWIN)
-    enable_testing()
+    ENABLE_TESTING()
 ENDIF(UNIX OR CYGWIN)
 ###########################################################################
 
@@ -42,7 +42,7 @@ ENDIF(UNIX OR CYGWIN)
 ###########################################################################
 # C++ 11 Check
 ###########################################################################
-include(CheckCXXCompilerFlag)
+INCLUDE(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
 CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
 if(COMPILER_SUPPORTS_CXX11)
@@ -59,6 +59,12 @@ endif()
 #  Compiler flags 
 ###########################################################################
 SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
+MARK_AS_ADVANCED( CLEAR CMAKE_CXX_FLAGS_RELEASE )
+MARK_AS_ADVANCED( CLEAR CMAKE_CXX_FLAGS_DEBUG )
+MARK_AS_ADVANCED( CLEAR CMAKE_C_FLAGS_RELEASE )
+MARK_AS_ADVANCED( CLEAR CMAKE_C_FLAGS_DEBUG )
+MARK_AS_ADVANCED( CLEAR CMAKE_CXX_COMPILER )
+MARK_AS_ADVANCED( CLEAR CMAKE_C_COMPILER )
 ###########################################################################
 
 ###########################################################################
@@ -93,19 +99,24 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/CMakeFiles)
 FIND_PACKAGE(SWIG)
 IF(SWIG_FOUND)
     INCLUDE(${SWIG_USE_FILE})
+
+    FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
+    IF(PythonLibs_FOUND)
+        FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
+        INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH})
+        OPTION(PYTHON_TESTING "Test the Python Libraries with CTest" OFF)
+        EXECUTE_PROCESS( COMMAND ${PYTHON_EXECUTABLE} -m site --user-site 
+                         OUTPUT_VARIABLE temp_PYTHON_SITE_DIRECTORY OUTPUT_STRIP_TRAILING_WHITESPACE)
+        SET( PYTHON_INSTALL_DIRECTORY ${temp_PYTHON_SITE_DIRECTORY} CACHE STRING "Location where Python libraries will be installed" )
+        MARK_AS_ADVANCED( CLEAR PYTHON_EXECUTABLE )
+    ENDIF(PythonLibs_FOUND)
+    
+    FIND_PACKAGE(PerlLibs)
+    IF(PerlLibs_FOUND)
+        OPTION(TEST_PERL "Test the perl build for SWIG. Note: Does not work yet" OFF) 
+    ENDIF(PerlLibs_FOUND)
+
 ENDIF(SWIG_FOUND)
-
-FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
-IF(PythonLibs_FOUND)
-    FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
-    INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH})
-    OPTION(PYTHON_TESTING "Test the Python Libraries with CTest" OFF)
-ENDIF(PythonLibs_FOUND)
-
-FIND_PACKAGE(PerlLibs)
-IF(PerlLibs_FOUND)
-    OPTION(TEST_PERL "Test the perl build for SWIG. Note: Does not work yet" OFF) 
-ENDIF(PerlLibs_FOUND)
 ###########################################################################
 
 
@@ -312,10 +323,6 @@ TARGET_LINK_LIBRARIES( adcircmodules proj4 point kdtree2 shapelib )
 ###########################################################################
 IF(PythonLibs_FOUND AND SWIG_FOUND)
     
-    FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/pyadcirc)
-    
-    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/swig/__init__.py ${CMAKE_BINARY_DIR}/pyadcirc COPYONLY )
-
     IF(WIN32)
 
         #...Builds a dummy cmake project
@@ -331,7 +338,7 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
         ")
 
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
-            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR}/pyadcirc -c++ -python -I${CMAKE_SOURCE_DIR}/src 
+            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/src 
                     -I${PYTHON_INCLUDE_PATH} 
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -344,7 +351,7 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
 
     ELSE(WIN32)
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
-            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR}/pyadcirc -c++ -python -I${CMAKE_SOURCE_DIR}/src 
+            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/src 
                     -I${PYTHON_INCLUDE_PATH} 
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -357,23 +364,22 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
     TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_DIRECTORIES} ${CMAKE_SOURCE_DIR}/src )
     TARGET_LINK_LIBRARIES( PyAdcirc PRIVATE adcircmodules ${PYTHON_LIBRARY} )
     SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES PREFIX "_")
-    SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES pyadcirc/PyAdcirc.py pyadcirc/__init__.py CMakeFiles/python_adcirc_wrap.cxx )
+    SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES PyAdcirc.py CMakeFiles/python_adcirc_wrap.cxx )
     ADD_DEPENDENCIES( PyAdcirc adcircmodules )
 
     IF(WIN32)
-        SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/pyadcirc
-                                                   RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/pyadcirc )
-        INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION bin RUNTIME DESTINATION pyadcirc)
+        SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+                                                   RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR} )
+        INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION bin RUNTIME DESTINATION ${PYTHON_INSTALL_DIRECTORY})
     ELSEIF(CYGWIN)
-        SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/pyadcirc)
-        INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION lib RUNTIME DESTINATION pyadcirc)
+        SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+        INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION lib RUNTIME DESTINATION ${PYTHON_INSTALL_DIRECTORY})
     ELSE(WIN32)
-        SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/pyadcirc)
-        INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION pyadcirc)
+        SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+        INSTALL(TARGETS PyAdcirc LIBRARY DESTINATION ${PYTHON_INSTALL_DIRECTORY})
     ENDIF(WIN32)
     
-    INSTALL(FILES ${CMAKE_BINARY_DIR}/pyadcirc/PyAdcirc.py DESTINATION pyadcirc)
-    INSTALL(FILES ${CMAKE_BINARY_DIR}/pyadcirc/__init__.py DESTINATION pyadcirc)
+    INSTALL(FILES ${CMAKE_BINARY_DIR}/PyAdcirc.py DESTINATION ${PYTHON_INSTALL_DIRECTORY})
     
     IF(WIN32)
         SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES SUFFIX ".pyd")
@@ -480,7 +486,7 @@ IF(UNIX OR CYGWIN)
         ADD_TEST( NAME Python_Test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/testing/pyadcirc_testcase.py
                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR} )
         SET_PROPERTY( TEST Python_Test PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
-        SET_PROPERTY( TEST Python_Test APPEND PROPERTY ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/pyadcirc")
+        SET_PROPERTY( TEST Python_Test APPEND PROPERTY ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}")
     ENDIF(PYTHON_TESTING)
 ENDIF(UNIX OR CYGWIN)
 ###########################################################################
