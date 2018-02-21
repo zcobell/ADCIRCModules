@@ -19,8 +19,17 @@
 #include "split.h"
 #include "boost/algorithm/string/split.hpp"
 #include "boost/algorithm/string/trim.hpp"
+#include "boost/algorithm/string/classification.hpp"
 
-vector<string> split::stringSplitToVector(string s, char delim) {
+vector<string> split::stringSplitToVector(string s, string delim) {
+  vector<string> elems;
+  boost::trim_if(s, boost::is_any_of(delim));
+  boost::algorithm::split(elems, s, boost::is_any_of(delim),
+                          boost::token_compress_on);
+  return elems;
+}
+
+vector<string> split::stringSplitToVector(string s) {
   vector<string> elems;
   boost::trim_if(s, boost::is_any_of(" "));
   boost::algorithm::split(elems, s, boost::is_any_of(" "),
