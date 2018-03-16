@@ -13,6 +13,7 @@ error = m.read()
 ## Note
 This project is still under development.
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5d2090993c804bcd8481e431719607eb)](https://app.codacy.com/app/zachary.cobell/ADCModules?utm_source=github.com&utm_medium=referral&utm_content=zcobell/ADCModules&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/zcobell/ADCModules.svg?branch=master)](https://travis-ci.org/zcobell/ADCModules)
 [![Coverity](https://scan.coverity.com/projects/14684/badge.svg)](https://scan.coverity.com/projects/zcobell-adcmodules)
 
