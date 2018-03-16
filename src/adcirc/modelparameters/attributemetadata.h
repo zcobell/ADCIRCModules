@@ -29,7 +29,7 @@ namespace Adcirc {
 namespace ModelParameters {
 
 class AttributeMetadata {
-public:
+ public:
   explicit AttributeMetadata(string name = "defaultName", string units = "none",
                              int numValues = 1);
 
@@ -48,7 +48,7 @@ public:
   void setDefaultValue(int index, const double &value);
   void setDefaultValue(const vector<double> &value);
 
-private:
+ private:
   /// Name of the nodal attribute
   string m_name;
 
@@ -63,4 +63,4 @@ private:
 };
 }
 }
-#endif // ATTRIBUTEMETADATA_H
+#endif  // ATTRIBUTEMETADATA_H

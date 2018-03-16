@@ -23,6 +23,6 @@ namespace Adcirc {
 
 const char *version();
 
-} // namespace Adcirc
+}  // namespace Adcirc
 
-#endif // CONFIG_H
+#endif  // CONFIG_H

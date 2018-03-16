@@ -26,8 +26,8 @@
 using namespace std;
 
 class split {
-public:
+ public:
   static vector<string> stringSplitToVector(string s, char delim);
 };
 
-#endif // SPLIT_H
+#endif  // SPLIT_H

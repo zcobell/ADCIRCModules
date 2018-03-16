@@ -21,17 +21,14 @@
 
 #include <string>
 
-using namespace std;
-
 class StringConversion {
-public:
+ public:
   StringConversion();
 
-  static int stringToInt(string a, bool &ok);
-  static float stringToFloat(string a, bool &ok);
-  static double stringToDouble(string a, bool &ok);
-  static string sanitizeString(string a);
-
+  static int stringToInt(std::string a, bool &ok);
+  static float stringToFloat(std::string a, bool &ok);
+  static double stringToDouble(std::string a, bool &ok);
+  static std::string sanitizeString(std::string a);
 };
 
-#endif // STRINGCONVERSION_H
+#endif  // STRINGCONVERSION_H

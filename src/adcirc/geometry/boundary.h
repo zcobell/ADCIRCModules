@@ -17,29 +17,27 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 /**
- * @class AdcircBoundary
+ * @class Boundary
  * @author Zachary Cobell
  *
- * The AdcircBoundary class handles the interpretation of boundary
+ * The Boundary class handles the interpretation of boundary
  * conditions used within the Adcirc model. The class is designed so that
  * it is generic and can handle both open and land boundaries.
  *
  */
-#ifndef ADCIRCBOUNDARY_H
-#define ADCIRCBOUNDARY_H
+#ifndef BOUNDARY_H
+#define BOUNDARY_H
 
-#include "adcirc/adcircmodules_global.h"
-#include "adcirc/geometry/node.h"
 #include <string>
 #include <vector>
-
-using namespace std;
+#include "adcirc/adcircmodules_global.h"
+#include "adcirc/geometry/node.h"
 
 namespace Adcirc {
 namespace Geometry {
 
 class Boundary {
-public:
+ public:
   explicit Boundary();
 
   explicit Boundary(int boundaryCode, int boundaryLength);
@@ -80,21 +78,21 @@ public:
   Adcirc::Geometry::Node *node2(int index) const;
   void setNode2(int index, Adcirc::Geometry::Node *node2);
 
-  vector<string> toStringList();
+  std::vector<std::string> toStringList();
 
-private:
+ private:
   int m_boundaryCode;
   int m_boundaryLength;
-  vector<double> m_crestElevation;
-  vector<double> m_subcriticalWeirCoefficient;
-  vector<double> m_supercriticalWeirCoefficient;
-  vector<double> m_pipeHeight;
-  vector<double> m_pipeDiameter;
-  vector<double> m_pipeCoefficient;
-  vector<double> m_averageLongitude;
-  vector<Adcirc::Geometry::Node *> m_node1;
-  vector<Adcirc::Geometry::Node *> m_node2;
+  std::vector<double> m_crestElevation;
+  std::vector<double> m_subcriticalWeirCoefficient;
+  std::vector<double> m_supercriticalWeirCoefficient;
+  std::vector<double> m_pipeHeight;
+  std::vector<double> m_pipeDiameter;
+  std::vector<double> m_pipeCoefficient;
+  std::vector<double> m_averageLongitude;
+  std::vector<Adcirc::Geometry::Node *> m_node1;
+  std::vector<Adcirc::Geometry::Node *> m_node2;
 };
 }
 }
-#endif // ADCIRCBOUNDARY_H
+#endif  // BOUNDARY_H

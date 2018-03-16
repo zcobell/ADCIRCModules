@@ -14,7 +14,7 @@ error = m.read()
 This project is still under development.
 
 [![Build Status](https://travis-ci.org/zcobell/ADCModules.svg?branch=master)](https://travis-ci.org/zcobell/ADCModules)
-[![Coverity](https://scan.coverity.com/projects/14684/badge.svg)](https://scan.coverity.com/projects/zcobell-adcmodules)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4a92371846ec42a48d0aab66ec4a0a3a)](https://www.codacy.com/app/zachary.cobell/ADCModules?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zcobell/ADCModules&amp;utm_campaign=Badge_Grade)
 
 ### Credits
 | Library  | Function | Source |

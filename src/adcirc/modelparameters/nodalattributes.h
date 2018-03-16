@@ -19,19 +19,19 @@
 #ifndef NODALATTRIBUTES_H
 #define NODALATTRIBUTES_H
 
-#include "adcirc/geometry/mesh.h"
-#include "adcirc/modelparameters/attribute.h"
-#include "adcirc/modelparameters/attributemetadata.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include "adcirc/geometry/mesh.h"
+#include "adcirc/modelparameters/attribute.h"
+#include "adcirc/modelparameters/attributemetadata.h"
 
 namespace Adcirc {
 
 namespace ModelParameters {
 
 class NodalAttributes {
-public:
+ public:
   explicit NodalAttributes();
 
   explicit NodalAttributes(string filename,
@@ -70,7 +70,7 @@ public:
   Attribute *attribute(string parameter, int node);
   Attribute *attribute(const char *parameter, int node);
 
-private:
+ private:
   int _readFort13Header(std::fstream &fid);
   int _readFort13Defaults(std::fstream &fid);
   int _readFort13Body(std::fstream &fid);
@@ -102,6 +102,6 @@ private:
   /// Vector of objects for the nodal parameters
   vector<vector<Attribute> > m_nodalData;
 };
-} // namespace ModelParameters
-} // namespace Adcirc
-#endif // NODALATTRIBUTES_H
+}  // namespace ModelParameters
+}  // namespace Adcirc
+#endif  // NODALATTRIBUTES_H
