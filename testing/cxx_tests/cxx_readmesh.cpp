@@ -23,8 +23,12 @@ int main(int argc, char *argv[]) {
   Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(string("test_files/ms-riv.grd"));
   int ierr = mesh->read();
   std::cout << "Mesh Read Return Code: " << ierr << "\n";
-  if(ierr!=Adcirc::NoError)
+  if(ierr!=Adcirc::NoError){
+      delete mesh;
       return ierr;
-  else
+  }
+  else{
+      delete mesh;
       return 0;
+  }
 }

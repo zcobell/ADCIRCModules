@@ -15,6 +15,7 @@ This project is still under development.
 
 [![Build Status](https://travis-ci.org/zcobell/ADCModules.svg?branch=master)](https://travis-ci.org/zcobell/ADCModules)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4a92371846ec42a48d0aab66ec4a0a3a)](https://www.codacy.com/app/zachary.cobell/ADCModules?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zcobell/ADCModules&amp;utm_campaign=Badge_Grade)
+[![codecov](https://codecov.io/gh/zcobell/ADCModules/branch/master/graph/badge.svg)](https://codecov.io/gh/zcobell/ADCModules)
 
 ### Credits
 | Library  | Function | Source |
