@@ -24,5 +24,7 @@
 #endif
 
 namespace Adcirc {
-const char *version() { return std::string(GIT_VERSION).c_str(); }
+
+const char *version() { return GIT_VERSION; }
+
 }

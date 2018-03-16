@@ -33,9 +33,9 @@ int main(int argc, char *argv[]) {
       delete fort13;
       return 1;
   }
-  else
+  else {
+      delete fort13;
       return 0;
-
-  delete fort13;
+  }
 
 }
