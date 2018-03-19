@@ -47,7 +47,6 @@ vector<double> AttributeMetadata::getDefaultValues() const {
 }
 
 double AttributeMetadata::getDefaultValue(int index) const {
-
   assert(index >= 0 && index < this->m_numValues);
 
   if (index >= 0 || index < this->m_numValues)

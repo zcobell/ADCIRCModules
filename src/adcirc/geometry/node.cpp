@@ -19,6 +19,7 @@
 #include "adcirc/geometry/node.h"
 #include "boost/format.hpp"
 
+using namespace std;
 using namespace Adcirc::Geometry;
 
 /**

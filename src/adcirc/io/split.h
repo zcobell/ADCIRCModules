@@ -31,4 +31,4 @@ public:
   static vector<string> stringSplitToVector(string s);
 };
 
-#endif // SPLIT_H
+#endif  // SPLIT_H

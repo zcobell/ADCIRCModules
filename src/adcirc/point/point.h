@@ -20,7 +20,7 @@
 #define POINT_H
 
 class Point {
-public:
+ public:
   Point();
 
   Point(double x, double y);
@@ -31,9 +31,9 @@ public:
   double y() const;
   void setY(double y);
 
-private:
+ private:
   double m_x;
   double m_y;
 };
 
-#endif // POINT_H
+#endif  // POINT_H

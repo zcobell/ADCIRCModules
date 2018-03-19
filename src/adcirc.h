@@ -19,13 +19,13 @@
 #ifndef ADCIRC_H
 #define ADCIRC_H
 
+#include "adcirc/point/point.h"
 #include "adcirc/qKdtree2/qkdtree2.h"
 #include "adcirc/qProj4/qproj4.h"
-#include "adcirc/point/point.h"
 
-#include "adcirc/config.h"
 #include "adcirc/adcirc_errors.h"
+#include "adcirc/config.h"
 #include "adcirc/geometry/mesh.h"
 #include "adcirc/modelparameters/nodalattributes.h"
 
-#endif // ADCIRC_H
+#endif  // ADCIRC_H

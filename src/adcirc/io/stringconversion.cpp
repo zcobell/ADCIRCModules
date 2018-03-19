@@ -19,6 +19,8 @@
 #include "stringconversion.h"
 #include "boost/algorithm/string.hpp"
 
+using namespace std;
+
 StringConversion::StringConversion() {}
 
 double StringConversion::stringToDouble(string a, bool &ok) {

@@ -19,16 +19,17 @@
 #ifndef ATTRIBUTE_H
 #define ATTRIBUTE_H
 
+#include <vector>
 #include "adcirc/geometry/node.h"
 #include "adcirc/modelparameters/attribute.h"
-#include <vector>
+
+using namespace std;
 
 namespace Adcirc {
-
 namespace ModelParameters {
 
 class Attribute {
-public:
+ public:
   explicit Attribute();
 
   explicit Attribute(int size);
@@ -50,7 +51,7 @@ public:
   int id() const;
   void setId(int id);
 
-private:
+ private:
   /// Number of values in this dataset
   int m_size;
 
@@ -65,4 +66,4 @@ private:
 };
 }
 }
-#endif // ATTRIBUTE_H
+#endif  // ATTRIBUTE_H

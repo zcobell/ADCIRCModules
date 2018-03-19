@@ -3,31 +3,21 @@ dist: trusty
 language: cpp
 compiler: gcc
 
-env:
-  global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-   - secure: "MNqRhCRIm2h/MlXmLHNOnecun4+5sFwWT9gmN0ec6BMsDiBozzCnogVgt7qpkpNZkK5aTzHcltBKC2ZUpT3QAGIRpol/QLuHl15QoypwasD60QuVk05rmTRJ3+xNyfLaEZ7tbuwkQdSVyUmBAL3dhDQrR4QNk9o0hK/aqymzI8wZmd3C0bCIlPbYVrougdBJ2UPxCdJ/e7YrY9oYh7saxYWvLVhKsbfAF7RQAqDU4qfoOsT08sbY4N4wKLu9c//0WtCiqm/bE7fYV05++E58IpCi04o3con5XWnN7veiwergp/M8lfnpcryuCI/2L0C8Mnlud3820Q55ETNadJePFFOE813QSUiXqwPcl9T6kbdMaWtnaBdNlTCHgoznKSKxZ4xcxndkVBtkiyEhuBWYtpy2p45luQaURuNtLCe8Bi2AM34qevD0LzbSms6lUVGGaDeORBbcXn05Vmvlq111gUNvDvyI8bL6MPUy/duwyRr8c+U2BDwxl3iHF5xXKAW0QhXnzB65EfB7UgmnPvRQ5YH0H1xjRTRW+Vm2SGy+668GQhsA9FI8iuuq/0aJe8OEfuDV8Dz7IuYyuL4xrzJfx6m9yP/QUDEaxDfT780Soq/Nhzh20E34UZuofA6F7dkzR0/4n8JL2B7WAp/GVcAuYwrx+hsBwYe6CB5VFmWa3R8="
-
 before_install:
-      - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
       - sudo apt-get update  -qq
-      - sudo apt-get install -qq libsqlite3-dev libnetcdf-dev python python-dev swig tcl8.5-dev
+      - sudo apt-get install -qq libsqlite3-dev libnetcdf-dev python python-dev swig tcl8.5-dev lcov
 
-addons:
-  coverity_scan:
-    project:
-      name: "zcobell/ADCModules"
-      description: "Build submitted via Travis CI"
-    notification_email: zachary.cobell@arcadis.com
-    build_command_prepend: "mkdir build; cd build; cmake .."
-    build_command:   "cd build; make -j 4"
-    branch_pattern: coverty_scan
-
-before_install:
-- echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+after_success:
+  # Creating report
+  - cd ${TRAVIS_BUILD_DIR}
+  - lcov --directory . --capture --output-file coverage.info # capture coverage info
+  - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
+  - lcov --remove coverage.info '*/thirdparty/*' --output-file coverage.info # filter thirdparty code
+  - lcov --list coverage.info #debug info
+  # Uploading report to CodeCov
+  - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
 
 script:
-- mkdir build; cd build; cmake ..
+- mkdir build; cd build; cmake -DCOVERAGE=ON ..
 - cd build; make -j 4
 - cd build; CTEST_OUTPUT_ON_FAILURE=1 make test

@@ -17,8 +17,10 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 #include "qproj4.h"
-#include "proj_api.h"
 #include "point.h"
+#include "proj_api.h"
+
+using namespace std;
 
 //-----------------------------------------------------------------------------------------//
 // Initializer
@@ -36,7 +38,7 @@
  *
  **/
 //-----------------------------------------------------------------------------------------//
-QProj4::QProj4() {this->_initialize();}
+QProj4::QProj4() { this->_initialize(); }
 //-----------------------------------------------------------------------------------------//
 
 //-----------------------------------------------------------------------------------------//
@@ -88,8 +90,7 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
 
   ierr = pj_transform(inputPJ, outputPJ, 1, 1, &x, &y, &z);
 
-  if (ierr != 0)
-    return Proj4InternalError;
+  if (ierr != 0) return Proj4InternalError;
 
   if (pj_is_latlong(outputPJ)) {
     output.setX(x * RAD_TO_DEG);
@@ -162,8 +163,7 @@ int QProj4::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
 
     ierr = pj_transform(inputPJ, outputPJ, 1, 1, &x[i], &y[i], &z[i]);
 
-    if (ierr != 0)
-      return Proj4InternalError;
+    if (ierr != 0) return Proj4InternalError;
 
     if (pj_is_latlong(outputPJ)) {
       output[i].setX(x[i] * RAD_TO_DEG);
@@ -182,4 +182,3 @@ int QProj4::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
   return NoError;
 }
 //-----------------------------------------------------------------------------------------//
-

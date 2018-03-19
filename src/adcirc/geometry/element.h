@@ -17,14 +17,14 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 /**
- * @class AdcircElement
+ * @class Element
  * @author Zachary Cobell
- * @brief The AdcircElement class describes an AdcircElement as an array
+ * @brief The Element class describes an AdcircElement as an array
  * of Node pointers
  *
  */
-#ifndef ADCIRCELEMENT_H
-#define ADCIRCELEMENT_H
+#ifndef ELEMENT_H
+#define ELEMENT_H
 
 #include "adcirc/adcircmodules_global.h"
 #include "adcirc/geometry/element.h"
@@ -52,15 +52,15 @@ public:
   int id() const;
   void setId(int id);
 
-  string toString();
+  std::string toString();
 
 private:
   int m_n = 3;
 
   int m_id;
-  vector<Adcirc::Geometry::Node *> m_nodes;
+  std::vector<Adcirc::Geometry::Node *> m_nodes;
 };
 }
 }
 
-#endif // ADCIRCELEMENT_H
+#endif // ELEMENT_H

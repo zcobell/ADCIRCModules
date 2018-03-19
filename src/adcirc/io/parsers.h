@@ -99,7 +99,7 @@ struct nodalAttribute12 {
   double value12;
 };
 
-} // namespace parse
+}  // namespace parse
 
 BOOST_FUSION_ADAPT_STRUCT(parse::node,
                           (int, id)(double, x)(double, y)(double, z))
@@ -219,6 +219,6 @@ struct nodalAttribute12_parser
   qi::rule<Iterator, nodalAttribute12(), ascii::space_type> start;
 };
 
-} // namespace parse
+}  // namespace parse
 
-#endif // PARSERS_H
+#endif  // PARSERS_H

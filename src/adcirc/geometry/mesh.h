@@ -17,14 +17,14 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 /**
- * @class AdcircMesh
+ * @class Mesh
  * @author Zachary Cobell
  * @brief Class that handles operations using Adcirc mesh files
  * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved.
  * @license This project is released under the terms of the GNU General Public
  * License v3
  *
- * The AdcircMesh class handles functions related to reading an
+ * The Mesh class handles functions related to reading an
  * adcirc mesh into memory and provides some facilities for
  * manipulation. The code is designed to be functional
  * with the python interface to the code.
@@ -47,17 +47,15 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include <fstream>
+#include <string>
+#include <unordered_map>
+#include <vector>
 #include "adcirc/adcircmodules_global.h"
 #include "adcirc/geometry/boundary.h"
 #include "adcirc/geometry/element.h"
 #include "adcirc/geometry/node.h"
 #include "adcirc/point/point.h"
-#include <fstream>
-#include <string>
-#include <unordered_map>
-#include <vector>
-
-using namespace std;
 
 class QKdtree2;
 
@@ -65,25 +63,24 @@ namespace Adcirc {
 namespace Geometry {
 
 class Mesh {
-
-public:
+ public:
   explicit Mesh();
-  explicit Mesh(string filename);
+  explicit Mesh(std::string filename);
   explicit Mesh(const char *filename);
 
   ~Mesh();
 
   int read();
 
-  int write(string outputFile);
+  int write(std::string outputFile);
   int write(const char *outputFile);
 
-  string filename() const;
-  void setFilename(const string &filename);
+  std::string filename() const;
+  void setFilename(const std::string &filename);
   void setFilename(const char *filename);
 
-  string meshHeaderString() const;
-  void setMeshHeaderString(const string &meshHeaderString);
+  std::string meshHeaderString() const;
+  void setMeshHeaderString(const std::string &meshHeaderString);
   void setMeshHeaderString(const char *meshHeaderString);
 
   int numNodes() const;
@@ -107,7 +104,7 @@ public:
   int reproject(int epsg);
   bool isLatLon();
 
-  int toShapefile(string outputFile);
+  int toShapefile(std::string outputFile);
   int toShapefile(const char *outputFile);
 
   int buildNodalSearchTree();
@@ -142,7 +139,7 @@ public:
   QKdtree2 *nodalSearchTree() const;
   QKdtree2 *elementalSearchTree() const;
 
-private:
+ private:
   int _readMeshHeader(std::fstream &fid);
   int _readNodes(std::fstream &fid);
   int _readElements(std::fstream &fid);
@@ -150,12 +147,12 @@ private:
   int _readLandBoundaries(std::fstream &fid);
   void _init();
 
-  string m_filename;
-  string m_meshHeaderString;
-  vector<Adcirc::Geometry::Node> m_nodes;
-  vector<Adcirc::Geometry::Element> m_elements;
-  vector<Adcirc::Geometry::Boundary> m_openBoundaries;
-  vector<Adcirc::Geometry::Boundary> m_landBoundaries;
+  std::string m_filename;
+  std::string m_meshHeaderString;
+  std::vector<Adcirc::Geometry::Node> m_nodes;
+  std::vector<Adcirc::Geometry::Element> m_elements;
+  std::vector<Adcirc::Geometry::Boundary> m_openBoundaries;
+  std::vector<Adcirc::Geometry::Boundary> m_landBoundaries;
   std::unordered_map<int, int> m_nodeLookup;
   std::unordered_map<int, int> m_elementLookup;
   int m_numNodes;
@@ -176,4 +173,4 @@ private:
 }
 }
 
-#endif // MESH_H
+#endif  // MESH_H

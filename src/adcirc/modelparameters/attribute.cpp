@@ -56,15 +56,13 @@ void Attribute::setValue(const double &value) {
 void Attribute::setValue(int index, const double &value) {
   assert(index >= 0 && index < this->m_size);
 
-  if (index >= 0 && index < this->m_size)
-    this->m_values[index] = value;
+  if (index >= 0 && index < this->m_size) this->m_values[index] = value;
 }
 
 void Attribute::setValue(const vector<double> &values) {
   assert(values.size() == this->m_size);
 
-  if (values.size() == this->m_size)
-    this->m_values = values;
+  if (values.size() == this->m_size) this->m_values = values;
 }
 
 Adcirc::Geometry::Node *Attribute::node() { return this->m_node; }

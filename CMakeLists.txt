@@ -16,6 +16,10 @@ IF(DEFINED CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "Choose the type of
         build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug
         Release RelWithDebInfo MinSizeRel.")
+ELSEIF(COVERAGE)
+        SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build,
+            options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release
+            RelWithDebInfo MinSizeRel.")
 ELSE()
     SET(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build,
         options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release
@@ -36,6 +40,21 @@ PROJECT(ADCIRCModules)
 IF(UNIX OR CYGWIN)
     ENABLE_TESTING()
 ENDIF(UNIX OR CYGWIN)
+###########################################################################
+
+
+###########################################################################
+# Enable Coverage
+###########################################################################
+#OPTION(COVERAGE "Export Code Coverage report from tests" OFF)
+IF(COVERAGE)
+    SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
+    IF(CMAKE_COMPILER_IS_GNUCXX) 
+        INCLUDE(CodeCoverage)
+        setup_target_for_coverage(adcmoduels_coverage tests coverage)
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -pthread -g -O0 -fprofile-arcs -ftest-coverage")
+    ENDIF(CMAKE_COMPILER_IS_GNUCXX)
+ENDIF(COVERAGE)
 ###########################################################################
 
 

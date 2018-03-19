@@ -17,26 +17,23 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 /**
- * @class AdcircNode
+ * @class Node
  * @author Zachary Cobell
- * @brief The AdcircNode class describes the x, y, z position of a single mesh
+ * @brief The Node class describes the x, y, z position of a single mesh
  * node
  *
  */
 #ifndef NODE_H
 #define NODE_H
 
-#include "adcirc/adcircmodules_global.h"
 #include <string>
-
-using namespace std;
+#include "adcirc/adcircmodules_global.h"
 
 namespace Adcirc {
 namespace Geometry {
 
 class Node {
-
-public:
+ public:
   explicit Node();
   explicit Node(int id, double x, double y, double z);
 
@@ -54,9 +51,9 @@ public:
   int id() const;
   void setId(int id);
 
-  string toString(bool geographicCoordinates);
+  std::string toString(bool geographicCoordinates);
 
-private:
+ private:
   int m_id;
   double m_x;
   double m_y;
@@ -64,4 +61,4 @@ private:
 };
 }
 }
-#endif // NODE_H
+#endif  // NODE_H

@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 #include "adcirc/geometry/mesh.h"
+#include <string>
 #include "adcirc/adcirc_errors.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"
@@ -24,28 +25,26 @@
 #include "qkdtree2.h"
 #include "qproj4.h"
 #include "shapefil.h"
-#include <string>
 
+using namespace std;
 using namespace Adcirc::Geometry;
 
-#define CHECK_FILEREAD_RETURN(ok)                                              \
-  if (!ok)                                                                     \
-    return FileIO::GenericFileReadError;
+#define CHECK_FILEREAD_RETURN(ok) \
+  if (!ok) return FileIO::GenericFileReadError;
 
-#define CHECK_FILEREAD_RETURN_AND_CLOSE(ok)                                    \
-  if (!ok) {                                                                   \
-    fid.close();                                                               \
-    return FileIO::GenericFileReadError;                                       \
+#define CHECK_FILEREAD_RETURN_AND_CLOSE(ok) \
+  if (!ok) {                                \
+    fid.close();                            \
+    return FileIO::GenericFileReadError;    \
   }
 
-#define CHECK_FILEREAD_RETURN_INT(ierr)                                        \
-  if (ierr != FileIO::NoError)                                                 \
-    return ierr;
+#define CHECK_FILEREAD_RETURN_INT(ierr) \
+  if (ierr != FileIO::NoError) return ierr;
 
-#define CHECK_RETURN_AND_CLOSE(ierr)                                           \
-  if (ierr != Adcirc::NoError) {                                               \
-    fid.close();                                                               \
-    return ierr;                                                               \
+#define CHECK_RETURN_AND_CLOSE(ierr) \
+  if (ierr != Adcirc::NoError) {     \
+    fid.close();                     \
+    return ierr;                     \
   }
 
 /**
@@ -98,7 +97,6 @@ void Mesh::_init() {
  * @brief Mesh::~Mesh Destructor
  */
 Mesh::~Mesh() {
-
   this->m_nodes.clear();
   this->m_elements.clear();
   this->m_openBoundaries.clear();
@@ -106,8 +104,7 @@ Mesh::~Mesh() {
   this->m_nodeLookup.clear();
   this->m_elementLookup.clear();
 
-  if (this->m_nodalSearchTree != nullptr)
-    delete this->m_nodalSearchTree;
+  if (this->m_nodalSearchTree != nullptr) delete this->m_nodalSearchTree;
 
   if (this->m_elementalSearchTree != nullptr)
     delete this->m_elementalSearchTree;
@@ -235,7 +232,6 @@ void Mesh::setNumLandBoundaries(int numLandBoundaries) {
  * occured
  */
 int Mesh::read() {
-
   int ierr;
 
   std::fstream fid(this->filename());
@@ -270,7 +266,6 @@ int Mesh::read() {
  * @return error code
  */
 int Mesh::_readMeshHeader(std::fstream &fid) {
-
   bool ok;
   int tempInt;
   string tempLine;
@@ -316,8 +311,7 @@ int Mesh::_readNodes(std::fstream &fid) {
     int ierr = IO::splitStringNodeFormat(tempLine, id, x, y, z);
     CHECK_FILEREAD_RETURN_INT(ierr);
 
-    if (i != id - 1)
-      this->m_nodeOrderingLogical = false;
+    if (i != id - 1) this->m_nodeOrderingLogical = false;
 
     this->m_nodes[i] = Node(id, x, y, z);
   }
@@ -339,7 +333,6 @@ int Mesh::_readNodes(std::fstream &fid) {
  * @return error code
  */
 int Mesh::_readElements(std::fstream &fid) {
-
   int id, e1, e2, e3;
   string tempLine;
 
@@ -361,8 +354,7 @@ int Mesh::_readElements(std::fstream &fid) {
       int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
       CHECK_FILEREAD_RETURN_INT(ierr);
 
-      if (i != id - 1)
-        this->m_elementOrderingLogical = false;
+      if (i != id - 1) this->m_elementOrderingLogical = false;
 
       this->m_elements[i].setElement(id, &this->m_nodes[this->m_nodeLookup[e1]],
                                      &this->m_nodes[this->m_nodeLookup[e2]],
@@ -406,7 +398,6 @@ int Mesh::_readOpenBoundaries(std::fstream &fid) {
   // ok));  CHECK_FILEREAD_RETURN(ok);
 
   for (int i = 0; i < this->numOpenBoundaries(); i++) {
-
     std::getline(fid, tempLine);
     IO::splitString(tempLine, tempList);
 
@@ -416,7 +407,6 @@ int Mesh::_readOpenBoundaries(std::fstream &fid) {
     this->m_openBoundaries[i].setBoundary(-1, length);
 
     for (int j = 0; j < this->m_openBoundaries[i].length(); j++) {
-
       std::getline(fid, tempLine);
       ierr = IO::splitStringBoundary0Format(tempLine, nid);
       CHECK_FILEREAD_RETURN_INT(ierr);
@@ -438,7 +428,6 @@ int Mesh::_readOpenBoundaries(std::fstream &fid) {
  * @return error code
  */
 int Mesh::_readLandBoundaries(std::fstream &fid) {
-
   string tempLine;
   vector<string> tempList;
   int length, n1, n2, code, ierr;
@@ -462,7 +451,6 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
   // CHECK_FILEREAD_RETURN(ok);
 
   for (int i = 0; i < this->numLandBoundaries(); i++) {
-
     std::getline(fid, tempLine);
     IO::splitString(tempLine, tempList);
 
@@ -474,11 +462,9 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
     this->m_landBoundaries[i].setBoundary(code, length);
 
     for (int j = 0; j < this->m_landBoundaries[i].length(); j++) {
-
       std::getline(fid, tempLine);
 
       if (code == 3 || code == 13 || code == 23) {
-
         ierr =
             IO::splitStringBoundary23Format(tempLine, n1, crest, supercritical);
         CHECK_FILEREAD_RETURN_INT(ierr);
@@ -708,7 +694,6 @@ bool Mesh::isLatLon() { return this->m_isLatLon; }
  * @return error code
  */
 int Mesh::reproject(int epsg) {
-
   QProj4 proj;
   vector<Point> inPoint, outPoint;
   inPoint.resize(this->numNodes());
@@ -721,8 +706,7 @@ int Mesh::reproject(int epsg) {
   int ierr = proj.transform(this->projection(), epsg, inPoint, outPoint,
                             this->m_isLatLon);
 
-  if (ierr != QProj4::NoError)
-    return Adcirc::Proj4Error;
+  if (ierr != QProj4::NoError) return Adcirc::Proj4Error;
 
   for (int i = 0; i < this->numNodes(); i++) {
     this->node(i)->setX(outPoint[i].x());
@@ -739,7 +723,6 @@ int Mesh::reproject(int epsg) {
  * @return error code
  */
 int Mesh::toShapefile(string outputFile) {
-
   SHPHandle shpid;
   DBFHandle dbfid;
   SHPObject *shpobj;
@@ -755,7 +738,6 @@ int Mesh::toShapefile(string outputFile) {
   DBFAddField(dbfid, "elevation", FTDouble, 16, 4);
 
   for (i = 0; i < this->numNodes(); i++) {
-
     nodeid = this->node(i)->id();
     longitude = this->node(i)->x();
     latitude = this->node(i)->y();

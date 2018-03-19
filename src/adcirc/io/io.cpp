@@ -17,13 +17,15 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 #include "io.h"
-#include "boost/algorithm/string/split.hpp"
-#include "boost/algorithm/string/trim.hpp"
-#include "parsers.h"
 #include <complex>
 #include <fstream>
 #include <iostream>
 #include <string>
+#include "boost/algorithm/string/split.hpp"
+#include "boost/algorithm/string/trim.hpp"
+#include "parsers.h"
+
+using namespace std;
 
 //...Typedefs for boost parsers used in I/O
 typedef string::const_iterator iterator_type;
@@ -96,7 +98,6 @@ int IO::splitStringElemFormat(string &data, int &id, int &n1, int &n2,
 }
 
 int IO::splitStringBoundary0Format(string &data, int &node1) {
-
   boundary0_parser bp;
   parse::boundary0 b;
   string::const_iterator iter = data.begin();
@@ -113,7 +114,6 @@ int IO::splitStringBoundary0Format(string &data, int &node1) {
 
 int IO::splitStringBoundary23Format(string &data, int &node1, double &crest,
                                     double &supercritical) {
-
   boundary23_parser bp;
   parse::boundary23 b;
   string::const_iterator iter = data.begin();
@@ -133,7 +133,6 @@ int IO::splitStringBoundary23Format(string &data, int &node1, double &crest,
 int IO::splitStringBoundary24Format(string &data, int &node1, int &node2,
                                     double &crest, double &subcritical,
                                     double &supercritical) {
-
   boundary24_parser bp;
   parse::boundary24 b;
   string::const_iterator iter = data.begin();
@@ -156,7 +155,6 @@ int IO::splitStringBoundary25Format(string &data, int &node1, int &node2,
                                     double &crest, double &subcritical,
                                     double &supercritical, double &pipeheight,
                                     double &pipecoef, double &pipediam) {
-
   boundary25_parser bp;
   parse::boundary25 b;
   string::const_iterator iter = data.begin();
@@ -179,7 +177,6 @@ int IO::splitStringBoundary25Format(string &data, int &node1, int &node2,
 }
 
 int IO::splitStringAttribute1Format(string &data, int &node, double &value) {
-
   nodalattribute1_parser nap;
   parse::nodalAttribute1 na;
   string::const_iterator iter = data.begin();
@@ -197,7 +194,6 @@ int IO::splitStringAttribute1Format(string &data, int &node, double &value) {
 
 int IO::splitStringAttribute12Format(string &data, int &node,
                                      vector<double> &values) {
-
   nodalattribute12_parser nap;
   parse::nodalAttribute12 na;
   string::const_iterator iter = data.begin();

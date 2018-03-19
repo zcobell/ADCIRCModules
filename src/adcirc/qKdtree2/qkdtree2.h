@@ -44,8 +44,7 @@ class kdtree2;
 class Point;
 
 class QKdtree2 {
-
-public:
+ public:
   enum _errors { NoError, SizeMismatch };
 
   explicit QKdtree2();
@@ -65,7 +64,7 @@ public:
 
   bool isInitialized() const;
 
-private:
+ private:
   /// Variable holding the total number of points in the search tree
   size_t m_numDataPoints;
 
@@ -76,4 +75,4 @@ private:
   kdtree2 *m_tree;
 };
 
-#endif // QKDTREE2_H
+#endif  // QKDTREE2_H

@@ -19,6 +19,7 @@
 #include "adcirc/geometry/boundary.h"
 #include "boost/format.hpp"
 
+using namespace std;
 using namespace Adcirc::Geometry;
 
 /**
@@ -81,7 +82,6 @@ int Boundary::length() const { return this->boundaryLength(); }
  */
 void Boundary::setBoundaryLength(int boundaryLength) {
   if (this->boundaryLength() != boundaryLength) {
-
     this->m_boundaryLength = boundaryLength;
     this->m_node1.resize(this->boundaryLength());
 
@@ -302,8 +302,7 @@ void Boundary::setPipeCoefficient(int index, double pipeCoefficient) {
  * @return pointer to an Node object
  */
 Node *Boundary::node1(int index) const {
-  if (index < this->boundaryLength() || index >= 0)
-    return this->m_node1[index];
+  if (index < this->boundaryLength() || index >= 0) return this->m_node1[index];
   return nullptr;
 }
 

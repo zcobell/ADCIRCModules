@@ -33,35 +33,26 @@
 #define QPROJ4_H
 
 #include <string>
-#include <vector>
 #include <unordered_map>
-#include <string>
+#include <vector>
 
 class Point;
 
-using namespace std;
-
 class QProj4 {
-
-public:
-
-  enum _errors {
-    NoError,
-    NoSuchProjection,
-    Proj4InternalError
-  };
+ public:
+  enum _errors { NoError, NoSuchProjection, Proj4InternalError };
 
   explicit QProj4();
 
   int transform(int inputEPSG, int outputEPSG, Point &input, Point &output,
                 bool &isLatLon);
 
-  int transform(int inputEPSG, int outputEPSG, vector<Point> &input,
-                vector<Point> &output, bool &isLatLon);
+  int transform(int inputEPSG, int outputEPSG, std::vector<Point> &input,
+                std::vector<Point> &output, bool &isLatLon);
 
-private:
+ private:
   void _initialize();
-  unordered_map<int,string> m_epsgMapping;
+  std::unordered_map<int, std::string> m_epsgMapping;
 };
 
-#endif // QPROJ4_H
+#endif  // QPROJ4_H

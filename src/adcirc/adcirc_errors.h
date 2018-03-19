@@ -40,4 +40,4 @@ namespace ModelParameters {
 enum _modelParamErrorCodes { MeshMismatch = 0x0400001 };
 }
 }
-#endif // ADCIRCERRORS_H
+#endif  // ADCIRCERRORS_H

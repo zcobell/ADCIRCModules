@@ -18,10 +18,10 @@
 //
 //-----------------------------------------------------------------------*/
 #include "qkdtree2.h"
-#include "point.h"
 #include "boost/array.hpp"
 #include "boost/multi_array.hpp"
 #include "kdtree2.hpp"
+#include "point.h"
 
 //-----------------------------------------------------------------------------------------//
 // Constructor function. Initializes the QKdtree2 class
@@ -42,8 +42,7 @@ QKdtree2::QKdtree2() {
 //-----------------------------------------------------------------------------------------//
 
 QKdtree2::~QKdtree2() {
-  if (this->m_tree != nullptr)
-    delete this->m_tree;
+  if (this->m_tree != nullptr) delete this->m_tree;
 }
 
 //-----------------------------------------------------------------------------------------//
@@ -98,8 +97,7 @@ int QKdtree2::build(vector<double> &x, vector<double> &y) {
   int i;
   typedef boost::multi_array<float, 2> array2d;
 
-  if (x.size() != y.size())
-    return SizeMismatch;
+  if (x.size() != y.size()) return SizeMismatch;
 
   this->m_numDataPoints = x.size();
 
@@ -200,8 +198,7 @@ vector<int> QKdtree2::findXNearest(Point pointLocation, int nn) {
   vector<float> query(2);
   vector<int> indicies;
 
-  if (nn > this->m_numDataPoints)
-    nn = static_cast<int>(this->m_numDataPoints);
+  if (nn > this->m_numDataPoints) nn = static_cast<int>(this->m_numDataPoints);
 
   query[0] = static_cast<float>(pointLocation.x());
   query[1] = static_cast<float>(pointLocation.y());
