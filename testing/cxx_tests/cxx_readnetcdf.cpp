@@ -16,36 +16,11 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#ifndef ADCIRCERRORS_H
-#define ADCIRCERRORS_H
-namespace Adcirc {
+#include "adcirc.h"
+#include <iostream>
 
-enum _genericErrorCodes {
-  NoError = 0x0000000,
-  MissingFile = 0x0000001,
-  FileOpenError = 0x0000002,
-  FileReadError = 0x0000003,
-  Proj4Error = 0x0000004,
-  KdtreeError = 0x0000005
-};
-
-namespace Geometry {
-enum _GeometryErrorCodes {
-  InvalidFormat = 0x0100001,
-  UnknownError = 0x0100002
-};
+int main(int argc, char *argv[]) {
+    Adcirc::Output::OutputFile *output = new Adcirc::Output::OutputFile("test_files/maxele.63.nc");
+    output->open();
+    delete output;
 }
-
-namespace ModelParameters {
-enum _modelParamErrorCodes { MeshMismatch = 0x0400001 };
-}
-
-namespace Output {
-
-const int NextOutputSnap = -9999;
-const double DefaultOutputValue = -99999.0;
-
-enum _fileTypes { ASCIIFull, ASCIISparse, Netcdf3, Netcdf4, Xdmf, Unknown };
-}
-}
-#endif  // ADCIRCERRORS_H

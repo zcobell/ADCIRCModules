@@ -16,52 +16,52 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#ifndef ATTRIBUTE_H
-#define ATTRIBUTE_H
+#ifndef OUTPUTRECORD_H
+#define OUTPUTRECORD_H
 
 #include <vector>
+#include "adcirc/adcirc_errors.h"
 #include "adcirc/geometry/node.h"
-#include "adcirc/modelparameters/attribute.h"
 
 namespace Adcirc {
-namespace ModelParameters {
 
-class Attribute {
+namespace Output {
+
+class OutputRecord {
  public:
-  explicit Attribute();
+  explicit OutputRecord(int numNodes, bool isVector);
 
-  explicit Attribute(int size);
+  void setU(int index, double value);
+  void setV(int index, double value);
+  void set(int index, double value);
+  void set(int index, double value_u, double value_v);
 
-  void resize(int size);
+  double value(int index);
+  double u(int index);
+  double v(int index);
+  double direction(int index);
 
-  double value(int index) const;
-  std::vector<double> values() const;
+  long long iteration() const;
+  void setIteration(long long iteration);
 
-  void setValue(const double &value);
-  void setValue(int index, const double &value);
-  void setValue(const std::vector<double> &values);
+  double time() const;
+  void setTime(double time);
 
-  Adcirc::Geometry::Node *node();
-  void setNode(Adcirc::Geometry::Node *node);
+  int numNodes() const;
+  void setNumNodes(int numNodes);
 
-  int size() const;
-
-  int id() const;
-  void setId(int id);
+  bool isVector() const;
+  void setIsVector(bool isVector);
 
  private:
-  /// Number of values in this dataset
-  int m_size;
-
-  /// ID number in the Adcirc Nodal Attributes file
-  int m_id;
-
-  /// Value(s) for nodal parameter at this node
-  std::vector<double> m_values;
-
-  /// Node that this value applies to
-  Adcirc::Geometry::Node *m_node;
+  std::vector<double> m_u;
+  std::vector<double> m_v;
+  long long m_iteration;
+  double m_time;
+  int m_numNodes;
+  bool m_isVector;
 };
 }
 }
-#endif  // ATTRIBUTE_H
+
+#endif  // OUTPUTRECORD_H

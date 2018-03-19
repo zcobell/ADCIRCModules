@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "attributemetadata.h"
+#include "adcirc/modelparameters/attributemetadata.h"
 #include <assert.h>
 
 using namespace Adcirc::ModelParameters;

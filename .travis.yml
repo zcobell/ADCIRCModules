@@ -5,7 +5,7 @@ compiler: gcc
 
 before_install:
       - sudo apt-get update  -qq
-      - sudo apt-get install -qq libsqlite3-dev libnetcdf-dev python python-dev swig tcl8.5-dev lcov
+      - sudo apt-get install -qq libsqlite3-dev libnetcdf-dev python python-dev swig tcl8.5-dev lcov netcdf-bin
 
 after_success:
   # Creating report

@@ -86,6 +86,8 @@ SOURCES += \
     ../../adcirc/modelparameters/attribute.cpp \
     ../../adcirc/modelparameters/attributemetadata.cpp \
     ../../adcirc/modelparameters/nodalattributes.cpp \
+    ../../adcirc/output/outputfile.cpp \
+    ../../adcirc/output/outputrecord.cpp \
     ../../adcirc/config.cpp
 
 HEADERS += \
@@ -102,6 +104,8 @@ HEADERS += \
     ../../adcirc/modelparameters/attribute.h \
     ../../adcirc/modelparameters/attributemetadata.h \
     ../../adcirc/modelparameters/nodalattributes.h \
+    ../../adcirc/output/outputfile.h \
+    ../../adcirc/output/outputrecord.h \
     ../../adcirc/adcirc_errors.h \
     ../../adcirc/config.h
 

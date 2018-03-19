@@ -27,5 +27,6 @@
 #include "adcirc/config.h"
 #include "adcirc/geometry/mesh.h"
 #include "adcirc/modelparameters/nodalattributes.h"
+#include "adcirc/output/outputfile.h"
 
 #endif  // ADCIRC_H
