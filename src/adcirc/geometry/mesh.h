@@ -66,22 +66,18 @@ class Mesh {
  public:
   explicit Mesh();
   explicit Mesh(std::string filename);
-  explicit Mesh(const char *filename);
 
   ~Mesh();
 
   int read();
 
   int write(std::string outputFile);
-  int write(const char *outputFile);
 
   std::string filename() const;
   void setFilename(const std::string &filename);
-  void setFilename(const char *filename);
 
   std::string meshHeaderString() const;
   void setMeshHeaderString(const std::string &meshHeaderString);
-  void setMeshHeaderString(const char *meshHeaderString);
 
   int numNodes() const;
   void setNumNodes(int numNodes);
@@ -105,7 +101,6 @@ class Mesh {
   bool isLatLon();
 
   int toShapefile(std::string outputFile);
-  int toShapefile(const char *outputFile);
 
   int buildNodalSearchTree();
   int buildElementalSearchTree();

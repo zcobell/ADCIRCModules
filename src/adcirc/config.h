@@ -19,9 +19,11 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <string>
+
 namespace Adcirc {
 
-const char *version();
+std::string version();
 
 }  // namespace Adcirc
 
