@@ -23,8 +23,10 @@
 #define GIT_VERSION "unknown"
 #endif
 
+using namespace std;
+
 namespace Adcirc {
 
-const char *version() { return GIT_VERSION; }
+string version() { return GIT_VERSION; }
 
 }

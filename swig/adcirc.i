@@ -41,6 +41,7 @@
 #include "adcirc/point/point.h"
 %}
 
+%include <std_string.i>
 %include "adcirc/config.h"
 %include "adcirc/geometry/mesh.h"
 %include "adcirc/geometry/node.h"

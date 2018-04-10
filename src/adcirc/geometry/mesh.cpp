@@ -64,17 +64,6 @@ Mesh::Mesh(string filename) {
 }
 
 /**
- * @overload Mesh::Mesh
- * @brief Default constructor with filename as a char
- * (for python)
- * @param filename name of the mesh to read
- */
-Mesh::Mesh(const char *filename) {
-  this->_init();
-  this->setFilename(filename);
-}
-
-/**
  * @name Mesh::_init
  * @brief Initialization routine called by all constructors
  */
@@ -125,15 +114,6 @@ string Mesh::filename() const { return this->m_filename; }
 void Mesh::setFilename(const string &filename) { this->m_filename = filename; }
 
 /**
- * @overload Mesh::setFilename
- * @brief Sets the name of the mesh to be read
- * @param filename Name of the mesh
- */
-void Mesh::setFilename(const char *filename) {
-  this->m_filename = string(filename);
-}
-
-/**
  * @name Mesh::meshHeaderString
  * @brief Returns the mesh header from the processed mesh
  * @return mesh header
@@ -147,15 +127,6 @@ string Mesh::meshHeaderString() const { return this->m_meshHeaderString; }
  */
 void Mesh::setMeshHeaderString(const string &meshHeaderString) {
   this->m_meshHeaderString = meshHeaderString;
-}
-
-/**
- * @overload Mesh::setMeshHeaderString
- * @brief Sets the header for the mesh
- * @param mesh header
- */
-void Mesh::setMeshHeaderString(const char *meshHeaderString) {
-  this->m_meshHeaderString = string(meshHeaderString);
 }
 
 /**
@@ -761,18 +732,6 @@ int Mesh::toShapefile(string outputFile) {
 }
 
 /**
- * @overload Mesh::toShapefile
- * @brief Writes the mesh nodes into ESRI shapefile format
- * @param outputFile output file with .shp extension
- * @return error code
- */
-int Mesh::toShapefile(const char *outputFile) {
-  string filename = string(outputFile);
-  int ierr = this->toShapefile(filename);
-  return ierr;
-}
-
-/**
  * @name Mesh::buildNodalSearchTree
  * @brief Builds a kd-tree object with the mesh nodes as the search locations
  * @return error code
@@ -1003,14 +962,6 @@ int Mesh::write(string filename) {
 
   return Adcirc::NoError;
 }
-
-/**
- * @overload Mesh::write
- * @brief Writes an Mesh object to disk in ASCII format
- * @param filename name of the output file to write
- * @return error code
- */
-int Mesh::write(const char *filename) { return this->write(string(filename)); }
 
 /**
  * @name Mesh::nodeOrderingIsLogical

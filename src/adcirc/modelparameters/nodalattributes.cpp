@@ -54,18 +54,6 @@ NodalAttributes::NodalAttributes(string filename,
   this->m_filename = filename;
 }
 
-NodalAttributes::NodalAttributes(const char *filename,
-                                 Adcirc::Geometry::Mesh *mesh) {
-  this->m_mesh = mesh;
-  if (this->m_mesh != nullptr) this->m_numNodes = mesh->numNodes();
-  this->m_numParameters = 0;
-  this->m_filename = string(filename);
-}
-
-void NodalAttributes::setFilename(const char *filename) {
-  this->m_filename = string(filename);
-}
-
 void NodalAttributes::setFilename(string filename) {
   this->m_filename = filename;
 }
@@ -77,10 +65,6 @@ void NodalAttributes::setMesh(Adcirc::Geometry::Mesh *mesh) {
 }
 
 Adcirc::Geometry::Mesh *NodalAttributes::mesh() { return this->m_mesh; }
-
-int NodalAttributes::locateAttribute(const char *attributeName) {
-  return this->locateAttribute(string(attributeName));
-}
 
 int NodalAttributes::locateAttribute(string attributeName) {
   assert(this->m_attributeLocations.find(attributeName) !=
@@ -340,14 +324,6 @@ Attribute *NodalAttributes::attribute(string parameter, int node) {
   return this->attribute(index, node);
 }
 
-Attribute *NodalAttributes::attribute(const char *parameter, int node) {
-  return this->attribute(string(parameter), node);
-}
-
-int NodalAttributes::write(const char *filename) {
-  return this->write(string(filename));
-}
-
 int NodalAttributes::write(string outputFilename) { return Adcirc::NoError; }
 
 string NodalAttributes::attributeNames(int index) {
@@ -358,6 +334,3 @@ string NodalAttributes::attributeNames(int index) {
     return string("Request out of bounds.");
 }
 
-const char *NodalAttributes::attributeNamesChar(int index) {
-  return this->attributeNames(index).c_str();
-}
