@@ -61,8 +61,6 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classQProj4-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">QProj4 Class Reference</div>  </div>
@@ -73,13 +71,6 @@ $(function() {
  <a href="classQProj4.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="qproj4_8h_source.html">qproj4.h</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for QProj4:</div>
-<div class="dyncontent">
-<div class="center"><img src="classQProj4__coll__graph.png" border="0" usemap="#QProj4_coll__map" alt="Collaboration graph"/></div>
-<map name="QProj4_coll__map" id="QProj4_coll__map">
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -99,16 +90,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a47a00a765ede21b8935b0ffd0e52afba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3c8bec6b01d03cc9fb8a2a0e24ef196"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQProj4.html#af3c8bec6b01d03cc9fb8a2a0e24ef196">transform</a> (int inputEPSG, int outputEPSG, std::vector&lt; <a class="el" href="classPoint.html">Point</a> &gt; &amp;input, std::vector&lt; <a class="el" href="classPoint.html">Point</a> &gt; &amp;output, bool &amp;isLatLon)</td></tr>
 <tr class="separator:af3c8bec6b01d03cc9fb8a2a0e24ef196"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a670b58d1e88f420dc8e1a22a092b97ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQProj4.html#a670b58d1e88f420dc8e1a22a092b97ce">_initialize</a> ()</td></tr>
-<tr class="separator:a670b58d1e88f420dc8e1a22a092b97ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a6d773dd0264f1381c99ee6e2b28c5648"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; int, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQProj4.html#a6d773dd0264f1381c99ee6e2b28c5648">m_epsgMapping</a></td></tr>
-<tr class="separator:a6d773dd0264f1381c99ee6e2b28c5648"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This function serves as the C++ interface to the C library PROJ4 (which is compiled into this code)</p>
@@ -168,31 +149,6 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a670b58d1e88f420dc8e1a22a092b97ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a670b58d1e88f420dc8e1a22a092b97ce">&#9670;&nbsp;</a></span>_initialize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void QProj4::_initialize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a47a00a765ede21b8935b0ffd0e52afba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a47a00a765ede21b8935b0ffd0e52afba">&#9670;&nbsp;</a></span>transform() <span class="overload">[1/2]</span></h2>
 
@@ -292,29 +248,6 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a6d773dd0264f1381c99ee6e2b28c5648"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d773dd0264f1381c99ee6e2b28c5648">&#9670;&nbsp;</a></span>m_epsgMapping</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unordered_map&lt;int, std::string&gt; QProj4::m_epsgMapping</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>

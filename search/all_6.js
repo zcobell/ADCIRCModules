@@ -9,6 +9,5 @@ var searchData=
   ['filereaderrornode',['FileReadErrorNode',['../namespaceFileIO.html#a60726b268bdef0cf614fa2d491a43fafa1b1042c89bdc18cdff0601914dcde8a5',1,'FileIO']]],
   ['filetype',['filetype',['../classAdcirc_1_1Output_1_1OutputFile.html#a531aae090ffa1a69236d87e158c4d7b2',1,'Adcirc::Output::OutputFile']]],
   ['findnearest',['findNearest',['../classQKdtree2.html#ace801cbf489f97427418d0158411017e',1,'QKdtree2::findNearest(Point pointLocation)'],['../classQKdtree2.html#a942d8370449e1ad2736e065b842c3c27',1,'QKdtree2::findNearest(double x, double y)']]],
-  ['findnetcdfvarid',['findNetcdfVarId',['../classAdcirc_1_1Output_1_1OutputFile.html#a10d4ba4bf47fefde225102a5e6800c32',1,'Adcirc::Output::OutputFile']]],
   ['findxnearest',['findXNearest',['../classQKdtree2.html#a844fdf95d92c016c0add78eb11d09c4c',1,'QKdtree2::findXNearest(Point pointLocation, int nn)'],['../classQKdtree2.html#a0c1b7a71e94fe86f830fbdb21a6de9a7',1,'QKdtree2::findXNearest(double x, double y, int nn)']]]
 ];
