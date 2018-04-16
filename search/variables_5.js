@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['hash',['hash',['../classadcirc__boundary.html#ae2213443de1eae67aef5e16f8da1d213',1,'adcirc_boundary::hash()'],['../classadcirc__element.html#a1f809cc4e41e84d32e81ce5986c0fcc0',1,'adcirc_element::hash()'],['../classadcirc__mesh.html#a22a51f0891ccd9fbd235e24e21c7868d',1,'adcirc_mesh::hash()']]]
+  ['pipecoef',['pipecoef',['../structparse_1_1boundary25.html#a24c4622742a35b5bf989571cfc9d57a8',1,'parse::boundary25']]],
+  ['pipediam',['pipediam',['../structparse_1_1boundary25.html#a9832cfd6ff8b2e2f93014907ec8ed423',1,'parse::boundary25']]],
+  ['pipeheight',['pipeheight',['../structparse_1_1boundary25.html#ad8e7ba8211cb0ad6e86c562d05dd660f',1,'parse::boundary25']]]
 ];

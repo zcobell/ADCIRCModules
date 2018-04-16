@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['openbc',['openBC',['../classadcirc__mesh.html#a5c9785298256d041fa863ccc3efd229c',1,'adcirc_mesh']]],
-  ['outputdata',['outputData',['../classadcirc__global__output.html#aec320fb44720b59943d5f30328c2b3bb',1,'adcirc_global_output']]]
+  ['z',['z',['../structparse_1_1node.html#aa41a1d9359e9d655079727458816fc81',1,'parse::node']]]
 ];
