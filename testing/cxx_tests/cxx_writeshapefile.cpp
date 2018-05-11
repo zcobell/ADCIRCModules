@@ -28,7 +28,17 @@ int main(int argc, char *argv[]) {
       return ierr;
   }
 
-  ierr = mesh->toShapefile("test_files/ms-riv.shp");
+  ierr = mesh->toNodeShapefile("test_files/ms-riv-nodes.shp");
+  if(ierr!=Adcirc::NoError){
+      delete mesh;
+      return ierr;
+  }
+  else {
+      delete mesh;
+      return 0;
+  }
+  
+  ierr = mesh->toConnectivityShapefile("test_files/ms-riv-elements.shp");
   if(ierr!=Adcirc::NoError){
       delete mesh;
       return ierr;

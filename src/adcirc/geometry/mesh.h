@@ -51,6 +51,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include "adcirc/adcirc_errors.h"
 #include "adcirc/adcircmodules_global.h"
 #include "adcirc/geometry/boundary.h"
 #include "adcirc/geometry/element.h"
@@ -100,7 +101,8 @@ class Mesh {
   int reproject(int epsg);
   bool isLatLon();
 
-  int toShapefile(std::string outputFile);
+  int toNodeShapefile(std::string outputFile);
+  int toConnectivityShapefile(std::string outputFile);
 
   int buildNodalSearchTree();
   int buildElementalSearchTree();
@@ -165,7 +167,7 @@ class Mesh {
   QKdtree2 *m_nodalSearchTree;
   QKdtree2 *m_elementalSearchTree;
 };
-}
-}
+}  // namespace Geometry
+}  // namespace Adcirc
 
 #endif  // MESH_H
