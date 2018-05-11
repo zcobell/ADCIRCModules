@@ -46,9 +46,9 @@ class OutputFile {
 
   bool isOpen();
 
-  bool read(OutputRecord &data, int snap = Adcirc::Output::NextOutputSnap);
+  int read(OutputRecord &data, int snap = Adcirc::Output::NextOutputSnap);
 
-  bool write(OutputRecord &data, int snap = Adcirc::Output::NextOutputSnap);
+  int write(OutputRecord &data, int snap = Adcirc::Output::NextOutputSnap);
 
   int filetype() const;
 
@@ -58,14 +58,30 @@ class OutputFile {
 
   OutputRecord *data(int snap, bool &ok);
 
+  int getNumSnaps() const;
+  void setNumSnaps(int numSnaps);
+
+  int getNumNodes() const;
+  void setNumNodes(int numNodes);
+
+  double getDt() const;
+  void setDt(double dt);
+
+  int getDit() const;
+  void setDit(int dit);
+
  private:
   // variables
   bool m_open;
   int m_filetype;
   int m_currentSnap;
+  int m_numSnaps;
+  int m_numNodes;
+  double m_dt;
+  int m_dit;
   std::fstream m_fid;
   std::string m_filename;
-  std::vector<OutputRecord> m_records;
+  std::vector<OutputRecord *> m_records;
   std::unordered_map<int, OutputRecord *> m_recordMap;
   std::string m_header;
 
@@ -78,26 +94,31 @@ class OutputFile {
 
   // functions
   int getFiletype();
-  bool findNetcdfVarId();
-  bool checkFiletypeAsciiFull();
-  bool checkFiletypeAsciiSparse();
-  bool checkFiletypeNetcdf3();
-  bool checkFiletypeNetcdf4();
-  bool checkFiletypeXdmf();
-  bool inquireNetcdfFormat(int &format);
+  int findNetcdfVarId();
 
-  bool openAscii();
-  bool openNetcdf();
-  bool openXdmf();
+  static bool checkFiletypeAsciiFull(std::string filename);
+  static bool checkFiletypeAsciiSparse(std::string filename);
+  static bool checkFiletypeNetcdf3(std::string filename);
+  static bool checkFiletypeNetcdf4(std::string filename);
+  static bool checkFiletypeXdmf(std::string filename);
+  static int inquireNetcdfFormat(std::string filename, int &format);
 
-  bool closeAscii();
-  bool closeNetcdf();
-  bool closeXdmf();
+  int openAscii();
+  int openNetcdf();
+  int openXdmf();
 
-  bool readAsciiHeader();
-  bool readNetcdfHeader();
+  int closeAscii();
+  int closeNetcdf();
+  int closeXdmf();
+
+  int readAsciiHeader();
+  int readNetcdfHeader();
+
+  OutputRecord *readAsciiRecord();
+  OutputRecord *readSparseAsciiOutputRecord();
+  OutputRecord *readFullAsciiOutputRecord();
 };
-}
-}
+}  // namespace Output
+}  // namespace Adcirc
 
 #endif  // OUTPUTFILE_H

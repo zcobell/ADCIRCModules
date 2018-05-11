@@ -36,6 +36,11 @@ class OutputRecord {
   void set(int index, double value);
   void set(int index, double value_u, double value_v);
 
+  void setAllU(std::vector<double> values);
+  void setAllV(std::vector<double> values);
+  void setAll(std::vector<double> values);
+  void setAll(std::vector<double> values_u, std::vector<double> values_v);
+
   double value(int index);
   double u(int index);
   double v(int index);
@@ -53,15 +58,19 @@ class OutputRecord {
   bool isVector() const;
   void setIsVector(bool isVector);
 
- private:
+  double defaultValue() const;
+  void setDefaultValue(double defaultValue);
+
+private:
   std::vector<double> m_u;
   std::vector<double> m_v;
   long long m_iteration;
   double m_time;
   int m_numNodes;
   bool m_isVector;
+  double m_defaultValue;
 };
-}
-}
+}  // namespace Output
+}  // namespace Adcirc
 
 #endif  // OUTPUTRECORD_H

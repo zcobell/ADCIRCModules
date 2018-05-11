@@ -29,6 +29,7 @@ OutputRecord::OutputRecord(int numNodes, bool isVector) {
   this->m_time = 0;
   this->m_iteration = 0;
   this->m_numNodes = numNodes;
+  this->m_defaultValue = Adcirc::Output::DefaultOutputValue;
 
   if (this->isVector()) {
     this->m_u.resize(this->numNodes());
@@ -55,6 +56,12 @@ void OutputRecord::setNumNodes(int numNodes) { this->m_numNodes = numNodes; }
 bool OutputRecord::isVector() const { return this->m_isVector; }
 
 void OutputRecord::setIsVector(bool isVector) { this->m_isVector = isVector; }
+
+double OutputRecord::defaultValue() const { return m_defaultValue; }
+
+void OutputRecord::setDefaultValue(double defaultValue) {
+  m_defaultValue = defaultValue;
+}
 
 void OutputRecord::setU(int index, double value) {
   assert(this->isVector());
@@ -108,4 +115,45 @@ double OutputRecord::v(int index) {
   assert(this->isVector());
   assert(index > 0 && index < this->numNodes());
   return this->m_v[index];
+}
+
+void OutputRecord::setAllU(std::vector<double> values) {
+  assert(this->isVector());
+  assert(this->m_numNodes == values.size());
+  if (!this->isVector()) return;
+  if (values.size() != this->m_numNodes) return;
+  this->m_u = values;
+  return;
+}
+
+void OutputRecord::setAllV(std::vector<double> values) {
+  assert(this->isVector());
+  assert(this->m_numNodes == values.size());
+  if (!this->isVector()) return;
+  if (values.size() != this->m_numNodes) return;
+  this->m_v = values;
+  return;
+}
+
+void OutputRecord::setAll(std::vector<double> values_u,
+                          std::vector<double> values_v) {
+  assert(this->isVector());
+  assert(this->m_numNodes == values_u.size());
+  assert(this->m_numNodes == values_v.size());
+  if (!this->isVector()) return;
+  if (values_u.size() != this->m_numNodes) return;
+  if (values_v.size() != this->m_numNodes) return;
+  this->m_u = values_u;
+  this->m_v = values_v;
+  return;
+}
+
+void OutputRecord::setAll(std::vector<double> values) {
+  assert(!this->isVector());
+  assert(this->m_numNodes == values.size());
+  if (!this->isVector()) return;
+  if (values.size() != this->m_numNodes)
+    ;
+  this->m_u = values;
+  return;
 }

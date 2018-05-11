@@ -35,7 +35,7 @@ win32 {
     TARGET_EXT = .dll
 
     #...Include the netCDF header
-    INCLUDEPATH += $$PWD/../thirdparty/netcdf/include
+    INCLUDEPATH += $$PWD/../../../thirdparty/netcdf/include
 
     #...Check for Visual C++ Compilers
     *msvc*{
