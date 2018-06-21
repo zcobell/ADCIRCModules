@@ -128,6 +128,8 @@ IF(SWIG_FOUND)
                          OUTPUT_VARIABLE temp_PYTHON_SITE_DIRECTORY OUTPUT_STRIP_TRAILING_WHITESPACE)
         SET( PYTHON_INSTALL_DIRECTORY ${temp_PYTHON_SITE_DIRECTORY} CACHE STRING "Location where Python libraries will be installed" )
         MARK_AS_ADVANCED( CLEAR PYTHON_EXECUTABLE )
+    ELSE(PythonLibs_FOUND)
+        SET( PYTHON_INSTALL_DIRECTORY "PYTHON_INSTALL_DIRECTORY-NOTFOUND" CACHE STRING "Location where Python libraries will be installed" )
     ENDIF(PythonLibs_FOUND)
     
     FIND_PACKAGE(PerlLibs)
