@@ -340,7 +340,7 @@ TARGET_LINK_LIBRARIES( adcircmodules proj4 point kdtree2 shapelib )
 ###########################################################################
 #  PyAdcirc Library
 ###########################################################################
-IF(PythonLibs_FOUND AND SWIG_FOUND)
+IF(NOT PYTHON_LIBRARY STREQUAL "" AND SWIG_FOUND)
     
     IF(WIN32)
 
@@ -410,7 +410,7 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
             TARGET_COMPILE_DEFINITIONS(PyAdcirc PRIVATE "MS_WIN32")
         ENDIF()
     ENDIF(WIN32)
-ENDIF(PythonLibs_FOUND AND SWIG_FOUND)
+ENDIF()
 ###########################################################################
 
 ###########################################################################
