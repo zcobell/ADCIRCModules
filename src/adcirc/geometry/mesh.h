@@ -79,21 +79,21 @@ class Mesh {
   std::string meshHeaderString() const;
   void setMeshHeaderString(const std::string &meshHeaderString);
 
-  int numNodes() const;
-  void setNumNodes(int numNodes);
+  size_t numNodes() const;
+  void setNumNodes(size_t numNodes);
 
-  int numElements() const;
-  void setNumElements(int numElements);
+  size_t numElements() const;
+  void setNumElements(size_t numElements);
 
-  int numOpenBoundaries() const;
-  void setNumOpenBoundaries(int numOpenBoundaries);
+  size_t numOpenBoundaries() const;
+  void setNumOpenBoundaries(size_t numOpenBoundaries);
 
-  int numLandBoundaries() const;
-  void setNumLandBoundaries(int numLandBoundaries);
+  size_t numLandBoundaries() const;
+  void setNumLandBoundaries(size_t numLandBoundaries);
 
-  int totalOpenBoundaryNodes();
+  size_t totalOpenBoundaryNodes();
 
-  int totalLandBoundaryNodes();
+  size_t totalLandBoundaryNodes();
 
   int projection();
   void defineProjection(int epsg, bool isLatLon);
@@ -111,25 +111,25 @@ class Mesh {
   bool nodeOrderingIsLogical();
   bool elementOrderingIsLogical();
 
-  Adcirc::Geometry::Node *node(int index);
-  Adcirc::Geometry::Element *element(int index);
-  Adcirc::Geometry::Boundary *openBoundary(int index);
-  Adcirc::Geometry::Boundary *landBoundary(int index);
+  Adcirc::Geometry::Node *node(size_t index);
+  Adcirc::Geometry::Element *element(size_t index);
+  Adcirc::Geometry::Boundary *openBoundary(size_t index);
+  Adcirc::Geometry::Boundary *landBoundary(size_t index);
 
-  Adcirc::Geometry::Node *nodeById(int id);
-  Adcirc::Geometry::Element *elementById(int id);
+  Adcirc::Geometry::Node *nodeById(size_t id);
+  Adcirc::Geometry::Element *elementById(size_t id);
 
-  int nodeIndexById(int id);
-  int elementIndexById(int id);
+  size_t nodeIndexById(size_t id);
+  size_t elementIndexById(size_t id);
 
-  void resizeMesh(int numNodes, int numElements, int numOpenBoundaries,
-                  int numLandBoundaries);
+  void resizeMesh(size_t numNodes, size_t numElements, size_t numOpenBoundaries,
+                  size_t numLandBoundaries);
 
-  void addNode(int index, Adcirc::Geometry::Node &node);
-  void deleteNode(int index);
+  void addNode(size_t index, Adcirc::Geometry::Node &node);
+  void deleteNode(size_t index);
 
-  void addElement(int index, Adcirc::Geometry::Element &element);
-  void deleteElement(int index);
+  void addElement(size_t index, Adcirc::Geometry::Element &element);
+  void deleteElement(size_t index);
 
   QKdtree2 *nodalSearchTree() const;
   QKdtree2 *elementalSearchTree() const;
@@ -148,14 +148,14 @@ class Mesh {
   std::vector<Adcirc::Geometry::Element> m_elements;
   std::vector<Adcirc::Geometry::Boundary> m_openBoundaries;
   std::vector<Adcirc::Geometry::Boundary> m_landBoundaries;
-  std::unordered_map<int, int> m_nodeLookup;
-  std::unordered_map<int, int> m_elementLookup;
-  int m_numNodes;
-  int m_numElements;
-  int m_numOpenBoundaries;
-  int m_numLandBoundaries;
-  int m_totalOpenBoundaryNodes;
-  int m_totalLandBoundaryNodes;
+  std::unordered_map<size_t, size_t> m_nodeLookup;
+  std::unordered_map<size_t, size_t> m_elementLookup;
+  size_t m_numNodes;
+  size_t m_numElements;
+  size_t m_numOpenBoundaries;
+  size_t m_numLandBoundaries;
+  size_t m_totalOpenBoundaryNodes;
+  size_t m_totalLandBoundaryNodes;
   int m_epsg;
   bool m_isLatLon;
 

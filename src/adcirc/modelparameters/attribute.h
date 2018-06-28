@@ -30,31 +30,31 @@ class Attribute {
  public:
   explicit Attribute();
 
-  explicit Attribute(int size);
+  explicit Attribute(size_t size);
 
-  void resize(int size);
+  void resize(size_t size);
 
-  double value(int index) const;
+  double value(size_t index) const;
   std::vector<double> values() const;
 
   void setValue(const double &value);
-  void setValue(int index, const double &value);
+  void setValue(size_t index, const double &value);
   void setValue(const std::vector<double> &values);
 
   Adcirc::Geometry::Node *node();
   void setNode(Adcirc::Geometry::Node *node);
 
-  int size() const;
+  size_t size() const;
 
-  int id() const;
-  void setId(int id);
+  size_t id() const;
+  void setId(size_t id);
 
  private:
   /// Number of values in this dataset
-  int m_size;
+  size_t m_size;
 
   /// ID number in the Adcirc Nodal Attributes file
-  int m_id;
+  size_t m_id;
 
   /// Value(s) for nodal parameter at this node
   std::vector<double> m_values;

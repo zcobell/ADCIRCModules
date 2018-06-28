@@ -53,6 +53,16 @@ int StringConversion::stringToInt(string a, bool &ok) {
   }
 }
 
+size_t StringConversion::stringToSizet(string a, bool &ok) {
+  ok = true;
+  try {
+    return std::stoull(a);
+  } catch (...) {
+    ok = false;
+    return 0;
+  }
+}
+
 string StringConversion::sanitizeString(string a) {
   string b = a;
   boost::algorithm::trim(b);

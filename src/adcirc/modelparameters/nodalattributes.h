@@ -47,21 +47,21 @@ class NodalAttributes {
 
   int write(string outputFilename);
 
-  string attributeNames(int index);
+  string attributeNames(size_t index);
 
-  int locateAttribute(string attributeName);
+  size_t locateAttribute(string attributeName);
 
   string header() const;
   void setHeader(const string &title);
 
-  int numParameters() const;
-  void setNumParameters(int numParameters);
+  size_t numParameters() const;
+  void setNumParameters(size_t numParameters);
 
-  int numNodes() const;
-  void setNumNodes(int numNodes);
+  size_t numNodes() const;
+  void setNumNodes(size_t numNodes);
 
-  Attribute *attribute(int parameter, int node);
-  Attribute *attribute(string parameter, int node);
+  Attribute *attribute(size_t parameter, size_t node);
+  Attribute *attribute(string parameter, size_t node);
 
  private:
   int _readFort13Header(std::fstream &fid);
@@ -72,7 +72,7 @@ class NodalAttributes {
 
   /// Mapping function between the name of a nodal parameter and its position in
   /// the nodalParameters vector
-  std::unordered_map<string, int> m_attributeLocations;
+  std::unordered_map<string, size_t> m_attributeLocations;
 
   /// Filename of the file that will be read or was read
   string m_filename;
@@ -81,10 +81,10 @@ class NodalAttributes {
   string m_header;
 
   /// Number of nodal attributes found within this file
-  int m_numParameters;
+  size_t m_numParameters;
 
   /// Number of nodes in the mesh that this nodal attribute files references
-  int m_numNodes;
+  size_t m_numNodes;
 
   /// Underlying adcirc_mesh object (if necessary)
   Adcirc::Geometry::Mesh *m_mesh;

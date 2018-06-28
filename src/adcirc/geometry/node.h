@@ -35,9 +35,9 @@ namespace Geometry {
 class Node {
  public:
   explicit Node();
-  explicit Node(int id, double x, double y, double z);
+  explicit Node(size_t id, double x, double y, double z);
 
-  void setNode(int id, double x, double y, double z);
+  void setNode(size_t id, double x, double y, double z);
 
   double x() const;
   void setX(double x);
@@ -48,13 +48,13 @@ class Node {
   double z() const;
   void setZ(double z);
 
-  int id() const;
-  void setId(int id);
+  size_t id() const;
+  void setId(size_t id);
 
   std::string toString(bool geographicCoordinates);
 
  private:
-  int m_id;
+  size_t m_id;
   double m_x;
   double m_y;
   double m_z;

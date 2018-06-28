@@ -41,7 +41,7 @@ Node::Node() {
  * @param y y position
  * @param z z elevation
  */
-Node::Node(int id, double x, double y, double z) {
+Node::Node(size_t id, double x, double y, double z) {
   this->m_id = id;
   this->m_x = x;
   this->m_y = y;
@@ -56,7 +56,7 @@ Node::Node(int id, double x, double y, double z) {
  * @param y y position
  * @param z z elevation
  */
-void Node::setNode(int id, double x, double y, double z) {
+void Node::setNode(size_t id, double x, double y, double z) {
   this->m_id = id;
   this->m_x = x;
   this->m_y = y;
@@ -111,14 +111,14 @@ void Node::setZ(double z) { this->m_z = z; }
  * @brief Returns the nodal id/label
  * @return nodal id/label
  */
-int Node::id() const { return this->m_id; }
+size_t Node::id() const { return this->m_id; }
 
 /**
  * @name Node::setId
  * @brief Sets the nodal id/label
  * @param id nodal id/label
  */
-void Node::setId(int id) { this->m_id = id; }
+void Node::setId(size_t id) { this->m_id = id; }
 
 /**
  * @name Node::toString

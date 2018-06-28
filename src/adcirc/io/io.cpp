@@ -36,6 +36,7 @@ typedef parse::boundary23_parser<iterator_type> boundary23_parser;
 typedef parse::boundary24_parser<iterator_type> boundary24_parser;
 typedef parse::boundary25_parser<iterator_type> boundary25_parser;
 typedef parse::nodalAttribute1_parser<iterator_type> nodalattribute1_parser;
+typedef parse::nodalAttribute2_parser<iterator_type> nodalattribute2_parser;
 typedef parse::nodalAttribute12_parser<iterator_type> nodalattribute12_parser;
 
 IO::IO() {}
@@ -59,7 +60,7 @@ int IO::splitString(string &data, vector<string> &result) {
   return FileIO::NoError;
 }
 
-int IO::splitStringNodeFormat(string &data, int &id, double &x, double &y,
+int IO::splitStringNodeFormat(string &data, size_t &id, double &x, double &y,
                               double &z) {
   node_parser np;
   parse::node n;
@@ -78,8 +79,8 @@ int IO::splitStringNodeFormat(string &data, int &id, double &x, double &y,
   }
 }
 
-int IO::splitStringElemFormat(string &data, int &id, int &n1, int &n2,
-                              int &n3) {
+int IO::splitStringElemFormat(string &data, size_t &id, size_t &n1, size_t &n2,
+                              size_t &n3) {
   elem_parser ep;
   parse::elem e;
   string::const_iterator iter = data.begin();
@@ -97,7 +98,7 @@ int IO::splitStringElemFormat(string &data, int &id, int &n1, int &n2,
   }
 }
 
-int IO::splitStringBoundary0Format(string &data, int &node1) {
+int IO::splitStringBoundary0Format(string &data, size_t &node1) {
   boundary0_parser bp;
   parse::boundary0 b;
   string::const_iterator iter = data.begin();
@@ -112,7 +113,7 @@ int IO::splitStringBoundary0Format(string &data, int &node1) {
   }
 }
 
-int IO::splitStringBoundary23Format(string &data, int &node1, double &crest,
+int IO::splitStringBoundary23Format(string &data, size_t &node1, double &crest,
                                     double &supercritical) {
   boundary23_parser bp;
   parse::boundary23 b;
@@ -130,7 +131,7 @@ int IO::splitStringBoundary23Format(string &data, int &node1, double &crest,
   }
 }
 
-int IO::splitStringBoundary24Format(string &data, int &node1, int &node2,
+int IO::splitStringBoundary24Format(string &data, size_t &node1, size_t &node2,
                                     double &crest, double &subcritical,
                                     double &supercritical) {
   boundary24_parser bp;
@@ -151,7 +152,7 @@ int IO::splitStringBoundary24Format(string &data, int &node1, int &node2,
   }
 }
 
-int IO::splitStringBoundary25Format(string &data, int &node1, int &node2,
+int IO::splitStringBoundary25Format(string &data, size_t &node1, size_t &node2,
                                     double &crest, double &subcritical,
                                     double &supercritical, double &pipeheight,
                                     double &pipecoef, double &pipediam) {
@@ -176,7 +177,7 @@ int IO::splitStringBoundary25Format(string &data, int &node1, int &node2,
   }
 }
 
-int IO::splitStringAttribute1Format(string &data, int &node, double &value) {
+int IO::splitStringAttribute1Format(string &data, size_t &node, double &value) {
   nodalattribute1_parser nap;
   parse::nodalAttribute1 na;
   string::const_iterator iter = data.begin();
@@ -192,7 +193,25 @@ int IO::splitStringAttribute1Format(string &data, int &node, double &value) {
   }
 }
 
-int IO::splitStringAttribute12Format(string &data, int &node,
+int IO::splitStringAttribute2Format(string &data, size_t &node, double &value1,
+                                    double &value2) {
+  nodalattribute2_parser nap;
+  parse::nodalAttribute2 na;
+  string::const_iterator iter = data.begin();
+  string::const_iterator end = data.end();
+
+  bool r = phrase_parse(iter, end, nap, space, na);
+  if (r) {
+    node = na.node;
+    value1 = na.value1;
+    value2 = na.value2;
+    return FileIO::NoError;
+  } else {
+    return FileIO::GenericFileReadError;
+  }
+}
+
+int IO::splitStringAttribute12Format(string &data, size_t &node,
                                      vector<double> &values) {
   nodalattribute12_parser nap;
   parse::nodalAttribute12 na;

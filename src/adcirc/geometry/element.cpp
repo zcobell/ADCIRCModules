@@ -39,7 +39,7 @@ Element::Element() {
  * @param n2 pointer to node 2
  * @param n3 pointer to node 3
  */
-Element::Element(int id, Node *n1, Node *n2, Node *n3) {
+Element::Element(size_t id, Node *n1, Node *n2, Node *n3) {
   this->m_nodes.resize(3);
   this->m_id = id;
   this->m_nodes[0] = n1;
@@ -56,7 +56,7 @@ Element::Element(int id, Node *n1, Node *n2, Node *n3) {
  * @param n2 pointer to node 2
  * @param n3 pointer to node 3
  */
-void Element::setElement(int id, Node *n1, Node *n2, Node *n3) {
+void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3) {
   this->m_id = id;
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;
@@ -87,14 +87,14 @@ void Element::setNode(int i, Node *node) {
  * @brief Returns the element id/flag
  * @return element id/flag
  */
-int Element::id() const { return this->m_id; }
+size_t Element::id() const { return this->m_id; }
 
 /**
  * @name Element::setId
  * @brief Sets the element id/flag
  * @param id element id/flag
  */
-void Element::setId(int id) { this->m_id = id; }
+void Element::setId(size_t id) { this->m_id = id; }
 
 /**
  * @name Element::node

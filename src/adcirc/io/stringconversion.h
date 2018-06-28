@@ -26,6 +26,7 @@ class StringConversion {
   StringConversion();
 
   static int stringToInt(std::string a, bool &ok);
+  static size_t stringToSizet(std::string a, bool &ok);
   static float stringToFloat(std::string a, bool &ok);
   static double stringToDouble(std::string a, bool &ok);
   static std::string sanitizeString(std::string a);

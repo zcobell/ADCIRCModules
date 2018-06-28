@@ -27,19 +27,19 @@ Attribute::Attribute() {
   this->resize(1);
 }
 
-Attribute::Attribute(int size) {
+Attribute::Attribute(size_t size) {
   this->m_node = nullptr;
   this->resize(size);
 }
 
-void Attribute::resize(int size) {
+void Attribute::resize(size_t size) {
   if (size != this->m_size) {
     this->m_values.resize(size);
     this->m_size = size;
   }
 }
 
-double Attribute::value(int index) const {
+double Attribute::value(size_t index) const {
   assert(index >= 0 && index < this->m_size);
 
   if (index >= 0 && index < this->m_size)
@@ -54,7 +54,7 @@ void Attribute::setValue(const double &value) {
   std::fill(this->m_values.begin(), this->m_values.end(), value);
 }
 
-void Attribute::setValue(int index, const double &value) {
+void Attribute::setValue(size_t index, const double &value) {
   assert(index >= 0 && index < this->m_size);
 
   if (index >= 0 && index < this->m_size) this->m_values[index] = value;
@@ -70,8 +70,8 @@ Adcirc::Geometry::Node *Attribute::node() { return this->m_node; }
 
 void Attribute::setNode(Adcirc::Geometry::Node *node) { this->m_node = node; }
 
-int Attribute::size() const { return this->m_size; }
+size_t Attribute::size() const { return this->m_size; }
 
-int Attribute::id() const { return this->m_id; }
+size_t Attribute::id() const { return this->m_id; }
 
-void Attribute::setId(int id) { this->m_id = id; }
+void Attribute::setId(size_t id) { this->m_id = id; }
