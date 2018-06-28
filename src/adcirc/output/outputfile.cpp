@@ -401,8 +401,6 @@ int OutputFile::readAsciiHeader() {
 
   if (this->m_filename.empty()) return false;
 
-  this->m_fid = fstream(this->m_filename);
-
   try {
     string line;
     std::getline(this->m_fid, line);  // header
