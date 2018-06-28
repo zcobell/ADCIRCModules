@@ -69,6 +69,7 @@ static const std::vector<string> netcdfVarNames = {"sigmat",
 OutputFile::OutputFile(std::string filename) {
   this->m_filename = filename;
   this->m_currentSnap = 0;
+  this->m_numNodes = 0;
   this->m_open = false;
   this->m_filetype = Adcirc::Output::Unknown;
 }
@@ -76,33 +77,57 @@ OutputFile::OutputFile(std::string filename) {
 OutputFile::OutputFile(const char* filename) {
   this->m_filename = std::string(filename);
   this->m_currentSnap = 0;
+  this->m_numNodes = 0;
   this->m_open = false;
   this->m_filetype = Adcirc::Output::Unknown;
 }
 
-OutputFile::~OutputFile() {}
+OutputFile::~OutputFile() { this->clear(); }
+
+void OutputFile::clear() {
+  for (size_t i = 0; i < this->m_records.size(); i++) {
+    delete this->m_records[i];
+  }
+  this->m_records.clear();
+  this->m_recordMap.clear();
+}
 
 string OutputFile::filename() const { return this->m_filename; }
 
 bool OutputFile::isOpen() { return this->m_open; }
 
+bool OutputFile::exists() {
+  ifstream f(this->m_filename.c_str());
+  return f.good();
+}
+
 bool OutputFile::open() {
   assert(!this->isOpen());
+  assert(this->exists());
 
   if (this->isOpen()) return false;
 
+  if (!this->exists()) {
+    std::cerr << "[ADCModules ERROR]: Specified file does not exist.\n";
+    return false;
+  }
+
   this->m_filetype = this->getFiletype();
-  std::cout << "Filetype: " << this->m_filetype << "\n";
 
   if (this->filetype() == Adcirc::Output::ASCIIFull ||
-      this->filetype() == Adcirc::Output::ASCIISparse)
+      this->filetype() == Adcirc::Output::ASCIISparse) {
     this->openAscii();
-
-  if (this->filetype() == Adcirc::Output::Netcdf3 ||
-      this->filetype() == Adcirc::Output::Netcdf4)
+    this->readAsciiHeader();
+  } else if (this->filetype() == Adcirc::Output::Netcdf3 ||
+             this->filetype() == Adcirc::Output::Netcdf4) {
     this->openNetcdf();
-
-  if (this->filetype() == Adcirc::Output::Xdmf) this->openXdmf();
+    this->readNetcdfHeader();
+  } else if (this->filetype() == Adcirc::Output::Xdmf) {
+    this->openXdmf();
+  } else {
+    std::cerr << "[ADCModules ERROR]: no valid file type found.";
+    return false;
+  }
 
   return this->isOpen();
 }
@@ -123,6 +148,28 @@ bool OutputFile::close() {
 
   return true;
 }
+
+int OutputFile::read(int snap) {
+  OutputRecord* record = nullptr;
+  if (this->m_filetype == Adcirc::Output::ASCIIFull ||
+      this->m_filetype == Adcirc::Output::ASCIISparse) {
+    if (snap != Adcirc::Output::NextOutputSnap) {
+      std::cerr << "[ADCModules WARNING]: ASCII Output must be read record by "
+                   "record. "
+                   "Specified snap number ignored.\n";
+    }
+    int ierr = this->readAsciiRecord(record);
+    if (ierr == 0) {
+      this->m_records.push_back(record);
+    } else {
+      return ierr;
+    }
+  }
+
+  return 0;
+}
+
+int OutputFile::write(int snap) { return 1; }
 
 int OutputFile::openAscii() {
   assert(!this->isOpen());
@@ -171,6 +218,11 @@ int OutputFile::closeNetcdf() {
 
 int OutputFile::closeXdmf() { return false; }
 
+OutputRecord* OutputFile::data(int snap) {
+  bool ok;
+  return this->data(snap, ok);
+}
+
 OutputRecord* OutputFile::data(int snap, bool& ok) {
   assert(this->m_recordMap.find(snap) != this->m_recordMap.end());
 
@@ -183,21 +235,21 @@ OutputRecord* OutputFile::data(int snap, bool& ok) {
   }
 }
 
-int OutputFile::getNumSnaps() const { return m_numSnaps; }
+int OutputFile::getNumSnaps() const { return this->m_numSnaps; }
 
-void OutputFile::setNumSnaps(int numSnaps) { m_numSnaps = numSnaps; }
+void OutputFile::setNumSnaps(int numSnaps) { this->m_numSnaps = numSnaps; }
 
-int OutputFile::getNumNodes() const { return m_numNodes; }
+size_t OutputFile::getNumNodes() const { return this->m_numNodes; }
 
-void OutputFile::setNumNodes(int numNodes) { m_numNodes = numNodes; }
+void OutputFile::setNumNodes(size_t numNodes) { this->m_numNodes = numNodes; }
 
-double OutputFile::getDt() const { return m_dt; }
+double OutputFile::getDt() const { return this->m_dt; }
 
-void OutputFile::setDt(double dt) { m_dt = dt; }
+void OutputFile::setDt(double dt) { this->m_dt = dt; }
 
-int OutputFile::getDit() const { return m_dit; }
+int OutputFile::getDit() const { return this->m_dit; }
 
-void OutputFile::setDit(int dit) { m_dit = dit; }
+void OutputFile::setDit(int dit) { this->m_dit = dit; }
 
 int OutputFile::filetype() const { return this->m_filetype; }
 
@@ -221,7 +273,7 @@ int OutputFile::getFiletype() {
   return Adcirc::Output::Unknown;
 }
 
-bool OutputFile::checkFiletypeAsciiFull(string filename) {
+bool OutputFile::checkFiletypeAsciiSparse(string filename) {
   assert(!filename.empty());
 
   fstream fid(filename);
@@ -252,7 +304,7 @@ bool OutputFile::checkFiletypeAsciiFull(string filename) {
   }
 }
 
-bool OutputFile::checkFiletypeAsciiSparse(string filename) {
+bool OutputFile::checkFiletypeAsciiFull(string filename) {
   assert(!filename.empty());
 
   fstream fid(filename);
@@ -372,7 +424,7 @@ int OutputFile::readAsciiHeader() {
       return false;
     }
 
-    this->setNumNodes(StringConversion::stringToInt(list.at(1), ok));
+    this->setNumNodes(StringConversion::stringToSizet(list.at(1), ok));
     if (!ok) {
       this->m_fid.close();
       return false;
@@ -408,30 +460,84 @@ int OutputFile::readAsciiHeader() {
   return true;
 }
 
-OutputRecord* OutputFile::readAsciiRecord() {
-  if (this->filetype() == Adcirc::Output::ASCIISparse)
-    return this->readSparseAsciiOutputRecord();
-  else if (this->filetype() == Adcirc::Output::ASCIIFull)
-    return this->readFullAsciiOutputRecord();
-  return nullptr;
-}
+int OutputFile::readNetcdfHeader() { return 0; }
 
-OutputRecord* OutputFile::readSparseAsciiOutputRecord() {
+int OutputFile::readAsciiRecord(OutputRecord* record) {
   string line;
 
-  OutputRecord *record;
+  record = new OutputRecord(this->m_numNodes, this->m_isVector);
 
+  //...Record header
   getline(this->m_fid, line);
-
   std::vector<string> list;
   IO::splitString(line, list);
+  bool ok;
 
+  double t = StringConversion::stringToDouble(list[0], ok);
+  if (ok)
+    record->setTime(t);
+  else {
+    delete record;
+    return 1;
+  }
 
-  return record;
+  int it = StringConversion::stringToInt(list[1], ok);
+  if (ok)
+    record->setIteration(it);
+  else {
+    delete record;
+    return 1;
+  }
 
-}
+  size_t numNonDefault = this->m_numNodes;
+  double dflt = Adcirc::Output::DefaultOutputValue;
 
-OutputRecord* OutputFile::readFullAsciiOutputRecord() {
-  OutputRecord *output;
-  return output;
+  if (list.size() > 2) {
+    numNonDefault = StringConversion::stringToSizet(list[2], ok);
+    if (!ok) {
+      delete record;
+      return 1;
+    }
+
+    dflt = StringConversion::stringToDouble(list[3], ok);
+    if (!ok) {
+      delete record;
+      return 1;
+    }
+  }
+  record->setDefaultValue(dflt);
+  record->fill(dflt);
+
+  //...Record loop
+  for (size_t i = 0; i < numNonDefault; i++) {
+    getline(this->m_fid, line);
+
+    if (this->m_isVector) {
+      size_t id;
+      double v1, v2;
+      int ierr = IO::splitStringAttribute2Format(line, id, v1, v2);
+      if (ierr == 0)
+        record->set(id - 1, v1, v2);
+      else {
+        delete record;
+        return 1;
+      }
+    } else {
+      size_t id;
+      double v1;
+      int ierr = IO::splitStringAttribute1Format(line, id, v1);
+      if (ierr == 0) {
+        record->set(id - 1, v1);
+      } else {
+        delete record;
+        return 1;
+      };
+    }
+  }
+
+  //...Setup the map for record indicies
+  this->m_recordMap[this->m_currentSnap] = record;
+  this->m_currentSnap++;
+
+  return 0;
 }

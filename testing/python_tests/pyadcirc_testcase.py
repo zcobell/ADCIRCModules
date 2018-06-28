@@ -48,3 +48,13 @@ if ierr != 0:
 print "Fort13 read successfully"
 print "  Manning n at node",m.node(1).id(),": ",f.attribute("mannings_n_at_sea_floor",1).value(0)
 print "  Tau0 at node",m.node(1).id(),": ",f.attribute("primitive_weighting_in_continuity_equation",1).value(0)
+print "Reading an adcirc ascii output file"
+o = PyAdcirc.OutputFile("../testing/test_files/maxele.63")
+berr = o.open();
+if berr != True:
+    exit(1)
+ierr = o.read();
+if ierr != 0:
+    exit(ierr);
+print "   Output value for record 1 at node 42: ",o.data(0).value(41)
+

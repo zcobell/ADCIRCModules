@@ -44,11 +44,13 @@ class OutputFile {
 
   bool close();
 
+  bool exists();
+
   bool isOpen();
 
-  int read(OutputRecord &data, int snap = Adcirc::Output::NextOutputSnap);
+  int read(int snap = Adcirc::Output::NextOutputSnap);
 
-  int write(OutputRecord &data, int snap = Adcirc::Output::NextOutputSnap);
+  int write(int snap = Adcirc::Output::NextOutputSnap);
 
   int filetype() const;
 
@@ -56,13 +58,14 @@ class OutputFile {
 
   std::string filename() const;
 
-  OutputRecord *data(int snap, bool &ok);
+  Adcirc::Output::OutputRecord *data(int snap);
+  Adcirc::Output::OutputRecord *data(int snap, bool &ok);
 
   int getNumSnaps() const;
   void setNumSnaps(int numSnaps);
 
-  int getNumNodes() const;
-  void setNumNodes(int numNodes);
+  size_t getNumNodes() const;
+  void setNumNodes(size_t numNodes);
 
   double getDt() const;
   void setDt(double dt);
@@ -70,19 +73,21 @@ class OutputFile {
   int getDit() const;
   void setDit(int dit);
 
+  void clear();
+
  private:
   // variables
   bool m_open;
   int m_filetype;
   int m_currentSnap;
   int m_numSnaps;
-  int m_numNodes;
+  size_t m_numNodes;
   double m_dt;
   int m_dit;
   std::fstream m_fid;
   std::string m_filename;
-  std::vector<OutputRecord *> m_records;
-  std::unordered_map<int, OutputRecord *> m_recordMap;
+  std::vector<Adcirc::Output::OutputRecord *> m_records;
+  std::unordered_map<int, Adcirc::Output::OutputRecord *> m_recordMap;
   std::string m_header;
 
   // netcdf specific variables
@@ -114,9 +119,7 @@ class OutputFile {
   int readAsciiHeader();
   int readNetcdfHeader();
 
-  OutputRecord *readAsciiRecord();
-  OutputRecord *readSparseAsciiOutputRecord();
-  OutputRecord *readFullAsciiOutputRecord();
+  int readAsciiRecord(Adcirc::Output::OutputRecord *record);
 };
 }  // namespace Output
 }  // namespace Adcirc

@@ -29,22 +29,24 @@ namespace Output {
 
 class OutputRecord {
  public:
-  explicit OutputRecord(int numNodes, bool isVector);
+  explicit OutputRecord(size_t numNodes, bool isVector);
 
-  void setU(int index, double value);
-  void setV(int index, double value);
-  void set(int index, double value);
-  void set(int index, double value_u, double value_v);
+  void fill(double value);
+
+  void setU(size_t index, double value);
+  void setV(size_t index, double value);
+  void set(size_t index, double value);
+  void set(size_t index, double value_u, double value_v);
 
   void setAllU(std::vector<double> values);
   void setAllV(std::vector<double> values);
   void setAll(std::vector<double> values);
   void setAll(std::vector<double> values_u, std::vector<double> values_v);
 
-  double value(int index);
-  double u(int index);
-  double v(int index);
-  double direction(int index);
+  double value(size_t index);
+  double u(size_t index);
+  double v(size_t index);
+  double direction(size_t index);
 
   long long iteration() const;
   void setIteration(long long iteration);
@@ -52,8 +54,8 @@ class OutputRecord {
   double time() const;
   void setTime(double time);
 
-  int numNodes() const;
-  void setNumNodes(int numNodes);
+  size_t numNodes() const;
+  void setNumNodes(size_t numNodes);
 
   bool isVector() const;
   void setIsVector(bool isVector);
@@ -66,7 +68,7 @@ private:
   std::vector<double> m_v;
   long long m_iteration;
   double m_time;
-  int m_numNodes;
+  size_t m_numNodes;
   bool m_isVector;
   double m_defaultValue;
 };

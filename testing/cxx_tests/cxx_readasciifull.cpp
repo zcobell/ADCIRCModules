@@ -21,6 +21,28 @@
 
 int main(int argc, char *argv[]) {
     Adcirc::Output::OutputFile *output = new Adcirc::Output::OutputFile("test_files/maxele.63");
-    output->open();
-    delete output;
+
+    //...Open file
+    bool berr = output->open();
+    if(!berr){
+        delete output;
+        return 1;
+    }
+    
+    //...Read snap 1
+    int ierr = output->read();
+    if(ierr!=0){
+        delete output;
+        return 2;
+    }
+    
+    //...Check output
+    if(output->data(0)->value(42)==5.0328082883E-001){
+        delete output;
+        return 0;
+    } else {
+        delete output;
+        return 3;
+    }
+
 }

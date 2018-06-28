@@ -83,6 +83,12 @@ struct nodalAttribute1 {
   double value;
 };
 
+struct nodalAttribute2 {
+  int node;
+  double value1;
+  double value2;
+};
+
 struct nodalAttribute12 {
   int node;
   double value1;
@@ -123,6 +129,9 @@ BOOST_FUSION_ADAPT_STRUCT(
                                                                      pipediam))
 
 BOOST_FUSION_ADAPT_STRUCT(parse::nodalAttribute1, (int, node)(double, value))
+
+BOOST_FUSION_ADAPT_STRUCT(parse::nodalAttribute2,
+                          (int, node)(double, value1)(double, value2))
 
 BOOST_FUSION_ADAPT_STRUCT(
     parse::nodalAttribute12,
@@ -204,6 +213,17 @@ struct nodalAttribute1_parser
     start %= int_ >> double_;
   }
   qi::rule<Iterator, nodalAttribute1(), ascii::space_type> start;
+};
+
+template <typename Iterator>
+struct nodalAttribute2_parser
+    : qi::grammar<Iterator, nodalAttribute2(), ascii::space_type> {
+  nodalAttribute2_parser() : nodalAttribute2_parser::base_type(start) {
+    using qi::double_;
+    using qi::int_;
+    start %= int_ >> double_ >> double_;
+  }
+  qi::rule<Iterator, nodalAttribute2(), ascii::space_type> start;
 };
 
 template <typename Iterator>
