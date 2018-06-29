@@ -88,7 +88,9 @@ SOURCES += \
     ../../adcirc/modelparameters/nodalattributes.cpp \
     ../../adcirc/output/outputfile.cpp \
     ../../adcirc/output/outputrecord.cpp \
-    ../../adcirc/config.cpp
+    ../../adcirc/config.cpp \
+    ../output/harmonicsoutput.cpp \
+    ../output/harmonicsrecord.cpp
 
 HEADERS += \
     ../../adcirc/adcircmodules_global.h \
@@ -107,7 +109,9 @@ HEADERS += \
     ../../adcirc/output/outputfile.h \
     ../../adcirc/output/outputrecord.h \
     ../../adcirc/adcirc_errors.h \
-    ../../adcirc/config.h
+    ../../adcirc/config.h \
+    ../output/harmonicsoutput.h \
+    ../output/harmonicsrecord.h
 
 INCLUDEPATH += $$BOOSTPATH
 INCLUDEPATH += ../..
