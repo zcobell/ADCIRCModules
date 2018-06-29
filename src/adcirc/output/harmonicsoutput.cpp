@@ -19,16 +19,18 @@
 #include "harmonicsoutput.h"
 #include <assert.h>
 #include <fstream>
+#include "adcirc/adcirc_errors.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"
 
 using namespace std;
+using namespace Adcirc::Output;
 
-HarmonicsOutput::HarmonicsOutput(bool isVector) {
+HarmonicsOutput::HarmonicsOutput(string filename, bool velocity) {
   this->m_numNodes = 0;
   this->m_numConstituents = 0;
-  this->m_isVector = isVector;
-  this->m_filename = string();
+  this->m_isVelocity = velocity;
+  this->m_filename = filename;
 }
 
 string HarmonicsOutput::filename() const { return this->m_filename; }
@@ -40,7 +42,7 @@ void HarmonicsOutput::setFilename(const string& filename) {
 size_t HarmonicsOutput::index(string name) {
   auto i = this->m_index.find(name);
   if (i == this->m_index.end())
-    return 999999;
+    return 999999999;
   else
     return i->second;
 }
@@ -86,9 +88,9 @@ HarmonicsRecord* HarmonicsOutput::u_phase(string name) {
 }
 
 HarmonicsRecord* HarmonicsOutput::u_phase(size_t index) {
-  assert(index < this->m_umagnitude.size());
-  if (index < this->m_umagnitude.size())
-    return &this->m_umagnitude[index];
+  assert(index < this->m_uphase.size());
+  if (index < this->m_uphase.size())
+    return &this->m_uphase[index];
   else
     return nullptr;
 }
@@ -141,12 +143,20 @@ void HarmonicsOutput::setNumNodes(const size_t& numNodes) {
   this->m_numNodes = numNodes;
 }
 
-bool HarmonicsOutput::isVector() const { return this->m_isVector; }
+bool HarmonicsOutput::isVector() const { return this->m_isVelocity; }
+
+size_t HarmonicsOutput::nodeIdToArrayIndex(size_t id) {
+  auto i = this->m_nodeIndex.find(id);
+  if (i == this->m_nodeIndex.end())
+    return 999999999;
+  else
+    return i->second;
+}
 
 int HarmonicsOutput::read() {
   fstream fid;
   fid.open(this->m_filename);
-  if (!fid.is_open()) return 1;
+  if (!fid.is_open()) return Adcirc::Output::OutputReadError;
 
   string line;
   bool ok;
@@ -156,7 +166,8 @@ int HarmonicsOutput::read() {
   if (ok) {
     this->setNumConstituents(n);
   } else {
-    return 1;
+    fid.close();
+    return Adcirc::Output::OutputReadError;
   }
 
   std::vector<double> frequency;
@@ -184,10 +195,13 @@ int HarmonicsOutput::read() {
   if (ok) {
     this->setNumNodes(n);
   } else {
-    return 1;
+    fid.close();
+    return Adcirc::Output::OutputReadError;
   }
 
   for (size_t i = 0; i < this->numConstituents(); i++) {
+    this->m_index[names[i]] = i;
+    this->m_reverseIndex[i] = names[i];
     if (this->isVector()) {
       this->u_magnitude(i)->setName(names[i]);
       this->u_magnitude(i)->setFrequency(frequency[i]);
@@ -197,8 +211,18 @@ int HarmonicsOutput::read() {
       this->v_magnitude(i)->setFrequency(frequency[i]);
       this->v_magnitude(i)->setNodalFactor(nodalFactor[i]);
       this->v_magnitude(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->u_phase(i)->setName(names[i]);
+      this->u_phase(i)->setFrequency(frequency[i]);
+      this->u_phase(i)->setNodalFactor(nodalFactor[i]);
+      this->u_phase(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->v_phase(i)->setName(names[i]);
+      this->v_phase(i)->setFrequency(frequency[i]);
+      this->v_phase(i)->setNodalFactor(nodalFactor[i]);
+      this->v_phase(i)->setEquilibriumArg(equilibriumArg[i]);
       this->u_magnitude(i)->resize(this->numNodes());
       this->v_magnitude(i)->resize(this->numNodes());
+      this->u_phase(i)->resize(this->numNodes());
+      this->v_phase(i)->resize(this->numNodes());
     } else {
       this->amplitude(i)->setName(names[i]);
       this->amplitude(i)->setFrequency(frequency[i]);
@@ -215,32 +239,79 @@ int HarmonicsOutput::read() {
 
   for (size_t i = 0; i < this->numNodes(); i++) {
     getline(fid, line);
+
     size_t node = StringConversion::stringToSizet(line, ok);
+    if (!ok) {
+      fid.close();
+      return Adcirc::Output::OutputReadError;
+    }
+    this->m_nodeIndex[node] = i;
+
     for (size_t j = 0; j < this->numConstituents(); j++) {
       getline(fid, line);
       vector<string> list;
       IO::splitString(line, list);
       if (this->isVector()) {
+        if (list.size() != 4) {
+          fid.close();
+          return Adcirc::Output::OutputReadError;
+        }
+
         double um = StringConversion::stringToDouble(list[0], ok);
+        if (!ok) {
+          fid.close();
+          return Adcirc::Output::OutputReadError;
+        }
+
         double up = StringConversion::stringToDouble(list[1], ok);
+        if (!ok) {
+          fid.close();
+          return Adcirc::Output::OutputReadError;
+        }
+
         double vm = StringConversion::stringToDouble(list[2], ok);
+        if (!ok) {
+          fid.close();
+          return Adcirc::Output::OutputReadError;
+        }
+
         double vp = StringConversion::stringToDouble(list[3], ok);
-        this->u_magnitude(j)->set(node, um);
-        this->u_phase(j)->set(node, up);
-        this->v_magnitude(j)->set(node, vm);
-        this->v_phase(j)->set(node, vp);
+        if (!ok) {
+          fid.close();
+          return Adcirc::Output::OutputReadError;
+        }
+
+        this->u_magnitude(j)->set(i, um);
+        this->u_phase(j)->set(i, up);
+        this->v_magnitude(j)->set(i, vm);
+        this->v_phase(j)->set(i, vp);
       } else {
+        if (list.size() != 2) {
+          fid.close();
+          return Adcirc::Output::OutputReadError;
+        }
+
         double a = StringConversion::stringToDouble(list[0], ok);
+        if (!ok) {
+          fid.close();
+          return Adcirc::Output::OutputReadError;
+        }
+
         double p = StringConversion::stringToDouble(list[1], ok);
-        this->amplitude(j)->set(node, a);
-        this->phase(j)->set(node, a);
+        if (!ok) {
+          fid.close();
+          return Adcirc::Output::OutputReadError;
+        }
+
+        this->amplitude(j)->set(i, a);
+        this->phase(j)->set(i, p);
       }
     }
   }
 
   fid.close();
 
-  return 0;
+  return Adcirc::NoError;
 }
 
-int HarmonicsOutput::write(string filename) { return 0; }
+int HarmonicsOutput::write(string filename) { return Adcirc::NoError; }

@@ -333,7 +333,9 @@ ADD_LIBRARY( adcircmodules SHARED
                 ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/attributemetadata.cpp
                 ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/nodalattributes.cpp 
                 ${CMAKE_SOURCE_DIR}/src/adcirc/output/outputfile.cpp 
-                ${CMAKE_SOURCE_DIR}/src/adcirc/output/outputrecord.cpp )
+                ${CMAKE_SOURCE_DIR}/src/adcirc/output/outputrecord.cpp 
+                ${CMAKE_SOURCE_DIR}/src/adcirc/output/harmonicsrecord.cpp
+                ${CMAKE_SOURCE_DIR}/src/adcirc/output/harmonicsoutput.cpp )
 
 TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/src/adcirc/point
@@ -371,6 +373,10 @@ INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/mesh.h DESTINATION includ
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/attribute.h DESTINATION include/adcirc/modelparameters)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/attributemetadata.h DESTINATION include/adcirc/modelparameters)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/nodalattributes.h DESTINATION include/adcirc/modelparameters)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/output/outputfile.h DESTINATION include/adcirc/output)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/output/outputrecord.h DESTINATION include/adcirc/output)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/output/harmonicsrecord.h DESTINATION include/adcirc/output)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/output/harmonicsoutput.h DESTINATION include/adcirc/output)
 
 TARGET_LINK_LIBRARIES( adcircmodules proj4 point kdtree2 shapelib ${NETCDF_LIBRARIES} )
 ###########################################################################
@@ -532,7 +538,7 @@ IF(UNIX OR CYGWIN)
     FOREACH(TESTFILE cxx_readmesh.cpp cxx_writemesh.cpp cxx_writeshapefile.cpp
                      cxx_projectmesh.cpp cxx_nodalSearchTree.cpp cxx_readfort13_wmesh.cpp 
                      cxx_readfort13_womesh.cpp cxx_fort13findatt.cpp cxx_readasciifull.cpp 
-                     cxx_readnetcdf.cpp )
+                     cxx_readnetcdf.cpp cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp )
         GET_FILENAME_COMPONENT( TESTNAME ${TESTFILE} NAME_WE )
         ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
         ADD_DEPENDENCIES( ${TESTNAME} adcircmodules )

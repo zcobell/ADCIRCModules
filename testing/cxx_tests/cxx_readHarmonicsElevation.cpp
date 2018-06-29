@@ -16,18 +16,30 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#ifndef ADCIRC_H
-#define ADCIRC_H
+#include "adcirc.h"
+#include <iostream>
 
-#include "adcirc/point/point.h"
-#include "adcirc/qKdtree2/qkdtree2.h"
-#include "adcirc/qProj4/qproj4.h"
+int main(int argc, char *argv[]) {
 
-#include "adcirc/adcirc_errors.h"
-#include "adcirc/config.h"
-#include "adcirc/geometry/mesh.h"
-#include "adcirc/modelparameters/nodalattributes.h"
-#include "adcirc/output/outputfile.h"
-#include "adcirc/output/harmonicsoutput.h"
+  Adcirc::Output::HarmonicsOutput *harm = new Adcirc::Output::HarmonicsOutput("test_files/fort.53");
+  int ierr = harm->read();
+  if(ierr!=Adcirc::NoError){
+      delete harm;
+      return ierr;
+  }
 
-#endif  // ADCIRC_H
+  double m2_amp_value = harm->amplitude("M2")->value(0);
+  double m2_pha_value = harm->phase("M2")->value(0);
+  double k1_amp_value = harm->amplitude("K1")->value(0);
+  double k1_pha_value = harm->phase("K1")->value(0);
+
+  if(m2_amp_value!=8.22651718E-001 || m2_pha_value != 247.8750 || 
+     k1_amp_value != 9.36588108E-002 || k1_pha_value != 138.2870) {
+      delete harm;
+      return 1;
+  }
+
+  delete harm;
+  return 0;
+
+}

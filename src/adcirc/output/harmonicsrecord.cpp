@@ -52,9 +52,9 @@ string HarmonicsRecord::name() const { return this->m_name; }
 
 void HarmonicsRecord::setName(const string &name) { this->m_name = name; }
 
-vector<double> HarmonicsRecord::allData() { return this->m_data; }
+vector<double> HarmonicsRecord::values() { return this->m_data; }
 
-double HarmonicsRecord::data(size_t index) {
+double HarmonicsRecord::value(size_t index) {
   assert(index < this->m_data.size());
   if (index < this->m_data.size())
     return this->m_data[index];

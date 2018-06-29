@@ -20,6 +20,7 @@
 #include <assert.h>
 #include <fstream>
 #include <iostream>
+#include "adcirc/adcirc_errors.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"
 #include "netcdf.h"
@@ -166,10 +167,13 @@ int OutputFile::read(int snap) {
     }
   }
 
-  return 0;
+  return Adcirc::NoError;
 }
 
-int OutputFile::write(int snap) { return 1; }
+int OutputFile::write(int snap) {
+  return Adcirc::Output::OutputReadError;
+  ;
+}
 
 int OutputFile::openAscii() {
   assert(!this->isOpen());
@@ -458,7 +462,7 @@ int OutputFile::readAsciiHeader() {
   return true;
 }
 
-int OutputFile::readNetcdfHeader() { return 0; }
+int OutputFile::readNetcdfHeader() { return Adcirc::NoError; }
 
 int OutputFile::readAsciiRecord(OutputRecord* record) {
   string line;
@@ -476,7 +480,8 @@ int OutputFile::readAsciiRecord(OutputRecord* record) {
     record->setTime(t);
   else {
     delete record;
-    return 1;
+    return Adcirc::Output::OutputReadError;
+    ;
   }
 
   int it = StringConversion::stringToInt(list[1], ok);
@@ -484,7 +489,8 @@ int OutputFile::readAsciiRecord(OutputRecord* record) {
     record->setIteration(it);
   else {
     delete record;
-    return 1;
+    return Adcirc::Output::OutputReadError;
+    ;
   }
 
   size_t numNonDefault = this->m_numNodes;
@@ -494,13 +500,15 @@ int OutputFile::readAsciiRecord(OutputRecord* record) {
     numNonDefault = StringConversion::stringToSizet(list[2], ok);
     if (!ok) {
       delete record;
-      return 1;
+      return Adcirc::Output::OutputReadError;
+      ;
     }
 
     dflt = StringConversion::stringToDouble(list[3], ok);
     if (!ok) {
       delete record;
-      return 1;
+      return Adcirc::Output::OutputReadError;
+      ;
     }
   }
   record->setDefaultValue(dflt);
@@ -518,7 +526,8 @@ int OutputFile::readAsciiRecord(OutputRecord* record) {
         record->set(id - 1, v1, v2);
       else {
         delete record;
-        return 1;
+        return Adcirc::Output::OutputReadError;
+        ;
       }
     } else {
       size_t id;
@@ -528,7 +537,8 @@ int OutputFile::readAsciiRecord(OutputRecord* record) {
         record->set(id - 1, v1);
       } else {
         delete record;
-        return 1;
+        return Adcirc::Output::OutputReadError;
+        ;
       };
     }
   }
@@ -537,5 +547,5 @@ int OutputFile::readAsciiRecord(OutputRecord* record) {
   this->m_recordMap[this->m_currentSnap] = record;
   this->m_currentSnap++;
 
-  return 0;
+  return Adcirc::NoError;
 }

@@ -29,10 +29,10 @@ class HarmonicsRecord {
   std::string name() const;
   void setName(const std::string &name);
 
-  double data(size_t index);
-  std::vector<double> allData();
+  double value(size_t index);
+  std::vector<double> values();
 
-  void set(size_t index, double data);
+  void set(size_t index, double value);
 
   void resize(size_t numNodes);
 

@@ -24,9 +24,13 @@
 //------------------------------------------------------------------------//
 #include "harmonicsrecord.h"
 
+namespace Adcirc {
+
+namespace Output {
+
 class HarmonicsOutput {
  public:
-  HarmonicsOutput(bool isVector);
+  HarmonicsOutput(std::string filename = std::string(), bool velocity = false);
 
   int read();
 
@@ -65,8 +69,10 @@ class HarmonicsOutput {
 
   bool isVector() const;
 
+  size_t nodeIdToArrayIndex(size_t id);
+
  private:
-  bool m_isVector;
+  bool m_isVelocity;
   std::string m_filename;
   size_t m_numConstituents;
   size_t m_numNodes;
@@ -76,8 +82,11 @@ class HarmonicsOutput {
   std::vector<HarmonicsRecord> m_vmagnitude;
   std::vector<HarmonicsRecord> m_uphase;
   std::vector<HarmonicsRecord> m_vphase;
+  std::unordered_map<size_t, size_t> m_nodeIndex;
   std::unordered_map<std::string, size_t> m_index;
   std::unordered_map<size_t, std::string> m_reverseIndex;
 };
+}  // namespace Output
+}  // namespace Adcirc
 
 #endif  // HARMONICSOUTPUT_H

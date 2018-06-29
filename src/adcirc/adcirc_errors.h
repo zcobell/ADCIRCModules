@@ -42,6 +42,8 @@ enum _modelParamErrorCodes { MeshMismatch = 0x0400001 };
 
 namespace Output {
 
+enum _outputErrorCodes { OutputReadError = 0x0500001 };
+
 const int NextOutputSnap = -9999;
 const double DefaultOutputValue = -99999.0;
 
