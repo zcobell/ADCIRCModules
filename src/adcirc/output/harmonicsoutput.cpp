@@ -19,10 +19,10 @@
 #include "harmonicsoutput.h"
 #include <assert.h>
 #include <fstream>
-#include <iostream>
 #include "adcirc/adcirc_errors.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"
+#include "boost/algorithm/string.hpp"
 
 using namespace std;
 using namespace Adcirc::Output;
@@ -41,6 +41,7 @@ void HarmonicsOutput::setFilename(const string& filename) {
 }
 
 size_t HarmonicsOutput::index(string name) {
+  boost::to_upper(name);
   auto i = this->m_index.find(name);
   if (i == this->m_index.end())
     return 999999999;
@@ -49,7 +50,6 @@ size_t HarmonicsOutput::index(string name) {
 }
 
 HarmonicsRecord* HarmonicsOutput::amplitude(string name) {
-  ;
   return this->amplitude(this->index(name));
 }
 
@@ -188,7 +188,7 @@ int HarmonicsOutput::read() {
     frequency[i] = StringConversion::stringToDouble(list[0], ok);
     nodalFactor[i] = StringConversion::stringToDouble(list[1], ok);
     equilibriumArg[i] = StringConversion::stringToDouble(list[2], ok);
-    names[i] = list[3];
+    names[i] = boost::to_upper_copy<std::string>(list[3]);
   }
 
   getline(fid, line);
