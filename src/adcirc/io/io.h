@@ -69,6 +69,10 @@ class IO {
 
   static int splitStringAttribute12Format(std::string &data, size_t &node,
                                           std::vector<double> &values);
+
+  static int splitStringHarmonicsElevationFormat(std::string &data, double &amplitude, double &phase);
+
+  static int splitStringHarmonicsVelocityFormat(std::string &data, double &u_magnitude, double &u_phase, double &v_magnitude, double &v_phase);
 };
 
 #endif  // IO_H

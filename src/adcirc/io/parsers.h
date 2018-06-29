@@ -105,6 +105,18 @@ struct nodalAttribute12 {
   double value12;
 };
 
+struct harmonicsElevation {
+  double amplitude;
+  double phase;
+};
+
+struct harmonicsVelocity {
+  double u_phase;
+  double u_magnitude;
+  double v_phase;
+  double v_magnitude;
+};
+
 }  // namespace parse
 
 BOOST_FUSION_ADAPT_STRUCT(parse::node,
@@ -138,6 +150,13 @@ BOOST_FUSION_ADAPT_STRUCT(
     (int, node)(double, value1)(double, value2)(double, value3)(double, value4)(
         double, value5)(double, value6)(double, value7)(double, value8)(
         double, value9)(double, value10)(double, value11)(double, value12))
+
+BOOST_FUSION_ADAPT_STRUCT(parse::harmonicsElevation,
+                          (double, amplitude)(double, phase))
+
+BOOST_FUSION_ADAPT_STRUCT(parse::harmonicsVelocity,
+                          (double, u_magnitude)(double, u_phase)(
+                              double, v_magnitude)(double, v_phase))
 
 namespace parse {
 template <typename Iterator>
@@ -237,6 +256,26 @@ struct nodalAttribute12_parser
              double_;
   }
   qi::rule<Iterator, nodalAttribute12(), ascii::space_type> start;
+};
+
+template <typename Iterator>
+struct harmonicsElevation_parser
+    : qi::grammar<Iterator, harmonicsElevation(), ascii::space_type> {
+  harmonicsElevation_parser() : harmonicsElevation_parser::base_type(start) {
+    using qi::double_;
+    start %= double_ >> double_;
+  }
+  qi::rule<Iterator, harmonicsElevation(), ascii::space_type> start;
+};
+
+template <typename Iterator>
+struct harmonicsVelocity_parser
+    : qi::grammar<Iterator, harmonicsVelocity(), ascii::space_type> {
+  harmonicsVelocity_parser() : harmonicsVelocity_parser::base_type(start) {
+    using qi::double_;
+    start %= double_ >> double_ >> double_ >> double_;
+  }
+  qi::rule<Iterator, harmonicsVelocity(), ascii::space_type> start;
 };
 
 }  // namespace parse

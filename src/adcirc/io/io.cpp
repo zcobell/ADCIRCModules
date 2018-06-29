@@ -38,6 +38,9 @@ typedef parse::boundary25_parser<iterator_type> boundary25_parser;
 typedef parse::nodalAttribute1_parser<iterator_type> nodalattribute1_parser;
 typedef parse::nodalAttribute2_parser<iterator_type> nodalattribute2_parser;
 typedef parse::nodalAttribute12_parser<iterator_type> nodalattribute12_parser;
+typedef parse::harmonicsElevation_parser<iterator_type>
+    harmonicsElevation_parser;
+typedef parse::harmonicsVelocity_parser<iterator_type> harmonicsVelocity_parser;
 
 IO::IO() {}
 
@@ -233,6 +236,41 @@ int IO::splitStringAttribute12Format(string &data, size_t &node,
     values[9] = na.value10;
     values[10] = na.value11;
     values[11] = na.value12;
+    return FileIO::NoError;
+  } else {
+    return FileIO::GenericFileReadError;
+  }
+}
+
+int IO::splitStringHarmonicsElevationFormat(string &data, double &amplitude,
+                                            double &phase) {
+  harmonicsElevation_parser hp;
+  parse::harmonicsElevation harm;
+  string::const_iterator iter = data.begin();
+  string::const_iterator end = data.end();
+  bool r = phrase_parse(iter, end, hp, space, harm);
+  if (r) {
+    amplitude = harm.amplitude;
+    phase = harm.phase;
+    return FileIO::NoError;
+  } else {
+    return FileIO::GenericFileReadError;
+  }
+}
+
+int IO::splitStringHarmonicsVelocityFormat(string &data, double &u_magnitude,
+                                           double &u_phase, double &v_magnitude,
+                                           double &v_phase) {
+  harmonicsVelocity_parser hp;
+  parse::harmonicsVelocity harm;
+  string::const_iterator iter = data.begin();
+  string::const_iterator end = data.end();
+  bool r = phrase_parse(iter, end, hp, space, harm);
+  if (r) {
+    u_magnitude = harm.u_magnitude;
+    u_phase = harm.u_phase;
+    v_magnitude = harm.v_magnitude;
+    v_phase = harm.v_phase;
     return FileIO::NoError;
   } else {
     return FileIO::GenericFileReadError;

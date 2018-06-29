@@ -19,6 +19,7 @@
 #include "harmonicsoutput.h"
 #include <assert.h>
 #include <fstream>
+#include <iostream>
 #include "adcirc/adcirc_errors.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"
@@ -240,68 +241,27 @@ int HarmonicsOutput::read() {
   for (size_t i = 0; i < this->numNodes(); i++) {
     getline(fid, line);
 
-    size_t node = StringConversion::stringToSizet(line, ok);
-    if (!ok) {
-      fid.close();
-      return Adcirc::Output::OutputReadError;
-    }
+    size_t node;
+    int ierr = IO::splitStringBoundary0Format(line, node);
+    if (ierr != 0) return ierr;
+
     this->m_nodeIndex[node] = i;
 
     for (size_t j = 0; j < this->numConstituents(); j++) {
       getline(fid, line);
-      vector<string> list;
-      IO::splitString(line, list);
       if (this->isVector()) {
-        if (list.size() != 4) {
-          fid.close();
-          return Adcirc::Output::OutputReadError;
-        }
-
-        double um = StringConversion::stringToDouble(list[0], ok);
-        if (!ok) {
-          fid.close();
-          return Adcirc::Output::OutputReadError;
-        }
-
-        double up = StringConversion::stringToDouble(list[1], ok);
-        if (!ok) {
-          fid.close();
-          return Adcirc::Output::OutputReadError;
-        }
-
-        double vm = StringConversion::stringToDouble(list[2], ok);
-        if (!ok) {
-          fid.close();
-          return Adcirc::Output::OutputReadError;
-        }
-
-        double vp = StringConversion::stringToDouble(list[3], ok);
-        if (!ok) {
-          fid.close();
-          return Adcirc::Output::OutputReadError;
-        }
+        double um, up, vm, vp;
+        ierr = IO::splitStringHarmonicsVelocityFormat(line, um, up, vm, vp);
+        if (ierr != 0) return ierr;
 
         this->u_magnitude(j)->set(i, um);
         this->u_phase(j)->set(i, up);
         this->v_magnitude(j)->set(i, vm);
         this->v_phase(j)->set(i, vp);
       } else {
-        if (list.size() != 2) {
-          fid.close();
-          return Adcirc::Output::OutputReadError;
-        }
-
-        double a = StringConversion::stringToDouble(list[0], ok);
-        if (!ok) {
-          fid.close();
-          return Adcirc::Output::OutputReadError;
-        }
-
-        double p = StringConversion::stringToDouble(list[1], ok);
-        if (!ok) {
-          fid.close();
-          return Adcirc::Output::OutputReadError;
-        }
+        double a, p;
+        ierr = IO::splitStringHarmonicsElevationFormat(line, a, p);
+        if (ierr != 0) return ierr;
 
         this->amplitude(j)->set(i, a);
         this->phase(j)->set(i, p);
