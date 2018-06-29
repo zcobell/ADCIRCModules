@@ -780,7 +780,7 @@ int Mesh::buildElementalSearchTree() {
   for (size_t i = 0; i < this->numElements(); i++) {
     tempX = 0.0;
     tempY = 0.0;
-    for (size_t j = 0; j < this->element(i)->n(); j++) {
+    for (int j = 0; j < this->element(i)->n(); j++) {
       tempX = tempX + this->element(i)->node(j)->x();
       tempY = tempY + this->element(i)->node(j)->y();
     }
@@ -915,7 +915,6 @@ void Mesh::deleteElement(size_t index) {
  * @return error code
  */
 int Mesh::write(string filename) {
-  int i, j;
   string tempString;
   vector<string> boundaryList;
   std::ofstream outputFile;
@@ -929,11 +928,11 @@ int Mesh::write(string filename) {
   outputFile << tempString << "\n";
 
   //...Write the mesh nodes
-  for (i = 0; i < this->numNodes(); i++)
+  for (size_t i = 0; i < this->numNodes(); i++)
     outputFile << this->node(i)->toString(this->isLatLon()) << "\n";
 
   //...Write the mesh elements
-  for (i = 0; i < this->numElements(); i++)
+  for (size_t i = 0; i < this->numElements(); i++)
     outputFile << this->element(i)->toString() << "\n";
 
   //...Write the open boundary header
@@ -941,9 +940,9 @@ int Mesh::write(string filename) {
   outputFile << this->totalOpenBoundaryNodes() << "\n";
 
   //...Write the open boundaries
-  for (i = 0; i < this->numOpenBoundaries(); i++) {
+  for (size_t i = 0; i < this->numOpenBoundaries(); i++) {
     boundaryList = this->openBoundary(i)->toStringList();
-    for (j = 0; j < boundaryList.size(); j++)
+    for (size_t j = 0; j < boundaryList.size(); j++)
       outputFile << boundaryList[j] << "\n";
   }
 
@@ -952,9 +951,9 @@ int Mesh::write(string filename) {
   outputFile << this->totalLandBoundaryNodes() << "\n";
 
   //...Write the land boundaries
-  for (i = 0; i < this->numLandBoundaries(); i++) {
+  for (size_t i = 0; i < this->numLandBoundaries(); i++) {
     boundaryList = this->landBoundary(i)->toStringList();
-    for (j = 0; j < boundaryList.size(); j++)
+    for (size_t j = 0; j < boundaryList.size(); j++)
       outputFile << boundaryList[j] << "\n";
   }
 
