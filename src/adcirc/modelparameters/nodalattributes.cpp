@@ -21,7 +21,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include "adcirc/adcirc_errors.h"
+#include "adcirc/adcirc_codes.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"
 
@@ -296,7 +296,9 @@ int NodalAttributes::_readFort13Body(std::fstream &fid) {
 
 size_t NodalAttributes::numNodes() const { return this->m_numNodes; }
 
-void NodalAttributes::setNumNodes(size_t numNodes) { this->m_numNodes = numNodes; }
+void NodalAttributes::setNumNodes(size_t numNodes) {
+  this->m_numNodes = numNodes;
+}
 
 size_t NodalAttributes::numParameters() const { return this->m_numParameters; }
 
@@ -311,11 +313,10 @@ void NodalAttributes::setHeader(const string &header) {
 }
 
 Attribute *NodalAttributes::attribute(size_t parameter, size_t node) {
-  assert(node >= 0 && node < this->numNodes());
-  assert(parameter >= 0 && parameter < this->numParameters());
+  assert(node < this->numNodes());
+  assert(parameter < this->numParameters());
 
-  if (node >= 0 && node < this->numNodes() && parameter >= 0 &&
-      parameter < this->numParameters()) {
+  if (node < this->numNodes() && parameter < this->numParameters()) {
     return &this->m_nodalData[parameter][node];
   } else
     return nullptr;
@@ -329,10 +330,9 @@ Attribute *NodalAttributes::attribute(string parameter, size_t node) {
 int NodalAttributes::write(string outputFilename) { return Adcirc::NoError; }
 
 string NodalAttributes::attributeNames(size_t index) {
-  assert(index >= 0 && index < this->m_nodalParameters.size());
-  if (index >= 0 && index < this->m_nodalParameters.size())
+  assert(index < this->m_nodalParameters.size());
+  if (index < this->m_nodalParameters.size())
     return this->m_nodalParameters[index].name();
   else
     return string("Request out of bounds.");
 }
-

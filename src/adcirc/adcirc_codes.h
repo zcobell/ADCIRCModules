@@ -18,36 +18,17 @@
 //------------------------------------------------------------------------//
 #ifndef ADCIRCERRORS_H
 #define ADCIRCERRORS_H
+
+#include "architecture/error.h"
+
 namespace Adcirc {
 
-enum _genericErrorCodes {
-  NoError = 0x0000000,
-  MissingFile = 0x0000001,
-  FileOpenError = 0x0000002,
-  FileReadError = 0x0000003,
-  Proj4Error = 0x0000004,
-  KdtreeError = 0x0000005
-};
-
-namespace Geometry {
-enum _GeometryErrorCodes {
-  InvalidFormat = 0x0100001,
-  UnknownError = 0x0100002
-};
-}
-
-namespace ModelParameters {
-enum _modelParamErrorCodes { MeshMismatch = 0x0400001 };
-}
-
 namespace Output {
-
-enum _outputErrorCodes { OutputReadError = 0x0500001 };
 
 const int NextOutputSnap = -9999;
 const double DefaultOutputValue = -99999.0;
 
 enum _fileTypes { ASCIIFull, ASCIISparse, Netcdf3, Netcdf4, Xdmf, Unknown };
-}
-}
+}  // namespace Output
+}  // namespace Adcirc
 #endif  // ADCIRCERRORS_H

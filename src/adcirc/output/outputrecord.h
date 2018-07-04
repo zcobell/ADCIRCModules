@@ -20,7 +20,7 @@
 #define OUTPUTRECORD_H
 
 #include <vector>
-#include "adcirc/adcirc_errors.h"
+#include "adcirc/adcirc_codes.h"
 #include "adcirc/geometry/node.h"
 
 namespace Adcirc {
@@ -29,7 +29,7 @@ namespace Output {
 
 class OutputRecord {
  public:
-  explicit OutputRecord(size_t numNodes, bool isVector);
+  explicit OutputRecord(size_t record, size_t numNodes, bool isVector);
 
   void fill(double value);
 
@@ -63,9 +63,14 @@ class OutputRecord {
   double defaultValue() const;
   void setDefaultValue(double defaultValue);
 
+  size_t record() const;
+  void setRecord(size_t record);
+
 private:
+  std::vector<int> m_node;
   std::vector<double> m_u;
   std::vector<double> m_v;
+  int m_record;
   long long m_iteration;
   double m_time;
   size_t m_numNodes;

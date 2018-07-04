@@ -322,6 +322,7 @@ TARGET_INCLUDE_DIRECTORIES( shapelib PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/shap
 ###########################################################################
 ADD_LIBRARY( adcircmodules SHARED 
                 ${CMAKE_SOURCE_DIR}/src/adcirc/config.cpp
+                ${CMAKE_SOURCE_DIR}/src/adcirc/architecture/error.cpp
                 ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/mesh.cpp 
                 ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/node.cpp
                 ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/element.cpp
@@ -361,7 +362,8 @@ ELSE(WIN32)
 ENDIF(WIN32)
 
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc.h DESTINATION include)
-INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/adcirc_errors.h DESTINATION include/adcirc)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/adcirc_codes.h DESTINATION include/adcirc)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/architecture/error.h DESTINATION include/adcirc/architecture)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/config.h DESTINATION include/adcirc)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/qKdtree2/qkdtree2.h DESTINATION include/adcirc/qKdtree2)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/qProj4/qproj4.h DESTINATION include/adcirc/qProj4)

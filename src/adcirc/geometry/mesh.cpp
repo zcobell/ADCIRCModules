@@ -18,7 +18,7 @@
 //------------------------------------------------------------------------//
 #include "adcirc/geometry/mesh.h"
 #include <string>
-#include "adcirc/adcirc_errors.h"
+#include "adcirc/adcirc_codes.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"
 #include "boost/format.hpp"
@@ -555,7 +555,7 @@ size_t Mesh::totalOpenBoundaryNodes() {
  * @return Node pointer
  */
 Node *Mesh::node(size_t index) {
-  if (index >= 0 && index < this->numNodes())
+  if (index < this->numNodes())
     return &this->m_nodes[index];
   else
     return nullptr;
@@ -569,7 +569,7 @@ Node *Mesh::node(size_t index) {
  * @return Element pointer
  */
 Element *Mesh::element(size_t index) {
-  if (index >= 0 && index < this->numElements())
+  if (index < this->numElements())
     return &this->m_elements[index];
   else
     return nullptr;
@@ -614,7 +614,7 @@ Element *Mesh::elementById(size_t id) {
  * @return Boundary pointer
  */
 Boundary *Mesh::openBoundary(size_t index) {
-  if (index >= 0 && index < this->numOpenBoundaries())
+  if (index < this->numOpenBoundaries())
     return &this->m_openBoundaries[index];
   else
     return nullptr;
@@ -627,7 +627,7 @@ Boundary *Mesh::openBoundary(size_t index) {
  * @return Boundary pointer
  */
 Boundary *Mesh::landBoundary(size_t index) {
-  if (index >= 0 && index < this->numLandBoundaries())
+  if (index < this->numLandBoundaries())
     return &this->m_landBoundaries[index];
   else
     return nullptr;

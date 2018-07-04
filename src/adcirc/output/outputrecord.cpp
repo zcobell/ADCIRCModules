@@ -22,9 +22,10 @@
 
 using namespace Adcirc::Output;
 
-OutputRecord::OutputRecord(size_t numNodes, bool isVector) {
+OutputRecord::OutputRecord(size_t record, size_t numNodes, bool isVector) {
   assert(numNodes != 0);
 
+  this->m_record = record;
   this->m_isVector = isVector;
   this->m_time = 0;
   this->m_iteration = 0;
@@ -71,9 +72,12 @@ void OutputRecord::setDefaultValue(double defaultValue) {
   this->m_defaultValue = defaultValue;
 }
 
+size_t OutputRecord::record() const { return this->m_record; }
+
+void OutputRecord::setRecord(size_t record) { this->m_record = record; }
+
 void OutputRecord::setU(size_t index, double value) {
   assert(this->isVector());
-  assert(index >= 0);
   assert(index < this->numNodes());
   this->m_u[index] = value;
   return;
@@ -81,7 +85,6 @@ void OutputRecord::setU(size_t index, double value) {
 
 void OutputRecord::setV(size_t index, double value) {
   assert(this->isVector());
-  assert(index >= 0);
   assert(index < this->numNodes());
   this->m_v[index] = value;
   return;
@@ -89,7 +92,6 @@ void OutputRecord::setV(size_t index, double value) {
 
 void OutputRecord::set(size_t index, double value) {
   assert(!this->isVector());
-  assert(index >= 0);
   assert(index < this->numNodes());
   this->m_u[index] = value;
   return;
@@ -97,14 +99,12 @@ void OutputRecord::set(size_t index, double value) {
 
 void OutputRecord::set(size_t index, double value_u, double value_v) {
   assert(this->isVector());
-  assert(index >= 0);
   assert(index < this->numNodes());
   this->m_u[index] = value_u;
   this->m_v[index] = value_v;
 }
 
 double OutputRecord::value(size_t index) {
-  assert(index >= 0);
   assert(index < this->numNodes());
   if (this->isVector())
     return pow(this->m_u[index], 2.0) + pow(this->m_v[index], 2.0);
@@ -114,19 +114,19 @@ double OutputRecord::value(size_t index) {
 
 double OutputRecord::direction(size_t index) {
   assert(this->isVector());
-  assert(index >= 0 && index < this->numNodes());
+  assert(index < this->numNodes());
   return atan2(this->m_v[index], this->m_u[index]);
 }
 
 double OutputRecord::u(size_t index) {
   assert(this->isVector());
-  assert(index >= 0 && index < this->numNodes());
+  assert(index < this->numNodes());
   return this->m_u[index];
 }
 
 double OutputRecord::v(size_t index) {
   assert(this->isVector());
-  assert(index >= 0 && index < this->numNodes());
+  assert(index < this->numNodes());
   return this->m_v[index];
 }
 

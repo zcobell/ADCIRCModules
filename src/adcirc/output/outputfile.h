@@ -22,7 +22,7 @@
 #include <fstream>
 #include <unordered_map>
 #include <vector>
-#include "adcirc/adcirc_errors.h"
+#include "adcirc/adcirc_codes.h"
 #include "adcirc/geometry/node.h"
 #include "adcirc/output/outputrecord.h"
 
@@ -34,15 +34,13 @@ class OutputFile {
  public:
   explicit OutputFile(std::string filename);
 
-  explicit OutputFile(const char *filename);
-
   ~OutputFile();
 
   void setHeader(const std::string &header);
 
-  bool open();
+  int open();
 
-  bool close();
+  int close();
 
   bool exists();
 
@@ -58,8 +56,11 @@ class OutputFile {
 
   std::string filename() const;
 
-  Adcirc::Output::OutputRecord *data(int snap);
-  Adcirc::Output::OutputRecord *data(int snap, bool &ok);
+  Adcirc::Output::OutputRecord *data(size_t snap);
+  Adcirc::Output::OutputRecord *data(size_t snap, bool &ok);
+
+  Adcirc::Output::OutputRecord *dataAt(size_t position);
+  Adcirc::Output::OutputRecord *dataAt(size_t position, bool &ok);
 
   int getNumSnaps() const;
   void setNumSnaps(int numSnaps);
@@ -70,24 +71,25 @@ class OutputFile {
   double getDt() const;
   void setDt(double dt);
 
-  int getDit() const;
-  void setDit(int dit);
+  int getDiteration() const;
+  void setDiteration(int dit);
 
   void clear();
+  void clearAt(size_t position);
 
  private:
   // variables
   bool m_open;
   int m_filetype;
-  int m_currentSnap;
-  int m_numSnaps;
+  size_t m_currentSnap;
+  size_t m_numSnaps;
   size_t m_numNodes;
   double m_dt;
   int m_dit;
   std::fstream m_fid;
   std::string m_filename;
   std::vector<Adcirc::Output::OutputRecord *> m_records;
-  std::unordered_map<int, Adcirc::Output::OutputRecord *> m_recordMap;
+  std::unordered_map<size_t, Adcirc::Output::OutputRecord *> m_recordMap;
   std::string m_header;
 
   // netcdf specific variables
@@ -100,6 +102,7 @@ class OutputFile {
   // functions
   int getFiletype();
   int findNetcdfVarId();
+  int rebuildMap();
 
   static bool checkFiletypeAsciiFull(std::string filename);
   static bool checkFiletypeAsciiSparse(std::string filename);

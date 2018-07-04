@@ -23,15 +23,15 @@ int main(int argc, char *argv[]) {
     Adcirc::Output::OutputFile *output = new Adcirc::Output::OutputFile("test_files/maxele.63");
 
     //...Open file
-    bool berr = output->open();
-    if(!berr){
+    int ierr = output->open();
+    if(ierr!=Adcirc::NoError){
         delete output;
         return 1;
     }
     
     //...Read snap 1
-    int ierr = output->read();
-    if(ierr!=0){
+    ierr = output->read();
+    if(ierr!=Adcirc::NoError){
         delete output;
         return 2;
     }

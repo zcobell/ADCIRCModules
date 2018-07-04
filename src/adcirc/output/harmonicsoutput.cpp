@@ -19,7 +19,7 @@
 #include "harmonicsoutput.h"
 #include <assert.h>
 #include <fstream>
-#include "adcirc/adcirc_errors.h"
+#include "adcirc/adcirc_codes.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"
 #include "boost/algorithm/string.hpp"
