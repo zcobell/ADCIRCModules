@@ -1,10 +1,4 @@
-#ifndef HARMONICSOUTPUT_H
-#define HARMONICSOUTPUT_H
-
-#include <string>
-#include <unordered_map>
-#include <vector>
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -21,7 +15,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
+//------------------------------------------------------------------------*/
+#ifndef HARMONICSOUTPUT_H
+#define HARMONICSOUTPUT_H
+
+#include <string>
+#include <unordered_map>
+#include <vector>
 #include "harmonicsrecord.h"
 
 namespace Adcirc {
