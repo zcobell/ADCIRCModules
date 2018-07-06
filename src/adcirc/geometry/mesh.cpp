@@ -19,6 +19,7 @@
 #include "adcirc/geometry/mesh.h"
 #include <string>
 #include "adcirc/adcirc_codes.h"
+#include "adcirc/architecture/error.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"
 #include "boost/format.hpp"
@@ -27,24 +28,26 @@
 #include "shapefil.h"
 
 using namespace std;
+using namespace Adcirc;
 using namespace Adcirc::Geometry;
 
-#define CHECK_FILEREAD_RETURN(ok) \
-  if (!ok) return FileIO::GenericFileReadError;
+#define CHECK_FILEREAD_RETURN(ok)                      \
+  if (!ok) Adcirc::Error::throwError("Error reading file"); \
+  ;
 
-#define CHECK_FILEREAD_RETURN_AND_CLOSE(ok) \
-  if (!ok) {                                \
-    fid.close();                            \
-    return FileIO::GenericFileReadError;    \
+#define CHECK_FILEREAD_RETURN_AND_CLOSE(ok)     \
+  if (!ok) {                                    \
+    fid.close();                                \
+    Adcirc::Error::throwError("Error reading file"); \
   }
 
 #define CHECK_FILEREAD_RETURN_INT(ierr) \
-  if (ierr != FileIO::NoError) return ierr;
+  if (ierr != 0) Adcirc::Error::throwError("Error reading file");
 
-#define CHECK_RETURN_AND_CLOSE(ierr) \
-  if (ierr != Adcirc::NoError) {     \
-    fid.close();                     \
-    return ierr;                     \
+#define CHECK_RETURN_AND_CLOSE(ierr)            \
+  if (ierr != Adcirc::NoError) {                \
+    fid.close();                                \
+    Adcirc::Error::throwError("Error reading file"); \
   }
 
 /**
@@ -203,29 +206,33 @@ void Mesh::setNumLandBoundaries(size_t numLandBoundaries) {
  * occured
  */
 int Mesh::read() {
-  int ierr;
+  try {
+    int ierr;
 
-  std::fstream fid(this->filename());
+    std::fstream fid(this->filename());
 
-  this->_readMeshHeader(fid);
+    this->_readMeshHeader(fid);
 
-  //...Read the node table
-  ierr = this->_readNodes(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
+    //...Read the node table
+    ierr = this->_readNodes(fid);
+    CHECK_RETURN_AND_CLOSE(ierr);
 
-  //...Read the element table
-  ierr = this->_readElements(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
+    //...Read the element table
+    ierr = this->_readElements(fid);
+    CHECK_RETURN_AND_CLOSE(ierr);
 
-  //...Read the open boundaries
-  ierr = this->_readOpenBoundaries(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
+    //...Read the open boundaries
+    ierr = this->_readOpenBoundaries(fid);
+    CHECK_RETURN_AND_CLOSE(ierr);
 
-  //...Read the land boundaries
-  ierr = this->_readLandBoundaries(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
+    //...Read the land boundaries
+    ierr = this->_readLandBoundaries(fid);
+    CHECK_RETURN_AND_CLOSE(ierr);
 
-  fid.close();
+    fid.close();
+  } catch (std::string e) {
+    Adcirc::Error::catchError(e);
+  }
 
   return Adcirc::NoError;
 }
@@ -675,7 +682,7 @@ int Mesh::reproject(int epsg) {
   int ierr = proj.transform(this->projection(), epsg, inPoint, outPoint,
                             this->m_isLatLon);
 
-  if (ierr != QProj4::NoError) return Adcirc::Proj4Error;
+  if (ierr != QProj4::NoError) Adcirc::Error::throwError("Proj4 library error");
 
   for (size_t i = 0; i < this->numNodes(); i++) {
     this->node(i)->setX(outPoint[i].x());
@@ -753,7 +760,7 @@ int Mesh::buildNodalSearchTree() {
   this->m_nodalSearchTree = new QKdtree2();
   ierr = this->m_nodalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
-    return Adcirc::KdtreeError;
+    Adcirc::Error::throwError("KDTree2 library error");
   }
 
   return Adcirc::NoError;
@@ -790,7 +797,7 @@ int Mesh::buildElementalSearchTree() {
   this->m_elementalSearchTree = new QKdtree2();
   int ierr = this->m_elementalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
-    return Adcirc::KdtreeError;
+    Adcirc::Error::throwError("KDTree2 library error");
   }
 
   return Adcirc::NoError;

@@ -21,6 +21,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include "adcirc/architecture/error.h"
 #include "boost/algorithm/string/split.hpp"
 #include "boost/algorithm/string/trim.hpp"
 #include "parsers.h"
@@ -53,14 +54,14 @@ int IO::readFileData(string filename, vector<string> &data) {
   t.read(&buffer[0], size);
   boost::algorithm::split(data, buffer, boost::is_any_of("\n"));
   t.close();
-  return FileIO::NoError;
+  return 0;
 }
 
 int IO::splitString(string &data, vector<string> &result) {
   boost::trim_if(data, boost::is_any_of(" "));
   boost::algorithm::split(result, data, boost::is_any_of(" "),
                           boost::token_compress_on);
-  return FileIO::NoError;
+  return 0;
 }
 
 int IO::splitStringNodeFormat(string &data, size_t &id, double &x, double &y,
@@ -76,9 +77,10 @@ int IO::splitStringNodeFormat(string &data, size_t &id, double &x, double &y,
     x = n.x;
     y = n.y;
     z = n.z;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
@@ -95,9 +97,10 @@ int IO::splitStringElemFormat(string &data, size_t &id, size_t &n1, size_t &n2,
     n1 = e.n1;
     n2 = e.n2;
     n3 = e.n3;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
@@ -110,9 +113,10 @@ int IO::splitStringBoundary0Format(string &data, size_t &node1) {
   bool r = phrase_parse(iter, end, bp, space, b);
   if (r) {
     node1 = b.node1;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
@@ -128,9 +132,10 @@ int IO::splitStringBoundary23Format(string &data, size_t &node1, double &crest,
     node1 = b.node1;
     crest = b.crest;
     supercritical = b.supercritical;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
@@ -149,9 +154,10 @@ int IO::splitStringBoundary24Format(string &data, size_t &node1, size_t &node2,
     crest = b.crest;
     subcritical = b.subcritical;
     supercritical = b.supercritical;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
@@ -174,9 +180,10 @@ int IO::splitStringBoundary25Format(string &data, size_t &node1, size_t &node2,
     pipeheight = b.pipeheight;
     pipecoef = b.pipecoef;
     pipediam = b.pipediam;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
@@ -190,9 +197,10 @@ int IO::splitStringAttribute1Format(string &data, size_t &node, double &value) {
   if (r) {
     node = na.node;
     value = na.value;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
@@ -208,9 +216,10 @@ int IO::splitStringAttribute2Format(string &data, size_t &node, double &value1,
     node = na.node;
     value1 = na.value1;
     value2 = na.value2;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
@@ -236,9 +245,10 @@ int IO::splitStringAttribute12Format(string &data, size_t &node,
     values[9] = na.value10;
     values[10] = na.value11;
     values[11] = na.value12;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
@@ -252,9 +262,10 @@ int IO::splitStringHarmonicsElevationFormat(string &data, double &amplitude,
   if (r) {
     amplitude = harm.amplitude;
     phase = harm.phase;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
@@ -271,8 +282,9 @@ int IO::splitStringHarmonicsVelocityFormat(string &data, double &u_magnitude,
     u_phase = harm.u_phase;
     v_magnitude = harm.v_magnitude;
     v_phase = harm.v_phase;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }

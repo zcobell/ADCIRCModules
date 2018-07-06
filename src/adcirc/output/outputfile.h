@@ -55,6 +55,7 @@ class OutputFile {
   std::string getHeader() const;
 
   std::string filename() const;
+  void setFilename(const std::string &filename);
 
   Adcirc::Output::OutputRecord *data(size_t snap);
   Adcirc::Output::OutputRecord *data(size_t snap, bool &ok);

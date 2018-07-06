@@ -22,16 +22,6 @@
 #include <string>
 #include <vector>
 
-namespace FileIO {
-enum _fileio {
-  NoError,
-  GenericFileReadError,
-  FileReadErrorNode,
-  FileReadErrorElement,
-  FileReadErrorBoundary
-};
-}
-
 class IO {
  public:
   explicit IO();
