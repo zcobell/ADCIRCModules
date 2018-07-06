@@ -110,7 +110,7 @@ int OutputFile::open() {
   if (this->isOpen()) return Adcirc::FileOpenError;
 
   if (!this->exists()) {
-    std::cerr << "[ADCModules ERROR]: Specified file does not exist.\n";
+    std::cerr << "[ADCIRCModules ERROR]: Specified file does not exist.\n";
     return Adcirc::FileOpenError;
   }
 
@@ -127,7 +127,7 @@ int OutputFile::open() {
   } else if (this->filetype() == Adcirc::Output::Xdmf) {
     this->openXdmf();
   } else {
-    std::cerr << "[ADCModules ERROR]: no valid file type found.\n";
+    std::cerr << "[ADCIRCModules ERROR]: no valid file type found.\n";
     return Adcirc::FileOpenError;
   }
 
@@ -159,11 +159,12 @@ int OutputFile::read(int snap) {
   if (this->m_filetype == Adcirc::Output::ASCIIFull ||
       this->m_filetype == Adcirc::Output::ASCIISparse) {
     if (snap != Adcirc::Output::NextOutputSnap) {
-      std::cerr << "[ADCModules WARNING]: ASCII Output must be read record by "
-                   "record. Specified snap number ignored.\n";
+      std::cerr
+          << "[ADCIRCModules WARNING]: ASCII Output must be read record by "
+             "record. Specified snap number ignored.\n";
     }
     if (this->m_currentSnap > this->m_numSnaps) {
-      std::cerr << "[ADCModules WARNING]: Attempt to read past last record\n.";
+      std::cerr << "[ADCIRCModules ERROR]: Attempt to read past last record\n.";
       return Adcirc::FileReadError;
     }
     int ierr = this->readAsciiRecord(record);

@@ -333,8 +333,8 @@ ADD_LIBRARY( adcircmodules SHARED
                 ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/attribute.cpp
                 ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/attributemetadata.cpp
                 ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/nodalattributes.cpp 
-                ${CMAKE_SOURCE_DIR}/src/adcirc/output/outputfile.cpp 
                 ${CMAKE_SOURCE_DIR}/src/adcirc/output/outputrecord.cpp 
+                ${CMAKE_SOURCE_DIR}/src/adcirc/output/outputfile.cpp 
                 ${CMAKE_SOURCE_DIR}/src/adcirc/output/harmonicsrecord.cpp
                 ${CMAKE_SOURCE_DIR}/src/adcirc/output/harmonicsoutput.cpp )
 
@@ -540,7 +540,8 @@ IF(UNIX OR CYGWIN)
     FOREACH(TESTFILE cxx_readmesh.cpp cxx_writemesh.cpp cxx_writeshapefile.cpp
                      cxx_projectmesh.cpp cxx_nodalSearchTree.cpp cxx_readfort13_wmesh.cpp 
                      cxx_readfort13_womesh.cpp cxx_fort13findatt.cpp cxx_readasciifull.cpp 
-                     cxx_readnetcdf.cpp cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp )
+                     cxx_readasciisparse.cpp cxx_readmaxele.cpp cxx_readnetcdf.cpp 
+                     cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp )
         GET_FILENAME_COMPONENT( TESTNAME ${TESTFILE} NAME_WE )
         ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
         ADD_DEPENDENCIES( ${TESTNAME} adcircmodules )

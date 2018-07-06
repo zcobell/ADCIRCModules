@@ -134,8 +134,7 @@ double Boundary::crestElevation(size_t index) const {
       this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
       this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
       this->boundaryCode() == 25)
-    if (index < this->boundaryLength() || index >= 0)
-      return this->m_crestElevation[index];
+    if (index < this->boundaryLength()) return this->m_crestElevation[index];
   return -9999.0;
 }
 
@@ -151,7 +150,7 @@ void Boundary::setCrestElevation(size_t index, double crestElevation) {
       this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
       this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
       this->boundaryCode() == 25)
-    if (index < this->boundaryLength() || index >= 0)
+    if (index < this->boundaryLength())
       this->m_crestElevation[index] = crestElevation;
 }
 
@@ -165,7 +164,7 @@ void Boundary::setCrestElevation(size_t index, double crestElevation) {
 double Boundary::subcriticalWeirCoefficient(size_t index) const {
   if (this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
       this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength() || index >= 0)
+    if (index < this->boundaryLength())
       return this->m_subcriticalWeirCoefficient[index];
   return -9999.0;
 }
@@ -176,10 +175,11 @@ double Boundary::subcriticalWeirCoefficient(size_t index) const {
  * @param index position along the boundary
  * @param subcriticalWeirCoefficient coefficient of subcritical flow
  */
-void Boundary::setSubcriticalWeirCoefficient(size_t index, double subcriticalWeirCoefficient) {
+void Boundary::setSubcriticalWeirCoefficient(
+    size_t index, double subcriticalWeirCoefficient) {
   if (this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
       this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength() || index >= 0)
+    if (index < this->boundaryLength())
       this->m_subcriticalWeirCoefficient[index] = subcriticalWeirCoefficient;
 }
 
@@ -195,7 +195,7 @@ double Boundary::supercriticalWeirCoefficient(size_t index) const {
       this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
       this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
       this->boundaryCode() == 25)
-    if (index < this->boundaryLength() || index >= 0)
+    if (index < this->boundaryLength())
       return this->m_supercriticalWeirCoefficient[index];
   return -9999.0;
 }
@@ -212,7 +212,7 @@ void Boundary::setSupercriticalWeirCoefficient(
       this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
       this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
       this->boundaryCode() == 25)
-    if (index < this->boundaryLength() || index >= 0)
+    if (index < this->boundaryLength())
       this->m_supercriticalWeirCoefficient[index] =
           supercriticalWeirCoefficient;
 }
@@ -226,8 +226,7 @@ void Boundary::setSupercriticalWeirCoefficient(
  */
 double Boundary::pipeHeight(size_t index) const {
   if (this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength() || index >= 0)
-      return this->m_pipeHeight[index];
+    if (index < this->boundaryLength()) return this->m_pipeHeight[index];
   return -9999.0;
 }
 
@@ -240,8 +239,7 @@ double Boundary::pipeHeight(size_t index) const {
  */
 void Boundary::setPipeHeight(size_t index, double pipeHeight) {
   if (this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength() || index >= 0)
-      this->m_pipeHeight[index] = pipeHeight;
+    if (index < this->boundaryLength()) this->m_pipeHeight[index] = pipeHeight;
 }
 
 /**
@@ -252,8 +250,7 @@ void Boundary::setPipeHeight(size_t index, double pipeHeight) {
  */
 double Boundary::pipeDiameter(size_t index) const {
   if (this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength() || index >= 0)
-      return this->m_pipeDiameter[index];
+    if (index < this->boundaryLength()) return this->m_pipeDiameter[index];
   return -9999.0;
 }
 
@@ -265,7 +262,7 @@ double Boundary::pipeDiameter(size_t index) const {
  */
 void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
   if (this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength() || index >= 0)
+    if (index < this->boundaryLength())
       this->m_pipeDiameter[index] = pipeDiameter;
 }
 
@@ -277,8 +274,7 @@ void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
  */
 double Boundary::pipeCoefficient(size_t index) const {
   if (this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength() || index >= 0)
-      return this->m_pipeCoefficient[index];
+    if (index < this->boundaryLength()) return this->m_pipeCoefficient[index];
   return -9999.0;
 }
 
@@ -290,7 +286,7 @@ double Boundary::pipeCoefficient(size_t index) const {
  */
 void Boundary::setPipeCoefficient(size_t index, double pipeCoefficient) {
   if (this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength() || index >= 0)
+    if (index < this->boundaryLength())
       this->m_pipeCoefficient[index] = pipeCoefficient;
 }
 
@@ -301,7 +297,7 @@ void Boundary::setPipeCoefficient(size_t index, double pipeCoefficient) {
  * @return pointer to an Node object
  */
 Node *Boundary::node1(size_t index) const {
-  if (index < this->boundaryLength() || index >= 0) return this->m_node1[index];
+  if (index < this->boundaryLength()) return this->m_node1[index];
   return nullptr;
 }
 
@@ -312,8 +308,7 @@ Node *Boundary::node1(size_t index) const {
  * @param node1 Pointer to an Node object
  */
 void Boundary::setNode1(size_t index, Node *node1) {
-  if (index < this->boundaryLength() || index >= 0)
-    this->m_node1[index] = node1;
+  if (index < this->boundaryLength()) this->m_node1[index] = node1;
 }
 
 /**
@@ -326,8 +321,7 @@ void Boundary::setNode1(size_t index, Node *node1) {
 Node *Boundary::node2(size_t index) const {
   if (this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
       this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength() || index >= 0)
-      return this->m_node2[index];
+    if (index < this->boundaryLength()) return this->m_node2[index];
   return nullptr;
 }
 
@@ -340,8 +334,7 @@ Node *Boundary::node2(size_t index) const {
 void Boundary::setNode2(size_t index, Node *node2) {
   if (this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
       this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength() || index >= 0)
-      this->m_node2[index] = node2;
+    if (index < this->boundaryLength()) this->m_node2[index] = node2;
 }
 
 /**

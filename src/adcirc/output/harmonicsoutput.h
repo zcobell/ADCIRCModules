@@ -42,24 +42,24 @@ class HarmonicsOutput {
   size_t index(std::string name);
 
   //...fort.53 type parameters
-  HarmonicsRecord* amplitude(std::string name);
-  HarmonicsRecord* amplitude(size_t index);
+  Adcirc::Output::HarmonicsRecord* amplitude(std::string name);
+  Adcirc::Output::HarmonicsRecord* amplitude(size_t index);
 
-  HarmonicsRecord* phase(std::string name);
-  HarmonicsRecord* phase(size_t index);
+  Adcirc::Output::HarmonicsRecord* phase(std::string name);
+  Adcirc::Output::HarmonicsRecord* phase(size_t index);
 
   //...fort.54 type parameters
-  HarmonicsRecord* u_magnitude(std::string name);
-  HarmonicsRecord* u_magnitude(size_t index);
+  Adcirc::Output::HarmonicsRecord* u_magnitude(std::string name);
+  Adcirc::Output::HarmonicsRecord* u_magnitude(size_t index);
 
-  HarmonicsRecord* u_phase(std::string name);
-  HarmonicsRecord* u_phase(size_t index);
+  Adcirc::Output::HarmonicsRecord* u_phase(std::string name);
+  Adcirc::Output::HarmonicsRecord* u_phase(size_t index);
 
-  HarmonicsRecord* v_magnitude(std::string name);
-  HarmonicsRecord* v_magnitude(size_t index);
+  Adcirc::Output::HarmonicsRecord* v_magnitude(std::string name);
+  Adcirc::Output::HarmonicsRecord* v_magnitude(size_t index);
 
-  HarmonicsRecord* v_phase(std::string name);
-  HarmonicsRecord* v_phase(size_t index);
+  Adcirc::Output::HarmonicsRecord* v_phase(std::string name);
+  Adcirc::Output::HarmonicsRecord* v_phase(size_t index);
 
   size_t numConstituents() const;
   void setNumConstituents(const size_t& numConstituents);
@@ -76,12 +76,12 @@ class HarmonicsOutput {
   std::string m_filename;
   size_t m_numConstituents;
   size_t m_numNodes;
-  std::vector<HarmonicsRecord> m_amplitude;
-  std::vector<HarmonicsRecord> m_phase;
-  std::vector<HarmonicsRecord> m_umagnitude;
-  std::vector<HarmonicsRecord> m_vmagnitude;
-  std::vector<HarmonicsRecord> m_uphase;
-  std::vector<HarmonicsRecord> m_vphase;
+  std::vector<Adcirc::Output::HarmonicsRecord> m_amplitude;
+  std::vector<Adcirc::Output::HarmonicsRecord> m_phase;
+  std::vector<Adcirc::Output::HarmonicsRecord> m_umagnitude;
+  std::vector<Adcirc::Output::HarmonicsRecord> m_vmagnitude;
+  std::vector<Adcirc::Output::HarmonicsRecord> m_uphase;
+  std::vector<Adcirc::Output::HarmonicsRecord> m_vphase;
   std::unordered_map<size_t, size_t> m_nodeIndex;
   std::unordered_map<std::string, size_t> m_index;
   std::unordered_map<size_t, std::string> m_reverseIndex;

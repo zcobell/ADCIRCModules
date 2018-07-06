@@ -419,11 +419,6 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
 
   std::getline(fid, tempLine);
 
-  // IO::splitString(tempLine, tempList);
-  // this->setTotalLandBoundaryNodes(
-  //    StringConversion::stringToInt(tempList[0], ok));
-  // CHECK_FILEREAD_RETURN(ok);
-
   for (size_t i = 0; i < this->numLandBoundaries(); i++) {
     std::getline(fid, tempLine);
     IO::splitString(tempLine, tempList);

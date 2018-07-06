@@ -22,6 +22,9 @@
 #include <string>
 #include <vector>
 
+namespace Adcirc {
+namespace Output {
+
 class HarmonicsRecord {
  public:
   HarmonicsRecord();
@@ -45,7 +48,7 @@ class HarmonicsRecord {
   double equilibriumArg() const;
   void setEquilibriumArg(double equilibriumArg);
 
-private:
+ private:
   size_t m_numNodes;
   std::string m_name;
   std::vector<double> m_data;
@@ -53,5 +56,7 @@ private:
   double m_nodalFactor;
   double m_equilibriumArg;
 };
+}  // namespace Output
+}  // namespace Adcirc
 
 #endif  // HARMONICSRECORD_H

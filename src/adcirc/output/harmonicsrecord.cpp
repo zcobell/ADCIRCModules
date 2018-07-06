@@ -20,6 +20,7 @@
 #include <assert.h>
 
 using namespace std;
+using namespace Adcirc::Output;
 
 HarmonicsRecord::HarmonicsRecord() { this->m_numNodes = 0; }
 
