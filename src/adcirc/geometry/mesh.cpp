@@ -410,8 +410,8 @@ int Mesh::_readOpenBoundaries(std::fstream &fid) {
 int Mesh::_readLandBoundaries(std::fstream &fid) {
   string tempLine;
   vector<string> tempList;
-  int code, ierr;
-  size_t n1, n2, length;
+
+  size_t n1, n2;
   double supercritical, subcritical, crest, pipeheight, pipediam, pipecoef;
   bool ok;
 
@@ -430,9 +430,9 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
     std::getline(fid, tempLine);
     IO::splitString(tempLine, tempList);
 
-    length = StringConversion::stringToSizet(tempList[0], ok);
+    size_t length = StringConversion::stringToSizet(tempList[0], ok);
     CHECK_FILEREAD_RETURN(ok);
-    code = StringConversion::stringToInt(tempList[1], ok);
+    int code = StringConversion::stringToInt(tempList[1], ok);
     CHECK_FILEREAD_RETURN(ok);
 
     this->m_landBoundaries[i].setBoundary(code, length);
@@ -441,7 +441,7 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
       std::getline(fid, tempLine);
 
       if (code == 3 || code == 13 || code == 23) {
-        ierr =
+        int ierr =
             IO::splitStringBoundary23Format(tempLine, n1, crest, supercritical);
         CHECK_FILEREAD_RETURN_INT(ierr);
         if (this->m_nodeOrderingLogical) {
@@ -456,8 +456,8 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
             j, supercritical);
 
       } else if (code == 4 || code == 24) {
-        ierr = IO::splitStringBoundary24Format(tempLine, n1, n2, crest,
-                                               subcritical, supercritical);
+        int ierr = IO::splitStringBoundary24Format(tempLine, n1, n2, crest,
+                                                   subcritical, supercritical);
         CHECK_FILEREAD_RETURN_INT(ierr);
 
         if (this->m_nodeOrderingLogical) {
@@ -476,9 +476,9 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
             j, supercritical);
 
       } else if (code == 5 || code == 25) {
-        ierr = IO::splitStringBoundary25Format(tempLine, n1, n2, crest,
-                                               subcritical, supercritical,
-                                               pipeheight, pipecoef, pipediam);
+        int ierr = IO::splitStringBoundary25Format(
+            tempLine, n1, n2, crest, subcritical, supercritical, pipeheight,
+            pipecoef, pipediam);
         CHECK_FILEREAD_RETURN_INT(ierr);
 
         if (this->m_nodeOrderingLogical) {
@@ -499,7 +499,7 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
         this->m_landBoundaries[i].setPipeCoefficient(j, pipecoef);
         this->m_landBoundaries[i].setPipeDiameter(j, pipediam);
       } else {
-        ierr = IO::splitStringBoundary0Format(tempLine, n1);
+        int ierr = IO::splitStringBoundary0Format(tempLine, n1);
         CHECK_FILEREAD_RETURN_INT(ierr);
         if (this->m_nodeOrderingLogical) {
           this->m_landBoundaries[i].setNode1(j, &this->m_nodes[n1 - 1]);
@@ -746,7 +746,6 @@ int Mesh::toNodeShapefile(const string outputFile) {
 }
 
 int Mesh::toConnectivityShapefile(const string outputFile) {
-
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_ARC);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
 
@@ -770,7 +769,7 @@ int Mesh::toConnectivityShapefile(const string outputFile) {
         n1 = 2;
         n2 = 0;
       }
-  
+
       int elemid, nodeid[2];
       double latitude[2], longitude[2], elevation[2];
 

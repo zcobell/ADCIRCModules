@@ -241,7 +241,6 @@ void NodalAttributes::_mapNodes() {
 
 int NodalAttributes::_readFort13Body(std::fstream &fid) {
   string tempLine, name;
-  size_t index, numNonDefault, nValues;
   int ierr;
   size_t node;
   double value;
@@ -253,16 +252,16 @@ int NodalAttributes::_readFort13Body(std::fstream &fid) {
   for (size_t i = 0; i < this->numParameters(); i++) {
     std::getline(fid, name);
     name = StringConversion::sanitizeString(name);
-    index = this->m_attributeLocations[name];
+    size_t index = this->m_attributeLocations[name];
 
     std::getline(fid, tempLine);
-    numNonDefault = StringConversion::stringToSizet(tempLine, ok);
+    size_t numNonDefault = StringConversion::stringToSizet(tempLine, ok);
     assert(ok);
     if (!ok) {
       Adcirc::Error::throwError("Error reading file data");
     }
 
-    nValues = this->m_nodalParameters[index].numberOfValues();
+    size_t nValues = this->m_nodalParameters[index].numberOfValues();
 
     for (size_t j = 0; j < numNonDefault; j++) {
       std::getline(fid, tempLine);
