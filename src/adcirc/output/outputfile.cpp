@@ -210,7 +210,7 @@ int OutputFile::read(int snap) {
         return 0;
       }
     }
-  } catch (std::string e) {
+  } catch (std::string& e) {
     Adcirc::Error::catchError(e);
   }
 

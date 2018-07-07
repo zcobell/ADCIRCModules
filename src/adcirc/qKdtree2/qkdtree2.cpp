@@ -37,7 +37,7 @@
 QKdtree2::QKdtree2() {
   this->m_initialized = false;
   this->m_numDataPoints = 0;
-  this->m_tree = nullptr;
+  this->m_tree.reset(nullptr);
 }
 //-----------------------------------------------------------------------------------------//
 

@@ -291,9 +291,10 @@ int HarmonicsOutput::read() {
     fid.close();
 
     return Adcirc::NoError;
-  } catch (std::string e) {
+  } catch (std::string& e) {
     Adcirc::Error::catchError(e);
   }
+  return Adcirc::NoError;
 }
 
 int HarmonicsOutput::write(const string& filename) { return Adcirc::NoError; }

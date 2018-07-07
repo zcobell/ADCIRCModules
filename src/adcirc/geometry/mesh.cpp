@@ -224,7 +224,7 @@ int Mesh::read() {
     CHECK_RETURN_AND_CLOSE(ierr);
 
     fid.close();
-  } catch (std::string e) {
+  } catch (std::string &e) {
     Adcirc::Error::catchError(e);
   }
 
@@ -359,13 +359,11 @@ int Mesh::_readElements(std::fstream &fid) {
 int Mesh::_readOpenBoundaries(std::fstream &fid) {
   string tempLine;
   vector<string> tempList;
-  int ierr;
-  size_t nid, length;
-  bool ok;
 
   std::getline(fid, tempLine);
   IO::splitString(tempLine, tempList);
 
+  bool ok;
   this->setNumOpenBoundaries(StringConversion::stringToSizet(tempList[0], ok));
   CHECK_FILEREAD_RETURN(ok);
 
@@ -381,14 +379,15 @@ int Mesh::_readOpenBoundaries(std::fstream &fid) {
     std::getline(fid, tempLine);
     IO::splitString(tempLine, tempList);
 
-    length = StringConversion::stringToSizet(tempList[0], ok);
+    size_t length = StringConversion::stringToSizet(tempList[0], ok);
     CHECK_FILEREAD_RETURN(ok);
 
     this->m_openBoundaries[i].setBoundary(-1, length);
 
     for (size_t j = 0; j < this->m_openBoundaries[i].length(); j++) {
       std::getline(fid, tempLine);
-      ierr = IO::splitStringBoundary0Format(tempLine, nid);
+      size_t nid;
+      int ierr = IO::splitStringBoundary0Format(tempLine, nid);
       CHECK_FILEREAD_RETURN_INT(ierr);
 
       if (this->m_nodeOrderingLogical) {
@@ -715,14 +714,8 @@ int Mesh::reproject(int epsg) {
  * @return error code
  */
 int Mesh::toShapefile(const string &outputFile) {
-  SHPHandle shpid;
-  DBFHandle dbfid;
-  SHPObject *shpobj;
-  int shp_index, nodeid;
-  double latitude, longitude, elevation;
-
-  shpid = SHPCreate(outputFile.c_str(), SHPT_POINT);
-  dbfid = DBFCreate(outputFile.c_str());
+  SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POINT);
+  DBFHandle dbfid = DBFCreate(outputFile.c_str());
 
   DBFAddField(dbfid, "nodeid", FTInteger, 16, 0);
   DBFAddField(dbfid, "longitude", FTDouble, 16, 8);
@@ -730,14 +723,14 @@ int Mesh::toShapefile(const string &outputFile) {
   DBFAddField(dbfid, "elevation", FTDouble, 16, 4);
 
   for (size_t i = 0; i < this->numNodes(); i++) {
-    nodeid = static_cast<int>(this->node(i)->id());
-    longitude = this->node(i)->x();
-    latitude = this->node(i)->y();
-    elevation = this->node(i)->z();
+    int nodeid = static_cast<int>(this->node(i)->id());
+    double longitude = this->node(i)->x();
+    double latitude = this->node(i)->y();
+    double elevation = this->node(i)->z();
 
-    shpobj =
+    SHPObject *shpobj =
         SHPCreateSimpleObject(SHPT_POINT, 1, &longitude, &latitude, &elevation);
-    shp_index = SHPWriteObject(shpid, -1, shpobj);
+    int shp_index = SHPWriteObject(shpid, -1, shpobj);
     SHPDestroyObject(shpobj);
 
     DBFWriteIntegerAttribute(dbfid, shp_index, 0, nodeid);

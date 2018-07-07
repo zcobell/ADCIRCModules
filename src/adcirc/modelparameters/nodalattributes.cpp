@@ -103,7 +103,7 @@ int NodalAttributes::read() {
     if (this->m_mesh != nullptr) {
       this->_mapNodes();
     }
-  } catch (std::string e) {
+  } catch (std::string &e) {
     Adcirc::Error::catchError(e);
   }
 
@@ -157,9 +157,6 @@ int NodalAttributes::_readFort13Defaults(std::fstream &fid) {
   vector<string> tempList;
   double defaultValue;
   vector<double> defaultValueVector;
-  int ierr;
-  size_t nValues;
-  bool ok;
 
   for (size_t i = 0; i < this->numParameters(); i++) {
     std::getline(fid, name);
@@ -167,8 +164,9 @@ int NodalAttributes::_readFort13Defaults(std::fstream &fid) {
 
     std::getline(fid, units);
 
+    bool ok;
     std::getline(fid, tempLine);
-    nValues = StringConversion::stringToSizet(tempLine, ok);
+    int nValues = StringConversion::stringToSizet(tempLine, ok);
     assert(ok);
     if (!ok) {
       Adcirc::Error::throwError("Error reading file data");
@@ -188,7 +186,7 @@ int NodalAttributes::_readFort13Defaults(std::fstream &fid) {
 
     } else {
       std::getline(fid, tempLine);
-      ierr = IO::splitString(tempLine, tempList);
+      int ierr = IO::splitString(tempLine, tempList);
       assert(ierr == 0);
       if (ierr != 0) {
         Adcirc::Error::throwError("Error reading file data");

@@ -22,7 +22,13 @@
 using namespace std;
 using namespace Adcirc::Output;
 
-HarmonicsRecord::HarmonicsRecord() { this->m_numNodes = 0; }
+HarmonicsRecord::HarmonicsRecord() {
+  this->m_numNodes = 0;
+  this->m_frequency = 0.0;
+  this->m_equilibriumArg = 0.0;
+  this->m_nodalFactor = 0.0;
+  this->m_name = string();
+}
 
 void HarmonicsRecord::resize(size_t numNodes) {
   this->m_numNodes = numNodes;
