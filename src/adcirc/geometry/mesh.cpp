@@ -708,12 +708,12 @@ int Mesh::reproject(int epsg) {
 }
 
 /**
- * @name Mesh::toShapefile
- * @brief Writes the mesh nodes into ESRI shapefile format
+ * @name Mesh::toNodeShapefile
+ * @brief Writes the mesh nodes or elements into ESRI shapefile format
  * @param outputFile output file with .shp extension
  * @return error code
  */
-int Mesh::toShapefile(const string &outputFile) {
+int Mesh::toNodeShapefile(const string outputFile) {
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POINT);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
 
@@ -737,6 +737,64 @@ int Mesh::toShapefile(const string &outputFile) {
     DBFWriteDoubleAttribute(dbfid, shp_index, 1, longitude);
     DBFWriteDoubleAttribute(dbfid, shp_index, 2, latitude);
     DBFWriteDoubleAttribute(dbfid, shp_index, 3, elevation);
+  }
+
+  DBFClose(dbfid);
+  SHPClose(shpid);
+
+  return Adcirc::NoError;
+}
+
+int Mesh::toConnectivityShapefile(const string outputFile) {
+
+  SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_ARC);
+  DBFHandle dbfid = DBFCreate(outputFile.c_str());
+
+  DBFAddField(dbfid, "elemid", FTInteger, 16, 0);
+  DBFAddField(dbfid, "node1", FTInteger, 16, 0);
+  DBFAddField(dbfid, "node2", FTInteger, 16, 0);
+  DBFAddField(dbfid, "znode1", FTDouble, 16, 4);
+  DBFAddField(dbfid, "znode2", FTDouble, 16, 4);
+
+  for (int i = 0; i < this->numElements(); i++) {
+    int n1, n2;
+
+    for (int j = 0; j < 3; j++) {
+      if (j == 0) {
+        n1 = 0;
+        n2 = 1;
+      } else if (j == 1) {
+        n1 = 1;
+        n2 = 2;
+      } else if (j == 2) {
+        n1 = 2;
+        n2 = 0;
+      }
+  
+      int elemid, nodeid[2];
+      double latitude[2], longitude[2], elevation[2];
+
+      elemid = this->element(i)->id();
+      nodeid[0] = this->element(i)->node(n1)->id();
+      nodeid[1] = this->element(i)->node(n2)->id();
+      longitude[0] = this->element(i)->node(n1)->x();
+      longitude[1] = this->element(i)->node(n2)->x();
+      latitude[0] = this->element(i)->node(n1)->y();
+      latitude[1] = this->element(i)->node(n2)->y();
+      elevation[0] = this->element(i)->node(n1)->z();
+      elevation[1] = this->element(i)->node(n2)->z();
+
+      SHPObject *shpobj =
+          SHPCreateSimpleObject(SHPT_ARC, 2, longitude, latitude, elevation);
+      int shp_index = SHPWriteObject(shpid, -1, shpobj);
+      SHPDestroyObject(shpobj);
+
+      DBFWriteIntegerAttribute(dbfid, shp_index, 0, elemid);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 1, nodeid[0]);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 2, nodeid[1]);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 3, elevation[0]);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 4, elevation[1]);
+    }
   }
 
   DBFClose(dbfid);

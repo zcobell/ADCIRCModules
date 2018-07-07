@@ -107,7 +107,8 @@ class Mesh {
   int reproject(int epsg);
   bool isLatLon();
 
-  int toShapefile(const std::string &outputFile);
+  int toNodeShapefile(std::string outputFile);
+  int toConnectivityShapefile(std::string outputFile);
 
   int buildNodalSearchTree();
   int buildElementalSearchTree();
