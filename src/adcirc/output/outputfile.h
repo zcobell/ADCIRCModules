@@ -22,13 +22,14 @@
 #include <fstream>
 #include <unordered_map>
 #include <vector>
-#include "adcirc/adcirc_codes.h"
 #include "adcirc/geometry/node.h"
 #include "adcirc/output/outputrecord.h"
 
 namespace Adcirc {
 
 namespace Output {
+
+enum _fileTypes { ASCIIFull, ASCIISparse, Netcdf3, Netcdf4, Xdmf, Unknown };
 
 class OutputFile {
  public:

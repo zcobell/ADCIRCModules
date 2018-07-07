@@ -21,23 +21,23 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include "adcirc/adcirc_codes.h"
 #include "adcirc/architecture/error.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"
 
 using namespace Adcirc::ModelParameters;
 
-#define CHECK_RETURN_AND_CLOSE(ierr) \
-  if (ierr != Adcirc::NoError) {     \
-    fid.close();                     \
-    return ierr;                     \
+#define CHECK_RETURN_AND_CLOSE(ierr)                      \
+  if (ierr != Adcirc::NoError) {                          \
+    fid.close();                                          \
+    Adcirc::Error::throwError("Error reading file data"); \
+    return ierr;                                          \
   }
 
-#define CHECK_FILEREAD_RETURN(ok)     \
-  if (!ok) {                          \
-    fid.close();                      \
-    Adcirc::Error::error("Error reading file data"); \
+#define CHECK_FILEREAD_RETURN(ok)                         \
+  if (!ok) {                                              \
+    fid.close();                                          \
+    Adcirc::Error::throwError("Error reading file data"); \
   }
 
 NodalAttributes::NodalAttributes() {
@@ -126,7 +126,8 @@ int NodalAttributes::_readFort13Header(std::fstream &fid) {
 
   if (this->m_mesh != nullptr) {
     if (this->m_mesh->numNodes() != numnodes)
-      Adcirc::Error::throwError("Number of nodes does not match provided mesh.");
+      Adcirc::Error::throwError(
+          "Number of nodes does not match provided mesh.");
   } else
     this->setNumNodes(numnodes);
 

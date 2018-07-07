@@ -20,12 +20,14 @@
 #define OUTPUTRECORD_H
 
 #include <vector>
-#include "adcirc/adcirc_codes.h"
 #include "adcirc/geometry/node.h"
 
 namespace Adcirc {
 
 namespace Output {
+
+const int NextOutputSnap = -9999;
+const double DefaultOutputValue = -99999.0;
 
 class OutputRecord {
  public:

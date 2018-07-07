@@ -20,7 +20,7 @@
 #include <assert.h>
 #include <fstream>
 #include <iostream>
-#include "adcirc/adcirc_codes.h"
+#include "adcirc/architecture/error.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"
 #include "netcdf.h"

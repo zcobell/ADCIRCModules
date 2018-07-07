@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "error.h"
+#include <stdexcept>
 
 using namespace Adcirc;
 using namespace std;

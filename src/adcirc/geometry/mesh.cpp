@@ -18,7 +18,6 @@
 //------------------------------------------------------------------------*/
 #include "adcirc/geometry/mesh.h"
 #include <string>
-#include "adcirc/adcirc_codes.h"
 #include "adcirc/architecture/error.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"

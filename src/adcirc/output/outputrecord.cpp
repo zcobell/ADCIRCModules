@@ -19,6 +19,7 @@
 #include "outputrecord.h"
 #include <assert.h>
 #include <math.h>
+#include "adcirc/architecture/error.h"
 
 using namespace Adcirc::Output;
 

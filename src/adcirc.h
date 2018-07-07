@@ -24,7 +24,6 @@
 #include "adcirc/qProj4/qproj4.h"
 
 #include "adcirc/architecture/error.h"
-#include "adcirc/adcirc_codes.h"
 #include "adcirc/config.h"
 #include "adcirc/geometry/mesh.h"
 #include "adcirc/modelparameters/nodalattributes.h"
