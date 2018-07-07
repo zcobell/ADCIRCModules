@@ -1,4 +1,4 @@
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
+//------------------------------------------------------------------------*/
 #include "adcirc/geometry/node.h"
 #include "boost/format.hpp"
 
@@ -41,7 +41,7 @@ Node::Node() {
  * @param y y position
  * @param z z elevation
  */
-Node::Node(int id, double x, double y, double z) {
+Node::Node(size_t id, double x, double y, double z) {
   this->m_id = id;
   this->m_x = x;
   this->m_y = y;
@@ -56,7 +56,7 @@ Node::Node(int id, double x, double y, double z) {
  * @param y y position
  * @param z z elevation
  */
-void Node::setNode(int id, double x, double y, double z) {
+void Node::setNode(size_t id, double x, double y, double z) {
   this->m_id = id;
   this->m_x = x;
   this->m_y = y;
@@ -111,14 +111,14 @@ void Node::setZ(double z) { this->m_z = z; }
  * @brief Returns the nodal id/label
  * @return nodal id/label
  */
-int Node::id() const { return this->m_id; }
+size_t Node::id() const { return this->m_id; }
 
 /**
  * @name Node::setId
  * @brief Sets the nodal id/label
  * @param id nodal id/label
  */
-void Node::setId(int id) { this->m_id = id; }
+void Node::setId(size_t id) { this->m_id = id; }
 
 /**
  * @name Node::toString
@@ -128,10 +128,11 @@ void Node::setId(int id) { this->m_id = id; }
  * @return formatted string
  */
 string Node::toString(bool geographicCoordinates) {
-  if (geographicCoordinates)
+  if (geographicCoordinates) {
     return boost::str(boost::format("%11i   %14.10f   %14.10f  %14.10f") %
                       this->id() % this->x() % this->y() % this->z());
-  else
+  } else {
     return boost::str(boost::format("%11i   %14.4f   %14.4f  %14.4f") %
                       this->id() % this->x() % this->y() % this->z());
+  }
 }

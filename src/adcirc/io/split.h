@@ -1,4 +1,4 @@
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
+//------------------------------------------------------------------------*/
 #ifndef SPLIT_H
 #define SPLIT_H
 
@@ -26,8 +26,8 @@
 using namespace std;
 
 class split {
-public:
-  static vector<string> stringSplitToVector(string s, string delim);
+ public:
+  static vector<string> stringSplitToVector(string s, const string& delim);
   static vector<string> stringSplitToVector(string s);
 };
 

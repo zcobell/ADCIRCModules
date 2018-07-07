@@ -1,4 +1,4 @@
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,13 +15,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
+//------------------------------------------------------------------------*/
 #include "split.h"
+#include "boost/algorithm/string/classification.hpp"
 #include "boost/algorithm/string/split.hpp"
 #include "boost/algorithm/string/trim.hpp"
-#include "boost/algorithm/string/classification.hpp"
 
-vector<string> split::stringSplitToVector(string s, string delim) {
+vector<string> split::stringSplitToVector(string s, const string& delim) {
   vector<string> elems;
   boost::trim_if(s, boost::is_any_of(delim));
   boost::algorithm::split(elems, s, boost::is_any_of(delim),

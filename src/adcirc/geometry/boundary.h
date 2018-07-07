@@ -1,4 +1,4 @@
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
+//------------------------------------------------------------------------*/
 /**
  * @class Boundary
  * @author Zachary Cobell
@@ -40,49 +40,49 @@ class Boundary {
  public:
   explicit Boundary();
 
-  explicit Boundary(int boundaryCode, int boundaryLength);
+  explicit Boundary(int boundaryCode, size_t boundaryLength);
 
-  void setBoundary(int boundaryCode, int boundaryLength);
+  void setBoundary(int boundaryCode, size_t boundaryLength);
 
   int boundaryCode() const;
   void setBoundaryCode(int boundaryCode);
 
-  int boundaryLength() const;
-  void setBoundaryLength(int boundaryLength);
-  int size() const;
-  int length() const;
+  size_t boundaryLength() const;
+  void setBoundaryLength(size_t boundaryLength);
+  size_t size() const;
+  size_t length() const;
 
-  double crestElevation(int index) const;
-  void setCrestElevation(int index, double crestElevation);
+  double crestElevation(size_t index) const;
+  void setCrestElevation(size_t index, double crestElevation);
 
-  double subcriticalWeirCoefficient(int index) const;
-  void setSubcriticalWeirCoefficient(int index,
+  double subcriticalWeirCoefficient(size_t index) const;
+  void setSubcriticalWeirCoefficient(size_t index,
                                      double subcriticalWeirCoefficient);
 
-  double supercriticalWeirCoefficient(int index) const;
-  void setSupercriticalWeirCoefficient(int index,
+  double supercriticalWeirCoefficient(size_t index) const;
+  void setSupercriticalWeirCoefficient(size_t index,
                                        double supercriticalWeirCoefficient);
 
-  double pipeHeight(int index) const;
-  void setPipeHeight(int index, double pipeHeight);
+  double pipeHeight(size_t index) const;
+  void setPipeHeight(size_t index, double pipeHeight);
 
-  double pipeDiameter(int index) const;
-  void setPipeDiameter(int index, double pipeDiameter);
+  double pipeDiameter(size_t index) const;
+  void setPipeDiameter(size_t index, double pipeDiameter);
 
-  double pipeCoefficient(int index) const;
-  void setPipeCoefficient(int index, double pipeCoefficient);
+  double pipeCoefficient(size_t index) const;
+  void setPipeCoefficient(size_t index, double pipeCoefficient);
 
-  Adcirc::Geometry::Node *node1(int index) const;
-  void setNode1(int index, Adcirc::Geometry::Node *node1);
+  Adcirc::Geometry::Node *node1(size_t index) const;
+  void setNode1(size_t index, Adcirc::Geometry::Node *node1);
 
-  Adcirc::Geometry::Node *node2(int index) const;
-  void setNode2(int index, Adcirc::Geometry::Node *node2);
+  Adcirc::Geometry::Node *node2(size_t index) const;
+  void setNode2(size_t index, Adcirc::Geometry::Node *node2);
 
   std::vector<std::string> toStringList();
 
  private:
   int m_boundaryCode;
-  int m_boundaryLength;
+  size_t m_boundaryLength;
   std::vector<double> m_crestElevation;
   std::vector<double> m_subcriticalWeirCoefficient;
   std::vector<double> m_supercriticalWeirCoefficient;
@@ -93,6 +93,6 @@ class Boundary {
   std::vector<Adcirc::Geometry::Node *> m_node1;
   std::vector<Adcirc::Geometry::Node *> m_node2;
 };
-}
-}
+}  // namespace Geometry
+}  // namespace Adcirc
 #endif  // BOUNDARY_H

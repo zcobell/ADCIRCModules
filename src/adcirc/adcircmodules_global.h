@@ -1,4 +1,4 @@
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
+//------------------------------------------------------------------------*/
 #ifndef ADCIRCMODULES_GLOBAL_H
 #define ADCIRCMODULES_GLOBAL_H
 

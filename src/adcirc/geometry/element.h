@@ -1,4 +1,4 @@
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
+//------------------------------------------------------------------------*/
 /**
  * @class Element
  * @author Zachary Cobell
@@ -26,22 +26,21 @@
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
-#include "adcirc/adcircmodules_global.h"
-#include "adcirc/geometry/element.h"
-#include "adcirc/geometry/node.h"
 #include <string>
 #include <vector>
+#include "adcirc/adcircmodules_global.h"
+#include "adcirc/geometry/node.h"
 
 namespace Adcirc {
 namespace Geometry {
 
 class Element {
-public:
+ public:
   explicit Element();
-  explicit Element(int id, Adcirc::Geometry::Node *n1,
+  explicit Element(size_t id, Adcirc::Geometry::Node *n1,
                    Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3);
 
-  void setElement(int id, Adcirc::Geometry::Node *n1,
+  void setElement(size_t id, Adcirc::Geometry::Node *n1,
                   Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3);
 
   int n() const;
@@ -49,18 +48,18 @@ public:
   Adcirc::Geometry::Node *node(int i);
   void setNode(int i, Adcirc::Geometry::Node *node);
 
-  int id() const;
-  void setId(int id);
+  size_t id() const;
+  void setId(size_t id);
 
   std::string toString();
 
-private:
+ private:
   int m_n = 3;
 
-  int m_id;
+  size_t m_id;
   std::vector<Adcirc::Geometry::Node *> m_nodes;
 };
-}
-}
+}  // namespace Geometry
+}  // namespace Adcirc
 
-#endif // ELEMENT_H
+#endif  // ELEMENT_H

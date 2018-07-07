@@ -1,4 +1,4 @@
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,12 +15,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
+//------------------------------------------------------------------------*/
 #include "io.h"
 #include <complex>
 #include <fstream>
 #include <iostream>
 #include <string>
+#include "adcirc/architecture/error.h"
 #include "boost/algorithm/string/split.hpp"
 #include "boost/algorithm/string/trim.hpp"
 #include "parsers.h"
@@ -28,19 +29,23 @@
 using namespace std;
 
 //...Typedefs for boost parsers used in I/O
-typedef string::const_iterator iterator_type;
-typedef parse::node_parser<iterator_type> node_parser;
-typedef parse::elem_parser<iterator_type> elem_parser;
-typedef parse::boundary0_parser<iterator_type> boundary0_parser;
-typedef parse::boundary23_parser<iterator_type> boundary23_parser;
-typedef parse::boundary24_parser<iterator_type> boundary24_parser;
-typedef parse::boundary25_parser<iterator_type> boundary25_parser;
-typedef parse::nodalAttribute1_parser<iterator_type> nodalattribute1_parser;
-typedef parse::nodalAttribute12_parser<iterator_type> nodalattribute12_parser;
+using iterator_type = string::const_iterator;
+using node_parser = parse::node_parser<iterator_type>;
+using elem_parser = parse::elem_parser<iterator_type>;
+using boundary0_parser = parse::boundary0_parser<iterator_type>;
+using boundary23_parser = parse::boundary23_parser<iterator_type>;
+using boundary24_parser = parse::boundary24_parser<iterator_type>;
+using boundary25_parser = parse::boundary25_parser<iterator_type>;
+using nodalattribute1_parser = parse::nodalAttribute1_parser<iterator_type>;
+using nodalattribute2_parser = parse::nodalAttribute2_parser<iterator_type>;
+using nodalattribute12_parser = parse::nodalAttribute12_parser<iterator_type>;
+using harmonicsElevation_parser =
+    parse::harmonicsElevation_parser<iterator_type>;
+using harmonicsVelocity_parser = parse::harmonicsVelocity_parser<iterator_type>;
 
-IO::IO() {}
+IO::IO() = default;
 
-int IO::readFileData(string filename, vector<string> &data) {
+int IO::readFileData(const string &filename, vector<string> &data) {
   std::ifstream t(filename.c_str());
   t.seekg(0, std::ios::end);
   size_t size = t.tellg();
@@ -49,17 +54,17 @@ int IO::readFileData(string filename, vector<string> &data) {
   t.read(&buffer[0], size);
   boost::algorithm::split(data, buffer, boost::is_any_of("\n"));
   t.close();
-  return FileIO::NoError;
+  return 0;
 }
 
 int IO::splitString(string &data, vector<string> &result) {
   boost::trim_if(data, boost::is_any_of(" "));
   boost::algorithm::split(result, data, boost::is_any_of(" "),
                           boost::token_compress_on);
-  return FileIO::NoError;
+  return 0;
 }
 
-int IO::splitStringNodeFormat(string &data, int &id, double &x, double &y,
+int IO::splitStringNodeFormat(string &data, size_t &id, double &x, double &y,
                               double &z) {
   node_parser np;
   parse::node n;
@@ -72,14 +77,15 @@ int IO::splitStringNodeFormat(string &data, int &id, double &x, double &y,
     x = n.x;
     y = n.y;
     z = n.z;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
-int IO::splitStringElemFormat(string &data, int &id, int &n1, int &n2,
-                              int &n3) {
+int IO::splitStringElemFormat(string &data, size_t &id, size_t &n1, size_t &n2,
+                              size_t &n3) {
   elem_parser ep;
   parse::elem e;
   string::const_iterator iter = data.begin();
@@ -91,13 +97,14 @@ int IO::splitStringElemFormat(string &data, int &id, int &n1, int &n2,
     n1 = e.n1;
     n2 = e.n2;
     n3 = e.n3;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
-int IO::splitStringBoundary0Format(string &data, int &node1) {
+int IO::splitStringBoundary0Format(string &data, size_t &node1) {
   boundary0_parser bp;
   parse::boundary0 b;
   string::const_iterator iter = data.begin();
@@ -106,13 +113,14 @@ int IO::splitStringBoundary0Format(string &data, int &node1) {
   bool r = phrase_parse(iter, end, bp, space, b);
   if (r) {
     node1 = b.node1;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
-int IO::splitStringBoundary23Format(string &data, int &node1, double &crest,
+int IO::splitStringBoundary23Format(string &data, size_t &node1, double &crest,
                                     double &supercritical) {
   boundary23_parser bp;
   parse::boundary23 b;
@@ -124,13 +132,14 @@ int IO::splitStringBoundary23Format(string &data, int &node1, double &crest,
     node1 = b.node1;
     crest = b.crest;
     supercritical = b.supercritical;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
-int IO::splitStringBoundary24Format(string &data, int &node1, int &node2,
+int IO::splitStringBoundary24Format(string &data, size_t &node1, size_t &node2,
                                     double &crest, double &subcritical,
                                     double &supercritical) {
   boundary24_parser bp;
@@ -145,13 +154,14 @@ int IO::splitStringBoundary24Format(string &data, int &node1, int &node2,
     crest = b.crest;
     subcritical = b.subcritical;
     supercritical = b.supercritical;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
-int IO::splitStringBoundary25Format(string &data, int &node1, int &node2,
+int IO::splitStringBoundary25Format(string &data, size_t &node1, size_t &node2,
                                     double &crest, double &subcritical,
                                     double &supercritical, double &pipeheight,
                                     double &pipecoef, double &pipediam) {
@@ -170,13 +180,14 @@ int IO::splitStringBoundary25Format(string &data, int &node1, int &node2,
     pipeheight = b.pipeheight;
     pipecoef = b.pipecoef;
     pipediam = b.pipediam;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
-int IO::splitStringAttribute1Format(string &data, int &node, double &value) {
+int IO::splitStringAttribute1Format(string &data, size_t &node, double &value) {
   nodalattribute1_parser nap;
   parse::nodalAttribute1 na;
   string::const_iterator iter = data.begin();
@@ -186,13 +197,33 @@ int IO::splitStringAttribute1Format(string &data, int &node, double &value) {
   if (r) {
     node = na.node;
     value = na.value;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }
 
-int IO::splitStringAttribute12Format(string &data, int &node,
+int IO::splitStringAttribute2Format(string &data, size_t &node, double &value1,
+                                    double &value2) {
+  nodalattribute2_parser nap;
+  parse::nodalAttribute2 na;
+  string::const_iterator iter = data.begin();
+  string::const_iterator end = data.end();
+
+  bool r = phrase_parse(iter, end, nap, space, na);
+  if (r) {
+    node = na.node;
+    value1 = na.value1;
+    value2 = na.value2;
+    return 0;
+  } else {
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
+  }
+}
+
+int IO::splitStringAttribute12Format(string &data, size_t &node,
                                      vector<double> &values) {
   nodalattribute12_parser nap;
   parse::nodalAttribute12 na;
@@ -214,8 +245,46 @@ int IO::splitStringAttribute12Format(string &data, int &node,
     values[9] = na.value10;
     values[10] = na.value11;
     values[11] = na.value12;
-    return FileIO::NoError;
+    return 0;
   } else {
-    return FileIO::GenericFileReadError;
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
+  }
+}
+
+int IO::splitStringHarmonicsElevationFormat(string &data, double &amplitude,
+                                            double &phase) {
+  harmonicsElevation_parser hp;
+  parse::harmonicsElevation harm;
+  string::const_iterator iter = data.begin();
+  string::const_iterator end = data.end();
+  bool r = phrase_parse(iter, end, hp, space, harm);
+  if (r) {
+    amplitude = harm.amplitude;
+    phase = harm.phase;
+    return 0;
+  } else {
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
+  }
+}
+
+int IO::splitStringHarmonicsVelocityFormat(string &data, double &u_magnitude,
+                                           double &u_phase, double &v_magnitude,
+                                           double &v_phase) {
+  harmonicsVelocity_parser hp;
+  parse::harmonicsVelocity harm;
+  string::const_iterator iter = data.begin();
+  string::const_iterator end = data.end();
+  bool r = phrase_parse(iter, end, hp, space, harm);
+  if (r) {
+    u_magnitude = harm.u_magnitude;
+    u_phase = harm.u_phase;
+    v_magnitude = harm.v_magnitude;
+    v_phase = harm.v_phase;
+    return 0;
+  } else {
+    Adcirc::Error::throwError("Error parsing file data");
+    return 0;
   }
 }

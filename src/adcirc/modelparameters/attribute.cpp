@@ -1,4 +1,4 @@
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,10 +15,11 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
-#include "attribute.h"
-#include <assert.h>
+//------------------------------------------------------------------------*/
+#include "adcirc/modelparameters/attribute.h"
+#include <cassert>
 
+using namespace std;
 using namespace Adcirc::ModelParameters;
 
 Attribute::Attribute() {
@@ -26,25 +27,26 @@ Attribute::Attribute() {
   this->resize(1);
 }
 
-Attribute::Attribute(int size) {
+Attribute::Attribute(size_t size) {
   this->m_node = nullptr;
   this->resize(size);
 }
 
-void Attribute::resize(int size) {
+void Attribute::resize(size_t size) {
   if (size != this->m_size) {
     this->m_values.resize(size);
     this->m_size = size;
   }
 }
 
-double Attribute::value(int index) const {
+double Attribute::value(size_t index) const {
   assert(index >= 0 && index < this->m_size);
 
-  if (index >= 0 && index < this->m_size)
+  if (index >= 0 && index < this->m_size) {
     return m_values[index];
-  else
+  } else {
     return -9999.0;
+  }
 }
 
 vector<double> Attribute::values() const { return this->m_values; }
@@ -53,24 +55,28 @@ void Attribute::setValue(const double &value) {
   std::fill(this->m_values.begin(), this->m_values.end(), value);
 }
 
-void Attribute::setValue(int index, const double &value) {
+void Attribute::setValue(size_t index, const double &value) {
   assert(index >= 0 && index < this->m_size);
 
-  if (index >= 0 && index < this->m_size) this->m_values[index] = value;
+  if (index >= 0 && index < this->m_size) {
+    this->m_values[index] = value;
+  }
 }
 
 void Attribute::setValue(const vector<double> &values) {
   assert(values.size() == this->m_size);
 
-  if (values.size() == this->m_size) this->m_values = values;
+  if (values.size() == this->m_size) {
+    this->m_values = values;
+  }
 }
 
 Adcirc::Geometry::Node *Attribute::node() { return this->m_node; }
 
 void Attribute::setNode(Adcirc::Geometry::Node *node) { this->m_node = node; }
 
-int Attribute::size() const { return this->m_size; }
+size_t Attribute::size() const { return this->m_size; }
 
-int Attribute::id() const { return this->m_id; }
+size_t Attribute::id() const { return this->m_id; }
 
-void Attribute::setId(int id) { this->m_id = id; }
+void Attribute::setId(size_t id) { this->m_id = id; }

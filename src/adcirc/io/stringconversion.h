@@ -1,4 +1,4 @@
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
+//------------------------------------------------------------------------*/
 #ifndef STRINGCONVERSION_H
 #define STRINGCONVERSION_H
 
@@ -25,9 +25,10 @@ class StringConversion {
  public:
   StringConversion();
 
-  static int stringToInt(std::string a, bool &ok);
-  static float stringToFloat(std::string a, bool &ok);
-  static double stringToDouble(std::string a, bool &ok);
+  static int stringToInt(const std::string& a, bool& ok);
+  static size_t stringToSizet(const std::string& a, bool& ok);
+  static float stringToFloat(const std::string& a, bool& ok);
+  static double stringToDouble(const std::string& a, bool& ok);
   static std::string sanitizeString(std::string a);
 };
 

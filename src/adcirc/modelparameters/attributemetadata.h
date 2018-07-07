@@ -1,4 +1,4 @@
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
+//------------------------------------------------------------------------*/
 #ifndef ATTRIBUTEMETADATA_H
 #define ATTRIBUTEMETADATA_H
 
@@ -30,8 +30,9 @@ namespace ModelParameters {
 
 class AttributeMetadata {
  public:
-  explicit AttributeMetadata(string name = "defaultName", string units = "none",
-                             int numValues = 1);
+  explicit AttributeMetadata(const string &name = "defaultName",
+                             const string &units = "none",
+                             size_t numValues = 1);
 
   string name() const;
   void setName(const string &name);
@@ -39,13 +40,13 @@ class AttributeMetadata {
   string units() const;
   void setUnits(const string &units);
 
-  int numberOfValues() const;
-  void setNumberOfValues(int numValues);
+  size_t numberOfValues() const;
+  void setNumberOfValues(size_t numValues);
 
   vector<double> getDefaultValues() const;
-  double getDefaultValue(int index = 0) const;
+  double getDefaultValue(size_t index = 0) const;
   void setDefaultValue(const double &value);
-  void setDefaultValue(int index, const double &value);
+  void setDefaultValue(size_t index, const double &value);
   void setDefaultValue(const vector<double> &value);
 
  private:
@@ -56,11 +57,11 @@ class AttributeMetadata {
   string m_units;
 
   /// Number of values associated with each node for this nodal attribute
-  int m_numValues;
+  size_t m_numValues;
 
   /// Default value(s) to be used when writing the fort.13 file
   vector<double> m_defaultValue;
 };
-}
-}
+}  // namespace ModelParameters
+}  // namespace Adcirc
 #endif  // ATTRIBUTEMETADATA_H

@@ -1,4 +1,4 @@
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,15 +15,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
+//------------------------------------------------------------------------*/
 #include "stringconversion.h"
+
+#include <utility>
 #include "boost/algorithm/string.hpp"
 
 using namespace std;
 
-StringConversion::StringConversion() {}
+StringConversion::StringConversion() = default;
 
-double StringConversion::stringToDouble(string a, bool &ok) {
+double StringConversion::stringToDouble(const string& a, bool& ok) {
   ok = true;
   try {
     return std::stod(a);
@@ -33,7 +35,7 @@ double StringConversion::stringToDouble(string a, bool &ok) {
   }
 }
 
-float StringConversion::stringToFloat(string a, bool &ok) {
+float StringConversion::stringToFloat(const string& a, bool& ok) {
   ok = true;
   try {
     return std::stof(a);
@@ -43,7 +45,7 @@ float StringConversion::stringToFloat(string a, bool &ok) {
   }
 }
 
-int StringConversion::stringToInt(string a, bool &ok) {
+int StringConversion::stringToInt(const string& a, bool& ok) {
   ok = true;
   try {
     return std::stoi(a);
@@ -53,8 +55,18 @@ int StringConversion::stringToInt(string a, bool &ok) {
   }
 }
 
+size_t StringConversion::stringToSizet(const string& a, bool& ok) {
+  ok = true;
+  try {
+    return std::stoull(a);
+  } catch (...) {
+    ok = false;
+    return 0;
+  }
+}
+
 string StringConversion::sanitizeString(string a) {
-  string b = a;
+  string b = std::move(a);
   boost::algorithm::trim(b);
   b.erase(std::remove(b.begin(), b.end(), '\r'), b.end());
   return b;

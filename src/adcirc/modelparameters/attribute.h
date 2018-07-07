@@ -1,4 +1,4 @@
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,15 +15,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
+//------------------------------------------------------------------------*/
 #ifndef ATTRIBUTE_H
 #define ATTRIBUTE_H
 
 #include <vector>
 #include "adcirc/geometry/node.h"
 #include "adcirc/modelparameters/attribute.h"
-
-using namespace std;
 
 namespace Adcirc {
 namespace ModelParameters {
@@ -32,38 +30,38 @@ class Attribute {
  public:
   explicit Attribute();
 
-  explicit Attribute(int size);
+  explicit Attribute(size_t size);
 
-  void resize(int size);
+  void resize(size_t size);
 
-  double value(int index) const;
-  vector<double> values() const;
+  double value(size_t index) const;
+  std::vector<double> values() const;
 
   void setValue(const double &value);
-  void setValue(int index, const double &value);
-  void setValue(const vector<double> &values);
+  void setValue(size_t index, const double &value);
+  void setValue(const std::vector<double> &values);
 
   Adcirc::Geometry::Node *node();
   void setNode(Adcirc::Geometry::Node *node);
 
-  int size() const;
+  size_t size() const;
 
-  int id() const;
-  void setId(int id);
+  size_t id() const;
+  void setId(size_t id);
 
  private:
   /// Number of values in this dataset
-  int m_size;
+  size_t m_size;
 
   /// ID number in the Adcirc Nodal Attributes file
-  int m_id;
+  size_t m_id;
 
   /// Value(s) for nodal parameter at this node
-  vector<double> m_values;
+  std::vector<double> m_values;
 
   /// Node that this value applies to
   Adcirc::Geometry::Node *m_node;
 };
-}
-}
+}  // namespace ModelParameters
+}  // namespace Adcirc
 #endif  // ATTRIBUTE_H

@@ -47,8 +47,8 @@ ENDIF(UNIX OR CYGWIN)
 # Enable Coverage
 ###########################################################################
 #OPTION(COVERAGE "Export Code Coverage report from tests" OFF)
+SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
 IF(COVERAGE)
-    SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
     IF(CMAKE_COMPILER_IS_GNUCXX) 
         INCLUDE(CodeCoverage)
         setup_target_for_coverage(adcmoduels_coverage tests coverage)
@@ -115,7 +115,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/CMakeFiles)
 ###########################################################################
 #  SWIG/PYTHON/PERL
 ###########################################################################
-FIND_PACKAGE(SWIG)
+FIND_PACKAGE(SWIG 3.0)
 IF(SWIG_FOUND)
     INCLUDE(${SWIG_USE_FILE})
 
@@ -138,6 +138,48 @@ IF(SWIG_FOUND)
     ENDIF(PerlLibs_FOUND)
 
 ENDIF(SWIG_FOUND)
+###########################################################################
+    
+    
+###########################################################################
+#  NETCDF
+###########################################################################
+IF(NOT "${NETCDFHOME}" STREQUAL "")
+    SET(NETCDF_DIR "${NETCDFHOME}")
+ELSEIF(NOT $ENV{NETCDFHOME} STREQUAL "")
+    SET(NETCDF_DIR $ENV{NETCDFHOME})
+ENDIF(NOT "${NETCDFHOME}" STREQUAL "")
+
+FIND_PACKAGE(NetCDF)
+
+SET(NETCDF_AdditionalLibs "" CACHE STRING "Additional libraries that may be required for netCDF")
+
+SET(netcdf4_cxx_code
+"
+    #include <netcdf.h>
+    int main() {
+       int ncid,varid;
+       int ierr = nc_def_var_deflate(ncid,varid,1,1,1);
+       return 0;
+    }
+"
+)
+
+IF(NOT NETCDF_FOUND)
+    MESSAGE(SEND_ERROR "Specify the netCDF path on the following screen")
+ELSE(NOT NETCDF_FOUND)
+    
+    FILE(WRITE "${CMAKE_BINARY_DIR}/CMakeFiles/netcdf4check.cxx" "${netcdf4_cxx_code}")
+    TRY_COMPILE(NETCDF_TEST "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/netcdf4check.cxx" CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${NETCDF_INCLUDE_DIRS}" LINK_LIBRARIES "${NETCDF_LIBRARIES}"  LINK_LIBRARIES "${NETCDF_AdditionalLibs}" OUTPUT_VARIABLE LOG)
+
+    IF(NETCDF_TEST)
+        SET(NETCDF_LINKER_FLAG "${NETCDF_LIBRARIES}")
+    ELSE(NETCDF_TEST)
+        MESSAGE(SEND_ERROR "The netCDF library is not functional.")
+        SET(NETCDF_WORKING FALSE)
+    ENDIF(NETCDF_TEST)
+
+ENDIF(NOT NETCDF_FOUND)
 ###########################################################################
 
 
@@ -282,6 +324,7 @@ TARGET_INCLUDE_DIRECTORIES( shapelib PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/shap
 ###########################################################################
 ADD_LIBRARY( adcircmodules SHARED 
                 ${CMAKE_SOURCE_DIR}/src/adcirc/config.cpp
+                ${CMAKE_SOURCE_DIR}/src/adcirc/architecture/error.cpp
                 ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/mesh.cpp 
                 ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/node.cpp
                 ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/element.cpp
@@ -291,7 +334,11 @@ ADD_LIBRARY( adcircmodules SHARED
                 ${CMAKE_SOURCE_DIR}/src/adcirc/io/stringconversion.cpp
                 ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/attribute.cpp
                 ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/attributemetadata.cpp
-                ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/nodalattributes.cpp )
+                ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/nodalattributes.cpp 
+                ${CMAKE_SOURCE_DIR}/src/adcirc/output/outputrecord.cpp 
+                ${CMAKE_SOURCE_DIR}/src/adcirc/output/outputfile.cpp 
+                ${CMAKE_SOURCE_DIR}/src/adcirc/output/harmonicsrecord.cpp
+                ${CMAKE_SOURCE_DIR}/src/adcirc/output/harmonicsoutput.cpp )
 
 TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/src/adcirc/point
@@ -299,12 +346,12 @@ TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/src/adcirc/qProj4
                                 ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
                                 ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 
-                                ${CMAKE_SOURCE_DIR}/thirdparty/kdtree )
+                                ${CMAKE_SOURCE_DIR}/thirdparty/kdtree 
+                                ${NETCDF_INCLUDE_DIR} ) 
 
 ADD_DEPENDENCIES( adcircmodules point proj4 kdtree2 shapelib )
 
 TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE GIT_VERSION="${GIT_VERSION}")
-TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE BUILD_TIME="${BUILD_TIME}")
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING} SOVERSION ${ADCIRCMODULES_VERSION_MAJOR} )
 
@@ -317,7 +364,8 @@ ELSE(WIN32)
 ENDIF(WIN32)
 
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc.h DESTINATION include)
-INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/adcirc_errors.h DESTINATION include/adcirc)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/adcirc_codes.h DESTINATION include/adcirc)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/architecture/error.h DESTINATION include/adcirc/architecture)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/config.h DESTINATION include/adcirc)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/qKdtree2/qkdtree2.h DESTINATION include/adcirc/qKdtree2)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/qProj4/qproj4.h DESTINATION include/adcirc/qProj4)
@@ -329,8 +377,12 @@ INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/geometry/mesh.h DESTINATION includ
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/attribute.h DESTINATION include/adcirc/modelparameters)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/attributemetadata.h DESTINATION include/adcirc/modelparameters)
 INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/modelparameters/nodalattributes.h DESTINATION include/adcirc/modelparameters)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/output/outputfile.h DESTINATION include/adcirc/output)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/output/outputrecord.h DESTINATION include/adcirc/output)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/output/harmonicsrecord.h DESTINATION include/adcirc/output)
+INSTALL( FILES ${CMAKE_SOURCE_DIR}/src/adcirc/output/harmonicsoutput.h DESTINATION include/adcirc/output)
 
-TARGET_LINK_LIBRARIES( adcircmodules proj4 point kdtree2 shapelib )
+TARGET_LINK_LIBRARIES( adcircmodules proj4 point kdtree2 shapelib ${NETCDF_LIBRARIES} )
 ###########################################################################
 
 
@@ -342,7 +394,7 @@ TARGET_LINK_LIBRARIES( adcircmodules proj4 point kdtree2 shapelib )
 ###########################################################################
 #  PyAdcirc Library
 ###########################################################################
-IF(NOT PYTHON_LIBRARY STREQUAL "" AND SWIG_FOUND)
+IF(PythonLibs_FOUND AND SWIG_FOUND)
     
     IF(WIN32)
 
@@ -489,7 +541,9 @@ IF(UNIX OR CYGWIN)
 
     FOREACH(TESTFILE cxx_readmesh.cpp cxx_writemesh.cpp cxx_writeshapefile.cpp
                      cxx_projectmesh.cpp cxx_nodalSearchTree.cpp cxx_readfort13_wmesh.cpp 
-                     cxx_readfort13_womesh.cpp cxx_fort13findatt.cpp )
+                     cxx_readfort13_womesh.cpp cxx_fort13findatt.cpp cxx_readasciifull.cpp 
+                     cxx_readasciisparse.cpp cxx_readmaxele.cpp cxx_readnetcdf.cpp 
+                     cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp )
         GET_FILENAME_COMPONENT( TESTNAME ${TESTFILE} NAME_WE )
         ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
         ADD_DEPENDENCIES( ${TESTNAME} adcircmodules )

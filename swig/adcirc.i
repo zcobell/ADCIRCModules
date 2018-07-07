@@ -29,6 +29,7 @@
 %{
 #define SWIG_FILE_WITH_INIT
 #include "adcirc/config.h"
+#include "adcirc/architecture/error.h"
 #include "adcirc/geometry/mesh.h"
 #include "adcirc/geometry/node.h"
 #include "adcirc/geometry/element.h"
@@ -36,13 +37,39 @@
 #include "adcirc/modelparameters/attribute.h"
 #include "adcirc/modelparameters/attributemetadata.h"
 #include "adcirc/modelparameters/nodalattributes.h"
+#include "adcirc/output/outputfile.h"
+#include "adcirc/output/outputrecord.h"
+#include "adcirc/output/harmonicsrecord.h"
+#include "adcirc/output/harmonicsoutput.h"
 #include "adcirc/qKdtree2/qkdtree2.h"
 #include "adcirc/qProj4/qproj4.h"
 #include "adcirc/point/point.h"
 %}
 
 %include <std_string.i>
+%include <exception.i>
+%include <std_vector.i>
+
+%exception { 
+  try { 
+    $action 
+  } catch (const std::exception& e) { 
+    SWIG_exception(SWIG_RuntimeError, e.what()); 
+  } catch (const std::string& e) { 
+    SWIG_exception(SWIG_RuntimeError, e.c_str()); 
+  } 
+} 
+
+namespace std {
+    %template(IntVector) vector<int>;
+    %template(SizetVector) vector<size_t>;
+    %template(DoubleVector) vector<double>;
+    %template(DoubleDoubleVector) vector<vector<double>>;
+    %template(SizetSizetVector) vector<vector<size_t>>;
+}
+
 %include "adcirc/config.h"
+%include "adcirc/architecture/error.h"
 %include "adcirc/geometry/mesh.h"
 %include "adcirc/geometry/node.h"
 %include "adcirc/geometry/element.h"
@@ -50,6 +77,10 @@
 %include "adcirc/modelparameters/attribute.h"
 %include "adcirc/modelparameters/attributemetadata.h"
 %include "adcirc/modelparameters/nodalattributes.h"
+%include "adcirc/output/outputfile.h"
+%include "adcirc/output/outputrecord.h"
+%include "adcirc/output/harmonicsrecord.h"
+%include "adcirc/output/harmonicsoutput.h"
 %include "adcirc/qKdtree2/qkdtree2.h"
 %include "adcirc/qProj4/qproj4.h"
 %include "adcirc/point/point.h"

@@ -37,13 +37,11 @@
 QKdtree2::QKdtree2() {
   this->m_initialized = false;
   this->m_numDataPoints = 0;
-  this->m_tree = nullptr;
+  this->m_tree.reset(nullptr);
 }
 //-----------------------------------------------------------------------------------------//
 
-QKdtree2::~QKdtree2() {
-  if (this->m_tree != nullptr) delete this->m_tree;
-}
+QKdtree2::~QKdtree2() {}
 
 //-----------------------------------------------------------------------------------------//
 //...Function that constructs a kd-tree for a given X/Y pair
@@ -71,8 +69,7 @@ int QKdtree2::build(vector<Point> &pointCloud) {
     data[i][1] = static_cast<float>(pointCloud[i].y());
   }
 
-  this->m_tree = new kdtree2(data, true);
-
+  this->m_tree = unique_ptr<kdtree2>(new kdtree2(data, true));
   this->m_initialized = true;
 
   return NoError;
@@ -97,7 +94,9 @@ int QKdtree2::build(vector<double> &x, vector<double> &y) {
   int i;
   typedef boost::multi_array<float, 2> array2d;
 
-  if (x.size() != y.size()) return SizeMismatch;
+  if (x.size() != y.size()) {
+    return SizeMismatch;
+  }
 
   this->m_numDataPoints = x.size();
 
@@ -108,7 +107,7 @@ int QKdtree2::build(vector<double> &x, vector<double> &y) {
     data[i][1] = static_cast<float>(y[i]);
   }
 
-  this->m_tree = new kdtree2(data, true);
+  this->m_tree = unique_ptr<kdtree2>(new kdtree2(data, true));
   this->m_initialized = true;
 
   return NoError;
@@ -198,7 +197,9 @@ vector<int> QKdtree2::findXNearest(Point pointLocation, int nn) {
   vector<float> query(2);
   vector<int> indicies;
 
-  if (nn > this->m_numDataPoints) nn = static_cast<int>(this->m_numDataPoints);
+  if (nn > this->m_numDataPoints) {
+    nn = static_cast<int>(this->m_numDataPoints);
+  }
 
   query[0] = static_cast<float>(pointLocation.x());
   query[1] = static_cast<float>(pointLocation.y());

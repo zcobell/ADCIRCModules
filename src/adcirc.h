@@ -1,4 +1,4 @@
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
+//------------------------------------------------------------------------*/
 #ifndef ADCIRC_H
 #define ADCIRC_H
 
@@ -23,9 +23,11 @@
 #include "adcirc/qKdtree2/qkdtree2.h"
 #include "adcirc/qProj4/qproj4.h"
 
-#include "adcirc/adcirc_errors.h"
+#include "adcirc/architecture/error.h"
 #include "adcirc/config.h"
 #include "adcirc/geometry/mesh.h"
 #include "adcirc/modelparameters/nodalattributes.h"
+#include "adcirc/output/harmonicsoutput.h"
+#include "adcirc/output/outputfile.h"
 
 #endif  // ADCIRC_H

@@ -35,7 +35,7 @@ win32 {
     TARGET_EXT = .dll
 
     #...Include the netCDF header
-    INCLUDEPATH += $$PWD/../thirdparty/netcdf/include
+    INCLUDEPATH += $$PWD/../../../thirdparty/netcdf/include
 
     #...Check for Visual C++ Compilers
     *msvc*{
@@ -86,7 +86,12 @@ SOURCES += \
     ../../adcirc/modelparameters/attribute.cpp \
     ../../adcirc/modelparameters/attributemetadata.cpp \
     ../../adcirc/modelparameters/nodalattributes.cpp \
-    ../../adcirc/config.cpp
+    ../../adcirc/output/outputfile.cpp \
+    ../../adcirc/output/outputrecord.cpp \
+    ../../adcirc/config.cpp \
+    ../output/harmonicsoutput.cpp \
+    ../output/harmonicsrecord.cpp \
+    ../architecture/error.cpp
 
 HEADERS += \
     ../../adcirc/adcircmodules_global.h \
@@ -102,8 +107,13 @@ HEADERS += \
     ../../adcirc/modelparameters/attribute.h \
     ../../adcirc/modelparameters/attributemetadata.h \
     ../../adcirc/modelparameters/nodalattributes.h \
-    ../../adcirc/adcirc_errors.h \
-    ../../adcirc/config.h
+    ../../adcirc/output/outputfile.h \
+    ../../adcirc/output/outputrecord.h \
+    ../../adcirc/adcirc_codes.h \
+    ../../adcirc/config.h \
+    ../output/harmonicsoutput.h \
+    ../output/harmonicsrecord.h \
+    ../architecture/error.h
 
 INCLUDEPATH += $$BOOSTPATH
 INCLUDEPATH += ../..

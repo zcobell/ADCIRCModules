@@ -1,4 +1,4 @@
-//------------------------------GPL---------------------------------------//
+/*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,10 +15,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------//
+//------------------------------------------------------------------------*/
 #include "adcirc/geometry/mesh.h"
 #include <string>
-#include "adcirc/adcirc_errors.h"
+#include "adcirc/architecture/error.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"
 #include "boost/format.hpp"
@@ -27,24 +27,26 @@
 #include "shapefil.h"
 
 using namespace std;
+using namespace Adcirc;
 using namespace Adcirc::Geometry;
 
-#define CHECK_FILEREAD_RETURN(ok) \
-  if (!ok) return FileIO::GenericFileReadError;
+#define CHECK_FILEREAD_RETURN(ok)                           \
+  if (!ok) Adcirc::Error::throwError("Error reading file"); \
+  ;
 
-#define CHECK_FILEREAD_RETURN_AND_CLOSE(ok) \
-  if (!ok) {                                \
-    fid.close();                            \
-    return FileIO::GenericFileReadError;    \
+#define CHECK_FILEREAD_RETURN_AND_CLOSE(ok)          \
+  if (!ok) {                                         \
+    fid.close();                                     \
+    Adcirc::Error::throwError("Error reading file"); \
   }
 
 #define CHECK_FILEREAD_RETURN_INT(ierr) \
-  if (ierr != FileIO::NoError) return ierr;
+  if (ierr != 0) Adcirc::Error::throwError("Error reading file");
 
-#define CHECK_RETURN_AND_CLOSE(ierr) \
-  if (ierr != Adcirc::NoError) {     \
-    fid.close();                     \
-    return ierr;                     \
+#define CHECK_RETURN_AND_CLOSE(ierr)                 \
+  if (ierr != Adcirc::NoError) {                     \
+    fid.close();                                     \
+    Adcirc::Error::throwError("Error reading file"); \
   }
 
 /**
@@ -58,7 +60,7 @@ Mesh::Mesh() { this->_init(); }
  * @brief Default constructor with filename parameter
  * @param filename name of the mesh to read
  */
-Mesh::Mesh(string filename) {
+Mesh::Mesh(const string &filename) {
   this->_init();
   this->setFilename(filename);
 }
@@ -92,11 +94,6 @@ Mesh::~Mesh() {
   this->m_landBoundaries.clear();
   this->m_nodeLookup.clear();
   this->m_elementLookup.clear();
-
-  if (this->m_nodalSearchTree != nullptr) delete this->m_nodalSearchTree;
-
-  if (this->m_elementalSearchTree != nullptr)
-    delete this->m_elementalSearchTree;
 }
 
 /**
@@ -134,7 +131,7 @@ void Mesh::setMeshHeaderString(const string &meshHeaderString) {
  * @brief Returns the number of nodes currently in the mesh
  * @return number of nodes
  */
-int Mesh::numNodes() const { return this->m_numNodes; }
+size_t Mesh::numNodes() const { return this->m_numNodes; }
 
 /**
  * @name Mesh::setNumNodes
@@ -142,14 +139,14 @@ int Mesh::numNodes() const { return this->m_numNodes; }
  * mesh
  * @param numNodes number of nodes
  */
-void Mesh::setNumNodes(int numNodes) { this->m_numNodes = numNodes; }
+void Mesh::setNumNodes(size_t numNodes) { this->m_numNodes = numNodes; }
 
 /**
  * @name Mesh::numElements
  * @brief Returns the number of elements in the mesh
  * @return number of elements
  */
-int Mesh::numElements() const { return this->m_numElements; }
+size_t Mesh::numElements() const { return this->m_numElements; }
 
 /**
  * @name Mesh::setNumElements
@@ -157,7 +154,7 @@ int Mesh::numElements() const { return this->m_numElements; }
  * the mesh
  * @param numElements Number of elements
  */
-void Mesh::setNumElements(int numElements) {
+void Mesh::setNumElements(size_t numElements) {
   this->m_numElements = numElements;
 }
 
@@ -166,7 +163,7 @@ void Mesh::setNumElements(int numElements) {
  * @brief Returns the number of open boundaries in the model
  * @return number of open boundaries
  */
-int Mesh::numOpenBoundaries() const { return this->m_numOpenBoundaries; }
+size_t Mesh::numOpenBoundaries() const { return this->m_numOpenBoundaries; }
 
 /**
  * @name Mesh::setNumOpenBoundaries
@@ -174,7 +171,7 @@ int Mesh::numOpenBoundaries() const { return this->m_numOpenBoundaries; }
  * resize the boundary array
  * @param numOpenBoundaries Number of open boundaries
  */
-void Mesh::setNumOpenBoundaries(int numOpenBoundaries) {
+void Mesh::setNumOpenBoundaries(size_t numOpenBoundaries) {
   this->m_numOpenBoundaries = numOpenBoundaries;
 }
 
@@ -183,7 +180,7 @@ void Mesh::setNumOpenBoundaries(int numOpenBoundaries) {
  * @brief Returns the number of land boundaries in the model
  * @return number of land boundaries
  */
-int Mesh::numLandBoundaries() const { return this->m_numLandBoundaries; }
+size_t Mesh::numLandBoundaries() const { return this->m_numLandBoundaries; }
 
 /**
  * @name Mesh::setNumLandBoundaries
@@ -191,7 +188,7 @@ int Mesh::numLandBoundaries() const { return this->m_numLandBoundaries; }
  * resize the boundary array
  * @param numLandBoundaries Number of land boundaries
  */
-void Mesh::setNumLandBoundaries(int numLandBoundaries) {
+void Mesh::setNumLandBoundaries(size_t numLandBoundaries) {
   this->m_numLandBoundaries = numLandBoundaries;
 }
 
@@ -203,29 +200,33 @@ void Mesh::setNumLandBoundaries(int numLandBoundaries) {
  * occured
  */
 int Mesh::read() {
-  int ierr;
+  try {
+    int ierr;
 
-  std::fstream fid(this->filename());
+    std::fstream fid(this->filename());
 
-  this->_readMeshHeader(fid);
+    this->_readMeshHeader(fid);
 
-  //...Read the node table
-  ierr = this->_readNodes(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
+    //...Read the node table
+    ierr = this->_readNodes(fid);
+    CHECK_RETURN_AND_CLOSE(ierr);
 
-  //...Read the element table
-  ierr = this->_readElements(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
+    //...Read the element table
+    ierr = this->_readElements(fid);
+    CHECK_RETURN_AND_CLOSE(ierr);
 
-  //...Read the open boundaries
-  ierr = this->_readOpenBoundaries(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
+    //...Read the open boundaries
+    ierr = this->_readOpenBoundaries(fid);
+    CHECK_RETURN_AND_CLOSE(ierr);
 
-  //...Read the land boundaries
-  ierr = this->_readLandBoundaries(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
+    //...Read the land boundaries
+    ierr = this->_readLandBoundaries(fid);
+    CHECK_RETURN_AND_CLOSE(ierr);
 
-  fid.close();
+    fid.close();
+  } catch (std::string &e) {
+    Adcirc::Error::catchError(e);
+  }
 
   return Adcirc::NoError;
 }
@@ -238,7 +239,7 @@ int Mesh::read() {
  */
 int Mesh::_readMeshHeader(std::fstream &fid) {
   bool ok;
-  int tempInt;
+  size_t tempInt;
   string tempLine;
   vector<string> tempList;
 
@@ -252,12 +253,12 @@ int Mesh::_readMeshHeader(std::fstream &fid) {
   std::getline(fid, tempLine);
   IO::splitString(tempLine, tempList);
   tempLine = tempList[0];
-  tempInt = StringConversion::stringToInt(tempLine, ok);
+  tempInt = StringConversion::stringToSizet(tempLine, ok);
   CHECK_FILEREAD_RETURN_AND_CLOSE(ok);
   this->setNumElements(tempInt);
 
   tempLine = tempList[1];
-  tempInt = StringConversion::stringToInt(tempLine, ok);
+  tempInt = StringConversion::stringToSizet(tempLine, ok);
   CHECK_FILEREAD_RETURN_AND_CLOSE(ok);
   this->setNumNodes(tempInt);
 
@@ -271,18 +272,20 @@ int Mesh::_readMeshHeader(std::fstream &fid) {
  * @return error code
  */
 int Mesh::_readNodes(std::fstream &fid) {
-  int id;
+  size_t id;
   double x, y, z;
   string tempLine;
 
   this->m_nodes.resize(this->numNodes());
 
-  for (int i = 0; i < this->numNodes(); i++) {
+  for (size_t i = 0; i < this->numNodes(); i++) {
     std::getline(fid, tempLine);
     int ierr = IO::splitStringNodeFormat(tempLine, id, x, y, z);
     CHECK_FILEREAD_RETURN_INT(ierr);
 
-    if (i != id - 1) this->m_nodeOrderingLogical = false;
+    if (i != id - 1) {
+      this->m_nodeOrderingLogical = false;
+    }
 
     this->m_nodes[i] = Node(id, x, y, z);
   }
@@ -290,8 +293,9 @@ int Mesh::_readNodes(std::fstream &fid) {
   if (!this->m_nodeOrderingLogical) {
     this->m_nodeLookup.reserve(this->numNodes());
 
-    for (int i = 0; i < this->m_numNodes; i++)
+    for (size_t i = 0; i < this->m_numNodes; i++) {
       this->m_nodeLookup[this->m_nodes[i].id()] = i;
+    }
   }
 
   return Adcirc::NoError;
@@ -304,13 +308,14 @@ int Mesh::_readNodes(std::fstream &fid) {
  * @return error code
  */
 int Mesh::_readElements(std::fstream &fid) {
-  int id, e1, e2, e3;
+  size_t id;
+  size_t e1, e2, e3;
   string tempLine;
 
   this->m_elements.resize(this->numElements());
 
   if (this->m_nodeOrderingLogical) {
-    for (int i = 0; i < this->numElements(); i++) {
+    for (size_t i = 0; i < this->numElements(); i++) {
       std::getline(fid, tempLine);
       int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
       CHECK_FILEREAD_RETURN_INT(ierr);
@@ -320,12 +325,14 @@ int Mesh::_readElements(std::fstream &fid) {
                                      &this->m_nodes[e3 - 1]);
     }
   } else {
-    for (int i = 0; i < this->numElements(); i++) {
+    for (size_t i = 0; i < this->numElements(); i++) {
       std::getline(fid, tempLine);
       int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
       CHECK_FILEREAD_RETURN_INT(ierr);
 
-      if (i != id - 1) this->m_elementOrderingLogical = false;
+      if (i != id - 1) {
+        this->m_elementOrderingLogical = false;
+      }
 
       this->m_elements[i].setElement(id, &this->m_nodes[this->m_nodeLookup[e1]],
                                      &this->m_nodes[this->m_nodeLookup[e2]],
@@ -335,8 +342,9 @@ int Mesh::_readElements(std::fstream &fid) {
 
   if (!this->m_elementOrderingLogical) {
     this->m_elementLookup.reserve(this->m_numElements);
-    for (int i = 0; i < this->m_numElements; i++)
+    for (size_t i = 0; i < this->m_numElements; i++) {
       this->m_elementLookup[this->m_elements[i].id()] = i;
+    }
   }
 
   return Adcirc::NoError;
@@ -351,13 +359,12 @@ int Mesh::_readElements(std::fstream &fid) {
 int Mesh::_readOpenBoundaries(std::fstream &fid) {
   string tempLine;
   vector<string> tempList;
-  int length, nid, ierr;
-  bool ok;
 
   std::getline(fid, tempLine);
   IO::splitString(tempLine, tempList);
 
-  this->setNumOpenBoundaries(StringConversion::stringToInt(tempList[0], ok));
+  bool ok;
+  this->setNumOpenBoundaries(StringConversion::stringToSizet(tempList[0], ok));
   CHECK_FILEREAD_RETURN(ok);
 
   this->m_openBoundaries.resize(this->numOpenBoundaries());
@@ -368,25 +375,27 @@ int Mesh::_readOpenBoundaries(std::fstream &fid) {
   // this->setTotalOpenBoundaryNodes(StringConversion::stringToInt(tempLine,
   // ok));  CHECK_FILEREAD_RETURN(ok);
 
-  for (int i = 0; i < this->numOpenBoundaries(); i++) {
+  for (size_t i = 0; i < this->numOpenBoundaries(); i++) {
     std::getline(fid, tempLine);
     IO::splitString(tempLine, tempList);
 
-    length = StringConversion::stringToInt(tempList[0], ok);
+    size_t length = StringConversion::stringToSizet(tempList[0], ok);
     CHECK_FILEREAD_RETURN(ok);
 
     this->m_openBoundaries[i].setBoundary(-1, length);
 
-    for (int j = 0; j < this->m_openBoundaries[i].length(); j++) {
+    for (size_t j = 0; j < this->m_openBoundaries[i].length(); j++) {
       std::getline(fid, tempLine);
-      ierr = IO::splitStringBoundary0Format(tempLine, nid);
+      size_t nid;
+      int ierr = IO::splitStringBoundary0Format(tempLine, nid);
       CHECK_FILEREAD_RETURN_INT(ierr);
 
-      if (this->m_nodeOrderingLogical)
+      if (this->m_nodeOrderingLogical) {
         this->m_openBoundaries[i].setNode1(j, &this->m_nodes[nid - 1]);
-      else
+      } else {
         this->m_openBoundaries[i].setNode1(
             j, &this->m_nodes[this->m_nodeLookup[nid]]);
+      }
     }
   }
   return Adcirc::NoError;
@@ -401,7 +410,8 @@ int Mesh::_readOpenBoundaries(std::fstream &fid) {
 int Mesh::_readLandBoundaries(std::fstream &fid) {
   string tempLine;
   vector<string> tempList;
-  int length, n1, n2, code, ierr;
+
+  size_t n1, n2;
   double supercritical, subcritical, crest, pipeheight, pipediam, pipecoef;
   bool ok;
 
@@ -409,34 +419,29 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
 
   IO::splitString(tempLine, tempList);
 
-  this->setNumLandBoundaries(StringConversion::stringToInt(tempList[0], ok));
+  this->setNumLandBoundaries(StringConversion::stringToSizet(tempList[0], ok));
   CHECK_FILEREAD_RETURN(ok);
 
   this->m_landBoundaries.resize(this->numLandBoundaries());
 
   std::getline(fid, tempLine);
 
-  // IO::splitString(tempLine, tempList);
-  // this->setTotalLandBoundaryNodes(
-  //    StringConversion::stringToInt(tempList[0], ok));
-  // CHECK_FILEREAD_RETURN(ok);
-
-  for (int i = 0; i < this->numLandBoundaries(); i++) {
+  for (size_t i = 0; i < this->numLandBoundaries(); i++) {
     std::getline(fid, tempLine);
     IO::splitString(tempLine, tempList);
 
-    length = StringConversion::stringToInt(tempList[0], ok);
+    size_t length = StringConversion::stringToSizet(tempList[0], ok);
     CHECK_FILEREAD_RETURN(ok);
-    code = StringConversion::stringToInt(tempList[1], ok);
+    int code = StringConversion::stringToInt(tempList[1], ok);
     CHECK_FILEREAD_RETURN(ok);
 
     this->m_landBoundaries[i].setBoundary(code, length);
 
-    for (int j = 0; j < this->m_landBoundaries[i].length(); j++) {
+    for (size_t j = 0; j < this->m_landBoundaries[i].length(); j++) {
       std::getline(fid, tempLine);
 
       if (code == 3 || code == 13 || code == 23) {
-        ierr =
+        int ierr =
             IO::splitStringBoundary23Format(tempLine, n1, crest, supercritical);
         CHECK_FILEREAD_RETURN_INT(ierr);
         if (this->m_nodeOrderingLogical) {
@@ -451,8 +456,8 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
             j, supercritical);
 
       } else if (code == 4 || code == 24) {
-        ierr = IO::splitStringBoundary24Format(tempLine, n1, n2, crest,
-                                               subcritical, supercritical);
+        int ierr = IO::splitStringBoundary24Format(tempLine, n1, n2, crest,
+                                                   subcritical, supercritical);
         CHECK_FILEREAD_RETURN_INT(ierr);
 
         if (this->m_nodeOrderingLogical) {
@@ -471,9 +476,9 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
             j, supercritical);
 
       } else if (code == 5 || code == 25) {
-        ierr = IO::splitStringBoundary25Format(tempLine, n1, n2, crest,
-                                               subcritical, supercritical,
-                                               pipeheight, pipecoef, pipediam);
+        int ierr = IO::splitStringBoundary25Format(
+            tempLine, n1, n2, crest, subcritical, supercritical, pipeheight,
+            pipecoef, pipediam);
         CHECK_FILEREAD_RETURN_INT(ierr);
 
         if (this->m_nodeOrderingLogical) {
@@ -494,13 +499,14 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
         this->m_landBoundaries[i].setPipeCoefficient(j, pipecoef);
         this->m_landBoundaries[i].setPipeDiameter(j, pipediam);
       } else {
-        ierr = IO::splitStringBoundary0Format(tempLine, n1);
+        int ierr = IO::splitStringBoundary0Format(tempLine, n1);
         CHECK_FILEREAD_RETURN_INT(ierr);
-        if (this->m_nodeOrderingLogical)
+        if (this->m_nodeOrderingLogical) {
           this->m_landBoundaries[i].setNode1(j, &this->m_nodes[n1 - 1]);
-        else
+        } else {
           this->m_landBoundaries[i].setNode1(
               j, &this->m_nodes[this->m_nodeLookup[n1]]);
+        }
       }
     }
   }
@@ -512,24 +518,27 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
  * @brief Returns a reference to the elemental search kd-tree
  * @return kd-tree object with element centers as search locations
  */
-QKdtree2 *Mesh::elementalSearchTree() const { return m_elementalSearchTree; }
+QKdtree2 *Mesh::elementalSearchTree() const {
+  return m_elementalSearchTree.get();
+}
 
 /**
  * @name Mesh::nodalSearchTree
  * @brief Returns a refrence to the nodal search kd-tree
  * @return kd-tree object with mesh nodes as serch locations
  */
-QKdtree2 *Mesh::nodalSearchTree() const { return m_nodalSearchTree; }
+QKdtree2 *Mesh::nodalSearchTree() const { return m_nodalSearchTree.get(); }
 
 /**
  * @name Mesh::totalLandBonudaryNodes
  * @brief Returns the number of land boundary nodes in the mesh
  * @return Number of nodes that fall on a land boundary
  */
-int Mesh::totalLandBoundaryNodes() {
+size_t Mesh::totalLandBoundaryNodes() {
   this->m_totalLandBoundaryNodes = 0;
-  for (size_t i = 0; i < this->m_landBoundaries.size(); i++)
-    this->m_totalLandBoundaryNodes += this->m_landBoundaries[i].length();
+  for (auto &m_landBoundarie : this->m_landBoundaries) {
+    this->m_totalLandBoundaryNodes += m_landBoundarie.length();
+  }
   return this->m_totalLandBoundaryNodes;
 }
 
@@ -538,10 +547,11 @@ int Mesh::totalLandBoundaryNodes() {
  * @brief Returns the number of open boundary nodes in the mesh
  * @return Number of open boundary nodes
  */
-int Mesh::totalOpenBoundaryNodes() {
+size_t Mesh::totalOpenBoundaryNodes() {
   this->m_totalOpenBoundaryNodes = 0;
-  for (size_t i = 0; i < this->m_openBoundaries.size(); i++)
-    this->m_totalOpenBoundaryNodes += this->m_openBoundaries[i].length();
+  for (auto &m_openBoundarie : this->m_openBoundaries) {
+    this->m_totalOpenBoundaryNodes += m_openBoundarie.length();
+  }
   return this->m_totalOpenBoundaryNodes;
 }
 
@@ -551,11 +561,12 @@ int Mesh::totalOpenBoundaryNodes() {
  * @param index location of the node in the vector
  * @return Node pointer
  */
-Node *Mesh::node(int index) {
-  if (index >= 0 && index < this->numNodes())
+Node *Mesh::node(size_t index) {
+  if (index < this->numNodes()) {
     return &this->m_nodes[index];
-  else
+  } else {
     return nullptr;
+  }
 }
 
 /**
@@ -565,11 +576,12 @@ Node *Mesh::node(int index) {
  * @param index location of the node in the vector
  * @return Element pointer
  */
-Element *Mesh::element(int index) {
-  if (index >= 0 && index < this->numElements())
+Element *Mesh::element(size_t index) {
+  if (index < this->numElements()) {
     return &this->m_elements[index];
-  else
+  } else {
     return nullptr;
+  }
 }
 
 /**
@@ -578,14 +590,16 @@ Element *Mesh::element(int index) {
  * @param id Nodal ID to return a reference to
  * @return Node pointer
  */
-Node *Mesh::nodeById(int id) {
-  if (this->m_nodeOrderingLogical)
-    if (id > 0 && id <= this->numNodes())
+Node *Mesh::nodeById(size_t id) {
+  if (this->m_nodeOrderingLogical) {
+    if (id > 0 && id <= this->numNodes()) {
       return &this->m_nodes[id - 1];
-    else
+    } else {
       return nullptr;
-  else
+    }
+  } else {
     return &this->m_nodes[this->m_nodeLookup[id]];
+  }
 }
 
 /**
@@ -594,14 +608,16 @@ Node *Mesh::nodeById(int id) {
  * @param id Elemental ID to return a reference to
  * @return Element pointer
  */
-Element *Mesh::elementById(int id) {
-  if (this->m_elementOrderingLogical)
-    if (id > 0 && id <= this->numElements())
+Element *Mesh::elementById(size_t id) {
+  if (this->m_elementOrderingLogical) {
+    if (id > 0 && id <= this->numElements()) {
       return &this->m_elements[id - 1];
-    else
+    } else {
       return nullptr;
-  else
+    }
+  } else {
     return &this->m_elements[this->m_elementLookup[id]];
+  }
 }
 
 /**
@@ -610,11 +626,12 @@ Element *Mesh::elementById(int id) {
  * @param index index in the open boundary array
  * @return Boundary pointer
  */
-Boundary *Mesh::openBoundary(int index) {
-  if (index >= 0 && index < this->numOpenBoundaries())
+Boundary *Mesh::openBoundary(size_t index) {
+  if (index < this->numOpenBoundaries()) {
     return &this->m_openBoundaries[index];
-  else
+  } else {
     return nullptr;
+  }
 }
 
 /**
@@ -623,11 +640,12 @@ Boundary *Mesh::openBoundary(int index) {
  * @param index index in the land boundary array
  * @return Boundary pointer
  */
-Boundary *Mesh::landBoundary(int index) {
-  if (index >= 0 && index < this->numLandBoundaries())
+Boundary *Mesh::landBoundary(size_t index) {
+  if (index < this->numLandBoundaries()) {
     return &this->m_landBoundaries[index];
-  else
+  } else {
     return nullptr;
+  }
 }
 
 /**
@@ -670,16 +688,18 @@ int Mesh::reproject(int epsg) {
   inPoint.resize(this->numNodes());
   outPoint.resize(this->numNodes());
 
-  for (int i = 0; i < this->numNodes(); i++) {
+  for (size_t i = 0; i < this->numNodes(); i++) {
     inPoint[i] = Point(this->node(i)->x(), this->node(i)->y());
   }
 
   int ierr = proj.transform(this->projection(), epsg, inPoint, outPoint,
                             this->m_isLatLon);
 
-  if (ierr != QProj4::NoError) return Adcirc::Proj4Error;
+  if (ierr != QProj4::NoError) {
+    Adcirc::Error::throwError("Proj4 library error");
+  }
 
-  for (int i = 0; i < this->numNodes(); i++) {
+  for (size_t i = 0; i < this->numNodes(); i++) {
     this->node(i)->setX(outPoint[i].x());
     this->node(i)->setY(outPoint[i].y());
   }
@@ -693,30 +713,24 @@ int Mesh::reproject(int epsg) {
  * @param outputFile output file with .shp extension
  * @return error code
  */
-int Mesh::toNodeShapefile(string outputFile) {
-  SHPHandle shpid;
-  DBFHandle dbfid;
-  SHPObject *shpobj;
-  int i, shp_index, nodeid;
-  double latitude, longitude, elevation;
-
-  shpid = SHPCreate(outputFile.c_str(), SHPT_POINT);
-  dbfid = DBFCreate(outputFile.c_str());
+int Mesh::toNodeShapefile(const string outputFile) {
+  SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POINT);
+  DBFHandle dbfid = DBFCreate(outputFile.c_str());
 
   DBFAddField(dbfid, "nodeid", FTInteger, 16, 0);
   DBFAddField(dbfid, "longitude", FTDouble, 16, 8);
   DBFAddField(dbfid, "latitude", FTDouble, 16, 8);
   DBFAddField(dbfid, "elevation", FTDouble, 16, 4);
 
-  for (i = 0; i < this->numNodes(); i++) {
-    nodeid = this->node(i)->id();
-    longitude = this->node(i)->x();
-    latitude = this->node(i)->y();
-    elevation = this->node(i)->z();
+  for (size_t i = 0; i < this->numNodes(); i++) {
+    int nodeid = static_cast<int>(this->node(i)->id());
+    double longitude = this->node(i)->x();
+    double latitude = this->node(i)->y();
+    double elevation = this->node(i)->z();
 
-    shpobj =
+    SHPObject *shpobj =
         SHPCreateSimpleObject(SHPT_POINT, 1, &longitude, &latitude, &elevation);
-    shp_index = SHPWriteObject(shpid, -1, shpobj);
+    int shp_index = SHPWriteObject(shpid, -1, shpobj);
     SHPDestroyObject(shpobj);
 
     DBFWriteIntegerAttribute(dbfid, shp_index, 0, nodeid);
@@ -731,15 +745,9 @@ int Mesh::toNodeShapefile(string outputFile) {
   return Adcirc::NoError;
 }
 
-int Mesh::toConnectivityShapefile(string outputFile) {
-  SHPHandle shpid;
-  DBFHandle dbfid;
-  SHPObject *shpobj;
-  int shp_index, elemid, nodeid[2];
-  double latitude[2], longitude[2], elevation[2];
-
-  shpid = SHPCreate(outputFile.c_str(), SHPT_ARC);
-  dbfid = DBFCreate(outputFile.c_str());
+int Mesh::toConnectivityShapefile(const string outputFile) {
+  SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_ARC);
+  DBFHandle dbfid = DBFCreate(outputFile.c_str());
 
   DBFAddField(dbfid, "elemid", FTInteger, 16, 0);
   DBFAddField(dbfid, "node1", FTInteger, 16, 0);
@@ -762,6 +770,9 @@ int Mesh::toConnectivityShapefile(string outputFile) {
         n2 = 0;
       }
 
+      int elemid, nodeid[2];
+      double latitude[2], longitude[2], elevation[2];
+
       elemid = this->element(i)->id();
       nodeid[0] = this->element(i)->node(n1)->id();
       nodeid[1] = this->element(i)->node(n2)->id();
@@ -772,9 +783,9 @@ int Mesh::toConnectivityShapefile(string outputFile) {
       elevation[0] = this->element(i)->node(n1)->z();
       elevation[1] = this->element(i)->node(n2)->z();
 
-      shpobj =
+      SHPObject *shpobj =
           SHPCreateSimpleObject(SHPT_ARC, 2, longitude, latitude, elevation);
-      shp_index = SHPWriteObject(shpid, -1, shpobj);
+      int shp_index = SHPWriteObject(shpid, -1, shpobj);
       SHPDestroyObject(shpobj);
 
       DBFWriteIntegerAttribute(dbfid, shp_index, 0, elemid);
@@ -797,25 +808,27 @@ int Mesh::toConnectivityShapefile(string outputFile) {
  * @return error code
  */
 int Mesh::buildNodalSearchTree() {
-  int i, ierr;
+  int ierr;
   vector<double> x, y;
 
   x.resize(this->numNodes());
   y.resize(this->numNodes());
 
-  for (i = 0; i < this->numNodes(); i++) {
+  for (size_t i = 0; i < this->numNodes(); i++) {
     x[i] = this->node(i)->x();
     y[i] = this->node(i)->y();
   }
 
-  if (this->m_nodalSearchTree != nullptr)
-    if (this->m_nodalSearchTree->isInitialized())
-      delete this->m_nodalSearchTree;
+  if (this->m_nodalSearchTree != nullptr) {
+    if (this->m_nodalSearchTree->isInitialized()) {
+      this->m_nodalSearchTree.reset(nullptr);
+    }
+  }
 
-  this->m_nodalSearchTree = new QKdtree2();
+  this->m_nodalSearchTree = unique_ptr<QKdtree2>(new QKdtree2());
   ierr = this->m_nodalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
-    return Adcirc::KdtreeError;
+    Adcirc::Error::throwError("KDTree2 library error");
   }
 
   return Adcirc::NoError;
@@ -834,7 +847,7 @@ int Mesh::buildElementalSearchTree() {
   x.resize(this->numElements());
   y.resize(this->numElements());
 
-  for (int i = 0; i < this->numElements(); i++) {
+  for (size_t i = 0; i < this->numElements(); i++) {
     tempX = 0.0;
     tempY = 0.0;
     for (int j = 0; j < this->element(i)->n(); j++) {
@@ -845,14 +858,16 @@ int Mesh::buildElementalSearchTree() {
     y[i] = tempY / this->element(i)->n();
   }
 
-  if (this->m_elementalSearchTree != nullptr)
-    if (this->m_elementalSearchTree->isInitialized())
-      delete this->m_elementalSearchTree;
+  if (this->m_elementalSearchTree != nullptr) {
+    if (this->m_elementalSearchTree->isInitialized()) {
+      this->m_elementalSearchTree.reset(nullptr);
+    }
+  }
 
-  this->m_elementalSearchTree = new QKdtree2();
+  this->m_elementalSearchTree = unique_ptr<QKdtree2>(new QKdtree2());
   int ierr = this->m_elementalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
-    return Adcirc::KdtreeError;
+    Adcirc::Error::throwError("KDTree2 library error");
   }
 
   return Adcirc::NoError;
@@ -886,8 +901,8 @@ bool Mesh::elementalSearchTreeInitialized() {
  * @param numOpenBoundaries Number of open boundaries
  * @param numLandBoundaries Number of land boundaries
  */
-void Mesh::resizeMesh(int numNodes, int numElements, int numOpenBoundaries,
-                      int numLandBoundaries) {
+void Mesh::resizeMesh(size_t numNodes, size_t numElements,
+                      size_t numOpenBoundaries, size_t numLandBoundaries) {
   if (numNodes != this->numNodes()) {
     this->m_nodes.resize(numNodes);
     this->setNumNodes(numNodes);
@@ -917,10 +932,9 @@ void Mesh::resizeMesh(int numNodes, int numElements, int numOpenBoundaries,
  * @param index location where the node should be added
  * @param node Reference to an Node object
  */
-void Mesh::addNode(int index, Node &node) {
-  unsigned long long index2 = static_cast<unsigned long long>(index);
+void Mesh::addNode(size_t index, Node &node) {
   if (index < this->numNodes()) {
-    this->m_nodes[index2] = node;
+    this->m_nodes[index] = node;
   }
   return;
 }
@@ -931,10 +945,10 @@ void Mesh::addNode(int index, Node &node) {
  * remaining nodes forward in the vector
  * @param index location where the node should be deleted from
  */
-void Mesh::deleteNode(int index) {
+void Mesh::deleteNode(size_t index) {
   if (index < this->numNodes()) {
     this->m_nodes.erase(this->m_nodes.begin() + index);
-    this->setNumNodes(static_cast<int>(this->m_nodes.size()));
+    this->setNumNodes(this->m_nodes.size());
   }
   return;
 }
@@ -945,7 +959,7 @@ void Mesh::deleteNode(int index) {
  * @param index location where the element should be added
  * @param element reference to the Element to add
  */
-void Mesh::addElement(int index, Element &element) {
+void Mesh::addElement(size_t index, Element &element) {
   if (index < this->numElements()) {
     this->m_elements[index] = element;
   }
@@ -958,11 +972,10 @@ void Mesh::addElement(int index, Element &element) {
  * remaining elements forward in the vector
  * @param index location where the element should be deleted from
  */
-void Mesh::deleteElement(int index) {
+void Mesh::deleteElement(size_t index) {
   if (index < this->numElements()) {
-    this->m_elements.erase(this->m_elements.begin() +
-                           static_cast<long long>(index));
-    this->setNumElements(static_cast<int>(this->m_elements.size()));
+    this->m_elements.erase(this->m_elements.begin() + index);
+    this->setNumElements(this->m_elements.size());
   }
   return;
 }
@@ -973,8 +986,7 @@ void Mesh::deleteElement(int index) {
  * @param filename name of the output file to write
  * @return error code
  */
-int Mesh::write(string filename) {
-  int i, j;
+int Mesh::write(const string &filename) {
   string tempString;
   vector<string> boundaryList;
   std::ofstream outputFile;
@@ -988,22 +1000,25 @@ int Mesh::write(string filename) {
   outputFile << tempString << "\n";
 
   //...Write the mesh nodes
-  for (i = 0; i < this->numNodes(); i++)
+  for (size_t i = 0; i < this->numNodes(); i++) {
     outputFile << this->node(i)->toString(this->isLatLon()) << "\n";
+  }
 
   //...Write the mesh elements
-  for (i = 0; i < this->numElements(); i++)
+  for (size_t i = 0; i < this->numElements(); i++) {
     outputFile << this->element(i)->toString() << "\n";
+  }
 
   //...Write the open boundary header
   outputFile << this->numOpenBoundaries() << "\n";
   outputFile << this->totalOpenBoundaryNodes() << "\n";
 
   //...Write the open boundaries
-  for (i = 0; i < this->numOpenBoundaries(); i++) {
+  for (size_t i = 0; i < this->numOpenBoundaries(); i++) {
     boundaryList = this->openBoundary(i)->toStringList();
-    for (j = 0; j < boundaryList.size(); j++)
-      outputFile << boundaryList[j] << "\n";
+    for (const auto &j : boundaryList) {
+      outputFile << j << "\n";
+    }
   }
 
   //...Write the land boundary header
@@ -1011,10 +1026,11 @@ int Mesh::write(string filename) {
   outputFile << this->totalLandBoundaryNodes() << "\n";
 
   //...Write the land boundaries
-  for (i = 0; i < this->numLandBoundaries(); i++) {
+  for (size_t i = 0; i < this->numLandBoundaries(); i++) {
     boundaryList = this->landBoundary(i)->toStringList();
-    for (j = 0; j < boundaryList.size(); j++)
-      outputFile << boundaryList[j] << "\n";
+    for (const auto &j : boundaryList) {
+      outputFile << j << "\n";
+    }
   }
 
   //...Close the file
@@ -1045,11 +1061,12 @@ bool Mesh::elementOrderingIsLogical() { return this->m_elementOrderingLogical; }
  * @param id nodal id
  * @return array position
  */
-int Mesh::nodeIndexById(int id) {
-  if (this->m_nodeOrderingLogical)
+size_t Mesh::nodeIndexById(size_t id) {
+  if (this->m_nodeOrderingLogical) {
     return id;
-  else
+  } else {
     return this->m_nodeLookup[id];
+  }
 }
 
 /**
@@ -1058,9 +1075,58 @@ int Mesh::nodeIndexById(int id) {
  * @param id element id
  * @return array position
  */
-int Mesh::elementIndexById(int id) {
-  if (this->m_elementOrderingLogical)
+size_t Mesh::elementIndexById(size_t id) {
+  if (this->m_elementOrderingLogical) {
     return id;
-  else
+  } else {
     return this->m_elementLookup[id];
+  }
+}
+
+vector<double> Mesh::x() {
+  vector<double> x;
+  x.resize(this->numNodes());
+  for (size_t i = 0; i < this->numNodes(); i++) {
+    x[i] = this->node(i)->x();
+  }
+  return x;
+}
+
+vector<double> Mesh::y() {
+  vector<double> y;
+  y.resize(this->numNodes());
+  for (size_t i = 0; i < this->numNodes(); i++) {
+    y[i] = this->node(i)->y();
+  }
+  return y;
+}
+
+vector<double> Mesh::z() {
+  vector<double> z;
+  z.resize(this->numNodes());
+  for (size_t i = 0; i < this->numNodes(); i++) {
+    z[i] = this->node(i)->z();
+  }
+  return z;
+}
+
+vector<vector<double>> Mesh::xyz() {
+  vector<vector<double>> xyz;
+  xyz.resize(3);
+  xyz[0] = this->x();
+  xyz[1] = this->y();
+  xyz[2] = this->z();
+  return xyz;
+}
+
+vector<vector<size_t>> Mesh::connectivity() {
+  vector<vector<size_t>> conn;
+  conn.resize(3);
+  for (size_t i = 0; i < 3; i++) {
+    conn[i].resize(this->numElements());
+    for (size_t j = 0; j < this->numElements(); j++) {
+      conn[i][j] = this->element(j)->node(i)->id();
+    }
+  }
+  return conn;
 }
