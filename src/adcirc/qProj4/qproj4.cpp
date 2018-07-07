@@ -131,7 +131,6 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
 int QProj4::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
                       vector<Point> &output, bool &isLatLon) {
   vector<double> x, y, z;
-  int ierr;
 
   if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end()) {
     return NoSuchProjection;
@@ -170,7 +169,7 @@ int QProj4::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
       y[i] = input[i].y();
     }
 
-    ierr = pj_transform(inputPJ, outputPJ, 1, 1, &x[i], &y[i], &z[i]);
+    int ierr = pj_transform(inputPJ, outputPJ, 1, 1, &x[i], &y[i], &z[i]);
 
     if (ierr != 0) {
       return Proj4InternalError;
