@@ -26,27 +26,30 @@ class IO {
  public:
   explicit IO();
 
-  static int readFileData(std::string filename, std::vector<std::string> &data);
+  static int readFileData(const std::string &filename,
+                          std::vector<std::string> &data);
 
   static int splitString(std::string &data, std::vector<std::string> &result);
 
-  static int splitStringNodeFormat(std::string &data, size_t &id, double &x, double &y,
-                                   double &z);
+  static int splitStringNodeFormat(std::string &data, size_t &id, double &x,
+                                   double &y, double &z);
 
-  static int splitStringElemFormat(std::string &data, size_t &id, size_t &n1, size_t &n2,
-                                   size_t &n3);
+  static int splitStringElemFormat(std::string &data, size_t &id, size_t &n1,
+                                   size_t &n2, size_t &n3);
 
   static int splitStringBoundary0Format(std::string &data, size_t &node1);
 
   static int splitStringBoundary23Format(std::string &data, size_t &node1,
                                          double &crest, double &supercritical);
 
-  static int splitStringBoundary24Format(std::string &data, size_t &node1, size_t &node2,
-                                         double &crest, double &subcritical,
+  static int splitStringBoundary24Format(std::string &data, size_t &node1,
+                                         size_t &node2, double &crest,
+                                         double &subcritical,
                                          double &supercritical);
 
-  static int splitStringBoundary25Format(std::string &data, size_t &node1, size_t &node2,
-                                         double &crest, double &subcritical,
+  static int splitStringBoundary25Format(std::string &data, size_t &node1,
+                                         size_t &node2, double &crest,
+                                         double &subcritical,
                                          double &supercritical,
                                          double &pipeheight, double &pipecoef,
                                          double &pipediam);
@@ -60,9 +63,15 @@ class IO {
   static int splitStringAttribute12Format(std::string &data, size_t &node,
                                           std::vector<double> &values);
 
-  static int splitStringHarmonicsElevationFormat(std::string &data, double &amplitude, double &phase);
+  static int splitStringHarmonicsElevationFormat(std::string &data,
+                                                 double &amplitude,
+                                                 double &phase);
 
-  static int splitStringHarmonicsVelocityFormat(std::string &data, double &u_magnitude, double &u_phase, double &v_magnitude, double &v_phase);
+  static int splitStringHarmonicsVelocityFormat(std::string &data,
+                                                double &u_magnitude,
+                                                double &u_phase,
+                                                double &v_magnitude,
+                                                double &v_phase);
 };
 
 #endif  // IO_H

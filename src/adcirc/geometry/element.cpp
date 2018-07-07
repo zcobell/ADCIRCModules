@@ -78,7 +78,9 @@ int Element::n() const { return this->m_n; }
  * @param node pointer to an Node object
  */
 void Element::setNode(int i, Node *node) {
-  if (i < this->n()) this->m_nodes[i] = node;
+  if (i < this->n()) {
+    this->m_nodes[i] = node;
+  }
   return;
 }
 
@@ -103,7 +105,9 @@ void Element::setId(size_t id) { this->m_id = id; }
  * @return Node pointer
  */
 Node *Element::node(int i) {
-  if (i < this->n()) return this->m_nodes.at(i);
+  if (i < this->n()) {
+    return this->m_nodes.at(i);
+  }
   return nullptr;
 }
 

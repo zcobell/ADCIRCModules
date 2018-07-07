@@ -17,8 +17,8 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "outputrecord.h"
-#include <assert.h>
-#include <math.h>
+#include <cassert>
+#include <cmath>
 #include "adcirc/architecture/error.h"
 
 using namespace Adcirc::Output;
@@ -107,10 +107,11 @@ void OutputRecord::set(size_t index, double value_u, double value_v) {
 
 double OutputRecord::value(size_t index) {
   assert(index < this->numNodes());
-  if (this->isVector())
+  if (this->isVector()) {
     return pow(this->m_u[index], 2.0) + pow(this->m_v[index], 2.0);
-  else
+  } else {
     return this->m_u[index];
+  }
 }
 
 double OutputRecord::direction(size_t index) {
@@ -131,42 +132,60 @@ double OutputRecord::v(size_t index) {
   return this->m_v[index];
 }
 
-void OutputRecord::setAllU(std::vector<double> values) {
+void OutputRecord::setAllU(const std::vector<double>& values) {
   assert(this->isVector());
   assert(this->m_numNodes == values.size());
-  if (!this->isVector()) return;
-  if (values.size() != this->m_numNodes) return;
+  if (!this->isVector()) {
+    return;
+  }
+  if (values.size() != this->m_numNodes) {
+    return;
+  }
   this->m_u = values;
   return;
 }
 
-void OutputRecord::setAllV(std::vector<double> values) {
+void OutputRecord::setAllV(const std::vector<double>& values) {
   assert(this->isVector());
   assert(this->m_numNodes == values.size());
-  if (!this->isVector()) return;
-  if (values.size() != this->m_numNodes) return;
+  if (!this->isVector()) {
+    return;
+  }
+  if (values.size() != this->m_numNodes) {
+    return;
+  }
   this->m_v = values;
   return;
 }
 
-void OutputRecord::setAll(std::vector<double> values_u,
-                          std::vector<double> values_v) {
+void OutputRecord::setAll(const std::vector<double>& values_u,
+                          const std::vector<double>& values_v) {
   assert(this->isVector());
   assert(this->m_numNodes == values_u.size());
   assert(this->m_numNodes == values_v.size());
-  if (!this->isVector()) return;
-  if (values_u.size() != this->m_numNodes) return;
-  if (values_v.size() != this->m_numNodes) return;
+  if (!this->isVector()) {
+    return;
+  }
+  if (values_u.size() != this->m_numNodes) {
+    return;
+  }
+  if (values_v.size() != this->m_numNodes) {
+    return;
+  }
   this->m_u = values_u;
   this->m_v = values_v;
   return;
 }
 
-void OutputRecord::setAll(std::vector<double> values) {
+void OutputRecord::setAll(const std::vector<double>& values) {
   assert(!this->isVector());
   assert(this->m_numNodes == values.size());
-  if (!this->isVector()) return;
-  if (values.size() != this->m_numNodes) return;
+  if (!this->isVector()) {
+    return;
+  }
+  if (values.size() != this->m_numNodes) {
+    return;
+  }
   this->m_u = values;
   return;
 }

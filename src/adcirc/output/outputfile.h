@@ -20,6 +20,7 @@
 #define OUTPUTFILE_H
 
 #include <fstream>
+#include <memory>
 #include <unordered_map>
 #include <vector>
 #include "adcirc/geometry/node.h"
@@ -90,7 +91,7 @@ class OutputFile {
   int m_dit;
   std::fstream m_fid;
   std::string m_filename;
-  std::vector<Adcirc::Output::OutputRecord *> m_records;
+  std::vector<std::unique_ptr<Adcirc::Output::OutputRecord>> m_records;
   std::unordered_map<size_t, Adcirc::Output::OutputRecord *> m_recordMap;
   std::string m_header;
 
@@ -106,12 +107,12 @@ class OutputFile {
   int findNetcdfVarId();
   int rebuildMap();
 
-  static bool checkFiletypeAsciiFull(std::string filename);
-  static bool checkFiletypeAsciiSparse(std::string filename);
+  static bool checkFiletypeAsciiFull(const std::string &filename);
+  static bool checkFiletypeAsciiSparse(const std::string &filename);
   static bool checkFiletypeNetcdf3(std::string filename);
   static bool checkFiletypeNetcdf4(std::string filename);
-  static bool checkFiletypeXdmf(std::string filename);
-  static int inquireNetcdfFormat(std::string filename, int &format);
+  static bool checkFiletypeXdmf(const std::string &filename);
+  static bool inquireNetcdfFormat(const std::string &filename, int &format);
 
   int openAscii();
   int openNetcdf();
@@ -124,7 +125,7 @@ class OutputFile {
   int readAsciiHeader();
   int readNetcdfHeader();
 
-  int readAsciiRecord(Adcirc::Output::OutputRecord *record);
+  int readAsciiRecord(std::unique_ptr<OutputRecord> &record);
 };
 }  // namespace Output
 }  // namespace Adcirc

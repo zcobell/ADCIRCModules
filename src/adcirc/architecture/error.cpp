@@ -24,7 +24,7 @@ using namespace std;
 
 static const string heading("[ADCIRCModules Runtime error]: ");
 
-Error::Error() {}
+Error::Error() = default;
 
 void Error::throwError(const string &s) { throw s; }
 

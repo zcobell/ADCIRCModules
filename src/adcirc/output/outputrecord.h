@@ -40,12 +40,13 @@ class OutputRecord {
   void set(size_t index, double value);
   void set(size_t index, double value_u, double value_v);
 
-  void setAllU(std::vector<double> values);
-  void setAllV(std::vector<double> values);
-  void setAll(std::vector<double> values);
-  void setAll(std::vector<double> values_u, std::vector<double> values_v);
+  void setAllU(const std::vector<double>& values);
+  void setAllV(const std::vector<double>& values);
+  void setAll(const std::vector<double>& values);
+  void setAll(const std::vector<double>& values_u,
+              const std::vector<double>& values_v);
 
-  std::vector<double> values(size_t column);
+  std::vector<double> values(size_t column = 0);
 
   double value(size_t index);
   double u(size_t index);

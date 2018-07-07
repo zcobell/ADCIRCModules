@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "adcirc/modelparameters/attribute.h"
-#include <assert.h>
+#include <cassert>
 
 using namespace std;
 using namespace Adcirc::ModelParameters;
@@ -42,10 +42,11 @@ void Attribute::resize(size_t size) {
 double Attribute::value(size_t index) const {
   assert(index >= 0 && index < this->m_size);
 
-  if (index >= 0 && index < this->m_size)
+  if (index >= 0 && index < this->m_size) {
     return m_values[index];
-  else
+  } else {
     return -9999.0;
+  }
 }
 
 vector<double> Attribute::values() const { return this->m_values; }
@@ -57,13 +58,17 @@ void Attribute::setValue(const double &value) {
 void Attribute::setValue(size_t index, const double &value) {
   assert(index >= 0 && index < this->m_size);
 
-  if (index >= 0 && index < this->m_size) this->m_values[index] = value;
+  if (index >= 0 && index < this->m_size) {
+    this->m_values[index] = value;
+  }
 }
 
 void Attribute::setValue(const vector<double> &values) {
   assert(values.size() == this->m_size);
 
-  if (values.size() == this->m_size) this->m_values = values;
+  if (values.size() == this->m_size) {
+    this->m_values = values;
+  }
 }
 
 Adcirc::Geometry::Node *Attribute::node() { return this->m_node; }

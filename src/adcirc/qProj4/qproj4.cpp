@@ -31,10 +31,8 @@ using namespace std;
  *to avoid memory leaks
  *
  * Constructs an object used to convert coordinates. The initialization function
- *is run at
- * startup which parses the included EPSG file (:/rsc/epsg) to determine the
- *parameters to pass
- * to the Proj4 API
+ *is run at startup which parses the included EPSG file (:/rsc/epsg) to
+ *determine the parameters to pass to the Proj4 API
  *
  **/
 //-----------------------------------------------------------------------------------------//
@@ -65,20 +63,24 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
 
   z = 0.0;
 
-  if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end())
+  if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end()) {
     return NoSuchProjection;
+  }
 
-  if (this->m_epsgMapping.find(outputEPSG) == this->m_epsgMapping.end())
+  if (this->m_epsgMapping.find(outputEPSG) == this->m_epsgMapping.end()) {
     return NoSuchProjection;
+  }
 
   string currentInitialization = this->m_epsgMapping[inputEPSG];
   string outputInitialization = this->m_epsgMapping[outputEPSG];
 
-  if (!(inputPJ = pj_init_plus(currentInitialization.c_str())))
+  if (!(inputPJ = pj_init_plus(currentInitialization.c_str()))) {
     return Proj4InternalError;
+  }
 
-  if (!(outputPJ = pj_init_plus(outputInitialization.c_str())))
+  if (!(outputPJ = pj_init_plus(outputInitialization.c_str()))) {
     return Proj4InternalError;
+  }
 
   if (pj_is_latlong(inputPJ)) {
     x = input.x() * DEG_TO_RAD;
@@ -90,7 +92,9 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
 
   ierr = pj_transform(inputPJ, outputPJ, 1, 1, &x, &y, &z);
 
-  if (ierr != 0) return Proj4InternalError;
+  if (ierr != 0) {
+    return Proj4InternalError;
+  }
 
   if (pj_is_latlong(outputPJ)) {
     output.setX(x * RAD_TO_DEG);
@@ -114,12 +118,11 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
  * @param[in]  inputEPSG  EPSG that coordinates are currently in
  * @param[in]  outputEPSG EPSG that the coordinates will be converted to
  * @param[in]  input      vector of Point objects containing the locations
- *to
- *be converted
+ *                        to be converted
  * @param[out] output     vector of Point objects containing the converted
- *coordiantes
+ *                        coordiantes
  * @param[out] isLatLon   Bool that determine if the coordinates are lat/lon or
- *otherwise
+ *                        otherwise
  *
  * Function to execute a coordinate system transformation using Proj4
  *
@@ -127,24 +130,30 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
 //-----------------------------------------------------------------------------------------//
 int QProj4::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
                       vector<Point> &output, bool &isLatLon) {
-  projPJ inputPJ, outputPJ;
   vector<double> x, y, z;
-  int i, ierr;
+  int ierr;
 
-  if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end())
+  if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end()) {
     return NoSuchProjection;
+  }
 
-  if (this->m_epsgMapping.find(outputEPSG) == this->m_epsgMapping.end())
+  if (this->m_epsgMapping.find(outputEPSG) == this->m_epsgMapping.end()) {
     return NoSuchProjection;
+  }
 
   string currentInitialization = this->m_epsgMapping[inputEPSG];
   string outputInitialization = this->m_epsgMapping[outputEPSG];
 
-  if (!(inputPJ = pj_init_plus(currentInitialization.c_str())))
-    return Proj4InternalError;
+  projPJ inputPJ = pj_init_plus(currentInitialization.c_str());
+  projPJ outputPJ = pj_init_plus(outputInitialization.c_str());
 
-  if (!(outputPJ = pj_init_plus(outputInitialization.c_str())))
+  if (!(inputPJ)) {
     return Proj4InternalError;
+  }
+
+  if (!(outputPJ)) {
+    return Proj4InternalError;
+  }
 
   x.resize(input.size());
   y.resize(input.size());
@@ -152,7 +161,7 @@ int QProj4::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
   std::fill(z.begin(), z.end(), 0.0);
   output.resize(input.size());
 
-  for (i = 0; i < input.size(); i++) {
+  for (size_t i = 0; i < input.size(); i++) {
     if (pj_is_latlong(inputPJ)) {
       x[i] = input[i].x() * DEG_TO_RAD;
       y[i] = input[i].y() * DEG_TO_RAD;
@@ -163,7 +172,9 @@ int QProj4::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
 
     ierr = pj_transform(inputPJ, outputPJ, 1, 1, &x[i], &y[i], &z[i]);
 
-    if (ierr != 0) return Proj4InternalError;
+    if (ierr != 0) {
+      return Proj4InternalError;
+    }
 
     if (pj_is_latlong(outputPJ)) {
       output[i].setX(x[i] * RAD_TO_DEG);
@@ -174,10 +185,11 @@ int QProj4::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
     }
   }
 
-  if (pj_is_latlong(outputPJ))
+  if (pj_is_latlong(outputPJ)) {
     isLatLon = true;
-  else
+  } else {
     isLatLon = false;
+  }
 
   return NoError;
 }

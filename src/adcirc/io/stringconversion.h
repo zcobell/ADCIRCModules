@@ -25,10 +25,10 @@ class StringConversion {
  public:
   StringConversion();
 
-  static int stringToInt(std::string a, bool &ok);
-  static size_t stringToSizet(std::string a, bool &ok);
-  static float stringToFloat(std::string a, bool &ok);
-  static double stringToDouble(std::string a, bool &ok);
+  static int stringToInt(const std::string& a, bool& ok);
+  static size_t stringToSizet(const std::string& a, bool& ok);
+  static float stringToFloat(const std::string& a, bool& ok);
+  static double stringToDouble(const std::string& a, bool& ok);
   static std::string sanitizeString(std::string a);
 };
 

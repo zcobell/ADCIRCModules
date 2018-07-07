@@ -17,11 +17,12 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "adcirc/modelparameters/attributemetadata.h"
-#include <assert.h>
+#include <cassert>
 
 using namespace Adcirc::ModelParameters;
 
-AttributeMetadata::AttributeMetadata(string name, string units, size_t numValues) {
+AttributeMetadata::AttributeMetadata(const string &name, const string &units,
+                                     size_t numValues) {
   this->setName(name);
   this->setUnits(units);
   this->setNumberOfValues(numValues);
@@ -49,10 +50,11 @@ vector<double> AttributeMetadata::getDefaultValues() const {
 double AttributeMetadata::getDefaultValue(size_t index) const {
   assert(index >= 0 && index < this->m_numValues);
 
-  if (index >= 0 || index < this->m_numValues)
+  if (index >= 0 || index < this->m_numValues) {
     return this->m_defaultValue[index];
-  else
+  } else {
     return this->m_defaultValue[0];
+  }
 }
 
 void AttributeMetadata::setDefaultValue(const vector<double> &value) {

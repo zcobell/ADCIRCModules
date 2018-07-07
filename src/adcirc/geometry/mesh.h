@@ -48,6 +48,7 @@
 #define MESH_H
 
 #include <fstream>
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -65,7 +66,7 @@ namespace Geometry {
 class Mesh {
  public:
   explicit Mesh();
-  explicit Mesh(std::string filename);
+  explicit Mesh(const std::string &filename);
 
   ~Mesh();
 
@@ -77,7 +78,7 @@ class Mesh {
 
   int read();
 
-  int write(std::string outputFile);
+  int write(const std::string &outputFile);
 
   std::string filename() const;
   void setFilename(const std::string &filename);
@@ -106,7 +107,7 @@ class Mesh {
   int reproject(int epsg);
   bool isLatLon();
 
-  int toShapefile(std::string outputFile);
+  int toShapefile(const std::string &outputFile);
 
   int buildNodalSearchTree();
   int buildElementalSearchTree();
@@ -168,8 +169,8 @@ class Mesh {
   bool m_nodeOrderingLogical;
   bool m_elementOrderingLogical;
 
-  QKdtree2 *m_nodalSearchTree;
-  QKdtree2 *m_elementalSearchTree;
+  std::unique_ptr<QKdtree2> m_nodalSearchTree;
+  std::unique_ptr<QKdtree2> m_elementalSearchTree;
 };
 }  // namespace Geometry
 }  // namespace Adcirc

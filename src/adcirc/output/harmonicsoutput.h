@@ -34,7 +34,7 @@ class HarmonicsOutput {
 
   int read();
 
-  int write(std::string filename);
+  int write(const std::string& filename);
 
   std::string filename() const;
   void setFilename(const std::string& filename);

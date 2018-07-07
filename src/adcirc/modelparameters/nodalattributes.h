@@ -45,11 +45,11 @@ class NodalAttributes {
   void setMesh(Adcirc::Geometry::Mesh *mesh);
   Adcirc::Geometry::Mesh *mesh();
 
-  int write(string outputFilename);
+  int write(const string &outputFilename);
 
   string attributeNames(size_t index);
 
-  size_t locateAttribute(string attributeName);
+  size_t locateAttribute(const string &attributeName);
 
   string header() const;
   void setHeader(const string &title);

@@ -60,7 +60,7 @@ Mesh::Mesh() { this->_init(); }
  * @brief Default constructor with filename parameter
  * @param filename name of the mesh to read
  */
-Mesh::Mesh(string filename) {
+Mesh::Mesh(const string &filename) {
   this->_init();
   this->setFilename(filename);
 }
@@ -94,11 +94,6 @@ Mesh::~Mesh() {
   this->m_landBoundaries.clear();
   this->m_nodeLookup.clear();
   this->m_elementLookup.clear();
-
-  if (this->m_nodalSearchTree != nullptr) delete this->m_nodalSearchTree;
-
-  if (this->m_elementalSearchTree != nullptr)
-    delete this->m_elementalSearchTree;
 }
 
 /**
@@ -288,7 +283,9 @@ int Mesh::_readNodes(std::fstream &fid) {
     int ierr = IO::splitStringNodeFormat(tempLine, id, x, y, z);
     CHECK_FILEREAD_RETURN_INT(ierr);
 
-    if (i != id - 1) this->m_nodeOrderingLogical = false;
+    if (i != id - 1) {
+      this->m_nodeOrderingLogical = false;
+    }
 
     this->m_nodes[i] = Node(id, x, y, z);
   }
@@ -296,8 +293,9 @@ int Mesh::_readNodes(std::fstream &fid) {
   if (!this->m_nodeOrderingLogical) {
     this->m_nodeLookup.reserve(this->numNodes());
 
-    for (size_t i = 0; i < this->m_numNodes; i++)
+    for (size_t i = 0; i < this->m_numNodes; i++) {
       this->m_nodeLookup[this->m_nodes[i].id()] = i;
+    }
   }
 
   return Adcirc::NoError;
@@ -332,7 +330,9 @@ int Mesh::_readElements(std::fstream &fid) {
       int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
       CHECK_FILEREAD_RETURN_INT(ierr);
 
-      if (i != id - 1) this->m_elementOrderingLogical = false;
+      if (i != id - 1) {
+        this->m_elementOrderingLogical = false;
+      }
 
       this->m_elements[i].setElement(id, &this->m_nodes[this->m_nodeLookup[e1]],
                                      &this->m_nodes[this->m_nodeLookup[e2]],
@@ -342,8 +342,9 @@ int Mesh::_readElements(std::fstream &fid) {
 
   if (!this->m_elementOrderingLogical) {
     this->m_elementLookup.reserve(this->m_numElements);
-    for (size_t i = 0; i < this->m_numElements; i++)
+    for (size_t i = 0; i < this->m_numElements; i++) {
       this->m_elementLookup[this->m_elements[i].id()] = i;
+    }
   }
 
   return Adcirc::NoError;
@@ -390,11 +391,12 @@ int Mesh::_readOpenBoundaries(std::fstream &fid) {
       ierr = IO::splitStringBoundary0Format(tempLine, nid);
       CHECK_FILEREAD_RETURN_INT(ierr);
 
-      if (this->m_nodeOrderingLogical)
+      if (this->m_nodeOrderingLogical) {
         this->m_openBoundaries[i].setNode1(j, &this->m_nodes[nid - 1]);
-      else
+      } else {
         this->m_openBoundaries[i].setNode1(
             j, &this->m_nodes[this->m_nodeLookup[nid]]);
+      }
     }
   }
   return Adcirc::NoError;
@@ -500,11 +502,12 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
       } else {
         ierr = IO::splitStringBoundary0Format(tempLine, n1);
         CHECK_FILEREAD_RETURN_INT(ierr);
-        if (this->m_nodeOrderingLogical)
+        if (this->m_nodeOrderingLogical) {
           this->m_landBoundaries[i].setNode1(j, &this->m_nodes[n1 - 1]);
-        else
+        } else {
           this->m_landBoundaries[i].setNode1(
               j, &this->m_nodes[this->m_nodeLookup[n1]]);
+        }
       }
     }
   }
@@ -516,14 +519,16 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
  * @brief Returns a reference to the elemental search kd-tree
  * @return kd-tree object with element centers as search locations
  */
-QKdtree2 *Mesh::elementalSearchTree() const { return m_elementalSearchTree; }
+QKdtree2 *Mesh::elementalSearchTree() const {
+  return m_elementalSearchTree.get();
+}
 
 /**
  * @name Mesh::nodalSearchTree
  * @brief Returns a refrence to the nodal search kd-tree
  * @return kd-tree object with mesh nodes as serch locations
  */
-QKdtree2 *Mesh::nodalSearchTree() const { return m_nodalSearchTree; }
+QKdtree2 *Mesh::nodalSearchTree() const { return m_nodalSearchTree.get(); }
 
 /**
  * @name Mesh::totalLandBonudaryNodes
@@ -532,8 +537,9 @@ QKdtree2 *Mesh::nodalSearchTree() const { return m_nodalSearchTree; }
  */
 size_t Mesh::totalLandBoundaryNodes() {
   this->m_totalLandBoundaryNodes = 0;
-  for (size_t i = 0; i < this->m_landBoundaries.size(); i++)
-    this->m_totalLandBoundaryNodes += this->m_landBoundaries[i].length();
+  for (auto &m_landBoundarie : this->m_landBoundaries) {
+    this->m_totalLandBoundaryNodes += m_landBoundarie.length();
+  }
   return this->m_totalLandBoundaryNodes;
 }
 
@@ -544,8 +550,9 @@ size_t Mesh::totalLandBoundaryNodes() {
  */
 size_t Mesh::totalOpenBoundaryNodes() {
   this->m_totalOpenBoundaryNodes = 0;
-  for (size_t i = 0; i < this->m_openBoundaries.size(); i++)
-    this->m_totalOpenBoundaryNodes += this->m_openBoundaries[i].length();
+  for (auto &m_openBoundarie : this->m_openBoundaries) {
+    this->m_totalOpenBoundaryNodes += m_openBoundarie.length();
+  }
   return this->m_totalOpenBoundaryNodes;
 }
 
@@ -556,10 +563,11 @@ size_t Mesh::totalOpenBoundaryNodes() {
  * @return Node pointer
  */
 Node *Mesh::node(size_t index) {
-  if (index < this->numNodes())
+  if (index < this->numNodes()) {
     return &this->m_nodes[index];
-  else
+  } else {
     return nullptr;
+  }
 }
 
 /**
@@ -570,10 +578,11 @@ Node *Mesh::node(size_t index) {
  * @return Element pointer
  */
 Element *Mesh::element(size_t index) {
-  if (index < this->numElements())
+  if (index < this->numElements()) {
     return &this->m_elements[index];
-  else
+  } else {
     return nullptr;
+  }
 }
 
 /**
@@ -583,13 +592,15 @@ Element *Mesh::element(size_t index) {
  * @return Node pointer
  */
 Node *Mesh::nodeById(size_t id) {
-  if (this->m_nodeOrderingLogical)
-    if (id > 0 && id <= this->numNodes())
+  if (this->m_nodeOrderingLogical) {
+    if (id > 0 && id <= this->numNodes()) {
       return &this->m_nodes[id - 1];
-    else
+    } else {
       return nullptr;
-  else
+    }
+  } else {
     return &this->m_nodes[this->m_nodeLookup[id]];
+  }
 }
 
 /**
@@ -599,13 +610,15 @@ Node *Mesh::nodeById(size_t id) {
  * @return Element pointer
  */
 Element *Mesh::elementById(size_t id) {
-  if (this->m_elementOrderingLogical)
-    if (id > 0 && id <= this->numElements())
+  if (this->m_elementOrderingLogical) {
+    if (id > 0 && id <= this->numElements()) {
       return &this->m_elements[id - 1];
-    else
+    } else {
       return nullptr;
-  else
+    }
+  } else {
     return &this->m_elements[this->m_elementLookup[id]];
+  }
 }
 
 /**
@@ -615,10 +628,11 @@ Element *Mesh::elementById(size_t id) {
  * @return Boundary pointer
  */
 Boundary *Mesh::openBoundary(size_t index) {
-  if (index < this->numOpenBoundaries())
+  if (index < this->numOpenBoundaries()) {
     return &this->m_openBoundaries[index];
-  else
+  } else {
     return nullptr;
+  }
 }
 
 /**
@@ -628,10 +642,11 @@ Boundary *Mesh::openBoundary(size_t index) {
  * @return Boundary pointer
  */
 Boundary *Mesh::landBoundary(size_t index) {
-  if (index < this->numLandBoundaries())
+  if (index < this->numLandBoundaries()) {
     return &this->m_landBoundaries[index];
-  else
+  } else {
     return nullptr;
+  }
 }
 
 /**
@@ -681,7 +696,9 @@ int Mesh::reproject(int epsg) {
   int ierr = proj.transform(this->projection(), epsg, inPoint, outPoint,
                             this->m_isLatLon);
 
-  if (ierr != QProj4::NoError) Adcirc::Error::throwError("Proj4 library error");
+  if (ierr != QProj4::NoError) {
+    Adcirc::Error::throwError("Proj4 library error");
+  }
 
   for (size_t i = 0; i < this->numNodes(); i++) {
     this->node(i)->setX(outPoint[i].x());
@@ -697,7 +714,7 @@ int Mesh::reproject(int epsg) {
  * @param outputFile output file with .shp extension
  * @return error code
  */
-int Mesh::toShapefile(string outputFile) {
+int Mesh::toShapefile(const string &outputFile) {
   SHPHandle shpid;
   DBFHandle dbfid;
   SHPObject *shpobj;
@@ -752,11 +769,13 @@ int Mesh::buildNodalSearchTree() {
     y[i] = this->node(i)->y();
   }
 
-  if (this->m_nodalSearchTree != nullptr)
-    if (this->m_nodalSearchTree->isInitialized())
-      delete this->m_nodalSearchTree;
+  if (this->m_nodalSearchTree != nullptr) {
+    if (this->m_nodalSearchTree->isInitialized()) {
+      this->m_nodalSearchTree.reset(nullptr);
+    }
+  }
 
-  this->m_nodalSearchTree = new QKdtree2();
+  this->m_nodalSearchTree = unique_ptr<QKdtree2>(new QKdtree2());
   ierr = this->m_nodalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
     Adcirc::Error::throwError("KDTree2 library error");
@@ -789,11 +808,13 @@ int Mesh::buildElementalSearchTree() {
     y[i] = tempY / this->element(i)->n();
   }
 
-  if (this->m_elementalSearchTree != nullptr)
-    if (this->m_elementalSearchTree->isInitialized())
-      delete this->m_elementalSearchTree;
+  if (this->m_elementalSearchTree != nullptr) {
+    if (this->m_elementalSearchTree->isInitialized()) {
+      this->m_elementalSearchTree.reset(nullptr);
+    }
+  }
 
-  this->m_elementalSearchTree = new QKdtree2();
+  this->m_elementalSearchTree = unique_ptr<QKdtree2>(new QKdtree2());
   int ierr = this->m_elementalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
     Adcirc::Error::throwError("KDTree2 library error");
@@ -915,7 +936,7 @@ void Mesh::deleteElement(size_t index) {
  * @param filename name of the output file to write
  * @return error code
  */
-int Mesh::write(string filename) {
+int Mesh::write(const string &filename) {
   string tempString;
   vector<string> boundaryList;
   std::ofstream outputFile;
@@ -929,12 +950,14 @@ int Mesh::write(string filename) {
   outputFile << tempString << "\n";
 
   //...Write the mesh nodes
-  for (size_t i = 0; i < this->numNodes(); i++)
+  for (size_t i = 0; i < this->numNodes(); i++) {
     outputFile << this->node(i)->toString(this->isLatLon()) << "\n";
+  }
 
   //...Write the mesh elements
-  for (size_t i = 0; i < this->numElements(); i++)
+  for (size_t i = 0; i < this->numElements(); i++) {
     outputFile << this->element(i)->toString() << "\n";
+  }
 
   //...Write the open boundary header
   outputFile << this->numOpenBoundaries() << "\n";
@@ -943,8 +966,9 @@ int Mesh::write(string filename) {
   //...Write the open boundaries
   for (size_t i = 0; i < this->numOpenBoundaries(); i++) {
     boundaryList = this->openBoundary(i)->toStringList();
-    for (size_t j = 0; j < boundaryList.size(); j++)
-      outputFile << boundaryList[j] << "\n";
+    for (const auto &j : boundaryList) {
+      outputFile << j << "\n";
+    }
   }
 
   //...Write the land boundary header
@@ -954,8 +978,9 @@ int Mesh::write(string filename) {
   //...Write the land boundaries
   for (size_t i = 0; i < this->numLandBoundaries(); i++) {
     boundaryList = this->landBoundary(i)->toStringList();
-    for (size_t j = 0; j < boundaryList.size(); j++)
-      outputFile << boundaryList[j] << "\n";
+    for (const auto &j : boundaryList) {
+      outputFile << j << "\n";
+    }
   }
 
   //...Close the file
@@ -987,10 +1012,11 @@ bool Mesh::elementOrderingIsLogical() { return this->m_elementOrderingLogical; }
  * @return array position
  */
 size_t Mesh::nodeIndexById(size_t id) {
-  if (this->m_nodeOrderingLogical)
+  if (this->m_nodeOrderingLogical) {
     return id;
-  else
+  } else {
     return this->m_nodeLookup[id];
+  }
 }
 
 /**
@@ -1000,10 +1026,11 @@ size_t Mesh::nodeIndexById(size_t id) {
  * @return array position
  */
 size_t Mesh::elementIndexById(size_t id) {
-  if (this->m_elementOrderingLogical)
+  if (this->m_elementOrderingLogical) {
     return id;
-  else
+  } else {
     return this->m_elementLookup[id];
+  }
 }
 
 vector<double> Mesh::x() {

@@ -30,7 +30,8 @@ namespace ModelParameters {
 
 class AttributeMetadata {
  public:
-  explicit AttributeMetadata(string name = "defaultName", string units = "none",
+  explicit AttributeMetadata(const string &name = "defaultName",
+                             const string &units = "none",
                              size_t numValues = 1);
 
   string name() const;
@@ -61,6 +62,6 @@ class AttributeMetadata {
   /// Default value(s) to be used when writing the fort.13 file
   vector<double> m_defaultValue;
 };
-}
-}
+}  // namespace ModelParameters
+}  // namespace Adcirc
 #endif  // ATTRIBUTEMETADATA_H

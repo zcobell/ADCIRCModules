@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "harmonicsrecord.h"
-#include <assert.h>
+#include <cassert>
 
 using namespace std;
 using namespace Adcirc::Output;
@@ -57,10 +57,11 @@ vector<double> HarmonicsRecord::values() { return this->m_data; }
 
 double HarmonicsRecord::value(size_t index) {
   assert(index < this->m_data.size());
-  if (index < this->m_data.size())
+  if (index < this->m_data.size()) {
     return this->m_data[index];
-  else
+  } else {
     return -9999;
+  }
 }
 
 void HarmonicsRecord::set(size_t index, double data) {

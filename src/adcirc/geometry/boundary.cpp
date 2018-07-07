@@ -134,8 +134,11 @@ double Boundary::crestElevation(size_t index) const {
   if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
       this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
       this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
-      this->boundaryCode() == 25)
-    if (index < this->boundaryLength()) return this->m_crestElevation[index];
+      this->boundaryCode() == 25) {
+    if (index < this->boundaryLength()) {
+      return this->m_crestElevation[index];
+    }
+  }
   Adcirc::Error::throwError("Index exceeds bounds");
   return -9999.0;
 }
@@ -171,9 +174,11 @@ void Boundary::setCrestElevation(size_t index, double crestElevation) {
  */
 double Boundary::subcriticalWeirCoefficient(size_t index) const {
   if (this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
-      this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength())
+      this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+    if (index < this->boundaryLength()) {
       return this->m_subcriticalWeirCoefficient[index];
+    }
+  }
   Adcirc::Error::throwError("Index exceeds bounds");
   return -9999.0;
 }
@@ -209,9 +214,11 @@ double Boundary::supercriticalWeirCoefficient(size_t index) const {
   if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
       this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
       this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
-      this->boundaryCode() == 25)
-    if (index < this->boundaryLength())
+      this->boundaryCode() == 25) {
+    if (index < this->boundaryLength()) {
       return this->m_supercriticalWeirCoefficient[index];
+    }
+  }
   Adcirc::Error::throwError("Index exceeds bounds");
   return -9999.0;
 }
@@ -247,8 +254,11 @@ void Boundary::setSupercriticalWeirCoefficient(
  * @return height of pipe center above datum
  */
 double Boundary::pipeHeight(size_t index) const {
-  if (this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength()) return this->m_pipeHeight[index];
+  if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+    if (index < this->boundaryLength()) {
+      return this->m_pipeHeight[index];
+    }
+  }
   Adcirc::Error::throwError("Index exceeds bounds");
   return -9999.0;
 }
@@ -279,8 +289,11 @@ void Boundary::setPipeHeight(size_t index, double pipeHeight) {
  * @return diameter of the pipe
  */
 double Boundary::pipeDiameter(size_t index) const {
-  if (this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength()) return this->m_pipeDiameter[index];
+  if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+    if (index < this->boundaryLength()) {
+      return this->m_pipeDiameter[index];
+    }
+  }
   Adcirc::Error::throwError("Index exceeds bounds");
   return -9999.0;
 }
@@ -311,7 +324,9 @@ void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
  */
 double Boundary::pipeCoefficient(size_t index) const {
   if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
-    if (index < this->boundaryLength()) return this->m_pipeCoefficient[index];
+    if (index < this->boundaryLength()) {
+      return this->m_pipeCoefficient[index];
+    }
   }
   Adcirc::Error::throwError("Index exceeds bounds");
   return -9999.0;
@@ -340,7 +355,9 @@ void Boundary::setPipeCoefficient(size_t index, double pipeCoefficient) {
  * @return pointer to an Node object
  */
 Node *Boundary::node1(size_t index) const {
-  if (index < this->boundaryLength()) return this->m_node1[index];
+  if (index < this->boundaryLength()) {
+    return this->m_node1[index];
+  }
   Adcirc::Error::throwError("Index exceeds bounds");
   return nullptr;
 }
@@ -369,7 +386,9 @@ void Boundary::setNode1(size_t index, Node *node1) {
 Node *Boundary::node2(size_t index) const {
   if (this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
       this->boundaryCode() == 5 || this->boundaryCode() == 25) {
-    if (index < this->boundaryLength()) return this->m_node2[index];
+    if (index < this->boundaryLength()) {
+      return this->m_node2[index];
+    }
   }
   Adcirc::Error::throwError("Index exceeds bounds");
   return nullptr;
@@ -401,11 +420,12 @@ void Boundary::setNode2(size_t index, Node *node2) {
 vector<string> Boundary::toStringList() {
   vector<string> outputList;
 
-  if (this->boundaryCode() == -1)
+  if (this->boundaryCode() == -1) {
     outputList.push_back(boost::str(boost::format("%11i") % this->length()));
-  else
+  } else {
     outputList.push_back(boost::str(boost::format("%11i %11i") %
                                     this->length() % this->boundaryCode()));
+  }
 
   for (size_t i = 0; i < this->length(); i++) {
     if (this->boundaryCode() == 0 || this->boundaryCode() == 1 ||

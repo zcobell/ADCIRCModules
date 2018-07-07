@@ -29,23 +29,23 @@
 using namespace std;
 
 //...Typedefs for boost parsers used in I/O
-typedef string::const_iterator iterator_type;
-typedef parse::node_parser<iterator_type> node_parser;
-typedef parse::elem_parser<iterator_type> elem_parser;
-typedef parse::boundary0_parser<iterator_type> boundary0_parser;
-typedef parse::boundary23_parser<iterator_type> boundary23_parser;
-typedef parse::boundary24_parser<iterator_type> boundary24_parser;
-typedef parse::boundary25_parser<iterator_type> boundary25_parser;
-typedef parse::nodalAttribute1_parser<iterator_type> nodalattribute1_parser;
-typedef parse::nodalAttribute2_parser<iterator_type> nodalattribute2_parser;
-typedef parse::nodalAttribute12_parser<iterator_type> nodalattribute12_parser;
-typedef parse::harmonicsElevation_parser<iterator_type>
-    harmonicsElevation_parser;
-typedef parse::harmonicsVelocity_parser<iterator_type> harmonicsVelocity_parser;
+using iterator_type = string::const_iterator;
+using node_parser = parse::node_parser<iterator_type>;
+using elem_parser = parse::elem_parser<iterator_type>;
+using boundary0_parser = parse::boundary0_parser<iterator_type>;
+using boundary23_parser = parse::boundary23_parser<iterator_type>;
+using boundary24_parser = parse::boundary24_parser<iterator_type>;
+using boundary25_parser = parse::boundary25_parser<iterator_type>;
+using nodalattribute1_parser = parse::nodalAttribute1_parser<iterator_type>;
+using nodalattribute2_parser = parse::nodalAttribute2_parser<iterator_type>;
+using nodalattribute12_parser = parse::nodalAttribute12_parser<iterator_type>;
+using harmonicsElevation_parser =
+    parse::harmonicsElevation_parser<iterator_type>;
+using harmonicsVelocity_parser = parse::harmonicsVelocity_parser<iterator_type>;
 
-IO::IO() {}
+IO::IO() = default;
 
-int IO::readFileData(string filename, vector<string> &data) {
+int IO::readFileData(const string &filename, vector<string> &data) {
   std::ifstream t(filename.c_str());
   t.seekg(0, std::ios::end);
   size_t size = t.tellg();

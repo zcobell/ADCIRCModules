@@ -36,6 +36,7 @@
 #define QKDTREE2_H
 
 #include <cstddef>
+#include <memory>
 #include <vector>
 
 using namespace std;
@@ -72,7 +73,7 @@ class QKdtree2 {
   bool m_initialized;
 
   /// Pointer to variable holding the kdtree search tree
-  kdtree2 *m_tree;
+  std::unique_ptr<kdtree2> m_tree;
 };
 
 #endif  // QKDTREE2_H

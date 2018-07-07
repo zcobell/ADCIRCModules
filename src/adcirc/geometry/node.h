@@ -59,6 +59,6 @@ class Node {
   double m_y;
   double m_z;
 };
-}
-}
+}  // namespace Geometry
+}  // namespace Adcirc
 #endif  // NODE_H

@@ -62,6 +62,6 @@ class Attribute {
   /// Node that this value applies to
   Adcirc::Geometry::Node *m_node;
 };
-}
-}
+}  // namespace ModelParameters
+}  // namespace Adcirc
 #endif  // ATTRIBUTE_H

@@ -128,10 +128,11 @@ void Node::setId(size_t id) { this->m_id = id; }
  * @return formatted string
  */
 string Node::toString(bool geographicCoordinates) {
-  if (geographicCoordinates)
+  if (geographicCoordinates) {
     return boost::str(boost::format("%11i   %14.10f   %14.10f  %14.10f") %
                       this->id() % this->x() % this->y() % this->z());
-  else
+  } else {
     return boost::str(boost::format("%11i   %14.4f   %14.4f  %14.4f") %
                       this->id() % this->x() % this->y() % this->z());
+  }
 }

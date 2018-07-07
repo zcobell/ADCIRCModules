@@ -26,16 +26,16 @@
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
-#include "adcirc/adcircmodules_global.h"
-#include "adcirc/geometry/node.h"
 #include <string>
 #include <vector>
+#include "adcirc/adcircmodules_global.h"
+#include "adcirc/geometry/node.h"
 
 namespace Adcirc {
 namespace Geometry {
 
 class Element {
-public:
+ public:
   explicit Element();
   explicit Element(size_t id, Adcirc::Geometry::Node *n1,
                    Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3);
@@ -53,13 +53,13 @@ public:
 
   std::string toString();
 
-private:
+ private:
   int m_n = 3;
 
   size_t m_id;
   std::vector<Adcirc::Geometry::Node *> m_nodes;
 };
-}
-}
+}  // namespace Geometry
+}  // namespace Adcirc
 
-#endif // ELEMENT_H
+#endif  // ELEMENT_H

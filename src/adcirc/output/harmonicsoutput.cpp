@@ -17,9 +17,10 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "harmonicsoutput.h"
-#include <assert.h>
+#include <cassert>
 #include <fstream>
 #include <iostream>
+#include <utility>
 #include "adcirc/architecture/error.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"
@@ -32,7 +33,7 @@ HarmonicsOutput::HarmonicsOutput(string filename, bool velocity) {
   this->m_numNodes = 0;
   this->m_numConstituents = 0;
   this->m_isVelocity = velocity;
-  this->m_filename = filename;
+  this->m_filename = std::move(filename);
 }
 
 string HarmonicsOutput::filename() const { return this->m_filename; }
@@ -44,81 +45,88 @@ void HarmonicsOutput::setFilename(const string& filename) {
 size_t HarmonicsOutput::index(string name) {
   boost::to_upper(name);
   auto i = this->m_index.find(name);
-  if (i == this->m_index.end())
+  if (i == this->m_index.end()) {
     return 999999999;
-  else
+  } else {
     return i->second;
+  }
 }
 
 HarmonicsRecord* HarmonicsOutput::amplitude(string name) {
-  return this->amplitude(this->index(name));
+  return this->amplitude(this->index(std::move(name)));
 }
 
 HarmonicsRecord* HarmonicsOutput::amplitude(size_t index) {
   assert(index < this->m_amplitude.size());
-  if (index < this->m_amplitude.size())
+  if (index < this->m_amplitude.size()) {
     return &this->m_amplitude[index];
-  else
+  } else {
     return nullptr;
+  }
 }
 
 HarmonicsRecord* HarmonicsOutput::phase(string name) {
-  return this->phase(this->index(name));
+  return this->phase(this->index(std::move(name)));
 }
 
 HarmonicsRecord* HarmonicsOutput::phase(size_t index) {
   assert(index < this->m_phase.size());
-  if (index < this->m_phase.size())
+  if (index < this->m_phase.size()) {
     return &this->m_phase[index];
-  else
+  } else {
     return nullptr;
+  }
 }
 
 HarmonicsRecord* HarmonicsOutput::u_magnitude(string name) {
-  return this->u_magnitude(this->index(name));
+  return this->u_magnitude(this->index(std::move(name)));
 }
 HarmonicsRecord* HarmonicsOutput::u_magnitude(size_t index) {
   assert(index < this->m_umagnitude.size());
-  if (index < this->m_umagnitude.size())
+  if (index < this->m_umagnitude.size()) {
     return &this->m_umagnitude[index];
-  else
+  } else {
     return nullptr;
+  }
 }
 
 HarmonicsRecord* HarmonicsOutput::u_phase(string name) {
-  return this->u_phase(this->index(name));
+  return this->u_phase(this->index(std::move(name)));
 }
 
 HarmonicsRecord* HarmonicsOutput::u_phase(size_t index) {
   assert(index < this->m_uphase.size());
-  if (index < this->m_uphase.size())
+  if (index < this->m_uphase.size()) {
     return &this->m_uphase[index];
-  else
+  } else {
     return nullptr;
+  }
 }
 
 HarmonicsRecord* HarmonicsOutput::v_magnitude(string name) {
-  return this->v_magnitude(this->index(name));
+  return this->v_magnitude(this->index(std::move(name)));
 }
 
 HarmonicsRecord* HarmonicsOutput::v_magnitude(size_t index) {
   assert(index < this->m_vmagnitude.size());
-  if (index < this->m_vmagnitude.size())
+  if (index < this->m_vmagnitude.size()) {
     return &this->m_vmagnitude[index];
-  else
+  } else {
     return nullptr;
+  }
 }
 
 HarmonicsRecord* HarmonicsOutput::v_phase(string name) {
-  return this->v_phase(this->index(name));
+  return this->v_phase(this->index(std::move(name)));
 }
 
 HarmonicsRecord* HarmonicsOutput::v_phase(size_t index) {
   assert(index < this->m_vphase.size());
-  if (index < this->m_vphase.size())
+  if (index < this->m_vphase.size()) {
     return &this->m_vphase[index];
-  else
+  } else {
     return nullptr;
+  }
 }
 
 size_t HarmonicsOutput::numConstituents() const {
@@ -149,17 +157,20 @@ bool HarmonicsOutput::isVector() const { return this->m_isVelocity; }
 
 size_t HarmonicsOutput::nodeIdToArrayIndex(size_t id) {
   auto i = this->m_nodeIndex.find(id);
-  if (i == this->m_nodeIndex.end())
+  if (i == this->m_nodeIndex.end()) {
     return 999999999;
-  else
+  } else {
     return i->second;
+  }
 }
 
 int HarmonicsOutput::read() {
   try {
     fstream fid;
     fid.open(this->m_filename);
-    if (!fid.is_open()) Adcirc::Error::throwError("File is not open");
+    if (!fid.is_open()) {
+      Adcirc::Error::throwError("File is not open");
+    }
 
     string line;
     bool ok;
@@ -245,7 +256,9 @@ int HarmonicsOutput::read() {
 
       size_t node;
       int ierr = IO::splitStringBoundary0Format(line, node);
-      if (ierr != 0) return ierr;
+      if (ierr != 0) {
+        return ierr;
+      }
 
       this->m_nodeIndex[node] = i;
 
@@ -254,7 +267,9 @@ int HarmonicsOutput::read() {
         if (this->isVector()) {
           double um, up, vm, vp;
           ierr = IO::splitStringHarmonicsVelocityFormat(line, um, up, vm, vp);
-          if (ierr != 0) return ierr;
+          if (ierr != 0) {
+            return ierr;
+          }
 
           this->u_magnitude(j)->set(i, um);
           this->u_phase(j)->set(i, up);
@@ -263,7 +278,9 @@ int HarmonicsOutput::read() {
         } else {
           double a, p;
           ierr = IO::splitStringHarmonicsElevationFormat(line, a, p);
-          if (ierr != 0) return ierr;
+          if (ierr != 0) {
+            return ierr;
+          }
 
           this->amplitude(j)->set(i, a);
           this->phase(j)->set(i, p);
@@ -279,4 +296,4 @@ int HarmonicsOutput::read() {
   }
 }
 
-int HarmonicsOutput::write(string filename) { return Adcirc::NoError; }
+int HarmonicsOutput::write(const string& filename) { return Adcirc::NoError; }

@@ -29,4 +29,4 @@ namespace Adcirc {
 
 string version() { return GIT_VERSION; }
 
-}
+}  // namespace Adcirc

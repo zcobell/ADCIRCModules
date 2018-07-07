@@ -17,9 +17,11 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "adcirc/output/outputfile.h"
-#include <assert.h>
+#include <cassert>
 #include <fstream>
 #include <iostream>
+#include <memory>
+#include <utility>
 #include "adcirc/architecture/error.h"
 #include "adcirc/io/io.h"
 #include "adcirc/io/stringconversion.h"
@@ -68,7 +70,7 @@ static const std::vector<string> netcdfVarNames = {"sigmat",
                                                    "swan_TMM10_max"};
 
 OutputFile::OutputFile(std::string filename) {
-  this->m_filename = filename;
+  this->m_filename = std::move(filename);
   this->m_currentSnap = 0;
   this->m_numNodes = 0;
   this->m_open = false;
@@ -78,8 +80,8 @@ OutputFile::OutputFile(std::string filename) {
 OutputFile::~OutputFile() { this->clear(); }
 
 void OutputFile::clear() {
-  for (size_t i = 0; i < this->m_records.size(); i++) {
-    delete this->m_records[i];
+  for (auto& m_record : this->m_records) {
+    m_record.reset(nullptr);
   }
   this->m_records.clear();
   this->m_recordMap.clear();
@@ -88,7 +90,7 @@ void OutputFile::clear() {
 void OutputFile::clearAt(size_t position) {
   assert(position < this->m_records.size());
   if (position < this->m_records.size()) {
-    delete this->m_records[position];
+    this->m_records[position].reset(nullptr);
     this->m_records.erase(this->m_records.begin() + position);
     this->rebuildMap();
   }
@@ -98,9 +100,9 @@ string OutputFile::filename() const { return this->m_filename; }
 
 void OutputFile::setFilename(const string& filename) {
   try {
-    if (!this->isOpen())
+    if (!this->isOpen()) {
       this->m_filename = filename;
-    else {
+    } else {
       Adcirc::Error::throwError(
           "Cannot change filename since file currently open");
     }
@@ -121,7 +123,9 @@ int OutputFile::open() {
   assert(this->exists());
 
   try {
-    if (this->isOpen()) Adcirc::Error::throwError("File already open");
+    if (this->isOpen()) {
+      Adcirc::Error::throwError("File already open");
+    }
 
     if (!this->exists()) {
       Adcirc::Error::throwError("File does not exist");
@@ -143,31 +147,38 @@ int OutputFile::open() {
       Adcirc::Error::throwError("No valid file type detected");
     }
 
-    if (this->isOpen())
+    if (this->isOpen()) {
       return Adcirc::NoError;
-    else {
+    } else {
       Adcirc::Error::throwError("Error opening file");
       return 0;
     }
   } catch (string& e) {
     Adcirc::Error::catchError(e);
   }
+  return Adcirc::NoError;
 }
 
 int OutputFile::close() {
   assert(this->isOpen());
   try {
-    if (!this->isOpen()) Adcirc::Error::throwError("File not open");
+    if (!this->isOpen()) {
+      Adcirc::Error::throwError("File not open");
+    }
 
     if (this->filetype() == Adcirc::Output::ASCIIFull ||
-        this->filetype() == Adcirc::Output::ASCIISparse)
+        this->filetype() == Adcirc::Output::ASCIISparse) {
       return this->closeAscii();
+    }
 
     if (this->filetype() == Adcirc::Output::Netcdf3 ||
-        this->filetype() == Adcirc::Output::Netcdf4)
+        this->filetype() == Adcirc::Output::Netcdf4) {
       return this->closeNetcdf();
+    }
 
-    if (this->filetype() == Adcirc::Output::Xdmf) return this->closeXdmf();
+    if (this->filetype() == Adcirc::Output::Xdmf) {
+      return this->closeXdmf();
+    }
   } catch (string& e) {
     Adcirc::Error::catchError(e);
   }
@@ -177,7 +188,7 @@ int OutputFile::close() {
 
 int OutputFile::read(int snap) {
   try {
-    OutputRecord* record = nullptr;
+    unique_ptr<OutputRecord> record;
     if (this->m_filetype == Adcirc::Output::ASCIIFull ||
         this->m_filetype == Adcirc::Output::ASCIISparse) {
       if (snap != Adcirc::Output::NextOutputSnap) {
@@ -190,9 +201,11 @@ int OutputFile::read(int snap) {
       }
       int ierr = this->readAsciiRecord(record);
       if (ierr == 0) {
-        this->m_records.push_back(record);
+        this->m_records.push_back(std::move(record));
       } else {
-        if (record != nullptr) delete record;
+        if (record != nullptr) {
+          record.reset(nullptr);
+        }
         Adcirc::Error::throwError("Error reading output record");
         return 0;
       }
@@ -211,21 +224,25 @@ int OutputFile::write(int snap) {
 
 int OutputFile::openAscii() {
   assert(!this->isOpen());
-  if (this->isOpen()) return false;
+  if (this->isOpen()) {
+    return false;
+  }
   this->m_fid.open(this->filename());
   if (this->m_fid.is_open()) {
     this->m_open = true;
     return true;
-  } else
+  } else {
     return false;
+  }
 }
 
 int OutputFile::openNetcdf() {
   assert(!this->isOpen());
   if (!this->isOpen()) {
     int ierr = nc_open(this->m_filename.c_str(), NC_NOWRITE, &this->m_ncid);
-    if (ierr != NC_NOERR)
+    if (ierr != NC_NOERR) {
       Adcirc::Error::throwError("Error opening netcdf file");
+    }
     this->m_open = true;
   } else {
     Adcirc::Error::throwError("Error opening netcdf file");
@@ -303,7 +320,7 @@ OutputRecord* OutputFile::dataAt(size_t position, bool& ok) {
       return nullptr;
     } else {
       ok = true;
-      return this->m_records[position];
+      return this->m_records[position].get();
     }
   } catch (std::string& e) {
     Adcirc::Error::catchError(e);
@@ -336,20 +353,25 @@ void OutputFile::setHeader(const std::string& header) {
 }
 
 int OutputFile::getFiletype() {
-  if (OutputFile::checkFiletypeNetcdf3(this->filename()))
+  if (OutputFile::checkFiletypeNetcdf3(this->filename())) {
     return Adcirc::Output::Netcdf3;
-  if (OutputFile::checkFiletypeNetcdf4(this->filename()))
+  }
+  if (OutputFile::checkFiletypeNetcdf4(this->filename())) {
     return Adcirc::Output::Netcdf4;
-  if (OutputFile::checkFiletypeXdmf(this->filename()))
+  }
+  if (OutputFile::checkFiletypeXdmf(this->filename())) {
     return Adcirc::Output::Xdmf;
-  if (OutputFile::checkFiletypeAsciiFull(this->filename()))
+  }
+  if (OutputFile::checkFiletypeAsciiFull(this->filename())) {
     return Adcirc::Output::ASCIIFull;
-  if (OutputFile::checkFiletypeAsciiSparse(this->filename()))
+  }
+  if (OutputFile::checkFiletypeAsciiSparse(this->filename())) {
     return Adcirc::Output::ASCIISparse;
+  }
   return Adcirc::Output::Unknown;
 }
 
-bool OutputFile::checkFiletypeAsciiSparse(string filename) {
+bool OutputFile::checkFiletypeAsciiSparse(const string& filename) {
   assert(!filename.empty());
 
   fstream fid(filename);
@@ -375,12 +397,14 @@ bool OutputFile::checkFiletypeAsciiSparse(string filename) {
       return false;
     }
   } catch (...) {
-    if (fid.is_open()) fid.close();
+    if (fid.is_open()) {
+      fid.close();
+    }
     return false;
   }
 }
 
-bool OutputFile::checkFiletypeAsciiFull(string filename) {
+bool OutputFile::checkFiletypeAsciiFull(const string& filename) {
   assert(!filename.empty());
 
   fstream fid(filename);
@@ -407,15 +431,20 @@ bool OutputFile::checkFiletypeAsciiFull(string filename) {
       return false;
     }
   } catch (...) {
-    if (fid.is_open()) fid.close();
+    if (fid.is_open()) {
+      fid.close();
+    }
     return false;
   }
 }
 
-int OutputFile::inquireNetcdfFormat(string filename, int& format) {
+bool OutputFile::inquireNetcdfFormat(const string& filename, int& format) {
   int ncid;
+  format = Adcirc::Output::Unknown;
   int ierr = nc_open(filename.c_str(), NC_NOWRITE, &ncid);
-  if (ierr != NC_NOERR) return false;
+  if (ierr != NC_NOERR) {
+    return false;
+  }
   ierr = nc_inq_format(ncid, &format);
   if (ierr != NC_NOERR) {
     nc_close(ncid);
@@ -427,49 +456,65 @@ int OutputFile::inquireNetcdfFormat(string filename, int& format) {
 
 bool OutputFile::checkFiletypeNetcdf3(string filename) {
   int format;
-  OutputFile::inquireNetcdfFormat(filename, format);
-  if (format == NC_FORMAT_CLASSIC) return true;
+  bool b = OutputFile::inquireNetcdfFormat(std::move(filename), format);
+  if (b && format == NC_FORMAT_CLASSIC) {
+    return true;
+  }
   return false;
 }
 
 bool OutputFile::checkFiletypeNetcdf4(string filename) {
   int format;
-  OutputFile::inquireNetcdfFormat(filename, format);
-  if (format == NC_FORMAT_NETCDF4_CLASSIC || format == NC_FORMAT_NETCDF4)
-    return true;
-  return false;
+  bool b = OutputFile::inquireNetcdfFormat(std::move(filename), format);
+  if (b) {
+    if (format == NC_FORMAT_NETCDF4_CLASSIC || format == NC_FORMAT_NETCDF4) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
 }
 
-bool OutputFile::checkFiletypeXdmf(string filename) { return false; }
+bool OutputFile::checkFiletypeXdmf(const string& filename) { return false; }
 
 int OutputFile::findNetcdfVarId() {
   assert(this->isOpen());
   assert(this->filetype() == Adcirc::Output::Netcdf3 ||
          this->filetype() == Adcirc::Output::Netcdf4);
 
-  if (!this->isOpen()) Adcirc::Error::throwError("Netcdf file not open");
+  if (!this->isOpen()) {
+    Adcirc::Error::throwError("Netcdf file not open");
+  }
 
   if (!(this->filetype() != Adcirc::Output::Netcdf3) ||
-      !(this->filetype() == Adcirc::Output::Netcdf4))
+      !(this->filetype() == Adcirc::Output::Netcdf4)) {
     Adcirc::Error::throwError("Filetype is not netcdf");
+  }
 
   int varid;
 
-  for (size_t i = 0; i < netcdfVarNames.size(); i++) {
-    string varname = netcdfVarNames.at(i);
+  for (const auto& varname : netcdfVarNames) {
     int ierr = nc_inq_varid(this->m_ncid, varname.c_str(), &varid);
     if (ierr != NC_NOERR) {
       this->m_varid_data.push_back(varid);
     }
   }
 
-  if (this->m_varid_data.size() == 0)
+  if (this->m_varid_data.size() == 0) {
     Adcirc::Error::throwError("No valid netcdf variables found");
-  if (this->m_varid_data.size() > 2)
+  }
+  if (this->m_varid_data.size() > 2) {
     Adcirc::Error::throwError("Too many netcdf variables found");
+  }
 
-  if (this->m_varid_data.size() == 1) this->m_isVector = false;
-  if (this->m_varid_data.size() == 2) this->m_isVector = true;
+  if (this->m_varid_data.size() == 1) {
+    this->m_isVector = false;
+  }
+  if (this->m_varid_data.size() == 2) {
+    this->m_isVector = true;
+  }
 
   return Adcirc::NoError;
 }
@@ -526,11 +571,11 @@ int OutputFile::readAsciiHeader() {
   }
 
   int numCols = StringConversion::stringToInt(list.at(4), ok);
-  if (numCols == 1)
+  if (numCols == 1) {
     this->m_isVector = false;
-  else if (numCols == 2)
+  } else if (numCols == 2) {
     this->m_isVector = true;
-  else {
+  } else {
     this->m_fid.close();
     Adcirc::Error::throwError("Invalid number of columns in file");
     return 0;
@@ -541,11 +586,11 @@ int OutputFile::readAsciiHeader() {
 
 int OutputFile::readNetcdfHeader() { return Adcirc::NoError; }
 
-int OutputFile::readAsciiRecord(OutputRecord* record) {
+int OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
   string line;
 
-  record =
-      new OutputRecord(this->m_currentSnap, this->m_numNodes, this->m_isVector);
+  record = unique_ptr<OutputRecord>(new OutputRecord(
+      this->m_currentSnap, this->m_numNodes, this->m_isVector));
 
   //...Record header
   getline(this->m_fid, line);
@@ -554,19 +599,19 @@ int OutputFile::readAsciiRecord(OutputRecord* record) {
   bool ok;
 
   double t = StringConversion::stringToDouble(list[0], ok);
-  if (ok)
+  if (ok) {
     record->setTime(t);
-  else {
-    delete record;
+  } else {
+    record.reset(nullptr);
     Adcirc::Error::throwError("Error reading ascii record");
     return 0;
   }
 
   int it = StringConversion::stringToInt(list[1], ok);
-  if (ok)
+  if (ok) {
     record->setIteration(it);
-  else {
-    delete record;
+  } else {
+    record.reset(nullptr);
     Adcirc::Error::throwError("Error reading ascii record");
     return 0;
   }
@@ -577,14 +622,14 @@ int OutputFile::readAsciiRecord(OutputRecord* record) {
   if (list.size() > 2) {
     numNonDefault = StringConversion::stringToSizet(list[2], ok);
     if (!ok) {
-      delete record;
+      record.reset(nullptr);
       Adcirc::Error::throwError("Error reading ascii record");
       return 0;
     }
 
     dflt = StringConversion::stringToDouble(list[3], ok);
     if (!ok) {
-      delete record;
+      record.reset(nullptr);
       Adcirc::Error::throwError("Error reading ascii record");
       return 0;
     }
@@ -600,10 +645,10 @@ int OutputFile::readAsciiRecord(OutputRecord* record) {
       size_t id;
       double v1, v2;
       int ierr = IO::splitStringAttribute2Format(line, id, v1, v2);
-      if (ierr == 0)
+      if (ierr == 0) {
         record->set(id - 1, v1, v2);
-      else {
-        delete record;
+      } else {
+        record.reset(nullptr);
         Adcirc::Error::throwError("Error reading ascii record");
         return 0;
       }
@@ -614,7 +659,7 @@ int OutputFile::readAsciiRecord(OutputRecord* record) {
       if (ierr == 0) {
         record->set(id - 1, v1);
       } else {
-        delete record;
+        record.reset(nullptr);
         Adcirc::Error::throwError("Error reading ascii record");
         return 0;
       };
@@ -622,7 +667,7 @@ int OutputFile::readAsciiRecord(OutputRecord* record) {
   }
 
   //...Setup the map for record indicies
-  this->m_recordMap[record->record()] = record;
+  this->m_recordMap[record->record()] = record.get();
   this->m_currentSnap++;
 
   return Adcirc::NoError;
@@ -630,8 +675,8 @@ int OutputFile::readAsciiRecord(OutputRecord* record) {
 
 int OutputFile::rebuildMap() {
   this->m_recordMap.clear();
-  for (size_t i = 0; i < this->m_records.size(); i++) {
-    this->m_recordMap[this->m_records[i]->record()] = this->m_records[i];
+  for (auto& m_record : this->m_records) {
+    this->m_recordMap[m_record->record()] = m_record.get();
   }
   return Adcirc::NoError;
 }

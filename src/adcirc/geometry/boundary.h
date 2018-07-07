@@ -93,6 +93,6 @@ class Boundary {
   std::vector<Adcirc::Geometry::Node *> m_node1;
   std::vector<Adcirc::Geometry::Node *> m_node2;
 };
-}
-}
+}  // namespace Geometry
+}  // namespace Adcirc
 #endif  // BOUNDARY_H
