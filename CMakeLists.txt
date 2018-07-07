@@ -115,7 +115,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/CMakeFiles)
 ###########################################################################
 #  SWIG/PYTHON/PERL
 ###########################################################################
-FIND_PACKAGE(SWIG)
+FIND_PACKAGE(SWIG 3.0)
 IF(SWIG_FOUND)
     INCLUDE(${SWIG_USE_FILE})
 
