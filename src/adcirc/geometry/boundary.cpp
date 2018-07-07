@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "adcirc/geometry/boundary.h"
+#include "adcirc/architecture/error.h"
 #include "boost/format.hpp"
 
 using namespace std;
@@ -135,6 +136,7 @@ double Boundary::crestElevation(size_t index) const {
       this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
       this->boundaryCode() == 25)
     if (index < this->boundaryLength()) return this->m_crestElevation[index];
+  Adcirc::Error::throwError("Index exceeds bounds");
   return -9999.0;
 }
 
@@ -149,9 +151,15 @@ void Boundary::setCrestElevation(size_t index, double crestElevation) {
   if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
       this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
       this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
-      this->boundaryCode() == 25)
-    if (index < this->boundaryLength())
+      this->boundaryCode() == 25) {
+    if (index < this->boundaryLength()) {
       this->m_crestElevation[index] = crestElevation;
+    } else {
+      Adcirc::Error::throwError("Index exceeds bounds");
+    }
+  } else {
+    Adcirc::Error::throwError("Invalid attribute for boundary type");
+  }
 }
 
 /**
@@ -166,6 +174,7 @@ double Boundary::subcriticalWeirCoefficient(size_t index) const {
       this->boundaryCode() == 5 || this->boundaryCode() == 25)
     if (index < this->boundaryLength())
       return this->m_subcriticalWeirCoefficient[index];
+  Adcirc::Error::throwError("Index exceeds bounds");
   return -9999.0;
 }
 /**
@@ -178,9 +187,15 @@ double Boundary::subcriticalWeirCoefficient(size_t index) const {
 void Boundary::setSubcriticalWeirCoefficient(
     size_t index, double subcriticalWeirCoefficient) {
   if (this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
-      this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength())
+      this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+    if (index < this->boundaryLength()) {
       this->m_subcriticalWeirCoefficient[index] = subcriticalWeirCoefficient;
+    } else {
+      Adcirc::Error::throwError("Index exceeds bounds");
+    }
+  } else {
+    Adcirc::Error::throwError("Invalid attribute for boundary type");
+  }
 }
 
 /**
@@ -197,6 +212,7 @@ double Boundary::supercriticalWeirCoefficient(size_t index) const {
       this->boundaryCode() == 25)
     if (index < this->boundaryLength())
       return this->m_supercriticalWeirCoefficient[index];
+  Adcirc::Error::throwError("Index exceeds bounds");
   return -9999.0;
 }
 
@@ -211,10 +227,16 @@ void Boundary::setSupercriticalWeirCoefficient(
   if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
       this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
       this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
-      this->boundaryCode() == 25)
-    if (index < this->boundaryLength())
+      this->boundaryCode() == 25) {
+    if (index < this->boundaryLength()) {
       this->m_supercriticalWeirCoefficient[index] =
           supercriticalWeirCoefficient;
+    } else {
+      Adcirc::Error::throwError("Index exceeds bounds");
+    }
+  } else {
+    Adcirc::Error::throwError("Invalid attribute for boundary type");
+  }
 }
 
 /**
@@ -227,6 +249,7 @@ void Boundary::setSupercriticalWeirCoefficient(
 double Boundary::pipeHeight(size_t index) const {
   if (this->boundaryCode() == 5 || this->boundaryCode() == 25)
     if (index < this->boundaryLength()) return this->m_pipeHeight[index];
+  Adcirc::Error::throwError("Index exceeds bounds");
   return -9999.0;
 }
 
@@ -238,8 +261,15 @@ double Boundary::pipeHeight(size_t index) const {
  * @param pipeHeight elevation of the pipe center above datum
  */
 void Boundary::setPipeHeight(size_t index, double pipeHeight) {
-  if (this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength()) this->m_pipeHeight[index] = pipeHeight;
+  if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+    if (index < this->boundaryLength()) {
+      this->m_pipeHeight[index] = pipeHeight;
+    } else {
+      Adcirc::Error::throwError("Index exceeds bounds");
+    }
+  } else {
+    Adcirc::Error::throwError("Invalid attribute for boundary type");
+  }
 }
 
 /**
@@ -251,6 +281,7 @@ void Boundary::setPipeHeight(size_t index, double pipeHeight) {
 double Boundary::pipeDiameter(size_t index) const {
   if (this->boundaryCode() == 5 || this->boundaryCode() == 25)
     if (index < this->boundaryLength()) return this->m_pipeDiameter[index];
+  Adcirc::Error::throwError("Index exceeds bounds");
   return -9999.0;
 }
 
@@ -261,9 +292,15 @@ double Boundary::pipeDiameter(size_t index) const {
  * @param pipeDiameter diameter of the pipe
  */
 void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
-  if (this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength())
+  if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+    if (index < this->boundaryLength()) {
       this->m_pipeDiameter[index] = pipeDiameter;
+    } else {
+      Adcirc::Error::throwError("Index exceeds bounds");
+    }
+  } else {
+    Adcirc::Error::throwError("Index exceeds bounds");
+  }
 }
 
 /**
@@ -273,8 +310,10 @@ void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
  * @return pipe coefficient
  */
 double Boundary::pipeCoefficient(size_t index) const {
-  if (this->boundaryCode() == 5 || this->boundaryCode() == 25)
+  if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
     if (index < this->boundaryLength()) return this->m_pipeCoefficient[index];
+  }
+  Adcirc::Error::throwError("Index exceeds bounds");
   return -9999.0;
 }
 
@@ -285,9 +324,13 @@ double Boundary::pipeCoefficient(size_t index) const {
  * @param pipeCoefficient pipe coefficient
  */
 void Boundary::setPipeCoefficient(size_t index, double pipeCoefficient) {
-  if (this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength())
+  if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+    if (index < this->boundaryLength()) {
       this->m_pipeCoefficient[index] = pipeCoefficient;
+    } else {
+      Adcirc::Error::throwError("Index exceeds bounds");
+    }
+  }
 }
 
 /**
@@ -298,6 +341,7 @@ void Boundary::setPipeCoefficient(size_t index, double pipeCoefficient) {
  */
 Node *Boundary::node1(size_t index) const {
   if (index < this->boundaryLength()) return this->m_node1[index];
+  Adcirc::Error::throwError("Index exceeds bounds");
   return nullptr;
 }
 
@@ -308,7 +352,11 @@ Node *Boundary::node1(size_t index) const {
  * @param node1 Pointer to an Node object
  */
 void Boundary::setNode1(size_t index, Node *node1) {
-  if (index < this->boundaryLength()) this->m_node1[index] = node1;
+  if (index < this->boundaryLength()) {
+    this->m_node1[index] = node1;
+  } else {
+    Adcirc::Error::throwError("Index exceeds bounds");
+  }
 }
 
 /**
@@ -320,8 +368,10 @@ void Boundary::setNode1(size_t index, Node *node1) {
  */
 Node *Boundary::node2(size_t index) const {
   if (this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
-      this->boundaryCode() == 5 || this->boundaryCode() == 25)
+      this->boundaryCode() == 5 || this->boundaryCode() == 25) {
     if (index < this->boundaryLength()) return this->m_node2[index];
+  }
+  Adcirc::Error::throwError("Index exceeds bounds");
   return nullptr;
 }
 
@@ -333,8 +383,13 @@ Node *Boundary::node2(size_t index) const {
  */
 void Boundary::setNode2(size_t index, Node *node2) {
   if (this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
-      this->boundaryCode() == 5 || this->boundaryCode() == 25)
-    if (index < this->boundaryLength()) this->m_node2[index] = node2;
+      this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+    if (index < this->boundaryLength()) {
+      this->m_node2[index] = node2;
+    } else {
+      Adcirc::Error::throwError("Index exceeds bounds");
+    }
+  }
 }
 
 /**
