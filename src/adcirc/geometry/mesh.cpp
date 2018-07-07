@@ -31,22 +31,22 @@ using namespace std;
 using namespace Adcirc;
 using namespace Adcirc::Geometry;
 
-#define CHECK_FILEREAD_RETURN(ok)                      \
+#define CHECK_FILEREAD_RETURN(ok)                           \
   if (!ok) Adcirc::Error::throwError("Error reading file"); \
   ;
 
-#define CHECK_FILEREAD_RETURN_AND_CLOSE(ok)     \
-  if (!ok) {                                    \
-    fid.close();                                \
+#define CHECK_FILEREAD_RETURN_AND_CLOSE(ok)          \
+  if (!ok) {                                         \
+    fid.close();                                     \
     Adcirc::Error::throwError("Error reading file"); \
   }
 
 #define CHECK_FILEREAD_RETURN_INT(ierr) \
   if (ierr != 0) Adcirc::Error::throwError("Error reading file");
 
-#define CHECK_RETURN_AND_CLOSE(ierr)            \
-  if (ierr != Adcirc::NoError) {                \
-    fid.close();                                \
+#define CHECK_RETURN_AND_CLOSE(ierr)                 \
+  if (ierr != Adcirc::NoError) {                     \
+    fid.close();                                     \
     Adcirc::Error::throwError("Error reading file"); \
   }
 
@@ -1005,4 +1005,52 @@ size_t Mesh::elementIndexById(size_t id) {
     return id;
   else
     return this->m_elementLookup[id];
+}
+
+vector<double> Mesh::x() {
+  vector<double> x;
+  x.resize(this->numNodes());
+  for (size_t i = 0; i < this->numNodes(); i++) {
+    x[i] = this->node(i)->x();
+  }
+  return x;
+}
+
+vector<double> Mesh::y() {
+  vector<double> y;
+  y.resize(this->numNodes());
+  for (size_t i = 0; i < this->numNodes(); i++) {
+    y[i] = this->node(i)->y();
+  }
+  return y;
+}
+
+vector<double> Mesh::z() {
+  vector<double> z;
+  z.resize(this->numNodes());
+  for (size_t i = 0; i < this->numNodes(); i++) {
+    z[i] = this->node(i)->z();
+  }
+  return z;
+}
+
+vector<vector<double>> Mesh::xyz() {
+  vector<vector<double>> xyz;
+  xyz.resize(3);
+  xyz[0] = this->x();
+  xyz[1] = this->y();
+  xyz[2] = this->z();
+  return xyz;
+}
+
+vector<vector<size_t>> Mesh::connectivity() {
+  vector<vector<size_t>> conn;
+  conn.resize(3);
+  for (size_t i = 0; i < 3; i++) {
+    conn[i].resize(this->numElements());
+    for (size_t j = 0; j < this->numElements(); j++) {
+      conn[i][j] = this->element(j)->node(i)->id();
+    }
+  }
+  return conn;
 }

@@ -69,6 +69,12 @@ class Mesh {
 
   ~Mesh();
 
+  std::vector<double> x();
+  std::vector<double> y();
+  std::vector<double> z();
+  std::vector<std::vector<double>> xyz();
+  std::vector<std::vector<size_t>> connectivity();
+
   int read();
 
   int write(std::string outputFile);
@@ -165,7 +171,7 @@ class Mesh {
   QKdtree2 *m_nodalSearchTree;
   QKdtree2 *m_elementalSearchTree;
 };
-}
-}
+}  // namespace Geometry
+}  // namespace Adcirc
 
 #endif  // MESH_H

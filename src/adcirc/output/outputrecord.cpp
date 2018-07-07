@@ -169,3 +169,18 @@ void OutputRecord::setAll(std::vector<double> values) {
   this->m_u = values;
   return;
 }
+
+std::vector<double> OutputRecord::values(size_t column) {
+  if (this->isVector()) {
+    if (column == 0) {
+      return this->m_u;
+    } else if (column == 1) {
+      return this->m_v;
+    } else {
+      Adcirc::Error::throwError("Invalid column specified");
+      return std::vector<double>();
+    }
+  } else {
+    return this->m_u;
+  }
+}

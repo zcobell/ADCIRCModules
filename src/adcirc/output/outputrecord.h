@@ -43,6 +43,8 @@ class OutputRecord {
   void setAll(std::vector<double> values);
   void setAll(std::vector<double> values_u, std::vector<double> values_v);
 
+  std::vector<double> values(size_t column);
+
   double value(size_t index);
   double u(size_t index);
   double v(size_t index);
@@ -66,8 +68,7 @@ class OutputRecord {
   size_t record() const;
   void setRecord(size_t record);
 
-private:
-  std::vector<int> m_node;
+ private:
   std::vector<double> m_u;
   std::vector<double> m_v;
   int m_record;

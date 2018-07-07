@@ -48,6 +48,7 @@
 
 %include <std_string.i>
 %include <exception.i>
+%include <std_vector.i>
 
 %exception { 
   try { 
@@ -58,6 +59,14 @@
     SWIG_exception(SWIG_RuntimeError, e.c_str()); 
   } 
 } 
+
+namespace std {
+    %template(IntVector) vector<int>;
+    %template(SizetVector) vector<size_t>;
+    %template(DoubleVector) vector<double>;
+    %template(DoubleDoubleVector) vector<vector<double>>;
+    %template(SizetSizetVector) vector<vector<size_t>>;
+}
 
 %include "adcirc/config.h"
 %include "adcirc/architecture/error.h"
