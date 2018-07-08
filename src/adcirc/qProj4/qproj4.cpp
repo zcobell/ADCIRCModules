@@ -18,7 +18,7 @@
 //------------------------------------------------------------------------//
 #include "qproj4.h"
 #include "point.h"
-#include "proj_api.h"
+#include "proj.h"
 
 using namespace std;
 
@@ -57,12 +57,6 @@ QProj4::QProj4() { this->_initialize(); }
 //-----------------------------------------------------------------------------------------//
 int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
                       Point &output, bool &isLatLon) {
-  projPJ inputPJ, outputPJ;
-  double x, y, z;
-  int ierr;
-
-  z = 0.0;
-
   if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end()) {
     return NoSuchProjection;
   }
@@ -71,41 +65,44 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
     return NoSuchProjection;
   }
 
-  string currentInitialization = this->m_epsgMapping[inputEPSG];
-  string outputInitialization = this->m_epsgMapping[outputEPSG];
+  string p1 = this->m_epsgMapping[inputEPSG];
+  string p2 = this->m_epsgMapping[outputEPSG];
 
-  if (!(inputPJ = pj_init_plus(currentInitialization.c_str()))) {
+  PJ *pj1 = proj_create(PJ_DEFAULT_CTX, p1.c_str());
+  if (pj1 == 0) {
     return Proj4InternalError;
   }
 
-  if (!(outputPJ = pj_init_plus(outputInitialization.c_str()))) {
+  PJ *pj2 = proj_create(PJ_DEFAULT_CTX, p2.c_str());
+  if (pj2 == 0) {
+    proj_destroy(pj1);
     return Proj4InternalError;
   }
 
-  if (pj_is_latlong(inputPJ)) {
-    x = input.x() * DEG_TO_RAD;
-    y = input.y() * DEG_TO_RAD;
+  PJ_COORD c, o;
+
+  if (proj_angular_input(pj1, PJ_FWD)) {
+    c.lp.lam = proj_torad(input.x());
+    c.lp.phi = proj_torad(input.y());
   } else {
-    x = input.x();
-    y = input.y();
+    c.xy.x = input.x();
+    c.xy.y = input.y();
   }
 
-  ierr = pj_transform(inputPJ, outputPJ, 1, 1, &x, &y, &z);
+  o = proj_trans(pj2, PJ_FWD, proj_trans(pj1, PJ_INV, c));
 
-  if (ierr != 0) {
-    return Proj4InternalError;
-  }
-
-  if (pj_is_latlong(outputPJ)) {
-    output.setX(x * RAD_TO_DEG);
-    output.setY(y * RAD_TO_DEG);
+  if (proj_angular_output(pj2, PJ_FWD)) {
+    output.setX(proj_todeg(o.lp.lam));
+    output.setY(proj_todeg(o.lp.phi));
     isLatLon = true;
   } else {
-    output.setX(x);
-    output.setY(y);
+    output.setX(o.xy.x);
+    output.setY(o.xy.y);
     isLatLon = false;
   }
 
+  proj_destroy(pj1);
+  proj_destroy(pj2);
   return NoError;
 }
 //-----------------------------------------------------------------------------------------//
@@ -130,8 +127,6 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
 //-----------------------------------------------------------------------------------------//
 int QProj4::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
                       vector<Point> &output, bool &isLatLon) {
-  vector<double> x, y, z;
-
   if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end()) {
     return NoSuchProjection;
   }
@@ -140,56 +135,46 @@ int QProj4::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
     return NoSuchProjection;
   }
 
-  string currentInitialization = this->m_epsgMapping[inputEPSG];
-  string outputInitialization = this->m_epsgMapping[outputEPSG];
+  string p1 = this->m_epsgMapping[inputEPSG];
+  string p2 = this->m_epsgMapping[outputEPSG];
 
-  projPJ inputPJ = pj_init_plus(currentInitialization.c_str());
-  projPJ outputPJ = pj_init_plus(outputInitialization.c_str());
-
-  if (!(inputPJ)) {
+  PJ *pj1 = proj_create(PJ_DEFAULT_CTX, p1.c_str());
+  if (pj1 == 0) {
     return Proj4InternalError;
   }
 
-  if (!(outputPJ)) {
+  PJ *pj2 = proj_create(PJ_DEFAULT_CTX, p2.c_str());
+  if (pj2 == 0) {
+    proj_destroy(pj1);
     return Proj4InternalError;
   }
-
-  x.resize(input.size());
-  y.resize(input.size());
-  z.resize(input.size());
-  std::fill(z.begin(), z.end(), 0.0);
-  output.resize(input.size());
 
   for (size_t i = 0; i < input.size(); i++) {
-    if (pj_is_latlong(inputPJ)) {
-      x[i] = input[i].x() * DEG_TO_RAD;
-      y[i] = input[i].y() * DEG_TO_RAD;
+    PJ_COORD c, o;
+
+    if (proj_angular_input(pj1, PJ_FWD)) {
+      c.lp.lam = proj_torad(input[i].x());
+      c.lp.phi = proj_torad(input[i].y());
     } else {
-      x[i] = input[i].x();
-      y[i] = input[i].y();
+      c.xy.x = input[i].x();
+      c.xy.y = input[i].y();
     }
 
-    int ierr = pj_transform(inputPJ, outputPJ, 1, 1, &x[i], &y[i], &z[i]);
+    o = proj_trans(pj2, PJ_FWD, proj_trans(pj1, PJ_INV, c));
 
-    if (ierr != 0) {
-      return Proj4InternalError;
-    }
-
-    if (pj_is_latlong(outputPJ)) {
-      output[i].setX(x[i] * RAD_TO_DEG);
-      output[i].setY(y[i] * RAD_TO_DEG);
+    if (proj_angular_output(pj2, PJ_FWD)) {
+      output[i].setX(proj_todeg(o.lp.lam));
+      output[i].setY(proj_todeg(o.lp.phi));
+      isLatLon = true;
     } else {
-      output[i].setX(x[i]);
-      output[i].setY(y[i]);
+      output[i].setX(o.xy.x);
+      output[i].setY(o.xy.y);
+      isLatLon = false;
     }
   }
 
-  if (pj_is_latlong(outputPJ)) {
-    isLatLon = true;
-  } else {
-    isLatLon = false;
-  }
-
+  proj_destroy(pj1);
+  proj_destroy(pj2);
   return NoError;
 }
 //-----------------------------------------------------------------------------------------//
