@@ -30,30 +30,30 @@ using namespace std;
 using namespace Adcirc;
 using namespace Adcirc::Geometry;
 
-#define CHECK_FILEREAD_RETURN(ok)                    \
-  if (!ok) {                                         \
-    Adcirc::Error::throwError("Error reading file"); \
-    return Adcirc::HasError;                         \
+#define CHECK_FILEREAD_RETURN(ok)                          \
+  if (!ok) {                                               \
+    Adcirc::Error::throwError("Mesh: Error reading file"); \
+    return Adcirc::HasError;                               \
   }
 
-#define CHECK_FILEREAD_RETURN_AND_CLOSE(ok)          \
-  if (!ok) {                                         \
-    fid.close();                                     \
-    Adcirc::Error::throwError("Error reading file"); \
-    return Adcirc::HasError;                         \
+#define CHECK_FILEREAD_RETURN_AND_CLOSE(ok)                \
+  if (!ok) {                                               \
+    fid.close();                                           \
+    Adcirc::Error::throwError("Mesh: Error reading file"); \
+    return Adcirc::HasError;                               \
   }
 
-#define CHECK_FILEREAD_RETURN_INT(ierr)              \
-  if (ierr != 0) {                                   \
-    Adcirc::Error::throwError("Error reading file"); \
-    return Adcirc::HasError;                         \
+#define CHECK_FILEREAD_RETURN_INT(ierr)                    \
+  if (ierr != 0) {                                         \
+    Adcirc::Error::throwError("Mesh: Error reading file"); \
+    return Adcirc::HasError;                               \
   }
 
-#define CHECK_RETURN_AND_CLOSE(ierr)                 \
-  if (ierr != Adcirc::NoError) {                     \
-    fid.close();                                     \
-    Adcirc::Error::throwError("Error reading file"); \
-    return Adcirc::HasError;                         \
+#define CHECK_RETURN_AND_CLOSE(ierr)                       \
+  if (ierr != Adcirc::NoError) {                           \
+    fid.close();                                           \
+    Adcirc::Error::throwError("Mesh: Error reading file"); \
+    return Adcirc::HasError;                               \
   }
 
 /**
@@ -556,7 +556,8 @@ Node *Mesh::node(size_t index) {
   if (index < this->numNodes()) {
     return &this->m_nodes[index];
   } else {
-    Adcirc::Error::throwError("Index out of bounds");
+    Adcirc::Error::throwError("Mesh: Node index " + to_string(index) +
+                              " out of bounds");
     return nullptr;
   }
 }
@@ -572,7 +573,7 @@ Element *Mesh::element(size_t index) {
   if (index < this->numElements()) {
     return &this->m_elements[index];
   } else {
-    Adcirc::Error::throwError("Index out of bounds");
+    Adcirc::Error::throwError("Mesh: Element index out of bounds");
     return nullptr;
   }
 }
@@ -588,7 +589,8 @@ Node *Mesh::nodeById(size_t id) {
     if (id > 0 && id <= this->numNodes()) {
       return &this->m_nodes[id - 1];
     } else {
-      Adcirc::Error::throwError("Node id not found");
+      Adcirc::Error::throwError("Mesh: Node id " + to_string(id) +
+                                " not found");
       return nullptr;
     }
   } else {
@@ -607,7 +609,7 @@ Element *Mesh::elementById(size_t id) {
     if (id > 0 && id <= this->numElements()) {
       return &this->m_elements[id - 1];
     } else {
-      Adcirc::Error::throwError("Element id not found");
+      Adcirc::Error::throwError("Mesh: Element id not found");
       return nullptr;
     }
   } else {
@@ -625,7 +627,7 @@ Boundary *Mesh::openBoundary(size_t index) {
   if (index < this->numOpenBoundaries()) {
     return &this->m_openBoundaries[index];
   } else {
-    Adcirc::Error::throwError("Index out of bounds");
+    Adcirc::Error::throwError("Mesh: Open boundary index out of bounds");
     return nullptr;
   }
 }
@@ -640,7 +642,7 @@ Boundary *Mesh::landBoundary(size_t index) {
   if (index < this->numLandBoundaries()) {
     return &this->m_landBoundaries[index];
   } else {
-    Adcirc::Error::throwError("Index out of bounds");
+    Adcirc::Error::throwError("Mesh: Land boundary index out of bounds");
     return nullptr;
   }
 }
@@ -693,7 +695,7 @@ int Mesh::reproject(int epsg) {
                             this->m_isLatLon);
 
   if (ierr != QProj4::NoError) {
-    Adcirc::Error::throwError("Proj4 library error");
+    Adcirc::Error::throwError("Mesh: Proj4 library error");
     return Adcirc::HasError;
   }
 
@@ -826,7 +828,7 @@ int Mesh::buildNodalSearchTree() {
   this->m_nodalSearchTree = unique_ptr<QKdtree2>(new QKdtree2());
   ierr = this->m_nodalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
-    Adcirc::Error::throwError("KDTree2 library error");
+    Adcirc::Error::throwError("Mesh: KDTree2 library error");
     return Adcirc::HasError;
   }
 
@@ -866,7 +868,7 @@ int Mesh::buildElementalSearchTree() {
   this->m_elementalSearchTree = unique_ptr<QKdtree2>(new QKdtree2());
   int ierr = this->m_elementalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
-    Adcirc::Error::throwError("KDTree2 library error");
+    Adcirc::Error::throwError("Mesh: KDTree2 library error");
     return Adcirc::HasError;
   }
 
@@ -936,7 +938,7 @@ void Mesh::addNode(size_t index, Node &node) {
   if (index < this->numNodes()) {
     this->m_nodes[index] = node;
   } else {
-    Adcirc::Error::throwError("Index exceeds dimension");
+    Adcirc::Error::throwError("Mesh: Node index > number of nodes");
   }
 
   return;
@@ -953,7 +955,7 @@ void Mesh::deleteNode(size_t index) {
     this->m_nodes.erase(this->m_nodes.begin() + index);
     this->setNumNodes(this->m_nodes.size());
   } else {
-    Adcirc::Error::throwError("Index exceeds dimension");
+    Adcirc::Error::throwError("Mesh: Node index > number of nodes");
   }
   return;
 }
@@ -968,7 +970,7 @@ void Mesh::addElement(size_t index, Element &element) {
   if (index < this->numElements()) {
     this->m_elements[index] = element;
   } else {
-    Adcirc::Error::throwError("Index exceeds dimension");
+    Adcirc::Error::throwError("Mesh: Element index > number of nodes");
   }
   return;
 }
@@ -984,7 +986,7 @@ void Mesh::deleteElement(size_t index) {
     this->m_elements.erase(this->m_elements.begin() + index);
     this->setNumElements(this->m_elements.size());
   } else {
-    Adcirc::Error::throwError("Index exceeds dimension");
+    Adcirc::Error::throwError("Mesh: Element index > number of nodes");
   }
   return;
 }

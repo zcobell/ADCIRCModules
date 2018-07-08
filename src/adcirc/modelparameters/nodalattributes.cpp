@@ -144,6 +144,13 @@ int NodalAttributes::_readFort13Header(std::fstream &fid) {
   this->m_nodalData.resize(this->numParameters());
   for (size_t i = 0; i < this->numParameters(); i++) {
     this->m_nodalData[i].resize(this->numNodes());
+    for (size_t j = 0; j < this->numNodes(); j++) {
+      if (this->m_mesh != nullptr) {
+        this->m_nodalData[i][j].setId(this->mesh()->node(j)->id());
+      } else {
+        this->m_nodalData[i][j].setId(j + 1);
+      }
+    }
   }
 
   return Adcirc::NoError;
@@ -229,8 +236,8 @@ void NodalAttributes::_fillDefaultValues() {
 void NodalAttributes::_mapNodes() {
   for (size_t i = 0; i < this->numParameters(); i++) {
     for (size_t j = 0; j < this->numNodes(); j++) {
-      this->m_nodalData[i][j].setNode(this->mesh()->node(
-          this->mesh()->nodeIndexById(this->m_nodalData[i][j].id())));
+      this->m_nodalData[i][j].setNode(
+          this->mesh()->nodeById(this->m_nodalData[i][j].id()));
     }
   }
   return;
