@@ -61,6 +61,7 @@ HarmonicsRecord* HarmonicsOutput::amplitude(size_t index) {
   if (index < this->m_amplitude.size()) {
     return &this->m_amplitude[index];
   } else {
+    Adcirc::Error::throwError("Index out of bounds");
     return nullptr;
   }
 }
@@ -74,6 +75,7 @@ HarmonicsRecord* HarmonicsOutput::phase(size_t index) {
   if (index < this->m_phase.size()) {
     return &this->m_phase[index];
   } else {
+    Adcirc::Error::throwError("Index out of bounds");
     return nullptr;
   }
 }
@@ -86,6 +88,7 @@ HarmonicsRecord* HarmonicsOutput::u_magnitude(size_t index) {
   if (index < this->m_umagnitude.size()) {
     return &this->m_umagnitude[index];
   } else {
+    Adcirc::Error::throwError("Index out of bounds");
     return nullptr;
   }
 }
@@ -99,6 +102,7 @@ HarmonicsRecord* HarmonicsOutput::u_phase(size_t index) {
   if (index < this->m_uphase.size()) {
     return &this->m_uphase[index];
   } else {
+    Adcirc::Error::throwError("Index out of bounds");
     return nullptr;
   }
 }
@@ -112,6 +116,7 @@ HarmonicsRecord* HarmonicsOutput::v_magnitude(size_t index) {
   if (index < this->m_vmagnitude.size()) {
     return &this->m_vmagnitude[index];
   } else {
+    Adcirc::Error::throwError("Index out of bounds");
     return nullptr;
   }
 }
@@ -125,6 +130,7 @@ HarmonicsRecord* HarmonicsOutput::v_phase(size_t index) {
   if (index < this->m_vphase.size()) {
     return &this->m_vphase[index];
   } else {
+    Adcirc::Error::throwError("Index out of bounds");
     return nullptr;
   }
 }
@@ -165,136 +171,134 @@ size_t HarmonicsOutput::nodeIdToArrayIndex(size_t id) {
 }
 
 int HarmonicsOutput::read() {
-  try {
-    fstream fid;
-    fid.open(this->m_filename);
-    if (!fid.is_open()) {
-      Adcirc::Error::throwError("File is not open");
-    }
-
-    string line;
-    bool ok;
-
-    getline(fid, line);
-    size_t n = StringConversion::stringToSizet(line, ok);
-    if (ok) {
-      this->setNumConstituents(n);
-    } else {
-      fid.close();
-      Adcirc::Error::throwError("Error reading file data");
-    }
-
-    std::vector<double> frequency;
-    std::vector<double> nodalFactor;
-    std::vector<double> equilibriumArg;
-    std::vector<string> names;
-
-    frequency.resize(this->numConstituents());
-    nodalFactor.resize(this->numConstituents());
-    equilibriumArg.resize(this->numConstituents());
-    names.resize(this->numConstituents());
-
-    for (size_t i = 0; i < this->numConstituents(); i++) {
-      std::vector<string> list;
-      getline(fid, line);
-      IO::splitString(line, list);
-      frequency[i] = StringConversion::stringToDouble(list[0], ok);
-      nodalFactor[i] = StringConversion::stringToDouble(list[1], ok);
-      equilibriumArg[i] = StringConversion::stringToDouble(list[2], ok);
-      names[i] = boost::to_upper_copy<std::string>(list[3]);
-    }
-
-    getline(fid, line);
-    n = StringConversion::stringToSizet(line, ok);
-    if (ok) {
-      this->setNumNodes(n);
-    } else {
-      fid.close();
-      Adcirc::Error::throwError("Error reading file data");
-    }
-
-    for (size_t i = 0; i < this->numConstituents(); i++) {
-      this->m_index[names[i]] = i;
-      this->m_reverseIndex[i] = names[i];
-      if (this->isVector()) {
-        this->u_magnitude(i)->setName(names[i]);
-        this->u_magnitude(i)->setFrequency(frequency[i]);
-        this->u_magnitude(i)->setNodalFactor(nodalFactor[i]);
-        this->u_magnitude(i)->setEquilibriumArg(equilibriumArg[i]);
-        this->v_magnitude(i)->setName(names[i]);
-        this->v_magnitude(i)->setFrequency(frequency[i]);
-        this->v_magnitude(i)->setNodalFactor(nodalFactor[i]);
-        this->v_magnitude(i)->setEquilibriumArg(equilibriumArg[i]);
-        this->u_phase(i)->setName(names[i]);
-        this->u_phase(i)->setFrequency(frequency[i]);
-        this->u_phase(i)->setNodalFactor(nodalFactor[i]);
-        this->u_phase(i)->setEquilibriumArg(equilibriumArg[i]);
-        this->v_phase(i)->setName(names[i]);
-        this->v_phase(i)->setFrequency(frequency[i]);
-        this->v_phase(i)->setNodalFactor(nodalFactor[i]);
-        this->v_phase(i)->setEquilibriumArg(equilibriumArg[i]);
-        this->u_magnitude(i)->resize(this->numNodes());
-        this->v_magnitude(i)->resize(this->numNodes());
-        this->u_phase(i)->resize(this->numNodes());
-        this->v_phase(i)->resize(this->numNodes());
-      } else {
-        this->amplitude(i)->setName(names[i]);
-        this->amplitude(i)->setFrequency(frequency[i]);
-        this->amplitude(i)->setNodalFactor(nodalFactor[i]);
-        this->amplitude(i)->setEquilibriumArg(equilibriumArg[i]);
-        this->phase(i)->setName(names[i]);
-        this->phase(i)->setFrequency(frequency[i]);
-        this->phase(i)->setNodalFactor(nodalFactor[i]);
-        this->phase(i)->setEquilibriumArg(equilibriumArg[i]);
-        this->amplitude(i)->resize(this->numNodes());
-        this->phase(i)->resize(this->numNodes());
-      }
-    }
-
-    for (size_t i = 0; i < this->numNodes(); i++) {
-      getline(fid, line);
-
-      size_t node;
-      int ierr = IO::splitStringBoundary0Format(line, node);
-      if (ierr != 0) {
-        return ierr;
-      }
-
-      this->m_nodeIndex[node] = i;
-
-      for (size_t j = 0; j < this->numConstituents(); j++) {
-        getline(fid, line);
-        if (this->isVector()) {
-          double um, up, vm, vp;
-          ierr = IO::splitStringHarmonicsVelocityFormat(line, um, up, vm, vp);
-          if (ierr != 0) {
-            return ierr;
-          }
-
-          this->u_magnitude(j)->set(i, um);
-          this->u_phase(j)->set(i, up);
-          this->v_magnitude(j)->set(i, vm);
-          this->v_phase(j)->set(i, vp);
-        } else {
-          double a, p;
-          ierr = IO::splitStringHarmonicsElevationFormat(line, a, p);
-          if (ierr != 0) {
-            return ierr;
-          }
-
-          this->amplitude(j)->set(i, a);
-          this->phase(j)->set(i, p);
-        }
-      }
-    }
-
-    fid.close();
-
-    return Adcirc::NoError;
-  } catch (std::string& e) {
-    Adcirc::Error::catchError(e);
+  fstream fid;
+  fid.open(this->m_filename);
+  if (!fid.is_open()) {
+    Adcirc::Error::throwError("File is not open");
+    return Adcirc::HasError;
   }
+
+  string line;
+  bool ok;
+
+  getline(fid, line);
+  size_t n = StringConversion::stringToSizet(line, ok);
+  if (ok) {
+    this->setNumConstituents(n);
+  } else {
+    fid.close();
+    Adcirc::Error::throwError("Error reading file data");
+    return Adcirc::HasError;
+  }
+
+  std::vector<double> frequency;
+  std::vector<double> nodalFactor;
+  std::vector<double> equilibriumArg;
+  std::vector<string> names;
+
+  frequency.resize(this->numConstituents());
+  nodalFactor.resize(this->numConstituents());
+  equilibriumArg.resize(this->numConstituents());
+  names.resize(this->numConstituents());
+
+  for (size_t i = 0; i < this->numConstituents(); i++) {
+    std::vector<string> list;
+    getline(fid, line);
+    IO::splitString(line, list);
+    frequency[i] = StringConversion::stringToDouble(list[0], ok);
+    nodalFactor[i] = StringConversion::stringToDouble(list[1], ok);
+    equilibriumArg[i] = StringConversion::stringToDouble(list[2], ok);
+    names[i] = boost::to_upper_copy<std::string>(list[3]);
+  }
+
+  getline(fid, line);
+  n = StringConversion::stringToSizet(line, ok);
+  if (ok) {
+    this->setNumNodes(n);
+  } else {
+    fid.close();
+    Adcirc::Error::throwError("Error reading file data");
+    return Adcirc::HasError;
+  }
+
+  for (size_t i = 0; i < this->numConstituents(); i++) {
+    this->m_index[names[i]] = i;
+    this->m_reverseIndex[i] = names[i];
+    if (this->isVector()) {
+      this->u_magnitude(i)->setName(names[i]);
+      this->u_magnitude(i)->setFrequency(frequency[i]);
+      this->u_magnitude(i)->setNodalFactor(nodalFactor[i]);
+      this->u_magnitude(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->v_magnitude(i)->setName(names[i]);
+      this->v_magnitude(i)->setFrequency(frequency[i]);
+      this->v_magnitude(i)->setNodalFactor(nodalFactor[i]);
+      this->v_magnitude(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->u_phase(i)->setName(names[i]);
+      this->u_phase(i)->setFrequency(frequency[i]);
+      this->u_phase(i)->setNodalFactor(nodalFactor[i]);
+      this->u_phase(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->v_phase(i)->setName(names[i]);
+      this->v_phase(i)->setFrequency(frequency[i]);
+      this->v_phase(i)->setNodalFactor(nodalFactor[i]);
+      this->v_phase(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->u_magnitude(i)->resize(this->numNodes());
+      this->v_magnitude(i)->resize(this->numNodes());
+      this->u_phase(i)->resize(this->numNodes());
+      this->v_phase(i)->resize(this->numNodes());
+    } else {
+      this->amplitude(i)->setName(names[i]);
+      this->amplitude(i)->setFrequency(frequency[i]);
+      this->amplitude(i)->setNodalFactor(nodalFactor[i]);
+      this->amplitude(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->phase(i)->setName(names[i]);
+      this->phase(i)->setFrequency(frequency[i]);
+      this->phase(i)->setNodalFactor(nodalFactor[i]);
+      this->phase(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->amplitude(i)->resize(this->numNodes());
+      this->phase(i)->resize(this->numNodes());
+    }
+  }
+
+  for (size_t i = 0; i < this->numNodes(); i++) {
+    getline(fid, line);
+
+    size_t node;
+    int ierr = IO::splitStringBoundary0Format(line, node);
+    if (ierr != Adcirc::NoError) {
+      return Adcirc::HasError;
+    }
+
+    this->m_nodeIndex[node] = i;
+
+    for (size_t j = 0; j < this->numConstituents(); j++) {
+      getline(fid, line);
+      if (this->isVector()) {
+        double um, up, vm, vp;
+        ierr = IO::splitStringHarmonicsVelocityFormat(line, um, up, vm, vp);
+        if (ierr != Adcirc::NoError) {
+          return Adcirc::HasError;
+        }
+
+        this->u_magnitude(j)->set(i, um);
+        this->u_phase(j)->set(i, up);
+        this->v_magnitude(j)->set(i, vm);
+        this->v_phase(j)->set(i, vp);
+      } else {
+        double a, p;
+        ierr = IO::splitStringHarmonicsElevationFormat(line, a, p);
+        if (ierr != Adcirc::NoError) {
+          return Adcirc::HasError;
+        }
+
+        this->amplitude(j)->set(i, a);
+        this->phase(j)->set(i, p);
+      }
+    }
+  }
+
+  fid.close();
+
   return Adcirc::NoError;
 }
 
-int HarmonicsOutput::write(const string& filename) { return Adcirc::NoError; }
+int HarmonicsOutput::write(const string& filename) { return Adcirc::HasError; }

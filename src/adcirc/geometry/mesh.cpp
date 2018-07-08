@@ -30,23 +30,30 @@ using namespace std;
 using namespace Adcirc;
 using namespace Adcirc::Geometry;
 
-#define CHECK_FILEREAD_RETURN(ok)                           \
-  if (!ok) Adcirc::Error::throwError("Error reading file"); \
-  ;
+#define CHECK_FILEREAD_RETURN(ok)                    \
+  if (!ok) {                                         \
+    Adcirc::Error::throwError("Error reading file"); \
+    return Adcirc::HasError;                         \
+  }
 
 #define CHECK_FILEREAD_RETURN_AND_CLOSE(ok)          \
   if (!ok) {                                         \
     fid.close();                                     \
     Adcirc::Error::throwError("Error reading file"); \
+    return Adcirc::HasError;                         \
   }
 
-#define CHECK_FILEREAD_RETURN_INT(ierr) \
-  if (ierr != 0) Adcirc::Error::throwError("Error reading file");
+#define CHECK_FILEREAD_RETURN_INT(ierr)              \
+  if (ierr != 0) {                                   \
+    Adcirc::Error::throwError("Error reading file"); \
+    return Adcirc::HasError;                         \
+  }
 
 #define CHECK_RETURN_AND_CLOSE(ierr)                 \
   if (ierr != Adcirc::NoError) {                     \
     fid.close();                                     \
     Adcirc::Error::throwError("Error reading file"); \
+    return Adcirc::HasError;                         \
   }
 
 /**
@@ -200,33 +207,29 @@ void Mesh::setNumLandBoundaries(size_t numLandBoundaries) {
  * occured
  */
 int Mesh::read() {
-  try {
-    int ierr;
+  int ierr;
 
-    std::fstream fid(this->filename());
+  std::fstream fid(this->filename());
 
-    this->_readMeshHeader(fid);
+  this->_readMeshHeader(fid);
 
-    //...Read the node table
-    ierr = this->_readNodes(fid);
-    CHECK_RETURN_AND_CLOSE(ierr);
+  //...Read the node table
+  ierr = this->_readNodes(fid);
+  CHECK_RETURN_AND_CLOSE(ierr);
 
-    //...Read the element table
-    ierr = this->_readElements(fid);
-    CHECK_RETURN_AND_CLOSE(ierr);
+  //...Read the element table
+  ierr = this->_readElements(fid);
+  CHECK_RETURN_AND_CLOSE(ierr);
 
-    //...Read the open boundaries
-    ierr = this->_readOpenBoundaries(fid);
-    CHECK_RETURN_AND_CLOSE(ierr);
+  //...Read the open boundaries
+  ierr = this->_readOpenBoundaries(fid);
+  CHECK_RETURN_AND_CLOSE(ierr);
 
-    //...Read the land boundaries
-    ierr = this->_readLandBoundaries(fid);
-    CHECK_RETURN_AND_CLOSE(ierr);
+  //...Read the land boundaries
+  ierr = this->_readLandBoundaries(fid);
+  CHECK_RETURN_AND_CLOSE(ierr);
 
-    fid.close();
-  } catch (std::string &e) {
-    Adcirc::Error::catchError(e);
-  }
+  fid.close();
 
   return Adcirc::NoError;
 }
@@ -272,13 +275,13 @@ int Mesh::_readMeshHeader(std::fstream &fid) {
  * @return error code
  */
 int Mesh::_readNodes(std::fstream &fid) {
-  size_t id;
-  double x, y, z;
-  string tempLine;
-
   this->m_nodes.resize(this->numNodes());
 
-  for (size_t i = 0; i < this->numNodes(); i++) {
+  size_t i = 0;
+  for (auto &n : this->m_nodes) {
+    size_t id;
+    double x, y, z;
+    string tempLine;
     std::getline(fid, tempLine);
     int ierr = IO::splitStringNodeFormat(tempLine, id, x, y, z);
     CHECK_FILEREAD_RETURN_INT(ierr);
@@ -287,13 +290,14 @@ int Mesh::_readNodes(std::fstream &fid) {
       this->m_nodeOrderingLogical = false;
     }
 
-    this->m_nodes[i] = Node(id, x, y, z);
+    n = Node(id, x, y, z);
+    i++;
   }
 
   if (!this->m_nodeOrderingLogical) {
     this->m_nodeLookup.reserve(this->numNodes());
 
-    for (size_t i = 0; i < this->m_numNodes; i++) {
+    for (size_t i = 0; i < this->m_numNodes; ++i) {
       this->m_nodeLookup[this->m_nodes[i].id()] = i;
     }
   }
@@ -315,17 +319,17 @@ int Mesh::_readElements(std::fstream &fid) {
   this->m_elements.resize(this->numElements());
 
   if (this->m_nodeOrderingLogical) {
-    for (size_t i = 0; i < this->numElements(); i++) {
+    for (auto &e : this->m_elements) {
       std::getline(fid, tempLine);
       int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
       CHECK_FILEREAD_RETURN_INT(ierr);
 
-      this->m_elements[i].setElement(id, &this->m_nodes[e1 - 1],
-                                     &this->m_nodes[e2 - 1],
-                                     &this->m_nodes[e3 - 1]);
+      e.setElement(id, &this->m_nodes[e1 - 1], &this->m_nodes[e2 - 1],
+                   &this->m_nodes[e3 - 1]);
     }
   } else {
-    for (size_t i = 0; i < this->numElements(); i++) {
+    size_t i = 0;
+    for (auto &e : this->m_elements) {
       std::getline(fid, tempLine);
       int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
       CHECK_FILEREAD_RETURN_INT(ierr);
@@ -334,15 +338,16 @@ int Mesh::_readElements(std::fstream &fid) {
         this->m_elementOrderingLogical = false;
       }
 
-      this->m_elements[i].setElement(id, &this->m_nodes[this->m_nodeLookup[e1]],
-                                     &this->m_nodes[this->m_nodeLookup[e2]],
-                                     &this->m_nodes[this->m_nodeLookup[e3]]);
+      e.setElement(id, &this->m_nodes[this->m_nodeLookup[e1]],
+                   &this->m_nodes[this->m_nodeLookup[e2]],
+                   &this->m_nodes[this->m_nodeLookup[e3]]);
+      i++;
     }
   }
 
   if (!this->m_elementOrderingLogical) {
     this->m_elementLookup.reserve(this->m_numElements);
-    for (size_t i = 0; i < this->m_numElements; i++) {
+    for (size_t i = 0; i < this->m_numElements; ++i) {
       this->m_elementLookup[this->m_elements[i].id()] = i;
     }
   }
@@ -370,31 +375,26 @@ int Mesh::_readOpenBoundaries(std::fstream &fid) {
   this->m_openBoundaries.resize(this->numOpenBoundaries());
 
   std::getline(fid, tempLine);
-  // IO::splitString(tempLine, tempList);
-  // tempLine = tempList[0];
-  // this->setTotalOpenBoundaryNodes(StringConversion::stringToInt(tempLine,
-  // ok));  CHECK_FILEREAD_RETURN(ok);
 
-  for (size_t i = 0; i < this->numOpenBoundaries(); i++) {
+  for (auto &b : this->m_openBoundaries) {
     std::getline(fid, tempLine);
     IO::splitString(tempLine, tempList);
 
     size_t length = StringConversion::stringToSizet(tempList[0], ok);
     CHECK_FILEREAD_RETURN(ok);
 
-    this->m_openBoundaries[i].setBoundary(-1, length);
+    b.setBoundary(-1, length);
 
-    for (size_t j = 0; j < this->m_openBoundaries[i].length(); j++) {
+    for (size_t j = 0; j < b.length(); ++j) {
       std::getline(fid, tempLine);
       size_t nid;
       int ierr = IO::splitStringBoundary0Format(tempLine, nid);
       CHECK_FILEREAD_RETURN_INT(ierr);
 
       if (this->m_nodeOrderingLogical) {
-        this->m_openBoundaries[i].setNode1(j, &this->m_nodes[nid - 1]);
+        b.setNode1(j, &this->m_nodes[nid - 1]);
       } else {
-        this->m_openBoundaries[i].setNode1(
-            j, &this->m_nodes[this->m_nodeLookup[nid]]);
+        b.setNode1(j, &this->m_nodes[this->m_nodeLookup[nid]]);
       }
     }
   }
@@ -426,7 +426,7 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
 
   std::getline(fid, tempLine);
 
-  for (size_t i = 0; i < this->numLandBoundaries(); i++) {
+  for (auto &b : this->m_landBoundaries) {
     std::getline(fid, tempLine);
     IO::splitString(tempLine, tempList);
 
@@ -435,9 +435,9 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
     int code = StringConversion::stringToInt(tempList[1], ok);
     CHECK_FILEREAD_RETURN(ok);
 
-    this->m_landBoundaries[i].setBoundary(code, length);
+    b.setBoundary(code, length);
 
-    for (size_t j = 0; j < this->m_landBoundaries[i].length(); j++) {
+    for (size_t j = 0; j < b.length(); ++j) {
       std::getline(fid, tempLine);
 
       if (code == 3 || code == 13 || code == 23) {
@@ -445,15 +445,13 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
             IO::splitStringBoundary23Format(tempLine, n1, crest, supercritical);
         CHECK_FILEREAD_RETURN_INT(ierr);
         if (this->m_nodeOrderingLogical) {
-          this->m_landBoundaries[i].setNode1(j, &this->m_nodes[n1 - 1]);
+          b.setNode1(j, &this->m_nodes[n1 - 1]);
         } else {
-          this->m_landBoundaries[i].setNode1(
-              j, &this->m_nodes[this->m_nodeLookup[n1]]);
+          b.setNode1(j, &this->m_nodes[this->m_nodeLookup[n1]]);
         }
 
-        this->m_landBoundaries[i].setCrestElevation(j, crest);
-        this->m_landBoundaries[i].setSupercriticalWeirCoefficient(
-            j, supercritical);
+        b.setCrestElevation(j, crest);
+        b.setSupercriticalWeirCoefficient(j, supercritical);
 
       } else if (code == 4 || code == 24) {
         int ierr = IO::splitStringBoundary24Format(tempLine, n1, n2, crest,
@@ -461,19 +459,16 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
         CHECK_FILEREAD_RETURN_INT(ierr);
 
         if (this->m_nodeOrderingLogical) {
-          this->m_landBoundaries[i].setNode1(j, &this->m_nodes[n1 - 1]);
-          this->m_landBoundaries[i].setNode2(j, &this->m_nodes[n2 - 1]);
+          b.setNode1(j, &this->m_nodes[n1 - 1]);
+          b.setNode2(j, &this->m_nodes[n2 - 1]);
         } else {
-          this->m_landBoundaries[i].setNode1(
-              j, &this->m_nodes[this->m_nodeLookup[n1]]);
-          this->m_landBoundaries[i].setNode2(
-              j, &this->m_nodes[this->m_nodeLookup[n2]]);
+          b.setNode1(j, &this->m_nodes[this->m_nodeLookup[n1]]);
+          b.setNode2(j, &this->m_nodes[this->m_nodeLookup[n2]]);
         }
 
-        this->m_landBoundaries[i].setCrestElevation(j, crest);
-        this->m_landBoundaries[i].setSubcriticalWeirCoefficient(j, subcritical);
-        this->m_landBoundaries[i].setSupercriticalWeirCoefficient(
-            j, supercritical);
+        b.setCrestElevation(j, crest);
+        b.setSubcriticalWeirCoefficient(j, subcritical);
+        b.setSupercriticalWeirCoefficient(j, supercritical);
 
       } else if (code == 5 || code == 25) {
         int ierr = IO::splitStringBoundary25Format(
@@ -482,30 +477,26 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
         CHECK_FILEREAD_RETURN_INT(ierr);
 
         if (this->m_nodeOrderingLogical) {
-          this->m_landBoundaries[i].setNode1(j, &this->m_nodes[n1 - 1]);
-          this->m_landBoundaries[i].setNode2(j, &this->m_nodes[n2 - 1]);
+          b.setNode1(j, &this->m_nodes[n1 - 1]);
+          b.setNode2(j, &this->m_nodes[n2 - 1]);
         } else {
-          this->m_landBoundaries[i].setNode1(
-              j, &this->m_nodes[this->m_nodeLookup[n1]]);
-          this->m_landBoundaries[i].setNode2(
-              j, &this->m_nodes[this->m_nodeLookup[n2]]);
+          b.setNode1(j, &this->m_nodes[this->m_nodeLookup[n1]]);
+          b.setNode2(j, &this->m_nodes[this->m_nodeLookup[n2]]);
         }
 
-        this->m_landBoundaries[i].setCrestElevation(j, crest);
-        this->m_landBoundaries[i].setSubcriticalWeirCoefficient(j, subcritical);
-        this->m_landBoundaries[i].setSupercriticalWeirCoefficient(
-            j, supercritical);
-        this->m_landBoundaries[i].setPipeHeight(j, pipeheight);
-        this->m_landBoundaries[i].setPipeCoefficient(j, pipecoef);
-        this->m_landBoundaries[i].setPipeDiameter(j, pipediam);
+        b.setCrestElevation(j, crest);
+        b.setSubcriticalWeirCoefficient(j, subcritical);
+        b.setSupercriticalWeirCoefficient(j, supercritical);
+        b.setPipeHeight(j, pipeheight);
+        b.setPipeCoefficient(j, pipecoef);
+        b.setPipeDiameter(j, pipediam);
       } else {
         int ierr = IO::splitStringBoundary0Format(tempLine, n1);
         CHECK_FILEREAD_RETURN_INT(ierr);
         if (this->m_nodeOrderingLogical) {
-          this->m_landBoundaries[i].setNode1(j, &this->m_nodes[n1 - 1]);
+          b.setNode1(j, &this->m_nodes[n1 - 1]);
         } else {
-          this->m_landBoundaries[i].setNode1(
-              j, &this->m_nodes[this->m_nodeLookup[n1]]);
+          b.setNode1(j, &this->m_nodes[this->m_nodeLookup[n1]]);
         }
       }
     }
@@ -565,6 +556,7 @@ Node *Mesh::node(size_t index) {
   if (index < this->numNodes()) {
     return &this->m_nodes[index];
   } else {
+    Adcirc::Error::throwError("Index out of bounds");
     return nullptr;
   }
 }
@@ -580,6 +572,7 @@ Element *Mesh::element(size_t index) {
   if (index < this->numElements()) {
     return &this->m_elements[index];
   } else {
+    Adcirc::Error::throwError("Index out of bounds");
     return nullptr;
   }
 }
@@ -595,6 +588,7 @@ Node *Mesh::nodeById(size_t id) {
     if (id > 0 && id <= this->numNodes()) {
       return &this->m_nodes[id - 1];
     } else {
+      Adcirc::Error::throwError("Node id not found");
       return nullptr;
     }
   } else {
@@ -613,6 +607,7 @@ Element *Mesh::elementById(size_t id) {
     if (id > 0 && id <= this->numElements()) {
       return &this->m_elements[id - 1];
     } else {
+      Adcirc::Error::throwError("Element id not found");
       return nullptr;
     }
   } else {
@@ -630,6 +625,7 @@ Boundary *Mesh::openBoundary(size_t index) {
   if (index < this->numOpenBoundaries()) {
     return &this->m_openBoundaries[index];
   } else {
+    Adcirc::Error::throwError("Index out of bounds");
     return nullptr;
   }
 }
@@ -644,6 +640,7 @@ Boundary *Mesh::landBoundary(size_t index) {
   if (index < this->numLandBoundaries()) {
     return &this->m_landBoundaries[index];
   } else {
+    Adcirc::Error::throwError("Index out of bounds");
     return nullptr;
   }
 }
@@ -685,11 +682,11 @@ bool Mesh::isLatLon() { return this->m_isLatLon; }
 int Mesh::reproject(int epsg) {
   QProj4 proj;
   vector<Point> inPoint, outPoint;
-  inPoint.resize(this->numNodes());
+  inPoint.reserve(this->numNodes());
   outPoint.resize(this->numNodes());
 
-  for (size_t i = 0; i < this->numNodes(); i++) {
-    inPoint[i] = Point(this->node(i)->x(), this->node(i)->y());
+  for (const auto &n : this->m_nodes) {
+    inPoint.push_back(Point(n.x(), n.y()));
   }
 
   int ierr = proj.transform(this->projection(), epsg, inPoint, outPoint,
@@ -697,9 +694,10 @@ int Mesh::reproject(int epsg) {
 
   if (ierr != QProj4::NoError) {
     Adcirc::Error::throwError("Proj4 library error");
+    return Adcirc::HasError;
   }
 
-  for (size_t i = 0; i < this->numNodes(); i++) {
+  for (size_t i = 0; i < this->numNodes(); ++i) {
     this->node(i)->setX(outPoint[i].x());
     this->node(i)->setY(outPoint[i].y());
   }
@@ -722,11 +720,11 @@ int Mesh::toNodeShapefile(const string outputFile) {
   DBFAddField(dbfid, "latitude", FTDouble, 16, 8);
   DBFAddField(dbfid, "elevation", FTDouble, 16, 4);
 
-  for (size_t i = 0; i < this->numNodes(); i++) {
-    int nodeid = static_cast<int>(this->node(i)->id());
-    double longitude = this->node(i)->x();
-    double latitude = this->node(i)->y();
-    double elevation = this->node(i)->z();
+  for (auto &n : this->m_nodes) {
+    int nodeid = static_cast<int>(n.id());
+    double longitude = n.x();
+    double latitude = n.y();
+    double elevation = n.z();
 
     SHPObject *shpobj =
         SHPCreateSimpleObject(SHPT_POINT, 1, &longitude, &latitude, &elevation);
@@ -755,10 +753,10 @@ int Mesh::toConnectivityShapefile(const string outputFile) {
   DBFAddField(dbfid, "znode1", FTDouble, 16, 4);
   DBFAddField(dbfid, "znode2", FTDouble, 16, 4);
 
-  for (int i = 0; i < this->numElements(); i++) {
+  for (auto &e : this->m_elements) {
     int n1, n2;
 
-    for (int j = 0; j < 3; j++) {
+    for (int j = 0; j < 3; ++j) {
       if (j == 0) {
         n1 = 0;
         n2 = 1;
@@ -773,15 +771,15 @@ int Mesh::toConnectivityShapefile(const string outputFile) {
       int elemid, nodeid[2];
       double latitude[2], longitude[2], elevation[2];
 
-      elemid = this->element(i)->id();
-      nodeid[0] = this->element(i)->node(n1)->id();
-      nodeid[1] = this->element(i)->node(n2)->id();
-      longitude[0] = this->element(i)->node(n1)->x();
-      longitude[1] = this->element(i)->node(n2)->x();
-      latitude[0] = this->element(i)->node(n1)->y();
-      latitude[1] = this->element(i)->node(n2)->y();
-      elevation[0] = this->element(i)->node(n1)->z();
-      elevation[1] = this->element(i)->node(n2)->z();
+      elemid = e.id();
+      nodeid[0] = e.node(n1)->id();
+      nodeid[1] = e.node(n2)->id();
+      longitude[0] = e.node(n1)->x();
+      longitude[1] = e.node(n2)->x();
+      latitude[0] = e.node(n1)->y();
+      latitude[1] = e.node(n2)->y();
+      elevation[0] = e.node(n1)->z();
+      elevation[1] = e.node(n2)->z();
 
       SHPObject *shpobj =
           SHPCreateSimpleObject(SHPT_ARC, 2, longitude, latitude, elevation);
@@ -811,12 +809,12 @@ int Mesh::buildNodalSearchTree() {
   int ierr;
   vector<double> x, y;
 
-  x.resize(this->numNodes());
-  y.resize(this->numNodes());
+  x.reserve(this->numNodes());
+  y.reserve(this->numNodes());
 
-  for (size_t i = 0; i < this->numNodes(); i++) {
-    x[i] = this->node(i)->x();
-    y[i] = this->node(i)->y();
+  for (const auto &n : this->m_nodes) {
+    x.push_back(n.x());
+    y.push_back(n.y());
   }
 
   if (this->m_nodalSearchTree != nullptr) {
@@ -829,6 +827,7 @@ int Mesh::buildNodalSearchTree() {
   ierr = this->m_nodalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
     Adcirc::Error::throwError("KDTree2 library error");
+    return Adcirc::HasError;
   }
 
   return Adcirc::NoError;
@@ -844,18 +843,18 @@ int Mesh::buildElementalSearchTree() {
   vector<double> x, y;
   double tempX, tempY;
 
-  x.resize(this->numElements());
-  y.resize(this->numElements());
+  x.reserve(this->numElements());
+  y.reserve(this->numElements());
 
-  for (size_t i = 0; i < this->numElements(); i++) {
+  for (auto &e : this->m_elements) {
     tempX = 0.0;
     tempY = 0.0;
-    for (int j = 0; j < this->element(i)->n(); j++) {
-      tempX = tempX + this->element(i)->node(j)->x();
-      tempY = tempY + this->element(i)->node(j)->y();
+    for (int j = 0; j < e.n(); ++j) {
+      tempX = tempX + e.node(j)->x();
+      tempY = tempY + e.node(j)->y();
     }
-    x[i] = tempX / this->element(i)->n();
-    y[i] = tempY / this->element(i)->n();
+    x.push_back(tempX / e.n());
+    y.push_back(tempY / e.n());
   }
 
   if (this->m_elementalSearchTree != nullptr) {
@@ -868,6 +867,7 @@ int Mesh::buildElementalSearchTree() {
   int ierr = this->m_elementalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
     Adcirc::Error::throwError("KDTree2 library error");
+    return Adcirc::HasError;
   }
 
   return Adcirc::NoError;
@@ -935,7 +935,10 @@ void Mesh::resizeMesh(size_t numNodes, size_t numElements,
 void Mesh::addNode(size_t index, Node &node) {
   if (index < this->numNodes()) {
     this->m_nodes[index] = node;
+  } else {
+    Adcirc::Error::throwError("Index exceeds dimension");
   }
+
   return;
 }
 
@@ -949,6 +952,8 @@ void Mesh::deleteNode(size_t index) {
   if (index < this->numNodes()) {
     this->m_nodes.erase(this->m_nodes.begin() + index);
     this->setNumNodes(this->m_nodes.size());
+  } else {
+    Adcirc::Error::throwError("Index exceeds dimension");
   }
   return;
 }
@@ -962,6 +967,8 @@ void Mesh::deleteNode(size_t index) {
 void Mesh::addElement(size_t index, Element &element) {
   if (index < this->numElements()) {
     this->m_elements[index] = element;
+  } else {
+    Adcirc::Error::throwError("Index exceeds dimension");
   }
   return;
 }
@@ -976,6 +983,8 @@ void Mesh::deleteElement(size_t index) {
   if (index < this->numElements()) {
     this->m_elements.erase(this->m_elements.begin() + index);
     this->setNumElements(this->m_elements.size());
+  } else {
+    Adcirc::Error::throwError("Index exceeds dimension");
   }
   return;
 }
@@ -988,7 +997,6 @@ void Mesh::deleteElement(size_t index) {
  */
 int Mesh::write(const string &filename) {
   string tempString;
-  vector<string> boundaryList;
   std::ofstream outputFile;
 
   outputFile.open(filename);
@@ -1000,13 +1008,13 @@ int Mesh::write(const string &filename) {
   outputFile << tempString << "\n";
 
   //...Write the mesh nodes
-  for (size_t i = 0; i < this->numNodes(); i++) {
-    outputFile << this->node(i)->toString(this->isLatLon()) << "\n";
+  for (auto n : this->m_nodes) {
+    outputFile << n.toString(this->isLatLon()) << "\n";
   }
 
   //...Write the mesh elements
-  for (size_t i = 0; i < this->numElements(); i++) {
-    outputFile << this->element(i)->toString() << "\n";
+  for (auto &e : this->m_elements) {
+    outputFile << e.toString() << "\n";
   }
 
   //...Write the open boundary header
@@ -1014,9 +1022,8 @@ int Mesh::write(const string &filename) {
   outputFile << this->totalOpenBoundaryNodes() << "\n";
 
   //...Write the open boundaries
-  for (size_t i = 0; i < this->numOpenBoundaries(); i++) {
-    boundaryList = this->openBoundary(i)->toStringList();
-    for (const auto &j : boundaryList) {
+  for (auto &b : this->m_openBoundaries) {
+    for (const auto &j : b.toStringList()) {
       outputFile << j << "\n";
     }
   }
@@ -1026,9 +1033,8 @@ int Mesh::write(const string &filename) {
   outputFile << this->totalLandBoundaryNodes() << "\n";
 
   //...Write the land boundaries
-  for (size_t i = 0; i < this->numLandBoundaries(); i++) {
-    boundaryList = this->landBoundary(i)->toStringList();
-    for (const auto &j : boundaryList) {
+  for (auto &b : this->m_landBoundaries) {
+    for (const auto &j : b.toStringList()) {
       outputFile << j << "\n";
     }
   }
@@ -1085,27 +1091,27 @@ size_t Mesh::elementIndexById(size_t id) {
 
 vector<double> Mesh::x() {
   vector<double> x;
-  x.resize(this->numNodes());
-  for (size_t i = 0; i < this->numNodes(); i++) {
-    x[i] = this->node(i)->x();
+  x.reserve(this->numNodes());
+  for (const auto &n : this->m_nodes) {
+    x.push_back(n.x());
   }
   return x;
 }
 
 vector<double> Mesh::y() {
   vector<double> y;
-  y.resize(this->numNodes());
-  for (size_t i = 0; i < this->numNodes(); i++) {
-    y[i] = this->node(i)->y();
+  y.reserve(this->numNodes());
+  for (const auto &n : this->m_nodes) {
+    y.push_back(n.y());
   }
   return y;
 }
 
 vector<double> Mesh::z() {
   vector<double> z;
-  z.resize(this->numNodes());
-  for (size_t i = 0; i < this->numNodes(); i++) {
-    z[i] = this->node(i)->z();
+  z.reserve(this->numNodes());
+  for (const auto &n : this->m_nodes) {
+    z.push_back(n.z());
   }
   return z;
 }
@@ -1121,12 +1127,14 @@ vector<vector<double>> Mesh::xyz() {
 
 vector<vector<size_t>> Mesh::connectivity() {
   vector<vector<size_t>> conn;
-  conn.resize(3);
-  for (size_t i = 0; i < 3; i++) {
-    conn[i].resize(this->numElements());
-    for (size_t j = 0; j < this->numElements(); j++) {
-      conn[i][j] = this->element(j)->node(i)->id();
+  conn.reserve(this->numElements());
+  for (auto &e : this->m_elements) {
+    vector<size_t> v;
+    v.resize(e.n());
+    for (size_t i = 0; i < e.n(); ++i) {
+      v[i] = e.node(i)->id();
     }
+    conn.push_back(v);
   }
   return conn;
 }

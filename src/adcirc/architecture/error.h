@@ -25,7 +25,7 @@
 
 namespace Adcirc {
 
-enum _code { NoError };
+enum _code { NoError, HasError };
 
 class Error {
  public:
@@ -33,7 +33,6 @@ class Error {
 
   static void throwError(const std::string &s);
 
-  static void catchError(const std::string &e);
 };
 
 }  // namespace Adcirc

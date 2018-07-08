@@ -106,6 +106,13 @@ set(ADCIRCMODULES_VERSION_STRING ${ADCIRCMODULES_VERSION_MAJOR}.${ADCIRCMODULES_
 
 
 ###########################################################################
+# ERROR HANDLING
+###########################################################################
+OPTION(ERRORS_ARE_NONFATAL "Log errors to screen, but do not throw runtime exceptions." OFF)
+###########################################################################
+
+
+###########################################################################
 #  SET THE LOCATION OF TEMPORARY STATIC LIBS
 ###########################################################################
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/CMakeFiles)
@@ -352,6 +359,10 @@ TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
 ADD_DEPENDENCIES( adcircmodules point proj4 kdtree2 shapelib )
 
 TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE GIT_VERSION="${GIT_VERSION}")
+
+IF(ERRORS_ARE_NONFATAL)
+    TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE ERRORS_NONFATAL )
+ENDIF(ERRORS_ARE_NONFATAL)
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING} SOVERSION ${ADCIRCMODULES_VERSION_MAJOR} )
 

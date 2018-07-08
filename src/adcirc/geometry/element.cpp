@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "adcirc/geometry/element.h"
+#include "adcirc/architecture/error.h"
 #include "boost/format.hpp"
 
 using namespace std;
@@ -108,6 +109,7 @@ Node *Element::node(int i) {
   if (i < this->n()) {
     return this->m_nodes.at(i);
   }
+  Adcirc::Error::throwError("Index out of bounds");
   return nullptr;
 }
 

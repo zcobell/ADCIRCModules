@@ -32,13 +32,14 @@ using namespace Adcirc::ModelParameters;
   if (ierr != Adcirc::NoError) {                          \
     fid.close();                                          \
     Adcirc::Error::throwError("Error reading file data"); \
-    return ierr;                                          \
+    return Adcirc::HasError;                              \
   }
 
 #define CHECK_FILEREAD_RETURN(ok)                         \
   if (!ok) {                                              \
     fid.close();                                          \
     Adcirc::Error::throwError("Error reading file data"); \
+    return Adcirc::HasError                               \
   }
 
 NodalAttributes::NodalAttributes() {
@@ -82,29 +83,25 @@ size_t NodalAttributes::locateAttribute(const string &attributeName) {
 }
 
 int NodalAttributes::read() {
-  try {
-    int ierr;
+  int ierr;
 
-    std::fstream fid(this->filename(), std::fstream::in);
+  std::fstream fid(this->filename(), std::fstream::in);
 
-    ierr = this->_readFort13Header(fid);
-    CHECK_RETURN_AND_CLOSE(ierr);
+  ierr = this->_readFort13Header(fid);
+  CHECK_RETURN_AND_CLOSE(ierr);
 
-    ierr = this->_readFort13Defaults(fid);
-    CHECK_RETURN_AND_CLOSE(ierr);
+  ierr = this->_readFort13Defaults(fid);
+  CHECK_RETURN_AND_CLOSE(ierr);
 
-    this->_fillDefaultValues();
+  this->_fillDefaultValues();
 
-    ierr = this->_readFort13Body(fid);
-    CHECK_RETURN_AND_CLOSE(ierr);
+  ierr = this->_readFort13Body(fid);
+  CHECK_RETURN_AND_CLOSE(ierr);
 
-    fid.close();
+  fid.close();
 
-    if (this->m_mesh != nullptr) {
-      this->_mapNodes();
-    }
-  } catch (std::string &e) {
-    Adcirc::Error::catchError(e);
+  if (this->m_mesh != nullptr) {
+    this->_mapNodes();
   }
 
   return Adcirc::NoError;
@@ -353,9 +350,8 @@ Attribute *NodalAttributes::attribute(size_t parameter, size_t node) {
 
   if (node < this->numNodes() && parameter < this->numParameters()) {
     return &this->m_nodalData[parameter][node];
-  } else {
-    Adcirc::Error::throwError("Attribute could not be located");
   }
+  Adcirc::Error::throwError("Attribute could not be located");
   return nullptr;
 }
 
