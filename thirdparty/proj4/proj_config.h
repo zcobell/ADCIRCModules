@@ -1,66 +1,65 @@
-/*
- * Windows CE platform config.
- */
-#ifndef _WIN32_WCE
-# error This version of proj_config.h header is dedicated for Windows CE platform!
-#endif
-
 /* Define to 1 if you have the <dlfcn.h> header file. */
-#undef HAVE_DLFCN_H
+#define HAVE_DLFCN_H 1
 
 /* Define to 1 if you have the <inttypes.h> header file. */
-#undef HAVE_INTTYPES_H
+#define HAVE_INTTYPES_H 1
+
+/* Define to 1 if you have the <jni.h> header file. */
+/* #undef HAVE_JNI_H */
 
 /* Define to 1 if you have the `m' library (-lm). */
-#undef HAVE_LIBM
+/* #undef HAVE_LIBM */
+
+/* Define to 1 if you have localeconv */
+#define HAVE_LOCALECONV 1
 
 /* Define to 1 if you have the <memory.h> header file. */
-#undef HAVE_MEMORY_H
+#define HAVE_MEMORY_H 1
 
 /* Define to 1 if you have the <stdint.h> header file. */
-#undef HAVE_STDINT_H
+#define HAVE_STDINT_H 1
 
 /* Define to 1 if you have the <stdlib.h> header file. */
-#define HAVE_STDLIB_H
+#define HAVE_STDLIB_H 1
 
 /* Define to 1 if you have the <strings.h> header file. */
-#undef HAVE_STRINGS_H
+/* #undef HAVE_STRINGS_H */
 
 /* Define to 1 if you have the <string.h> header file. */
-#define HAVE_STRING_H
+#define HAVE_STRING_H 1
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
-#define HAVE_SYS_STAT_H
+#define HAVE_SYS_STAT_H 1
 
 /* Define to 1 if you have the <sys/types.h> header file. */
-#define HAVE_SYS_TYPES_H
+#define HAVE_SYS_TYPES_H 1
 
 /* Define to 1 if you have the <unistd.h> header file. */
-#undef HAVE_UNISTD_H
+#define HAVE_UNISTD_H 1
 
 /* Enabled for Java/JNI Support */
-#undef JNI_ENABLED
+/* #undef JNI_ENABLED */
 
 /* Name of package */
-#undef PACKAGE
+#define PACKAGE "proj"
 
 /* Define to the address where bug reports for this package should be sent. */
-#undef PACKAGE_BUGREPORT
+#define PACKAGE_BUGREPORT "https://github.com/OSGeo/proj.4/issues"
 
 /* Define to the full name of this package. */
-#undef PACKAGE_NAME
+#define PACKAGE_NAME "PROJ"
 
 /* Define to the full name and version of this package. */
-#undef PACKAGE_STRING
+#define PACKAGE_STRING "PROJ "
 
 /* Define to the one symbol short name of this package. */
-#undef PACKAGE_TARNAME
+#define PACKAGE_TARNAME "proj"
 
 /* Define to the version of this package. */
-#undef PACKAGE_VERSION
+/* #undef PACKAGE_VERSION */
 
 /* Define to 1 if you have the ANSI C header files. */
-#undef STDC_HEADERS
+#define STDC_HEADERS 1
 
 /* Version number of package */
-#undef VERSION
+/* #undef VERSION */

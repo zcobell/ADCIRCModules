@@ -1,4 +1,4 @@
-#include <projects.h>
+#include "projects.h"
 static void /* sum coefficients less than res */
 eval(projUV **w, int nu, int nv, double res, projUV *resid) {
     int i, j;
@@ -19,18 +19,23 @@ makeT(int nru, int nrv) {
     Tseries *T;
     int i;
 
-    if ((T = (Tseries *)pj_malloc(sizeof(Tseries))) &&
-        (T->cu = (struct PW_COEF *)pj_malloc(
-            sizeof(struct PW_COEF) * nru)) &&
-        (T->cv = (struct PW_COEF *)pj_malloc(
-            sizeof(struct PW_COEF) * nrv))) {
-        for (i = 0; i < nru; ++i)
-            T->cu[i].c = 0;
-        for (i = 0; i < nrv; ++i)
-            T->cv[i].c = 0;
-        return T;
-    } else
+    if (!(T = (Tseries *)pj_malloc(sizeof(Tseries))))
         return 0;
+    if (!(T->cu = (struct PW_COEF *)pj_malloc(sizeof(struct PW_COEF) * nru))) {
+        pj_dalloc(T);
+        return 0;
+    }
+    if (!(T->cv = (struct PW_COEF *)pj_malloc(sizeof(struct PW_COEF) * nrv))) {
+        pj_dalloc(T->cu);
+        pj_dalloc(T);
+        return 0;
+    }
+
+    for (i = 0; i < nru; ++i)
+        T->cu[i].c = 0;
+    for (i = 0; i < nrv; ++i)
+        T->cv[i].c = 0;
+    return T;
 }
 Tseries *
 mk_cheby(projUV a, projUV b, double res, projUV *resid, projUV (*func)(projUV), 
@@ -40,9 +45,12 @@ mk_cheby(projUV a, projUV b, double res, projUV *resid, projUV (*func)(projUV),
     projUV **w;
     double cutres;
 
-    if (!(w = (projUV **)vector2(nu, nv, sizeof(projUV))) ||
-        !(ncu = (int *)vector1(nu + nv, sizeof(int))))
+    if (!(w = (projUV **)vector2(nu, nv, sizeof(projUV))))
         return 0;
+    if (!(ncu = (int *)vector1(nu + nv, sizeof(int)))) {
+        freev2((void **)w, nu);
+        return 0;
+    }
     ncv = ncu + nu;
     if (!bchgen(a, b, nu, nv, w, func)) {
         projUV *s;
@@ -83,9 +91,9 @@ mk_cheby(projUV a, projUV b, double res, projUV *resid, projUV (*func)(projUV),
             for (j = 0; j < nu; ++j) {
                 ncu[j] = ncv[j] = 0; /* clear column maxes */
                 for (s = w[j], i = 0; i < nv; ++i, ++s) {
-                    if (s->u)
+                    if (s->u != 0.0)
                         ncu[j] = i + 1;	/* update column max */
-                    if (s->v)
+                    if (s->v != 0.0)
                         ncv[j] = i + 1;
                 }
                 if (ncu[j]) nru = j + 1;	/* update row max */

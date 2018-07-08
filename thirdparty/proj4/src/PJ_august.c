@@ -1,8 +1,15 @@
 #define PJ_LIB__
-#include	<projects.h>
+
+#include <math.h>
+
+#include "projects.h"
+
 PROJ_HEAD(august, "August Epicycloidal") "\n\tMisc Sph, no inv.";
 #define M 1.333333333333333
-FORWARD(s_forward); /* spheroid */
+
+
+static XY s_forward (LP lp, PJ *P) {           /* Spheroidal, forward */
+    XY xy = {0.0,0.0};
 	double t, c1, c, x1, x12, y1, y12;
 	(void) P;
 
@@ -15,5 +22,13 @@ FORWARD(s_forward); /* spheroid */
 	xy.y = M * y1 * (3. + 3. * x12 - y12);
 	return (xy);
 }
-FREEUP; if (P) pj_dalloc(P); }
-ENTRY0(august) P->inv = 0; P->fwd = s_forward; P->es = 0.; ENDENTRY(P)
+
+
+
+
+PJ *PROJECTION(august) {
+    P->inv = 0;
+    P->fwd = s_forward;
+    P->es = 0.;
+    return P;
+}

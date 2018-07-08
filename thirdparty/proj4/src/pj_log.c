@@ -25,9 +25,13 @@
  * DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
-#include <projects.h>
-#include <string.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "proj.h"
+#include "projects.h"
 
 /************************************************************************/
 /*                          pj_stderr_logger()                          */
@@ -42,6 +46,41 @@ void pj_stderr_logger( void *app_data, int level, const char *msg )
 }
 
 /************************************************************************/
+/*                               pj_vlog()                              */
+/************************************************************************/
+void pj_vlog( projCtx ctx, int level, const char *fmt, va_list args );
+/* Workhorse for the log functions - relates to pj_log as vsprintf relates to sprintf */
+void pj_vlog( projCtx ctx, int level, const char *fmt, va_list args )
+
+{
+    char *msg_buf;
+    int debug_level = ctx->debug_level;
+    int shutup_unless_errno_set = debug_level < 0;
+
+    /* For negative debug levels, we first start logging when errno is set */
+    if (ctx->last_errno==0 && shutup_unless_errno_set)
+        return;
+
+    if (debug_level < 0)
+        debug_level = -debug_level;
+
+    if( level > debug_level )
+        return;
+
+    msg_buf = (char *) malloc(100000);
+    if( msg_buf == NULL )
+        return;
+
+    /* we should use vsnprintf where available once we add configure detect.*/
+    vsprintf( msg_buf, fmt, args );
+
+    ctx->logger( ctx->app_data, level, msg_buf );
+
+    free( msg_buf );
+}
+
+
+/************************************************************************/
 /*                               pj_log()                               */
 /************************************************************************/
 
@@ -49,23 +88,11 @@ void pj_log( projCtx ctx, int level, const char *fmt, ... )
 
 {
     va_list args;
-    char *msg_buf;
 
     if( level > ctx->debug_level )
         return;
 
-    msg_buf = (char *) malloc(100000);
-    if( msg_buf == NULL )
-        return;
-
     va_start( args, fmt );
-
-    /* we should use vsnprintf where available once we add configure detect.*/
-    vsprintf( msg_buf, fmt, args );
-
+    pj_vlog( ctx, level, fmt, args );
     va_end( args );
-
-    ctx->logger( ctx->app_data, level, msg_buf );
-    
-    free( msg_buf );
 }

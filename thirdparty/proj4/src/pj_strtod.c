@@ -27,6 +27,11 @@
  * DEALINGS IN THE SOFTWARE.
  ****************************************************************************/
 
+#include <errno.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "projects.h"
 
 /* Windows nmake build doesn't have a proj_config.h, but HAVE_LOCALECONV */
@@ -34,10 +39,6 @@
 #ifndef HAVE_LOCALECONV
 #include "proj_config.h"
 #endif
-
-#include <stdlib.h>
-#include <locale.h>
-#include <errno.h>
 
 #define PJ_STRTOD_WORK_BUFFER_SIZE 64
 
@@ -69,14 +70,20 @@ double pj_atof( const char* nptr )
 
 
 /************************************************************************/
-/*                     pj_replace_point_by_locale_point()               */
+/*                     replace_point_by_locale_point()               */
 /************************************************************************/
 
-static char* pj_replace_point_by_locale_point(const char* pszNumber, char point,
+static char* replace_point_by_locale_point(const char* pszNumber, char point,
                                               char* pszWorkBuffer)
 {
-#if !defined(HAVE_LOCALECONV) || defined(_WIN32_WCE)
+#if !defined(HAVE_LOCALECONV)
+
+#if defined(_MSC_VER)  /* Visual C++ */
+#pragma message("localeconv not available")
+#else
 #warning "localeconv not available"
+#endif
+
     static char byPoint = 0;
     if (byPoint == 0)
     {
@@ -95,8 +102,11 @@ static char* pj_replace_point_by_locale_point(const char* pszNumber, char point,
                 strcpy(pszWorkBuffer, pszNumber);
                 pszNew = pszWorkBuffer;
             }
-            else
-                pszNew = strdup(pszNumber);
+            else {
+                pszNew = pj_strdup(pszNumber);
+                if (!pszNew)
+                    return NULL;
+            }
             pszNew[pszPoint - pszNumber] = byPoint;
             return pszNew;
         }
@@ -121,8 +131,11 @@ static char* pj_replace_point_by_locale_point(const char* pszNumber, char point,
                     strcpy(pszWorkBuffer, pszNumber);
                     pszNew = pszWorkBuffer;
                 }
-                else
-                    pszNew = strdup(pszNumber);
+                else {
+                    pszNew = pj_strdup(pszNumber);
+                    if (!pszNew)
+                        return NULL;
+                }
                 if( pszLocalePoint )
                     pszNew[pszLocalePoint - pszNumber] = ' ';
                 if( pszPoint )
@@ -167,7 +180,7 @@ double pj_strtod( const char *nptr, char **endptr )
     int         nError;
     char        szWorkBuffer[PJ_STRTOD_WORK_BUFFER_SIZE];
 
-    char*       pszNumber = pj_replace_point_by_locale_point(nptr, '.', szWorkBuffer);
+    char*       pszNumber = replace_point_by_locale_point(nptr, '.', szWorkBuffer);
 
     dfValue = strtod( pszNumber, endptr );
     nError = errno;
@@ -181,4 +194,3 @@ double pj_strtod( const char *nptr, char **endptr )
     errno = nError;
     return dfValue;
 }
-

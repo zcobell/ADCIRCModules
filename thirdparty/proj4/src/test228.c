@@ -1,4 +1,6 @@
-#include <proj_api.h>
+#include "proj_api.h"
+#include <stdio.h> /* for printf declaration */
+
 
 #ifdef _WIN32
 
@@ -15,14 +17,15 @@ int main(int argc, char* argv[])
 #include <assert.h>
 #include <unistd.h>
 
-volatile int run = 0;
-volatile int started = 0;
+static volatile int run = 0;
+static volatile int started = 0;
 
-void* thread_main(void* unused)
+static void* thread_main(void* unused)
 {
     projCtx p_proj_ctxt;
     projPJ p_WGS84_proj;
     projPJ p_OSGB36_proj;
+    (void)unused;
 
     __sync_add_and_fetch(&started, 1);
     while(run == 0);
@@ -33,7 +36,7 @@ void* thread_main(void* unused)
     p_OSGB36_proj=pj_init_plus_ctx(p_proj_ctxt,
             "+proj=longlat +ellps=airy +datum=OSGB36 +nadgrids=OSTN02_NTv2.gsb "
             "+no_defs");
-    
+
     while(run)
     {
         double x, y;
@@ -51,12 +54,15 @@ void* thread_main(void* unused)
         assert(fabs(y - 49.999396034285531698) < 1e-15);
     }
 
+    pj_free (p_OSGB36_proj);
+    pj_free (p_WGS84_proj);
     return NULL;
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     int i;
+
     pthread_t tid1, tid2;
     pthread_attr_t attr1, attr2;
 

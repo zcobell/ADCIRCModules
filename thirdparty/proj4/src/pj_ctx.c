@@ -25,8 +25,11 @@
  * DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
-#include <projects.h>
+#include <errno.h>
+#include <stdlib.h>
 #include <string.h>
+
+#include "projects.h"
 
 static projCtx_t default_context;
 static volatile int       default_context_initialized = 0;
@@ -38,6 +41,10 @@ static volatile int       default_context_initialized = 0;
 projCtx pj_get_ctx( projPJ pj )
 
 {
+    if (0==pj)
+        return pj_get_default_ctx ();
+    if (0==pj->ctx)
+        return pj_get_default_ctx ();
     return pj->ctx;
 }
 
@@ -50,6 +57,8 @@ projCtx pj_get_ctx( projPJ pj )
 void pj_set_ctx( projPJ pj, projCtx ctx )
 
 {
+    if (pj==0)
+        return;
     pj->ctx = ctx;
 }
 
@@ -60,8 +69,13 @@ void pj_set_ctx( projPJ pj, projCtx ctx )
 projCtx pj_get_default_ctx()
 
 {
+    /* If already initialized, don't bother locking */
+    if( default_context_initialized )
+        return &default_context;
+
     pj_acquire_lock();
 
+    /* Ask again, since it may have been initialized in another thread */
     if( !default_context_initialized )
     {
         default_context.last_errno = 0;
@@ -72,7 +86,7 @@ projCtx pj_get_default_ctx()
 
         if( getenv("PROJ_DEBUG") != NULL )
         {
-            if( atoi(getenv("PROJ_DEBUG")) > 0 )
+            if( atoi(getenv("PROJ_DEBUG")) >= -PJ_LOG_DEBUG_MINOR )
                 default_context.debug_level = atoi(getenv("PROJ_DEBUG"));
             else
                 default_context.debug_level = PJ_LOG_DEBUG_MINOR;
@@ -93,6 +107,8 @@ projCtx pj_ctx_alloc()
 
 {
     projCtx ctx = (projCtx_t *) malloc(sizeof(projCtx_t));
+    if (0==ctx)
+        return 0;
     memcpy( ctx, pj_get_default_ctx(), sizeof(projCtx_t) );
     ctx->last_errno = 0;
 
@@ -106,7 +122,7 @@ projCtx pj_ctx_alloc()
 void pj_ctx_free( projCtx ctx )
 
 {
-    free( ctx );
+    pj_dealloc( ctx );
 }
 
 /************************************************************************/
@@ -116,21 +132,25 @@ void pj_ctx_free( projCtx ctx )
 int pj_ctx_get_errno( projCtx ctx )
 
 {
+    if (0==ctx)
+        return pj_get_default_ctx ()->last_errno;
     return ctx->last_errno;
 }
 
 /************************************************************************/
 /*                          pj_ctx_set_errno()                          */
 /*                                                                      */
-/*      Also sets the global errno.                                     */
+/*                      Also sets the global errno                      */
 /************************************************************************/
 
 void pj_ctx_set_errno( projCtx ctx, int new_errno )
 
 {
     ctx->last_errno = new_errno;
-    if( new_errno != 0 )
-        pj_errno = new_errno;
+    if( new_errno == 0 )
+        return;
+    errno = new_errno;
+    pj_errno = new_errno;
 }
 
 /************************************************************************/
@@ -140,6 +160,8 @@ void pj_ctx_set_errno( projCtx ctx, int new_errno )
 void pj_ctx_set_debug( projCtx ctx, int new_debug )
 
 {
+    if (0==ctx)
+        return;
     ctx->debug_level = new_debug;
 }
 
@@ -150,6 +172,8 @@ void pj_ctx_set_debug( projCtx ctx, int new_debug )
 void pj_ctx_set_logger( projCtx ctx, void (*new_logger)(void*,int,const char*) )
 
 {
+    if (0==ctx)
+        return;
     ctx->logger = new_logger;
 }
 
@@ -160,6 +184,8 @@ void pj_ctx_set_logger( projCtx ctx, void (*new_logger)(void*,int,const char*) )
 void pj_ctx_set_app_data( projCtx ctx, void *new_app_data )
 
 {
+    if (0==ctx)
+        return;
     ctx->app_data = new_app_data;
 }
 
@@ -170,6 +196,8 @@ void pj_ctx_set_app_data( projCtx ctx, void *new_app_data )
 void *pj_ctx_get_app_data( projCtx ctx )
 
 {
+    if (0==ctx)
+        return 0;
     return ctx->app_data;
 }
 
@@ -180,6 +208,8 @@ void *pj_ctx_get_app_data( projCtx ctx )
 void pj_ctx_set_fileapi( projCtx ctx, projFileAPI *fileapi )
 
 {
+    if (0==ctx)
+        return;
     ctx->fileapi = fileapi;
 }
 
@@ -190,7 +220,7 @@ void pj_ctx_set_fileapi( projCtx ctx, projFileAPI *fileapi )
 projFileAPI *pj_ctx_get_fileapi( projCtx ctx )
 
 {
+    if (0==ctx)
+        return 0;
     return ctx->fileapi;
 }
-
-

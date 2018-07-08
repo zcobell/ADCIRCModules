@@ -28,22 +28,26 @@
 
 /* projects.h and windows.h conflict - avoid this! */
 
-#if defined(MUTEX_pthread) && !defined(_XOPEN_SOURCE)
-// For pthread_mutexattr_settype
+#if defined(MUTEX_pthread) && !defined(_XOPEN_SOURCE) && !defined(__sun)
+/* For pthread_mutexattr_settype */
 #define _XOPEN_SOURCE 500
 #endif
 
+/* For PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP */
+#define _GNU_SOURCE
 
 #ifndef _WIN32
 #include "proj_config.h"
-#include <projects.h>
+#include "projects.h"
 #else
-#include <proj_api.h>
+#include "proj_api.h"
 #endif
 
 /* on win32 we always use win32 mutexes, even if pthreads are available */
 #if defined(_WIN32) && !defined(MUTEX_stub)
+#ifndef MUTEX_win32
 #  define MUTEX_win32
+#endif
 #  undef  MUTEX_pthread
 #endif
 
@@ -86,7 +90,7 @@ void pj_cleanup_lock()
 {
 }
 
-#endif // def MUTEX_stub
+#endif /* def MUTEX_stub */
 
 /************************************************************************/
 /* ==================================================================== */
@@ -98,9 +102,32 @@ void pj_cleanup_lock()
 
 #include "pthread.h"
 
-static pthread_mutex_t pj_precreated_lock = PTHREAD_MUTEX_INITIALIZER;
-static pthread_mutex_t pj_core_lock;
-static int pj_core_lock_created = 0;
+#ifdef PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP
+static pthread_mutex_t core_lock = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+#else
+static pthread_mutex_t core_lock;
+
+/************************************************************************/
+/*                          pj_create_lock()                            */
+/************************************************************************/
+
+static void pj_create_lock()
+{
+    /*
+    ** We need to ensure the core mutex is created in recursive mode
+    */
+    pthread_mutexattr_t mutex_attr;
+
+    pthread_mutexattr_init(&mutex_attr);
+#ifdef HAVE_PTHREAD_MUTEX_RECURSIVE
+    pthread_mutexattr_settype(&mutex_attr, PTHREAD_MUTEX_RECURSIVE);
+#else
+    pthread_mutexattr_settype(&mutex_attr, PTHREAD_MUTEX_RECURSIVE_NP);
+#endif
+    pthread_mutex_init(&core_lock, &mutex_attr);
+}
+
+#endif /* PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP */
 
 /************************************************************************/
 /*                          pj_acquire_lock()                           */
@@ -110,30 +137,16 @@ static int pj_core_lock_created = 0;
 
 void pj_acquire_lock()
 {
-    if (!pj_core_lock_created) {
-        /*
-        ** We need to ensure the core mutex is created in recursive mode
-        ** and there is no portable way of doing that using automatic
-        ** initialization so we have pj_precreated_lock only for the purpose
-        ** of protecting the creation of the core lock.
-        */
-        pthread_mutexattr_t mutex_attr;
 
-        pthread_mutex_lock( &pj_precreated_lock);
-
-        pthread_mutexattr_init(&mutex_attr);
-#ifdef HAVE_PTHREAD_MUTEX_RECURSIVE
-        pthread_mutexattr_settype(&mutex_attr, PTHREAD_MUTEX_RECURSIVE);
-#else
-        pthread_mutexattr_settype(&mutex_attr, PTHREAD_MUTEX_RECURSIVE_NP);
-#endif
-        pthread_mutex_init(&pj_core_lock, &mutex_attr);
-        pj_core_lock_created = 1;
-
-        pthread_mutex_unlock( &pj_precreated_lock );
+#ifndef PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP
+    static pthread_once_t sOnceKey = PTHREAD_ONCE_INIT;
+    if( pthread_once(&sOnceKey, pj_create_lock) != 0 )
+    {
+        fprintf(stderr, "pthread_once() failed in pj_acquire_lock().\n");
     }
+#endif
 
-    pthread_mutex_lock( &pj_core_lock);
+    pthread_mutex_lock( &core_lock);
 }
 
 /************************************************************************/
@@ -144,7 +157,7 @@ void pj_acquire_lock()
 
 void pj_release_lock()
 {
-    pthread_mutex_unlock( &pj_core_lock );
+    pthread_mutex_unlock( &core_lock );
 }
 
 /************************************************************************/
@@ -154,7 +167,7 @@ void pj_cleanup_lock()
 {
 }
 
-#endif // def MUTEX_pthread
+#endif /* def MUTEX_pthread */
 
 /************************************************************************/
 /* ==================================================================== */
@@ -168,6 +181,24 @@ void pj_cleanup_lock()
 
 static HANDLE mutex_lock = NULL;
 
+#if _WIN32_WINNT >= 0x0600
+
+/************************************************************************/
+/*                          pj_create_lock()                            */
+/************************************************************************/
+
+static BOOL CALLBACK pj_create_lock(PINIT_ONCE InitOnce,
+                                    PVOID Parameter,
+                                    PVOID *Context)
+{
+    (void)InitOnce;
+    (void)Parameter;
+    (void)Context;
+    mutex_lock = CreateMutex( NULL, FALSE, NULL );
+    return TRUE;
+}
+#endif
+
 /************************************************************************/
 /*                            pj_init_lock()                            */
 /************************************************************************/
@@ -175,8 +206,13 @@ static HANDLE mutex_lock = NULL;
 static void pj_init_lock()
 
 {
+#if _WIN32_WINNT >= 0x0600
+    static INIT_ONCE sInitOnce = INIT_ONCE_STATIC_INIT;
+    InitOnceExecuteOnce( &sInitOnce, pj_create_lock, NULL, NULL );
+#else
     if( mutex_lock == NULL )
         mutex_lock = CreateMutex( NULL, FALSE, NULL );
+#endif
 }
 
 /************************************************************************/
@@ -219,4 +255,4 @@ void pj_cleanup_lock()
     }
 }
 
-#endif // def MUTEX_win32
+#endif /* def MUTEX_win32 */

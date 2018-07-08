@@ -26,14 +26,16 @@
  * DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
-#include "projects.h"
+#include <ctype.h>
+#include <locale.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
-#include <math.h>
+
+#include "proj.h"
+#include "projects.h"
 #include "emess.h"
-#include <locale.h>
 
 #define MAX_LINE 1000
 #define MAX_PARGS 100
@@ -100,7 +102,7 @@ static void process(FILE *fid)
         if (!*s && (s > line)) --s; /* assumed we gobbled \n */
 
         if ( echoin) {
-            int t;
+            char t;
             t = *s;
             *s = '\0';
             (void)fputs(line, stdout);
@@ -166,7 +168,7 @@ int main(int argc, char **argv)
 {
     char *arg, **eargv = argv, *from_argv[MAX_PARGS], *to_argv[MAX_PARGS];
     FILE *fid;
-    int from_argc=0, to_argc=0, eargc = 0, c, mon = 0;
+    int from_argc=0, to_argc=0, eargc = 0, mon = 0;
     int have_to_flag = 0, inverse = 0, i;
     int use_env_locale = 0;
 
@@ -206,11 +208,11 @@ int main(int argc, char **argv)
               case 'l': /* list projections, ellipses or units */
                 if (!arg[1] || arg[1] == 'p' || arg[1] == 'P') {
                     /* list projections */
-                    struct PJ_LIST *lp;
+                    const struct PJ_LIST *lp;
                     int do_long = arg[1] == 'P', c;
                     char *str;
 
-                    for (lp = pj_get_list_ref() ; lp->id ; ++lp) {
+                    for (lp = proj_list_operations() ; lp->id ; ++lp) {
                         (void)printf("%s : ", lp->id);
                         if (do_long)  /* possibly multiline description */
                             (void)puts(*lp->descr);
@@ -222,28 +224,28 @@ int main(int argc, char **argv)
                         }
                     }
                 } else if (arg[1] == '=') { /* list projection 'descr' */
-                    struct PJ_LIST *lp;
+                    const struct PJ_LIST *lp;
 
                     arg += 2;
-                    for (lp = pj_get_list_ref() ; lp->id ; ++lp)
+                    for (lp = proj_list_operations() ; lp->id ; ++lp)
                         if (!strcmp(lp->id, arg)) {
                             (void)printf("%9s : %s\n", lp->id, *lp->descr);
                             break;
                         }
                 } else if (arg[1] == 'e') { /* list ellipses */
-                    struct PJ_ELLPS *le;
+                    const struct PJ_ELLPS *le;
 
-                    for (le = pj_get_ellps_ref(); le->id ; ++le)
+                    for (le = proj_list_ellps(); le->id ; ++le)
                         (void)printf("%9s %-16s %-16s %s\n",
                                      le->id, le->major, le->ell, le->name);
                 } else if (arg[1] == 'u') { /* list units */
-                    struct PJ_UNITS *lu;
+                    const struct PJ_UNITS *lu;
 
-                    for (lu = pj_get_units_ref(); lu->id ; ++lu)
+                    for (lu = proj_list_units(); lu->id ; ++lu)
                         (void)printf("%12s %-20s %s\n",
                                      lu->id, lu->to_meter, lu->name);
                 } else if (arg[1] == 'd') { /* list datums */
-                    struct PJ_DATUMS *ld;
+                    const struct PJ_DATUMS *ld;
 
                     printf("__datum_id__ __ellipse___ __definition/comments______________________________\n" );
                     for (ld = pj_get_datums_ref(); ld->id ; ++ld)
@@ -254,14 +256,15 @@ int main(int argc, char **argv)
                             printf( "%25s %s\n", " ", ld->comments );
                     }
                 } else if( arg[1] == 'm') { /* list prime meridians */
-                    struct PJ_PRIME_MERIDIANS *lpm;
+                    const struct PJ_PRIME_MERIDIANS *lpm;
 
-                    for (lpm = pj_get_prime_meridians_ref(); lpm->id ; ++lpm)
+                    for (lpm = proj_list_prime_meridians(); lpm->id ; ++lpm)
                         (void)printf("%12s %-30s\n",
                                      lpm->id, lpm->defn);
                 } else
                     emess(1,"invalid list option: l%c",arg[1]);
                 exit(0);
+                /* cppcheck-suppress duplicateBreak */
                 continue; /* artificial */
               case 'e': /* error line alternative */
                 if (--argc <= 0)
@@ -271,12 +274,15 @@ int main(int argc, char **argv)
                 continue;
               case 'W': /* specify seconds precision */
               case 'w': /* -W for constant field width */
-                if ((c = arg[1]) != 0 && isdigit(c)) {
+              {
+                char c = arg[1];
+                if (c != 0 && isdigit(c)) {
                     set_rtodms(c - '0', *arg == 'W');
                     ++arg;
                 } else
                     emess(1,"-W argument missing or non-digit");
                 continue;
+              }
               case 'f': /* alternate output format degrees or xy */
                 if (--argc <= 0) goto noargument;
                 oform = *++argv;
@@ -331,8 +337,6 @@ int main(int argc, char **argv)
         
         for( i = 0; i < MAX_PARGS; i++ )
         {
-            char *arg;
-
             arg = from_argv[i];
             from_argv[i] = to_argv[i];
             to_argv[i] = arg;
@@ -404,7 +408,7 @@ int main(int argc, char **argv)
 
     if( use_env_locale )
     {
-        /* Restore C locale to avoid issues in parsing/outputing numbers*/
+        /* Restore C locale to avoid issues in parsing/outputting numbers*/
         setlocale(LC_ALL, "C");
     }
 
@@ -415,7 +419,7 @@ int main(int argc, char **argv)
         pj_pr_list(toProj);
     }
 
-    /* set input formating control */
+    /* set input formatting control */
     if( !fromProj->is_latlong )
         informat = strtod;
     else {
@@ -444,10 +448,8 @@ int main(int argc, char **argv)
         emess_dat.File_name = 0;
     }
 
-    if( fromProj != NULL )
-        pj_free( fromProj );
-    if( toProj != NULL )
-        pj_free( toProj );
+    pj_free( fromProj );
+    pj_free( toProj );
 
     pj_deallocate_grids();
 

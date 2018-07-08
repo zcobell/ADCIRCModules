@@ -1,8 +1,13 @@
 /* definition of standard geoids */
+
+#include <stddef.h>
+
+#include "proj.h"
+
 #define PJ_ELLPS__
 #include "projects.h"
 
-C_NAMESPACE_VAR struct PJ_ELLPS
+C_NAMESPACE_VAR const struct PJ_ELLPS
 pj_ellps[] = {
 {"MERIT",	"a=6378137.0",		"rf=298.257",		"MERIT 1983"},
 {"SGS85",	"a=6378136.0",		"rf=298.257",		"Soviet Geodetic System 85"},
@@ -13,8 +18,10 @@ pj_ellps[] = {
 {"NWL9D",	"a=6378145.0.",		"rf=298.25",		"Naval Weapons Lab., 1965"},
 {"mod_airy",	"a=6377340.189",	"b=6356034.446",	"Modified Airy"},
 {"andrae",	"a=6377104.43",		"rf=300.0",		"Andrae 1876 (Den., Iclnd.)"},
+{"danish",	"a=6377019.2563",	"rf=300.0",		"Andrae 1876 (Denmark, Iceland)"},
 {"aust_SA",	"a=6378160.0",		"rf=298.25",		"Australian Natl & S. Amer. 1969"},
 {"GRS67",	"a=6378160.0",		"rf=298.2471674270",	"GRS 67(IUGG 1967)"},
+{"GSK2011",	"a=6378136.5",		"rf=298.2564151",	"GSK-2011"},
 {"bessel",	"a=6377397.155",	"rf=299.1528128",	"Bessel 1841"},
 {"bess_nam",	"a=6377483.865",	"rf=299.1528128",	"Bessel 1841 (Namibia)"},
 {"clrk66",	"a=6378206.4",		"b=6356583.8",		"Clarke 1866"},
@@ -40,6 +47,7 @@ pj_ellps[] = {
 {"mprts",	"a=6397300.",		"rf=191.",		"Maupertius 1738"},
 {"new_intl",	"a=6378157.5",		"b=6356772.2",		"New International 1967"},
 {"plessis",	"a=6376523.",		"b=6355863.", 		"Plessis 1817 (France)"},
+{"PZ90",	"a=6378136.0",		"rf=298.25784",		"PZ-90"},
 {"SEasia",	"a=6378155.0",		"b=6356773.3205",	"Southeast Asia"},
 {"walbeck",	"a=6376896.0",		"b=6355834.8467",	"Walbeck"},
 {"WGS60",	"a=6378165.0",		"rf=298.3",		"WGS 60"},
@@ -51,7 +59,11 @@ pj_ellps[] = {
 };
 
 struct PJ_ELLPS *pj_get_ellps_ref()
+{
+    return (struct PJ_ELLPS *)pj_ellps;
+}
 
+const PJ_ELLPS *proj_list_ellps(void)
 {
     return pj_ellps;
 }

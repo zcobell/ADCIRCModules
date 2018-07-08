@@ -28,28 +28,35 @@
  *****************************************************************************/
 
 #define PJ_LIB__
-#include <projects.h>
+#include "projects.h"
 
 PROJ_HEAD(geocent, "Geocentric")  "\n\t";
 
-FORWARD(forward);
-	(void) P;
-        xy.x = lp.lam;
-        xy.y = lp.phi;
-        return xy;
+static XY forward(LP lp, PJ *P) {
+    XY xy = {0.0,0.0};
+    (void) P;
+    xy.x = lp.lam;
+    xy.y = lp.phi;
+    return xy;
 }
-INVERSE(inverse);
-	(void) P;
-        lp.phi = xy.y;
-        lp.lam = xy.x;
-        return lp;
-}
-FREEUP; if (P) pj_dalloc(P); }
 
-ENTRY0(geocent)
-    P->is_geocent = 1; 
+static LP inverse(XY xy, PJ *P) {
+    LP lp = {0.0,0.0};
+    (void) P;
+    lp.phi = xy.y;
+    lp.lam = xy.x;
+    return lp;
+}
+
+PJ *CONVERSION (geocent, 0) {
+    P->is_geocent = 1;
     P->x0 = 0.0;
     P->y0 = 0.0;
-    P->inv = inverse; P->fwd = forward;
-ENDENTRY(P)
+    P->inv = inverse;
+    P->fwd = forward;
+    P->left = PJ_IO_UNITS_ANGULAR;
+    P->right = PJ_IO_UNITS_CARTESIAN;
+
+    return P;
+}
 

@@ -1,11 +1,13 @@
 /******************************************************************************
  * Project:  PROJ.4
- * Purpose:  Java/JNI wrappers for PROJ.4 API.
+ * Purpose:  Java/JNI wrappers for PROJ API.
  * Author:   Antonello Andrea
  *           Martin Desruisseaux
  *
  ******************************************************************************
- * Copyright (c) 2005, Antonello Andrea
+ * Copyright (c) 2005, Andrea Antonello
+ * Copyright (c) 2011, Martin Desruisseaux
+ * Copyright (c) 2018, Even Rouault
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,7 +32,7 @@
  * \file jniproj.c
  *
  * \brief
- * Functions used by the Java Native Interface (JNI) wrappers of Proj.4
+ * Functions used by the Java Native Interface (JNI) wrappers of PROJ.
  *
  *
  * \author Antonello Andrea
@@ -52,9 +54,6 @@
 
 #define PJ_FIELD_NAME "ptr"
 #define PJ_FIELD_TYPE "J"
-#define PJ_MAX_DIMENSION 100
-/* The PJ_MAX_DIMENSION value appears also in quoted strings.
-   Please perform a search-and-replace if this value is changed. */
 
 /*!
  * \brief
@@ -340,7 +339,7 @@ JNIEXPORT jdouble JNICALL Java_org_proj4_PJ_getLinearUnitToMetre
  * Converts input values from degrees to radians before coordinate operation, or the output
  * values from radians to degrees after the coordinate operation.
  *
- * \param pj        - The Proj.4 PJ structure.
+ * \param pj        - The PROJ.4 PJ structure.
  * \param data      - The coordinate array to transform.
  * \param numPts    - Number of points to transform.
  * \param dimension - Dimension of points in the coordinate array.
@@ -351,11 +350,8 @@ void convertAngularOrdinates(PJ *pj, double* data, jint numPts, int dimension, d
     if (pj_is_latlong(pj)) {
         /* Convert only the 2 first ordinates and skip all the other dimensions. */
         dimToSkip = dimension - 2;
-    } else if (pj_is_geocent(pj)) {
-        /* Convert only the 3 first ordinates and skip all the other dimensions. */
-        dimToSkip = dimension - 3;
     } else {
-        /* Not a geographic or geocentric CRS: nothing to convert. */
+        /* Not a geographic CRS: nothing to convert. */
         return;
     }
     double *stop = data + dimension*numPts;
@@ -392,9 +388,9 @@ JNIEXPORT void JNICALL Java_org_proj4_PJ_transform
         if (c) (*env)->ThrowNew(env, c, "The target CRS and the coordinates array can not be null.");
         return;
     }
-    if (dimension < 2 || dimension > PJ_MAX_DIMENSION) { /* Arbitrary upper value for catching potential misuse. */
+    if (dimension < 2 || dimension > org_proj4_PJ_DIMENSION_MAX) { /* Arbitrary upper value for catching potential misuse. */
         jclass c = (*env)->FindClass(env, "java/lang/IllegalArgumentException");
-        if (c) (*env)->ThrowNew(env, c, "Illegal dimension. Must be in the [2-100] range.");
+        if (c) (*env)->ThrowNew(env, c, "Illegal number of dimensions.");
         return;
     }
     if ((offset < 0) || (numPts < 0) || (offset + dimension*numPts) > (*env)->GetArrayLength(env, coordinates)) {
@@ -454,7 +450,7 @@ JNIEXPORT jstring JNICALL Java_org_proj4_PJ_getLastError
  * This method will also set the Java "ptr" final field to 0 as a safety. In theory we are not
  * supposed to change the value of a final field. But no Java code should use this field, and
  * the PJ object is being garbage collected anyway. We set the field to 0 as a safety in case
- * some user invoked the finalize() method explicitely despite our warning in the Javadoc to
+ * some user invoked the finalize() method explicitly despite our warning in the Javadoc to
  * never do such thing.
  *
  * \param env    - The JNI environment.
