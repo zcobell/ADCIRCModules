@@ -22,9 +22,8 @@
 using namespace Adcirc::ModelParameters;
 
 AttributeMetadata::AttributeMetadata(const string &name, const string &units,
-                                     size_t numValues) {
-  this->setName(name);
-  this->setUnits(units);
+                                     size_t numValues)
+    : m_name(name), m_units(units) {
   this->setNumberOfValues(numValues);
 }
 
@@ -48,9 +47,9 @@ vector<double> AttributeMetadata::getDefaultValues() const {
 }
 
 double AttributeMetadata::getDefaultValue(size_t index) const {
-  assert(index >= 0 && index < this->m_numValues);
+  assert(index < this->m_numValues);
 
-  if (index >= 0 || index < this->m_numValues) {
+  if (index < this->m_numValues) {
     return this->m_defaultValue[index];
   } else {
     return this->m_defaultValue[0];
@@ -67,6 +66,6 @@ void AttributeMetadata::setDefaultValue(const double &value) {
 }
 
 void AttributeMetadata::setDefaultValue(size_t index, const double &value) {
-  assert(index >= 0 && index < this->m_numValues);
+  assert(index < this->m_numValues);
   this->m_defaultValue[index] = value;
 }

@@ -49,14 +49,13 @@ NodalAttributes::NodalAttributes() {
   this->m_filename = string();
 }
 
-NodalAttributes::NodalAttributes(string filename,
-                                 Adcirc::Geometry::Mesh *mesh) {
+NodalAttributes::NodalAttributes(string filename, Adcirc::Geometry::Mesh *mesh)
+    : m_filename(filename) {
   this->m_mesh = mesh;
   if (this->m_mesh != nullptr) {
     this->m_numNodes = mesh->numNodes();
   }
   this->m_numParameters = 0;
-  this->m_filename = std::move(filename);
 }
 
 void NodalAttributes::setFilename(string filename) {

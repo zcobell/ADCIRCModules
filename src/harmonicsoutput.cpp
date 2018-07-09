@@ -29,11 +29,11 @@
 using namespace std;
 using namespace Adcirc::Output;
 
-HarmonicsOutput::HarmonicsOutput(string filename, bool velocity) {
+HarmonicsOutput::HarmonicsOutput(string filename, bool velocity)
+    : m_filename(filename) {
   this->m_numNodes = 0;
   this->m_numConstituents = 0;
   this->m_isVelocity = velocity;
-  this->m_filename = std::move(filename);
 }
 
 string HarmonicsOutput::filename() const { return this->m_filename; }

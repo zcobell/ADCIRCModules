@@ -18,6 +18,7 @@
 //------------------------------------------------------------------------*/
 #include "attribute.h"
 #include <cassert>
+#include <limits>
 #include "error.h"
 
 using namespace std;
@@ -25,11 +26,13 @@ using namespace Adcirc::ModelParameters;
 
 Attribute::Attribute() {
   this->m_node = nullptr;
+  this->m_id = std::numeric_limits<size_t>::max();
   this->resize(1);
 }
 
 Attribute::Attribute(size_t size) {
   this->m_node = nullptr;
+  this->m_id = std::numeric_limits<size_t>::max();
   this->resize(size);
 }
 

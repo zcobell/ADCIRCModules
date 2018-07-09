@@ -60,24 +60,20 @@ using namespace Adcirc::Geometry;
  * @name Mesh::Mesh
  * @brief Default Constructor
  */
-Mesh::Mesh() { this->_init(); }
+Mesh::Mesh() : m_filename("none") { this->_init(); }
 
 /**
  * @overload Mesh::Mesh
  * @brief Default constructor with filename parameter
  * @param filename name of the mesh to read
  */
-Mesh::Mesh(const string &filename) {
-  this->_init();
-  this->setFilename(filename);
-}
+Mesh::Mesh(const string &filename) : m_filename(filename) { this->_init(); }
 
 /**
  * @name Mesh::_init
  * @brief Initialization routine called by all constructors
  */
 void Mesh::_init() {
-  this->setFilename(string());
   this->defineProjection(4326, true);
   this->m_nodalSearchTree = nullptr;
   this->m_elementalSearchTree = nullptr;

@@ -69,8 +69,7 @@ static const std::vector<string> netcdfVarNames = {"sigmat",
                                                    "swan_TMM10",
                                                    "swan_TMM10_max"};
 
-OutputFile::OutputFile(std::string filename) {
-  this->m_filename = std::move(filename);
+OutputFile::OutputFile(std::string filename) : m_filename(filename) {
   this->m_currentSnap = 0;
   this->m_numNodes = 0;
   this->m_open = false;
@@ -115,7 +114,7 @@ bool OutputFile::exists() {
 }
 
 int OutputFile::open() {
-  assert(!this->isOpen());
+  assert(!this->m_open);
   assert(this->exists());
 
   if (this->isOpen()) {
@@ -153,7 +152,7 @@ int OutputFile::open() {
 }
 
 int OutputFile::close() {
-  assert(this->isOpen());
+  assert(this->m_open);
 
   if (!this->isOpen()) {
     Adcirc::Error::throwError("OutputFile: File not open");
