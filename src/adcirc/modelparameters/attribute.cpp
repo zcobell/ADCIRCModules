@@ -18,6 +18,7 @@
 //------------------------------------------------------------------------*/
 #include "adcirc/modelparameters/attribute.h"
 #include <cassert>
+#include "adcirc/architecture/error.h"
 
 using namespace std;
 using namespace Adcirc::ModelParameters;
@@ -40,11 +41,12 @@ void Attribute::resize(size_t size) {
 }
 
 double Attribute::value(size_t index) const {
-  assert(index >= 0 && index < this->m_size);
+  assert(index < this->m_size);
 
-  if (index >= 0 && index < this->m_size) {
+  if (index < this->m_size) {
     return m_values[index];
   } else {
+    Adcirc::Error::throwError("Attribute: Index out of bounds");
     return -9999.0;
   }
 }
@@ -56,10 +58,12 @@ void Attribute::setValue(const double &value) {
 }
 
 void Attribute::setValue(size_t index, const double &value) {
-  assert(index >= 0 && index < this->m_size);
+  assert(index < this->m_size);
 
-  if (index >= 0 && index < this->m_size) {
+  if (index < this->m_size) {
     this->m_values[index] = value;
+  } else {
+    Adcirc::Error::throwError("Attribute: Index out of bounds");
   }
 }
 
@@ -68,6 +72,8 @@ void Attribute::setValue(const vector<double> &values) {
 
   if (values.size() == this->m_size) {
     this->m_values = values;
+  } else {
+    Adcirc::Error::throwError("Attribute: Index out of bounds");
   }
 }
 

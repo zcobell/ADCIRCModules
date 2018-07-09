@@ -18,6 +18,7 @@
 //------------------------------------------------------------------------*/
 #include "harmonicsrecord.h"
 #include <cassert>
+#include "adcirc/architecture/error.h"
 
 using namespace std;
 using namespace Adcirc::Output;
@@ -66,6 +67,7 @@ double HarmonicsRecord::value(size_t index) {
   if (index < this->m_data.size()) {
     return this->m_data[index];
   } else {
+    Adcirc::Error::throwError("HarmonicsRecord: Index out of bounds");
     return -9999;
   }
 }
@@ -74,6 +76,9 @@ void HarmonicsRecord::set(size_t index, double data) {
   assert(index < this->m_data.size());
   if (index < this->m_data.size()) {
     this->m_data[index] = data;
+  } else {
+    Adcirc::Error::throwError("HarmonicsRecord: Index out of bounds");
+    return;
   }
   return;
 }

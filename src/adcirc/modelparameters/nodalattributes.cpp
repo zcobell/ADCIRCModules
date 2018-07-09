@@ -28,18 +28,18 @@
 
 using namespace Adcirc::ModelParameters;
 
-#define CHECK_RETURN_AND_CLOSE(ierr)                      \
-  if (ierr != Adcirc::NoError) {                          \
-    fid.close();                                          \
-    Adcirc::Error::throwError("Error reading file data"); \
-    return Adcirc::HasError;                              \
+#define CHECK_RETURN_AND_CLOSE(ierr)                                       \
+  if (ierr != Adcirc::NoError) {                                           \
+    fid.close();                                                           \
+    Adcirc::Error::throwError("NodalAttributes: Error reading file data"); \
+    return Adcirc::HasError;                                               \
   }
 
-#define CHECK_FILEREAD_RETURN(ok)                         \
-  if (!ok) {                                              \
-    fid.close();                                          \
-    Adcirc::Error::throwError("Error reading file data"); \
-    return Adcirc::HasError                               \
+#define CHECK_FILEREAD_RETURN(ok)                                          \
+  if (!ok) {                                                               \
+    fid.close();                                                           \
+    Adcirc::Error::throwError("NodalAttributes: Error reading file data"); \
+    return Adcirc::HasError                                                \
   }
 
 NodalAttributes::NodalAttributes() {
@@ -119,14 +119,14 @@ int NodalAttributes::_readFort13Header(std::fstream &fid) {
 
   size_t numnodes = StringConversion::stringToSizet(tempLine, ok);
   if (!ok) {
-    Adcirc::Error::throwError("Error reading file data");
+    Adcirc::Error::throwError("NodalAttributes: Error reading file data");
   }
 
   std::getline(fid, tempLine);
 
   size_t numparams = StringConversion::stringToSizet(tempLine, ok);
   if (!ok) {
-    Adcirc::Error::throwError("Error reading file data");
+    Adcirc::Error::throwError("NodalAttributes: Error reading file data");
   }
 
   this->setNumParameters(numparams);
@@ -134,7 +134,7 @@ int NodalAttributes::_readFort13Header(std::fstream &fid) {
   if (this->m_mesh != nullptr) {
     if (this->m_mesh->numNodes() != numnodes) {
       Adcirc::Error::throwError(
-          "Number of nodes does not match provided mesh.");
+          "NodalAttributes: Number of nodes does not match provided mesh.");
     }
   } else {
     this->setNumNodes(numnodes);
@@ -173,7 +173,7 @@ int NodalAttributes::_readFort13Defaults(std::fstream &fid) {
     int nValues = StringConversion::stringToSizet(tempLine, ok);
     assert(ok);
     if (!ok) {
-      Adcirc::Error::throwError("Error reading file data");
+      Adcirc::Error::throwError("NodalAttributes: Error reading file data");
     }
 
     if (nValues == 1) {
@@ -181,7 +181,7 @@ int NodalAttributes::_readFort13Defaults(std::fstream &fid) {
       defaultValue = StringConversion::stringToDouble(tempLine, ok);
       assert(ok);
       if (!ok) {
-        Adcirc::Error::throwError("Error reading file data");
+        Adcirc::Error::throwError("NodalAttributes: Error reading file data");
       }
 
       this->m_nodalParameters[i] = AttributeMetadata(name, units, nValues);
@@ -193,7 +193,7 @@ int NodalAttributes::_readFort13Defaults(std::fstream &fid) {
       int ierr = IO::splitString(tempLine, tempList);
       assert(ierr == 0);
       if (ierr != 0) {
-        Adcirc::Error::throwError("Error reading file data");
+        Adcirc::Error::throwError("NodalAttributes: Error reading file data");
       }
 
       defaultValueVector.resize(nValues);
@@ -202,7 +202,7 @@ int NodalAttributes::_readFort13Defaults(std::fstream &fid) {
             StringConversion::stringToDouble(tempList[j], ok);
         assert(ok);
         if (!ok) {
-          Adcirc::Error::throwError("Error reading file data");
+          Adcirc::Error::throwError("NodalAttributes: Error reading file data");
         }
       }
 
@@ -262,7 +262,7 @@ int NodalAttributes::_readFort13Body(std::fstream &fid) {
     size_t numNonDefault = StringConversion::stringToSizet(tempLine, ok);
     assert(ok);
     if (!ok) {
-      Adcirc::Error::throwError("Error reading file data");
+      Adcirc::Error::throwError("NodalAttributes: Error reading file data");
     }
 
     size_t nValues = this->m_nodalParameters[index].numberOfValues();
@@ -274,7 +274,7 @@ int NodalAttributes::_readFort13Body(std::fstream &fid) {
         ierr = IO::splitStringAttribute1Format(tempLine, node, value);
         assert(ierr == 0);
         if (ierr != 0) {
-          Adcirc::Error::throwError("Error reading file data");
+          Adcirc::Error::throwError("NodalAttributes: Error reading file data");
         }
 
         if (this->m_mesh != nullptr) {
@@ -290,7 +290,7 @@ int NodalAttributes::_readFort13Body(std::fstream &fid) {
         ierr = IO::splitStringAttribute12Format(tempLine, node, values);
         assert(ierr == 0);
         if (ierr != 0) {
-          Adcirc::Error::throwError("Error reading file data");
+          Adcirc::Error::throwError("NodalAttributes: Error reading file data");
         };
 
         if (this->m_mesh != nullptr) {
@@ -310,14 +310,15 @@ int NodalAttributes::_readFort13Body(std::fstream &fid) {
         node = StringConversion::stringToSizet(tempList[0], ok);
         assert(ok);
         if (!ok) {
-          Adcirc::Error::throwError("Error reading file data");
+          Adcirc::Error::throwError("NodalAttributes: Error reading file data");
         }
 
         for (size_t j = 1; j < tempList.size(); j++) {
           value = StringConversion::stringToDouble(tempList[j], ok);
           assert(ok);
           if (!ok) {
-            Adcirc::Error::throwError("Error reading file data");
+            Adcirc::Error::throwError(
+                "NodalAttributes: Error reading file data");
           }
 
           if (this->m_mesh != nullptr) {
@@ -358,7 +359,7 @@ Attribute *NodalAttributes::attribute(size_t parameter, size_t node) {
   if (node < this->numNodes() && parameter < this->numParameters()) {
     return &this->m_nodalData[parameter][node];
   }
-  Adcirc::Error::throwError("Attribute could not be located");
+  Adcirc::Error::throwError("NodalAttributes: Attribute could not be located");
   return nullptr;
 }
 
@@ -376,7 +377,7 @@ string NodalAttributes::attributeNames(size_t index) {
   if (index < this->m_nodalParameters.size()) {
     return this->m_nodalParameters[index].name();
   } else {
-    Adcirc::Error::throwError("Request out of bounds.");
+    Adcirc::Error::throwError("NodalAttributes: Request out of bounds.");
   }
   return string();
 }

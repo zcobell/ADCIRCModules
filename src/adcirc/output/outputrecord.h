@@ -31,6 +31,7 @@ const double DefaultOutputValue = -99999.0;
 
 class OutputRecord {
  public:
+  explicit OutputRecord();
   explicit OutputRecord(size_t record, size_t numNodes, bool isVector);
 
   void fill(double value);
