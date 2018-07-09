@@ -195,9 +195,9 @@ PJ *PROJECTION(omerc) {
         J = Q->E * Q->E;
         J = (J - L * H) / (J + L * H);
         if ((con = lam1 - lam2) < -M_PI)
-            lam2 -= M_TWOPI;
+            lam2 -= M_PJ_TWOPI;
         else if (con > M_PI)
-            lam2 += M_TWOPI;
+            lam2 += M_PJ_TWOPI;
         P->lam0 = adjlon(.5 * (lam1 + lam2) - atan(
            J * tan(.5 * Q->B * (lam1 - lam2)) / p) / Q->B);
         gamma0 = atan(2. * sin(Q->B * adjlon(lam1 - P->lam0)) /

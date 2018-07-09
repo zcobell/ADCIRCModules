@@ -11,7 +11,7 @@ double adjlon (double lon) {
     lon += M_PI;
 
     /* remove integral # of 'revolutions'*/
-    lon -= M_TWOPI * floor(lon / M_TWOPI);
+    lon -= M_PJ_TWOPI * floor(lon / M_PJ_TWOPI);
 
     /* adjust back to -pi..pi range */
     lon -= M_PI;

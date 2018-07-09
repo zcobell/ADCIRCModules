@@ -89,8 +89,8 @@ process(FILE *fid) {
 		}
 		if (!*s && (s > line)) --s; /* assumed we gobbled \n */
 		if (pos_azi) {
-			if (al12 < 0.) al12 += M_TWOPI;
-			if (al21 < 0.) al21 += M_TWOPI;
+			if (al12 < 0.) al12 += M_PJ_TWOPI;
+			if (al21 < 0.) al21 += M_PJ_TWOPI;
 		}
 		if (fullout) {
 			printLL(phi1, lam1); TAB;

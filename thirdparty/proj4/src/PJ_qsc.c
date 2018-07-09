@@ -104,9 +104,9 @@ static double qsc_fwd_equat_face_theta(double phi, double y, double x, enum Area
 static double qsc_shift_lon_origin(double lon, double offset) {
     double slon = lon + offset;
     if (slon < -M_PI) {
-        slon += M_TWOPI;
+        slon += M_PJ_TWOPI;
     } else if (slon > +M_PI) {
-        slon -= M_TWOPI;
+        slon -= M_PJ_TWOPI;
     }
     return slon;
 }

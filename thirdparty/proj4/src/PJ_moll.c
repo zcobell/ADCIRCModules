@@ -61,7 +61,7 @@ static PJ * setup(PJ *P, double p) {
 
     P->es = 0;
     sp = sin(p);
-    r = sqrt(M_TWOPI * sp / (p2 + sin(p2)));
+    r = sqrt(M_PJ_TWOPI * sp / (p2 + sin(p2)));
 
     Q->C_x = 2. * r / M_PI;
     Q->C_y = r / sp;

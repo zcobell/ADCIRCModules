@@ -657,7 +657,7 @@ pj_init_ctx(projCtx ctx, int argc, char **argv) {
         /* Don't accept excessive values otherwise we might perform badly */
         /* when correcting longitudes around it */
         /* The test is written this way to error on long_wrap_center "=" NaN */
-        if( !(fabs(PIN->long_wrap_center) < 10 * M_TWOPI) )
+        if( !(fabs(PIN->long_wrap_center) < 10 * M_PJ_TWOPI) )
             return pj_default_destructor (PIN, PJD_ERR_LAT_OR_LON_EXCEED_LIMIT);
     }
 

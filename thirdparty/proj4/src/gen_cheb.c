@@ -53,7 +53,7 @@ void gen_cheb(int inverse, projUV (*proj)(projUV), char *s, PJ *P,
 	if (low.u == upp.u || low.v >= upp.v)
 		emess(16,"approx. argument range error");
 	if (low.u > upp.u)
-		low.u -= M_TWOPI;
+		low.u -= M_PJ_TWOPI;
 	if (NU < 2 || NV < 2)
 		emess(16,"approx. work dimensions (%d %d) too small",NU,NV);
 	if (!(F = mk_cheby(low, upp, pow(10., (double)res)*.5, &resid, proj,

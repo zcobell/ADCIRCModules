@@ -73,7 +73,7 @@ static LP s_inverse (XY xy, PJ *P) {           /* Spheroidal, inverse */
     y2 = xy.y * xy.y;
     r = x2 + y2;    r2 = r * r;
     c1 = - M_PI * ay * (r + PISQ);
-    c3 = r2 + M_TWOPI * (ay * r + M_PI * (y2 + M_PI * (ay + M_HALFPI)));
+    c3 = r2 + M_PJ_TWOPI * (ay * r + M_PI * (y2 + M_PI * (ay + M_HALFPI)));
     c2 = c1 + PISQ * (r - 3. *  y2);
     c0 = M_PI * ay;
     c2 /= c3;

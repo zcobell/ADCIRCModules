@@ -98,7 +98,7 @@ static XY e_forward (LP lp, PJ *P) {          /* Ellipsoidal, forward */
             if (!l || ++nn >= 3 || (lamdp > Q->rlm && lamdp < Q->rlm2))
                     break;
             if (lamdp <= Q->rlm)
-                lampp = M_TWOPI_HALFPI;
+                lampp = M_PJ_TWOPI_HALFPI;
             else if (lamdp >= Q->rlm2)
                 lampp = M_HALFPI;
     }
@@ -179,7 +179,7 @@ PJ *PROJECTION(misrsom) {
     if (path <= 0 || path > 233)
         return pj_default_destructor(P, PJD_ERR_PATH_NOT_IN_RANGE);
 
-    P->lam0 = DEG_TO_RAD * 129.3056 - M_TWOPI / 233. * path;
+    P->lam0 = DEG_TO_RAD * 129.3056 - M_PJ_TWOPI / 233. * path;
     alf = 98.30382 * DEG_TO_RAD;
     Q->p22 = 98.88 / 1440.0;
 
@@ -196,7 +196,7 @@ PJ *PROJECTION(misrsom) {
     Q->u = esc * P->rone_es;
     Q->xj = P->one_es * P->one_es * P->one_es;
     Q->rlm = 0;
-    Q->rlm2 = Q->rlm + M_TWOPI;
+    Q->rlm2 = Q->rlm + M_PJ_TWOPI;
     Q->a2 = Q->a4 = Q->b = Q->c1 = Q->c3 = 0.;
     seraz0(0., 1., P);
     for (lam = 9.; lam <= 81.0001; lam += 18.)

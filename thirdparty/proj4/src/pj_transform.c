@@ -474,11 +474,11 @@ static int long_wrap (PJ *P, long n, int dist, double *x) {
             continue;
 
         /* Get fast in ] -2 PI, 2 PI [ range */
-        val = fmod(val, M_TWOPI);
+        val = fmod(val, M_PJ_TWOPI);
         while( val < P->long_wrap_center - M_PI )
-            val += M_TWOPI;
+            val += M_PJ_TWOPI;
         while( val > P->long_wrap_center + M_PI )
-            val -= M_TWOPI;
+            val -= M_PJ_TWOPI;
         x[dist*i] = val;
     }
     return 0;
