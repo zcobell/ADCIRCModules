@@ -751,7 +751,8 @@ IF(UNIX OR CYGWIN)
     FOREACH(TESTFILE cxx_readmesh.cpp cxx_writemesh.cpp cxx_writeshapefile.cpp
                      cxx_projectmesh.cpp cxx_nodalSearchTree.cpp cxx_readfort13_wmesh.cpp 
                      cxx_readfort13_womesh.cpp cxx_fort13findatt.cpp cxx_readasciifull.cpp 
-                     cxx_readasciisparse.cpp cxx_readmaxele.cpp cxx_readnetcdf.cpp 
+                     cxx_readasciisparse.cpp cxx_readmaxele.cpp cxx_readnetcdfmaxele.cpp 
+                     cxx_readasciivector.cpp cxx_readnetcdf.cpp cxx_readnetcdfvector.cpp 
                      cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp )
         GET_FILENAME_COMPONENT( TESTNAME ${TESTFILE} NAME_WE )
         ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )

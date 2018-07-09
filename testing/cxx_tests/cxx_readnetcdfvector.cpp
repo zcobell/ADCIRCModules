@@ -21,13 +21,13 @@
 #include <cmath>
 
 int main(int argc, char *argv[]) {
-    Adcirc::Output::OutputFile *output = new Adcirc::Output::OutputFile("test_files/fort.63.nc");
+    Adcirc::Output::OutputFile *output = new Adcirc::Output::OutputFile("test_files/fort.64.nc");
     output->open();
     output->read();
     output->read();
     output->read();
-    std::cout << "Expected: 1.84674, Got: " << output->data(2)->z(925) << std::endl;
-    if(fabs(output->data(2)->z(925)-1.84674)>0.00001){
+    std::cout << "Expected: -0.000205562, Got: " << output->data(2)->u(925) << std::endl;
+    if(fabs(output->data(2)->u(925)-(-0.000205562))>0.000001){
         delete output;
         return 1;
     }

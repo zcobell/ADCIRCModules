@@ -48,9 +48,9 @@ class OutputFile {
 
   bool isOpen();
 
-  int read(int snap = Adcirc::Output::NextOutputSnap);
+  int read(size_t snap = Adcirc::Output::NextOutputSnap);
 
-  int write(int snap = Adcirc::Output::NextOutputSnap);
+  int write(size_t snap = Adcirc::Output::NextOutputSnap);
 
   int filetype() const;
 
@@ -82,12 +82,15 @@ class OutputFile {
 
  private:
   // variables
+  bool m_isVector;
+  bool m_isMax;
   bool m_open;
   int m_filetype;
   size_t m_currentSnap;
   size_t m_numSnaps;
   size_t m_numNodes;
   double m_dt;
+  double m_defaultValue;
   int m_dit;
   std::fstream m_fid;
   std::string m_filename;
@@ -96,10 +99,10 @@ class OutputFile {
   std::string m_header;
 
   // netcdf specific variables
-  bool m_isVector;
   int m_ncid;
-  int m_dimid_time;
+  int m_dimid_time, m_dimid_node;
   int m_varid_time;
+  std::vector<double> m_time;
   std::vector<int> m_varid_data;
 
   // functions
@@ -126,6 +129,7 @@ class OutputFile {
   int readNetcdfHeader();
 
   int readAsciiRecord(std::unique_ptr<OutputRecord> &record);
+  int readNetcdfRecord(size_t snap, std::unique_ptr<OutputRecord> &record);
 };
 }  // namespace Output
 }  // namespace Adcirc

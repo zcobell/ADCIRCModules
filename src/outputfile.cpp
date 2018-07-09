@@ -18,6 +18,7 @@
 //------------------------------------------------------------------------*/
 #include "outputfile.h"
 #include <cassert>
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -30,6 +31,7 @@
 using namespace Adcirc::Output;
 using namespace std;
 
+//...netcdf Variable names currently in ADCIRC source code
 static const std::vector<string> netcdfVarNames = {"sigmat",
                                                    "salinity",
                                                    "temperature",
@@ -73,6 +75,8 @@ OutputFile::OutputFile(std::string filename) : m_filename(filename) {
   this->m_currentSnap = 0;
   this->m_numNodes = 0;
   this->m_open = false;
+  this->m_isVector = false;
+  this->m_isMax = false;
   this->m_filetype = Adcirc::Output::Unknown;
 }
 
@@ -92,6 +96,8 @@ void OutputFile::clearAt(size_t position) {
     this->m_records[position].reset(nullptr);
     this->m_records.erase(this->m_records.begin() + position);
     this->rebuildMap();
+  } else {
+    Adcirc::Error::throwError("OutputFile: Index exceeds dimension");
   }
 }
 
@@ -176,8 +182,10 @@ int OutputFile::close() {
   return Adcirc::NoError;
 }
 
-int OutputFile::read(int snap) {
+int OutputFile::read(size_t snap) {
+  int ierr;
   unique_ptr<OutputRecord> record;
+
   if (this->m_filetype == Adcirc::Output::ASCIIFull ||
       this->m_filetype == Adcirc::Output::ASCIISparse) {
     if (snap != Adcirc::Output::NextOutputSnap) {
@@ -189,22 +197,29 @@ int OutputFile::read(int snap) {
       Adcirc::Error::throwError(
           "OutputFile: Attempt to read past last record in file");
     }
-    int ierr = this->readAsciiRecord(record);
-    if (ierr == Adcirc::NoError) {
-      this->m_records.push_back(std::move(record));
-    } else {
-      if (record.get() != nullptr) {
-        record.reset(nullptr);
-      }
-      Adcirc::Error::throwError("OutputFile: Error reading output record");
-      return Adcirc::HasError;
+    ierr = this->readAsciiRecord(record);
+  } else if (this->m_filetype == Adcirc::Output::Netcdf3 ||
+             this->m_filetype == Adcirc::Output::Netcdf4) {
+    ierr = this->readNetcdfRecord(snap, record);
+  } else {
+    Adcirc::Error::throwError("OutputFile: Unknown filetype");
+    return Adcirc::HasError;
+  }
+
+  if (ierr == Adcirc::NoError) {
+    this->m_records.push_back(std::move(record));
+  } else {
+    if (record.get() != nullptr) {
+      record.reset(nullptr);
     }
+    Adcirc::Error::throwError("OutputFile: Error reading output record");
+    return Adcirc::HasError;
   }
 
   return Adcirc::NoError;
 }
 
-int OutputFile::write(int snap) {
+int OutputFile::write(size_t snap) {
   Adcirc::Error::throwError("OutputFile: Not implemented");
   return Adcirc::HasError;
 }
@@ -480,8 +495,12 @@ int OutputFile::findNetcdfVarId() {
 
   for (const auto& varname : netcdfVarNames) {
     int ierr = nc_inq_varid(this->m_ncid, varname.c_str(), &varid);
-    if (ierr != NC_NOERR) {
+    if (ierr == NC_NOERR) {
       this->m_varid_data.push_back(varid);
+      if (varname.substr(varname.size() - 3, varname.size()) == "max" ||
+          varname.substr(varname.size() - 3, varname.size()) == "min") {
+        this->m_isMax = true;
+      }
     }
   }
 
@@ -569,7 +588,81 @@ int OutputFile::readAsciiHeader() {
   return Adcirc::NoError;
 }
 
-int OutputFile::readNetcdfHeader() { return Adcirc::HasError; }
+int OutputFile::readNetcdfHeader() {
+  assert(this->isOpen());
+
+  int ierr = nc_inq_dimid(this->m_ncid, "time", &this->m_dimid_time);
+  if (ierr != NC_NOERR) {
+    Adcirc::Error::throwError("OutputFile: Time dimension not found");
+    return Adcirc::HasError;
+  }
+
+  ierr = nc_inq_varid(this->m_ncid, "time", &this->m_varid_time);
+  if (ierr != NC_NOERR) {
+    Adcirc::Error::throwError("OutputFile: Time variable not found");
+    return Adcirc::HasError;
+  }
+
+  ierr = nc_inq_dimlen(this->m_ncid, this->m_dimid_time, &this->m_numSnaps);
+  if (ierr != NC_NOERR) {
+    Adcirc::Error::throwError("OutputFile: Error reading time dimension");
+    return Adcirc::HasError;
+  }
+
+  ierr = nc_inq_dimid(this->m_ncid, "node", &this->m_dimid_node);
+  if (ierr != NC_NOERR) {
+    Adcirc::Error::throwError("OutputFile: Node dimension not found");
+    return Adcirc::HasError;
+  }
+
+  ierr = nc_inq_dimlen(this->m_ncid, this->m_dimid_node, &this->m_numNodes);
+  if (ierr != NC_NOERR) {
+    Adcirc::Error::throwError("OutputFile: Error reading node dimension");
+    return Adcirc::HasError;
+  }
+
+  double dt;
+  ierr = nc_get_att_double(this->m_ncid, NC_GLOBAL, "dt", &dt);
+  if (ierr != NC_NOERR) {
+    Adcirc::Error::throwError("OutputFile: Error reading model dt");
+    return Adcirc::HasError;
+  }
+
+  double* t = (double*)malloc(sizeof(double) * this->m_numSnaps);
+
+  ierr = nc_get_var_double(this->m_ncid, this->m_varid_time, t);
+  if (ierr != NC_NOERR) {
+    free(t);
+    Adcirc::Error::throwError(nc_strerror(ierr));
+    return Adcirc::HasError;
+  }
+
+  if (this->m_numSnaps > 1) {
+    this->m_dt = t[1] - t[0];
+  } else {
+    this->m_dt = t[0];
+  }
+  this->m_dit = this->m_dt / dt;
+  this->m_time = vector<double>(t, t + this->m_numSnaps);
+  free(t);
+
+  ierr = this->findNetcdfVarId();
+  if (ierr != Adcirc::NoError) {
+    Adcirc::Error::throwError(
+        "OutputFile: Error locating netcdf output variables");
+    return Adcirc::HasError;
+  }
+
+  int nofill;
+  ierr = nc_inq_var_fill(this->m_ncid, this->m_varid_data[0], &nofill,
+                         &this->m_defaultValue);
+  if (ierr != Adcirc::NoError) {
+    Adcirc::Error::throwError("OutputFile: Error reading default value");
+    return Adcirc::HasError;
+  }
+
+  return Adcirc::NoError;
+}
 
 int OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
   string line;
@@ -585,7 +678,7 @@ int OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
 
   double t = StringConversion::stringToDouble(list[0], ok);
   if (ok) {
-    record->setTime(t);
+    record.get()->setTime(t);
   } else {
     record.reset(nullptr);
     Adcirc::Error::throwError("OutputFile: Error reading ascii record");
@@ -594,7 +687,7 @@ int OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
 
   int it = StringConversion::stringToInt(list[1], ok);
   if (ok) {
-    record->setIteration(it);
+    record.get()->setIteration(it);
   } else {
     record.reset(nullptr);
     Adcirc::Error::throwError("OutputFile: Error reading ascii record");
@@ -619,8 +712,8 @@ int OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
       return Adcirc::HasError;
     }
   }
-  record->setDefaultValue(dflt);
-  record->fill(dflt);
+  record.get()->setDefaultValue(dflt);
+  record.get()->fill(dflt);
 
   //...Record loop
   for (size_t i = 0; i < numNonDefault; i++) {
@@ -631,7 +724,7 @@ int OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
       double v1, v2;
       int ierr = IO::splitStringAttribute2Format(line, id, v1, v2);
       if (ierr == 0) {
-        record->set(id - 1, v1, v2);
+        record.get()->set(id - 1, v1, v2);
       } else {
         record.reset(nullptr);
         Adcirc::Error::throwError("OutputFile: Error reading ascii record");
@@ -642,7 +735,7 @@ int OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
       double v1;
       int ierr = IO::splitStringAttribute1Format(line, id, v1);
       if (ierr == 0) {
-        record->set(id - 1, v1);
+        record.get()->set(id - 1, v1);
       } else {
         record.reset(nullptr);
         Adcirc::Error::throwError("OutputFile: Error reading ascii record");
@@ -652,9 +745,82 @@ int OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
   }
 
   //...Setup the map for record indicies
-  this->m_recordMap[record->record()] = record.get();
+  this->m_recordMap[record.get()->record()] = record.get();
   this->m_currentSnap++;
 
+  return Adcirc::NoError;
+}
+
+int OutputFile::readNetcdfRecord(size_t snap,
+                                 std::unique_ptr<OutputRecord>& record) {
+  if (snap == Output::NextOutputSnap) {
+    snap = this->m_currentSnap;
+  }
+
+  assert(snap < this->m_numSnaps);
+  assert(this->isOpen());
+
+  if (snap > this->m_numSnaps) {
+    Adcirc::Error::throwError(
+        "OutputFile: Record requested > number of records in file");
+    return Adcirc::HasError;
+  }
+  record = unique_ptr<OutputRecord>(
+      new OutputRecord(snap, this->m_numNodes, this->m_isVector));
+
+  record.get()->setTime(this->m_time[snap]);
+  record.get()->setIteration(std::floor(this->m_time[snap] / this->m_dt));
+
+  //..Read the data record. If it is a max record, there is
+  //  no time dimension
+  if (this->m_isMax) {
+    double* u = (double*)malloc(sizeof(double) * this->m_numNodes);
+    int ierr = nc_get_var(this->m_ncid, this->m_varid_data[0], u);
+
+    if (ierr != NC_NOERR) {
+      free(u);
+      Adcirc::Error::throwError("OutputFile: Error reading netcdf record");
+      return Adcirc::HasError;
+    }
+    record.get()->setAll(this->m_numNodes, u);
+    free(u);
+
+  } else {
+    size_t start[2], count[2];
+    start[0] = snap;
+    start[1] = 0;
+    count[0] = 1;
+    count[1] = this->m_numNodes;
+    double* u = (double*)malloc(sizeof(double) * this->m_numNodes);
+
+    int ierr =
+        nc_get_vara(this->m_ncid, this->m_varid_data[0], start, count, u);
+    if (ierr != NC_NOERR) {
+      free(u);
+      Adcirc::Error::throwError("OutputFile: Error reading netcdf record");
+      return Adcirc::HasError;
+    }
+
+    if (this->m_isVector) {
+      double* v = (double*)malloc(sizeof(double) * this->m_numNodes);
+      ierr = nc_get_vara(this->m_ncid, this->m_varid_data[1], start, count, v);
+      if (ierr != NC_NOERR) {
+        free(u);
+        free(v);
+        Adcirc::Error::throwError("OutputFile: Error reading netcdf record");
+        return Adcirc::HasError;
+      }
+      record.get()->setAll(this->m_numNodes, u, v);
+      free(v);
+    } else {
+      record.get()->setAll(this->m_numNodes, u);
+    }
+
+    free(u);
+  }
+
+  this->m_recordMap[record.get()->record()] = record.get();
+  this->m_currentSnap++;
   return Adcirc::NoError;
 }
 

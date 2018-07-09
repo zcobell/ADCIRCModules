@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 
     
     //...Check output
-    if(output->data(2)->value(42)==0.21464678645){
+    if(output->data(2)->z(42)==0.21464678645){
         delete output;
         return 0;
     } else {

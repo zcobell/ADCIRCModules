@@ -26,7 +26,7 @@ namespace Adcirc {
 
 namespace Output {
 
-const int NextOutputSnap = -9999;
+const size_t NextOutputSnap = -9999;
 const double DefaultOutputValue = -99999.0;
 
 class OutputRecord {
@@ -34,11 +34,11 @@ class OutputRecord {
   explicit OutputRecord();
   explicit OutputRecord(size_t record, size_t numNodes, bool isVector);
 
-  void fill(double value);
+  void fill(double z);
 
-  void setU(size_t index, double value);
-  void setV(size_t index, double value);
-  void set(size_t index, double value);
+  void setU(size_t index, double z);
+  void setV(size_t index, double z);
+  void set(size_t index, double z);
   void set(size_t index, double value_u, double value_v);
 
   void setAllU(const std::vector<double>& values);
@@ -46,10 +46,12 @@ class OutputRecord {
   void setAll(const std::vector<double>& values);
   void setAll(const std::vector<double>& values_u,
               const std::vector<double>& values_v);
+  void setAll(size_t size, const double* values);
+  void setAll(size_t size, const double* values_u, const double* value_v);
 
   std::vector<double> values(size_t column = 0);
 
-  double value(size_t index);
+  double z(size_t index);
   double u(size_t index);
   double v(size_t index);
   double direction(size_t index);

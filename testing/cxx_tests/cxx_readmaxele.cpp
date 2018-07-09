@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     }
     
     //...Check output
-    if(output->data(0)->value(42)==5.0328082883E-001){
+    if(output->data(0)->z(42)==5.0328082883E-001){
         delete output;
         return 0;
     } else {

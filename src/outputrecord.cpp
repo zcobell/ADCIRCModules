@@ -130,7 +130,7 @@ void OutputRecord::set(size_t index, double value_u, double value_v) {
   }
 }
 
-double OutputRecord::value(size_t index) {
+double OutputRecord::z(size_t index) {
   assert(index < this->numNodes());
   if (index < this->numNodes()) {
     if (this->isVector()) {
@@ -269,4 +269,26 @@ std::vector<double> OutputRecord::values(size_t column) {
   } else {
     return this->m_u;
   }
+}
+
+void OutputRecord::setAll(size_t size, const double* values) {
+  assert(size == this->m_numNodes);
+  if (this->m_numNodes != size) {
+    Adcirc::Error::throwError("OutputRecord: Array size mismatch");
+    return;
+  }
+  this->m_u = std::vector<double>(values, values + size);
+  return;
+}
+
+void OutputRecord::setAll(size_t size, const double* values_u,
+                          const double* values_v) {
+  assert(size == this->m_numNodes);
+  if (this->m_numNodes != size) {
+    Adcirc::Error::throwError("OutputRecord: Array size mismatch");
+    return;
+  }
+  this->m_u = std::vector<double>(values_u, values_u + size);
+  this->m_v = std::vector<double>(values_v, values_v + size);
+  return;
 }

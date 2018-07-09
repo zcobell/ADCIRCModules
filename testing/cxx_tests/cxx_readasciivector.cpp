@@ -21,16 +21,45 @@
 #include <cmath>
 
 int main(int argc, char *argv[]) {
-    Adcirc::Output::OutputFile *output = new Adcirc::Output::OutputFile("test_files/fort.63.nc");
-    output->open();
-    output->read();
-    output->read();
-    output->read();
-    std::cout << "Expected: 1.84674, Got: " << output->data(2)->z(925) << std::endl;
-    if(fabs(output->data(2)->z(925)-1.84674)>0.00001){
+    Adcirc::Output::OutputFile *output = new Adcirc::Output::OutputFile("test_files/sparse_fort.64");
+
+    //...Open file
+    int ierr = output->open();
+    if(ierr!=Adcirc::NoError){
         delete output;
         return 1;
     }
-    delete output;
-    return 0;
+    
+    //...Read snap 1
+    ierr = output->read();
+    if(ierr!=Adcirc::NoError){
+        delete output;
+        return 2;
+    }
+    
+    //...Read snap 2
+    ierr = output->read();
+    if(ierr!=Adcirc::NoError){
+        delete output;
+        return 2;
+    }
+    
+    //...Read snap 3
+    ierr = output->read();
+    if(ierr!=Adcirc::NoError){
+        delete output;
+        return 2;
+    }
+
+    
+    //...Check output
+    std::cout << "Expected: -0.000333917, Got: " << output->data(2)->v(1220) << std::endl;
+    if(fabs(output->data(2)->v(1220)-(-0.000333917))<0.0000001){
+        delete output;
+        return 0;
+    } else {
+        delete output;
+        return 3;
+    }
+
 }
