@@ -16,18 +16,17 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCIRC_H
-#define ADCIRC_H
-
-#include "point.h"
-#include "qkdtree2.h"
-#include "qproj4.h"
-
-#include "error.h"
 #include "config.h"
-#include "mesh.h"
-#include "nodalattributes.h"
-#include "harmonicsoutput.h"
-#include "outputfile.h"
+#include <string>
 
-#endif  // ADCIRC_H
+#ifndef GIT_VERSION
+#define GIT_VERSION "unknown"
+#endif
+
+using namespace std;
+
+namespace Adcirc {
+
+string version() { return GIT_VERSION; }
+
+}  // namespace Adcirc

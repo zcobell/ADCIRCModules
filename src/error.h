@@ -16,18 +16,25 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCIRC_H
-#define ADCIRC_H
+#ifndef ERROR_H
+#define ERROR_H
 
-#include "point.h"
-#include "qkdtree2.h"
-#include "qproj4.h"
+#include <iostream>
+#include <string>
+#include "adcircmodules_global.h"
 
-#include "error.h"
-#include "config.h"
-#include "mesh.h"
-#include "nodalattributes.h"
-#include "harmonicsoutput.h"
-#include "outputfile.h"
+namespace Adcirc {
 
-#endif  // ADCIRC_H
+enum _code { NoError, HasError };
+
+class Error {
+ public:
+  Error();
+
+  static void throwError(const std::string &s);
+
+};
+
+}  // namespace Adcirc
+
+#endif  // ERROR_H

@@ -19,5 +19,5 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS  = libraries src
+SUBDIRS  = point  qKdtree2  qProj4  shapelib
 CONFIG += ordered           

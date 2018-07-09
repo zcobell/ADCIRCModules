@@ -16,18 +16,49 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCIRC_H
-#define ADCIRC_H
+/**
+ * @class Node
+ * @author Zachary Cobell
+ * @brief The Node class describes the x, y, z position of a single mesh
+ * node
+ *
+ */
+#ifndef NODE_H
+#define NODE_H
 
-#include "point.h"
-#include "qkdtree2.h"
-#include "qproj4.h"
+#include <string>
+#include "adcircmodules_global.h"
 
-#include "error.h"
-#include "config.h"
-#include "mesh.h"
-#include "nodalattributes.h"
-#include "harmonicsoutput.h"
-#include "outputfile.h"
+namespace Adcirc {
+namespace Geometry {
 
-#endif  // ADCIRC_H
+class Node {
+ public:
+  explicit Node();
+  explicit Node(size_t id, double x, double y, double z);
+
+  void setNode(size_t id, double x, double y, double z);
+
+  double x() const;
+  void setX(double x);
+
+  double y() const;
+  void setY(double y);
+
+  double z() const;
+  void setZ(double z);
+
+  size_t id() const;
+  void setId(size_t id);
+
+  std::string toString(bool geographicCoordinates);
+
+ private:
+  size_t m_id;
+  double m_x;
+  double m_y;
+  double m_z;
+};
+}  // namespace Geometry
+}  // namespace Adcirc
+#endif  // NODE_H

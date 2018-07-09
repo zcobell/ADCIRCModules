@@ -16,8 +16,17 @@
 ## You should have received a copy of the GNU General Public License
 ## along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 ##------------------------------------------------------------------------##
+TARGET = shapelib
+TEMPLATE = lib
+CONFIG += static
+CONFIG -= qt
 
-TEMPLATE = subdirs
+#...Shapelib Library
+SHAPELIBPATH  = $$PWD/../../thirdparty/shapelib
 
-SUBDIRS  = libraries src
-CONFIG += ordered           
+#...Shapelib Sources
+SOURCES_SHAPELIB = $$SHAPELIBPATH/shpopen.c $$SHAPELIBPATH/dbfopen.c $$SHAPELIBPATH/safileio.c $$SHAPELIBPATH/shptree.c
+
+SOURCES += $$SOURCES_SHAPELIB
+
+INCLUDEPATH += $$SHAPELIBPATH
