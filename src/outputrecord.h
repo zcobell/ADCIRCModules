@@ -50,10 +50,13 @@ class OutputRecord {
   void setAll(size_t size, const double* values_u, const double* value_v);
 
   std::vector<double> values(size_t column = 0);
+  std::vector<double> magnitudes();
+  std::vector<double> directions();
 
   double z(size_t index);
   double u(size_t index);
   double v(size_t index);
+  double magnitude(size_t index);
   double direction(size_t index);
 
   long long iteration() const;

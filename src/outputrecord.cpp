@@ -21,6 +21,7 @@
 #include <cmath>
 #include "error.h"
 
+using namespace std;
 using namespace Adcirc::Output;
 
 OutputRecord::OutputRecord() {
@@ -134,10 +135,26 @@ double OutputRecord::z(size_t index) {
   assert(index < this->numNodes());
   if (index < this->numNodes()) {
     if (this->isVector()) {
-      return pow(this->m_u[index], 2.0) + pow(this->m_v[index], 2.0);
+      Adcirc::Error::throwError("OutputRecord: Datatype is a vector");
+      return 0.0;
     } else {
       return this->m_u[index];
     }
+  } else {
+    Adcirc::Error::throwError("OutputRecord: Index out of range");
+    return 0.0;
+  }
+}
+
+double OutputRecord::magnitude(size_t index) {
+  assert(index < this->numNodes());
+  assert(this->isVector());
+  if (!this->isVector()) {
+    Adcirc::Error::throwError("OutputRecord: Datatype not a vector");
+    return 0.0;
+  }
+  if (index < this->numNodes()) {
+    return pow(this->m_u[index], 2.0) + pow(this->m_v[index], 2.0);
   } else {
     Adcirc::Error::throwError("OutputRecord: Index out of range");
     return 0.0;
@@ -189,7 +206,7 @@ double OutputRecord::v(size_t index) {
   }
 }
 
-void OutputRecord::setAllU(const std::vector<double>& values) {
+void OutputRecord::setAllU(const vector<double>& values) {
   assert(this->isVector());
   assert(this->m_numNodes == values.size());
   if (!this->isVector()) {
@@ -204,7 +221,7 @@ void OutputRecord::setAllU(const std::vector<double>& values) {
   return;
 }
 
-void OutputRecord::setAllV(const std::vector<double>& values) {
+void OutputRecord::setAllV(const vector<double>& values) {
   assert(this->isVector());
   assert(this->m_numNodes == values.size());
   if (!this->isVector()) {
@@ -219,8 +236,8 @@ void OutputRecord::setAllV(const std::vector<double>& values) {
   return;
 }
 
-void OutputRecord::setAll(const std::vector<double>& values_u,
-                          const std::vector<double>& values_v) {
+void OutputRecord::setAll(const vector<double>& values_u,
+                          const vector<double>& values_v) {
   assert(this->isVector());
   assert(this->m_numNodes == values_u.size());
   assert(this->m_numNodes == values_v.size());
@@ -241,7 +258,7 @@ void OutputRecord::setAll(const std::vector<double>& values_u,
   return;
 }
 
-void OutputRecord::setAll(const std::vector<double>& values) {
+void OutputRecord::setAll(const vector<double>& values) {
   assert(!this->isVector());
   assert(this->m_numNodes == values.size());
   if (!this->isVector()) {
@@ -256,7 +273,7 @@ void OutputRecord::setAll(const std::vector<double>& values) {
   return;
 }
 
-std::vector<double> OutputRecord::values(size_t column) {
+vector<double> OutputRecord::values(size_t column) {
   if (this->isVector()) {
     if (column == 0) {
       return this->m_u;
@@ -264,7 +281,7 @@ std::vector<double> OutputRecord::values(size_t column) {
       return this->m_v;
     } else {
       Adcirc::Error::throwError("OutputRecord: Invalid column specified");
-      return std::vector<double>();
+      return vector<double>();
     }
   } else {
     return this->m_u;
@@ -277,7 +294,7 @@ void OutputRecord::setAll(size_t size, const double* values) {
     Adcirc::Error::throwError("OutputRecord: Array size mismatch");
     return;
   }
-  this->m_u = std::vector<double>(values, values + size);
+  this->m_u = vector<double>(values, values + size);
   return;
 }
 
@@ -288,7 +305,37 @@ void OutputRecord::setAll(size_t size, const double* values_u,
     Adcirc::Error::throwError("OutputRecord: Array size mismatch");
     return;
   }
-  this->m_u = std::vector<double>(values_u, values_u + size);
-  this->m_v = std::vector<double>(values_v, values_v + size);
+  this->m_u = vector<double>(values_u, values_u + size);
+  this->m_v = vector<double>(values_v, values_v + size);
   return;
+}
+
+vector<double> OutputRecord::magnitudes() {
+  assert(this->isVector());
+  if (!this->isVector()) {
+    Adcirc::Error::throwError(
+        "OutputRecord: Must be a vector to compute magnitude");
+    return vector<double>();
+  }
+  vector<double> m;
+  m.resize(this->m_numNodes);
+  for (size_t i = 0; i < this->m_numNodes; ++i) {
+    m[i] = pow(this->m_u[i], 2.0) + pow(this->m_v[i], 2.0);
+  }
+  return m;
+}
+
+vector<double> OutputRecord::directions() {
+  assert(this->isVector());
+  if (!this->isVector()) {
+    Adcirc::Error::throwError(
+        "OutputRecord: Must be a vector to compute direction");
+    return vector<double>();
+  }
+  vector<double> d;
+  d.resize(this->m_numNodes);
+  for (size_t i = 0; i < this->m_numNodes; ++i) {
+    d[i] = atan2(this->m_v[i], this->m_u[i]);
+  }
+  return d;
 }
