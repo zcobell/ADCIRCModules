@@ -1,5 +1,6 @@
 #!/bin/python
 import PyAdcirc
+import math
 
 print "Reading a mesh"
 m = PyAdcirc.Mesh("../testing/test_files/ms-riv.grd")
@@ -35,11 +36,13 @@ if ierr != 0:
     exit(ierr)
 print "  Mesh written in utm-15 successfully"
 print "  Writing mesh as a shapefile..."
-ierr = m.toShapefile("ms-riv-utm15.shp");
+ierr = m.toNodeShapefile("ms-riv-utm15.shp");
 if ierr != 0:
     exit(ierr)
 print "  Mesh written in utm-15 shapefile successfully"
-
+print "  Getting mesh xyz as python array..."
+xyz=m.xyz();
+print "  Accessing data in python array, node position is: ",xyz[0][1],",",xyz[1][1],",",xyz[2][1]
 print "Reading a fort.13"
 f = PyAdcirc.NodalAttributes("../testing/test_files/ms-riv.13",m)
 ierr = f.read()
@@ -50,13 +53,41 @@ print "  Manning n at node",m.node(1).id(),": ",f.attribute("mannings_n_at_sea_f
 print "  Tau0 at node",m.node(1).id(),": ",f.attribute("primitive_weighting_in_continuity_equation",1).value(0)
 print "Reading an adcirc ascii output file"
 o = PyAdcirc.OutputFile("../testing/test_files/maxele.63")
-berr = o.open();
-if berr != True:
+ierr = o.open();
+if ierr != 0:
     exit(1)
 ierr = o.read();
 if ierr != 0:
     exit(ierr);
-print "   Output value for record 1 at node 42: ",o.data(0).value(41)
+ierr=o.close()
+print "   Output value for record 1 at node 42: ",o.data(0).z(41)
+print "Adcirc maxele ascii file read successfully"
+print "Reading netcdf maxele file"
+onc = PyAdcirc.OutputFile("../testing/test_files/maxele.63.nc")
+ierr = onc.open()
+ierr = onc.read()
+ierr=onc.close();
+print "   Output value for reacord 1 at node 42: ",onc.data(0).z(41)
+print "Reading ascii timeseries scalar file"
+asc = PyAdcirc.OutputFile("../testing/test_files/sparse_fort.63")
+ierr = asc.open();
+ierr = asc.read();
+ierr = asc.read();
+ierr = asc.read();
+print "    Output value for record 3 at node 925: ",asc.data(2).z(1220);
+ierr=asc.close();
+print "Reading timeseries netcdf vector file"
+ncv = PyAdcirc.OutputFile("../testing/test_files/fort.64.nc")
+ierr = ncv.open();
+ncv.read();
+ncv.read();
+ncv.clearAt(1); #...deletes record 2 from memory
+ncv.read();
+print "    Velocity at node 1221: ",ncv.data(2).u(1220),",",ncv.data(2).v(1220)
+print "       Magnitude is: ",ncv.data(2).magnitude(1220)
+print "       Direction is: ",ncv.data(2).direction(1220,PyAdcirc.Radians), "radians or ",ncv.data(2).direction(1220,PyAdcirc.Degrees)," degrees"
+print "Success reading netcdf vector timeseries file"
+ierr = ncv.close()
 print "Reading harmonics elevation file"
 he = PyAdcirc.HarmonicsOutput("../testing/test_files/fort.53");
 ierr = he.read();

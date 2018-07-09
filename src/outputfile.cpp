@@ -324,7 +324,7 @@ OutputRecord* OutputFile::dataAt(size_t position, bool& ok) {
   }
 }
 
-int OutputFile::getNumSnaps() const { return this->m_numSnaps; }
+size_t OutputFile::getNumSnaps() const { return this->m_numSnaps; }
 
 void OutputFile::setNumSnaps(int numSnaps) { this->m_numSnaps = numSnaps; }
 

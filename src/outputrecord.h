@@ -29,6 +29,8 @@ namespace Output {
 const size_t NextOutputSnap = -9999;
 const double DefaultOutputValue = -99999.0;
 
+enum AngleUnits { Degrees, Radians };
+
 class OutputRecord {
  public:
   explicit OutputRecord();
@@ -51,13 +53,13 @@ class OutputRecord {
 
   std::vector<double> values(size_t column = 0);
   std::vector<double> magnitudes();
-  std::vector<double> directions();
+  std::vector<double> directions(AngleUnits angleType = AngleUnits::Degrees);
 
   double z(size_t index);
   double u(size_t index);
   double v(size_t index);
   double magnitude(size_t index);
-  double direction(size_t index);
+  double direction(size_t index, AngleUnits angleType = AngleUnits::Degrees);
 
   long long iteration() const;
   void setIteration(long long iteration);
@@ -80,12 +82,14 @@ class OutputRecord {
  private:
   std::vector<double> m_u;
   std::vector<double> m_v;
-  int m_record;
+  size_t m_record;
   long long m_iteration;
   double m_time;
   size_t m_numNodes;
   bool m_isVector;
   double m_defaultValue;
+
+  double angle(double x, double y, AngleUnits units);
 };
 }  // namespace Output
 }  // namespace Adcirc

@@ -24,6 +24,9 @@
 using namespace std;
 using namespace Adcirc::Output;
 
+const double _pi = 4.0 * atan(1.0);
+const double _2pi = 2.0 * _pi;
+
 OutputRecord::OutputRecord() {
   this->m_record = 0;
   this->m_isVector = false;
@@ -154,14 +157,36 @@ double OutputRecord::magnitude(size_t index) {
     return 0.0;
   }
   if (index < this->numNodes()) {
-    return pow(this->m_u[index], 2.0) + pow(this->m_v[index], 2.0);
+    return pow(pow(this->m_u[index], 2.0) + pow(this->m_v[index], 2.0), 0.5);
   } else {
     Adcirc::Error::throwError("OutputRecord: Index out of range");
     return 0.0;
   }
 }
 
-double OutputRecord::direction(size_t index) {
+double OutputRecord::angle(double x, double y, AngleUnits units) {
+  double a = atan2(y, x);
+  if (units == AngleUnits::Degrees) {
+    a = a * 180.0 / _pi;
+    if (a >= 360.0) {
+      a = a - 360.0;
+    } else if (a < 0.0) {
+      a = a + 360.0;
+    }
+  } else if (units == AngleUnits::Radians) {
+    if (a >= _2pi) {
+      a = a - _2pi;
+    } else if (a < 0.0) {
+      a = a + _2pi;
+    }
+  } else {
+    Adcirc::Error::throwError("Invalid angle units");
+    return 0.0;
+  }
+  return a;
+}
+
+double OutputRecord::direction(size_t index, AngleUnits angleType) {
   assert(this->isVector());
   assert(index < this->numNodes());
   if (!this->isVector()) {
@@ -169,7 +194,7 @@ double OutputRecord::direction(size_t index) {
     return 0.0;
   }
   if (index < this->numNodes()) {
-    return atan2(this->m_v[index], this->m_u[index]);
+    return this->angle(this->m_u[index], this->m_v[index], angleType);
   } else {
     Adcirc::Error::throwError("OutputRecord: Index out of range");
     return 0.0;
@@ -320,12 +345,12 @@ vector<double> OutputRecord::magnitudes() {
   vector<double> m;
   m.resize(this->m_numNodes);
   for (size_t i = 0; i < this->m_numNodes; ++i) {
-    m[i] = pow(this->m_u[i], 2.0) + pow(this->m_v[i], 2.0);
+    m[i] = pow(pow(this->m_u[i], 2.0) + pow(this->m_v[i], 2.0), 0.5);
   }
   return m;
 }
 
-vector<double> OutputRecord::directions() {
+vector<double> OutputRecord::directions(AngleUnits angleType) {
   assert(this->isVector());
   if (!this->isVector()) {
     Adcirc::Error::throwError(
@@ -335,7 +360,7 @@ vector<double> OutputRecord::directions() {
   vector<double> d;
   d.resize(this->m_numNodes);
   for (size_t i = 0; i < this->m_numNodes; ++i) {
-    d[i] = atan2(this->m_v[i], this->m_u[i]);
+    d[i] = this->angle(this->m_u[i], this->m_v[i], angleType);
   }
   return d;
 }

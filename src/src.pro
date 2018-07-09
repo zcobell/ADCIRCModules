@@ -28,29 +28,29 @@ CONFIG += c++11
 DEFINES += ADCIRCMODULES_LIBRARY
 
 #...Boost Library
-BOOSTPATH     = $$PWD/../../../thirdparty/boost_1_66_0
+BOOSTPATH     = $$PWD/../thirdparty/boost_1_66_0
 
 win32 {
     #...Set extension for a windows dll (avoids tracking version numbering in filename)
     TARGET_EXT = .dll
 
     #...Include the netCDF header
-    INCLUDEPATH += $$PWD/../../../thirdparty/netcdf/include
+    INCLUDEPATH += $$PWD/../thirdparty/netcdf/include
 
     #...Check for Visual C++ Compilers
     *msvc*{
         contains(QT_ARCH, i386){
             message("MSVC-32 Compiler in use")
-            LIBS += -L$$PWD/../../../thirdparty/netcdf/libs_vc32 -lnetcdf -lhdf5 -lzlib -llibcurl_imp
+            LIBS += -L$$PWD/../thirdparty/netcdf/libs_vc32 -lnetcdf -lhdf5 -lzlib -llibcurl_imp
         }else{
             message("MSVC-64 Compiler in use")
-            LIBS += -L$$PWD/../../../thirdparty/netcdf/libs_vc64 -lnetcdf -lhdf5 -lzlib -llibcurl_imp
+            LIBS += -L$$PWD/../thirdparty/netcdf/libs_vc64 -lnetcdf -lhdf5 -lzlib -llibcurl_imp
         }
     }
 
     #...Check for MinGW-32
     win32-g++ {
-        LIBS += -L$$PWD/../../../thirdparty/netcdf/bin_32 -lnetcdf -lhdf5 -lz -lcurl
+        LIBS += -L$$PWD/../thirdparty/netcdf/bin_32 -lnetcdf -lhdf5 -lz -lcurl
     }
 }
 

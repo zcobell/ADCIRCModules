@@ -65,7 +65,7 @@ class OutputFile {
   Adcirc::Output::OutputRecord *dataAt(size_t position);
   Adcirc::Output::OutputRecord *dataAt(size_t position, bool &ok);
 
-  int getNumSnaps() const;
+  size_t getNumSnaps() const;
   void setNumSnaps(int numSnaps);
 
   size_t getNumNodes() const;
