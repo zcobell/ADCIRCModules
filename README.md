@@ -7,12 +7,12 @@ Implementation of routines used to manipulate ADCIRC model files in C++. The cod
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Python
-When the python interface is compiled, you will have a PyAdcirc library file. For windows, this will by `PyAdcirc.dll` and for Linux type systems this will be `_PyAdcirc.so`. In addition to the library, you will see `PyAdcirc.py`. CMake will attempt to install these files to the appropriate directory, however, the user can change this. The standard library (`adcircmodules.dll` or `adcircmodules.so` is also required to be in a location where it can be found at runtime (`LD_LIBRARY_PATH` on Unix systems).
+When the python interface is compiled, you will have a PyAdcirc library file. For windows, this will by `PyAdcirc.dll` and for Linux type systems this will be `_PyAdcirc.so`. In addition to the library, you will see `PyAdcirc.py`. CMake will attempt to install these files to the appropriate directory, however, the user can change this. The standard library (`adcircmodules.dll` or `libadcircmodules.so` is also required to be in a location where it can be found at runtime (`LD_LIBRARY_PATH` on Unix systems).
 
 ```
 import PyAdcirc
 m = PyAdcirc.Mesh("mymesh.grd")
-error = m.read()
+m.read()
 ```
 
 ## Note
