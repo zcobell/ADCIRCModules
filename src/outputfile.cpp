@@ -495,6 +495,7 @@ void OutputFile::readNetcdfHeader() {
   if (ierr != NC_NOERR) {
     delete[] t;
     Adcirc::Error::throwError("Error getting time variable");
+    return;
   }
 
   if (this->m_numSnaps > 1) {
@@ -627,6 +628,7 @@ void OutputFile::readNetcdfRecord(size_t snap,
     if (ierr != NC_NOERR) {
       delete[] u;
       Adcirc::Error::throwError("OutputFile: Error reading netcdf record");
+      return;
     }
     record.get()->setAll(this->m_numNodes, u);
     delete[] u;
@@ -644,6 +646,7 @@ void OutputFile::readNetcdfRecord(size_t snap,
     if (ierr != NC_NOERR) {
       delete[] u;
       Adcirc::Error::throwError("OutputFile: Error reading netcdf record");
+      return;
     }
 
     if (this->m_isVector) {
@@ -653,6 +656,7 @@ void OutputFile::readNetcdfRecord(size_t snap,
         delete[] u;
         delete[] v;
         Adcirc::Error::throwError("OutputFile: Error reading netcdf record");
+        return;
       }
       record.get()->setAll(this->m_numNodes, u, v);
       delete[] v;
