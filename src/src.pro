@@ -91,7 +91,8 @@ SOURCES += \
     config.cpp \
     harmonicsoutput.cpp \
     harmonicsrecord.cpp \
-    error.cpp
+    error.cpp \
+    filetypes.cpp
 
 HEADERS += \
     adcircmodules_global.h \
@@ -113,7 +114,8 @@ HEADERS += \
     config.h \
     harmonicsoutput.h \
     harmonicsrecord.h \
-    error.h
+    error.h \
+    filetypes.h
 
 INCLUDEPATH += $$BOOSTPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib

@@ -30,8 +30,6 @@ namespace Adcirc {
 
 namespace Output {
 
-enum _fileTypes { ASCIIFull, ASCIISparse, Netcdf3, Netcdf4, Xdmf, Unknown };
-
 class OutputFile {
  public:
   explicit OutputFile(std::string filename);
@@ -109,13 +107,6 @@ class OutputFile {
   int getFiletype();
   int findNetcdfVarId();
   int rebuildMap();
-
-  static bool checkFiletypeAsciiFull(const std::string &filename);
-  static bool checkFiletypeAsciiSparse(const std::string &filename);
-  static bool checkFiletypeNetcdf3(std::string filename);
-  static bool checkFiletypeNetcdf4(std::string filename);
-  static bool checkFiletypeXdmf(const std::string &filename);
-  static bool inquireNetcdfFormat(const std::string &filename, int &format);
 
   int openAscii();
   int openNetcdf();

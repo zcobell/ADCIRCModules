@@ -81,3 +81,13 @@ void HarmonicsRecord::set(size_t index, double data) {
   }
   return;
 }
+
+void HarmonicsRecord::set(const std::vector<double> &value) {
+  assert(value.size() == this->m_data.size());
+  if (value.size() != this->m_data.size()) {
+    Adcirc::Error::throwError("HarmonicsRecord: Invalid data size");
+    return;
+  }
+  this->m_data = value;
+  return;
+}

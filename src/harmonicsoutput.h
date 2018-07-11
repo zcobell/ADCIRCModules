@@ -41,6 +41,8 @@ class HarmonicsOutput {
 
   size_t index(std::string name);
 
+  std::string name(size_t index);
+
   //...fort.53 type parameters
   Adcirc::Output::HarmonicsRecord* amplitude(std::string name);
   Adcirc::Output::HarmonicsRecord* amplitude(size_t index);
@@ -67,13 +69,17 @@ class HarmonicsOutput {
   size_t numNodes() const;
   void setNumNodes(const size_t& numNodes);
 
-  bool isVector() const;
+  bool isVelocity() const;
 
   size_t nodeIdToArrayIndex(size_t id);
 
+  int filetype() const;
+
  private:
+  int m_filetype;
   bool m_isVelocity;
   std::string m_filename;
+  std::vector<std::string> m_consituentNames;
   size_t m_numConstituents;
   size_t m_numNodes;
   std::vector<Adcirc::Output::HarmonicsRecord> m_amplitude;
@@ -85,6 +91,13 @@ class HarmonicsOutput {
   std::unordered_map<size_t, size_t> m_nodeIndex;
   std::unordered_map<std::string, size_t> m_index;
   std::unordered_map<size_t, std::string> m_reverseIndex;
+
+  int getFiletype();
+  int readAsciiFormat();
+  int readNetcdfFormat();
+  int readNetcdfFormatHeader(int ncid, std::vector<int>& varids);
+  int readNetcdfElevationData(int ncid, std::vector<int>& varids);
+  int readNetcdfVelocityData(int ncid, std::vector<int>& varids);
 };
 }  // namespace Output
 }  // namespace Adcirc

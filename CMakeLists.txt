@@ -512,6 +512,7 @@ TARGET_INCLUDE_DIRECTORIES( shapelib PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/shap
 ADD_LIBRARY( adcircmodules SHARED 
                 ${CMAKE_SOURCE_DIR}/src/config.cpp
                 ${CMAKE_SOURCE_DIR}/src/error.cpp
+                ${CMAKE_SOURCE_DIR}/src/filetypes.cpp
                 ${CMAKE_SOURCE_DIR}/src/mesh.cpp 
                 ${CMAKE_SOURCE_DIR}/src/node.cpp
                 ${CMAKE_SOURCE_DIR}/src/element.cpp
@@ -753,7 +754,8 @@ IF(UNIX OR CYGWIN)
                      cxx_readfort13_womesh.cpp cxx_fort13findatt.cpp cxx_readasciifull.cpp 
                      cxx_readasciisparse.cpp cxx_readmaxele.cpp cxx_readnetcdfmaxele.cpp 
                      cxx_readasciivector.cpp cxx_readnetcdf.cpp cxx_readnetcdfvector.cpp 
-                     cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp )
+                     cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp 
+                     cxx_readnetcdfHarmonicsElevation.cpp  cxx_readnetcdfHarmonicsVelocity.cpp )
         GET_FILENAME_COMPONENT( TESTNAME ${TESTFILE} NAME_WE )
         ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
         ADD_DEPENDENCIES( ${TESTNAME} adcircmodules )

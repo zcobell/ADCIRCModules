@@ -24,6 +24,7 @@
 #include <memory>
 #include <utility>
 #include "error.h"
+#include "filetypes.h"
 #include "io.h"
 #include "netcdf.h"
 #include "stringconversion.h"
@@ -189,9 +190,9 @@ int OutputFile::read(size_t snap) {
   if (this->m_filetype == Adcirc::Output::ASCIIFull ||
       this->m_filetype == Adcirc::Output::ASCIISparse) {
     if (snap != Adcirc::Output::NextOutputSnap) {
-      std::cerr
-          << "[ADCIRCModules WARNING]: ASCII Output must be read record by "
-             "record. Specified snap number ignored.\n";
+      Error::warning(
+          "ASCII Output must be read record by "
+          "record. Specified snap number ignored.");
     }
     if (this->m_currentSnap > this->m_numSnaps) {
       Adcirc::Error::throwError(
@@ -349,131 +350,23 @@ void OutputFile::setHeader(const std::string& header) {
 }
 
 int OutputFile::getFiletype() {
-  if (OutputFile::checkFiletypeNetcdf3(this->filename())) {
+  if (Filetypes::checkFiletypeNetcdf3(this->filename())) {
     return Adcirc::Output::Netcdf3;
   }
-  if (OutputFile::checkFiletypeNetcdf4(this->filename())) {
+  if (Filetypes::checkFiletypeNetcdf4(this->filename())) {
     return Adcirc::Output::Netcdf4;
   }
-  if (OutputFile::checkFiletypeXdmf(this->filename())) {
+  if (Filetypes::checkFiletypeXdmf(this->filename())) {
     return Adcirc::Output::Xdmf;
   }
-  if (OutputFile::checkFiletypeAsciiFull(this->filename())) {
+  if (Filetypes::checkFiletypeAsciiFull(this->filename())) {
     return Adcirc::Output::ASCIIFull;
   }
-  if (OutputFile::checkFiletypeAsciiSparse(this->filename())) {
+  if (Filetypes::checkFiletypeAsciiSparse(this->filename())) {
     return Adcirc::Output::ASCIISparse;
   }
   return Adcirc::Output::Unknown;
 }
-
-bool OutputFile::checkFiletypeAsciiSparse(const string& filename) {
-  assert(!filename.empty());
-
-  fstream fid(filename);
-
-  try {
-    string line;
-    std::getline(fid, line);  // header
-    std::getline(fid, line);  // header
-    std::getline(fid, line);  // first record
-
-    vector<string> list;
-    int ierr = IO::splitString(line, list);
-    if (ierr != 0) {
-      fid.close();
-      return false;
-    }
-
-    if (list.size() == 4) {
-      fid.close();
-      return true;
-    } else {
-      fid.close();
-      return false;
-    }
-  } catch (...) {
-    if (fid.is_open()) {
-      fid.close();
-    }
-    return false;
-  }
-}
-
-bool OutputFile::checkFiletypeAsciiFull(const string& filename) {
-  assert(!filename.empty());
-
-  fstream fid(filename);
-
-  try {
-    string line;
-
-    getline(fid, line);  // header
-    getline(fid, line);  // header
-    getline(fid, line);  // first record header
-
-    vector<string> list;
-    int ierr = IO::splitString(line, list);
-    if (ierr != 0) {
-      fid.close();
-      return false;
-    }
-
-    if (list.size() == 2) {
-      fid.close();
-      return true;
-    } else {
-      fid.close();
-      return false;
-    }
-  } catch (...) {
-    if (fid.is_open()) {
-      fid.close();
-    }
-    return false;
-  }
-}
-
-bool OutputFile::inquireNetcdfFormat(const string& filename, int& format) {
-  int ncid;
-  format = Adcirc::Output::Unknown;
-  int ierr = nc_open(filename.c_str(), NC_NOWRITE, &ncid);
-  if (ierr != NC_NOERR) {
-    return false;
-  }
-  ierr = nc_inq_format(ncid, &format);
-  if (ierr != NC_NOERR) {
-    nc_close(ncid);
-    return false;
-  }
-  nc_close(ncid);
-  return true;
-}
-
-bool OutputFile::checkFiletypeNetcdf3(string filename) {
-  int format;
-  bool b = OutputFile::inquireNetcdfFormat(std::move(filename), format);
-  if (b && format == NC_FORMAT_CLASSIC) {
-    return true;
-  }
-  return false;
-}
-
-bool OutputFile::checkFiletypeNetcdf4(string filename) {
-  int format;
-  bool b = OutputFile::inquireNetcdfFormat(std::move(filename), format);
-  if (b) {
-    if (format == NC_FORMAT_NETCDF4_CLASSIC || format == NC_FORMAT_NETCDF4) {
-      return true;
-    } else {
-      return false;
-    }
-  } else {
-    return false;
-  }
-}
-
-bool OutputFile::checkFiletypeXdmf(const string& filename) { return false; }
 
 int OutputFile::findNetcdfVarId() {
   assert(this->isOpen());
@@ -628,11 +521,11 @@ int OutputFile::readNetcdfHeader() {
     return Adcirc::HasError;
   }
 
-  double* t = (double*)malloc(sizeof(double) * this->m_numSnaps);
+  double* t = new double[this->m_numSnaps];
 
   ierr = nc_get_var_double(this->m_ncid, this->m_varid_time, t);
   if (ierr != NC_NOERR) {
-    free(t);
+    delete[] t;
     Adcirc::Error::throwError(nc_strerror(ierr));
     return Adcirc::HasError;
   }
@@ -644,7 +537,7 @@ int OutputFile::readNetcdfHeader() {
   }
   this->m_dit = this->m_dt / dt;
   this->m_time = vector<double>(t, t + this->m_numSnaps);
-  free(t);
+  delete[] t;;
 
   ierr = this->findNetcdfVarId();
   if (ierr != Adcirc::NoError) {
@@ -774,16 +667,16 @@ int OutputFile::readNetcdfRecord(size_t snap,
   //..Read the data record. If it is a max record, there is
   //  no time dimension
   if (this->m_isMax) {
-    double* u = (double*)malloc(sizeof(double) * this->m_numNodes);
+    double* u = new double[this->m_numNodes];
     int ierr = nc_get_var(this->m_ncid, this->m_varid_data[0], u);
 
     if (ierr != NC_NOERR) {
-      free(u);
+      delete[] u;
       Adcirc::Error::throwError("OutputFile: Error reading netcdf record");
       return Adcirc::HasError;
     }
     record.get()->setAll(this->m_numNodes, u);
-    free(u);
+    delete[] u;
 
   } else {
     size_t start[2], count[2];
@@ -791,32 +684,32 @@ int OutputFile::readNetcdfRecord(size_t snap,
     start[1] = 0;
     count[0] = 1;
     count[1] = this->m_numNodes;
-    double* u = (double*)malloc(sizeof(double) * this->m_numNodes);
+    double* u = new double[this->m_numNodes];
 
     int ierr =
         nc_get_vara(this->m_ncid, this->m_varid_data[0], start, count, u);
     if (ierr != NC_NOERR) {
-      free(u);
+      delete[] u;
       Adcirc::Error::throwError("OutputFile: Error reading netcdf record");
       return Adcirc::HasError;
     }
 
     if (this->m_isVector) {
-      double* v = (double*)malloc(sizeof(double) * this->m_numNodes);
+      double* v = new double[this->m_numNodes];
       ierr = nc_get_vara(this->m_ncid, this->m_varid_data[1], start, count, v);
       if (ierr != NC_NOERR) {
-        free(u);
-        free(v);
+        delete[] u;
+        delete[] v;
         Adcirc::Error::throwError("OutputFile: Error reading netcdf record");
         return Adcirc::HasError;
       }
       record.get()->setAll(this->m_numNodes, u, v);
-      free(v);
+      delete[] v;
     } else {
       record.get()->setAll(this->m_numNodes, u);
     }
 
-    free(u);
+    delete[] u;
   }
 
   this->m_recordMap[record.get()->record()] = record.get();

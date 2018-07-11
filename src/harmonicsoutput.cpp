@@ -23,7 +23,10 @@
 #include <utility>
 #include "boost/algorithm/string.hpp"
 #include "error.h"
+#include "filetypes.h"
 #include "io.h"
+#include "netcdf.h"
+#include "outputfile.h"
 #include "stringconversion.h"
 
 using namespace std;
@@ -34,6 +37,7 @@ HarmonicsOutput::HarmonicsOutput(string filename, bool velocity)
   this->m_numNodes = 0;
   this->m_numConstituents = 0;
   this->m_isVelocity = velocity;
+  this->m_filetype = Adcirc::Output::Unknown;
 }
 
 string HarmonicsOutput::filename() const { return this->m_filename; }
@@ -46,9 +50,20 @@ size_t HarmonicsOutput::index(string name) {
   boost::to_upper(name);
   auto i = this->m_index.find(name);
   if (i == this->m_index.end()) {
-    return 999999999;
+    Adcirc::Error::throwError("Harmonic consituent not found in data");
+    return std::numeric_limits<size_t>::max();
   } else {
     return i->second;
+  }
+}
+
+string HarmonicsOutput::name(size_t index) {
+  assert(index < this->m_consituentNames.size());
+  if (index < this->m_consituentNames.size()) {
+    return this->m_consituentNames[index];
+  } else {
+    Adcirc::Error::throwError("Index out of bounds");
+    return string();
   }
 }
 
@@ -141,7 +156,7 @@ size_t HarmonicsOutput::numConstituents() const {
 
 void HarmonicsOutput::setNumConstituents(const size_t& numConstituents) {
   this->m_numConstituents = numConstituents;
-  if (this->isVector()) {
+  if (this->isVelocity()) {
     this->m_umagnitude.resize(this->numConstituents());
     this->m_vmagnitude.resize(this->numConstituents());
     this->m_uphase.resize(this->numConstituents());
@@ -159,18 +174,51 @@ void HarmonicsOutput::setNumNodes(const size_t& numNodes) {
   this->m_numNodes = numNodes;
 }
 
-bool HarmonicsOutput::isVector() const { return this->m_isVelocity; }
+bool HarmonicsOutput::isVelocity() const { return this->m_isVelocity; }
 
 size_t HarmonicsOutput::nodeIdToArrayIndex(size_t id) {
   auto i = this->m_nodeIndex.find(id);
   if (i == this->m_nodeIndex.end()) {
-    return 999999999;
+    Adcirc::Error::throwError("Harmonic consituent not found in data");
+    return std::numeric_limits<size_t>::max();
   } else {
     return i->second;
   }
 }
 
+int HarmonicsOutput::filetype() const { return this->m_filetype; }
+
 int HarmonicsOutput::read() {
+  int ierr = this->getFiletype();
+  if (ierr != Adcirc::NoError) {
+    Adcirc::Error::throwError("No valid file type specified");
+    return Adcirc::HasError;
+  }
+
+  if (this->m_filetype == ASCIIHarmonics) {
+    return this->readAsciiFormat();
+  } else if (this->m_filetype == Netcdf4) {
+    return this->readNetcdfFormat();
+  } else {
+    Adcirc::Error::throwError("Invalid file type");
+    return Adcirc::HasError;
+  }
+}
+
+int HarmonicsOutput::getFiletype() {
+  if (Filetypes::checkFiletypeNetcdfHarmonics(this->filename())) {
+    this->m_filetype = Adcirc::Output::Netcdf4;
+    return Adcirc::NoError;
+  }
+  if (Filetypes::checkFiletypeAsciiHarmonics(this->filename())) {
+    this->m_filetype = Adcirc::Output::ASCIIHarmonics;
+    return Adcirc::NoError;
+  }
+  this->m_filetype = Adcirc::Output::Unknown;
+  return Adcirc::HasError;
+}
+
+int HarmonicsOutput::readAsciiFormat() {
   fstream fid;
   fid.open(this->m_filename);
   if (!fid.is_open()) {
@@ -224,7 +272,8 @@ int HarmonicsOutput::read() {
   for (size_t i = 0; i < this->numConstituents(); i++) {
     this->m_index[names[i]] = i;
     this->m_reverseIndex[i] = names[i];
-    if (this->isVector()) {
+    this->m_consituentNames.push_back(names[i]);
+    if (this->isVelocity()) {
       this->u_magnitude(i)->setName(names[i]);
       this->u_magnitude(i)->setFrequency(frequency[i]);
       this->u_magnitude(i)->setNodalFactor(nodalFactor[i]);
@@ -272,7 +321,7 @@ int HarmonicsOutput::read() {
 
     for (size_t j = 0; j < this->numConstituents(); j++) {
       getline(fid, line);
-      if (this->isVector()) {
+      if (this->isVelocity()) {
         double um, up, vm, vp;
         ierr = IO::splitStringHarmonicsVelocityFormat(line, um, up, vm, vp);
         if (ierr != Adcirc::NoError) {
@@ -298,6 +347,375 @@ int HarmonicsOutput::read() {
 
   fid.close();
 
+  return Adcirc::NoError;
+}
+
+int HarmonicsOutput::readNetcdfFormat() {
+  int ncid;
+  int ierr = nc_open(this->filename().c_str(), NC_NOWRITE, &ncid);
+  if (ierr != NC_NOERR) {
+    Adcirc::Error::throwError("Could not open netcdf file");
+    return Adcirc::HasError;
+  }
+
+  vector<int> varids;
+  ierr = this->readNetcdfFormatHeader(ncid, varids);
+  if (ierr != 0) {
+    Adcirc::Error::throwError("Error reading harmonics netcdf header");
+    return Adcirc::HasError;
+  }
+  if (this->isVelocity()) {
+    ierr = this->readNetcdfVelocityData(ncid, varids);
+    if (ierr != 0) {
+      Adcirc::Error::throwError("Error reading harmonics netcdf velocity");
+      return Adcirc::HasError;
+    }
+  } else {
+    ierr = this->readNetcdfElevationData(ncid, varids);
+    if (ierr != 0) {
+      Adcirc::Error::throwError("Error reading harmonics netcdf elevation");
+      return Adcirc::HasError;
+    }
+  }
+  nc_close(ncid);
+  return Adcirc::NoError;
+}
+
+int HarmonicsOutput::readNetcdfFormatHeader(int ncid,
+                                            std::vector<int>& varids) {
+  int ierr, dimid_nconst, dimid_constlen, dimid_node;
+  ierr = nc_inq_dimid(ncid, "num_const", &dimid_nconst);
+  if (ierr != NC_NOERR) {
+    nc_close(ncid);
+    Adcirc::Error::throwError("Could not locate constituent dimension");
+    return Adcirc::HasError;
+  }
+
+  ierr = nc_inq_dimid(ncid, "constlen", &dimid_constlen);
+  if (ierr != NC_NOERR) {
+    nc_close(ncid);
+    Adcirc::Error::throwError("Could not locate constituent length dimension");
+    return Adcirc::HasError;
+  }
+
+  ierr = nc_inq_dimid(ncid, "node", &dimid_node);
+  if (ierr != NC_NOERR) {
+    nc_close(ncid);
+    Adcirc::Error::throwError("Could not locate node dimension");
+    return Adcirc::HasError;
+  }
+
+  size_t charlen;
+  ierr = nc_inq_dimlen(ncid, dimid_nconst, &this->m_numConstituents);
+  if (ierr != NC_NOERR) {
+    nc_close(ncid);
+    Adcirc::Error::throwError("Could not read constituent dimension");
+    return Adcirc::HasError;
+  }
+
+  ierr = nc_inq_dimlen(ncid, dimid_node, &this->m_numNodes);
+  if (ierr != NC_NOERR) {
+    nc_close(ncid);
+    Adcirc::Error::throwError("Could not read node dimension");
+    return Adcirc::HasError;
+  }
+
+  ierr = nc_inq_dimlen(ncid, dimid_constlen, &charlen);
+  if (ierr != NC_NOERR) {
+    nc_close(ncid);
+    Adcirc::Error::throwError("Could not read character dimension");
+    return Adcirc::HasError;
+  }
+
+  int varid_connames;
+  ierr = nc_inq_varid(ncid, "const", &varid_connames);
+  if (ierr != NC_NOERR) {
+    nc_close(ncid);
+    Adcirc::Error::throwError("Could not find constituent names");
+    return Adcirc::HasError;
+  }
+
+  //...Note: Frequency, Equilibrium Arg, and Nodal factor aren't in
+  //   the netcdf harmonics output files in adcirc <= 53.04
+  //   in that case, we just set the values to a ridiculous number
+  //   and wish the user luck
+  bool hasFrequency;
+  int varid_freq, varid_equ, varid_nodefactor;
+  nc_inq_varid(ncid, "frequency", &varid_freq);
+  nc_inq_varid(ncid, "nodal_factor", &varid_nodefactor);
+  ierr = nc_inq_varid(ncid, "equilibrium_argument", &varid_equ);
+  if (ierr != NC_NOERR) {
+    Error::warning(
+        "ADCIRC <= 53.04 does not place frequency, "
+        "nodal factor, and equilibrium argument in netcdf output files. "
+        "Invalid data has been inserted as a placeholder.");
+    hasFrequency = false;
+  } else {
+    hasFrequency = true;
+  }
+
+  char* constituents = new char[charlen + 1]();
+  std::fill(constituents, constituents + charlen + 1, 0);
+  for (size_t i = 0; i < this->numConstituents(); i++) {
+    size_t start[2];
+    size_t count[2];
+    start[0] = i;
+    start[1] = 0;
+    count[0] = 1;
+    count[1] = charlen;
+    ierr = nc_get_vara_text(ncid, varid_connames, start, count, constituents);
+    this->m_consituentNames.push_back(constituents);
+    this->m_consituentNames.back() =
+        StringConversion::sanitizeString(this->m_consituentNames.back());
+    if (ierr != NC_NOERR) {
+      nc_close(ncid);
+      delete[] constituents;
+      Adcirc::Error::throwError("Could not read constituent names");
+      return Adcirc::HasError;
+    }
+  }
+
+  delete[] constituents;
+
+  double* frequency = new double[this->numConstituents()];
+  double* nodeFactor = new double[this->numConstituents()];
+  double* equilibriumArg = new double[this->numConstituents()];
+  if (hasFrequency) {
+    ierr = nc_get_var(ncid, varid_freq, frequency);
+    if (ierr != NC_NOERR) {
+      nc_close(ncid);
+      delete[] nodeFactor;
+      delete[] equilibriumArg;
+      delete[] frequency;
+      Adcirc::Error::throwError("Could not read frequency");
+      return Adcirc::HasError;
+    }
+    ierr = nc_get_var(ncid, varid_equ, equilibriumArg);
+    if (ierr != NC_NOERR) {
+      nc_close(ncid);
+      delete[] nodeFactor;
+      delete[] equilibriumArg;
+      delete[] frequency;
+      Adcirc::Error::throwError("Could not read equilibrium argument");
+      return Adcirc::HasError;
+    }
+    ierr = nc_get_var(ncid, varid_freq, nodeFactor);
+    if (ierr != NC_NOERR) {
+      nc_close(ncid);
+      delete[] nodeFactor;
+      delete[] equilibriumArg;
+      delete[] frequency;
+      Adcirc::Error::throwError("Could not node factor");
+      return Adcirc::HasError;
+    }
+  } else {
+    for (size_t i = 0; i < this->numConstituents(); i++) {
+      nodeFactor[i] = std::numeric_limits<double>::min();
+      equilibriumArg[i] = std::numeric_limits<double>::min();
+      frequency[i] = std::numeric_limits<double>::min();
+    }
+  }
+
+  //...Check file type
+  int v;
+  ierr = nc_inq_varid(ncid, "amp", &v);
+  if (ierr == NC_NOERR) {
+    this->m_isVelocity = false;
+  } else {
+    this->m_isVelocity = true;
+  }
+
+  if (this->isVelocity()) {
+    this->m_umagnitude.resize(this->numConstituents());
+    this->m_vmagnitude.resize(this->numConstituents());
+    this->m_uphase.resize(this->numConstituents());
+    this->m_vphase.resize(this->numConstituents());
+    for (size_t i = 0; i < this->numConstituents(); i++) {
+      this->m_index[this->m_consituentNames[i]] = i;
+      this->m_reverseIndex[i] = this->m_consituentNames[i];
+      this->u_magnitude(i)->resize(this->numNodes());
+      this->u_magnitude(i)->setName(this->m_consituentNames[i]);
+      this->u_magnitude(i)->setFrequency(frequency[i]);
+      this->u_magnitude(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->u_magnitude(i)->setNodalFactor(nodeFactor[i]);
+      this->v_magnitude(i)->resize(this->numNodes());
+      this->v_magnitude(i)->setName(this->m_consituentNames[i]);
+      this->v_magnitude(i)->setFrequency(frequency[i]);
+      this->v_magnitude(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->v_magnitude(i)->setNodalFactor(nodeFactor[i]);
+      this->u_phase(i)->resize(this->numNodes());
+      this->u_phase(i)->setName(this->m_consituentNames[i]);
+      this->u_phase(i)->setFrequency(frequency[i]);
+      this->u_phase(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->u_phase(i)->setNodalFactor(nodeFactor[i]);
+      this->v_phase(i)->resize(this->numNodes());
+      this->v_phase(i)->setName(this->m_consituentNames[i]);
+      this->v_phase(i)->setFrequency(frequency[i]);
+      this->v_phase(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->v_phase(i)->setNodalFactor(nodeFactor[i]);
+    }
+  } else {
+    this->m_amplitude.resize(this->numConstituents());
+    this->m_phase.resize(this->numConstituents());
+    for (size_t i = 0; i < this->numConstituents(); i++) {
+      this->m_index[this->m_consituentNames[i]] = i;
+      this->m_reverseIndex[i] = this->m_consituentNames[i];
+      this->amplitude(i)->resize(this->numNodes());
+      this->amplitude(i)->setName(this->m_consituentNames[i]);
+      this->amplitude(i)->setFrequency(frequency[i]);
+      this->amplitude(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->amplitude(i)->setNodalFactor(nodeFactor[i]);
+      this->phase(i)->resize(this->numNodes());
+      this->phase(i)->setName(this->m_consituentNames[i]);
+      this->phase(i)->setFrequency(frequency[i]);
+      this->phase(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->phase(i)->setNodalFactor(nodeFactor[i]);
+    }
+  }
+
+  delete[] nodeFactor;
+  delete[] equilibriumArg;
+  delete[] frequency;
+
+  int vid;
+  if (this->isVelocity()) {
+    ierr = nc_inq_varid(ncid, "u_amp", &vid);
+    if (ierr != NC_NOERR) {
+      nc_close(ncid);
+      Adcirc::Error::throwError("Could not find u_amp");
+      return Adcirc::HasError;
+    }
+    varids.push_back(vid);
+
+    ierr = nc_inq_varid(ncid, "u_phs", &vid);
+    if (ierr != NC_NOERR) {
+      nc_close(ncid);
+      Adcirc::Error::throwError("Could not find u_phs");
+      return Adcirc::HasError;
+    }
+    varids.push_back(vid);
+
+    ierr = nc_inq_varid(ncid, "v_amp", &vid);
+    if (ierr != NC_NOERR) {
+      nc_close(ncid);
+      Adcirc::Error::throwError("Could not find v_amp");
+      return Adcirc::HasError;
+    }
+    varids.push_back(vid);
+
+    ierr = nc_inq_varid(ncid, "v_phs", &vid);
+    if (ierr != NC_NOERR) {
+      nc_close(ncid);
+      Adcirc::Error::throwError("Could not find v_phs");
+      return Adcirc::HasError;
+    }
+    varids.push_back(vid);
+  } else {
+    ierr = nc_inq_varid(ncid, "amp", &vid);
+    if (ierr != NC_NOERR) {
+      nc_close(ncid);
+      Adcirc::Error::throwError("Could not find amp");
+      return Adcirc::HasError;
+    }
+    varids.push_back(vid);
+
+    ierr = nc_inq_varid(ncid, "phs", &vid);
+    if (ierr != NC_NOERR) {
+      nc_close(ncid);
+      Adcirc::Error::throwError("Could not find phs");
+      return Adcirc::HasError;
+    }
+    varids.push_back(vid);
+  }
+
+  return Adcirc::NoError;
+}
+
+int HarmonicsOutput::readNetcdfElevationData(int ncid,
+                                             std::vector<int>& varids) {
+  assert(varids.size() == 2);
+
+  double* v = new double[this->numNodes()];
+  size_t start[2], count[2];
+  for (size_t i = 0; i < this->numConstituents(); i++) {
+    start[0] = 0;
+    start[1] = i;
+    count[0] = this->numNodes();
+    count[1] = 1;
+    int ierr = nc_get_vara(ncid, varids[0], start, count, v);
+    if (ierr != NC_NOERR) {
+      delete[] v;
+      Adcirc::Error::throwError("Error reading harmonic elevation data");
+      return Adcirc::HasError;
+    }
+    vector<double> amp(v, v + this->numNodes());
+    this->amplitude(i)->set(amp);
+    ierr = nc_get_vara(ncid, varids[1], start, count, v);
+    if (ierr != NC_NOERR) {
+      delete[] v;
+      Adcirc::Error::throwError("Error reading harmonic elevation data");
+      return Adcirc::HasError;
+    }
+    vector<double> phs(v, v + this->numNodes());
+    this->phase(i)->set(phs);
+  }
+
+  delete[] v;
+
+  return Adcirc::NoError;
+}
+
+int HarmonicsOutput::readNetcdfVelocityData(int ncid,
+                                            std::vector<int>& varids) {
+  assert(varids.size() == 4);
+
+  double* v = new double[this->numNodes()];
+  size_t start[2], count[2];
+
+  for (size_t i = 0; i < this->numConstituents(); i++) {
+    start[0] = 0;
+    start[1] = i;
+    count[0] = this->numNodes();
+    count[1] = 1;
+
+    int ierr = nc_get_vara(ncid, varids[0], start, count, v);
+    if (ierr != NC_NOERR) {
+      delete[] v;
+      Adcirc::Error::throwError("Error reading harmonic velocity data");
+      return Adcirc::HasError;
+    }
+    vector<double> ua(v, v + this->numNodes());
+    this->u_magnitude(i)->set(ua);
+
+    ierr = nc_get_vara(ncid, varids[1], start, count, v);
+    if (ierr != NC_NOERR) {
+      delete[] v;
+      Adcirc::Error::throwError("Error reading harmonic velocity data");
+      return Adcirc::HasError;
+    }
+    vector<double> up(v, v + this->numNodes());
+    this->u_phase(i)->set(up);
+
+    ierr = nc_get_vara(ncid, varids[2], start, count, v);
+    if (ierr != NC_NOERR) {
+      delete[] v;
+      Adcirc::Error::throwError("Error reading harmonic velocity data");
+      return Adcirc::HasError;
+    }
+    vector<double> va(v, v + this->numNodes());
+    this->v_magnitude(i)->set(va);
+
+    ierr = nc_get_vara(ncid, varids[3], start, count, v);
+    if (ierr != NC_NOERR) {
+      delete[] v;
+      Adcirc::Error::throwError("Error reading harmonic velocity data");
+      return Adcirc::HasError;
+    }
+    vector<double> vp(v, v + this->numNodes());
+    this->v_phase(i)->set(vp);
+  }
+
+  delete[] v;
   return Adcirc::NoError;
 }
 

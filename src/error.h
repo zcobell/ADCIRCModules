@@ -33,6 +33,7 @@ class Error {
 
   static void throwError(const std::string &s);
 
+  static void warning(const std::string &s);
 };
 
 }  // namespace Adcirc
