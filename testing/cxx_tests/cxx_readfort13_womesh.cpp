@@ -22,14 +22,7 @@
 int main(int argc, char *argv[]) {
 
   Adcirc::ModelParameters::NodalAttributes *fort13 = new Adcirc::ModelParameters::NodalAttributes("test_files/ms-riv.13");
-  int ierr = fort13->read();
-  if(ierr!=Adcirc::NoError){
-      delete fort13;
-      return ierr;
-  }
-  else{
-      delete fort13;
-      return 0;
-  }
-
+  fort13->read();
+  delete fort13;
+  return 0;
 }

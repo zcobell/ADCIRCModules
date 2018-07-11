@@ -76,9 +76,9 @@ class Mesh {
   std::vector<std::vector<double>> xyz();
   std::vector<std::vector<size_t>> connectivity();
 
-  int read();
+  void read();
 
-  int write(const std::string &outputFile);
+  void write(const std::string &outputFile);
 
   std::string filename() const;
   void setFilename(const std::string &filename);
@@ -104,14 +104,14 @@ class Mesh {
 
   int projection();
   void defineProjection(int epsg, bool isLatLon);
-  int reproject(int epsg);
+  void reproject(int epsg);
   bool isLatLon();
 
-  int toNodeShapefile(std::string outputFile);
-  int toConnectivityShapefile(std::string outputFile);
+  void toNodeShapefile(std::string outputFile);
+  void toConnectivityShapefile(std::string outputFile);
 
-  int buildNodalSearchTree();
-  int buildElementalSearchTree();
+  void buildNodalSearchTree();
+  void buildElementalSearchTree();
 
   bool nodalSearchTreeInitialized();
   bool elementalSearchTreeInitialized();
@@ -143,11 +143,11 @@ class Mesh {
   QKdtree2 *elementalSearchTree() const;
 
  private:
-  int _readMeshHeader(std::fstream &fid);
-  int _readNodes(std::fstream &fid);
-  int _readElements(std::fstream &fid);
-  int _readOpenBoundaries(std::fstream &fid);
-  int _readLandBoundaries(std::fstream &fid);
+  void _readMeshHeader(std::fstream &fid);
+  void _readNodes(std::fstream &fid);
+  void _readElements(std::fstream &fid);
+  void _readOpenBoundaries(std::fstream &fid);
+  void _readLandBoundaries(std::fstream &fid);
   void _init();
 
   std::string m_filename;

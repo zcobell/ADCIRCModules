@@ -32,9 +32,9 @@ class HarmonicsOutput {
  public:
   HarmonicsOutput(std::string filename = std::string(), bool velocity = false);
 
-  int read();
+  void read();
 
-  int write(const std::string& filename);
+  void write(const std::string& filename);
 
   std::string filename() const;
   void setFilename(const std::string& filename);
@@ -92,12 +92,12 @@ class HarmonicsOutput {
   std::unordered_map<std::string, size_t> m_index;
   std::unordered_map<size_t, std::string> m_reverseIndex;
 
-  int getFiletype();
-  int readAsciiFormat();
-  int readNetcdfFormat();
-  int readNetcdfFormatHeader(int ncid, std::vector<int>& varids);
-  int readNetcdfElevationData(int ncid, std::vector<int>& varids);
-  int readNetcdfVelocityData(int ncid, std::vector<int>& varids);
+  void getFiletype();
+  void readAsciiFormat();
+  void readNetcdfFormat();
+  void readNetcdfFormatHeader(int ncid, std::vector<int>& varids);
+  void readNetcdfElevationData(int ncid, std::vector<int>& varids);
+  void readNetcdfVelocityData(int ncid, std::vector<int>& varids);
 };
 }  // namespace Output
 }  // namespace Adcirc

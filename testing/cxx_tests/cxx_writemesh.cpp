@@ -21,21 +21,9 @@
 
 int main(int argc, char *argv[]) {
   Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(string("test_files/ms-riv.grd"));
-  int ierr = mesh->read();
-  std::cout << "Mesh Read Return Code: " << ierr << "\n";
-  if(ierr!=Adcirc::NoError){
-      delete mesh;
-      return ierr;
-  }
-
-  ierr = mesh->write("test_files/ms-riv_write.grd");
-  if(ierr!=Adcirc::NoError){
-      delete mesh;
-      return ierr;
-  }
-  else { 
-      delete mesh;
-      return 0;
-  }
+  mesh->read();
+  mesh->write("test_files/ms-riv_write.grd");
+  delete mesh;
+  return 0;
 
 }

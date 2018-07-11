@@ -23,33 +23,16 @@ int main(int argc, char *argv[]) {
     Adcirc::Output::OutputFile *output = new Adcirc::Output::OutputFile("test_files/fort.63");
 
     //...Open file
-    int ierr = output->open();
-    if(ierr!=Adcirc::NoError){
-        delete output;
-        return 1;
-    }
+    output->open();
     
     //...Read snap 1
-    ierr = output->read();
-    if(ierr!=Adcirc::NoError){
-        delete output;
-        return 2;
-    }
+    output->read();
     
     //...Read snap 2
-    ierr = output->read();
-    if(ierr!=Adcirc::NoError){
-        delete output;
-        return 2;
-    }
+    output->read();
     
     //...Read snap 3
-    ierr = output->read();
-    if(ierr!=Adcirc::NoError){
-        delete output;
-        return 2;
-    }
-
+    output->read();
     
     //...Check output
     if(output->data(2)->z(42)==0.21464678645){

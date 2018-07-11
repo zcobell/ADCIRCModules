@@ -37,7 +37,7 @@ class NodalAttributes {
   explicit NodalAttributes(string filename,
                            Adcirc::Geometry::Mesh *mesh = nullptr);
 
-  int read();
+  void read();
 
   void setFilename(string filename);
   string filename();
@@ -45,7 +45,7 @@ class NodalAttributes {
   void setMesh(Adcirc::Geometry::Mesh *mesh);
   Adcirc::Geometry::Mesh *mesh();
 
-  int write(const string &outputFilename);
+  void write(const string &outputFilename);
 
   string attributeNames(size_t index);
 
@@ -64,9 +64,9 @@ class NodalAttributes {
   Attribute *attribute(string parameter, size_t node);
 
  private:
-  int _readFort13Header(std::fstream &fid);
-  int _readFort13Defaults(std::fstream &fid);
-  int _readFort13Body(std::fstream &fid);
+  void _readFort13Header(std::fstream &fid);
+  void _readFort13Defaults(std::fstream &fid);
+  void _readFort13Body(std::fstream &fid);
   void _fillDefaultValues();
   void _mapNodes();
 

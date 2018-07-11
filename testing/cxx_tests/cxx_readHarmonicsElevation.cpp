@@ -22,11 +22,7 @@
 int main(int argc, char *argv[]) {
 
   Adcirc::Output::HarmonicsOutput *harm = new Adcirc::Output::HarmonicsOutput("test_files/fort.53");
-  int ierr = harm->read();
-  if(ierr!=Adcirc::NoError){
-      delete harm;
-      return ierr;
-  }
+  harm->read();
 
   double m2_amp_value = harm->amplitude("M2")->value(0);
   double m2_pha_value = harm->phase("M2")->value(0);

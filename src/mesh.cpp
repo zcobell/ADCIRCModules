@@ -30,32 +30,6 @@ using namespace std;
 using namespace Adcirc;
 using namespace Adcirc::Geometry;
 
-#define CHECK_FILEREAD_RETURN(ok)                          \
-  if (!ok) {                                               \
-    Adcirc::Error::throwError("Mesh: Error reading file"); \
-    return Adcirc::HasError;                               \
-  }
-
-#define CHECK_FILEREAD_RETURN_AND_CLOSE(ok)                \
-  if (!ok) {                                               \
-    fid.close();                                           \
-    Adcirc::Error::throwError("Mesh: Error reading file"); \
-    return Adcirc::HasError;                               \
-  }
-
-#define CHECK_FILEREAD_RETURN_INT(ierr)                    \
-  if (ierr != 0) {                                         \
-    Adcirc::Error::throwError("Mesh: Error reading file"); \
-    return Adcirc::HasError;                               \
-  }
-
-#define CHECK_RETURN_AND_CLOSE(ierr)                       \
-  if (ierr != Adcirc::NoError) {                           \
-    fid.close();                                           \
-    Adcirc::Error::throwError("Mesh: Error reading file"); \
-    return Adcirc::HasError;                               \
-  }
-
 /**
  * @name Mesh::Mesh
  * @brief Default Constructor
@@ -199,44 +173,27 @@ void Mesh::setNumLandBoundaries(size_t numLandBoundaries) {
  * @name Mesh::read
  * @brief Reads an ASCII formatted ADCIRC mesh. Note this will be extended in
  * the future to netCDF formatted meshes
- * @return error code. If error code does not equal Adcirc::NoError, an error
- * occured
  */
-int Mesh::read() {
-  int ierr;
-
+void Mesh::read() {
   std::fstream fid(this->filename());
 
   this->_readMeshHeader(fid);
-
-  //...Read the node table
-  ierr = this->_readNodes(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
-
-  //...Read the element table
-  ierr = this->_readElements(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
-
-  //...Read the open boundaries
-  ierr = this->_readOpenBoundaries(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
-
-  //...Read the land boundaries
-  ierr = this->_readLandBoundaries(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
+  this->_readNodes(fid);
+  this->_readElements(fid);
+  this->_readOpenBoundaries(fid);
+  this->_readLandBoundaries(fid);
 
   fid.close();
 
-  return Adcirc::NoError;
+  return;
 }
 
 /**
  * @name Mesh::_readMeshHeader
  * @brief Reads the mesh title line and node/element dimensional data
  * @param fid std::fstream reference for the currently opened mesh
- * @return error code
  */
-int Mesh::_readMeshHeader(std::fstream &fid) {
+void Mesh::_readMeshHeader(std::fstream &fid) {
   bool ok;
   size_t tempInt;
   string tempLine;
@@ -253,24 +210,29 @@ int Mesh::_readMeshHeader(std::fstream &fid) {
   IO::splitString(tempLine, tempList);
   tempLine = tempList[0];
   tempInt = StringConversion::stringToSizet(tempLine, ok);
-  CHECK_FILEREAD_RETURN_AND_CLOSE(ok);
+  if (!ok) {
+    fid.close();
+    Adcirc::Error::throwError("Error reading mesh header");
+  }
   this->setNumElements(tempInt);
 
   tempLine = tempList[1];
   tempInt = StringConversion::stringToSizet(tempLine, ok);
-  CHECK_FILEREAD_RETURN_AND_CLOSE(ok);
+  if (!ok) {
+    fid.close();
+    Adcirc::Error::throwError("Error reading mesh header");
+  }
   this->setNumNodes(tempInt);
 
-  return Adcirc::NoError;
+  return;
 }
 
 /**
  * @name Mesh::_readNodes
  * @brief Reads the node section of the ASCII formatted mesh
  * @param fid std::fstream reference for the currently opened mesh
- * @return error code
  */
-int Mesh::_readNodes(std::fstream &fid) {
+void Mesh::_readNodes(std::fstream &fid) {
   this->m_nodes.resize(this->numNodes());
 
   size_t i = 0;
@@ -280,7 +242,10 @@ int Mesh::_readNodes(std::fstream &fid) {
     string tempLine;
     std::getline(fid, tempLine);
     int ierr = IO::splitStringNodeFormat(tempLine, id, x, y, z);
-    CHECK_FILEREAD_RETURN_INT(ierr);
+    if (ierr != Adcirc::NoError) {
+      fid.close();
+      Adcirc::Error::throwError("Error reading nodes");
+    }
 
     if (i != id - 1) {
       this->m_nodeOrderingLogical = false;
@@ -298,7 +263,7 @@ int Mesh::_readNodes(std::fstream &fid) {
     }
   }
 
-  return Adcirc::NoError;
+  return;
 }
 
 /**
@@ -307,7 +272,7 @@ int Mesh::_readNodes(std::fstream &fid) {
  * @param fid std::fstream reference for the currently opened mesh
  * @return error code
  */
-int Mesh::_readElements(std::fstream &fid) {
+void Mesh::_readElements(std::fstream &fid) {
   size_t id;
   size_t e1, e2, e3;
   string tempLine;
@@ -318,7 +283,10 @@ int Mesh::_readElements(std::fstream &fid) {
     for (auto &e : this->m_elements) {
       std::getline(fid, tempLine);
       int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
-      CHECK_FILEREAD_RETURN_INT(ierr);
+      if (ierr != Adcirc::NoError) {
+        fid.close();
+        Adcirc::Error::throwError("Error reading elements");
+      }
 
       e.setElement(id, &this->m_nodes[e1 - 1], &this->m_nodes[e2 - 1],
                    &this->m_nodes[e3 - 1]);
@@ -328,7 +296,10 @@ int Mesh::_readElements(std::fstream &fid) {
     for (auto &e : this->m_elements) {
       std::getline(fid, tempLine);
       int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
-      CHECK_FILEREAD_RETURN_INT(ierr);
+      if (ierr != Adcirc::NoError) {
+        fid.close();
+        Adcirc::Error::throwError("Error reading nodes");
+      }
 
       if (i != id - 1) {
         this->m_elementOrderingLogical = false;
@@ -348,7 +319,7 @@ int Mesh::_readElements(std::fstream &fid) {
     }
   }
 
-  return Adcirc::NoError;
+  return;
 }
 
 /**
@@ -357,7 +328,7 @@ int Mesh::_readElements(std::fstream &fid) {
  * @param fid std::fstream reference for the currently opened mesh
  * @return error code
  */
-int Mesh::_readOpenBoundaries(std::fstream &fid) {
+void Mesh::_readOpenBoundaries(std::fstream &fid) {
   string tempLine;
   vector<string> tempList;
 
@@ -366,7 +337,10 @@ int Mesh::_readOpenBoundaries(std::fstream &fid) {
 
   bool ok;
   this->setNumOpenBoundaries(StringConversion::stringToSizet(tempList[0], ok));
-  CHECK_FILEREAD_RETURN(ok);
+  if (!ok) {
+    fid.close();
+    Adcirc::Error::throwError("Error reading number of open boundaries");
+  }
 
   this->m_openBoundaries.resize(this->numOpenBoundaries());
 
@@ -377,7 +351,10 @@ int Mesh::_readOpenBoundaries(std::fstream &fid) {
     IO::splitString(tempLine, tempList);
 
     size_t length = StringConversion::stringToSizet(tempList[0], ok);
-    CHECK_FILEREAD_RETURN(ok);
+    if (!ok) {
+      fid.close();
+      Adcirc::Error::throwError("Error reading boundaries");
+    }
 
     b.setBoundary(-1, length);
 
@@ -385,7 +362,10 @@ int Mesh::_readOpenBoundaries(std::fstream &fid) {
       std::getline(fid, tempLine);
       size_t nid;
       int ierr = IO::splitStringBoundary0Format(tempLine, nid);
-      CHECK_FILEREAD_RETURN_INT(ierr);
+      if (ierr != Adcirc::NoError) {
+        fid.close();
+        Adcirc::Error::throwError("Error reading boundaries");
+      }
 
       if (this->m_nodeOrderingLogical) {
         b.setNode1(j, &this->m_nodes[nid - 1]);
@@ -394,7 +374,7 @@ int Mesh::_readOpenBoundaries(std::fstream &fid) {
       }
     }
   }
-  return Adcirc::NoError;
+  return;
 }
 
 /**
@@ -403,7 +383,7 @@ int Mesh::_readOpenBoundaries(std::fstream &fid) {
  * @param fid std::fstream reference for the currently opened mesh
  * @return error code
  */
-int Mesh::_readLandBoundaries(std::fstream &fid) {
+void Mesh::_readLandBoundaries(std::fstream &fid) {
   string tempLine;
   vector<string> tempList;
 
@@ -416,8 +396,10 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
   IO::splitString(tempLine, tempList);
 
   this->setNumLandBoundaries(StringConversion::stringToSizet(tempList[0], ok));
-  CHECK_FILEREAD_RETURN(ok);
-
+  if (!ok) {
+    fid.close();
+    Adcirc::Error::throwError("Error reading boundaries");
+  }
   this->m_landBoundaries.resize(this->numLandBoundaries());
 
   std::getline(fid, tempLine);
@@ -427,9 +409,15 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
     IO::splitString(tempLine, tempList);
 
     size_t length = StringConversion::stringToSizet(tempList[0], ok);
-    CHECK_FILEREAD_RETURN(ok);
+    if (!ok) {
+      fid.close();
+      Adcirc::Error::throwError("Error reading boundaries");
+    }
     int code = StringConversion::stringToInt(tempList[1], ok);
-    CHECK_FILEREAD_RETURN(ok);
+    if (!ok) {
+      fid.close();
+      Adcirc::Error::throwError("Error reading boundaries");
+    }
 
     b.setBoundary(code, length);
 
@@ -439,7 +427,10 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
       if (code == 3 || code == 13 || code == 23) {
         int ierr =
             IO::splitStringBoundary23Format(tempLine, n1, crest, supercritical);
-        CHECK_FILEREAD_RETURN_INT(ierr);
+        if (ierr != Adcirc::NoError) {
+          fid.close();
+          Adcirc::Error::throwError("Error reading boundaries");
+        }
         if (this->m_nodeOrderingLogical) {
           b.setNode1(j, &this->m_nodes[n1 - 1]);
         } else {
@@ -452,7 +443,10 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
       } else if (code == 4 || code == 24) {
         int ierr = IO::splitStringBoundary24Format(tempLine, n1, n2, crest,
                                                    subcritical, supercritical);
-        CHECK_FILEREAD_RETURN_INT(ierr);
+        if (ierr != Adcirc::NoError) {
+          fid.close();
+          Adcirc::Error::throwError("Error reading boundaries");
+        }
 
         if (this->m_nodeOrderingLogical) {
           b.setNode1(j, &this->m_nodes[n1 - 1]);
@@ -470,7 +464,10 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
         int ierr = IO::splitStringBoundary25Format(
             tempLine, n1, n2, crest, subcritical, supercritical, pipeheight,
             pipecoef, pipediam);
-        CHECK_FILEREAD_RETURN_INT(ierr);
+        if (ierr != Adcirc::NoError) {
+          fid.close();
+          Adcirc::Error::throwError("Error reading boundaries");
+        }
 
         if (this->m_nodeOrderingLogical) {
           b.setNode1(j, &this->m_nodes[n1 - 1]);
@@ -488,7 +485,10 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
         b.setPipeDiameter(j, pipediam);
       } else {
         int ierr = IO::splitStringBoundary0Format(tempLine, n1);
-        CHECK_FILEREAD_RETURN_INT(ierr);
+        if (ierr != Adcirc::NoError) {
+          fid.close();
+          Adcirc::Error::throwError("Error reading boundaries");
+        }
         if (this->m_nodeOrderingLogical) {
           b.setNode1(j, &this->m_nodes[n1 - 1]);
         } else {
@@ -497,7 +497,7 @@ int Mesh::_readLandBoundaries(std::fstream &fid) {
       }
     }
   }
-  return Adcirc::NoError;
+  return;
 }
 
 /**
@@ -677,7 +677,7 @@ bool Mesh::isLatLon() { return this->m_isLatLon; }
  * @param epsg EPSG coordinate system to convert the mesh into
  * @return error code
  */
-int Mesh::reproject(int epsg) {
+void Mesh::reproject(int epsg) {
   QProj4 proj;
   vector<Point> inPoint, outPoint;
   inPoint.reserve(this->numNodes());
@@ -692,7 +692,6 @@ int Mesh::reproject(int epsg) {
 
   if (ierr != QProj4::NoError) {
     Adcirc::Error::throwError("Mesh: Proj4 library error");
-    return Adcirc::HasError;
   }
 
   for (size_t i = 0; i < this->numNodes(); ++i) {
@@ -700,7 +699,7 @@ int Mesh::reproject(int epsg) {
     this->node(i)->setY(outPoint[i].y());
   }
 
-  return Adcirc::NoError;
+  return;
 }
 
 /**
@@ -709,7 +708,7 @@ int Mesh::reproject(int epsg) {
  * @param outputFile output file with .shp extension
  * @return error code
  */
-int Mesh::toNodeShapefile(const string outputFile) {
+void Mesh::toNodeShapefile(const string outputFile) {
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POINT);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
 
@@ -738,10 +737,10 @@ int Mesh::toNodeShapefile(const string outputFile) {
   DBFClose(dbfid);
   SHPClose(shpid);
 
-  return Adcirc::NoError;
+  return;
 }
 
-int Mesh::toConnectivityShapefile(const string outputFile) {
+void Mesh::toConnectivityShapefile(const string outputFile) {
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_ARC);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
 
@@ -795,7 +794,7 @@ int Mesh::toConnectivityShapefile(const string outputFile) {
   DBFClose(dbfid);
   SHPClose(shpid);
 
-  return Adcirc::NoError;
+  return;
 }
 
 /**
@@ -803,7 +802,7 @@ int Mesh::toConnectivityShapefile(const string outputFile) {
  * @brief Builds a kd-tree object with the mesh nodes as the search locations
  * @return error code
  */
-int Mesh::buildNodalSearchTree() {
+void Mesh::buildNodalSearchTree() {
   int ierr;
   vector<double> x, y;
 
@@ -825,10 +824,9 @@ int Mesh::buildNodalSearchTree() {
   ierr = this->m_nodalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
     Adcirc::Error::throwError("Mesh: KDTree2 library error");
-    return Adcirc::HasError;
   }
 
-  return Adcirc::NoError;
+  return;
 }
 
 /**
@@ -837,7 +835,7 @@ int Mesh::buildNodalSearchTree() {
  * locations
  * @return error code
  */
-int Mesh::buildElementalSearchTree() {
+void Mesh::buildElementalSearchTree() {
   vector<double> x, y;
   double tempX, tempY;
 
@@ -865,10 +863,9 @@ int Mesh::buildElementalSearchTree() {
   int ierr = this->m_elementalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
     Adcirc::Error::throwError("Mesh: KDTree2 library error");
-    return Adcirc::HasError;
   }
 
-  return Adcirc::NoError;
+  return;
 }
 
 /**
@@ -993,7 +990,7 @@ void Mesh::deleteElement(size_t index) {
  * @param filename name of the output file to write
  * @return error code
  */
-int Mesh::write(const string &filename) {
+void Mesh::write(const string &filename) {
   string tempString;
   std::ofstream outputFile;
 
@@ -1040,7 +1037,7 @@ int Mesh::write(const string &filename) {
   //...Close the file
   outputFile.close();
 
-  return Adcirc::NoError;
+  return;
 }
 
 /**

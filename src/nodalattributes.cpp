@@ -81,21 +81,13 @@ size_t NodalAttributes::locateAttribute(const string &attributeName) {
   }
 }
 
-int NodalAttributes::read() {
-  int ierr;
-
+void NodalAttributes::read() {
   std::fstream fid(this->filename(), std::fstream::in);
 
-  ierr = this->_readFort13Header(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
-
-  ierr = this->_readFort13Defaults(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
-
+  this->_readFort13Header(fid);
+  this->_readFort13Defaults(fid);
   this->_fillDefaultValues();
-
-  ierr = this->_readFort13Body(fid);
-  CHECK_RETURN_AND_CLOSE(ierr);
+  this->_readFort13Body(fid);
 
   fid.close();
 
@@ -103,10 +95,10 @@ int NodalAttributes::read() {
     this->_mapNodes();
   }
 
-  return Adcirc::NoError;
+  return;
 }
 
-int NodalAttributes::_readFort13Header(std::fstream &fid) {
+void NodalAttributes::_readFort13Header(std::fstream &fid) {
   string tempLine;
   bool ok;
 
@@ -152,10 +144,10 @@ int NodalAttributes::_readFort13Header(std::fstream &fid) {
     }
   }
 
-  return Adcirc::NoError;
+  return;
 }
 
-int NodalAttributes::_readFort13Defaults(std::fstream &fid) {
+void NodalAttributes::_readFort13Defaults(std::fstream &fid) {
   string name, units, tempLine;
   vector<string> tempList;
   double defaultValue;
@@ -170,7 +162,6 @@ int NodalAttributes::_readFort13Defaults(std::fstream &fid) {
     bool ok;
     std::getline(fid, tempLine);
     int nValues = StringConversion::stringToSizet(tempLine, ok);
-    assert(ok);
     if (!ok) {
       Adcirc::Error::throwError("NodalAttributes: Error reading file data");
     }
@@ -190,7 +181,6 @@ int NodalAttributes::_readFort13Defaults(std::fstream &fid) {
     } else {
       std::getline(fid, tempLine);
       int ierr = IO::splitString(tempLine, tempList);
-      assert(ierr == 0);
       if (ierr != 0) {
         Adcirc::Error::throwError("NodalAttributes: Error reading file data");
       }
@@ -210,7 +200,7 @@ int NodalAttributes::_readFort13Defaults(std::fstream &fid) {
       this->m_attributeLocations[name] = i;
     }
   }
-  return Adcirc::NoError;
+  return;
 }
 
 void NodalAttributes::_fillDefaultValues() {
@@ -242,7 +232,7 @@ void NodalAttributes::_mapNodes() {
   return;
 }
 
-int NodalAttributes::_readFort13Body(std::fstream &fid) {
+void NodalAttributes::_readFort13Body(std::fstream &fid) {
   string tempLine, name;
   int ierr;
   size_t node;
@@ -330,7 +320,7 @@ int NodalAttributes::_readFort13Body(std::fstream &fid) {
       }
     }
   }
-  return Adcirc::NoError;
+  return;
 }
 
 size_t NodalAttributes::numNodes() const { return this->m_numNodes; }
@@ -367,16 +357,13 @@ Attribute *NodalAttributes::attribute(string parameter, size_t node) {
   return this->attribute(index, node);
 }
 
-int NodalAttributes::write(const string &outputFilename) {
-  return Adcirc::NoError;
-}
+void NodalAttributes::write(const string &outputFilename) { return; }
 
 string NodalAttributes::attributeNames(size_t index) {
   assert(index < this->m_nodalParameters.size());
   if (index < this->m_nodalParameters.size()) {
     return this->m_nodalParameters[index].name();
-  } else {
-    Adcirc::Error::throwError("NodalAttributes: Request out of bounds.");
   }
+  Adcirc::Error::throwError("NodalAttributes: Request out of bounds.");
   return string();
 }

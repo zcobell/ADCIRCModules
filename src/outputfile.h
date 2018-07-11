@@ -38,17 +38,17 @@ class OutputFile {
 
   void setHeader(const std::string &header);
 
-  int open();
+  void open();
 
-  int close();
+  void close();
 
   bool exists();
 
   bool isOpen();
 
-  int read(size_t snap = Adcirc::Output::NextOutputSnap);
+  void read(size_t snap = Adcirc::Output::NextOutputSnap);
 
-  int write(size_t snap = Adcirc::Output::NextOutputSnap);
+  void write(size_t snap = Adcirc::Output::NextOutputSnap);
 
   int filetype() const;
 
@@ -105,22 +105,22 @@ class OutputFile {
 
   // functions
   int getFiletype();
-  int findNetcdfVarId();
-  int rebuildMap();
+  void findNetcdfVarId();
+  void rebuildMap();
 
-  int openAscii();
-  int openNetcdf();
-  int openXdmf();
+  void openAscii();
+  void openNetcdf();
+  void openXdmf();
 
-  int closeAscii();
-  int closeNetcdf();
-  int closeXdmf();
+  void closeAscii();
+  void closeNetcdf();
+  void closeXdmf();
 
-  int readAsciiHeader();
-  int readNetcdfHeader();
+  void readAsciiHeader();
+  void readNetcdfHeader();
 
-  int readAsciiRecord(std::unique_ptr<OutputRecord> &record);
-  int readNetcdfRecord(size_t snap, std::unique_ptr<OutputRecord> &record);
+  void readAsciiRecord(std::unique_ptr<OutputRecord> &record);
+  void readNetcdfRecord(size_t snap, std::unique_ptr<OutputRecord> &record);
 };
 }  // namespace Output
 }  // namespace Adcirc

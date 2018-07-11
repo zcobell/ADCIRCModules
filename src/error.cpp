@@ -22,21 +22,14 @@
 using namespace Adcirc;
 using namespace std;
 
-#ifndef ERRORS_NONFATAL
 static const string errorHeading("[ADCIRCModules runtime error]: ");
-#else
-static const string errorHeading("[ADCIRCModules error]: ");
-#endif
+
 static const string warningHeading("[ADCIRCModules Warning]: ");
 
 Error::Error() = default;
 
 void Error::throwError(const string &s) {
-#ifndef ERRORS_NONFATAL
   throw runtime_error(errorHeading + s);
-#else
-  std::cerr << errorHeading << s << std::endl;
-#endif
 }
 
 void Error::warning(const std::string &s) {

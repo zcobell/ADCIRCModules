@@ -21,31 +21,10 @@
 
 int main(int argc, char *argv[]) {
   Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(string("test_files/ms-riv.grd"));
-  int ierr = mesh->read();
-  std::cout << "Mesh Read Return Code: " << ierr << "\n";
-  if(ierr!=Adcirc::NoError) {
-      delete mesh;
-      return ierr;
-  }
-
-  ierr = mesh->toNodeShapefile("test_files/ms-riv-nodes.shp");
-  if(ierr!=Adcirc::NoError){
-      delete mesh;
-      return ierr;
-  }
-  else {
-      delete mesh;
-      return 0;
-  }
-  
-  ierr = mesh->toConnectivityShapefile("test_files/ms-riv-elements.shp");
-  if(ierr!=Adcirc::NoError){
-      delete mesh;
-      return ierr;
-  }
-  else {
-      delete mesh;
-      return 0;
-  }
+  mesh->read();
+  mesh->toNodeShapefile("test_files/ms-riv-nodes.shp");
+  mesh->toConnectivityShapefile("test_files/ms-riv-elements.shp");
+  delete mesh;
+  return 0;
 
 }

@@ -22,38 +22,28 @@
 
 int main(int argc, char *argv[]) {
   Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(string("test_files/ms-riv.grd"));
-  int ierr = mesh->read();
+  mesh->read();
   double oldx = mesh->node(0)->x();
   double oldy = mesh->node(0)->y();
-  std::cout << "Mesh Read Return Code: " << ierr << "\n";
-  if(ierr!=Adcirc::NoError){
-      delete mesh;
-      return ierr;
-  }
 
-  ierr = mesh->reproject(26915);
-  if(ierr!=Adcirc::NoError){
-      delete mesh;
-      return ierr;
-  }
-  else {
-      double newx = mesh->node(0)->x();
-      double newy = mesh->node(0)->y();
-      delete mesh;
-      char buffer1[50],buffer2[50],buffer3[50],buffer4[50];
-      sprintf(buffer1,"Original X coordinate: %f",oldx);
-      std::cout << buffer1 << std::endl;
-      sprintf(buffer2,"Projected X coordinate: %f",newx);
-      std::cout << buffer2 << std::endl;
-      sprintf(buffer3,"Original Y coordinate: %f",oldy);
-      std::cout << buffer3 << std::endl;
-      sprintf(buffer4,"Projected Y coordinate: %f",newy);
-      std::cout << buffer4 << std::endl;
-      if(fabs(newx-753922.922116)>0.000001 || fabs(newy-3328065.712818)>0.000001){
-        return 1;
-      }else{
-        return 0;
-      }
+  mesh->reproject(26915);
+  double newx = mesh->node(0)->x();
+  double newy = mesh->node(0)->y();
+  delete mesh;
+  
+  char buffer1[50],buffer2[50],buffer3[50],buffer4[50];
+  sprintf(buffer1,"Original X coordinate: %f",oldx);
+  std::cout << buffer1 << std::endl;
+  sprintf(buffer2,"Projected X coordinate: %f",newx);
+  std::cout << buffer2 << std::endl;
+  sprintf(buffer3,"Original Y coordinate: %f",oldy);
+  std::cout << buffer3 << std::endl;
+  sprintf(buffer4,"Projected Y coordinate: %f",newy);
+  std::cout << buffer4 << std::endl;
+  if(fabs(newx-753922.922116)>0.000001 || fabs(newy-3328065.712818)>0.000001){
+    return 1;
+  }else{
+    return 0;
   }
 
 

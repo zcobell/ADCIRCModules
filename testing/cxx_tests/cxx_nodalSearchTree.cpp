@@ -21,18 +21,8 @@
 
 int main(int argc, char *argv[]) {
   Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(string("test_files/ms-riv.grd"));
-  int ierr = mesh->read();
-  std::cout << "Mesh Read Return Code: " << ierr << "\n";
-  if(ierr!=Adcirc::NoError){
-      delete mesh;
-      return ierr;
-  }
-
-  ierr = mesh->buildNodalSearchTree();
-  if(ierr!=Adcirc::NoError){
-      delete mesh;
-      return ierr;
-  }
+  mesh->read();
+  mesh->buildNodalSearchTree();
 
   QKdtree2 *searchTree = mesh->nodalSearchTree();
   int index = searchTree->findNearest(-95.0,27.0);

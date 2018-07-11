@@ -104,13 +104,6 @@ set(ADCIRCMODULES_VERSION_PATCH 0)
 set(ADCIRCMODULES_VERSION_STRING ${ADCIRCMODULES_VERSION_MAJOR}.${ADCIRCMODULES_VERSION_MINOR}.${ADCIRCMODULES_VERSION_PATCH})
 ###########################################################################
 
-
-###########################################################################
-# ERROR HANDLING
-###########################################################################
-OPTION(ERRORS_ARE_NONFATAL "Log errors to screen, but do not throw runtime exceptions." OFF)
-###########################################################################
-
 ###########################################################################
 # TESTING 
 ###########################################################################

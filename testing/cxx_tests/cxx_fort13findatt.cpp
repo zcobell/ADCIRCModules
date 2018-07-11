@@ -22,11 +22,7 @@
 int main(int argc, char *argv[]) {
 
   Adcirc::ModelParameters::NodalAttributes *fort13 = new Adcirc::ModelParameters::NodalAttributes("test_files/ms-riv.13");
-  int ierr = fort13->read();
-  if(ierr!=Adcirc::NoError){
-      delete fort13;
-      return ierr;
-  }
+  fort13->read();
 
   double manning_value = fort13->attribute("mannings_n_at_sea_floor",0)->value(0);
   if(manning_value != 0.012){
