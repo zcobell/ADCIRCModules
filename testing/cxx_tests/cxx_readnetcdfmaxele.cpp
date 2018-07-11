@@ -18,6 +18,7 @@
 //------------------------------------------------------------------------//
 #include "adcirc.h"
 #include <iostream>
+#include <vector>
 
 int main(int argc, char *argv[]) {
     Adcirc::Output::OutputFile *output = new Adcirc::Output::OutputFile("test_files/maxele.63.nc");
@@ -28,6 +29,17 @@ int main(int argc, char *argv[]) {
         delete output;
         return 1;
     }
+
+    //...Extra gymnastics to test other functions
+    std::vector<double> a = output->data(0)->values();
+
+    for(size_t i=0;i<a.size();i++){
+        a[i]=a[i]+10;
+    }
+
+    output->data(0)->setAll(a);
+
     delete output;
     return 0;
+
 }

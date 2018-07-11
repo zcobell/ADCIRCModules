@@ -32,7 +32,7 @@ namespace Output {
 
 class OutputFile {
  public:
-  explicit OutputFile(std::string filename);
+  explicit OutputFile(const std::string &filename);
 
   ~OutputFile();
 

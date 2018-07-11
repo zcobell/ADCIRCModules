@@ -18,6 +18,6 @@ after_success:
   - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
 
 script:
-- mkdir build; cd build; cmake -DCOVERAGE=ON ..
+- mkdir build; cd build; cmake -DCOVERAGE=ON -DBUILD_TESTS=ON ..
 - cd build; make -j 4
 - cd build; CTEST_OUTPUT_ON_FAILURE=1 make test

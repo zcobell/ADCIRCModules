@@ -111,6 +111,11 @@ set(ADCIRCMODULES_VERSION_STRING ${ADCIRCMODULES_VERSION_MAJOR}.${ADCIRCMODULES_
 OPTION(ERRORS_ARE_NONFATAL "Log errors to screen, but do not throw runtime exceptions." OFF)
 ###########################################################################
 
+###########################################################################
+# TESTING 
+###########################################################################
+OPTION(BUILD_TESTS "Build test cases" OFF)
+###########################################################################
 
 ###########################################################################
 #  SET THE LOCATION OF TEMPORARY STATIC LIBS
@@ -746,41 +751,43 @@ ENDIF(TEST_PERL)
 # Test Cases
 ###########################################################################
 IF(UNIX OR CYGWIN)
-    #...C++ Testing
-    FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases)
-
-    FOREACH(TESTFILE cxx_readmesh.cpp cxx_writemesh.cpp cxx_writeshapefile.cpp
-                     cxx_projectmesh.cpp cxx_nodalSearchTree.cpp cxx_readfort13_wmesh.cpp 
-                     cxx_readfort13_womesh.cpp cxx_fort13findatt.cpp cxx_readasciifull.cpp 
-                     cxx_readasciisparse.cpp cxx_readmaxele.cpp cxx_readnetcdfmaxele.cpp 
-                     cxx_readasciivector.cpp cxx_readnetcdf.cpp cxx_readnetcdfvector.cpp 
-                     cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp 
-                     cxx_readnetcdfHarmonicsElevation.cpp  cxx_readnetcdfHarmonicsVelocity.cpp )
-        GET_FILENAME_COMPONENT( TESTNAME ${TESTFILE} NAME_WE )
-        ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
-        ADD_DEPENDENCIES( ${TESTNAME} adcircmodules )
-        TARGET_INCLUDE_DIRECTORIES( ${TESTNAME} PRIVATE ${CMAKE_SOURCE_DIR}/src 
-                                                        ${CMAKE_SOURCE_DIR}/libraries/point 
-                                                        ${CMAKE_SOURCE_DIR}/libraries/qProj4 
-                                                        ${CMAKE_SOURCE_DIR}/libraries/qKdtree2 )
-        TARGET_LINK_LIBRARIES( ${TESTNAME} adcircmodules )
-        SET_TARGET_PROPERTIES( ${TESTNAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases )
-
-        ADD_TEST( NAME TEST_${TESTNAME} COMMAND ${CMAKE_BINARY_DIR}/cxx_testcases/${TESTNAME}
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/testing )
-        IF(CYGWIN)
-           SET_TESTS_PROPERTIES( TEST_${TESTNAME} PROPERTIES ENVIRONMENT "PATH=$ENV{PATH}:${CMAKE_BINARY_DIR}")
-        ELSE(CYGWIN)
-           SET_TESTS_PROPERTIES( TEST_${TESTNAME} PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
-        ENDIF(CYGWIN)
-    ENDFOREACH()
+    IF(BUILD_TESTS)
+        #...C++ Testing
+        FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases)
     
-    #...Python Test
-    IF(PYTHON_TESTING)
-        ADD_TEST( NAME Python_Test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/testing/pyadcirc_testcase.py
-                WORKING_DIRECTORY ${CMAKE_BINARY_DIR} )
-        SET_PROPERTY( TEST Python_Test PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
-        SET_PROPERTY( TEST Python_Test APPEND PROPERTY ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}")
-    ENDIF(PYTHON_TESTING)
+        FOREACH(TESTFILE cxx_readmesh.cpp cxx_writemesh.cpp cxx_writeshapefile.cpp
+                         cxx_projectmesh.cpp cxx_nodalSearchTree.cpp cxx_readfort13_wmesh.cpp 
+                         cxx_readfort13_womesh.cpp cxx_fort13findatt.cpp cxx_readasciifull.cpp 
+                         cxx_readasciisparse.cpp cxx_readmaxele.cpp cxx_readnetcdfmaxele.cpp 
+                         cxx_readasciivector.cpp cxx_readnetcdf.cpp cxx_readnetcdfvector.cpp 
+                         cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp 
+                         cxx_readnetcdfHarmonicsElevation.cpp  cxx_readnetcdfHarmonicsVelocity.cpp )
+            GET_FILENAME_COMPONENT( TESTNAME ${TESTFILE} NAME_WE )
+            ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
+            ADD_DEPENDENCIES( ${TESTNAME} adcircmodules )
+            TARGET_INCLUDE_DIRECTORIES( ${TESTNAME} PRIVATE ${CMAKE_SOURCE_DIR}/src 
+                                                            ${CMAKE_SOURCE_DIR}/libraries/point 
+                                                            ${CMAKE_SOURCE_DIR}/libraries/qProj4 
+                                                            ${CMAKE_SOURCE_DIR}/libraries/qKdtree2 )
+            TARGET_LINK_LIBRARIES( ${TESTNAME} adcircmodules )
+            SET_TARGET_PROPERTIES( ${TESTNAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases )
+    
+            ADD_TEST( NAME TEST_${TESTNAME} COMMAND ${CMAKE_BINARY_DIR}/cxx_testcases/${TESTNAME}
+                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/testing )
+            IF(CYGWIN)
+               SET_TESTS_PROPERTIES( TEST_${TESTNAME} PROPERTIES ENVIRONMENT "PATH=$ENV{PATH}:${CMAKE_BINARY_DIR}")
+            ELSE(CYGWIN)
+               SET_TESTS_PROPERTIES( TEST_${TESTNAME} PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
+            ENDIF(CYGWIN)
+        ENDFOREACH()
+        
+        #...Python Test
+        IF(PYTHON_TESTING)
+            ADD_TEST( NAME Python_Test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/testing/pyadcirc_testcase.py
+                    WORKING_DIRECTORY ${CMAKE_BINARY_DIR} )
+            SET_PROPERTY( TEST Python_Test PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
+            SET_PROPERTY( TEST Python_Test APPEND PROPERTY ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}")
+        ENDIF(PYTHON_TESTING)
+    ENDIF(BUILD_TESTS)
 ENDIF(UNIX OR CYGWIN)
 ###########################################################################

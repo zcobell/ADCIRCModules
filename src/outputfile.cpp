@@ -72,7 +72,7 @@ static const std::vector<string> netcdfVarNames = {"sigmat",
                                                    "swan_TMM10",
                                                    "swan_TMM10_max"};
 
-OutputFile::OutputFile(std::string filename) : m_filename(filename) {
+OutputFile::OutputFile(const string &filename) : m_filename(filename) {
   this->m_currentSnap = 0;
   this->m_numNodes = 0;
   this->m_open = false;

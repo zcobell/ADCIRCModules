@@ -286,8 +286,8 @@ void OutputRecord::setAll(const vector<double>& values_u,
 void OutputRecord::setAll(const vector<double>& values) {
   assert(!this->isVector());
   assert(this->m_numNodes == values.size());
-  if (!this->isVector()) {
-    Adcirc::Error::throwError("OutputRecord: Datatype is not a vector");
+  if (this->isVector()) {
+    Adcirc::Error::throwError("OutputRecord: Datatype is a vector");
     return;
   }
   if (values.size() != this->m_numNodes) {

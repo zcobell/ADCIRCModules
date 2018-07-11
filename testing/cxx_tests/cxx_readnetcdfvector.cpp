@@ -31,6 +31,19 @@ int main(int argc, char *argv[]) {
         delete output;
         return 1;
     }
+
+    //...Additional gymnastics
+    double m = output->data(2)->magnitude(925);
+    double d = output->data(2)->direction(925);
+
+    printf("%20.15f\n",m);
+    printf("%20.15f\n",d);
+
+    if(fabs(m-0.001863604616870)>0.0000001 || fabs(d-263.667187302645971)>0.000001){
+        delete output;
+        return 1;
+    }
+
     delete output;
     return 0;
 }
