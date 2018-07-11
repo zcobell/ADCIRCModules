@@ -837,14 +837,13 @@ void Mesh::buildNodalSearchTree() {
  */
 void Mesh::buildElementalSearchTree() {
   vector<double> x, y;
-  double tempX, tempY;
 
   x.reserve(this->numElements());
   y.reserve(this->numElements());
 
   for (auto &e : this->m_elements) {
-    tempX = 0.0;
-    tempY = 0.0;
+    double tempX = 0.0;
+    double tempY = 0.0;
     for (int j = 0; j < e.n(); ++j) {
       tempX = tempX + e.node(j)->x();
       tempY = tempY + e.node(j)->y();

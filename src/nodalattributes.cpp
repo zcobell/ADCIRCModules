@@ -42,11 +42,10 @@ using namespace Adcirc::ModelParameters;
     return Adcirc::HasError                                                \
   }
 
-NodalAttributes::NodalAttributes() {
+NodalAttributes::NodalAttributes() : m_filename(string()) {
   this->m_mesh = nullptr;
   this->m_numParameters = 0;
   this->m_numNodes = 0;
-  this->m_filename = string();
 }
 
 NodalAttributes::NodalAttributes(string filename, Adcirc::Geometry::Mesh *mesh)

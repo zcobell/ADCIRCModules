@@ -75,6 +75,7 @@ static const std::vector<string> netcdfVarNames = {"sigmat",
 OutputFile::OutputFile(const string& filename) : m_filename(filename) {
   this->m_currentSnap = 0;
   this->m_numNodes = 0;
+  this->m_numSnaps = 0;
   this->m_open = false;
   this->m_isVector = false;
   this->m_isMax = false;
@@ -121,8 +122,6 @@ bool OutputFile::exists() {
 }
 
 void OutputFile::open() {
-  assert(!this->m_open);
-  assert(this->exists());
 
   if (this->isOpen()) {
     Adcirc::Error::throwError("OutputFile: File already open");
@@ -181,7 +180,7 @@ void OutputFile::close() {
 }
 
 void OutputFile::read(size_t snap) {
-  int ierr;
+
   unique_ptr<OutputRecord> record;
 
   if (this->m_filetype == Adcirc::Output::ASCIIFull ||
@@ -214,7 +213,6 @@ void OutputFile::write(size_t snap) {
 }
 
 void OutputFile::openAscii() {
-  assert(!this->isOpen());
   if (this->isOpen()) {
     Adcirc::Error::throwError("OutputFile: File already open");
   }
@@ -228,7 +226,6 @@ void OutputFile::openAscii() {
 }
 
 void OutputFile::openNetcdf() {
-  assert(!this->isOpen());
   if (!this->isOpen()) {
     int ierr = nc_open(this->m_filename.c_str(), NC_NOWRITE, &this->m_ncid);
     if (ierr != NC_NOERR) {
@@ -248,7 +245,6 @@ void OutputFile::openXdmf() {
 }
 
 void OutputFile::closeAscii() {
-  assert(this->isOpen());
   if (this->isOpen()) {
     this->m_fid.close();
     this->m_open = false;
@@ -259,7 +255,6 @@ void OutputFile::closeAscii() {
 }
 
 void OutputFile::closeNetcdf() {
-  assert(this->isOpen());
   if (this->isOpen()) {
     nc_close(this->m_ncid);
     this->m_open = false;
