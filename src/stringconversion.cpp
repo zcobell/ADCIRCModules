@@ -65,8 +65,8 @@ size_t StringConversion::stringToSizet(const string& a, bool& ok) {
   }
 }
 
-string StringConversion::sanitizeString(string a) {
-  string b = std::move(a);
+string StringConversion::sanitizeString(const string& a) {
+  string b = a;
   boost::algorithm::trim(b);
   b.erase(std::remove(b.begin(), b.end(), '\r'), b.end());
   return b;

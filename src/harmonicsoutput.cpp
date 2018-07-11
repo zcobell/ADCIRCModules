@@ -243,7 +243,7 @@ void HarmonicsOutput::readAsciiFormat() {
   equilibriumArg.resize(this->numConstituents());
   names.resize(this->numConstituents());
 
-  for (size_t i = 0; i < this->numConstituents(); i++) {
+  for (size_t i = 0; i < this->numConstituents(); ++i) {
     std::vector<string> list;
     getline(fid, line);
     IO::splitString(line, list);
@@ -262,7 +262,7 @@ void HarmonicsOutput::readAsciiFormat() {
     Adcirc::Error::throwError("Error reading file data");
   }
 
-  for (size_t i = 0; i < this->numConstituents(); i++) {
+  for (size_t i = 0; i < this->numConstituents(); ++i) {
     this->m_index[names[i]] = i;
     this->m_reverseIndex[i] = names[i];
     this->m_consituentNames.push_back(names[i]);
@@ -301,7 +301,7 @@ void HarmonicsOutput::readAsciiFormat() {
     }
   }
 
-  for (size_t i = 0; i < this->numNodes(); i++) {
+  for (size_t i = 0; i < this->numNodes(); ++i) {
     getline(fid, line);
 
     size_t node;
@@ -311,7 +311,7 @@ void HarmonicsOutput::readAsciiFormat() {
 
     this->m_nodeIndex[node] = i;
 
-    for (size_t j = 0; j < this->numConstituents(); j++) {
+    for (size_t j = 0; j < this->numConstituents(); ++j) {
       getline(fid, line);
       if (this->isVelocity()) {
         double um, up, vm, vp;
@@ -429,7 +429,7 @@ void HarmonicsOutput::readNetcdfFormatHeader(int ncid,
 
   char* constituents = new char[charlen + 1]();
   std::fill(constituents, constituents + charlen + 1, 0);
-  for (size_t i = 0; i < this->numConstituents(); i++) {
+  for (size_t i = 0; i < this->numConstituents(); ++i) {
     size_t start[2];
     size_t count[2];
     start[0] = i;
@@ -478,7 +478,7 @@ void HarmonicsOutput::readNetcdfFormatHeader(int ncid,
       Adcirc::Error::throwError("Could not node factor");
     }
   } else {
-    for (size_t i = 0; i < this->numConstituents(); i++) {
+    for (size_t i = 0; i < this->numConstituents(); ++i) {
       nodeFactor[i] = std::numeric_limits<double>::min();
       equilibriumArg[i] = std::numeric_limits<double>::min();
       frequency[i] = std::numeric_limits<double>::min();
@@ -499,7 +499,7 @@ void HarmonicsOutput::readNetcdfFormatHeader(int ncid,
     this->m_vmagnitude.resize(this->numConstituents());
     this->m_uphase.resize(this->numConstituents());
     this->m_vphase.resize(this->numConstituents());
-    for (size_t i = 0; i < this->numConstituents(); i++) {
+    for (size_t i = 0; i < this->numConstituents(); ++i) {
       this->m_index[this->m_consituentNames[i]] = i;
       this->m_reverseIndex[i] = this->m_consituentNames[i];
       this->u_magnitude(i)->resize(this->numNodes());
@@ -526,7 +526,7 @@ void HarmonicsOutput::readNetcdfFormatHeader(int ncid,
   } else {
     this->m_amplitude.resize(this->numConstituents());
     this->m_phase.resize(this->numConstituents());
-    for (size_t i = 0; i < this->numConstituents(); i++) {
+    for (size_t i = 0; i < this->numConstituents(); ++i) {
       this->m_index[this->m_consituentNames[i]] = i;
       this->m_reverseIndex[i] = this->m_consituentNames[i];
       this->amplitude(i)->resize(this->numNodes());
@@ -600,7 +600,7 @@ void HarmonicsOutput::readNetcdfElevationData(int ncid,
 
   double* v = new double[this->numNodes()];
   size_t start[2], count[2];
-  for (size_t i = 0; i < this->numConstituents(); i++) {
+  for (size_t i = 0; i < this->numConstituents(); ++i) {
     start[0] = 0;
     start[1] = i;
     count[0] = this->numNodes();
@@ -633,7 +633,7 @@ void HarmonicsOutput::readNetcdfVelocityData(int ncid,
   double* v = new double[this->numNodes()];
   size_t start[2], count[2];
 
-  for (size_t i = 0; i < this->numConstituents(); i++) {
+  for (size_t i = 0; i < this->numConstituents(); ++i) {
     start[0] = 0;
     start[1] = i;
     count[0] = this->numNodes();

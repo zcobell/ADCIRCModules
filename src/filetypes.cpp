@@ -138,7 +138,7 @@ bool Filetypes::checkFiletypeAsciiHarmonics(const string& filename) {
     return false;
   }
 
-  for (size_t i = 0; i < n; i++) {
+  for (size_t i = 0; i < n; ++i) {
     std::vector<string> list;
     getline(fid, line);
     int ierr = IO::splitString(line, list);

@@ -133,9 +133,9 @@ void NodalAttributes::_readFort13Header(std::fstream &fid) {
 
   this->m_nodalParameters.resize(this->numParameters());
   this->m_nodalData.resize(this->numParameters());
-  for (size_t i = 0; i < this->numParameters(); i++) {
+  for (size_t i = 0; i < this->numParameters(); ++i) {
     this->m_nodalData[i].resize(this->numNodes());
-    for (size_t j = 0; j < this->numNodes(); j++) {
+    for (size_t j = 0; j < this->numNodes(); ++j) {
       if (this->m_mesh != nullptr) {
         this->m_nodalData[i][j].setId(this->mesh()->node(j)->id());
       } else {
@@ -153,7 +153,7 @@ void NodalAttributes::_readFort13Defaults(std::fstream &fid) {
   double defaultValue;
   vector<double> defaultValueVector;
 
-  for (size_t i = 0; i < this->numParameters(); i++) {
+  for (size_t i = 0; i < this->numParameters(); ++i) {
     std::getline(fid, name);
     name = StringConversion::sanitizeString(name);
 
@@ -186,7 +186,7 @@ void NodalAttributes::_readFort13Defaults(std::fstream &fid) {
       }
 
       defaultValueVector.resize(nValues);
-      for (size_t j = 0; j < nValues; j++) {
+      for (size_t j = 0; j < nValues; ++j) {
         defaultValueVector[j] =
             StringConversion::stringToDouble(tempList[j], ok);
         assert(ok);
@@ -204,15 +204,15 @@ void NodalAttributes::_readFort13Defaults(std::fstream &fid) {
 }
 
 void NodalAttributes::_fillDefaultValues() {
-  for (size_t i = 0; i < this->numParameters(); i++) {
+  for (size_t i = 0; i < this->numParameters(); ++i) {
     if (this->m_nodalParameters[i].numberOfValues() == 1) {
-      for (size_t j = 0; j < this->numNodes(); j++) {
+      for (size_t j = 0; j < this->numNodes(); ++j) {
         this->m_nodalData[i][j].resize(1);
         this->m_nodalData[i][j].setValue(
             this->m_nodalParameters[i].getDefaultValue());
       }
     } else {
-      for (size_t j = 0; j < this->numNodes(); j++) {
+      for (size_t j = 0; j < this->numNodes(); ++j) {
         this->m_nodalData[i][j].resize(
             this->m_nodalParameters[i].numberOfValues());
         this->m_nodalData[i][j].setValue(
@@ -223,8 +223,8 @@ void NodalAttributes::_fillDefaultValues() {
 }
 
 void NodalAttributes::_mapNodes() {
-  for (size_t i = 0; i < this->numParameters(); i++) {
-    for (size_t j = 0; j < this->numNodes(); j++) {
+  for (size_t i = 0; i < this->numParameters(); ++i) {
+    for (size_t j = 0; j < this->numNodes(); ++j) {
       this->m_nodalData[i][j].setNode(
           this->mesh()->nodeById(this->m_nodalData[i][j].id()));
     }
@@ -242,7 +242,7 @@ void NodalAttributes::_readFort13Body(std::fstream &fid) {
   vector<string> tempList;
   values.resize(12);
 
-  for (size_t i = 0; i < this->numParameters(); i++) {
+  for (size_t i = 0; i < this->numParameters(); ++i) {
     std::getline(fid, name);
     name = StringConversion::sanitizeString(name);
     size_t index = this->m_attributeLocations[name];
@@ -256,7 +256,7 @@ void NodalAttributes::_readFort13Body(std::fstream &fid) {
 
     size_t nValues = this->m_nodalParameters[index].numberOfValues();
 
-    for (size_t j = 0; j < numNonDefault; j++) {
+    for (size_t j = 0; j < numNonDefault; ++j) {
       std::getline(fid, tempLine);
 
       if (nValues == 1) {
@@ -302,7 +302,7 @@ void NodalAttributes::_readFort13Body(std::fstream &fid) {
           Adcirc::Error::throwError("NodalAttributes: Error reading file data");
         }
 
-        for (size_t j = 1; j < tempList.size(); j++) {
+        for (size_t j = 1; j < tempList.size(); ++j) {
           value = StringConversion::stringToDouble(tempList[j], ok);
           assert(ok);
           if (!ok) {

@@ -427,7 +427,7 @@ vector<string> Boundary::toStringList() {
                                     this->length() % this->boundaryCode()));
   }
 
-  for (size_t i = 0; i < this->length(); i++) {
+  for (size_t i = 0; i < this->length(); ++i) {
     if (this->boundaryCode() == 0 || this->boundaryCode() == 1 ||
         this->boundaryCode() == 2 || this->boundaryCode() == 10 ||
         this->boundaryCode() == 11 || this->boundaryCode() == 12 ||

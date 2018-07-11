@@ -566,7 +566,7 @@ void OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
   record.get()->fill(dflt);
 
   //...Record loop
-  for (size_t i = 0; i < numNonDefault; i++) {
+  for (size_t i = 0; i < numNonDefault; ++i) {
     getline(this->m_fid, line);
 
     if (this->m_isVector) {

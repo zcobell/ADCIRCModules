@@ -29,7 +29,7 @@ class StringConversion {
   static size_t stringToSizet(const std::string& a, bool& ok);
   static float stringToFloat(const std::string& a, bool& ok);
   static double stringToDouble(const std::string& a, bool& ok);
-  static std::string sanitizeString(std::string a);
+  static std::string sanitizeString(const std::string& a);
 };
 
 #endif  // STRINGCONVERSION_H
