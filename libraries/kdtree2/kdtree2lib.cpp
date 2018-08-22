@@ -17,7 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 //-----------------------------------------------------------------------*/
-#include "qkdtree2.h"
+#include "kdtree2lib.h"
 #include "boost/array.hpp"
 #include "boost/multi_array.hpp"
 #include "kdtree2.hpp"

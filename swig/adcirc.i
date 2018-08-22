@@ -41,8 +41,8 @@
 #include "outputrecord.h"
 #include "harmonicsrecord.h"
 #include "harmonicsoutput.h"
-#include "qkdtree2.h"
-#include "qproj4.h"
+#include "kdtree2lib.h"
+#include "projection.h"
 #include "point.h"
 %}
 
@@ -81,6 +81,6 @@ namespace std {
 %include "outputrecord.h"
 %include "harmonicsrecord.h"
 %include "harmonicsoutput.h"
-%include "qkdtree2.h"
-%include "qproj4.h"
+%include "kdtree2lib.h"
+%include "projection.h"
 %include "point.h"

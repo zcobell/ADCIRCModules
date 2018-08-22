@@ -16,7 +16,10 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "qproj4.h"
+#include "projection.h"
+#include <cassert>
+#include <cmath>
+#include "constants.h"
 #include "point.h"
 #include "proj.h"
 
@@ -27,16 +30,13 @@ using namespace std;
 //-----------------------------------------------------------------------------------------//
 /** \brief Constructor for the proj4 wrapper class
  *
- * @param[in] *parent reference to QObject. Enables automatic memory management
- *to avoid memory leaks
- *
  * Constructs an object used to convert coordinates. The initialization function
  *is run at startup which parses the included EPSG file (:/rsc/epsg) to
  *determine the parameters to pass to the Proj4 API
  *
  **/
 //-----------------------------------------------------------------------------------------//
-QProj4::QProj4() { this->_initialize(); }
+Projection::Projection() { this->_initialize(); }
 //-----------------------------------------------------------------------------------------//
 
 //-----------------------------------------------------------------------------------------//
@@ -55,57 +55,26 @@ QProj4::QProj4() { this->_initialize(); }
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
-                      Point &output, bool &isLatLon) {
-  if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end()) {
-    return NoSuchProjection;
-  }
-
-  if (this->m_epsgMapping.find(outputEPSG) == this->m_epsgMapping.end()) {
-    return NoSuchProjection;
-  }
-
-  string p1 = this->m_epsgMapping[inputEPSG];
-  string p2 = this->m_epsgMapping[outputEPSG];
-
-  PJ *pj1 = proj_create(PJ_DEFAULT_CTX, p1.c_str());
-  if (pj1 == 0) {
-    return Proj4InternalError;
-  }
-
-  PJ *pj2 = proj_create(PJ_DEFAULT_CTX, p2.c_str());
-  if (pj2 == 0) {
-    proj_destroy(pj1);
-    return Proj4InternalError;
-  }
-
-  PJ_COORD c, o;
-
-  if (proj_angular_input(pj1, PJ_FWD)) {
-    c.lp.lam = proj_torad(input.x());
-    c.lp.phi = proj_torad(input.y());
-  } else {
-    c.xy.x = input.x();
-    c.xy.y = input.y();
-  }
-
-  o = proj_trans(pj2, PJ_FWD, proj_trans(pj1, PJ_INV, c));
-
-  if (proj_angular_output(pj2, PJ_FWD)) {
-    output.setX(proj_todeg(o.lp.lam));
-    output.setY(proj_todeg(o.lp.phi));
-    isLatLon = true;
-  } else {
-    output.setX(o.xy.x);
-    output.setY(o.xy.y);
-    isLatLon = false;
-  }
-
-  proj_destroy(pj1);
-  proj_destroy(pj2);
-  return NoError;
+int Projection::transform(int inputEPSG, int outputEPSG, Point &input,
+                          Point &output, bool &isLatLon) {
+  std::vector<Point> in, out;
+  in.push_back(input);
+  int ierr = this->transform(inputEPSG, outputEPSG, in, out, isLatLon);
+  if (ierr != Projection::NoError) return ierr;
+  output = out.at(0);
+  return ierr;
 }
 //-----------------------------------------------------------------------------------------//
+
+int Projection::transform(int inputEPSG, int outputEPSG, double x, double y,
+                          double &outx, double &outy, bool &isLatLon) {
+  Point in(x, y), out;
+  int ierr = this->transform(inputEPSG, outputEPSG, in, out, isLatLon);
+  if (ierr != Projection::NoError) return ierr;
+  outx = out.x();
+  outy = out.y();
+  return ierr;
+}
 
 //-----------------------------------------------------------------------------------------//
 // Function to execute a coordinate system transformation using Proj4
@@ -125,8 +94,11 @@ int QProj4::transform(int inputEPSG, int outputEPSG, Point &input,
  *
  **/
 //-----------------------------------------------------------------------------------------//
-int QProj4::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
-                      vector<Point> &output, bool &isLatLon) {
+int Projection::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
+                          vector<Point> &output, bool &isLatLon) {
+  assert(input.size() > 0);
+  if (input.size() <= 0) return Projection::NoData;
+
   if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end()) {
     return NoSuchProjection;
   }
@@ -139,17 +111,19 @@ int QProj4::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
   string p2 = this->m_epsgMapping[outputEPSG];
 
   PJ *pj1 = proj_create(PJ_DEFAULT_CTX, p1.c_str());
-  if (pj1 == 0) {
+  if (pj1 == nullptr) {
     return Proj4InternalError;
   }
 
   PJ *pj2 = proj_create(PJ_DEFAULT_CTX, p2.c_str());
-  if (pj2 == 0) {
+  if (pj2 == nullptr) {
     proj_destroy(pj1);
     return Proj4InternalError;
   }
 
-  for (size_t i = 0; i < input.size(); i++) {
+  output.resize(input.size());
+
+  for (size_t i = 0; i < input.size(); ++i) {
     PJ_COORD c, o;
 
     if (proj_angular_input(pj1, PJ_FWD)) {
@@ -178,3 +152,74 @@ int QProj4::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
   return NoError;
 }
 //-----------------------------------------------------------------------------------------//
+
+int Projection::cpp(double lambda0, double phi0, double x, double y,
+                    double &outx, double &outy) {
+  Point i(x, y), o;
+  int ierr = Projection::cpp(lambda0, phi0, i, o);
+  if (ierr != Projection::NoError) return ierr;
+  outx = o.x();
+  outy = o.y();
+  return Projection::NoError;
+}
+
+int Projection::cpp(double lambda0, double phi0, Point &input, Point &output) {
+  vector<Point> in, out;
+  in.push_back(input);
+  int ierr = Projection::cpp(lambda0, phi0, in, out);
+  if (ierr == Projection::NoError) output = out.at(0);
+  return ierr;
+}
+
+int Projection::cpp(double lambda0, double phi0, vector<Point> &input,
+                    vector<Point> &output) {
+  assert(input.size() > 0);
+  if (input.size() <= 0) return Projection::NoData;
+
+  double slam0 = Constants::toRadians(lambda0);
+  double sfea0 = Constants::toRadians(phi0);
+  double r = Constants::radiusEarth(phi0);
+  output.reserve(input.size());
+  for (auto &p : input) {
+    double x = r * (Constants::toRadians(p.x()) - slam0) * cos(sfea0);
+    double y = r * (Constants::toRadians(p.y()));
+    output.push_back(Point(x, y));
+  }
+  return Projection::NoError;
+}
+
+int Projection::inverseCpp(double lambda0, double phi0, double x, double y,
+                           double &outx, double &outy) {
+  Point i(x, y), o;
+  int ierr = Projection::inverseCpp(lambda0, phi0, i, o);
+  if (ierr != Projection::NoError) return ierr;
+  outx = o.x();
+  outy = o.y();
+  return Projection::NoError;
+}
+
+int Projection::inverseCpp(double lambda0, double phi0, Point &input,
+                           Point &output) {
+  vector<Point> in, out;
+  in.push_back(input);
+  int ierr = Projection::inverseCpp(lambda0, phi0, in, out);
+  if (ierr == Projection::NoError) output = out.at(0);
+  return ierr;
+}
+
+int Projection::inverseCpp(double lambda0, double phi0, vector<Point> &input,
+                           vector<Point> &output) {
+  assert(input.size() > 0);
+  if (input.size() <= 0) return Projection::NoData;
+
+  double slam0 = Constants::toRadians(lambda0);
+  double sfea0 = Constants::toRadians(phi0);
+  double r = Constants::radiusEarth(phi0);
+  output.reserve(input.size());
+  for (auto &p : input) {
+    double x = Constants::toDegrees(slam0 + p.x() / (r * cos(sfea0)));
+    double y = Constants::toDegrees(p.y() / r);
+    output.push_back(Point(x, y));
+  }
+  return Projection::NoError;
+}

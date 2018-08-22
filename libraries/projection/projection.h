@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 /**
- * \class QProj4
+ * \class Projection
  *
  * \brief Class that serves as an interface to the standard C PROJ4 library
  *
@@ -29,20 +29,22 @@
  * Contact: zcobell@gmail.com
  *
  */
-#ifndef QPROJ4_H
-#define QPROJ4_H
+#ifndef PROJECTION_H
+#define PROJECTION_H
 
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include "point.h"
 
-class Point;
-
-class QProj4 {
+class Projection {
  public:
-  enum _errors { NoError, NoSuchProjection, Proj4InternalError };
+  enum _errors { NoError, NoSuchProjection, NoData, Proj4InternalError };
 
-  explicit QProj4();
+  explicit Projection();
+
+  int transform(int inputEPSG, int outputEPSG, double x, double y, double &outx,
+                double &outy, bool &isLatLon);
 
   int transform(int inputEPSG, int outputEPSG, Point &input, Point &output,
                 bool &isLatLon);
@@ -50,9 +52,22 @@ class QProj4 {
   int transform(int inputEPSG, int outputEPSG, std::vector<Point> &input,
                 std::vector<Point> &output, bool &isLatLon);
 
+  static int cpp(double lambda0, double phi0, double x, double y, double &outx,
+                 double &outy);
+  static int cpp(double lambda0, double phi0, Point &input, Point &output);
+  static int cpp(double lambda0, double phi0, std::vector<Point> &input,
+                 std::vector<Point> &output);
+
+  static int inverseCpp(double lambda0, double phi0, double x, double y,
+                        double &outx, double &outy);
+  static int inverseCpp(double lambda0, double phi0, Point &input,
+                        Point &output);
+  static int inverseCpp(double lambda0, double phi0, std::vector<Point> &input,
+                        std::vector<Point> &output);
+
  private:
   void _initialize();
   std::unordered_map<int, std::string> m_epsgMapping;
 };
 
-#endif  // QPROJ4_H
+#endif  // Projection_H

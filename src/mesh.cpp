@@ -21,8 +21,8 @@
 #include "boost/format.hpp"
 #include "error.h"
 #include "io.h"
-#include "qkdtree2.h"
-#include "qproj4.h"
+#include "kdtree2lib.h"
+#include "projection.h"
 #include "shapefil.h"
 #include "stringconversion.h"
 
@@ -678,7 +678,7 @@ bool Mesh::isLatLon() { return this->m_isLatLon; }
  * @return error code
  */
 void Mesh::reproject(int epsg) {
-  QProj4 proj;
+  Projection proj;
   vector<Point> inPoint, outPoint;
   inPoint.reserve(this->numNodes());
   outPoint.resize(this->numNodes());
@@ -690,7 +690,7 @@ void Mesh::reproject(int epsg) {
   int ierr = proj.transform(this->projection(), epsg, inPoint, outPoint,
                             this->m_isLatLon);
 
-  if (ierr != QProj4::NoError) {
+  if (ierr != Projection::NoError) {
     Adcirc::Error::throwError("Mesh: Proj4 library error");
   }
 
@@ -1125,10 +1125,32 @@ vector<vector<size_t>> Mesh::connectivity() {
   for (auto &e : this->m_elements) {
     vector<size_t> v;
     v.resize(e.n());
-    for (size_t i = 0; i < e.n(); ++i) {
+    for (int i = 0; i < e.n(); ++i) {
       v[i] = e.node(i)->id();
     }
     conn.push_back(v);
   }
   return conn;
+}
+
+void Mesh::cpp(double lambda, double phi) {
+  for (auto &n : this->m_nodes) {
+    Point i = Point(n.x(), n.y());
+    Point o;
+    Projection::cpp(lambda, phi, i, o);
+    n.setX(o.x());
+    n.setY(o.y());
+  }
+  return;
+}
+
+void Mesh::inverseCpp(double lambda, double phi){
+  for (auto &n : this->m_nodes) {
+    Point i = Point(n.x(), n.y());
+    Point o;
+    Projection::inverseCpp(lambda, phi, i, o);
+    n.setX(o.x());
+    n.setY(o.y());
+  }
+  return;
 }

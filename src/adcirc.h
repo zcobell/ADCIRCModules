@@ -20,8 +20,8 @@
 #define ADCIRC_H
 
 #include "point.h"
-#include "qkdtree2.h"
-#include "qproj4.h"
+#include "kdtree2lib.h"
+#include "projection.h"
 
 #include "error.h"
 #include "config.h"

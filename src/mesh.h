@@ -107,6 +107,9 @@ class Mesh {
   void reproject(int epsg);
   bool isLatLon();
 
+  void cpp(double lambda, double phi);
+  void inverseCpp(double lambda, double phi);
+
   void toNodeShapefile(std::string outputFile);
   void toConnectivityShapefile(std::string outputFile);
 

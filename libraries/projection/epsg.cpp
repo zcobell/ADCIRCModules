@@ -19,11 +19,11 @@
 #ifndef EPSG_H
 #define EPSG_H
 
-#include "qproj4.h"
+#include "projection.h"
 
 using namespace std;
 
-void QProj4::_initialize() {
+void Projection::_initialize() {
   // clang-format off
     this->m_epsgMapping.insert(pair<int,string>(3819,"+proj=longlat +ellps=bessel +towgs84=595.48,121.69,515.35,4.115,-2.9383,0.853,-3.408 +no_defs"));
     this->m_epsgMapping.insert(pair<int,string>(3821,"+proj=longlat +ellps=aust_SA +no_defs"));

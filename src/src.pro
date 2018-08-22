@@ -160,33 +160,6 @@ else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PW
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/point/debug/point.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/point/libpoint.a
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/qKdtree2/release/ -lqkdtree2
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/qKdtree2/debug/ -lqkdtree2
-else:unix: LIBS += -L$$OUT_PWD/../libraries/qKdtree2/ -lqkdtree2
-
-INCLUDEPATH += $$PWD/../libraries/qKdtree2
-DEPENDPATH += $$PWD/../libraries/qKdtree2
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/qKdtree2/release/libqkdtree2.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/qKdtree2/debug/libqkdtree2.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/qKdtree2/release/qkdtree2.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/qKdtree2/debug/qkdtree2.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/qKdtree2/libqkdtree2.a
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/qProj4/release/ -lqproj4
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/qProj4/debug/ -lqproj4
-else:unix: LIBS += -L$$OUT_PWD/../libraries/qProj4/ -lqproj4
-
-INCLUDEPATH += $$PWD/../libraries/qProj4
-DEPENDPATH += $$PWD/../libraries/qProj4
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/qProj4/release/libqproj4.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/qProj4/debug/libqproj4.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/qProj4/release/qproj4.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/qProj4/debug/qproj4.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/qProj4/libqproj4.a
-
-
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/shapelib/release/ -lshapelib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/shapelib/debug/ -lshapelib
 else:unix: LIBS += -L$$OUT_PWD/../libraries/shapelib/ -lshapelib
@@ -199,3 +172,42 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libr
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/shapelib/release/shapelib.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/shapelib/debug/shapelib.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/shapelib/libshapelib.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/kdtree2/release/ -lkdtree2lib
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/kdtree2/debug/ -lkdtree2lib
+else:unix: LIBS += -L$$OUT_PWD/../libraries/kdtree2/ -lkdtree2lib
+
+INCLUDEPATH += $$PWD/../libraries/kdtree2
+DEPENDPATH += $$PWD/../libraries/kdtree2
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/kdtree2/release/libkdtree2lib.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/kdtree2/debug/libkdtree2lib.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/kdtree2/release/kdtree2lib.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/kdtree2/debug/kdtree2lib.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/kdtree2/libkdtree2lib.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/projection/release/ -lprojection
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/projection/debug/ -lprojection
+else:unix: LIBS += -L$$OUT_PWD/../libraries/projection/ -lprojection
+
+INCLUDEPATH += $$PWD/../libraries/projection
+DEPENDPATH += $$PWD/../libraries/projection
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/projection/release/libprojection.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/projection/debug/libprojection.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/projection/release/projection.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/projection/debug/projection.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/projection/libprojection.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/constants/release/ -lconstants
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/constants/debug/ -lconstants
+else:unix: LIBS += -L$$OUT_PWD/../libraries/constants/ -lconstants
+
+INCLUDEPATH += $$PWD/../libraries/constants
+DEPENDPATH += $$PWD/../libraries/constants
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/constants/release/libconstants.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/constants/debug/libconstants.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/constants/release/constants.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/constants/debug/constants.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/constants/libconstants.a
