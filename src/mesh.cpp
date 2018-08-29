@@ -1144,7 +1144,7 @@ void Mesh::cpp(double lambda, double phi) {
   return;
 }
 
-void Mesh::inverseCpp(double lambda, double phi){
+void Mesh::inverseCpp(double lambda, double phi) {
   for (auto &n : this->m_nodes) {
     Point i = Point(n.x(), n.y());
     Point o;
@@ -1153,4 +1153,49 @@ void Mesh::inverseCpp(double lambda, double phi){
     n.setY(o.y());
   }
   return;
+}
+
+size_t Mesh::findNearestNode(double x, double y) {
+  return this->findNearestNode(Point(x, y));
+}
+
+size_t Mesh::findNearestNode(Point location) {
+  if (!this->nodalSearchTreeInitialized()) {
+    this->buildNodalSearchTree();
+  }
+  return this->nodalSearchTree()->findNearest(location);
+}
+
+size_t Mesh::findNearestElement(double x, double y) {
+  return this->findNearestElement(Point(x, y));
+}
+
+size_t Mesh::findNearestElement(Point location) {
+  if (!this->elementalSearchTreeInitialized()) {
+    this->buildElementalSearchTree();
+  }
+  return this->elementalSearchTree()->findNearest(location);
+}
+
+size_t Mesh::findElement(double x, double y) {
+  return this->findElement(Point(x, y));
+}
+
+size_t Mesh::findElement(Point location) {
+  const int searchDepth = 20;
+
+  if (!this->elementalSearchTreeInitialized()) {
+    this->buildElementalSearchTree();
+  }
+
+  vector<size_t> indicies;
+  indicies = this->elementalSearchTree()->findXNearest(location, searchDepth);
+
+  for (auto i : indicies) {
+    bool found = this->element(i)->isInside(location);
+    if (found) {
+      return i;
+    }
+  }
+  return -1;
 }

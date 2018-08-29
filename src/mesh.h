@@ -122,6 +122,13 @@ class Mesh {
   bool nodeOrderingIsLogical();
   bool elementOrderingIsLogical();
 
+  size_t findNearestNode(Point location);
+  size_t findNearestNode(double x, double y);
+  size_t findNearestElement(Point location);
+  size_t findNearestElement(double x, double y);
+  size_t findElement(Point location);
+  size_t findElement(double x, double y);
+
   Adcirc::Geometry::Node *node(size_t index);
   Adcirc::Geometry::Element *element(size_t index);
   Adcirc::Geometry::Boundary *openBoundary(size_t index);

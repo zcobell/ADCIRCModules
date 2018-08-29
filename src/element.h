@@ -30,6 +30,7 @@
 #include <vector>
 #include "adcircmodules_global.h"
 #include "node.h"
+#include "point.h"
 
 namespace Adcirc {
 namespace Geometry {
@@ -52,6 +53,9 @@ class Element {
   void setId(size_t id);
 
   std::string toString();
+
+  bool isInside(Point location);
+  bool isInside(double x, double y);
 
  private:
   int m_n = 3;
