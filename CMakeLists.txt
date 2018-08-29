@@ -517,7 +517,8 @@ ADD_LIBRARY( adcircmodules SHARED
                 ${CMAKE_SOURCE_DIR}/src/outputfile.cpp 
                 ${CMAKE_SOURCE_DIR}/src/harmonicsrecord.cpp
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.cpp 
-                ${CMAKE_SOURCE_DIR}/src/ltea.cpp )
+                ${CMAKE_SOURCE_DIR}/src/ltea.cpp 
+                ${CMAKE_SOURCE_DIR}/src/meshchecker.cpp )
 
 TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/libraries/point
@@ -554,6 +555,7 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcirc.h
                 ${CMAKE_SOURCE_DIR}/src/outputfile.h
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.h
                 ${CMAKE_SOURCE_DIR}/src/ltea.h
+                ${CMAKE_SOURCE_DIR}/src/meshchecker.h
                 ${CMAKE_SOURCE_DIR}/libraries/point/point.h 
                 ${CMAKE_SOURCE_DIR}/libraries/kdtree2/kdtree2lib.h 
                 ${CMAKE_SOURCE_DIR}/libraries/projection/projection.h ) 
