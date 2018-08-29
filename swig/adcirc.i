@@ -44,6 +44,9 @@
 #include "kdtree2lib.h"
 #include "projection.h"
 #include "point.h"
+#include "meshchecker.h"
+#include "ltea.h"
+#include "elementtable.h"
 %}
 
 %include <std_string.i>
@@ -84,3 +87,6 @@ namespace std {
 %include "kdtree2lib.h"
 %include "projection.h"
 %include "point.h"
+%include "meshchecker.h"
+%include "ltea.h"
+%include "elementtable.h"

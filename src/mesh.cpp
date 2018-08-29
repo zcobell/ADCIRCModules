@@ -867,6 +867,20 @@ void Mesh::buildElementalSearchTree() {
   return;
 }
 
+void Mesh::deleteNodalSearchTree() {
+  if (this->nodalSearchTreeInitialized()) {
+    this->m_nodalSearchTree.reset();
+  }
+  return;
+}
+
+void Mesh::deleteElementalSearchTree() {
+  if (this->elementalSearchTreeInitialized()) {
+    this->m_elementalSearchTree.reset();
+  }
+  return;
+}
+
 /**
  * @name Mesh::nodalSearchTreeInitialized
  * @brief Returns a boolean value determining if the nodal search tree has been

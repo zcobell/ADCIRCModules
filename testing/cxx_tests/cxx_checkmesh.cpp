@@ -1,4 +1,4 @@
-/*------------------------------GPL---------------------------------------//
+//------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,23 +15,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------*/
-#ifndef ADCIRC_H
-#define ADCIRC_H
+//------------------------------------------------------------------------//
+#include "adcirc.h"
+#include <iostream>
 
-#include "kdtree2lib.h"
-#include "point.h"
-#include "projection.h"
-
-#include "config.h"
-#include "constants.h"
-#include "elementtable.h"
-#include "error.h"
-#include "harmonicsoutput.h"
-#include "ltea.h"
-#include "mesh.h"
-#include "meshchecker.h"
-#include "nodalattributes.h"
-#include "outputfile.h"
-
-#endif  // ADCIRC_H
+int main(int argc, char *argv[]) {
+  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(string("test_files/ms-riv.grd"));
+  mesh->read();
+  MeshChecker checker(mesh);
+  checker.checkMesh();
+  delete mesh;
+  return 0;
+}

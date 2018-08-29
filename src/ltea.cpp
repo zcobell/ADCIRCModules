@@ -19,35 +19,13 @@
 #include "ltea.h"
 
 using namespace Adcirc::Geometry;
+using namespace std;
 
 Ltea::Ltea(Mesh *mesh) {
   this->m_mesh = mesh;
   if (!this->m_mesh->elementalSearchTreeInitialized()) {
     this->m_mesh->buildElementalSearchTree();
   }
-  this->createInverseConnectivityTable();
-}
-
-void Ltea::createInverseConnectivityTable() {
-  this->m_inverseConnectivity.resize(this->m_mesh->numNodes());
-
-  for (size_t i = 0; i < this->m_mesh->numNodes(); i++) {
-    this->m_inverseConnectivity[i].node = this->m_mesh->node(i);
-  }
-
-  for (size_t i = 0; i < this->m_mesh->numElements(); i++) {
-    for (size_t j = 0; j < this->m_mesh->element(i)->n(); j++) {
-      size_t index =
-          this->m_mesh->nodeIndexById(this->m_mesh->element(i)->node(j)->id());
-      this->m_inverseConnectivity[index].element.push_back(
-          this->m_mesh->element(i));
-    }
-  }
-
-  for (size_t i = 0; i < this->m_inverseConnectivity.size(); i++) {
-    this->m_inverseConnectivity[i].n =
-        this->m_inverseConnectivity[i].element.size();
-  }
-
-  return;
+  this->m_inverseConnectivity.setMesh(mesh);
+  this->m_inverseConnectivity.build();
 }

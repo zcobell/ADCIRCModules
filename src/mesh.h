@@ -116,6 +116,9 @@ class Mesh {
   void buildNodalSearchTree();
   void buildElementalSearchTree();
 
+  void deleteNodalSearchTree();
+  void deleteElementalSearchTree();
+
   bool nodalSearchTreeInitialized();
   bool elementalSearchTreeInitialized();
 

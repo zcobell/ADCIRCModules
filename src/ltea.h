@@ -22,6 +22,7 @@
 #include <cmath>
 #include <list>
 #include "mesh.h"
+#include "elementtable.h"
 
 class Ltea {
  public:
@@ -60,15 +61,7 @@ class Ltea {
   //...Internal variables
   Adcirc::Geometry::Mesh *m_mesh;
 
-  struct _inverseConnectivity {
-    Adcirc::Geometry::Node *node;
-    std::list<Adcirc::Geometry::Element *> element;
-    size_t n;
-  };
-  std::vector<_inverseConnectivity> m_inverseConnectivity;
-
-  //...Private functions
-  void createInverseConnectivityTable();
+  Adcirc::Geometry::ElementTable m_inverseConnectivity;
 };
 
 #endif  // LTEA_H

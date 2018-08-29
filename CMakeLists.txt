@@ -518,6 +518,7 @@ ADD_LIBRARY( adcircmodules SHARED
                 ${CMAKE_SOURCE_DIR}/src/harmonicsrecord.cpp
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.cpp 
                 ${CMAKE_SOURCE_DIR}/src/ltea.cpp 
+                ${CMAKE_SOURCE_DIR}/src/elementtable.cpp
                 ${CMAKE_SOURCE_DIR}/src/meshchecker.cpp )
 
 TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
@@ -556,6 +557,7 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcirc.h
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.h
                 ${CMAKE_SOURCE_DIR}/src/ltea.h
                 ${CMAKE_SOURCE_DIR}/src/meshchecker.h
+                ${CMAKE_SOURCE_DIR}/src/elementtable.h
                 ${CMAKE_SOURCE_DIR}/libraries/point/point.h 
                 ${CMAKE_SOURCE_DIR}/libraries/kdtree2/kdtree2lib.h 
                 ${CMAKE_SOURCE_DIR}/libraries/projection/projection.h ) 
@@ -750,14 +752,16 @@ IF(UNIX OR CYGWIN)
                          cxx_readasciisparse.cpp cxx_readmaxele.cpp cxx_readnetcdfmaxele.cpp 
                          cxx_readasciivector.cpp cxx_readnetcdf.cpp cxx_readnetcdfvector.cpp 
                          cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp 
-                         cxx_readnetcdfHarmonicsElevation.cpp  cxx_readnetcdfHarmonicsVelocity.cpp )
+                         cxx_readnetcdfHarmonicsElevation.cpp  cxx_readnetcdfHarmonicsVelocity.cpp 
+                         cxx_checkMesh.cpp )
             GET_FILENAME_COMPONENT( TESTNAME ${TESTFILE} NAME_WE )
             ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
             ADD_DEPENDENCIES( ${TESTNAME} adcircmodules )
             TARGET_INCLUDE_DIRECTORIES( ${TESTNAME} PRIVATE ${CMAKE_SOURCE_DIR}/src 
                                                             ${CMAKE_SOURCE_DIR}/libraries/point 
                                                             ${CMAKE_SOURCE_DIR}/libraries/projection 
-                                                            ${CMAKE_SOURCE_DIR}/libraries/kdtree2 )
+                                                            ${CMAKE_SOURCE_DIR}/libraries/kdtree2 
+                                                            ${CMAKE_SOURCE_DIR}/libraries/constants )
             TARGET_LINK_LIBRARIES( ${TESTNAME} adcircmodules )
             SET_TARGET_PROPERTIES( ${TESTNAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases )
     
