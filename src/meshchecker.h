@@ -33,6 +33,8 @@ class MeshChecker {
   static bool checkOverlappingElements(Adcirc::Geometry::Mesh *mesh);
   static bool checkDisjointNodes(Adcirc::Geometry::Mesh *mesh);
   static bool checkPipeHeights(Adcirc::Geometry::Mesh *mesh);
+  static bool checkElementSizes(Adcirc::Geometry::Mesh *mesh,
+                                double minimumElementSize);
 
  private:
   Adcirc::Geometry::Mesh *m_mesh;
@@ -40,7 +42,4 @@ class MeshChecker {
   static void printFailedLeveeStatus(
       Adcirc::Geometry::Boundary *bc, int index,
       double minimumCrestElevationOverTopography);
-
-  static void eline(Adcirc::Geometry::Mesh *mesh, size_t i, size_t j,
-                    size_t &n1, size_t &n2);
 };

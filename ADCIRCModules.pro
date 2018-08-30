@@ -19,5 +19,5 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS  = libraries src
+SUBDIRS  = libraries src testing
 CONFIG += ordered           

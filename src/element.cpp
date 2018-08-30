@@ -18,6 +18,7 @@
 //------------------------------------------------------------------------*/
 #include "element.h"
 #include "boost/format.hpp"
+#include "constants.h"
 #include "error.h"
 
 using namespace std;
@@ -126,6 +127,34 @@ string Element::toString() {
 
 bool Element::isInside(double x, double y) {
   return this->isInside(Point(x, y));
+}
+
+double Element::elementSize(bool geodesic) {
+  double size = 0.0;
+  for (int i = 0; i < this->n(); ++i) {
+    std::pair<Node*,Node*> p = this->elementLeg(i);
+    Node *n1 = p.first;
+    Node *n2 = p.second;
+    size = size +
+           Constants::distance(n1->x(), n1->y(), n2->x(), n2->y(), geodesic);
+  }
+  return size / this->n();
+}
+
+std::pair<Node *, Node *> Element::elementLeg(size_t i) {
+  assert(i >= 0 && i < this->n());
+
+  size_t j1 = i;
+  size_t j2 = i + 1;
+
+  if (j2 == this->n()) {
+    j2 = 0;
+  }
+
+  Node *np1 = this->node(j1);
+  Node *np2 = this->node(j2);
+
+  return std::make_pair(np1,np2);
 }
 
 bool Element::isInside(Point location) {

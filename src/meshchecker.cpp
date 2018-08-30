@@ -59,6 +59,11 @@ bool MeshChecker::checkMesh() {
     return false;
   }
 
+  if (!this->checkPipeHeights((this->m_mesh))) {
+    printf("MeshChecker::checkMesh :: Pipe height check failed.\n");
+    return false;
+  }
+
   return true;
 }
 
@@ -171,17 +176,21 @@ bool MeshChecker::checkOverlappingElements(Mesh *mesh) {
 
   for (size_t i = 0; i < mesh->numElements(); ++i) {
     for (int j = 0; j < mesh->element(i)->n(); ++j) {
-      size_t n1, n2;
       int count = 0;
 
-      MeshChecker::eline(mesh, i, j, n1, n2);
+      std::pair<Node*,Node*> p = mesh->element(i)->elementLeg(j);
+      Node *n1 = p.first;
+      Node *n2 = p.second;
 
-      for (size_t i1 = 0; i1 < elementsAroundNode.elementList(n1).size();
+      size_t nid1 = mesh->nodeIndexById(n1->id());
+      size_t nid2 = mesh->nodeIndexById(n2->id());
+
+      for (size_t i1 = 0; i1 < elementsAroundNode.elementList(nid1).size();
            ++i1) {
-        Element *m1 = elementsAroundNode.elementList(n1).at(i1);
-        for (size_t i2 = 0; i2 < elementsAroundNode.elementList(n2).size();
+        Element *m1 = elementsAroundNode.elementList(nid1).at(i1);
+        for (size_t i2 = 0; i2 < elementsAroundNode.elementList(nid2).size();
              ++i2) {
-          Element *m2 = elementsAroundNode.elementList(n2).at(i2);
+          Element *m2 = elementsAroundNode.elementList(nid2).at(i2);
           if (m1->id() == m2->id()) {
             count++;
             break;
@@ -203,26 +212,6 @@ bool MeshChecker::checkOverlappingElements(Mesh *mesh) {
   } else {
     return true;
   }
-}
-
-void MeshChecker::eline(Mesh *mesh, size_t i, size_t j, size_t &n1,
-                        size_t &n2) {
-  assert(j >= 0 && j < 3);
-  switch (j) {
-    case 0:
-      n1 = mesh->nodeIndexById(mesh->element(i)->node(0)->id());
-      n2 = mesh->nodeIndexById(mesh->element(i)->node(1)->id());
-      break;
-    case 1:
-      n1 = mesh->nodeIndexById(mesh->element(i)->node(1)->id());
-      n2 = mesh->nodeIndexById(mesh->element(i)->node(2)->id());
-      break;
-    case 2:
-      n1 = mesh->nodeIndexById(mesh->element(i)->node(2)->id());
-      n2 = mesh->nodeIndexById(mesh->element(i)->node(0)->id());
-      break;
-  }
-  return;
 }
 
 bool MeshChecker::checkDisjointNodes(Mesh *mesh) {
@@ -282,5 +271,19 @@ bool MeshChecker::checkPipeHeights(Mesh *mesh) {
       }
     }
   }
+  return passed;
+}
+
+bool MeshChecker::checkElementSizes(Mesh *mesh, double minimumElementSize) {
+  bool passed = true;
+  vector<double> element_size;
+  element_size.resize(mesh->numElements());
+  for (size_t i = 0; i < mesh->numElements(); i++) {
+    double size = std::numeric_limits<double>::max();
+    for (int j = 0; j < mesh->element(i)->n(); j++) {
+
+    }
+  }
+
   return passed;
 }
