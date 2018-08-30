@@ -24,6 +24,7 @@ TEMPLATE = lib
 VERSION = 0.1.0
 CONFIG -= qt
 CONFIG += c++11
+CONFIG += static
 
 DEFINES += ADCIRCMODULES_LIBRARY
 
@@ -32,7 +33,7 @@ BOOSTPATH     = $$PWD/../thirdparty/boost_1_66_0
 
 win32 {
     #...Set extension for a windows dll (avoids tracking version numbering in filename)
-    TARGET_EXT = .dll
+    #TARGET_EXT = .dll
 
     #...Include the netCDF header
     INCLUDEPATH += $$PWD/../thirdparty/netcdf/include

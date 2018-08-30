@@ -165,7 +165,20 @@ SET(NETCDF_AdditionalLibs "" CACHE STRING "Additional libraries that may be requ
 IF(NOT NETCDF_FOUND)
     MESSAGE(SEND_ERROR "Specify the netCDF path on the following screen")
 ELSE(NOT NETCDF_FOUND)
-    check_library_exists(netcdf nc_def_var_deflate "" NC_DEFLATE_FOUND)
+    
+    SET(netcdf_c_code
+"
+    #include <netcdf.h>
+    int main(){
+        int ncid,varid;
+        int ierr = nc_def_var_deflate(ncid,varid,1,2,2);
+        return 0;
+    }
+"
+    )
+    FILE(WRITE "${CMAKE_BINARY_DIR}/CMakeFiles/netcdf_c_check.c" "${netcdf_c_code}")
+    TRY_COMPILE(NC_DEFLATE_FOUND "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/netcdf_c_check.c" CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${NETCDF_INCLUDE_DIRS}" LINK_LIBRARIES "${NETCDF_LIBRARIES}" LINK_LIBRARIES "${NETCDF_AdditionalLibs}" OUTPUT_VARIABLE LOG1)
+        
     IF(NC_DEFLATE_FOUND)
         SET(NETCDF_LINKER_FLAG "${NETCDF_LIBRARIES}")
     ELSE(NC_DEFLATE_FOUND)
@@ -743,7 +756,7 @@ ENDIF(TEST_PERL)
 ###########################################################################
 IF(UNIX OR CYGWIN)
     IF(BUILD_TESTS)
-        #...C++ Testing
+        #...C++ Testingc
         FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases)
     
         FOREACH(TESTFILE cxx_readmesh.cpp cxx_writemesh.cpp cxx_writeshapefile.cpp
