@@ -20,6 +20,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS  = constants point kdtree2 projection shapelib \
-    rasterdata
+    rasterdata \
+    progress
 
 CONFIG += ordered           
