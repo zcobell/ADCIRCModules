@@ -22,9 +22,13 @@ class Griddata {
 
   std::vector<int> interpolationFlags() const;
   void setInterpolationFlags(const std::vector<int> &interpolationFlags);
+  int interpolationFlag(size_t index);
+  void setInterpolationFlag(size_t index, int flag);
 
-  std::vector<double> filterSize() const;
-  void setFilterSize(std::vector<double> filterSize);
+  std::vector<double> filterSizes() const;
+  void setFilterSizes(std::vector<double> filterSize);
+  double filterSize(size_t index);
+  void setFilterSize(size_t index, double filterSize);
 
   double defaultValue() const;
   void setDefaultValue(double defaultValue);
@@ -45,7 +49,7 @@ class Griddata {
   double rasterMultiplier() const;
   void setRasterMultiplier(double rasterMultiplier);
 
-private:
+ private:
   void buildWindDirectionLookup();
   double calculatePoint(Point &p, double searchRadius, Griddata::Method method);
   double calculateAvearage(Point &p, double w);

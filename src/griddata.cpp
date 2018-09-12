@@ -65,10 +65,40 @@ void Griddata::setInterpolationFlags(
   this->m_interpolationFlags = interpolationFlags;
 }
 
-std::vector<double> Griddata::filterSize() const { return this->m_filterSize; }
+void Griddata::setInterpolationFlag(size_t index, int flag) {
+  if (index < this->m_interpolationFlags.size()) {
+    this->m_interpolationFlags[index] = static_cast<Method>(flag);
+  }
+  return;
+}
 
-void Griddata::setFilterSize(std::vector<double> filterSize) {
+int Griddata::interpolationFlag(size_t index) {
+  if (index < this->m_interpolationFlags.size()) {
+    return static_cast<int>(this->m_interpolationFlags[index]);
+  } else {
+    return Method::NoMethod;
+  }
+}
+
+std::vector<double> Griddata::filterSizes() const { return this->m_filterSize; }
+
+void Griddata::setFilterSizes(std::vector<double> filterSize) {
   this->m_filterSize = filterSize;
+}
+
+double Griddata::filterSize(size_t index) {
+  if (index < this->m_filterSize.size()) {
+    return this->m_filterSize[index];
+  } else {
+    return 0.0;
+  }
+}
+
+void Griddata::setFilterSize(size_t index, double filterSize) {
+  if (index < this->m_filterSize.size()) {
+    this->m_filterSize[index] = filterSize;
+  }
+  return;
 }
 
 double Griddata::defaultValue() const { return this->m_defaultValue; }
@@ -131,7 +161,7 @@ double Griddata::calculateAvearage(Point &p, double w) {
     this->m_raster.pixelValues(ul.i(), ul.j(), lr.i(), lr.j(), x, y, z);
     for (size_t i = 0; i < x.size(); ++i) {
       double d = Constants::distance(p.x(), p.y(), x[i], y[i]);
-      if (d < w) {
+      if (d < w && z[i] != this->m_raster.nodata()) {
         a += z[i];
         n++;
       }
@@ -148,20 +178,25 @@ double Griddata::calculateNearest(Point &p, double w) {
   double d = Constants::distance(p.x(), p.y(), pxloc.x(), pxloc.y());
   if (d > w)
     return this->defaultValue();
-  else
-    return this->m_raster.pixelValueDouble(px);
+  else {
+    double z = this->m_raster.pixelValueDouble(px);
+    if (z != this->m_raster.nodata()) {
+      return z;
+    } else {
+      return this->defaultValue();
+    }
+  }
 }
 
 double Griddata::calculateHighest(Point &p, double w) {
-  size_t ibegin, iend, jbegin, jend;
   vector<double> x, y, z;
   double zm = std::numeric_limits<double>::min();
   Pixel ul, lr;
 
   this->m_raster.searchBoxAroundPoint(p.x(), p.y(), w, ul, lr);
-  this->m_raster.pixelValues(ibegin, jbegin, iend, jend, x, y, z);
+  this->m_raster.pixelValues(ul.i(), ul.j(), lr.i(), lr.j(), x, y, z);
   for (size_t i = 0; i < x.size(); ++i) {
-    if (z[i] > zm) {
+    if (z[i] > zm && z[i] != this->m_raster.nodata()) {
       double d = Constants::distance(p.x(), p.y(), x[i], y[i]);
       if (d < w) {
         zm = z[i];
