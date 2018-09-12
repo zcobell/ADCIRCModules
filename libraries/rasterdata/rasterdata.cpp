@@ -170,12 +170,12 @@ int Rasterdata::searchBoxAroundPoint(double x, double y, double width,
                                      Pixel &upperLeft, Pixel &lowerRight) {
   Pixel p = this->coordinateToPixel(x, y);
   if (p.isValid()) {
-    size_t nx = static_cast<size_t>(std::round(width / this->m_dx));
-    size_t ny = static_cast<size_t>(std::round(width / this->m_dy));
-    size_t ibegin = std::max<size_t>(0, p.i() - nx);
-    size_t iend = std::min<size_t>(this->m_nx, p.i() + nx);
-    size_t jbegin = std::max<size_t>(0, p.j() - ny);
-    size_t jend = std::min<size_t>(this->m_ny, p.j() + ny);
+    int nx = static_cast<int>(std::round(width / this->m_dx));
+    int ny = static_cast<int>(std::round(width / this->m_dy));
+    int ibegin = std::max<int>(1, p.i() - nx);
+    int iend = std::min<int>(this->m_nx - 1, p.i() + nx);
+    int jbegin = std::max<int>(1, p.j() - ny);
+    int jend = std::min<int>(this->m_ny - 1, p.j() + ny);
     nx = iend - ibegin + 1;
     ny = jend - jbegin + 1;
     upperLeft = Pixel(ibegin, jbegin);

@@ -1,11 +1,14 @@
 #include "griddata.h"
 #include <algorithm>
 #include <cmath>
+#include <fstream>
 #include <utility>
 #include "constants.h"
 #include "elementtable.h"
 #include "error.h"
 #include "progressbar/progressbar.h"
+#include "split.h"
+#include "stringconversion.h"
 
 template <typename T>
 int sgn(T val) {
@@ -54,6 +57,25 @@ double Griddata::windRadius() const { return this->m_windRadius; }
 
 void Griddata::setRasterFile(const std::string &rasterFile) {
   this->m_rasterFile = rasterFile;
+}
+
+void Griddata::readLookupTable(string lookupTableFile) {
+  this->m_lookup.clear();
+  std::fstream fid(lookupTableFile);
+  while (!fid.eof()) {
+    string l;
+    std::getline(fid, l);
+    vector<string> ls = split::stringSplitToVector(l);
+    if (ls.size() != 2) {
+      Adcirc::Error::throwError("Could not read the lookup table.");
+    }
+    bool ok;
+    size_t cls = StringConversion::stringToSizet(ls[0], ok);
+    double v = StringConversion::stringToDouble(ls[1], ok);
+    this->m_lookup[cls] = v;
+  }
+  fid.close();
+  return;
 }
 
 std::vector<int> Griddata::interpolationFlags() const {
@@ -166,7 +188,10 @@ double Griddata::calculateAvearage(Point &p, double w) {
         n++;
       }
     }
-    return a / n;
+    if (n > 0)
+      return a / n;
+    else
+      return this->defaultValue();
   } else {
     return this->defaultValue();
   }
@@ -309,9 +334,6 @@ std::vector<double> Griddata::computeValuesFromRaster() {
     Adcirc::Error::warning("Recommend using planar based coordinate system.");
   }
 
-  if (this->m_mesh->projection() != this->m_epsg)
-    this->m_mesh->reproject(this->m_epsg);
-
   if (this->m_gridsize.size() != this->m_mesh->numNodes())
     this->computeGridScale();
 
@@ -332,6 +354,9 @@ std::vector<double> Griddata::computeValuesFromRaster() {
                   this->calculatePoint(
                       p, this->m_filterSize[i] * this->m_gridsize[i],
                       static_cast<Method>(this->m_interpolationFlags[i]));
+    } else {
+      Adcirc::Error::warning("Negative mesh size detected");
+      result[i] = this->m_defaultValue;
     }
   }
 

@@ -20,6 +20,8 @@ class Griddata {
   std::string rasterFile() const;
   void setRasterFile(const std::string &rasterFile);
 
+  void readLookupTable(std::string lookupTableFile);
+
   std::vector<int> interpolationFlags() const;
   void setInterpolationFlags(const std::vector<int> &interpolationFlags);
   int interpolationFlag(size_t index);
