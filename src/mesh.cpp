@@ -34,14 +34,17 @@ using namespace Adcirc::Geometry;
  * @name Mesh::Mesh
  * @brief Default Constructor
  */
-Mesh::Mesh() : m_filename("none") { this->_init(); }
+Mesh::Mesh() { this->_init(); }
 
 /**
  * @overload Mesh::Mesh
  * @brief Default constructor with filename parameter
  * @param filename name of the mesh to read
  */
-Mesh::Mesh(const string &filename) : m_filename(filename) { this->_init(); }
+Mesh::Mesh(const string &filename) {
+  this->_init();
+  this->m_filename = filename;
+}
 
 /**
  * @name Mesh::_init
@@ -59,6 +62,7 @@ void Mesh::_init() {
   this->m_totalLandBoundaryNodes = 0;
   this->m_nodeOrderingLogical = true;
   this->m_elementOrderingLogical = true;
+  this->m_filename = string();
 }
 
 /**
@@ -71,6 +75,68 @@ Mesh::~Mesh() {
   this->m_landBoundaries.clear();
   this->m_nodeLookup.clear();
   this->m_elementLookup.clear();
+}
+
+Mesh::Mesh(const Mesh &m) {
+  this->resizeMesh(m.numNodes(), m.numElements(), m.numOpenBoundaries(),
+                   m.numLandBoundaries());
+  this->m_nodes = m.allNodes();
+  this->m_elements = m.allElements();
+  this->m_openBoundaries = m.allOpenBoundaries();
+  this->m_landBoundaries = m.allLandBoundaries();
+  this->m_epsg = m.projection();
+  this->m_isLatLon = m.isLatLon();
+  this->m_meshHeaderString = m.meshHeaderString();
+  this->m_filename = m.filename();
+  this->m_nodeOrderingLogical = m.nodeOrderingIsLogical();
+  this->m_elementOrderingLogical = m.elementOrderingIsLogical();
+  this->m_nodeLookup = m.nodeLookupTable();
+  this->m_elementLookup = m.elementLookupTable();
+  this->m_nodalSearchTree.reset();
+  this->m_elementalSearchTree.reset();
+  return;
+}
+
+Mesh &Mesh::operator=(const Mesh &m) {
+  if (this != &m) {
+    this->resizeMesh(m.numNodes(), m.numElements(), m.numOpenBoundaries(),
+                     m.numLandBoundaries());
+    this->m_nodes = m.allNodes();
+    this->m_elements = m.allElements();
+    this->m_openBoundaries = m.allOpenBoundaries();
+    this->m_landBoundaries = m.allLandBoundaries();
+    this->m_epsg = m.projection();
+    this->m_isLatLon = m.isLatLon();
+    this->m_meshHeaderString = m.meshHeaderString();
+    this->m_filename = m.filename();
+    this->m_nodeOrderingLogical = m.nodeOrderingIsLogical();
+    this->m_elementOrderingLogical = m.elementOrderingIsLogical();
+    this->m_nodeLookup = m.nodeLookupTable();
+    this->m_elementLookup = m.elementLookupTable();
+    this->m_nodalSearchTree.reset();
+    this->m_elementalSearchTree.reset();
+  }
+  return *this;
+}
+
+vector<Node> Mesh::allNodes() const { return this->m_nodes; }
+
+vector<Element> Mesh::allElements() const { return this->m_elements; }
+
+vector<Boundary> Mesh::allOpenBoundaries() const {
+  return this->m_openBoundaries;
+}
+
+vector<Boundary> Mesh::allLandBoundaries() const {
+  return this->m_landBoundaries;
+}
+
+unordered_map<size_t, size_t> Mesh::nodeLookupTable() const {
+  return this->m_nodeLookup;
+}
+
+unordered_map<size_t, size_t> Mesh::elementLookupTable() const {
+  return this->m_elementLookup;
 }
 
 /**
@@ -662,14 +728,14 @@ void Mesh::defineProjection(int epsg, bool isLatLon) {
  * @brief Returns the EPSG code for the current mesh projection
  * @return EPSG code
  */
-int Mesh::projection() { return this->m_epsg; }
+int Mesh::projection() const { return this->m_epsg; }
 
 /**
  * @name Mesh::isLatLon
  * @brief Returns true if the mesh is in a geographic projection
  * @return boolean value for mesh projection type
  */
-bool Mesh::isLatLon() { return this->m_isLatLon; }
+bool Mesh::isLatLon() const { return this->m_isLatLon; }
 
 /**
  * @name Mesh::reproject
@@ -1059,7 +1125,7 @@ void Mesh::write(const string &filename) {
  * ordering is logcical (i.e. sequential) or not
  * @return true if node ordering is sequential
  */
-bool Mesh::nodeOrderingIsLogical() { return this->m_nodeOrderingLogical; }
+bool Mesh::nodeOrderingIsLogical() const { return this->m_nodeOrderingLogical; }
 
 /**
  * @name Mesh::elementOrderingIsLogical
@@ -1067,7 +1133,9 @@ bool Mesh::nodeOrderingIsLogical() { return this->m_nodeOrderingLogical; }
  * ordering is logcical (i.e. sequential) or not
  * @return true if element ordering is sequential
  */
-bool Mesh::elementOrderingIsLogical() { return this->m_elementOrderingLogical; }
+bool Mesh::elementOrderingIsLogical() const {
+  return this->m_elementOrderingLogical;
+}
 
 /**
  * @name Mesh::nodeIndexById

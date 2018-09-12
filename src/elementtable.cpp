@@ -29,8 +29,8 @@ void ElementTable::build() {
   return;
 }
 
-std::vector<Element *> ElementTable::elementList(int nodeIndex) {
-  if (nodeIndex >= 0 && nodeIndex < this->m_mesh->numNodes()) {
+std::vector<Element *> ElementTable::elementList(size_t nodeIndex) {
+  if (nodeIndex < this->m_mesh->numNodes()) {
     return this->m_elementTable[nodeIndex];
   } else {
     std::vector<Element *> a;

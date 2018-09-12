@@ -38,6 +38,8 @@ class Constants {
   static double rhoAir();
   static double distance(double x1, double y1, double x2, double y2, bool geodesic = false);
   static double azimuth(double x1, double y1, double  x2, double y2);
+  static double root2();
+  static double root3();
 
 private:
   static double geodesic_distance(double x1, double y1, double x2, double y2);

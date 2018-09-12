@@ -30,6 +30,8 @@ const double m_deg2rad = m_pi / 180.0;
 const double m_rad2deg = 180.0 / m_pi;
 const double m_rhoAir = 1.15;
 const double m_g = 9.80665;
+const double m_root2 = sqrt(2);
+const double m_root3 = sqrt(3);
 
 Constants::Constants() = default;
 
@@ -85,3 +87,7 @@ double Constants::toDegrees(double radians) {
 double Constants::toRadians(double degrees) {
   return degrees * Constants::deg2rad();
 }
+
+double Constants::root2() { return m_root2; }
+
+double Constants::root3() { return m_root3; }

@@ -17,10 +17,11 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 #include "point.h"
+#include <limits>
 
 Point::Point() {
-  this->m_x = -9999.0;
-  this->m_y = -9999.0;
+  this->m_x = std::numeric_limits<double>::min();
+  this->m_y = std::numeric_limits<double>::min();
 }
 
 Point::Point(double x, double y) {

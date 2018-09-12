@@ -13,7 +13,7 @@ class ElementTable {
   ElementTable();
   ElementTable(Adcirc::Geometry::Mesh *mesh);
 
-  std::vector<Adcirc::Geometry::Element *> elementList(int nodeIndex);
+  std::vector<Adcirc::Geometry::Element *> elementList(size_t nodeIndex);
 
   void build();
 

@@ -24,7 +24,7 @@ TEMPLATE = lib
 VERSION = 0.1.0
 CONFIG -= qt
 CONFIG += c++11
-CONFIG += static
+#CONFIG += static
 
 DEFINES += ADCIRCMODULES_LIBRARY
 
@@ -34,6 +34,9 @@ BOOSTPATH     = $$PWD/../thirdparty/boost_1_66_0
 win32 {
     #...Set extension for a windows dll (avoids tracking version numbering in filename)
     #TARGET_EXT = .dll
+
+    INCLUDEPATH += C:/OSGeo4W64/include
+    LIBS+= -LC:/OSGeo4W64/lib -lgdal_i
 
     #...Include the netCDF header
     INCLUDEPATH += $$PWD/../thirdparty/netcdf/include
@@ -64,6 +67,7 @@ unix:!macx{
         LIBS += -L$$NETCDFHOME/lib -lnetcdf
         INCLUDEPATH += $$NETCDFHOME/include
     }
+    LIBS+= -lgdal
 }
 
 # The following define makes your compiler emit warnings if you use
@@ -96,7 +100,8 @@ SOURCES += \
     filetypes.cpp \
     ltea.cpp \
     meshchecker.cpp \
-    elementtable.cpp
+    elementtable.cpp \
+    griddata.cpp
 
 HEADERS += \
     adcircmodules_global.h \
@@ -122,7 +127,8 @@ HEADERS += \
     filetypes.h \
     ltea.h \
     meshchecker.h \
-    elementtable.h
+    elementtable.h \
+    griddata.h
 
 INCLUDEPATH += $$BOOSTPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib
@@ -218,3 +224,16 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libr
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/constants/release/constants.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/constants/debug/constants.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/constants/libconstants.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/rasterdata/release/ -lrasterdata
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/rasterdata/debug/ -lrasterdata
+else:unix: LIBS += -L$$OUT_PWD/../libraries/rasterdata/ -lrasterdata
+
+INCLUDEPATH += $$PWD/../libraries/rasterdata
+DEPENDPATH += $$PWD/../libraries/rasterdata
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/rasterdata/release/librasterdata.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/rasterdata/debug/librasterdata.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/rasterdata/release/rasterdata.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/rasterdata/debug/rasterdata.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/rasterdata/librasterdata.a

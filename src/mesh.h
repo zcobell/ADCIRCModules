@@ -67,6 +67,8 @@ class Mesh {
  public:
   explicit Mesh();
   explicit Mesh(const std::string &filename);
+  Mesh(const Mesh &m);
+  Mesh &operator=(const Mesh &m);
 
   ~Mesh();
 
@@ -102,10 +104,10 @@ class Mesh {
 
   size_t totalLandBoundaryNodes();
 
-  int projection();
+  int projection() const;
   void defineProjection(int epsg, bool isLatLon);
   void reproject(int epsg);
-  bool isLatLon();
+  bool isLatLon() const;
 
   void cpp(double lambda, double phi);
   void inverseCpp(double lambda, double phi);
@@ -122,8 +124,8 @@ class Mesh {
   bool nodalSearchTreeInitialized();
   bool elementalSearchTreeInitialized();
 
-  bool nodeOrderingIsLogical();
-  bool elementOrderingIsLogical();
+  bool nodeOrderingIsLogical() const;
+  bool elementOrderingIsLogical() const;
 
   size_t findNearestNode(Point location);
   size_t findNearestNode(double x, double y);
@@ -139,6 +141,14 @@ class Mesh {
 
   Adcirc::Geometry::Node *nodeById(size_t id);
   Adcirc::Geometry::Element *elementById(size_t id);
+
+  std::vector<Adcirc::Geometry::Node> allNodes() const;
+  std::vector<Adcirc::Geometry::Element> allElements() const;
+  std::vector<Adcirc::Geometry::Boundary> allOpenBoundaries() const;
+  std::vector<Adcirc::Geometry::Boundary> allLandBoundaries() const;
+
+  std::unordered_map<size_t, size_t> nodeLookupTable() const;
+  std::unordered_map<size_t, size_t> elementLookupTable() const;
 
   size_t nodeIndexById(size_t id);
   size_t elementIndexById(size_t id);
