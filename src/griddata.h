@@ -61,7 +61,7 @@ class Griddata {
                                       std::vector<double> &y,
                                       std::vector<double> &z);
 
-  void computeGridScale();
+  std::vector<double> computeGridScale();
 
   std::vector<double> m_filterSize;
   double m_defaultValue;
@@ -69,7 +69,6 @@ class Griddata {
   Rasterdata m_raster;
   std::string m_rasterFile;
   std::vector<int> m_interpolationFlags;
-  std::vector<double> m_gridsize;
   std::map<size_t, double> m_lookup;
   std::map<std::pair<int, int>, int> m_windDirections;
   int m_epsg;

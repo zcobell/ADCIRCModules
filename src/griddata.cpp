@@ -39,7 +39,6 @@ Griddata::Griddata(Mesh *mesh, string rasterFile) {
             this->m_interpolationFlags.end(), Average);
   this->m_filterSize.resize(this->m_mesh->numNodes());
   std::fill(this->m_filterSize.begin(), this->m_filterSize.end(), 1.0);
-  this->computeGridScale();
   this->m_defaultValue = -9999;
   this->m_epsg = 4326;
   this->m_showProgressBar = false;
@@ -234,11 +233,12 @@ double Griddata::calculateHighest(Point &p, double w) {
     return zm;
 }
 
-void Griddata::computeGridScale() {
+std::vector<double> Griddata::computeGridScale() {
   ElementTable e(this->m_mesh);
   e.build();
 
-  this->m_gridsize.resize(this->m_mesh->numNodes());
+  std::vector<double> gridsize;
+  gridsize.resize(this->m_mesh->numNodes());
 
   for (size_t i = 0; i < this->m_mesh->numNodes(); i++) {
     vector<Element *> l = e.elementList(this->m_mesh->node(i));
@@ -246,9 +246,9 @@ void Griddata::computeGridScale() {
     for (size_t j = 0; j < l.size(); ++j) {
       a += l[j]->elementSize(false);
     }
-    this->m_gridsize[i] = a / l.size();
+    gridsize[i] = a / l.size();
   }
-  return;
+  return gridsize;
 }
 
 double Griddata::rasterMultiplier() const { return m_rasterMultiplier; }
@@ -334,8 +334,7 @@ std::vector<double> Griddata::computeValuesFromRaster() {
     Adcirc::Error::warning("Recommend using planar based coordinate system.");
   }
 
-  if (this->m_gridsize.size() != this->m_mesh->numNodes())
-    this->computeGridScale();
+  std::vector<double> gridsize = this->computeGridScale();
 
   std::vector<double> result;
   result.resize(this->m_mesh->numNodes());
@@ -348,11 +347,11 @@ std::vector<double> Griddata::computeValuesFromRaster() {
     if (this->m_showProgressBar)
       if (i % (this->m_mesh->numNodes() / 1000) == 0) progressbar_inc(progress);
 
-    if (this->m_gridsize[i] > 0) {
+    if (gridsize[i] > 0) {
       Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
       result[i] = this->m_rasterMultiplier *
                   this->calculatePoint(
-                      p, this->m_filterSize[i] * this->m_gridsize[i],
+                      p, this->m_filterSize[i] * gridsize[i],
                       static_cast<Method>(this->m_interpolationFlags[i]));
     } else {
       Adcirc::Error::warning("Negative mesh size detected");
