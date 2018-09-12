@@ -1,10 +1,7 @@
 #include "pixel.h"
 #include <limits>
 
-Pixel::Pixel() {
-  this->m_i = std::numeric_limits<size_t>::min();
-  this->m_j = std::numeric_limits<size_t>::min();
-}
+Pixel::Pixel() { this->setInvalid(); }
 
 Pixel::Pixel(size_t i, size_t j) {
   this->m_i = i;
@@ -21,3 +18,13 @@ void Pixel::set(const size_t &i, const size_t &j) {
 size_t Pixel::i() const { return this->m_i; }
 
 size_t Pixel::j() const { return this->m_j; }
+
+bool Pixel::isValid() {
+  return this->m_i < std::numeric_limits<size_t>::max() &&
+         this->m_j < std::numeric_limits<size_t>::max();
+}
+
+void Pixel::setInvalid() {
+  this->m_i = std::numeric_limits<size_t>::max();
+  this->m_j = this->m_i;
+}

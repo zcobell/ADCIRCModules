@@ -182,15 +182,12 @@ bool MeshChecker::checkOverlappingElements(Mesh *mesh) {
       Node *n1 = p.first;
       Node *n2 = p.second;
 
-      size_t nid1 = mesh->nodeIndexById(n1->id());
-      size_t nid2 = mesh->nodeIndexById(n2->id());
-
-      for (size_t i1 = 0; i1 < elementsAroundNode.elementList(nid1).size();
+      for (size_t i1 = 0; i1 < elementsAroundNode.elementList(n1).size();
            ++i1) {
-        Element *m1 = elementsAroundNode.elementList(nid1).at(i1);
-        for (size_t i2 = 0; i2 < elementsAroundNode.elementList(nid2).size();
+        Element *m1 = elementsAroundNode.elementList(n1).at(i1);
+        for (size_t i2 = 0; i2 < elementsAroundNode.elementList(n2).size();
              ++i2) {
-          Element *m2 = elementsAroundNode.elementList(nid2).at(i2);
+          Element *m2 = elementsAroundNode.elementList(n2).at(i2);
           if (m1->id() == m2->id()) {
             count++;
             break;

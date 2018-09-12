@@ -301,6 +301,17 @@ TARGET_LINK_LIBRARIES( kdtree2 point )
 
 
 ###########################################################################
+# PROGRESS BAR
+###########################################################################
+set(CURSES_NEED_NCURSES TRUE)
+find_package(Curses)
+ADD_LIBRARY( progress STATIC ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/lib/progressbar.c 
+                             ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/lib/statusbar.c )
+TARGET_INCLUDE_DIRECTORIES( progress PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/include/progressbar ${CURSES_INCLUDE_DIRS})
+###########################################################################
+
+
+###########################################################################
 #  PROJ4 Library
 ###########################################################################
 ADD_LIBRARY( projection STATIC ${CMAKE_SOURCE_DIR}/libraries/projection/projection.cpp
@@ -559,9 +570,10 @@ TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
                                 ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 
                                 ${CMAKE_SOURCE_DIR}/libraries/constants
+                                ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/include 
                                 ${NETCDF_INCLUDE_DIR} ) 
 
-ADD_DEPENDENCIES( adcircmodules point projection kdtree2 shapelib constants rasterdata )
+ADD_DEPENDENCIES( adcircmodules point projection kdtree2 shapelib constants rasterdata progress )
 
 TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE GIT_VERSION="${GIT_VERSION}")
 
@@ -608,7 +620,7 @@ ELSE(WIN32)
     INSTALL( TARGETS adcircmodules LIBRARY DESTINATION lib PUBLIC_HEADER DESTINATION ${HEADER_DEST})
 ENDIF(WIN32)
 
-TARGET_LINK_LIBRARIES( adcircmodules projection point kdtree2 shapelib constants rasterdata ${NETCDF_LIBRARIES} ${GDAL_LIBRARY} )
+TARGET_LINK_LIBRARIES( adcircmodules projection point kdtree2 shapelib constants rasterdata progress ${NETCDF_LIBRARIES} ${GDAL_LIBRARY} )
 ###########################################################################
 
 

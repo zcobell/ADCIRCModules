@@ -14,7 +14,7 @@ class Griddata {
   enum Method { NoMethod = 0, Average = 1, Nearest = 2, Highest = 3 };
 
   Griddata();
-  Griddata(Adcirc::Geometry::Mesh &mesh, std::string rasterFile);
+  Griddata(Adcirc::Geometry::Mesh *mesh, std::string rasterFile);
   ~Griddata();
 
   std::string rasterFile() const;
@@ -29,14 +29,23 @@ class Griddata {
   double defaultValue() const;
   void setDefaultValue(double defaultValue);
 
-  void computeValuesFromRaster(std::vector<double> &result);
+  std::vector<double> computeValuesFromRaster();
   void computeValuesFromLookup(std::vector<double> &result);
 
   double windRadius() const;
 
   double windSigma() const;
 
- private:
+  int epsg() const;
+  void setEpsg(int epsg);
+
+  bool showProgressBar() const;
+  void setShowProgressBar(bool showProgressBar);
+
+  double rasterMultiplier() const;
+  void setRasterMultiplier(double rasterMultiplier);
+
+private:
   void buildWindDirectionLookup();
   double calculatePoint(Point &p, double searchRadius, Griddata::Method method);
   double calculateAvearage(Point &p, double w);
@@ -50,13 +59,16 @@ class Griddata {
 
   std::vector<double> m_filterSize;
   double m_defaultValue;
-  Adcirc::Geometry::Mesh m_mesh;
+  Adcirc::Geometry::Mesh *m_mesh;
   Rasterdata m_raster;
   std::string m_rasterFile;
   std::vector<int> m_interpolationFlags;
   std::vector<double> m_gridsize;
   std::map<size_t, double> m_lookup;
   std::map<std::pair<int, int>, int> m_windDirections;
+  int m_epsg;
+  double m_rasterMultiplier;
+  bool m_showProgressBar;
 
   const double m_windRadius = 10.0;
   const double m_windSigma = 6.0;

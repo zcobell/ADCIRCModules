@@ -13,7 +13,8 @@ class ElementTable {
   ElementTable();
   ElementTable(Adcirc::Geometry::Mesh *mesh);
 
-  std::vector<Adcirc::Geometry::Element *> elementList(size_t nodeIndex);
+  std::vector<Adcirc::Geometry::Element *> elementList(
+      Adcirc::Geometry::Node *n);
 
   void build();
 
@@ -21,7 +22,9 @@ class ElementTable {
   void setMesh(Adcirc::Geometry::Mesh *mesh);
 
  private:
-  std::vector<std::vector<Adcirc::Geometry::Element *>> m_elementTable;
+  std::unordered_map<Adcirc::Geometry::Node *,
+                     std::vector<Adcirc::Geometry::Element *>>
+      m_elementTable;
 
   Adcirc::Geometry::Mesh *m_mesh;
 };

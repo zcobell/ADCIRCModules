@@ -5,6 +5,7 @@
 #include "constants.h"
 #include "elementtable.h"
 #include "error.h"
+#include "progressbar/progressbar.h"
 
 template <typename T>
 int sgn(T val) {
@@ -20,20 +21,26 @@ Griddata::Griddata() {
   this->m_interpolationFlags = std::vector<int>();
   this->m_filterSize = std::vector<double>();
   this->m_defaultValue = -9999.0;
+  this->m_epsg = 4326;
+  this->m_showProgressBar = false;
+  this->m_rasterMultiplier = 1.0;
   this->buildWindDirectionLookup();
 }
 
-Griddata::Griddata(Mesh &mesh, string rasterFile) {
+Griddata::Griddata(Mesh *mesh, string rasterFile) {
   this->m_mesh = mesh;
   this->m_rasterFile = rasterFile;
   this->m_raster = Rasterdata(this->m_rasterFile);
-  this->m_interpolationFlags.resize(this->m_mesh.numNodes());
+  this->m_interpolationFlags.resize(this->m_mesh->numNodes());
   std::fill(this->m_interpolationFlags.begin(),
             this->m_interpolationFlags.end(), Average);
-  this->m_filterSize.resize(this->m_mesh.numNodes());
+  this->m_filterSize.resize(this->m_mesh->numNodes());
   std::fill(this->m_filterSize.begin(), this->m_filterSize.end(), 1.0);
   this->computeGridScale();
   this->m_defaultValue = -9999;
+  this->m_epsg = 4326;
+  this->m_showProgressBar = false;
+  this->m_rasterMultiplier = 1.0;
   this->buildWindDirectionLookup();
 }
 
@@ -114,22 +121,25 @@ double Griddata::calculatePoint(Point &p, double searchRadius,
 }
 
 double Griddata::calculateAvearage(Point &p, double w) {
-  size_t ibegin, iend, jbegin, jend;
-  vector<double> x, y, z;
-  double a = 0.0;
-  size_t n = 0;
+  Pixel ul, lr;
 
-  this->m_raster.searchBoxAroundPoint(p.x(), p.y(), w, ibegin, jbegin, iend,
-                                      jend);
-  this->m_raster.pixelValues(ibegin, jbegin, iend, jend, x, y, z);
-  for (size_t i = 0; i < x.size(); ++i) {
-    double d = Constants::distance(p.x(), p.y(), x[i], y[i]);
-    if (d < w) {
-      a += z[i];
-      n++;
+  this->m_raster.searchBoxAroundPoint(p.x(), p.y(), w, ul, lr);
+  if (ul.isValid() && lr.isValid()) {
+    vector<double> x, y, z;
+    double a = 0.0;
+    size_t n = 0;
+    this->m_raster.pixelValues(ul.i(), ul.j(), lr.i(), lr.j(), x, y, z);
+    for (size_t i = 0; i < x.size(); ++i) {
+      double d = Constants::distance(p.x(), p.y(), x[i], y[i]);
+      if (d < w) {
+        a += z[i];
+        n++;
+      }
     }
+    return a / n;
+  } else {
+    return this->defaultValue();
   }
-  return a / n;
 }
 
 double Griddata::calculateNearest(Point &p, double w) {
@@ -146,9 +156,9 @@ double Griddata::calculateHighest(Point &p, double w) {
   size_t ibegin, iend, jbegin, jend;
   vector<double> x, y, z;
   double zm = std::numeric_limits<double>::min();
+  Pixel ul, lr;
 
-  this->m_raster.searchBoxAroundPoint(p.x(), p.y(), w, ibegin, jbegin, iend,
-                                      jend);
+  this->m_raster.searchBoxAroundPoint(p.x(), p.y(), w, ul, lr);
   this->m_raster.pixelValues(ibegin, jbegin, iend, jend, x, y, z);
   for (size_t i = 0; i < x.size(); ++i) {
     if (z[i] > zm) {
@@ -165,23 +175,37 @@ double Griddata::calculateHighest(Point &p, double w) {
 }
 
 void Griddata::computeGridScale() {
-  ElementTable e(&this->m_mesh);
+  ElementTable e(this->m_mesh);
   e.build();
 
-  this->m_gridsize.resize(this->m_mesh.numNodes());
+  this->m_gridsize.resize(this->m_mesh->numNodes());
 
-  for (size_t i = 0; i < this->m_mesh.numNodes(); ++i) {
-    vector<Element *> l = e.elementList(i);
+  for (size_t i = 0; i < this->m_mesh->numNodes(); i++) {
+    vector<Element *> l = e.elementList(this->m_mesh->node(i));
     double a = 0.0;
-    size_t n = 0;
     for (size_t j = 0; j < l.size(); ++j) {
       a += l[j]->elementSize(false);
-      n++;
     }
-    this->m_gridsize[i] = a / n;
+    this->m_gridsize[i] = a / l.size();
   }
   return;
 }
+
+double Griddata::rasterMultiplier() const { return m_rasterMultiplier; }
+
+void Griddata::setRasterMultiplier(double rasterMultiplier) {
+  m_rasterMultiplier = rasterMultiplier;
+}
+
+bool Griddata::showProgressBar() const { return m_showProgressBar; }
+
+void Griddata::setShowProgressBar(bool showProgressBar) {
+  m_showProgressBar = showProgressBar;
+}
+
+int Griddata::epsg() const { return this->m_epsg; }
+
+void Griddata::setEpsg(int epsg) { this->m_epsg = epsg; }
 
 vector<double> Griddata::directionalWind(Point &p, vector<double> &x,
                                          vector<double> &y, vector<double> &z) {
@@ -209,9 +233,11 @@ vector<double> Griddata::directionalWind(Point &p, vector<double> &x,
         tanxy = abs(dy / dx);
       }
 
-      int k = min<int>(1, tanxy / (2 - Constants::root3()));
-      k = k + min<int>(1, tanxy);
-      k = k + min<int>(1, tanxy / (2 * Constants::root3()));
+      int k = min<int>(
+          1, static_cast<int>(std::floor(tanxy / (2 - Constants::root3()))));
+      k = k + min<int>(1, static_cast<int>(std::floor(tanxy)));
+      k = k + min<int>(1, static_cast<int>(
+                              std::floor(tanxy / (2 + Constants::root3()))));
 
       if (k > 3) {
         Adcirc::Error::throwError("Overflow in k");
@@ -236,7 +262,7 @@ vector<double> Griddata::directionalWind(Point &p, vector<double> &x,
   return r;
 }
 
-void Griddata::computeValuesFromRaster(std::vector<double> &result) {
+std::vector<double> Griddata::computeValuesFromRaster() {
   if (!this->m_raster.isOpen()) {
     bool success = this->m_raster.open();
     if (!success) {
@@ -244,22 +270,39 @@ void Griddata::computeValuesFromRaster(std::vector<double> &result) {
     }
   }
 
-  if (this->m_raster.epsg() == 4326 || this->m_raster.epsg() == 4269) {
+  if (this->m_epsg == 4326 || this->m_epsg == 4269) {
     Adcirc::Error::warning("Recommend using planar based coordinate system.");
   }
 
-  if (this->m_mesh.projection() != this->m_raster.epsg())
-    this->m_mesh.reproject(this->m_raster.epsg());
+  if (this->m_mesh->projection() != this->m_epsg)
+    this->m_mesh->reproject(this->m_epsg);
 
-  if (this->m_gridsize.size() != this->m_mesh.numNodes())
+  if (this->m_gridsize.size() != this->m_mesh->numNodes())
     this->computeGridScale();
 
-  for (size_t i = 0; i < this->m_mesh.numNodes(); ++i) {
-    Point p = Point(this->m_mesh.node(i)->x(), this->m_mesh.node(i)->y());
-    result[i] = this->calculatePoint(
-        p, this->m_filterSize[i] * this->m_gridsize[i],
-        static_cast<Method>(this->m_interpolationFlags[i]));
+  std::vector<double> result;
+  result.resize(this->m_mesh->numNodes());
+
+  progressbar *progress;
+  if (this->m_showProgressBar)
+    progress = progressbar_new("Raster Interpolation", 1000);
+
+  for (size_t i = 0; i < this->m_mesh->numNodes(); ++i) {
+    if (this->m_showProgressBar)
+      if (i % (this->m_mesh->numNodes() / 1000) == 0) progressbar_inc(progress);
+
+    if (this->m_gridsize[i] > 0) {
+      Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
+      result[i] = this->m_rasterMultiplier *
+                  this->calculatePoint(
+                      p, this->m_filterSize[i] * this->m_gridsize[i],
+                      static_cast<Method>(this->m_interpolationFlags[i]));
+    }
   }
+
+  if (this->m_showProgressBar) progressbar_finish(progress);
+
+  return result;
 }
 
 void Griddata::computeValuesFromLookup(std::vector<double> &result) { return; }

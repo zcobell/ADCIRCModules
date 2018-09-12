@@ -11,6 +11,9 @@ class Pixel {
   size_t i() const;
   size_t j() const;
 
+  bool isValid();
+  void setInvalid();
+
   void set(const size_t &i, const size_t &j);
 
  private:

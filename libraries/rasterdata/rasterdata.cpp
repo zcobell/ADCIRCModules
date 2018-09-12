@@ -104,8 +104,12 @@ Point Rasterdata::pixelToCoordinate(Pixel &p) {
 }
 
 Pixel Rasterdata::coordinateToPixel(double x, double y) {
-  return Pixel(static_cast<int>(std::round((x - this->m_xmin) / this->m_dx)),
-               static_cast<int>(std::round((this->m_ymax - y) / this->m_dy)));
+  if (x > this->xmax() || x < this->xmin() || y > this->ymax() || y < ymin()) {
+    return Pixel();
+  } else {
+    return Pixel(static_cast<int>(std::round((x - this->m_xmin) / this->m_dx)),
+                 static_cast<int>(std::round((this->m_ymax - y) / this->m_dy)));
+  }
 }
 
 Pixel Rasterdata::coordinateToPixel(Point &p) {
@@ -163,18 +167,25 @@ double Rasterdata::pixelValueDouble(Pixel &p) {
 }
 
 int Rasterdata::searchBoxAroundPoint(double x, double y, double width,
-                                     size_t &ibegin, size_t &jbegin,
-                                     size_t &iend, size_t &jend) {
+                                     Pixel &upperLeft, Pixel &lowerRight) {
   Pixel p = this->coordinateToPixel(x, y);
-  size_t nx = static_cast<size_t>(std::round(width / this->m_dx));
-  size_t ny = static_cast<size_t>(std::round(width / this->m_dy));
-  ibegin = std::max<size_t>(0, p.i() - nx);
-  iend = std::min<size_t>(this->m_nx, p.i() + nx);
-  jbegin = std::max<size_t>(0, p.j() - ny);
-  jend = std::min<size_t>(this->m_ny, p.j() + ny);
-  nx = iend - ibegin + 1;
-  ny = jend - jbegin + 1;
-  return nx * ny;
+  if (p.isValid()) {
+    size_t nx = static_cast<size_t>(std::round(width / this->m_dx));
+    size_t ny = static_cast<size_t>(std::round(width / this->m_dy));
+    size_t ibegin = std::max<size_t>(0, p.i() - nx);
+    size_t iend = std::min<size_t>(this->m_nx, p.i() + nx);
+    size_t jbegin = std::max<size_t>(0, p.j() - ny);
+    size_t jend = std::min<size_t>(this->m_ny, p.j() + ny);
+    nx = iend - ibegin + 1;
+    ny = jend - jbegin + 1;
+    upperLeft = Pixel(ibegin, jbegin);
+    lowerRight = Pixel(iend, jend);
+    return nx * ny;
+  } else {
+    upperLeft.setInvalid();
+    lowerRight.setInvalid();
+    return 0;
+  }
 }
 
 int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
