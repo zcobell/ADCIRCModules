@@ -307,6 +307,7 @@ set(CURSES_NEED_NCURSES TRUE)
 find_package(Curses)
 ADD_LIBRARY( progress STATIC ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/lib/progressbar.c 
                              ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/lib/statusbar.c )
+SET_PROPERTY(TARGET progress PROPERTY C_STANDARD 99)
 TARGET_INCLUDE_DIRECTORIES( progress PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/include/progressbar ${CURSES_INCLUDE_DIRS})
 ###########################################################################
 
