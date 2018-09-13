@@ -10,13 +10,18 @@
 #include "split.h"
 #include "stringconversion.h"
 
+using namespace std;
+using namespace Adcirc::Geometry;
+
 template <typename T>
 int sgn(T val) {
   return (T(0) < val) - (val < T(0));
 }
 
-using namespace std;
-using namespace Adcirc::Geometry;
+bool Griddata::hasKey(int key) {
+  if (this->m_lookup.find(key) != this->m_lookup.end()) return true;
+  return false;
+}
 
 Griddata::Griddata() {
   this->m_raster = Rasterdata();
@@ -171,6 +176,24 @@ double Griddata::calculatePoint(Point &p, double searchRadius,
   }
 }
 
+double Griddata::calculatePointFromLookup(Point &p, double searchRadius,
+                                          Griddata::Method method) {
+  switch (method) {
+    case Average:
+      return this->calculateAvearageFromLookup(p, searchRadius);
+      break;
+    case Nearest:
+      return this->calculateNearestFromLookup(p, searchRadius);
+      break;
+    case Highest:
+      return this->calculateHighestFromLookup(p, searchRadius);
+      break;
+    default:
+      return this->defaultValue();
+      break;
+  }
+}
+
 double Griddata::calculateAvearage(Point &p, double w) {
   Pixel ul, lr;
 
@@ -185,6 +208,34 @@ double Griddata::calculateAvearage(Point &p, double w) {
       if (d < w && z[i] != this->m_raster.nodata()) {
         a += z[i];
         n++;
+      }
+    }
+    if (n > 0)
+      return a / n;
+    else
+      return this->defaultValue();
+  } else {
+    return this->defaultValue();
+  }
+}
+
+double Griddata::calculateAvearageFromLookup(Point &p, double w) {
+  Pixel ul, lr;
+
+  this->m_raster.searchBoxAroundPoint(p.x(), p.y(), w, ul, lr);
+  if (ul.isValid() && lr.isValid()) {
+    vector<double> x, y;
+    vector<int> z;
+    double a = 0.0;
+    size_t n = 0;
+    this->m_raster.pixelValues(ul.i(), ul.j(), lr.i(), lr.j(), x, y, z);
+    for (size_t i = 0; i < x.size(); ++i) {
+      double d = Constants::distance(p.x(), p.y(), x[i], y[i]);
+      if (d < w && z[i] != this->m_raster.nodataint()) {
+        if (this->hasKey(z[i])) {
+          a += this->m_lookup[z[i]];
+          n++;
+        }
       }
     }
     if (n > 0)
@@ -212,6 +263,25 @@ double Griddata::calculateNearest(Point &p, double w) {
   }
 }
 
+double Griddata::calculateNearestFromLookup(Point &p, double w) {
+  Pixel px = this->m_raster.coordinateToPixel(p);
+  Point pxloc = this->m_raster.pixelToCoordinate(px);
+  double d = Constants::distance(p.x(), p.y(), pxloc.x(), pxloc.y());
+  if (d > w)
+    return this->defaultValue();
+  else {
+    int z = this->m_raster.pixelValueInt(px);
+    if (z != this->m_raster.nodataint()) {
+      if (this->hasKey(z))
+        return this->m_lookup[z];
+      else
+        return this->defaultValue();
+    } else {
+      return this->defaultValue();
+    }
+  }
+}
+
 double Griddata::calculateHighest(Point &p, double w) {
   vector<double> x, y, z;
   double zm = std::numeric_limits<double>::min();
@@ -224,6 +294,33 @@ double Griddata::calculateHighest(Point &p, double w) {
       double d = Constants::distance(p.x(), p.y(), x[i], y[i]);
       if (d < w) {
         zm = z[i];
+      }
+    }
+  }
+  if (zm == std::numeric_limits<double>::min())
+    return this->defaultValue();
+  else
+    return zm;
+}
+
+double Griddata::calculateHighestFromLookup(Point &p, double w) {
+  vector<double> x, y;
+  vector<int> z;
+  double zm = std::numeric_limits<double>::min();
+  Pixel ul, lr;
+
+  this->m_raster.searchBoxAroundPoint(p.x(), p.y(), w, ul, lr);
+  this->m_raster.pixelValues(ul.i(), ul.j(), lr.i(), lr.j(), x, y, z);
+  for (size_t i = 0; i < x.size(); ++i) {
+    if (z[i] != this->m_raster.nodataint()) {
+      if (this->hasKey(z[i])) {
+        double zv = this->m_lookup[z[i]];
+        if (zv > zm) {
+          double d = Constants::distance(p.x(), p.y(), x[i], y[i]);
+          if (d < w) {
+            zm = zv;
+          }
+        }
       }
     }
   }
@@ -251,16 +348,16 @@ std::vector<double> Griddata::computeGridScale() {
   return gridsize;
 }
 
-double Griddata::rasterMultiplier() const { return m_rasterMultiplier; }
+double Griddata::rasterMultiplier() const { return this->m_rasterMultiplier; }
 
 void Griddata::setRasterMultiplier(double rasterMultiplier) {
   m_rasterMultiplier = rasterMultiplier;
 }
 
-bool Griddata::showProgressBar() const { return m_showProgressBar; }
+bool Griddata::showProgressBar() const { return this->m_showProgressBar; }
 
 void Griddata::setShowProgressBar(bool showProgressBar) {
-  m_showProgressBar = showProgressBar;
+  this->m_showProgressBar = showProgressBar;
 }
 
 int Griddata::epsg() const { return this->m_epsg; }
@@ -335,7 +432,6 @@ std::vector<double> Griddata::computeValuesFromRaster() {
   }
 
   std::vector<double> gridsize = this->computeGridScale();
-
   std::vector<double> result;
   result.resize(this->m_mesh->numNodes());
 
@@ -364,4 +460,47 @@ std::vector<double> Griddata::computeValuesFromRaster() {
   return result;
 }
 
-void Griddata::computeValuesFromLookup(std::vector<double> &result) { return; }
+std::vector<double> Griddata::computeValuesFromLookup() {
+  if (!this->m_raster.isOpen()) {
+    bool success = this->m_raster.open();
+    if (!success) {
+      Adcirc::Error::throwError("Could not open the raster file.");
+    }
+  }
+
+  if (this->m_lookup.size() == 0) {
+    Adcirc::Error::throwError("No lookup table supplied.");
+  }
+
+  if (this->m_epsg == 4326 || this->m_epsg == 4269) {
+    Adcirc::Error::warning("Recommend using planar based coordinate system.");
+  }
+
+  std::vector<double> gridsize = this->computeGridScale();
+  std::vector<double> result;
+  result.resize(this->m_mesh->numNodes());
+
+  progressbar *progress;
+  if (this->m_showProgressBar)
+    progress = progressbar_new("Raster Lookup Interpolation", 1000);
+
+  for (size_t i = 0; i < this->m_mesh->numNodes(); ++i) {
+    if (this->m_showProgressBar)
+      if (i % (this->m_mesh->numNodes() / 1000) == 0) progressbar_inc(progress);
+
+    if (gridsize[i] > 0) {
+      Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
+      result[i] = this->m_rasterMultiplier *
+                  this->calculatePointFromLookup(
+                      p, this->m_filterSize[i] * gridsize[i],
+                      static_cast<Method>(this->m_interpolationFlags[i]));
+    } else {
+      Adcirc::Error::warning("Negative mesh size detected");
+      result[i] = this->m_defaultValue;
+    }
+  }
+
+  if (this->m_showProgressBar) progressbar_finish(progress);
+
+  return result;
+}

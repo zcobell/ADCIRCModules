@@ -83,6 +83,8 @@ class Rasterdata {
 
   bool isOpen() const;
 
+  int nodataint() const;
+
 private:
   void init();
   bool getRasterMetadata();
@@ -97,6 +99,7 @@ private:
   double m_dx, m_dy;
   double m_xmin, m_xmax, m_ymin, m_ymax;
   double m_nodata;
+  int m_nodataint;
   RasterTypes m_rasterType;
   std::string m_projectionReference;
   std::string m_filename;

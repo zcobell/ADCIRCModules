@@ -36,7 +36,7 @@ class Griddata {
   void setDefaultValue(double defaultValue);
 
   std::vector<double> computeValuesFromRaster();
-  void computeValuesFromLookup(std::vector<double> &result);
+  std::vector<double> computeValuesFromLookup();
 
   double windRadius() const;
 
@@ -52,11 +52,18 @@ class Griddata {
   void setRasterMultiplier(double rasterMultiplier);
 
  private:
+  bool hasKey(int key);
   void buildWindDirectionLookup();
   double calculatePoint(Point &p, double searchRadius, Griddata::Method method);
   double calculateAvearage(Point &p, double w);
   double calculateNearest(Point &p, double w);
   double calculateHighest(Point &p, double w);
+
+  double calculatePointFromLookup(Point &p, double w, Griddata::Method method);
+  double calculateAvearageFromLookup(Point &p, double w);
+  double calculateNearestFromLookup(Point &p, double w);
+  double calculateHighestFromLookup(Point &p, double w);
+
   std::vector<double> directionalWind(Point &p, std::vector<double> &x,
                                       std::vector<double> &y,
                                       std::vector<double> &z);

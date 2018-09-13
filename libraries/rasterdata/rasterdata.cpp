@@ -28,6 +28,7 @@ void Rasterdata::init() {
   this->m_nx = std::numeric_limits<int>::min();
   this->m_ny = std::numeric_limits<int>::min();
   this->m_nodata = std::numeric_limits<double>::min();
+  this->m_nodataint = std::numeric_limits<int>::min();
   return;
 }
 
@@ -52,6 +53,8 @@ bool Rasterdata::getRasterMetadata() {
   if (!successNoData) {
     this->m_nodata = std::numeric_limits<double>::min();
   }
+
+  this->m_nodataint = static_cast<int>(std::round(this->m_nodata));
 
   GDALDataType d = this->m_band->GetRasterDataType();
   this->m_rasterType = this->selectRasterType(d);
@@ -265,6 +268,8 @@ Rasterdata::RasterTypes Rasterdata::selectRasterType(int d) {
     return RasterTypes::Unknown;
   }
 }
+
+int Rasterdata::nodataint() const { return this->m_nodataint; }
 
 bool Rasterdata::isOpen() const { return this->m_isOpen; }
 
