@@ -687,6 +687,7 @@ bool Mesh::isLatLon() { return this->m_isLatLon; }
  */
 void Mesh::reproject(int epsg) {
   Projection proj;
+  bool isLatLon;
   vector<Point> inPoint, outPoint;
   inPoint.reserve(this->numNodes());
   outPoint.resize(this->numNodes());
@@ -696,7 +697,7 @@ void Mesh::reproject(int epsg) {
   }
 
   int ierr = proj.transform(this->projection(), epsg, inPoint, outPoint,
-                            this->m_isLatLon);
+                            isLatLon);
 
   if (ierr != Projection::NoError) {
     Adcirc::Error::throwError("Mesh: Proj4 library error");
@@ -706,6 +707,8 @@ void Mesh::reproject(int epsg) {
     this->node(i)->setX(outPoint[i].x());
     this->node(i)->setY(outPoint[i].y());
   }
+
+  this->defineProjection(epsg, isLatLon);
 
   return;
 }

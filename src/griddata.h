@@ -1,9 +1,27 @@
+/*------------------------------GPL---------------------------------------//
+// This file is part of ADCIRCModules.
+//
+// (c) 2015-2018 Zachary Cobell
+//
+// ADCIRCModules is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// ADCIRCModules is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
+//------------------------------------------------------------------------*/
 #ifndef GRIDDATA_H
 #define GRIDDATA_H
 
-#include <map>
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include "mesh.h"
 #include "point.h"
@@ -35,8 +53,9 @@ class Griddata {
   double defaultValue() const;
   void setDefaultValue(double defaultValue);
 
-  std::vector<double> computeValuesFromRaster();
-  std::vector<double> computeValuesFromLookup();
+  std::vector<double> computeValuesFromRaster(bool useLookupTable = false);
+  std::vector<std::vector<double>> computeDirectionalWindReduction(
+      bool useLookupTable = false);
 
   double windRadius() const;
 
@@ -51,24 +70,47 @@ class Griddata {
   double rasterMultiplier() const;
   void setRasterMultiplier(double rasterMultiplier);
 
- private:
+  std::unordered_map<size_t, double> lookup() const;
+
+private:
   bool hasKey(int key);
   void buildWindDirectionLookup();
   double calculatePoint(Point &p, double searchRadius, Griddata::Method method);
-  double calculateAvearage(Point &p, double w);
+  double calculateAverage(Point &p, double w);
   double calculateNearest(Point &p, double w);
   double calculateHighest(Point &p, double w);
 
   double calculatePointFromLookup(Point &p, double w, Griddata::Method method);
-  double calculateAvearageFromLookup(Point &p, double w);
+  double calculateAverageFromLookup(Point &p, double w);
   double calculateNearestFromLookup(Point &p, double w);
   double calculateHighestFromLookup(Point &p, double w);
+
+  double (Griddata::*m_calculatePointPtr)(Point &p, double w,
+                                        Griddata::Method method);
+
+  bool pixelDataInRadius(Point &p, double w, std::vector<double> &x,
+                         std::vector<double> &y, std::vector<double> &z);
+  bool pixelDataInRadius(Point &p, double w, std::vector<double> &x,
+                         std::vector<double> &y, std::vector<int> &z);
 
   std::vector<double> directionalWind(Point &p, std::vector<double> &x,
                                       std::vector<double> &y,
                                       std::vector<double> &z);
 
+  std::vector<double> directionalWind(Point &p, std::vector<double> &x,
+                                      std::vector<double> &y,
+                                      std::vector<int> &z);
+
+  void sizeDirectionalWindMatrix(std::vector<std::vector<double>> &result);
+
+  bool computeWindDirectionAndWeight(Point &p, double x, double y, double &w,
+                                     int &dir);
+
+  void computeWeightedDirectionalWindValues(double tw, std::vector<double> &wt,
+                                            std::vector<double> &r);
+
   std::vector<double> computeGridScale();
+  int windDirection(int i, int j);
 
   std::vector<double> m_filterSize;
   double m_defaultValue;
@@ -76,8 +118,8 @@ class Griddata {
   Rasterdata m_raster;
   std::string m_rasterFile;
   std::vector<int> m_interpolationFlags;
-  std::map<size_t, double> m_lookup;
-  std::map<std::pair<int, int>, int> m_windDirections;
+  std::unordered_map<size_t, double> m_lookup;
+  std::vector<std::vector<int>> m_windDirections;
   int m_epsg;
   double m_rasterMultiplier;
   bool m_showProgressBar;
