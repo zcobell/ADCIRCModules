@@ -303,8 +303,6 @@ TARGET_LINK_LIBRARIES( kdtree2 point )
 ###########################################################################
 # PROGRESS BAR
 ###########################################################################
-set(CURSES_NEED_NCURSES TRUE)
-find_package(Curses)
 ADD_LIBRARY( progress STATIC ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/lib/progressbar.c 
                              ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/lib/statusbar.c )
 SET_PROPERTY(TARGET progress PROPERTY C_STANDARD 99)
