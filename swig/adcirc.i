@@ -47,9 +47,14 @@
 #include "ltea.h"
 #include "elementtable.h"
 #include "meshchecker.h"
+%}
+
+#ifdef _USE_GDAL
+%{
 #include "rasterdata.h"
 #include "griddata.h"
 %}
+#endif
 
 %include <std_string.i>
 %include <exception.i>
@@ -92,5 +97,7 @@ namespace std {
 %include "meshchecker.h"
 %include "ltea.h"
 %include "elementtable.h"
+#ifdef _USE_GDAL
 %include "rasterdata.h"
 %include "griddata.h"
+#endif

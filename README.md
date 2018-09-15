@@ -18,6 +18,14 @@ m.read()
 ## Note
 This project is still under development.
 
+### Citation
+Please appropriately cite this work in publications, reports, and other source code.
+
+Suggested citation:
+```
+Cobell, Z. (2018). Adcirc Modules (Version xxx) [Library]. Retrieved from [https://github.com/zcobell/ADCIRCModules](https://github.com/zcobell/ADCIRCModules)
+```
+
 
 ### Credits
 | Library  | Function | Source |
@@ -28,3 +36,4 @@ This project is still under development.
 | netCDF   | Used to read ADCIRC files formatted with this library | [Visit Website](http://www.unidata.ucar.edu/software/netcdf/) |
 | shapelib | Used to convert meshes to shapefile format | [Visit Website](http://shapelib.maptools.org/) |
 | swig     | Used to generate an interface to Python | [Visit Website](http://www.swig.org/) |
+| gdal     | Used to read raster data to interpolate to meshes | [GDAL](https://www.gdal.org/) |

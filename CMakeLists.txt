@@ -190,7 +190,17 @@ ENDIF(NOT NETCDF_FOUND)
 ###########################################################################
 # GDAL
 ###########################################################################
-Find_PACKAGE(GDAL REQUIRED )
+OPTION(ENABLE_GDAL "Enabele GDAL" ON )
+IF(ENABLE_GDAL)
+    Find_PACKAGE(GDAL)
+    IF(NOT GDAL_FOUND)
+        MESSAGE( WARNING "GDAL Library not found. These functions will be disabled.")
+    ENDIF(NOT GDAL_FOUND)
+ELSE(ENABLE_GDAL)
+    MESSAGE( WARNING "GDAL Library has been disabled. Raster operations will not be available.")
+    SET(GDAL_FOUND FALSE)
+    SET(ENABLE_GDAL OFF)
+ENDIF(ENABLE_GDAL)
 ###########################################################################
 
 ###########################################################################
@@ -278,11 +288,13 @@ TARGET_INCLUDE_DIRECTORIES( point PRIVATE ${CMAKE_SOURCE_DIR}/libraries/point )
 ###########################################################################
 # Rasterdata
 ###########################################################################
-ADD_LIBRARY( rasterdata STATIC ${CMAKE_SOURCE_DIR}/libraries/rasterdata/rasterdata.cpp 
-                               ${CMAKE_SOURCE_DIR}/libraries/rasterdata/pixel.cpp )
-TARGET_INCLUDE_DIRECTORIES( rasterdata PRIVATE ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
-TARGET_INCLUDE_DIRECTORIES( rasterdata PRIVATE ${GDAL_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/libraries/point )
-TARGET_LINK_LIBRARIES( rasterdata point )
+IF(GDAL_FOUND)
+    ADD_LIBRARY( rasterdata STATIC ${CMAKE_SOURCE_DIR}/libraries/rasterdata/rasterdata.cpp 
+                                   ${CMAKE_SOURCE_DIR}/libraries/rasterdata/pixel.cpp )
+    TARGET_INCLUDE_DIRECTORIES( rasterdata PRIVATE ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
+    TARGET_INCLUDE_DIRECTORIES( rasterdata PRIVATE ${GDAL_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/libraries/point )
+    TARGET_LINK_LIBRARIES( rasterdata point )
+ENDIF(GDAL_FOUND)
 ###########################################################################
 
 
@@ -303,10 +315,12 @@ TARGET_LINK_LIBRARIES( kdtree2 point )
 ###########################################################################
 # PROGRESS BAR
 ###########################################################################
-ADD_LIBRARY( progress STATIC ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/lib/progressbar.c 
-                             ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/lib/statusbar.c )
-SET_PROPERTY(TARGET progress PROPERTY C_STANDARD 99)
-TARGET_INCLUDE_DIRECTORIES( progress PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/include/progressbar ${CURSES_INCLUDE_DIRS})
+IF(GDAL_FOUND)
+    ADD_LIBRARY( progress STATIC ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/lib/progressbar.c 
+                                 ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/lib/statusbar.c )
+    SET_PROPERTY(TARGET progress PROPERTY C_STANDARD 99)
+    TARGET_INCLUDE_DIRECTORIES( progress PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/include/progressbar ${CURSES_INCLUDE_DIRS})
+ENDIF(GDAL_FOUND)
 ###########################################################################
 
 
@@ -538,7 +552,7 @@ TARGET_INCLUDE_DIRECTORIES( shapelib PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/shap
 ###########################################################################
 #  ADCIRCModules Library
 ###########################################################################
-ADD_LIBRARY( adcircmodules SHARED 
+SET( ADCIRCMODULES_SOURCES 
                 ${CMAKE_SOURCE_DIR}/src/config.cpp
                 ${CMAKE_SOURCE_DIR}/src/error.cpp
                 ${CMAKE_SOURCE_DIR}/src/filetypes.cpp
@@ -558,23 +572,34 @@ ADD_LIBRARY( adcircmodules SHARED
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.cpp 
                 ${CMAKE_SOURCE_DIR}/src/ltea.cpp 
                 ${CMAKE_SOURCE_DIR}/src/elementtable.cpp
-                ${CMAKE_SOURCE_DIR}/src/meshchecker.cpp 
-                ${CMAKE_SOURCE_DIR}/src/griddata.cpp )
+                ${CMAKE_SOURCE_DIR}/src/meshchecker.cpp )
+
+IF( GDAL_FOUND )
+    SET( ADCIRCMODULES_SOURCES ${ADCIRCMODULES_SOURCES} ${CMAKE_SOURCE_DIR}/src/griddata.cpp )
+ENDIF( GDAL_FOUND )
+
+ADD_LIBRARY( adcircmodules SHARED ${ADCIRCMODULES_SOURCES} )
 
 TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/libraries/point
                                 ${CMAKE_SOURCE_DIR}/libraries/kdtree2
                                 ${CMAKE_SOURCE_DIR}/libraries/projection
-                                ${CMAKE_SOURCE_DIR}/libraries/rasterdata
                                 ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
                                 ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 
                                 ${CMAKE_SOURCE_DIR}/libraries/constants
-                                ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/include 
                                 ${NETCDF_INCLUDE_DIR} ) 
 
-ADD_DEPENDENCIES( adcircmodules point projection kdtree2 shapelib constants rasterdata progress )
+ADD_DEPENDENCIES( adcircmodules point projection kdtree2 shapelib constants )
 
 TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE GIT_VERSION="${GIT_VERSION}")
+
+IF(GDAL_FOUND)
+    TARGET_LINK_LIBRARIES( adcircmodules rasterdata progress ${GDAL_LIBRARY} ) 
+    TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE  
+                                ${CMAKE_SOURCE_DIR}/libraries/rasterdata
+                                ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/include )
+    ADD_DEPENDENCIES( adcircmodules rasterdata progress )
+ENDIF(GDAL_FOUND)
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING} SOVERSION ${ADCIRCMODULES_VERSION_MAJOR} )
 
@@ -619,7 +644,9 @@ ELSE(WIN32)
     INSTALL( TARGETS adcircmodules LIBRARY DESTINATION lib PUBLIC_HEADER DESTINATION ${HEADER_DEST})
 ENDIF(WIN32)
 
-TARGET_LINK_LIBRARIES( adcircmodules projection point kdtree2 shapelib constants rasterdata progress ${NETCDF_LIBRARIES} ${GDAL_LIBRARY} )
+TARGET_LINK_LIBRARIES( adcircmodules projection point kdtree2 shapelib constants ${NETCDF_LIBRARIES} )
+
+
 ###########################################################################
 
 
@@ -632,6 +659,10 @@ TARGET_LINK_LIBRARIES( adcircmodules projection point kdtree2 shapelib constants
 #  PyAdcirc Library
 ###########################################################################
 IF(PythonLibs_FOUND AND SWIG_FOUND)
+
+    IF(GDAL_FOUND)
+        SET(SWIG_GDAL_FLAG "-D_USE_GDAL")
+    ENDIF(GDAL_FOUND)
     
     IF(WIN32)
 
@@ -651,7 +682,7 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/src 
                     -I${CMAKE_SOURCE_DIR}/libraries/point -I${CMAKE_SOURCE_DIR}/libraries/kdtree2 
                     -I${CMAKE_SOURCE_DIR}/libraries/projection -I${CMAKE_SOURCE_DIR}/libraries/rasterdata
-                    -I${PYTHON_INCLUDE_PATH} 
+                    -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG}
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
             COMMAND ${CMAKE_COMMAND} -DSRC=\"${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1\" 
@@ -666,7 +697,7 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/src 
                     -I${CMAKE_SOURCE_DIR}/libraries/point -I${CMAKE_SOURCE_DIR}/libraries/kdtree2
                     -I${CMAKE_SOURCE_DIR}/libraries/projection -I${CMAKE_SOURCE_DIR}/libraries/rasterdata
-                    -I${PYTHON_INCLUDE_PATH} 
+                    -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG} 
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
@@ -678,10 +709,11 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
     TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_DIRECTORIES} ${CMAKE_SOURCE_DIR}/src 
                                     ${CMAKE_SOURCE_DIR}/libraries/point ${CMAKE_SOURCE_DIR}/libraries/kdtree2
                                     ${CMAKE_SOURCE_DIR}/libraries/projection ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
-    TARGET_LINK_LIBRARIES( PyAdcirc PRIVATE adcircmodules rasterdata ${PYTHON_LIBRARY} )
+    TARGET_LINK_LIBRARIES( PyAdcirc PRIVATE adcircmodules ${PYTHON_LIBRARY} )
     SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES PREFIX "_")
     SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES PyAdcirc.py CMakeFiles/python_adcirc_wrap.cxx )
-    ADD_DEPENDENCIES( PyAdcirc adcircmodules rasterdata )
+
+    ADD_DEPENDENCIES( PyAdcirc adcircmodules )
 
     IF(WIN32)
         SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}

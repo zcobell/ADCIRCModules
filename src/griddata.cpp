@@ -16,6 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
+
 #include "griddata.h"
 #include <algorithm>
 #include <cmath>
@@ -408,7 +409,7 @@ bool Griddata::computeWindDirectionAndWeight(Point &p, double x, double y,
   double d = dx * dx + dy * dy;
   if (sqrt(d) > std::numeric_limits<double>::epsilon()) {
     w = 1.0 / (exp(0.5 * d / (this->m_windSigmaSquared)) *
-               pow(((2.0 * Constants::pi() * this->m_windSigma)), 2.0));
+               pow(((Constants::twoPi() * this->m_windSigma)), 2.0));
 
     double tanxy;
     if (abs(dx) < std::numeric_limits<double>::epsilon()) {
@@ -522,15 +523,15 @@ std::vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
   std::vector<double> result;
   result.resize(this->m_mesh->numNodes());
 
-  progressbar *progress;
-  if (this->m_showProgressBar)
-    progress = progressbar_new("Raster Interpolation", 1000);
-
   if (useLookupTable) {
     this->m_calculatePointPtr = &Griddata::calculatePointFromLookup;
   } else {
     this->m_calculatePointPtr = &Griddata::calculatePoint;
   }
+
+  progressbar *progress;
+  if (this->m_showProgressBar)
+    progress = progressbar_new("Raster Interpolation", 1000);
 
   for (size_t i = 0; i < this->m_mesh->numNodes(); ++i) {
     if (this->m_showProgressBar) {
