@@ -132,11 +132,10 @@ bool Element::isInside(double x, double y) {
 double Element::elementSize(bool geodesic) {
   double size = 0.0;
   for (int i = 0; i < this->n(); ++i) {
-    std::pair<Node*,Node*> p = this->elementLeg(i);
+    std::pair<Node *, Node *> p = this->elementLeg(i);
     Node *n1 = p.first;
     Node *n2 = p.second;
-    size = size +
-           Constants::distance(n1->x(), n1->y(), n2->x(), n2->y(), geodesic);
+    size += Constants::distance(n1->x(), n1->y(), n2->x(), n2->y(), geodesic);
   }
   return size / this->n();
 }
@@ -154,7 +153,7 @@ std::pair<Node *, Node *> Element::elementLeg(size_t i) {
   Node *np1 = this->node(j1);
   Node *np2 = this->node(j2);
 
-  return std::make_pair(np1,np2);
+  return std::make_pair(np1, np2);
 }
 
 bool Element::isInside(Point location) {

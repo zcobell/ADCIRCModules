@@ -75,7 +75,7 @@ class Rasterdata {
 
   std::string projectionString() const;
 
-  int searchBoxAroundPoint(double x, double y, double width, Pixel &upperLeft,
+  int searchBoxAroundPoint(double x, double y, double halfSide, Pixel &upperLeft,
                            Pixel &lowerRight);
 
   std::string filename() const;

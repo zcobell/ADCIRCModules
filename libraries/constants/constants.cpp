@@ -59,7 +59,7 @@ double Constants::distance(double x1, double y1, double x2, double y2,
   if (geodesic) {
     return Constants::geodesic_distance(x1, y1, x2, y2);
   } else {
-    return Constants::cartesian_distance(x1, y2, x2, y2);
+    return Constants::cartesian_distance(x1, y1, x2, y2);
   }
 }
 

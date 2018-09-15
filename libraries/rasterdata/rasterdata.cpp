@@ -115,9 +115,14 @@ bool Rasterdata::close() {
 }
 
 Point Rasterdata::pixelToCoordinate(size_t i, size_t j) {
-  return Point(
-      static_cast<double>(i) * this->m_dx + this->m_xmin + 0.50 * this->m_dx,
-      this->m_ymax - (static_cast<double>(j) * this->m_dy) + 0.50 * this->m_dy);
+  if (i <= this->m_nx && j <= this->m_ny) {
+    return Point(
+        static_cast<double>(i) * this->m_dx + this->m_xmin + 0.50 * this->m_dx,
+        this->m_ymax - (static_cast<double>(j) * this->m_dy) +
+            0.50 * this->m_dy);
+  } else {
+    return Point();
+  }
 }
 
 Point Rasterdata::pixelToCoordinate(Pixel &p) {
@@ -187,12 +192,12 @@ double Rasterdata::pixelValueDouble(Pixel &p) {
   return v;
 }
 
-int Rasterdata::searchBoxAroundPoint(double x, double y, double width,
+int Rasterdata::searchBoxAroundPoint(double x, double y, double halfSide,
                                      Pixel &upperLeft, Pixel &lowerRight) {
   Pixel p = this->coordinateToPixel(x, y);
   if (p.isValid()) {
-    int nx = static_cast<int>(std::round(width / this->m_dx));
-    int ny = static_cast<int>(std::round(width / this->m_dy));
+    int nx = static_cast<int>(std::round(halfSide / this->m_dx));
+    int ny = static_cast<int>(std::round(halfSide / this->m_dy));
     int ibegin = std::max<int>(1, p.i() - nx);
     int iend = std::min<int>(this->m_nx - 1, p.i() + nx);
     int jbegin = std::max<int>(1, p.j() - ny);

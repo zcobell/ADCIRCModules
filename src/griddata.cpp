@@ -199,10 +199,10 @@ int Griddata::windDirection(int i, int j) {
 
 std::unordered_map<size_t, double> Griddata::lookup() const { return m_lookup; }
 
-bool Griddata::pixelDataInRadius(Point &p, double w, vector<double> &x,
+bool Griddata::pixelDataInRadius(Point &p, double radius, vector<double> &x,
                                  vector<double> &y, vector<double> &z) {
   Pixel ul, lr;
-  this->m_raster.searchBoxAroundPoint(p.x(), p.y(), w, ul, lr);
+  this->m_raster.searchBoxAroundPoint(p.x(), p.y(), radius, ul, lr);
 
   if (ul.isValid() && lr.isValid()) {
     std::vector<double> xt, yt, zt;
@@ -214,7 +214,7 @@ bool Griddata::pixelDataInRadius(Point &p, double w, vector<double> &x,
 
     for (size_t i = 0; i < xt.size(); ++i) {
       if (zt[i] != this->m_raster.nodata()) {
-        if (Constants::distance(p.x(), p.y(), xt[i], yt[i]) < w) {
+        if (Constants::distance(p.x(), p.y(), xt[i], yt[i]) <= radius) {
           x.push_back(xt[i]);
           y.push_back(yt[i]);
           z.push_back(zt[i]);
@@ -226,10 +226,10 @@ bool Griddata::pixelDataInRadius(Point &p, double w, vector<double> &x,
   return false;
 }
 
-bool Griddata::pixelDataInRadius(Point &p, double w, vector<double> &x,
+bool Griddata::pixelDataInRadius(Point &p, double radius, vector<double> &x,
                                  vector<double> &y, vector<int> &z) {
   Pixel ul, lr;
-  this->m_raster.searchBoxAroundPoint(p.x(), p.y(), w, ul, lr);
+  this->m_raster.searchBoxAroundPoint(p.x(), p.y(), radius, ul, lr);
 
   if (ul.isValid() && lr.isValid()) {
     std::vector<double> xt, yt;
@@ -242,7 +242,7 @@ bool Griddata::pixelDataInRadius(Point &p, double w, vector<double> &x,
 
     for (size_t i = 0; i < xt.size(); ++i) {
       if (zt[i] != this->m_raster.nodataint()) {
-        if (Constants::distance(p.x(), p.y(), xt[i], yt[i]) < w) {
+        if (Constants::distance(p.x(), p.y(), xt[i], yt[i]) <= radius) {
           x.push_back(xt[i]);
           y.push_back(yt[i]);
           z.push_back(zt[i]);
@@ -514,7 +514,6 @@ std::vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
   }
 
   if (this->m_epsg != this->m_mesh->projection()) {
-    std::cout << this->m_epsg << " " << this->m_mesh->projection();
     Adcirc::Error::throwError(
         "You must use the same coordinate systems for mesh and raster.");
   }
@@ -540,7 +539,7 @@ std::vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
 
     Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
     double v;
-    double s = (double)this->m_filterSize[i] * gridsize[i];
+    double s = (double)this->m_filterSize[i] * gridsize[i] / 2.0;
     Method m = static_cast<Method>(this->m_interpolationFlags[i]);
     v = (this->*m_calculatePointPtr)(p, s, m);
     result[i] = v * this->m_rasterMultiplier;

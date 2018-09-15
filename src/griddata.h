@@ -88,9 +88,9 @@ private:
   double (Griddata::*m_calculatePointPtr)(Point &p, double w,
                                         Griddata::Method method);
 
-  bool pixelDataInRadius(Point &p, double w, std::vector<double> &x,
+  bool pixelDataInRadius(Point &p, double radius, std::vector<double> &x,
                          std::vector<double> &y, std::vector<double> &z);
-  bool pixelDataInRadius(Point &p, double w, std::vector<double> &x,
+  bool pixelDataInRadius(Point &p, double radius, std::vector<double> &x,
                          std::vector<double> &y, std::vector<int> &z);
 
   std::vector<double> directionalWind(Point &p, std::vector<double> &x,
