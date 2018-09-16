@@ -42,6 +42,7 @@ void Rasterdata::init() {
   this->m_file = nullptr;
   this->m_band = nullptr;
   this->m_isOpen = false;
+  this->m_isRead = false;
   this->m_epsg = 4326;
   this->m_nx = std::numeric_limits<int>::min();
   this->m_ny = std::numeric_limits<int>::min();
@@ -214,9 +215,137 @@ int Rasterdata::searchBoxAroundPoint(double x, double y, double halfSide,
   }
 }
 
+void Rasterdata::readDoubleRasterToMemory() {
+  size_t n = this->nx() * this->ny();
+  double *buf = (double *)CPLMalloc(sizeof(double) * n);
+  CPLErr e = this->m_band->RasterIO(GF_Read, 0, 0, this->nx(), this->ny(), buf,
+                                    this->nx(), this->ny(), GDT_Float64, 0, 0);
+
+  this->m_doubleOnDisk.resize(this->nx());
+  for (size_t i = 0; i < this->m_doubleOnDisk.size(); ++i) {
+    this->m_doubleOnDisk[i].resize(this->ny());
+  }
+
+  size_t k = 0;
+  for (size_t j = 0; j < this->ny(); ++j) {
+    for (size_t i = 0; i < this->nx(); ++i) {
+      this->m_doubleOnDisk[i][j] = buf[k];
+      k++;
+    }
+  }
+  CPLFree(buf);
+}
+
+void Rasterdata::readIntegerRasterToMemory() {
+  size_t n = this->nx() * this->ny();
+  int *buf = (int *)CPLMalloc(sizeof(int) * n);
+  CPLErr e = this->m_band->RasterIO(GF_Read, 0, 0, this->nx(), this->ny(), buf,
+                                    this->nx(), this->ny(), GDT_Int32, 0, 0);
+
+  this->m_intOnDisk.resize(this->nx());
+  for (size_t i = 0; i < this->m_intOnDisk.size(); ++i) {
+    this->m_intOnDisk[i].resize(this->ny());
+  }
+
+  size_t k = 0;
+  for (size_t j = 0; j < this->ny(); ++j) {
+    for (size_t i = 0; i < this->nx(); ++i) {
+      this->m_intOnDisk[i][j] = buf[k];
+      k++;
+    }
+  }
+  CPLFree(buf);
+}
+
+void Rasterdata::read() {
+  if (this->m_isRead) return;
+  if (this->m_rasterType == RasterTypes::Double) {
+    this->readDoubleRasterToMemory();
+  } else {
+    this->readIntegerRasterToMemory();
+  }
+  this->m_isRead = true;
+  return;
+}
+
 int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
                             size_t jend, std::vector<double> &x,
                             std::vector<double> &y, std::vector<double> &z) {
+  if (this->m_isRead) {
+    return this->pixelValuesFromMemory(ibegin, jbegin, iend, jend, x, y, z);
+  } else {
+    return this->pixelValuesFromDisk(ibegin, jbegin, iend, jend, x, y, z);
+  }
+}
+
+int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
+                            size_t jend, std::vector<double> &x,
+                            std::vector<double> &y, std::vector<int> &z) {
+  if (this->m_isRead) {
+    return this->pixelValuesFromMemory(ibegin, jbegin, iend, jend, x, y, z);
+  } else {
+    return this->pixelValuesFromDisk(ibegin, jbegin, iend, jend, x, y, z);
+  }
+}
+
+int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
+                                      size_t jend, std::vector<double> &x,
+                                      std::vector<double> &y,
+                                      std::vector<double> &z) {
+  size_t nx = iend - ibegin + 1;
+  size_t ny = jend - jbegin + 1;
+  size_t n = nx * ny;
+
+  if (x.size() != n) {
+    x.resize(n);
+    y.resize(n);
+    z.resize(n);
+  }
+
+  size_t k = 0;
+  for (size_t j = jbegin; j <= jend; ++j) {
+    for (size_t i = ibegin; i <= iend; ++i) {
+      Point p = this->pixelToCoordinate(i, j);
+      x[k] = p.x();
+      y[k] = p.y();
+      z[k] = this->m_doubleOnDisk[i - 1][j - 1];
+      k++;
+    }
+  }
+  return 0;
+}
+
+int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
+                                      size_t jend, std::vector<double> &x,
+                                      std::vector<double> &y,
+                                      std::vector<int> &z) {
+  size_t nx = iend - ibegin + 1;
+  size_t ny = jend - jbegin + 1;
+  size_t n = nx * ny;
+
+  if (x.size() != n) {
+    x.resize(n);
+    y.resize(n);
+    z.resize(n);
+  }
+
+  size_t k = 0;
+  for (size_t j = jbegin; j <= jend; ++j) {
+    for (size_t i = ibegin; i <= iend; ++i) {
+      Point p = this->pixelToCoordinate(i, j);
+      x[k] = p.x();
+      y[k] = p.y();
+      z[k] = this->m_intOnDisk[i - 1][j - 1];
+      k++;
+    }
+  }
+  return 0;
+}
+
+int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
+                                    size_t jend, std::vector<double> &x,
+                                    std::vector<double> &y,
+                                    std::vector<double> &z) {
   size_t nx = iend - ibegin + 1;
   size_t ny = jend - jbegin + 1;
   size_t n = nx * ny;
@@ -244,9 +373,10 @@ int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
   return static_cast<int>(e);
 }
 
-int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
-                            size_t jend, std::vector<double> &x,
-                            std::vector<double> &y, std::vector<int> &z) {
+int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
+                                    size_t jend, std::vector<double> &x,
+                                    std::vector<double> &y,
+                                    std::vector<int> &z) {
   size_t nx = iend - ibegin + 1;
   size_t ny = jend - jbegin + 1;
   size_t n = nx * ny;

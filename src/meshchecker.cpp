@@ -225,7 +225,7 @@ bool MeshChecker::checkDisjointNodes(Mesh *mesh) {
   }
 
   for (size_t i = 0; i < mesh->numNodes(); i++) {
-    if (found[i] = false) {
+    if (found[i] == false) {
       printf(
           "[Mesh Error] MeshChecker::checkDisjointNodes :: Node %zd is not "
           "connected to any element.",

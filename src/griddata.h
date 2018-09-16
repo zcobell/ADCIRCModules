@@ -72,6 +72,9 @@ class Griddata {
 
   std::unordered_map<size_t, double> lookup() const;
 
+  bool rasterInMemory() const;
+  void setRasterInMemory(bool rasterInMemory);
+
 private:
   bool hasKey(int key);
   void buildWindDirectionLookup();
@@ -86,22 +89,17 @@ private:
   double calculateHighestFromLookup(Point &p, double w);
 
   double (Griddata::*m_calculatePointPtr)(Point &p, double w,
-                                        Griddata::Method method);
+                                          Griddata::Method method);
+
+  std::vector<double> (Griddata::*m_calculateDwindPtr)(Point &p);
 
   bool pixelDataInRadius(Point &p, double radius, std::vector<double> &x,
                          std::vector<double> &y, std::vector<double> &z);
   bool pixelDataInRadius(Point &p, double radius, std::vector<double> &x,
                          std::vector<double> &y, std::vector<int> &z);
 
-  std::vector<double> directionalWind(Point &p, std::vector<double> &x,
-                                      std::vector<double> &y,
-                                      std::vector<double> &z);
-
-  std::vector<double> directionalWind(Point &p, std::vector<double> &x,
-                                      std::vector<double> &y,
-                                      std::vector<int> &z);
-
-  void sizeDirectionalWindMatrix(std::vector<std::vector<double>> &result);
+  std::vector<double> calculateDirectionalWindFromRaster(Point &p);
+  std::vector<double> calculateDirectionalWindFromLookup(Point &p);
 
   bool computeWindDirectionAndWeight(Point &p, double x, double y, double &w,
                                      int &dir);
@@ -123,8 +121,9 @@ private:
   int m_epsg;
   double m_rasterMultiplier;
   bool m_showProgressBar;
+  bool m_rasterInMemory;
 
-  const double m_windRadius = 10.0;
+  const double m_windRadius = 10000;
   const double m_windSigma = 6.0;
   const double m_windSigmaSquared = m_windSigma * m_windSigma;
 };

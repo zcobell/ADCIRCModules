@@ -166,9 +166,10 @@ void Griddata::setDefaultValue(double defaultValue) {
 }
 
 void Griddata::buildWindDirectionLookup() {
-  this->m_windDirections.resize(2);
-  this->m_windDirections[0].resize(6);
-  this->m_windDirections[1].resize(6);
+  this->m_windDirections.resize(3);
+  this->m_windDirections[0].resize(7);
+  this->m_windDirections[1].resize(7);
+  this->m_windDirections[2].resize(7);
   this->m_windDirections[1 + 1][0 + 3] = 7;
   this->m_windDirections[1 + 1][1 + 3] = 8;
   this->m_windDirections[1 + 1][2 + 3] = 9;
@@ -195,6 +196,12 @@ void Griddata::buildWindDirectionLookup() {
 
 int Griddata::windDirection(int i, int j) {
   return this->m_windDirections[i + 1][j + 3];
+}
+
+bool Griddata::rasterInMemory() const { return m_rasterInMemory; }
+
+void Griddata::setRasterInMemory(bool rasterInMemory) {
+  m_rasterInMemory = rasterInMemory;
 }
 
 std::unordered_map<size_t, double> Griddata::lookup() const { return m_lookup; }
@@ -413,23 +420,19 @@ bool Griddata::computeWindDirectionAndWeight(Point &p, double x, double y,
 
     double tanxy;
     if (abs(dx) < std::numeric_limits<double>::epsilon()) {
-      tanxy = std::numeric_limits<double>::max();
+      tanxy = 10000000.0;
     } else {
       tanxy = abs(dy / dx);
     }
 
-    int k = min<int>(
-        1, static_cast<int>(std::floor(tanxy / (2 - Constants::root3()))));
-    k = k + min<int>(1, static_cast<int>(std::floor(tanxy)));
-    k = k + min<int>(1, static_cast<int>(
-                            std::floor(tanxy / (2 + Constants::root3()))));
+    int64_t k = min<int64_t>(
+        1, static_cast<int64_t>(std::floor(tanxy / (2 - Constants::root3()))));
+    k = k + min<int64_t>(1, static_cast<int64_t>(std::floor(tanxy)));
+    k = k + min<int64_t>(1, static_cast<int64_t>(
+                                std::floor(tanxy / (2 + Constants::root3()))));
 
-    if (k > 3) {
-      Adcirc::Error::throwError("Overflow in k");
-    }
-
-    int a = static_cast<int>(std::round(sgn(dx)));
-    int b = static_cast<int>(std::round(k * sgn(dy)));
+    int a = static_cast<int>(sgn(dx));
+    int b = static_cast<int>(k * sgn(dy));
     dir = this->windDirection(a, b) - 1;
     return true;
   }
@@ -448,13 +451,14 @@ void Griddata::computeWeightedDirectionalWindValues(double tw,
   return;
 }
 
-vector<double> Griddata::directionalWind(Point &p, vector<double> &x,
-                                         vector<double> &y, vector<double> &z) {
+vector<double> Griddata::calculateDirectionalWindFromRaster(Point &p) {
   double tw = 0.0;
   double tv = 0.0;
-  vector<double> r, wt;
+  vector<double> x, y, z, r, wt;
   r.resize(12);
   wt.resize(12);
+
+  this->pixelDataInRadius(p, this->m_windRadius, x, y, z);
 
   for (size_t i = 0; i < x.size(); ++i) {
     if (z[i] != this->m_raster.nodata()) {
@@ -474,13 +478,15 @@ vector<double> Griddata::directionalWind(Point &p, vector<double> &x,
   return r;
 }
 
-vector<double> Griddata::directionalWind(Point &p, vector<double> &x,
-                                         vector<double> &y, vector<int> &z) {
+vector<double> Griddata::calculateDirectionalWindFromLookup(Point &p) {
   double tw = 0.0;
   double tv = 0.0;
-  vector<double> r, wt;
+  vector<double> x, y, r, wt;
+  vector<int> z;
   r.resize(12);
   wt.resize(12);
+
+  this->pixelDataInRadius(p, this->m_windRadius, x, y, z);
 
   for (size_t i = 0; i < x.size(); ++i) {
     if (z[i] != this->m_raster.nodata()) {
@@ -495,7 +501,7 @@ vector<double> Griddata::directionalWind(Point &p, vector<double> &x,
           tv += w * zl;
         }
       } else {
-        Adcirc::Error::throwError("Key not found.");
+        // Adcirc::Error::throwError("Key not found.");
       }
     }
   }
@@ -518,9 +524,14 @@ std::vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
         "You must use the same coordinate systems for mesh and raster.");
   }
 
+  this->buildWindDirectionLookup();
   std::vector<double> gridsize = this->computeGridScale();
   std::vector<double> result;
   result.resize(this->m_mesh->numNodes());
+
+  if (this->m_rasterInMemory) {
+    this->m_raster.read();
+  }
 
   if (useLookupTable) {
     this->m_calculatePointPtr = &Griddata::calculatePointFromLookup;
@@ -528,13 +539,30 @@ std::vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
     this->m_calculatePointPtr = &Griddata::calculatePoint;
   }
 
+  size_t progressCount = std::min<size_t>(this->m_mesh->numNodes() / 10000,
+                                          this->m_mesh->numNodes());
   progressbar *progress;
-  if (this->m_showProgressBar)
-    progress = progressbar_new("Raster Interpolation", 1000);
+  if (this->m_showProgressBar) {
+    if (progressCount == this->m_mesh->numNodes()) {
+      progress =
+          progressbar_new("Raster Interpolation", this->m_mesh->numNodes());
+    } else {
+      progress = progressbar_new("Raster Interpolation", 10000);
+    }
+  }
 
+  size_t k = 0;
+#pragma omp parallel for schedule(dynamic) shared(k)
   for (size_t i = 0; i < this->m_mesh->numNodes(); ++i) {
+#pragma omp atomic
+    k++;
+
     if (this->m_showProgressBar) {
-      if (i % (this->m_mesh->numNodes() / 1000) == 0) progressbar_inc(progress);
+      if (progressCount == this->m_mesh->numNodes()) {
+        progressbar_inc(progress);
+      } else {
+        if (k % progressCount == 0) progressbar_inc(progress);
+      }
     }
 
     Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
@@ -550,18 +578,65 @@ std::vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
   return result;
 }
 
-void Griddata::sizeDirectionalWindMatrix(
-    std::vector<std::vector<double> > &result) {
-  result.resize(12);
-  for (auto &sr : result) {
-    sr.resize(this->m_mesh->numNodes());
-  }
-}
-
 std::vector<std::vector<double> > Griddata::computeDirectionalWindReduction(
     bool useLookupTable) {
+  if (!this->m_raster.isOpen()) {
+    bool success = this->m_raster.open();
+    if (!success) {
+      Adcirc::Error::throwError("Could not open the raster file.");
+    }
+  }
+
+  if (this->m_epsg != this->m_mesh->projection()) {
+    Adcirc::Error::throwError(
+        "You must use the same coordinate systems for mesh and raster.");
+  }
+
+  this->buildWindDirectionLookup();
   std::vector<std::vector<double> > result;
-  this->sizeDirectionalWindMatrix(result);
+  result.resize(this->m_mesh->numNodes());
+
+  if (this->m_rasterInMemory) {
+    this->m_raster.read();
+  }
+
+  if (useLookupTable) {
+    this->m_calculateDwindPtr = &Griddata::calculateDirectionalWindFromLookup;
+  } else {
+    this->m_calculateDwindPtr = &Griddata::calculateDirectionalWindFromRaster;
+  }
+
+  size_t progressCount = std::min<size_t>(this->m_mesh->numNodes() / 10000,
+                                          this->m_mesh->numNodes());
+  progressbar *progress;
+  if (this->m_showProgressBar) {
+    if (progressCount == this->m_mesh->numNodes()) {
+      progress =
+          progressbar_new("Raster Interpolation", this->m_mesh->numNodes());
+    } else {
+      progress = progressbar_new("Raster Interpolation", 10000);
+    }
+  }
+
+  size_t k = 0;
+#pragma omp parallel for schedule(dynamic) shared(k)
+  for (size_t i = 0; i < this->m_mesh->numNodes(); ++i) {
+#pragma omp atomic
+    k++;
+
+    if (this->m_showProgressBar) {
+      if (progressCount == this->m_mesh->numNodes()) {
+        progressbar_inc(progress);
+      } else {
+        if (k % progressCount == 0) progressbar_inc(progress);
+      }
+    }
+
+    Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
+    result[i] = (this->*m_calculateDwindPtr)(p);
+  }
+
+  if (this->m_showProgressBar) progressbar_finish(progress);
 
   return result;
 }

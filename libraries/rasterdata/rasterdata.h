@@ -48,6 +48,7 @@ class Rasterdata {
 
   bool open();
   bool close();
+  void read();
 
   size_t nx() const;
 
@@ -75,8 +76,8 @@ class Rasterdata {
 
   std::string projectionString() const;
 
-  int searchBoxAroundPoint(double x, double y, double halfSide, Pixel &upperLeft,
-                           Pixel &lowerRight);
+  int searchBoxAroundPoint(double x, double y, double halfSide,
+                           Pixel &upperLeft, Pixel &lowerRight);
 
   std::string filename() const;
   void setFilename(const std::string &filename);
@@ -103,15 +104,37 @@ class Rasterdata {
 
   int nodataint() const;
 
-private:
+ private:
   void init();
   bool getRasterMetadata();
   RasterTypes selectRasterType(int d);
+  int pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend, size_t jend,
+                  std::vector<double> &x, std::vector<double> &y,
+                  std::vector<int> &z);
+
+  int pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend, size_t jend,
+                  std::vector<double> &x, std::vector<double> &y,
+                  std::vector<double> &z);
+
+  int pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend, size_t jend,
+                  std::vector<double> &x, std::vector<double> &y,
+                  std::vector<int> &z);
+
+  int pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend, size_t jend,
+                  std::vector<double> &x, std::vector<double> &y,
+                  std::vector<double> &z);
+
+  void readIntegerRasterToMemory();
+  void readDoubleRasterToMemory();
 
   GDALDataset *m_file;
   GDALRasterBand *m_band;
 
+  std::vector<std::vector<double>> m_doubleOnDisk;
+  std::vector<std::vector<int>> m_intOnDisk;
+
   bool m_isOpen;
+  bool m_isRead;
   size_t m_nx, m_ny;
   int m_epsg;
   double m_dx, m_dy;
