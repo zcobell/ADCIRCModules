@@ -101,7 +101,8 @@ SOURCES += \
     ltea.cpp \
     meshchecker.cpp \
     elementtable.cpp \
-    griddata.cpp
+    griddata.cpp \
+    multithreading.cpp
 
 HEADERS += \
     adcircmodules_global.h \
@@ -128,7 +129,8 @@ HEADERS += \
     ltea.h \
     meshchecker.h \
     elementtable.h \
-    griddata.h
+    griddata.h \
+    multithreading.h
 
 INCLUDEPATH += $$BOOSTPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib

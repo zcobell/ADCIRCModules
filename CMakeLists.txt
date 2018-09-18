@@ -573,7 +573,8 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.cpp 
                 ${CMAKE_SOURCE_DIR}/src/ltea.cpp 
                 ${CMAKE_SOURCE_DIR}/src/elementtable.cpp
-                ${CMAKE_SOURCE_DIR}/src/meshchecker.cpp )
+                ${CMAKE_SOURCE_DIR}/src/meshchecker.cpp 
+                ${CMAKE_SOURCE_DIR}/src/multithreading.cpp )
 
 IF( GDAL_FOUND )
     SET( ADCIRCMODULES_SOURCES ${ADCIRCMODULES_SOURCES} ${CMAKE_SOURCE_DIR}/src/griddata.cpp )
@@ -625,7 +626,8 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcirc.h
                 ${CMAKE_SOURCE_DIR}/libraries/kdtree2/kdtree2lib.h 
                 ${CMAKE_SOURCE_DIR}/libraries/projection/projection.h 
                 ${CMAKE_SOURCE_DIR}/libraries/rasterdata/rasterdata.h 
-                ${CMAKE_SOURCE_DIR}/src/griddata.h ) 
+                ${CMAKE_SOURCE_DIR}/src/griddata.h 
+                ${CMAKE_SOURCE_DIR}/src/multithreading.h ) 
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES PUBLIC_HEADER "${HEADER_LIST}" ) 
 
