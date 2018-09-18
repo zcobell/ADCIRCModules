@@ -237,18 +237,3 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libr
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/rasterdata/release/rasterdata.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/rasterdata/debug/rasterdata.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/rasterdata/librasterdata.a
-
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/progress/release/ -lprogress
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/progress/debug/ -lprogress
-else:unix: LIBS += -L$$OUT_PWD/../libraries/progress/ -lprogress
-
-INCLUDEPATH += $$PWD/../libraries/progress
-INCLUDEPATH += $$PWD/../thirdparty/progressbar/include
-DEPENDPATH += $$PWD/../libraries/progress
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/progress/release/libprogress.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/progress/debug/libprogress.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/progress/release/progress.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/progress/debug/progress.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/progress/libprogress.a

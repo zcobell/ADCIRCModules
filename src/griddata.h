@@ -126,6 +126,10 @@ private:
   const double m_windRadius = 10000;
   const double m_windSigma = 6.0;
   const double m_windSigmaSquared = m_windSigma * m_windSigma;
+  void checkMatchingCoorindateSystems();
+  void checkRasterOpen();
+  void assignDirectionalWindReductionFunctionPointer(bool useLookupTable);
+  void assignInterpolationFunctionPointer(bool useLookupTable);
 };
 
 #endif  // GRIDDATA_H

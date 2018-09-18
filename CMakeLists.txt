@@ -326,18 +326,6 @@ TARGET_LINK_LIBRARIES( kdtree2 point )
 
 
 ###########################################################################
-# PROGRESS BAR
-###########################################################################
-IF(GDAL_FOUND)
-    ADD_LIBRARY( progress STATIC ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/lib/progressbar.c 
-                                 ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/lib/statusbar.c )
-    SET_PROPERTY(TARGET progress PROPERTY C_STANDARD 99)
-    TARGET_INCLUDE_DIRECTORIES( progress PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/include/progressbar ${CURSES_INCLUDE_DIRS})
-ENDIF(GDAL_FOUND)
-###########################################################################
-
-
-###########################################################################
 #  PROJ4 Library
 ###########################################################################
 ADD_LIBRARY( projection STATIC ${CMAKE_SOURCE_DIR}/libraries/projection/projection.cpp
@@ -607,11 +595,10 @@ ADD_DEPENDENCIES( adcircmodules point projection kdtree2 shapelib constants )
 TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE GIT_VERSION="${GIT_VERSION}")
 
 IF(GDAL_FOUND)
-    TARGET_LINK_LIBRARIES( adcircmodules rasterdata progress ${GDAL_LIBRARY} ) 
+    TARGET_LINK_LIBRARIES( adcircmodules rasterdata ${GDAL_LIBRARY} ) 
     TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE  
-                                ${CMAKE_SOURCE_DIR}/libraries/rasterdata
-                                ${CMAKE_SOURCE_DIR}/thirdparty/progressbar/include )
-    ADD_DEPENDENCIES( adcircmodules rasterdata progress )
+                                ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
+    ADD_DEPENDENCIES( adcircmodules rasterdata )
 ENDIF(GDAL_FOUND)
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING} SOVERSION ${ADCIRCMODULES_VERSION_MAJOR} )

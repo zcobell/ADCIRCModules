@@ -23,10 +23,10 @@
 #include <fstream>
 #include <numeric>
 #include <utility>
+#include "boost/progress.hpp"
 #include "constants.h"
 #include "elementtable.h"
 #include "error.h"
-#include "progressbar/progressbar.h"
 #include "split.h"
 #include "stringconversion.h"
 
@@ -446,6 +446,8 @@ void Griddata::computeWeightedDirectionalWindValues(double tw,
     double w = tw + wt[i];
     if (w > 1e-12) {
       r[i] = r[i] / w;
+    } else {
+      r[i] = 0.0;
     }
   }
   return;
@@ -511,132 +513,97 @@ vector<double> Griddata::calculateDirectionalWindFromLookup(Point &p) {
   return r;
 }
 
-std::vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
+void Griddata::assignInterpolationFunctionPointer(bool useLookupTable) {
+  if (useLookupTable) {
+    this->m_calculatePointPtr = &Griddata::calculatePointFromLookup;
+  } else {
+    this->m_calculatePointPtr = &Griddata::calculatePoint;
+  }
+}
+
+void Griddata::checkMatchingCoorindateSystems() {
+  if (this->m_epsg != this->m_mesh->projection()) {
+    Adcirc::Error::throwError(
+        "You must use the same coordinate systems for mesh and raster.");
+  }
+}
+
+void Griddata::checkRasterOpen() {
   if (!this->m_raster.isOpen()) {
     bool success = this->m_raster.open();
     if (!success) {
       Adcirc::Error::throwError("Could not open the raster file.");
     }
   }
+}
 
-  if (this->m_epsg != this->m_mesh->projection()) {
-    Adcirc::Error::throwError(
-        "You must use the same coordinate systems for mesh and raster.");
+void Griddata::assignDirectionalWindReductionFunctionPointer(
+    bool useLookupTable) {
+  if (useLookupTable) {
+    this->m_calculateDwindPtr = &Griddata::calculateDirectionalWindFromLookup;
+  } else {
+    this->m_calculateDwindPtr = &Griddata::calculateDirectionalWindFromRaster;
   }
+}
 
-  this->buildWindDirectionLookup();
-  std::vector<double> gridsize = this->computeGridScale();
-  std::vector<double> result;
-  result.resize(this->m_mesh->numNodes());
+std::vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
+  this->checkRasterOpen();
+  this->checkMatchingCoorindateSystems();
+  this->assignInterpolationFunctionPointer(useLookupTable);
 
   if (this->m_rasterInMemory) {
     this->m_raster.read();
   }
 
-  if (useLookupTable) {
-    this->m_calculatePointPtr = &Griddata::calculatePointFromLookup;
-  } else {
-    this->m_calculatePointPtr = &Griddata::calculatePoint;
-  }
+  std::vector<double> gridsize = this->computeGridScale();
+  std::vector<double> result;
+  result.resize(this->m_mesh->numNodes());
 
-  size_t progressCount = std::min<size_t>(this->m_mesh->numNodes() / 10000,
-                                          this->m_mesh->numNodes());
-  progressbar *progress;
-  if (this->m_showProgressBar) {
-    if (progressCount == this->m_mesh->numNodes()) {
-      progress =
-          progressbar_new("Raster Interpolation", this->m_mesh->numNodes());
-    } else {
-      progress = progressbar_new("Raster Interpolation", 10000);
-    }
-  }
+  boost::progress_display progress(this->m_mesh->numNodes());
 
-  size_t k = 0;
-#pragma omp parallel for schedule(dynamic) shared(k)
+#pragma omp parallel for schedule(dynamic) shared(progress)
   for (size_t i = 0; i < this->m_mesh->numNodes(); ++i) {
-#pragma omp atomic
-    k++;
-
     if (this->m_showProgressBar) {
-      if (progressCount == this->m_mesh->numNodes()) {
-        progressbar_inc(progress);
-      } else {
-        if (k % progressCount == 0) progressbar_inc(progress);
-      }
+#pragma omp critical
+      ++progress;
     }
 
     Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
-    double v;
-    double s = (double)this->m_filterSize[i] * gridsize[i] / 2.0;
     Method m = static_cast<Method>(this->m_interpolationFlags[i]);
-    v = (this->*m_calculatePointPtr)(p, s, m);
+    double s = (double)this->m_filterSize[i] * gridsize[i] / 2.0;
+    double v = (this->*m_calculatePointPtr)(p, s, m);
     result[i] = v * this->m_rasterMultiplier;
   }
-
-  if (this->m_showProgressBar) progressbar_finish(progress);
 
   return result;
 }
 
 std::vector<std::vector<double> > Griddata::computeDirectionalWindReduction(
     bool useLookupTable) {
-  if (!this->m_raster.isOpen()) {
-    bool success = this->m_raster.open();
-    if (!success) {
-      Adcirc::Error::throwError("Could not open the raster file.");
-    }
-  }
-
-  if (this->m_epsg != this->m_mesh->projection()) {
-    Adcirc::Error::throwError(
-        "You must use the same coordinate systems for mesh and raster.");
-  }
-
+  this->checkRasterOpen();
+  this->checkMatchingCoorindateSystems();
   this->buildWindDirectionLookup();
-  std::vector<std::vector<double> > result;
-  result.resize(this->m_mesh->numNodes());
+  this->assignDirectionalWindReductionFunctionPointer(useLookupTable);
 
   if (this->m_rasterInMemory) {
     this->m_raster.read();
   }
 
-  if (useLookupTable) {
-    this->m_calculateDwindPtr = &Griddata::calculateDirectionalWindFromLookup;
-  } else {
-    this->m_calculateDwindPtr = &Griddata::calculateDirectionalWindFromRaster;
-  }
+  std::vector<std::vector<double> > result;
+  result.resize(this->m_mesh->numNodes());
 
-  size_t progressCount = std::min<size_t>(this->m_mesh->numNodes() / 10000,
-                                          this->m_mesh->numNodes());
-  progressbar *progress;
-  if (this->m_showProgressBar) {
-    if (progressCount == this->m_mesh->numNodes()) {
-      progress =
-          progressbar_new("Raster Interpolation", this->m_mesh->numNodes());
-    } else {
-      progress = progressbar_new("Raster Interpolation", 10000);
-    }
-  }
+  boost::progress_display progress(this->m_mesh->numNodes());
 
-  size_t k = 0;
-#pragma omp parallel for schedule(dynamic) shared(k)
+#pragma omp parallel for schedule(dynamic) shared(progress)
   for (size_t i = 0; i < this->m_mesh->numNodes(); ++i) {
-#pragma omp atomic
-    k++;
-
     if (this->m_showProgressBar) {
-      if (progressCount == this->m_mesh->numNodes()) {
-        progressbar_inc(progress);
-      } else {
-        if (k % progressCount == 0) progressbar_inc(progress);
-      }
+#pragma omp critical
+      ++progress;
     }
 
     Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
     result[i] = (this->*m_calculateDwindPtr)(p);
   }
-
-  if (this->m_showProgressBar) progressbar_finish(progress);
 
   return result;
 }
