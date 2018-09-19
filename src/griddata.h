@@ -59,10 +59,6 @@ class Griddata {
   std::vector<std::vector<double>> computeDirectionalWindReduction(
       bool useLookupTable = false);
 
-  double windRadius() const;
-
-  double windSigma() const;
-
   int epsg() const;
   void setEpsg(int epsg);
 
@@ -76,6 +72,15 @@ class Griddata {
 
   bool rasterInMemory() const;
   void setRasterInMemory(bool rasterInMemory);
+
+  static constexpr double windRadius() { return 10000.0; }
+  static constexpr double windSigma() { return 6.0; }
+  static constexpr double windSigmaSquared() {
+    return Griddata::windSigma() * Griddata::windSigma();
+  }
+  static constexpr double windSigma2pi() {
+    return sqrt(2.0 * Constants::pi() * Griddata::windSigma());
+  }
 
  private:
   bool hasKey(size_t key);
@@ -113,10 +118,15 @@ class Griddata {
   std::vector<double> computeGridScale();
   int windDirection(int i, int j);
 
+  void checkMatchingCoorindateSystems();
+  void checkRasterOpen();
+  void assignDirectionalWindReductionFunctionPointer(bool useLookupTable);
+  void assignInterpolationFunctionPointer(bool useLookupTable);
+
   std::vector<double> m_filterSize;
   double m_defaultValue;
   Adcirc::Geometry::Mesh *m_mesh;
-  Rasterdata m_raster;
+  std::unique_ptr<Rasterdata> m_raster;
   std::string m_rasterFile;
   std::vector<int> m_interpolationFlags;
   std::unordered_map<size_t, double> m_lookup;
@@ -125,15 +135,6 @@ class Griddata {
   double m_rasterMultiplier;
   bool m_showProgressBar;
   bool m_rasterInMemory;
-
-  const double m_windRadius = 10000;
-  const double m_windSigma = 6.0;
-  const double m_windSigmaSquared = m_windSigma * m_windSigma;
-  const double m_windSigma2pi = sqrt(2.0 * Constants::pi() * m_windSigma);
-  void checkMatchingCoorindateSystems();
-  void checkRasterOpen();
-  void assignDirectionalWindReductionFunctionPointer(bool useLookupTable);
-  void assignInterpolationFunctionPointer(bool useLookupTable);
 };
 
 #endif  // GRIDDATA_H
