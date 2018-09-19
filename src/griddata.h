@@ -78,7 +78,7 @@ class Griddata {
   static constexpr double windSigmaSquared() {
     return Griddata::windSigma() * Griddata::windSigma();
   }
-  static constexpr double windSigma2pi() {
+  static double windSigma2pi() {
     return sqrt(2.0 * Constants::pi() * Griddata::windSigma());
   }
 

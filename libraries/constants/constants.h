@@ -28,15 +28,15 @@ class Constants {
   static constexpr double equitoralRadius() { return 6378137.0; }
   static constexpr double polarRadius() { return 6356752.3; }
   static constexpr double g() { return 9.80665; }
-  static constexpr double e() { return exp(1.0); }
-  static constexpr double pi() { return 4.0 * atan2(1.0, 1.0); }
+  static constexpr double e() { return M_E; }
+  static constexpr double pi() { return M_PI; }
   static constexpr double deg2rad() { return Constants::pi() / 180.0; }
   static constexpr double rad2deg() { return 180.0 / Constants::pi(); }
-  static constexpr double twoPi() { return 2.0 * Constants::pi(); }
-  static constexpr double halfPi() { return 0.5 * Constants::halfPi(); }
+  static constexpr double twoPi() { return M_2_PI; }
+  static constexpr double halfPi() { return M_PI_2; }
   static constexpr double rhoAir() { return 1.15; }
-  static constexpr double root2() { return sqrt(2.0); }
-  static constexpr double root3() { return sqrt(3.0); }
+  static constexpr double root2() { return M_SQRT2;}
+  static constexpr double root3() { return 1.7320508075688772935;}
 
   static double toRadians(double degrees);
   static double toDegrees(double radians);
