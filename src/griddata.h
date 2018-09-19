@@ -101,9 +101,11 @@ class Griddata {
   std::vector<double> (Griddata::*m_calculateDwindPtr)(Point &p);
 
   bool pixelDataInRadius(Point &p, double radius, std::vector<double> &x,
-                         std::vector<double> &y, std::vector<double> &z);
+                         std::vector<double> &y, std::vector<double> &z,
+                         std::vector<bool> &valid);
   bool pixelDataInRadius(Point &p, double radius, std::vector<double> &x,
-                         std::vector<double> &y, std::vector<int> &z);
+                         std::vector<double> &y, std::vector<int> &z,
+                         std::vector<bool> &valid);
 
   std::vector<double> calculateDirectionalWindFromRaster(Point &p);
   std::vector<double> calculateDirectionalWindFromLookup(Point &p);

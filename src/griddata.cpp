@@ -201,60 +201,54 @@ void Griddata::setRasterInMemory(bool rasterInMemory) {
 std::unordered_map<size_t, double> Griddata::lookup() const { return m_lookup; }
 
 bool Griddata::pixelDataInRadius(Point &p, double radius, vector<double> &x,
-                                 vector<double> &y, vector<double> &z) {
+                                 vector<double> &y, vector<double> &z,
+                                 vector<bool> &valid) {
   Pixel ul, lr;
   this->m_raster.get()->searchBoxAroundPoint(p.x(), p.y(), radius, ul, lr);
 
+  bool r = false;
+
   if (ul.isValid() && lr.isValid()) {
-    vector<double> xt, yt, zt;
-    this->m_raster.get()->pixelValues(ul.i(), ul.j(), lr.i(), lr.j(), xt, yt,
-                                      zt);
+    this->m_raster.get()->pixelValues(ul.i(), ul.j(), lr.i(), lr.j(), x, y, z);
+    valid.resize(x.size());
+    std::fill(valid.begin(), valid.end(), false);
 
-    x.reserve(xt.size());
-    y.reserve(yt.size());
-    z.reserve(yt.size());
-
-    for (size_t i = 0; i < xt.size(); ++i) {
-      if (zt[i] != this->m_raster.get()->nodata()) {
-        if (Constants::distance(p.x(), p.y(), xt[i], yt[i]) <= radius) {
-          x.push_back(xt[i]);
-          y.push_back(yt[i]);
-          z.push_back(zt[i]);
+    for (size_t i = 0; i < x.size(); ++i) {
+      if (z[i] != this->m_raster.get()->nodata()) {
+        if (Constants::distance(p.x(), p.y(), x[i], y[i]) <= radius) {
+          valid[i] = true;
+          r = true;
         }
       }
     }
-    return x.size() > 0;
+    return r;
   }
-  return false;
+  return r;
 }
 
 bool Griddata::pixelDataInRadius(Point &p, double radius, vector<double> &x,
-                                 vector<double> &y, vector<int> &z) {
+                                 vector<double> &y, vector<int> &z,
+                                 vector<bool> &valid) {
   Pixel ul, lr;
   this->m_raster.get()->searchBoxAroundPoint(p.x(), p.y(), radius, ul, lr);
 
+  bool r = false;
+
   if (ul.isValid() && lr.isValid()) {
-    vector<double> xt, yt;
-    vector<int> zt;
-    this->m_raster.get()->pixelValues(ul.i(), ul.j(), lr.i(), lr.j(), xt, yt,
-                                      zt);
+    this->m_raster.get()->pixelValues(ul.i(), ul.j(), lr.i(), lr.j(), x, y, z);
+    valid.resize(x.size());
+    std::fill(valid.begin(), valid.end(), false);
 
-    x.reserve(xt.size());
-    y.reserve(yt.size());
-    z.reserve(yt.size());
-
-    for (size_t i = 0; i < xt.size(); ++i) {
-      if (zt[i] != this->m_raster.get()->nodataint()) {
-        if (Constants::distance(p.x(), p.y(), xt[i], yt[i]) <= radius) {
-          x.push_back(xt[i]);
-          y.push_back(yt[i]);
-          z.push_back(zt[i]);
+    for (size_t i = 0; i < x.size(); ++i) {
+      if (z[i] != this->m_raster.get()->nodataint()) {
+        if (Constants::distance(p.x(), p.y(), x[i], y[i]) <= radius) {
+          valid[i] = true;
+          r = true;
         }
       }
     }
-    return x.size() > 0;
   }
-  return false;
+  return r;
 }
 
 double Griddata::calculatePoint(Point &p, double searchRadius,
@@ -295,9 +289,17 @@ double Griddata::calculatePointFromLookup(Point &p, double searchRadius,
 
 double Griddata::calculateAverage(Point &p, double w) {
   vector<double> x, y, z;
-  if (this->pixelDataInRadius(p, w, x, y, z)) {
-    return (z.size() > 0 ? std::accumulate(z.begin(), z.end(), 0.0) / z.size()
-                         : this->defaultValue());
+  vector<bool> v;
+  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+    double a = 0.0;
+    size_t n = 0;
+    for (size_t i = 0; i < x.size(); ++i) {
+      if (v[i]) {
+        a += z[i];
+        n++;
+      }
+      return n > 0 ? a / n : this->defaultValue();
+    }
   } else {
     return this->defaultValue();
   }
@@ -306,13 +308,16 @@ double Griddata::calculateAverage(Point &p, double w) {
 double Griddata::calculateAverageFromLookup(Point &p, double w) {
   vector<double> x, y;
   vector<int> z;
-  if (this->pixelDataInRadius(p, w, x, y, z)) {
+  vector<bool> v;
+  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
     size_t n = 0;
     double a = 0.0;
     for (size_t i = 0; i < x.size(); ++i) {
-      if (this->hasKey(z[i])) {
-        a += this->m_lookup[z[i]];
-        n++;
+      if (v[i]) {
+        if (this->hasKey(z[i])) {
+          a += this->m_lookup[z[i]];
+          n++;
+        }
       }
     }
     return (n > 0 ? a / n : this->defaultValue());
@@ -351,11 +356,14 @@ double Griddata::calculateNearestFromLookup(Point &p, double w) {
 
 double Griddata::calculateHighest(Point &p, double w) {
   vector<double> x, y, z;
-  if (this->pixelDataInRadius(p, w, x, y, z)) {
+  vector<bool> v;
+  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
     double zm = std::numeric_limits<double>::min();
     for (size_t i = 0; i < x.size(); ++i) {
-      if (z[i] > zm) {
-        zm = z[i];
+      if (v[i]) {
+        if (z[i] > zm) {
+          zm = z[i];
+        }
       }
     }
     return zm;
@@ -367,10 +375,11 @@ double Griddata::calculateHighest(Point &p, double w) {
 double Griddata::calculateHighestFromLookup(Point &p, double w) {
   vector<double> x, y;
   vector<int> z;
-  if (this->pixelDataInRadius(p, w, x, y, z)) {
+  vector<bool> v;
+  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
     double zm = std::numeric_limits<double>::min();
     for (size_t i = 0; i < x.size(); ++i) {
-      if (z[i] != this->m_raster.get()->nodataint()) {
+      if (v[i]) {
         if (this->hasKey(z[i])) {
           double zv = this->m_lookup[z[i]];
           if (zv > zm) {
@@ -451,16 +460,17 @@ void Griddata::computeWeightedDirectionalWindValues(vector<double> &weight,
 vector<double> Griddata::calculateDirectionalWindFromRaster(Point &p) {
   double nearWeight = 0.0;
   vector<double> x, y, z, wind, weight;
+  vector<bool> v;
   wind.resize(12);
   weight.resize(12);
 
   std::fill(weight.begin(), weight.end(), 0.0);
   std::fill(wind.begin(), wind.end(), 0.0);
 
-  this->pixelDataInRadius(p, this->windRadius(), x, y, z);
+  this->pixelDataInRadius(p, this->windRadius(), x, y, z, v);
 
   for (size_t i = 0; i < x.size(); ++i) {
-    if (z[i] != this->m_raster.get()->nodataint()) {
+    if (v[i]) {
       double w = 0.0;
       int dir = 0;
 
@@ -481,16 +491,17 @@ vector<double> Griddata::calculateDirectionalWindFromLookup(Point &p) {
   double nearWeight = 0.0;
   vector<double> x, y, wind, weight;
   vector<int> z;
+  vector<bool> v;
   wind.resize(12);
   weight.resize(12);
 
   std::fill(weight.begin(), weight.end(), 0.0);
   std::fill(wind.begin(), wind.end(), 0.0);
 
-  this->pixelDataInRadius(p, this->windRadius(), x, y, z);
+  this->pixelDataInRadius(p, this->windRadius(), x, y, z, v);
 
   for (size_t i = 0; i < x.size(); ++i) {
-    if (z[i] != this->m_raster.get()->nodataint()) {
+    if (v[i]) {
       if (this->hasKey(z[i])) {
         double zl = this->m_lookup[z[i]];
         double w = 0.0;
