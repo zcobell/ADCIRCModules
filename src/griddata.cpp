@@ -104,6 +104,7 @@ void Griddata::readLookupTable(string lookupTableFile) {
     }
     vector<string> ls = split::stringSplitToVector(l);
     if (ls.size() < 2) {
+      fid.close();
       Adcirc::Error::throwError("Could not read the lookup table.");
     }
     bool ok;
@@ -416,24 +417,27 @@ vector<double> Griddata::computeGridScale() {
 
 bool Griddata::computeWindDirectionAndWeight(Point &p, double x, double y,
                                              double &w, int &dir) {
-  double dx = (x - p.x()) / 1000.0;
-  double dy = (y - p.y()) / 1000.0;
+  static const double oOwss = 1.0 / this->windSigmaSquared();
+  static const double oO2mr3 = 1.0 / (2.0 - Constants::root3());
+  static const double oO2pr3 = 1.0 / (2.0 + Constants::root3());
+  double dx = (x - p.x()) * 0.001;
+  double dy = (y - p.y()) * 0.001;
   double d = dx * dx + dy * dy;
 
-  w = 1.0 / (exp(0.5 * d / this->windSigmaSquared()) + this->windSigma2pi());
-  if (sqrt(d) <= this->windRadius() / 1000.0) {
+  w = 1.0 / (exp(0.5 * d * oOwss) + this->windSigma2pi());
+  if (sqrt(d) > std::numeric_limits<double>::epsilon()) {
     double tanxy;
+
     if (abs(dx) <= std::numeric_limits<double>::epsilon()) {
       tanxy = 10000000.0;
     } else {
       tanxy = abs(dy / dx);
     }
 
-    int64_t k = min<int64_t>(
-        1, static_cast<int64_t>(std::floor(tanxy / (2 - Constants::root3()))));
+    int64_t k =
+        min<int64_t>(1, static_cast<int64_t>(std::floor(tanxy * oO2mr3)));
     k = k + min<int64_t>(1, static_cast<int64_t>(std::floor(tanxy)));
-    k = k + min<int64_t>(1, static_cast<int64_t>(
-                                std::floor(tanxy / (2 + Constants::root3()))));
+    k = k + min<int64_t>(1, static_cast<int64_t>(std::floor(tanxy * oO2pr3)));
 
     int a = static_cast<int>(sgn(dx));
     int b = static_cast<int>(k * sgn(dy));
@@ -578,7 +582,7 @@ vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
 
     Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
     Method m = static_cast<Method>(this->m_interpolationFlags[i]);
-    double s = (double)this->m_filterSize[i] * gridsize[i] / 2.0;
+    double s = (double)this->m_filterSize[i] * gridsize[i] * 0.5;
     double v = (this->*m_calculatePointPtr)(p, s, m);
     result[i] = v * this->m_rasterMultiplier;
   }
