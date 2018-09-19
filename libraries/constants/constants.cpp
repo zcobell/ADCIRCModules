@@ -17,7 +17,33 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 #include "constants.h"
+#include <cmath>
 
+static const double m_equitoralRadius = 6378137.0;
+static const double m_polarRadius = 6356752.3;
+static const double m_meanRadiusEarth = 6378206.4;
+static const double m_e = exp(1.0);
+static const double m_pi = 4.0 * atan2(1.0, 1.0);
+static const double m_2pi = 2.0 * m_pi;
+static const double m_halfPi = 0.5 * m_pi;
+static const double m_deg2rad = m_pi / 180.0;
+static const double m_rad2deg = 180.0 / m_pi;
+static const double m_rhoAir = 1.15;
+static const double m_g = 9.80665;
+static const double m_root2 = sqrt(2);
+static const double m_root3 = sqrt(3);
+
+double Constants::equitoralRadius() { return m_equitoralRadius; }
+double Constants::polarRadius() { return m_polarRadius; }
+double Constants::g() { return m_g; }
+double Constants::e() { return m_e; }
+double Constants::pi() { return m_pi; }
+double Constants::deg2rad() { return m_deg2rad; }
+double Constants::rad2deg() { return m_rad2deg; }
+double Constants::twoPi() { return m_2pi; }
+double Constants::halfPi() { return m_halfPi; }
+double Constants::rhoAir() { return m_rhoAir; }
+double Constants::radiusEarth() { return m_meanRadiusEarth; }
 double Constants::radiusEarth(double latitude) {
   double l = Constants::toRadians(latitude);
   return sqrt((pow(Constants::equitoralRadius(), 4.0) * cos(l) * cos(l) +
@@ -59,3 +85,7 @@ double Constants::toDegrees(double radians) {
 double Constants::toRadians(double degrees) {
   return degrees * Constants::deg2rad();
 }
+
+double Constants::root2() { return m_root2; }
+
+double Constants::root3() { return m_root3; }

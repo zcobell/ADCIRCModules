@@ -306,8 +306,8 @@ double Griddata::calculateAverage(Point &p, double w) {
         a += z[i];
         n++;
       }
-      return n > 0 ? a / n : this->defaultValue();
     }
+    return n > 0 ? a / n : this->defaultValue();
   } else {
     return this->defaultValue();
   }
@@ -474,8 +474,12 @@ vector<double> Griddata::computeGridScale() {
     for (size_t j = 0; j < l.size(); ++j) {
       a += l[j]->elementSize(false);
     }
-    gridsize[i] = a / l.size();
-    if (gridsize[i] <= 0.0) {
+    if (l.size() > 0)
+      gridsize[i] = a / l.size();
+    else
+      gridsize[i] = 0.0;
+
+    if (gridsize[i] < 0.0) {
       Adcirc::Error::throwError("Error computing mesh size table.");
     }
   }

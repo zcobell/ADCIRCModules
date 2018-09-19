@@ -19,33 +19,28 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#include <cmath>
-
 class Constants {
  public:
   Constants() = default;
-
-  static constexpr double equitoralRadius() { return 6378137.0; }
-  static constexpr double polarRadius() { return 6356752.3; }
-  static constexpr double g() { return 9.80665; }
-  static constexpr double e() { return M_E; }
-  static constexpr double pi() { return M_PI; }
-  static constexpr double deg2rad() { return Constants::pi() / 180.0; }
-  static constexpr double rad2deg() { return 180.0 / Constants::pi(); }
-  static constexpr double twoPi() { return M_2_PI; }
-  static constexpr double halfPi() { return M_PI_2; }
-  static constexpr double rhoAir() { return 1.15; }
-  static constexpr double root2() { return M_SQRT2;}
-  static constexpr double root3() { return 1.7320508075688772935;}
-
+  static double equitoralRadius();
+  static double polarRadius();
+  static double e();
+  static double pi();
+  static double twoPi();
+  static double halfPi();
+  static double deg2rad();
+  static double rad2deg();
   static double toRadians(double degrees);
   static double toDegrees(double radians);
   static double radiusEarth(double latitude);
-  static double radiusEarth() { return 6378206.4; }
-
+  static double radiusEarth();
+  static double g();
+  static double rhoAir();
   static double distance(double x1, double y1, double x2, double y2,
                          bool geodesic = false);
   // static double azimuth(double x1, double y1, double  x2, double y2);
+  static double root2();
+  static double root3();
 
  private:
   static double geodesic_distance(double x1, double y1, double x2, double y2);
