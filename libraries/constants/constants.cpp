@@ -33,8 +33,6 @@ const double m_g = 9.80665;
 const double m_root2 = sqrt(2);
 const double m_root3 = sqrt(3);
 
-Constants::Constants() = default;
-
 double Constants::equitoralRadius() { return m_equitoralRadius; }
 double Constants::polarRadius() { return m_polarRadius; }
 double Constants::g() { return m_g; }

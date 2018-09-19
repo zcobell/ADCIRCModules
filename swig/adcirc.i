@@ -48,6 +48,7 @@
 #include "elementtable.h"
 #include "meshchecker.h"
 #include "multithreading.h"
+#include "constants.h"
 %}
 
 #ifdef _USE_GDAL
@@ -99,6 +100,7 @@ namespace std {
 %include "ltea.h"
 %include "elementtable.h"
 %include "multithreading.h"
+%include "constants.h"
 #ifdef _USE_GDAL
 %include "rasterdata.h"
 %include "griddata.h"

@@ -19,10 +19,12 @@
 #ifndef GRIDDATA_H
 #define GRIDDATA_H
 
+#include <cmath>
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <utility>
+#include "constants.h"
 #include "mesh.h"
 #include "point.h"
 #include "rasterdata.h"
@@ -75,8 +77,8 @@ class Griddata {
   bool rasterInMemory() const;
   void setRasterInMemory(bool rasterInMemory);
 
-private:
-  bool hasKey(int key);
+ private:
+  bool hasKey(size_t key);
   void buildWindDirectionLookup();
   double calculatePoint(Point &p, double searchRadius, Griddata::Method method);
   double calculateAverage(Point &p, double w);
@@ -104,8 +106,9 @@ private:
   bool computeWindDirectionAndWeight(Point &p, double x, double y, double &w,
                                      int &dir);
 
-  void computeWeightedDirectionalWindValues(double tw, std::vector<double> &wt,
-                                            std::vector<double> &r);
+  void computeWeightedDirectionalWindValues(std::vector<double> &weight,
+                                            std::vector<double> &wind,
+                                            double nearWeight);
 
   std::vector<double> computeGridScale();
   int windDirection(int i, int j);
@@ -126,6 +129,7 @@ private:
   const double m_windRadius = 10000;
   const double m_windSigma = 6.0;
   const double m_windSigmaSquared = m_windSigma * m_windSigma;
+  const double m_windSigma2pi = sqrt(2.0 * Constants::pi() * m_windSigma);
   void checkMatchingCoorindateSystems();
   void checkRasterOpen();
   void assignDirectionalWindReductionFunctionPointer(bool useLookupTable);

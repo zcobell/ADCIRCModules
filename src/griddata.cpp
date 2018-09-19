@@ -18,8 +18,8 @@
 //------------------------------------------------------------------------*/
 
 #include "griddata.h"
+#include <omp.h>
 #include <algorithm>
-#include <cmath>
 #include <fstream>
 #include <numeric>
 #include <utility>
@@ -38,7 +38,7 @@ int sgn(T val) {
   return (T(0) < val) - (val < T(0));
 }
 
-bool Griddata::hasKey(int key) {
+bool Griddata::hasKey(size_t key) {
   if (this->m_lookup.find(key) != this->m_lookup.end()) return true;
   return false;
 }
@@ -46,8 +46,8 @@ bool Griddata::hasKey(int key) {
 Griddata::Griddata() {
   this->m_raster = Rasterdata();
   this->m_rasterFile = string();
-  this->m_interpolationFlags = std::vector<int>();
-  this->m_filterSize = std::vector<double>();
+  this->m_interpolationFlags = vector<int>();
+  this->m_filterSize = vector<double>();
   this->m_defaultValue = -9999.0;
   this->m_epsg = 4326;
   this->m_showProgressBar = false;
@@ -120,12 +120,11 @@ void Griddata::readLookupTable(string lookupTableFile) {
   return;
 }
 
-std::vector<int> Griddata::interpolationFlags() const {
+vector<int> Griddata::interpolationFlags() const {
   return this->m_interpolationFlags;
 }
 
-void Griddata::setInterpolationFlags(
-    const std::vector<int> &interpolationFlags) {
+void Griddata::setInterpolationFlags(const vector<int> &interpolationFlags) {
   this->m_interpolationFlags = interpolationFlags;
 }
 
@@ -142,9 +141,9 @@ int Griddata::interpolationFlag(size_t index) {
              : Method::NoMethod;
 }
 
-std::vector<double> Griddata::filterSizes() const { return this->m_filterSize; }
+vector<double> Griddata::filterSizes() const { return this->m_filterSize; }
 
-void Griddata::setFilterSizes(std::vector<double> filterSize) {
+void Griddata::setFilterSizes(vector<double> filterSize) {
   this->m_filterSize = filterSize;
 }
 
@@ -212,7 +211,7 @@ bool Griddata::pixelDataInRadius(Point &p, double radius, vector<double> &x,
   this->m_raster.searchBoxAroundPoint(p.x(), p.y(), radius, ul, lr);
 
   if (ul.isValid() && lr.isValid()) {
-    std::vector<double> xt, yt, zt;
+    vector<double> xt, yt, zt;
     this->m_raster.pixelValues(ul.i(), ul.j(), lr.i(), lr.j(), xt, yt, zt);
 
     x.reserve(xt.size());
@@ -239,8 +238,8 @@ bool Griddata::pixelDataInRadius(Point &p, double radius, vector<double> &x,
   this->m_raster.searchBoxAroundPoint(p.x(), p.y(), radius, ul, lr);
 
   if (ul.isValid() && lr.isValid()) {
-    std::vector<double> xt, yt;
-    std::vector<int> zt;
+    vector<double> xt, yt;
+    vector<int> zt;
     this->m_raster.pixelValues(ul.i(), ul.j(), lr.i(), lr.j(), xt, yt, zt);
 
     x.reserve(xt.size());
@@ -388,11 +387,11 @@ double Griddata::calculateHighestFromLookup(Point &p, double w) {
   return this->defaultValue();
 }
 
-std::vector<double> Griddata::computeGridScale() {
+vector<double> Griddata::computeGridScale() {
   ElementTable e(this->m_mesh);
   e.build();
 
-  std::vector<double> gridsize;
+  vector<double> gridsize;
   gridsize.resize(this->m_mesh->numNodes());
 
   for (size_t i = 0; i < this->m_mesh->numNodes(); i++) {
@@ -411,15 +410,14 @@ std::vector<double> Griddata::computeGridScale() {
 
 bool Griddata::computeWindDirectionAndWeight(Point &p, double x, double y,
                                              double &w, int &dir) {
-  double dx = p.x() - x;
-  double dy = p.y() - y;
+  double dx = (x - p.x()) / 1000.0;
+  double dy = (y - p.y()) / 1000.0;
   double d = dx * dx + dy * dy;
-  if (sqrt(d) > std::numeric_limits<double>::epsilon()) {
-    w = 1.0 / (exp(0.5 * d / (this->m_windSigmaSquared)) *
-               pow(((Constants::twoPi() * this->m_windSigma)), 2.0));
 
+  w = 1.0 / (exp(0.5 * d / this->m_windSigmaSquared) + this->m_windSigma2pi);
+  if (sqrt(d) <= this->m_windRadius / 1000.0) {
     double tanxy;
-    if (abs(dx) < std::numeric_limits<double>::epsilon()) {
+    if (abs(dx) <= std::numeric_limits<double>::epsilon()) {
       tanxy = 10000000.0;
     } else {
       tanxy = abs(dy / dx);
@@ -439,78 +437,80 @@ bool Griddata::computeWindDirectionAndWeight(Point &p, double x, double y,
   return false;
 }
 
-void Griddata::computeWeightedDirectionalWindValues(double tw,
-                                                    vector<double> &wt,
-                                                    vector<double> &r) {
-  for (int i = 0; i < 12; ++i) {
-    double w = tw + wt[i];
+void Griddata::computeWeightedDirectionalWindValues(vector<double> &weight,
+                                                    vector<double> &wind,
+                                                    double nearWeight) {
+  for (size_t i = 0; i < 12; ++i) {
+    double w = weight[i] + nearWeight;
     if (w > 1e-12) {
-      r[i] = r[i] / w;
+      wind[i] = wind[i] / w;
     } else {
-      r[i] = 0.0;
+      wind[i] = 0.0;
     }
   }
   return;
 }
 
 vector<double> Griddata::calculateDirectionalWindFromRaster(Point &p) {
-  double tw = 0.0;
-  double tv = 0.0;
-  vector<double> x, y, z, r, wt;
-  r.resize(12);
-  wt.resize(12);
+  double nearWeight = 0.0;
+  vector<double> x, y, z, wind, weight;
+  wind.resize(12);
+  weight.resize(12);
+
+  std::fill(weight.begin(), weight.end(), 0.0);
+  std::fill(wind.begin(), wind.end(), 0.0);
 
   this->pixelDataInRadius(p, this->m_windRadius, x, y, z);
 
   for (size_t i = 0; i < x.size(); ++i) {
-    if (z[i] != this->m_raster.nodata()) {
-      double w;
-      int dir;
+    if (z[i] != this->m_raster.nodataint()) {
+      double w = 0.0;
+      int dir = 0;
+
       if (this->computeWindDirectionAndWeight(p, x[i], y[i], w, dir)) {
-        tw += w;
-        wt[dir] += w;
-        r[dir] += w * z[i];
-        tv += w * z[i];
+        weight[dir] += w;
+        wind[dir] += w * z[i];
+      } else {
+        nearWeight += w;
       }
     }
   }
 
-  this->computeWeightedDirectionalWindValues(tw, wt, r);
-
-  return r;
+  this->computeWeightedDirectionalWindValues(weight, wind, nearWeight);
+  return wind;
 }
 
 vector<double> Griddata::calculateDirectionalWindFromLookup(Point &p) {
-  double tw = 0.0;
-  double tv = 0.0;
-  vector<double> x, y, r, wt;
+  double nearWeight = 0.0;
+  vector<double> x, y, wind, weight;
   vector<int> z;
-  r.resize(12);
-  wt.resize(12);
+  wind.resize(12);
+  weight.resize(12);
+
+  std::fill(weight.begin(), weight.end(), 0.0);
+  std::fill(wind.begin(), wind.end(), 0.0);
 
   this->pixelDataInRadius(p, this->m_windRadius, x, y, z);
 
   for (size_t i = 0; i < x.size(); ++i) {
-    if (z[i] != this->m_raster.nodata()) {
+    if (z[i] != this->m_raster.nodataint()) {
       if (this->hasKey(z[i])) {
         double zl = this->m_lookup[z[i]];
-        double w;
-        int dir;
+        double w = 0.0;
+        int dir = 0;
+
         if (this->computeWindDirectionAndWeight(p, x[i], y[i], w, dir)) {
-          tw += w;
-          wt[dir] += w;
-          r[dir] += w * zl;
-          tv += w * zl;
+          weight[dir] += w;
+          wind[dir] += w * zl;
+        } else {
+          nearWeight += w;
         }
-      } else {
-        // Adcirc::Error::throwError("Key not found.");
       }
     }
   }
 
-  this->computeWeightedDirectionalWindValues(tw, wt, r);
-
-  return r;
+  this->computeWeightedDirectionalWindValues(weight, wind, nearWeight);
+  return wind;
 }
 
 void Griddata::assignInterpolationFunctionPointer(bool useLookupTable) {
@@ -546,7 +546,7 @@ void Griddata::assignDirectionalWindReductionFunctionPointer(
   }
 }
 
-std::vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
+vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
   this->checkRasterOpen();
   this->checkMatchingCoorindateSystems();
   this->assignInterpolationFunctionPointer(useLookupTable);
@@ -555,8 +555,8 @@ std::vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
     this->m_raster.read();
   }
 
-  std::vector<double> gridsize = this->computeGridScale();
-  std::vector<double> result;
+  vector<double> gridsize = this->computeGridScale();
+  vector<double> result;
   result.resize(this->m_mesh->numNodes());
 
   boost::progress_display progress(this->m_mesh->numNodes());
@@ -578,7 +578,7 @@ std::vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
   return result;
 }
 
-std::vector<std::vector<double> > Griddata::computeDirectionalWindReduction(
+vector<vector<double> > Griddata::computeDirectionalWindReduction(
     bool useLookupTable) {
   this->checkRasterOpen();
   this->checkMatchingCoorindateSystems();
@@ -589,7 +589,7 @@ std::vector<std::vector<double> > Griddata::computeDirectionalWindReduction(
     this->m_raster.read();
   }
 
-  std::vector<std::vector<double> > result;
+  vector<vector<double> > result;
   result.resize(this->m_mesh->numNodes());
 
   boost::progress_display progress(this->m_mesh->numNodes());

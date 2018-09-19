@@ -688,7 +688,7 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/src 
                     -I${CMAKE_SOURCE_DIR}/libraries/point -I${CMAKE_SOURCE_DIR}/libraries/kdtree2 
                     -I${CMAKE_SOURCE_DIR}/libraries/projection -I${CMAKE_SOURCE_DIR}/libraries/rasterdata
-                    -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG}
+                    -I${CMAKE_SOURCE_DIR}/libraries/constants -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG}
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
             COMMAND ${CMAKE_COMMAND} -DSRC=\"${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1\" 
@@ -703,7 +703,7 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/src 
                     -I${CMAKE_SOURCE_DIR}/libraries/point -I${CMAKE_SOURCE_DIR}/libraries/kdtree2
                     -I${CMAKE_SOURCE_DIR}/libraries/projection -I${CMAKE_SOURCE_DIR}/libraries/rasterdata
-                    -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG} 
+                    -I${CMAKE_SOURCE_DIR}/libraries/constants -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG} 
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
@@ -714,7 +714,8 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
     ADD_LIBRARY( PyAdcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx )
     TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_DIRECTORIES} ${CMAKE_SOURCE_DIR}/src 
                                     ${CMAKE_SOURCE_DIR}/libraries/point ${CMAKE_SOURCE_DIR}/libraries/kdtree2
-                                    ${CMAKE_SOURCE_DIR}/libraries/projection ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
+                                    ${CMAKE_SOURCE_DIR}/libraries/projection ${CMAKE_SOURCE_DIR}/libraries/constants 
+                                    ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
     TARGET_LINK_LIBRARIES( PyAdcirc PRIVATE adcircmodules ${PYTHON_LIBRARY} )
     SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES PREFIX "_")
     SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES PyAdcirc.py CMakeFiles/python_adcirc_wrap.cxx )
