@@ -264,6 +264,9 @@ double Griddata::calculatePoint(Point &p, double searchRadius,
     case Highest:
       return this->calculateHighest(p, searchRadius);
       break;
+    case PlusTwoSigma:
+      return this->calculateOutsideStandardDeviation(p, searchRadius, 2);
+      break;
     default:
       return this->defaultValue();
       break;
@@ -281,6 +284,10 @@ double Griddata::calculatePointFromLookup(Point &p, double searchRadius,
       break;
     case Highest:
       return this->calculateHighestFromLookup(p, searchRadius);
+      break;
+    case PlusTwoSigma:
+      return this->calculateOutsideStandardDeviationFromLookup(p, searchRadius,
+                                                               2);
       break;
     default:
       return this->defaultValue();
@@ -325,6 +332,66 @@ double Griddata::calculateAverageFromLookup(Point &p, double w) {
   } else {
     return this->defaultValue();
   }
+}
+
+double Griddata::calculateOutsideStandardDeviation(Point &p, double w, int n) {
+  vector<double> x, y, z, z2;
+  vector<bool> v;
+  z2.reserve(z.size());
+  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+    for (size_t i = 0; i < z.size(); ++i) {
+      if (v[i]) {
+        z2.push_back(z[i]);
+      }
+    }
+    double mean = std::accumulate(z2.begin(), z2.end(), 0.0) / z2.size();
+    double stddev = sqrt(
+        std::inner_product(z2.begin(), z2.end(), z2.begin(), 0.0) / z2.size() -
+        (mean * mean));
+    double cutoff = mean + n * stddev;
+    double a = 0;
+    size_t n = 0;
+    for (size_t i = 0; i < z2.size(); i++) {
+      if (z[i] >= cutoff) {
+        a += z[i];
+        n++;
+      }
+    }
+    return n > 0 ? a / n : this->defaultValue();
+  }
+  return this->defaultValue();
+}
+
+double Griddata::calculateOutsideStandardDeviationFromLookup(Point &p, double w,
+                                                             int n) {
+  vector<double> x, y, z2;
+  vector<int> z;
+  vector<bool> v;
+  z2.reserve(z.size());
+  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+    for (size_t i = 0; i < z.size(); ++i) {
+      if (v[i]) {
+        if (this->hasKey(z[i])) {
+          z2.push_back(this->m_lookup[z[i]]);
+        }
+      }
+    }
+    double mean = std::accumulate(z2.begin(), z2.end(), 0.0) / z2.size();
+    double stddev = sqrt(
+        std::inner_product(z2.begin(), z2.end(), z2.begin(), 0.0) / z2.size() -
+        (mean * mean));
+    double cutoff = mean + n * stddev;
+    double a = 0;
+    size_t n = 0;
+    for (size_t i = 0; i < z2.size(); i++) {
+      if (z[i] >= cutoff) {
+        a += z[i];
+        n++;
+      }
+    }
+    return n > 0 ? a / n : this->defaultValue();
+  }
+  return this->defaultValue();
 }
 
 double Griddata::calculateNearest(Point &p, double w) {

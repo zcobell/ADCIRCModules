@@ -31,7 +31,7 @@
 
 class Griddata {
  public:
-  enum Method { NoMethod = 0, Average = 1, Nearest = 2, Highest = 3 };
+  enum Method { NoMethod = 0, Average = 1, Nearest = 2, Highest = 3, PlusTwoSigma = 4 };
 
   Griddata();
   Griddata(Adcirc::Geometry::Mesh *mesh, std::string rasterFile);
@@ -89,16 +89,21 @@ class Griddata {
   double calculateAverage(Point &p, double w);
   double calculateNearest(Point &p, double w);
   double calculateHighest(Point &p, double w);
+  double calculateOutsideStandardDeviation(Point &p, double w, int n);
 
   double calculatePointFromLookup(Point &p, double w, Griddata::Method method);
   double calculateAverageFromLookup(Point &p, double w);
   double calculateNearestFromLookup(Point &p, double w);
   double calculateHighestFromLookup(Point &p, double w);
+  double calculateOutsideStandardDeviationFromLookup(Point &p, double w, int n);
 
   double (Griddata::*m_calculatePointPtr)(Point &p, double w,
                                           Griddata::Method method);
 
   std::vector<double> (Griddata::*m_calculateDwindPtr)(Point &p);
+
+  double mean(std::vector<double> &v);
+  double standardDeviation(std::vector<double> &v);
 
   bool pixelDataInRadius(Point &p, double radius, std::vector<double> &x,
                          std::vector<double> &y, std::vector<double> &z,
