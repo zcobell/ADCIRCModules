@@ -32,6 +32,14 @@
 using namespace std;
 using namespace Adcirc::Geometry;
 
+//...A couple constants used within
+static const double oOwss = 1.0 / Griddata::windSigmaSquared();
+static const double oO2mr3 = 1.0 / (2.0 - Constants::root3());
+static const double oO2pr3 = 1.0 / (2.0 + Constants::root3());
+static const double ws2pi = Griddata::windSigma2pi();
+static const double epsilonSquared =
+    pow(std::numeric_limits<double>::epsilon(), 2.0);
+
 template <typename T>
 int sgn(T val) {
   return (T(0) < val) - (val < T(0));
@@ -488,27 +496,21 @@ vector<double> Griddata::computeGridScale() {
 
 bool Griddata::computeWindDirectionAndWeight(Point &p, double x, double y,
                                              double &w, int &dir) {
-  static const double oOwss = 1.0 / this->windSigmaSquared();
-  static const double oO2mr3 = 1.0 / (2.0 - Constants::root3());
-  static const double oO2pr3 = 1.0 / (2.0 + Constants::root3());
   double dx = (x - p.x()) * 0.001;
   double dy = (y - p.y()) * 0.001;
   double d = dx * dx + dy * dy;
 
-  w = 1.0 / (exp(0.5 * d * oOwss) + this->windSigma2pi());
-  if (sqrt(d) > std::numeric_limits<double>::epsilon()) {
-    double tanxy;
-
-    if (abs(dx) <= std::numeric_limits<double>::epsilon()) {
-      tanxy = 10000000.0;
-    } else {
+  w = 1.0 / (exp(0.5 * d * oOwss) + ws2pi);
+  if (d > epsilonSquared) {
+    double tanxy = 10000000.0;
+    if (abs(dx) > std::numeric_limits<double>::epsilon()) {
       tanxy = abs(dy / dx);
     }
 
     int64_t k =
-        min<int64_t>(1, static_cast<int64_t>(std::floor(tanxy * oO2mr3)));
-    k = k + min<int64_t>(1, static_cast<int64_t>(std::floor(tanxy)));
-    k = k + min<int64_t>(1, static_cast<int64_t>(std::floor(tanxy * oO2pr3)));
+        min<int64_t>(1, static_cast<int64_t>(std::floor(tanxy * oO2mr3))) +
+        min<int64_t>(1, static_cast<int64_t>(std::floor(tanxy))) +
+        min<int64_t>(1, static_cast<int64_t>(std::floor(tanxy * oO2pr3)));
 
     int a = static_cast<int>(sgn(dx));
     int b = static_cast<int>(k * sgn(dy));
