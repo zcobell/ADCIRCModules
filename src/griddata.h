@@ -83,7 +83,7 @@ class Griddata {
   }
 
  private:
-  bool hasKey(size_t key);
+  bool getKeyValue(size_t key, double &value);
   void buildWindDirectionLookup();
   double calculatePoint(Point &p, double searchRadius, Griddata::Method method);
   double calculateAverage(Point &p, double w);

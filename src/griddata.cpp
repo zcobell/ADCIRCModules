@@ -45,9 +45,11 @@ int sgn(T val) {
   return (T(0) < val) - (val < T(0));
 }
 
-bool Griddata::hasKey(size_t key) {
-  if (this->m_lookup.find(key) != this->m_lookup.end()) return true;
-  return false;
+bool Griddata::getKeyValue(size_t key, double &value) {
+  auto t = this->m_lookup.find(key);
+  if (t == this->m_lookup.end()) return false;
+  value = t->second;
+  return true;
 }
 
 Griddata::Griddata() {
@@ -204,10 +206,12 @@ int Griddata::windDirection(int i, int j) {
 bool Griddata::rasterInMemory() const { return this->m_rasterInMemory; }
 
 void Griddata::setRasterInMemory(bool rasterInMemory) {
-  m_rasterInMemory = rasterInMemory;
+  this->m_rasterInMemory = rasterInMemory;
 }
 
-std::unordered_map<size_t, double> Griddata::lookup() const { return m_lookup; }
+std::unordered_map<size_t, double> Griddata::lookup() const {
+  return this->m_lookup;
+}
 
 bool Griddata::pixelDataInRadius(Point &p, double radius, vector<double> &x,
                                  vector<double> &y, vector<double> &z,
@@ -330,8 +334,9 @@ double Griddata::calculateAverageFromLookup(Point &p, double w) {
     double a = 0.0;
     for (size_t i = 0; i < x.size(); ++i) {
       if (v[i]) {
-        if (this->hasKey(z[i])) {
-          a += this->m_lookup[z[i]];
+        double zl;
+        if (this->getKeyValue(z[i], zl)) {
+          a += zl;
           n++;
         }
       }
@@ -379,8 +384,9 @@ double Griddata::calculateOutsideStandardDeviationFromLookup(Point &p, double w,
   if (this->pixelDataInRadius(p, w, x, y, z, v)) {
     for (size_t i = 0; i < z.size(); ++i) {
       if (v[i]) {
-        if (this->hasKey(z[i])) {
-          z2.push_back(this->m_lookup[z[i]]);
+        double zl;
+        if (this->getKeyValue(z[i], zl)) {
+          z2.push_back(zl);
         }
       }
     }
@@ -423,7 +429,8 @@ double Griddata::calculateNearestFromLookup(Point &p, double w) {
   else {
     int z = this->m_raster.get()->pixelValueInt(px);
     if (z != this->m_raster.get()->nodataint()) {
-      return this->hasKey(z) ? this->m_lookup[z] : this->defaultValue();
+      double zl;
+      return this->getKeyValue(z, zl) ? zl : this->defaultValue();
     } else {
       return this->defaultValue();
     }
@@ -456,10 +463,10 @@ double Griddata::calculateHighestFromLookup(Point &p, double w) {
     double zm = std::numeric_limits<double>::min();
     for (size_t i = 0; i < x.size(); ++i) {
       if (v[i]) {
-        if (this->hasKey(z[i])) {
-          double zv = this->m_lookup[z[i]];
-          if (zv > zm) {
-            zm = zv;
+        double zl;
+        if (this->getKeyValue(z[i], zl)) {
+          if (zl > zm) {
+            zm = zl;
           }
         }
       }
@@ -500,17 +507,16 @@ bool Griddata::computeWindDirectionAndWeight(Point &p, double x, double y,
   double dy = (y - p.y()) * 0.001;
   double d = dx * dx + dy * dy;
 
-  w = 1.0 / (exp(0.5 * d * oOwss) + ws2pi);
+  w = 1.0 / (std::exp(0.5 * d * oOwss) + ws2pi);
   if (d > epsilonSquared) {
     double tanxy = 10000000.0;
-    if (abs(dx) > std::numeric_limits<double>::epsilon()) {
-      tanxy = abs(dy / dx);
+    if (std::abs(dx) > std::numeric_limits<double>::epsilon()) {
+      tanxy = std::abs(dy / dx);
     }
 
-    int64_t k =
-        min<int64_t>(1, static_cast<int64_t>(std::floor(tanxy * oO2mr3))) +
-        min<int64_t>(1, static_cast<int64_t>(std::floor(tanxy))) +
-        min<int64_t>(1, static_cast<int64_t>(std::floor(tanxy * oO2pr3)));
+    int64_t k = min<int64_t>(1.0, tanxy * oO2mr3) +
+                min<int64_t>(1.0, tanxy) +
+                min<int64_t>(1.0, tanxy * oO2pr3);
 
     int a = static_cast<int>(sgn(dx));
     int b = static_cast<int>(k * sgn(dy));
@@ -579,8 +585,8 @@ vector<double> Griddata::calculateDirectionalWindFromLookup(Point &p) {
 
   for (size_t i = 0; i < x.size(); ++i) {
     if (v[i]) {
-      if (this->hasKey(z[i])) {
-        double zl = this->m_lookup[z[i]];
+      double zl;
+      if (this->getKeyValue(z[i], zl)) {
         double w = 0.0;
         int dir = 0;
 
