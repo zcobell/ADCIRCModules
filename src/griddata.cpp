@@ -264,20 +264,31 @@ bool Griddata::pixelDataInRadius(Point &p, double radius, vector<double> &x,
   return r;
 }
 
+bool Griddata::calculateBilskieRadius(double meshSize, double rasterCellSize,
+                                      double &radius) {
+  double n = (0.25 * meshSize) / rasterCellSize;
+  radius = pow(2 * n + 1.0, 2.0) * rasterCellSize;
+  return n >= 1.0;
+}
+
 double Griddata::calculatePoint(Point &p, double searchRadius,
-                                Griddata::Method method) {
+                                double gsMultiplier, Griddata::Method method) {
   switch (method) {
     case Average:
-      return this->calculateAverage(p, searchRadius);
+      return this->calculateAverage(p, searchRadius * gsMultiplier);
       break;
     case Nearest:
-      return this->calculateNearest(p, searchRadius);
+      return this->calculateNearest(p, searchRadius * gsMultiplier);
       break;
     case Highest:
-      return this->calculateHighest(p, searchRadius);
+      return this->calculateHighest(p, searchRadius * gsMultiplier);
       break;
     case PlusTwoSigma:
-      return this->calculateOutsideStandardDeviation(p, searchRadius, 2);
+      return this->calculateOutsideStandardDeviation(
+          p, searchRadius * gsMultiplier, 2);
+      break;
+    case BilskieEtAll:
+      return this->calculateBilskieAveraging(p, searchRadius, gsMultiplier);
       break;
     default:
       return this->defaultValue();
@@ -286,20 +297,25 @@ double Griddata::calculatePoint(Point &p, double searchRadius,
 }
 
 double Griddata::calculatePointFromLookup(Point &p, double searchRadius,
+                                          double gsMultiplier,
                                           Griddata::Method method) {
   switch (method) {
     case Average:
-      return this->calculateAverageFromLookup(p, searchRadius);
+      return this->calculateAverageFromLookup(p, searchRadius * gsMultiplier);
       break;
     case Nearest:
-      return this->calculateNearestFromLookup(p, searchRadius);
+      return this->calculateNearestFromLookup(p, searchRadius * gsMultiplier);
       break;
     case Highest:
-      return this->calculateHighestFromLookup(p, searchRadius);
+      return this->calculateHighestFromLookup(p, searchRadius * gsMultiplier);
       break;
     case PlusTwoSigma:
-      return this->calculateOutsideStandardDeviationFromLookup(p, searchRadius,
-                                                               2);
+      return this->calculateOutsideStandardDeviationFromLookup(
+          p, searchRadius * gsMultiplier, 2);
+      break;
+    case BilskieEtAll:
+      return this->calculateBilskieAveragingFromLookup(p, searchRadius,
+                                                       gsMultiplier);
       break;
     default:
       return this->defaultValue();
@@ -344,6 +360,26 @@ double Griddata::calculateAverageFromLookup(Point &p, double w) {
     return (n > 0 ? a / n : this->defaultValue());
   } else {
     return this->defaultValue();
+  }
+}
+
+double Griddata::calculateBilskieAveraging(Point &p, double w,
+                                           double gsMultiplier) {
+  double r;
+  if (this->calculateBilskieRadius(w, this->m_raster.get()->dx(), r)) {
+    return this->calculateAverage(p, r * gsMultiplier);
+  } else {
+    return this->calculateNearest(p, r * gsMultiplier);
+  }
+}
+
+double Griddata::calculateBilskieAveragingFromLookup(Point &p, double w,
+                                                     double gsMultiplier) {
+  double r;
+  if (this->calculateBilskieRadius(w, this->m_raster.get()->dx(), r)) {
+    return this->calculateAverageFromLookup(p, r * gsMultiplier);
+  } else {
+    return this->calculateNearestFromLookup(p, r * gsMultiplier);
   }
 }
 
@@ -514,8 +550,7 @@ bool Griddata::computeWindDirectionAndWeight(Point &p, double x, double y,
       tanxy = std::abs(dy / dx);
     }
 
-    int64_t k = min<int64_t>(1.0, tanxy * oO2mr3) +
-                min<int64_t>(1.0, tanxy) +
+    int64_t k = min<int64_t>(1.0, tanxy * oO2mr3) + min<int64_t>(1.0, tanxy) +
                 min<int64_t>(1.0, tanxy * oO2pr3);
 
     int a = static_cast<int>(sgn(dx));
@@ -661,8 +696,8 @@ vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
 
     Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
     Method m = static_cast<Method>(this->m_interpolationFlags[i]);
-    double s = (double)this->m_filterSize[i] * gridsize[i] * 0.5;
-    double v = (this->*m_calculatePointPtr)(p, s, m);
+    double v = (this->*m_calculatePointPtr)(p, gridsize[i] * 0.5,
+                                            this->m_filterSize[i], m);
     result[i] = v * this->m_rasterMultiplier;
   }
 
