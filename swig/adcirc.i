@@ -26,6 +26,11 @@
 %module perladcirc
 #endif
 
+%insert("python") %{
+    import signal
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+%}
+
 %{
 #define SWIG_FILE_WITH_INIT
 #include "config.h"
@@ -105,3 +110,4 @@ namespace std {
 %include "rasterdata.h"
 %include "griddata.h"
 #endif
+
