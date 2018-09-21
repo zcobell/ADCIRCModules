@@ -119,7 +119,7 @@ Point Rasterdata::pixelToCoordinate(size_t i, size_t j) {
   if (i <= this->m_nx && j <= this->m_ny) {
     return Point(
         static_cast<double>(i) * this->m_dx + this->m_xmin + 0.50 * this->m_dx,
-        this->m_ymax - (static_cast<double>(j) * this->m_dy) +
+        this->m_ymax - (static_cast<double>(j + 1) * this->m_dy) +
             0.50 * this->m_dy);
   } else {
     return Point();
@@ -134,8 +134,8 @@ Pixel Rasterdata::coordinateToPixel(double x, double y) {
   if (x > this->xmax() || x < this->xmin() || y > this->ymax() || y < ymin()) {
     return Pixel();
   } else {
-    return Pixel(static_cast<int>(std::round((x - this->m_xmin) / this->m_dx)),
-                 static_cast<int>(std::round((this->m_ymax - y) / this->m_dy)));
+    return Pixel(static_cast<int>((x - this->m_xmin) / this->m_dx),
+                 static_cast<int>((this->m_ymax - y) / this->m_dy));
   }
 }
 
@@ -176,21 +176,29 @@ int Rasterdata::pixelValueInt(size_t i, size_t j) {
 }
 
 int Rasterdata::pixelValueInt(Pixel p) {
-  int *buf = (int *)CPLMalloc(sizeof(int) * 1);
-  this->m_band->RasterIO(GF_Read, p.i(), p.j() - 1, 1, 1, buf, 1, 1, GDT_Int32,
-                         0, 0);
-  int v = buf[0];
-  CPLFree(buf);
-  return v;
+  if (p.i() > 0 && p.j() > 0) {
+    int *buf = (int *)CPLMalloc(sizeof(int) * 1);
+    this->m_band->RasterIO(GF_Read, p.i(), p.j(), 1, 1, buf, 1, 1, GDT_Int32, 0,
+                           0);
+    int v = buf[0];
+    CPLFree(buf);
+    return v;
+  } else {
+    return this->nodataint();
+  }
 }
 
 double Rasterdata::pixelValueDouble(Pixel &p) {
-  double *buf = (double *)CPLMalloc(sizeof(double) * 1);
-  this->m_band->RasterIO(GF_Read, p.i(), p.j() - 1, 1, 1, buf, 1, 1,
-                         GDT_Float64, 0, 0);
-  double v = buf[0];
-  CPLFree(buf);
-  return v;
+  if (p.i() > 0 && p.j() > 0 && p.i() < this->nx() && p.j() < this->ny()) {
+    double *buf = (double *)CPLMalloc(sizeof(double) * 1);
+    this->m_band->RasterIO(GF_Read, p.i(), p.j(), 1, 1, buf, 1, 1, GDT_Float64,
+                           0, 0);
+    double v = buf[0];
+    CPLFree(buf);
+    return v;
+  } else {
+    return this->nodata();
+  }
 }
 
 int Rasterdata::searchBoxAroundPoint(double x, double y, double halfSide,
@@ -350,7 +358,7 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
   size_t ny = jend - jbegin + 1;
   size_t n = nx * ny;
   double *buf = (double *)CPLMalloc(sizeof(double) * n);
-  CPLErr e = this->m_band->RasterIO(GF_Read, ibegin, jbegin - 1, nx, ny, buf,
+  CPLErr e = this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, buf,
                                     nx, ny, GDT_Float64, 0, 0);
 
   if (x.size() != n) {

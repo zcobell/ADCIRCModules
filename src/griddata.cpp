@@ -218,7 +218,6 @@ bool Griddata::pixelDataInRadius(Point &p, double radius, vector<double> &x,
                                  vector<bool> &valid) {
   Pixel ul, lr;
   this->m_raster.get()->searchBoxAroundPoint(p.x(), p.y(), radius, ul, lr);
-
   bool r = false;
 
   if (ul.isValid() && lr.isValid()) {
@@ -244,7 +243,6 @@ bool Griddata::pixelDataInRadius(Point &p, double radius, vector<double> &x,
                                  vector<bool> &valid) {
   Pixel ul, lr;
   this->m_raster.get()->searchBoxAroundPoint(p.x(), p.y(), radius, ul, lr);
-
   bool r = false;
 
   if (ul.isValid() && lr.isValid()) {
@@ -448,9 +446,9 @@ double Griddata::calculateNearest(Point &p, double w) {
   Pixel px = this->m_raster.get()->coordinateToPixel(p);
   Point pxloc = this->m_raster.get()->pixelToCoordinate(px);
   double d = Constants::distance(p.x(), p.y(), pxloc.x(), pxloc.y());
-  if (d > w)
+  if (d > w) {
     return this->defaultValue();
-  else {
+  } else {
     double z = this->m_raster.get()->pixelValueDouble(px);
     return z != this->m_raster.get()->nodata() ? z : this->defaultValue();
   }
