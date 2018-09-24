@@ -23,7 +23,7 @@ Please appropriately cite this work in publications, reports, and other source c
 
 Suggested citation:
 ```
-Cobell, Z. (2018). Adcirc Modules (Version xxx) [Library]. Retrieved from [https://github.com/zcobell/ADCIRCModules](https://github.com/zcobell/ADCIRCModules)
+Cobell, Z. (2018). Adcirc Modules (Version xxx) [Library]. Retrieved from https://github.com/zcobell/ADCIRCModules
 ```
 
 
