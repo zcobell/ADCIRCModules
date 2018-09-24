@@ -872,12 +872,3 @@ IF(UNIX OR CYGWIN)
     ENDIF(BUILD_TESTS)
 ENDIF(UNIX OR CYGWIN)
 ###########################################################################
-
-ADD_EXECUTABLE(rasterinterp ${CMAKE_SOURCE_DIR}/testing/cxx_tests/cxx_interpolateRaster.cpp)
-ADD_DEPENDENCIES( rasterinterp adcircmodules )
-TARGET_INCLUDE_DIRECTORIES( rasterinterp PRIVATE ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/libraries/kdtree2 ${CMAKE_SOURCE_DIR}/libraries/point ${CMAKE_SOURCE_DIR}/libraries/projection ${CMAKE_SOURCE_DIR}/libraries/constants ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
-TARGET_LINK_LIBRARIES( rasterinterp adcircmodules )
-IF(OPENMP_FOUND)
-    TARGET_COMPILE_OPTIONS( rasterinterp PRIVATE ${OpenMP_CXX_FLAGS})
-    TARGET_LINK_LIBRARIES( rasterinterp ${OpenMP_CXX_LIB_NAMES} )
-ENDIF(OPENMP_FOUND)
