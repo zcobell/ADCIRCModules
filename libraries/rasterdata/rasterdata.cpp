@@ -24,14 +24,12 @@
 #include "cpl_error.h"
 #include "gdal_priv.h"
 
-Rasterdata::Rasterdata() {
-  this->m_filename = std::string();
+Rasterdata::Rasterdata() : m_filename(std::string()) {
   this->init();
   return;
 }
 
-Rasterdata::Rasterdata(std::string filename) {
-  this->m_filename = filename;
+Rasterdata::Rasterdata(const std::string filename) : m_filename(filename) {
   this->init();
   return;
 }
@@ -46,6 +44,8 @@ void Rasterdata::init() {
   this->m_epsg = 4326;
   this->m_nx = std::numeric_limits<int>::min();
   this->m_ny = std::numeric_limits<int>::min();
+  this->m_dx = 0.0;
+  this->m_dy = 0.0;
   this->m_nodata = std::numeric_limits<double>::min();
   this->m_nodataint = std::numeric_limits<int>::min();
   return;
@@ -53,7 +53,8 @@ void Rasterdata::init() {
 
 bool Rasterdata::open() {
   GDALAllRegister();
-  this->m_file = (GDALDataset *)GDALOpen(this->m_filename.c_str(), GA_ReadOnly);
+  this->m_file = static_cast<GDALDataset *>(
+      GDALOpen(this->m_filename.c_str(), GA_ReadOnly));
   if (this->m_file == nullptr) {
     return false;
   } else {
@@ -358,8 +359,8 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
   size_t ny = jend - jbegin + 1;
   size_t n = nx * ny;
   double *buf = (double *)CPLMalloc(sizeof(double) * n);
-  CPLErr e = this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, buf,
-                                    nx, ny, GDT_Float64, 0, 0);
+  CPLErr e = this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, buf, nx,
+                                    ny, GDT_Float64, 0, 0);
 
   if (x.size() != n) {
     x.resize(n);

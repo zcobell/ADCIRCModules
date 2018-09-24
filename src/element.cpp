@@ -141,7 +141,7 @@ double Element::elementSize(bool geodesic) {
 }
 
 std::pair<Node *, Node *> Element::elementLeg(size_t i) {
-  assert(i >= 0 && i < this->n());
+  assert(i < this->n());
 
   size_t j1 = i;
   size_t j2 = i + 1;

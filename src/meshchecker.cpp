@@ -29,6 +29,7 @@ using namespace std;
 MeshChecker::MeshChecker(Mesh *mesh) { this->m_mesh = mesh; }
 
 bool MeshChecker::checkMesh() {
+  bool passed = true;
   if (!this->checkNodeNumbering(this->m_mesh)) {
     printf("MeshChecker::checkMesh :: Node numbering check failed.\n");
     return false;
@@ -41,12 +42,12 @@ bool MeshChecker::checkMesh() {
 
   if (!this->checkNodalElevations(this->m_mesh, -200.0)) {
     printf("MeshChecker::checkMesh :: Nodal elevation check failed.\n");
-    return false;
+    passed = false;
   }
 
   if (!this->checkDisjointNodes(this->m_mesh)) {
     printf("MeshChecker::checkMesh :: Disjoint nodes found.");
-    return false;
+    passed = false;
   }
 
   if (!this->checkOverlappingElements(this->m_mesh)) {
@@ -64,7 +65,12 @@ bool MeshChecker::checkMesh() {
     return false;
   }
 
-  return true;
+  if (!this->checkElementSizes(this->m_mesh, 20.0)) {
+    printf("MeshChecker::checkMesh :: Element size check failed.");
+    passed = false;
+  }
+
+  return passed;
 }
 
 bool MeshChecker::checkNodeNumbering(Mesh *mesh) {
@@ -178,7 +184,7 @@ bool MeshChecker::checkOverlappingElements(Mesh *mesh) {
     for (int j = 0; j < mesh->element(i)->n(); ++j) {
       int count = 0;
 
-      std::pair<Node*,Node*> p = mesh->element(i)->elementLeg(j);
+      std::pair<Node *, Node *> p = mesh->element(i)->elementLeg(j);
       Node *n1 = p.first;
       Node *n2 = p.second;
 
@@ -276,11 +282,14 @@ bool MeshChecker::checkElementSizes(Mesh *mesh, double minimumElementSize) {
   vector<double> element_size;
   element_size.resize(mesh->numElements());
   for (size_t i = 0; i < mesh->numElements(); i++) {
-    double size = std::numeric_limits<double>::max();
-    for (int j = 0; j < mesh->element(i)->n(); j++) {
-
+    double size = mesh->element(i)->elementSize();
+    if (size < minimumElementSize) {
+      passed = false;
+      printf(
+          "[Mesh Error] MeshChecker::checkElementSizes :: Element %zd has size "
+          "%f, which is less than %f\n",
+          mesh->element(i)->id(), size, minimumElementSize);
     }
   }
-
   return passed;
 }

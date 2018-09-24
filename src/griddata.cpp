@@ -61,6 +61,8 @@ Griddata::Griddata() {
   this->m_epsg = 4326;
   this->m_showProgressBar = false;
   this->m_rasterMultiplier = 1.0;
+  this->m_calculateDwindPtr = nullptr;
+  this->m_calculatePointPtr = nullptr;
 }
 
 Griddata::Griddata(Mesh *mesh, string rasterFile) {
