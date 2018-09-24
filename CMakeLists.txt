@@ -833,7 +833,8 @@ IF(UNIX OR CYGWIN)
                          cxx_readasciivector.cpp cxx_readnetcdf.cpp cxx_readnetcdfvector.cpp 
                          cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp 
                          cxx_readnetcdfHarmonicsElevation.cpp  cxx_readnetcdfHarmonicsVelocity.cpp 
-                         cxx_checkmesh.cpp )
+                         cxx_checkmesh.cpp cxx_interpolateRaster.cpp cxx_interpolateManning.cpp 
+                         cxx_interpolateDwind.cpp )
             GET_FILENAME_COMPONENT( TESTNAME ${TESTFILE} NAME_WE )
             ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
             ADD_DEPENDENCIES( ${TESTNAME} adcircmodules )
@@ -841,7 +842,8 @@ IF(UNIX OR CYGWIN)
                                                             ${CMAKE_SOURCE_DIR}/libraries/point 
                                                             ${CMAKE_SOURCE_DIR}/libraries/projection 
                                                             ${CMAKE_SOURCE_DIR}/libraries/kdtree2 
-                                                            ${CMAKE_SOURCE_DIR}/libraries/constants )
+                                                            ${CMAKE_SOURCE_DIR}/libraries/constants 
+                                                            ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
             TARGET_LINK_LIBRARIES( ${TESTNAME} adcircmodules )
             SET_TARGET_PROPERTIES( ${TESTNAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases )
     
