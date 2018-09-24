@@ -58,8 +58,8 @@ class QKdtree2 {
   size_t findNearest(Point pointLocation);
   size_t findNearest(double x, double y);
 
-  vector<int> findXNearest(Point pointLocation, int nn);
-  vector<int> findXNearest(double x, double y, int nn);
+  vector<size_t> findXNearest(Point pointLocation, int nn);
+  vector<size_t> findXNearest(double x, double y, int nn);
 
   size_t size() const;
 

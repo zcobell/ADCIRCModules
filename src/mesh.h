@@ -102,6 +102,8 @@ class Mesh {
 
   size_t totalLandBoundaryNodes();
 
+  void setZ(std::vector<double> z);
+
   int projection();
   void defineProjection(int epsg, bool isLatLon);
   void reproject(int epsg);
@@ -116,11 +118,21 @@ class Mesh {
   void buildNodalSearchTree();
   void buildElementalSearchTree();
 
+  void deleteNodalSearchTree();
+  void deleteElementalSearchTree();
+
   bool nodalSearchTreeInitialized();
   bool elementalSearchTreeInitialized();
 
   bool nodeOrderingIsLogical();
   bool elementOrderingIsLogical();
+
+  size_t findNearestNode(Point location);
+  size_t findNearestNode(double x, double y);
+  size_t findNearestElement(Point location);
+  size_t findNearestElement(double x, double y);
+  size_t findElement(Point location);
+  size_t findElement(double x, double y);
 
   Adcirc::Geometry::Node *node(size_t index);
   Adcirc::Geometry::Element *element(size_t index);

@@ -27,9 +27,11 @@
 #define ELEMENT_H
 
 #include <string>
+#include <utility>
 #include <vector>
 #include "adcircmodules_global.h"
 #include "node.h"
+#include "point.h"
 
 namespace Adcirc {
 namespace Geometry {
@@ -52,6 +54,14 @@ class Element {
   void setId(size_t id);
 
   std::string toString();
+
+  bool isInside(Point location);
+  bool isInside(double x, double y);
+
+  double elementSize(bool geodesic = true);
+
+  std::pair<Adcirc::Geometry::Node *, Adcirc::Geometry::Node *> elementLeg(
+      size_t i);
 
  private:
   int m_n = 3;

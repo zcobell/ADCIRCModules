@@ -21,7 +21,7 @@
 
 class Constants {
  public:
-  Constants();
+  Constants() = default;
   static double equitoralRadius();
   static double polarRadius();
   static double e();
@@ -36,10 +36,13 @@ class Constants {
   static double radiusEarth();
   static double g();
   static double rhoAir();
-  static double distance(double x1, double y1, double x2, double y2, bool geodesic = false);
-  static double azimuth(double x1, double y1, double  x2, double y2);
+  static double distance(double x1, double y1, double x2, double y2,
+                         bool geodesic = false);
+  // static double azimuth(double x1, double y1, double  x2, double y2);
+  static double root2();
+  static double root3();
 
-private:
+ private:
   static double geodesic_distance(double x1, double y1, double x2, double y2);
   static double cartesian_distance(double x1, double y1, double x2, double y2);
 };

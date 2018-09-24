@@ -34,5 +34,11 @@
 #   error("Don't know how to export shared object libraries")
 #endif
 
+#if defined(ADCIRCMODULES_LIBRARY)
+# define ADCIRCMODULES_EXPORT DLL_EXPORT
+#else
+# define ADCIRCMODULES_EXPORT DLL_IMPORT
+#endif
+
 
 #endif // ADCIRCMODULES_GLOBAL_H

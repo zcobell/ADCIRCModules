@@ -190,12 +190,12 @@ size_t QKdtree2::findNearest(double x, double y) {
  *
  **/
 //-----------------------------------------------------------------------------------------//
-vector<int> QKdtree2::findXNearest(Point pointLocation, int nn) {
+vector<size_t> QKdtree2::findXNearest(Point pointLocation, int nn) {
   int i;
   kdtree2_result_vector result_vector;
   kdtree2_result result;
   vector<float> query(2);
-  vector<int> indicies;
+  vector<size_t> indicies;
 
   if (nn > this->m_numDataPoints) {
     nn = static_cast<int>(this->m_numDataPoints);
@@ -238,7 +238,7 @@ vector<int> QKdtree2::findXNearest(Point pointLocation, int nn) {
  *
  **/
 //-----------------------------------------------------------------------------------------//
-vector<int> QKdtree2::findXNearest(double x, double y, int nn) {
+vector<size_t> QKdtree2::findXNearest(double x, double y, int nn) {
   return this->findXNearest(Point(x, y), nn);
 }
 //-----------------------------------------------------------------------------------------//

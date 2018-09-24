@@ -26,6 +26,11 @@
 %module perladcirc
 #endif
 
+%insert("python") %{
+    import signal
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+%}
+
 %{
 #define SWIG_FILE_WITH_INIT
 #include "config.h"
@@ -44,7 +49,18 @@
 #include "kdtree2lib.h"
 #include "projection.h"
 #include "point.h"
+#include "elementtable.h"
+#include "meshchecker.h"
+#include "multithreading.h"
+#include "constants.h"
 %}
+
+#ifdef _USE_GDAL
+%{
+#include "rasterdata.h"
+#include "griddata.h"
+%}
+#endif
 
 %include <std_string.i>
 %include <exception.i>
@@ -84,3 +100,12 @@ namespace std {
 %include "kdtree2lib.h"
 %include "projection.h"
 %include "point.h"
+%include "meshchecker.h"
+%include "elementtable.h"
+%include "multithreading.h"
+%include "constants.h"
+#ifdef _USE_GDAL
+%include "rasterdata.h"
+%include "griddata.h"
+#endif
+

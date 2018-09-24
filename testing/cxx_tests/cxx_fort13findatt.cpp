@@ -25,7 +25,9 @@ int main(int argc, char *argv[]) {
   fort13->read();
 
   double manning_value = fort13->attribute("mannings_n_at_sea_floor",0)->value(0);
-  if(manning_value != 0.012){
+  std::cout << manning_value << std::endl;
+  std::cout.flush();
+  if(manning_value != 0.036067){
       delete fort13;
       return 1;
   }

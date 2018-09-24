@@ -111,6 +111,7 @@ set(ADCIRCMODULES_VERSION_STRING ${ADCIRCMODULES_VERSION_MAJOR}.${ADCIRCMODULES_
 # TESTING 
 ###########################################################################
 OPTION(BUILD_TESTS "Build test cases" OFF)
+OPTION(LONG_TESTS "Build long tests" OFF)
 ###########################################################################
 
 ###########################################################################
@@ -165,7 +166,20 @@ SET(NETCDF_AdditionalLibs "" CACHE STRING "Additional libraries that may be requ
 IF(NOT NETCDF_FOUND)
     MESSAGE(SEND_ERROR "Specify the netCDF path on the following screen")
 ELSE(NOT NETCDF_FOUND)
-    check_library_exists(netcdf nc_def_var_deflate "" NC_DEFLATE_FOUND)
+    
+    SET(netcdf_c_code
+"
+    #include <netcdf.h>
+    int main(){
+        int ncid,varid;
+        int ierr = nc_def_var_deflate(ncid,varid,1,2,2);
+        return 0;
+    }
+"
+    )
+    FILE(WRITE "${CMAKE_BINARY_DIR}/CMakeFiles/netcdf_c_check.c" "${netcdf_c_code}")
+    TRY_COMPILE(NC_DEFLATE_FOUND "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/netcdf_c_check.c" CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${NETCDF_INCLUDE_DIRS}" LINK_LIBRARIES "${NETCDF_LIBRARIES}" LINK_LIBRARIES "${NETCDF_AdditionalLibs}" OUTPUT_VARIABLE LOG1)
+        
     IF(NC_DEFLATE_FOUND)
         SET(NETCDF_LINKER_FLAG "${NETCDF_LIBRARIES}")
     ELSE(NC_DEFLATE_FOUND)
@@ -174,6 +188,34 @@ ELSE(NOT NETCDF_FOUND)
 ENDIF(NOT NETCDF_FOUND)
 ###########################################################################
 
+
+###########################################################################
+# OpenMP
+###########################################################################
+OPTION(ENABLE_OPENMP "Enable OpenMP Multithreading" ON)
+IF(ENABLE_OPENMP)
+    Find_Package(OpenMP)
+ELSE(ENABLE_OPENMP)
+
+ENDIF(ENABLE_OPENMP)
+###########################################################################
+
+
+###########################################################################
+# GDAL
+###########################################################################
+OPTION(ENABLE_GDAL "Enabele GDAL" ON )
+IF(ENABLE_GDAL)
+    Find_PACKAGE(GDAL)
+    IF(NOT GDAL_FOUND)
+        MESSAGE( WARNING "GDAL Library not found. These functions will be disabled.")
+    ENDIF(NOT GDAL_FOUND)
+ELSE(ENABLE_GDAL)
+    MESSAGE( WARNING "GDAL Library has been disabled. Raster operations will not be available.")
+    SET(GDAL_FOUND FALSE)
+    SET(ENABLE_GDAL OFF)
+ENDIF(ENABLE_GDAL)
+###########################################################################
 
 ###########################################################################
 # PROJ4 Configuration Options
@@ -254,6 +296,19 @@ configure_file(${CMAKE_SOURCE_DIR}/thirdparty/proj5.1/proj_config.cmake.in ${CMA
 ###########################################################################
 ADD_LIBRARY( point STATIC ${CMAKE_SOURCE_DIR}/libraries/point/point.cpp )
 TARGET_INCLUDE_DIRECTORIES( point PRIVATE ${CMAKE_SOURCE_DIR}/libraries/point )
+###########################################################################
+
+
+###########################################################################
+# Rasterdata
+###########################################################################
+IF(GDAL_FOUND)
+    ADD_LIBRARY( rasterdata STATIC ${CMAKE_SOURCE_DIR}/libraries/rasterdata/rasterdata.cpp 
+                                   ${CMAKE_SOURCE_DIR}/libraries/rasterdata/pixel.cpp )
+    TARGET_INCLUDE_DIRECTORIES( rasterdata PRIVATE ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
+    TARGET_INCLUDE_DIRECTORIES( rasterdata PRIVATE ${GDAL_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/libraries/point )
+    TARGET_LINK_LIBRARIES( rasterdata point )
+ENDIF(GDAL_FOUND)
 ###########################################################################
 
 
@@ -499,7 +554,7 @@ TARGET_INCLUDE_DIRECTORIES( shapelib PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/shap
 ###########################################################################
 #  ADCIRCModules Library
 ###########################################################################
-ADD_LIBRARY( adcircmodules SHARED 
+SET( ADCIRCMODULES_SOURCES 
                 ${CMAKE_SOURCE_DIR}/src/config.cpp
                 ${CMAKE_SOURCE_DIR}/src/error.cpp
                 ${CMAKE_SOURCE_DIR}/src/filetypes.cpp
@@ -516,7 +571,16 @@ ADD_LIBRARY( adcircmodules SHARED
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.cpp 
                 ${CMAKE_SOURCE_DIR}/src/outputfile.cpp 
                 ${CMAKE_SOURCE_DIR}/src/harmonicsrecord.cpp
-                ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.cpp )
+                ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.cpp 
+                ${CMAKE_SOURCE_DIR}/src/elementtable.cpp
+                ${CMAKE_SOURCE_DIR}/src/meshchecker.cpp 
+                ${CMAKE_SOURCE_DIR}/src/multithreading.cpp )
+
+IF( GDAL_FOUND )
+    SET( ADCIRCMODULES_SOURCES ${ADCIRCMODULES_SOURCES} ${CMAKE_SOURCE_DIR}/src/griddata.cpp )
+ENDIF( GDAL_FOUND )
+
+ADD_LIBRARY( adcircmodules SHARED ${ADCIRCMODULES_SOURCES} )
 
 TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/libraries/point
@@ -531,9 +595,12 @@ ADD_DEPENDENCIES( adcircmodules point projection kdtree2 shapelib constants )
 
 TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE GIT_VERSION="${GIT_VERSION}")
 
-IF(ERRORS_ARE_NONFATAL)
-    TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE ERRORS_NONFATAL )
-ENDIF(ERRORS_ARE_NONFATAL)
+IF(GDAL_FOUND)
+    TARGET_LINK_LIBRARIES( adcircmodules rasterdata ${GDAL_LIBRARY} ) 
+    TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE  
+                                ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
+    ADD_DEPENDENCIES( adcircmodules rasterdata )
+ENDIF(GDAL_FOUND)
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING} SOVERSION ${ADCIRCMODULES_VERSION_MAJOR} )
 
@@ -552,9 +619,14 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcirc.h
                 ${CMAKE_SOURCE_DIR}/src/node.h
                 ${CMAKE_SOURCE_DIR}/src/outputfile.h
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.h
+                ${CMAKE_SOURCE_DIR}/src/meshchecker.h
+                ${CMAKE_SOURCE_DIR}/src/elementtable.h
                 ${CMAKE_SOURCE_DIR}/libraries/point/point.h 
                 ${CMAKE_SOURCE_DIR}/libraries/kdtree2/kdtree2lib.h 
-                ${CMAKE_SOURCE_DIR}/libraries/projection/projection.h ) 
+                ${CMAKE_SOURCE_DIR}/libraries/projection/projection.h 
+                ${CMAKE_SOURCE_DIR}/libraries/rasterdata/rasterdata.h 
+                ${CMAKE_SOURCE_DIR}/src/griddata.h 
+                ${CMAKE_SOURCE_DIR}/src/multithreading.h ) 
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES PUBLIC_HEADER "${HEADER_LIST}" ) 
 
@@ -574,6 +646,12 @@ ELSE(WIN32)
 ENDIF(WIN32)
 
 TARGET_LINK_LIBRARIES( adcircmodules projection point kdtree2 shapelib constants ${NETCDF_LIBRARIES} )
+IF(OPENMP_FOUND)
+    TARGET_COMPILE_OPTIONS( adcircmodules PRIVATE ${OpenMP_CXX_FLAGS})
+    TARGET_LINK_LIBRARIES(  adcircmodules ${OpenMP_CXX_LIB_NAMES} ${OpenMP_CXX_FLAGS} )
+ENDIF(OPENMP_FOUND)
+
+
 ###########################################################################
 
 
@@ -586,6 +664,10 @@ TARGET_LINK_LIBRARIES( adcircmodules projection point kdtree2 shapelib constants
 #  PyAdcirc Library
 ###########################################################################
 IF(PythonLibs_FOUND AND SWIG_FOUND)
+
+    IF(GDAL_FOUND)
+        SET(SWIG_GDAL_FLAG "-D_USE_GDAL")
+    ENDIF(GDAL_FOUND)
     
     IF(WIN32)
 
@@ -604,7 +686,8 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/src 
                     -I${CMAKE_SOURCE_DIR}/libraries/point -I${CMAKE_SOURCE_DIR}/libraries/kdtree2 
-                    -I${CMAKE_SOURCE_DIR}/libraries/projection -I${PYTHON_INCLUDE_PATH} 
+                    -I${CMAKE_SOURCE_DIR}/libraries/projection -I${CMAKE_SOURCE_DIR}/libraries/rasterdata
+                    -I${CMAKE_SOURCE_DIR}/libraries/constants -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG}
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
             COMMAND ${CMAKE_COMMAND} -DSRC=\"${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1\" 
@@ -618,7 +701,8 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/src 
                     -I${CMAKE_SOURCE_DIR}/libraries/point -I${CMAKE_SOURCE_DIR}/libraries/kdtree2
-                    -I${CMAKE_SOURCE_DIR}/libraries/projection -I${PYTHON_INCLUDE_PATH} 
+                    -I${CMAKE_SOURCE_DIR}/libraries/projection -I${CMAKE_SOURCE_DIR}/libraries/rasterdata
+                    -I${CMAKE_SOURCE_DIR}/libraries/constants -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG} 
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
@@ -629,10 +713,12 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
     ADD_LIBRARY( PyAdcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx )
     TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_DIRECTORIES} ${CMAKE_SOURCE_DIR}/src 
                                     ${CMAKE_SOURCE_DIR}/libraries/point ${CMAKE_SOURCE_DIR}/libraries/kdtree2
-                                    ${CMAKE_SOURCE_DIR}/libraries/projection )
+                                    ${CMAKE_SOURCE_DIR}/libraries/projection ${CMAKE_SOURCE_DIR}/libraries/constants 
+                                    ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
     TARGET_LINK_LIBRARIES( PyAdcirc PRIVATE adcircmodules ${PYTHON_LIBRARY} )
     SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES PREFIX "_")
     SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES PyAdcirc.py CMakeFiles/python_adcirc_wrap.cxx )
+
     ADD_DEPENDENCIES( PyAdcirc adcircmodules )
 
     IF(WIN32)
@@ -710,7 +796,8 @@ IF(TEST_PERL)
         TARGET_INCLUDE_DIRECTORIES( perladcirc PRIVATE ${PERL_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src 
                                         ${CMAKE_SOURCE_DIR}/libraries/point 
                                         ${CMAKE_SOURCE_DIR}/libraries/kdtree2
-                                        ${CMAKE_SOURCE_DIR}/libraries/projection )
+                                        ${CMAKE_SOURCE_DIR}/libraries/projection 
+                                        ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
         TARGET_LINK_LIBRARIES( perladcirc PRIVATE adcircmodules ${PERL_LIBRARY} )
         SET_TARGET_PROPERTIES( perladcirc PROPERTIES PREFIX "")
         SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES perladcirc.pm CMakeFiles/perl_adcirc_wrap.cxx )
@@ -737,23 +824,32 @@ ENDIF(TEST_PERL)
 ###########################################################################
 IF(UNIX OR CYGWIN)
     IF(BUILD_TESTS)
-        #...C++ Testing
+        #...C++ Testingc
         FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases)
+
+        SET(TEST_LIST cxx_readmesh.cpp cxx_writemesh.cpp cxx_writeshapefile.cpp
+                      cxx_projectmesh.cpp cxx_nodalSearchTree.cpp cxx_readfort13_wmesh.cpp 
+                      cxx_readfort13_womesh.cpp cxx_fort13findatt.cpp cxx_readasciifull.cpp
+                      cxx_readasciisparse.cpp cxx_readmaxele.cpp cxx_readnetcdfmaxele.cpp
+                      cxx_readasciivector.cpp cxx_readnetcdf.cpp cxx_readnetcdfvector.cpp
+                      cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp 
+                      cxx_readnetcdfHarmonicsElevation.cpp  cxx_readnetcdfHarmonicsVelocity.cpp
+                      cxx_checkmesh.cpp cxx_interpolateRaster.cpp cxx_interpolateManning.cpp )
+
+        IF(LONG_TESTS)
+            SET(TEST_LIST ${TEST_LIST} cxx_interpolateDwind.cpp)
+        ENDIF(LONG_TESTS)
     
-        FOREACH(TESTFILE cxx_readmesh.cpp cxx_writemesh.cpp cxx_writeshapefile.cpp
-                         cxx_projectmesh.cpp cxx_nodalSearchTree.cpp cxx_readfort13_wmesh.cpp 
-                         cxx_readfort13_womesh.cpp cxx_fort13findatt.cpp cxx_readasciifull.cpp 
-                         cxx_readasciisparse.cpp cxx_readmaxele.cpp cxx_readnetcdfmaxele.cpp 
-                         cxx_readasciivector.cpp cxx_readnetcdf.cpp cxx_readnetcdfvector.cpp 
-                         cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp 
-                         cxx_readnetcdfHarmonicsElevation.cpp  cxx_readnetcdfHarmonicsVelocity.cpp )
+        FOREACH(TESTFILE ${TEST_LIST} ) 
             GET_FILENAME_COMPONENT( TESTNAME ${TESTFILE} NAME_WE )
             ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
             ADD_DEPENDENCIES( ${TESTNAME} adcircmodules )
             TARGET_INCLUDE_DIRECTORIES( ${TESTNAME} PRIVATE ${CMAKE_SOURCE_DIR}/src 
                                                             ${CMAKE_SOURCE_DIR}/libraries/point 
                                                             ${CMAKE_SOURCE_DIR}/libraries/projection 
-                                                            ${CMAKE_SOURCE_DIR}/libraries/kdtree2 )
+                                                            ${CMAKE_SOURCE_DIR}/libraries/kdtree2 
+                                                            ${CMAKE_SOURCE_DIR}/libraries/constants 
+                                                            ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
             TARGET_LINK_LIBRARIES( ${TESTNAME} adcircmodules )
             SET_TARGET_PROPERTIES( ${TESTNAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases )
     

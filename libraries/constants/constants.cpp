@@ -19,19 +19,19 @@
 #include "constants.h"
 #include <cmath>
 
-const double m_equitoralRadius = 6378137.0;
-const double m_polarRadius = 6356752.3;
-const double m_meanRadiusEarth = 6378206.4;
-const double m_e = exp(1.0);
-const double m_pi = 4.0 * atan2(1.0, 1.0);
-const double m_2pi = 2.0 * m_pi;
-const double m_halfPi = 0.5 * m_pi;
-const double m_deg2rad = m_pi / 180.0;
-const double m_rad2deg = 180.0 / m_pi;
-const double m_rhoAir = 1.15;
-const double m_g = 9.80665;
-
-Constants::Constants() = default;
+static const double m_equitoralRadius = 6378137.0;
+static const double m_polarRadius = 6356752.3;
+static const double m_meanRadiusEarth = 6378206.4;
+static const double m_e = exp(1.0);
+static const double m_pi = 4.0 * atan2(1.0, 1.0);
+static const double m_2pi = 2.0 * m_pi;
+static const double m_halfPi = 0.5 * m_pi;
+static const double m_deg2rad = m_pi / 180.0;
+static const double m_rad2deg = 180.0 / m_pi;
+static const double m_rhoAir = 1.15;
+static const double m_g = 9.80665;
+static const double m_root2 = sqrt(2);
+static const double m_root3 = sqrt(3);
 
 double Constants::equitoralRadius() { return m_equitoralRadius; }
 double Constants::polarRadius() { return m_polarRadius; }
@@ -57,7 +57,7 @@ double Constants::distance(double x1, double y1, double x2, double y2,
   if (geodesic) {
     return Constants::geodesic_distance(x1, y1, x2, y2);
   } else {
-    return Constants::cartesian_distance(x1, y2, x2, y2);
+    return Constants::cartesian_distance(x1, y1, x2, y2);
   }
 }
 
@@ -85,3 +85,7 @@ double Constants::toDegrees(double radians) {
 double Constants::toRadians(double degrees) {
   return degrees * Constants::deg2rad();
 }
+
+double Constants::root2() { return m_root2; }
+
+double Constants::root3() { return m_root3; }

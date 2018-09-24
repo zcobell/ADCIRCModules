@@ -18,6 +18,7 @@
 //------------------------------------------------------------------------*/
 #include "element.h"
 #include "boost/format.hpp"
+#include "constants.h"
 #include "error.h"
 
 using namespace std;
@@ -109,7 +110,7 @@ Node *Element::node(int i) {
   if (i < this->n()) {
     return this->m_nodes.at(i);
   }
-  Adcirc::Error::throwError("Index out of bounds");
+  adcircmodules_throw_exception("Index out of bounds");
   return nullptr;
 }
 
@@ -122,4 +123,56 @@ string Element::toString() {
   return boost::str(boost::format("%11i %3i %11i %11i %11i") % this->id() %
                     this->n() % this->node(0)->id() % this->node(1)->id() %
                     this->node(2)->id());
+}
+
+bool Element::isInside(double x, double y) {
+  return this->isInside(Point(x, y));
+}
+
+double Element::elementSize(bool geodesic) {
+  double size = 0.0;
+  for (int i = 0; i < this->n(); ++i) {
+    std::pair<Node *, Node *> p = this->elementLeg(i);
+    Node *n1 = p.first;
+    Node *n2 = p.second;
+    size += Constants::distance(n1->x(), n1->y(), n2->x(), n2->y(), geodesic);
+  }
+  return size / this->n();
+}
+
+std::pair<Node *, Node *> Element::elementLeg(size_t i) {
+  assert(i < this->n());
+
+  size_t j1 = i;
+  size_t j2 = i + 1;
+
+  if (j2 == this->n()) {
+    j2 = 0;
+  }
+
+  Node *np1 = this->node(j1);
+  Node *np2 = this->node(j2);
+
+  return std::make_pair(np1, np2);
+}
+
+bool Element::isInside(Point location) {
+  double x = location.x();
+  double y = location.y();
+  double x1 = this->node(0)->x();
+  double y1 = this->node(0)->y();
+  double x2 = this->node(1)->x();
+  double y2 = this->node(1)->y();
+  double x3 = this->node(2)->x();
+  double y3 = this->node(2)->y();
+  double s1 = abs((x2 * y3 - x3 * y2) - (x * y3 - x3 * y) + (x * y2 - x2 * y));
+  double s2 = abs((x * y3 - x3 * y) - (x1 * y3 - x3 * y1) + (x1 * y - x * y1));
+  double s3 = abs((x2 * y - x * y2) - (x1 * y - x * y1) + (x1 * y2 - x2 * y1));
+  double ta =
+      abs((x2 * y3 - x3 * y2) - (x1 * y3 - x3 * y1) + (x1 * y2 - x2 * y1));
+  if (s1 + s2 + s3 <= 1.001 * ta) {
+    return true;
+  } else {
+    return false;
+  }
 }

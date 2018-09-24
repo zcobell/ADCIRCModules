@@ -23,7 +23,7 @@ CONFIG -= qt
 CONFIG += c++11
 
 #...PROJ4 Library
-PROJPATH      = $$PWD/../../thirdparty/proj4/src
+PROJPATH      = $$PWD/../../thirdparty/proj5.1/src
 
 #...PROJ Sources
 SOURCES_PROJ4 =   $$PROJPATH/nad_init.c                \
@@ -209,7 +209,7 @@ HEADERS += epsg.h \
 SOURCES += $$SOURCES_PROJ4 epsg.cpp \
     projection.cpp
 
-INCLUDEPATH += $$PROJPATH $$PWD/../../thirdparty/proj4
+INCLUDEPATH += $$PROJPATH $$PWD/../../thirdparty/proj5.1
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../point/release/ -lpoint
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../point/debug/ -lpoint
