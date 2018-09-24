@@ -16,6 +16,12 @@ class ElementTable {
   std::vector<Adcirc::Geometry::Element *> elementList(
       Adcirc::Geometry::Node *n);
 
+  size_t numElementsAroundNode(Adcirc::Geometry::Node *n);
+  size_t numElementsAroundNode(size_t nodeIndex);
+  Adcirc::Geometry::Element *elementTable(Adcirc::Geometry::Node *n,
+                                          size_t listIndex);
+  Adcirc::Geometry::Element *elementTable(size_t nodeIndex, size_t listIndex);
+
   void build();
 
   Adcirc::Geometry::Mesh *mesh() const;
