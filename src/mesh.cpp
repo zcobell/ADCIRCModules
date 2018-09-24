@@ -212,7 +212,7 @@ void Mesh::_readMeshHeader(std::fstream &fid) {
   tempInt = StringConversion::stringToSizet(tempLine, ok);
   if (!ok) {
     fid.close();
-    Adcirc::Error::throwError("Error reading mesh header");
+    adcircmodules_throw_exception("Error reading mesh header");
   }
   this->setNumElements(tempInt);
 
@@ -220,7 +220,7 @@ void Mesh::_readMeshHeader(std::fstream &fid) {
   tempInt = StringConversion::stringToSizet(tempLine, ok);
   if (!ok) {
     fid.close();
-    Adcirc::Error::throwError("Error reading mesh header");
+    adcircmodules_throw_exception("Error reading mesh header");
   }
   this->setNumNodes(tempInt);
 
@@ -244,7 +244,7 @@ void Mesh::_readNodes(std::fstream &fid) {
     int ierr = IO::splitStringNodeFormat(tempLine, id, x, y, z);
     if (ierr != Adcirc::NoError) {
       fid.close();
-      Adcirc::Error::throwError("Error reading nodes");
+      adcircmodules_throw_exception("Error reading nodes");
     }
 
     if (i != id - 1) {
@@ -285,7 +285,7 @@ void Mesh::_readElements(std::fstream &fid) {
       int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
       if (ierr != Adcirc::NoError) {
         fid.close();
-        Adcirc::Error::throwError("Error reading elements");
+        adcircmodules_throw_exception("Error reading elements");
       }
 
       e.setElement(id, &this->m_nodes[e1 - 1], &this->m_nodes[e2 - 1],
@@ -298,7 +298,7 @@ void Mesh::_readElements(std::fstream &fid) {
       int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
       if (ierr != Adcirc::NoError) {
         fid.close();
-        Adcirc::Error::throwError("Error reading nodes");
+        adcircmodules_throw_exception("Error reading nodes");
       }
 
       if (i != id - 1) {
@@ -339,7 +339,7 @@ void Mesh::_readOpenBoundaries(std::fstream &fid) {
   this->setNumOpenBoundaries(StringConversion::stringToSizet(tempList[0], ok));
   if (!ok) {
     fid.close();
-    Adcirc::Error::throwError("Error reading number of open boundaries");
+    adcircmodules_throw_exception("Error reading number of open boundaries");
   }
 
   this->m_openBoundaries.resize(this->numOpenBoundaries());
@@ -353,7 +353,7 @@ void Mesh::_readOpenBoundaries(std::fstream &fid) {
     size_t length = StringConversion::stringToSizet(tempList[0], ok);
     if (!ok) {
       fid.close();
-      Adcirc::Error::throwError("Error reading boundaries");
+      adcircmodules_throw_exception("Error reading boundaries");
     }
 
     b.setBoundary(-1, length);
@@ -364,7 +364,7 @@ void Mesh::_readOpenBoundaries(std::fstream &fid) {
       int ierr = IO::splitStringBoundary0Format(tempLine, nid);
       if (ierr != Adcirc::NoError) {
         fid.close();
-        Adcirc::Error::throwError("Error reading boundaries");
+        adcircmodules_throw_exception("Error reading boundaries");
       }
 
       if (this->m_nodeOrderingLogical) {
@@ -398,7 +398,7 @@ void Mesh::_readLandBoundaries(std::fstream &fid) {
   this->setNumLandBoundaries(StringConversion::stringToSizet(tempList[0], ok));
   if (!ok) {
     fid.close();
-    Adcirc::Error::throwError("Error reading boundaries");
+    adcircmodules_throw_exception("Error reading boundaries");
   }
   this->m_landBoundaries.resize(this->numLandBoundaries());
 
@@ -411,12 +411,12 @@ void Mesh::_readLandBoundaries(std::fstream &fid) {
     size_t length = StringConversion::stringToSizet(tempList[0], ok);
     if (!ok) {
       fid.close();
-      Adcirc::Error::throwError("Error reading boundaries");
+      adcircmodules_throw_exception("Error reading boundaries");
     }
     int code = StringConversion::stringToInt(tempList[1], ok);
     if (!ok) {
       fid.close();
-      Adcirc::Error::throwError("Error reading boundaries");
+      adcircmodules_throw_exception("Error reading boundaries");
     }
 
     b.setBoundary(code, length);
@@ -429,7 +429,7 @@ void Mesh::_readLandBoundaries(std::fstream &fid) {
             IO::splitStringBoundary23Format(tempLine, n1, crest, supercritical);
         if (ierr != Adcirc::NoError) {
           fid.close();
-          Adcirc::Error::throwError("Error reading boundaries");
+          adcircmodules_throw_exception("Error reading boundaries");
         }
         if (this->m_nodeOrderingLogical) {
           b.setNode1(j, &this->m_nodes[n1 - 1]);
@@ -445,7 +445,7 @@ void Mesh::_readLandBoundaries(std::fstream &fid) {
                                                    subcritical, supercritical);
         if (ierr != Adcirc::NoError) {
           fid.close();
-          Adcirc::Error::throwError("Error reading boundaries");
+          adcircmodules_throw_exception("Error reading boundaries");
         }
 
         if (this->m_nodeOrderingLogical) {
@@ -466,7 +466,7 @@ void Mesh::_readLandBoundaries(std::fstream &fid) {
             pipecoef, pipediam);
         if (ierr != Adcirc::NoError) {
           fid.close();
-          Adcirc::Error::throwError("Error reading boundaries");
+          adcircmodules_throw_exception("Error reading boundaries");
         }
 
         if (this->m_nodeOrderingLogical) {
@@ -487,7 +487,7 @@ void Mesh::_readLandBoundaries(std::fstream &fid) {
         int ierr = IO::splitStringBoundary0Format(tempLine, n1);
         if (ierr != Adcirc::NoError) {
           fid.close();
-          Adcirc::Error::throwError("Error reading boundaries");
+          adcircmodules_throw_exception("Error reading boundaries");
         }
         if (this->m_nodeOrderingLogical) {
           b.setNode1(j, &this->m_nodes[n1 - 1]);
@@ -560,8 +560,8 @@ Node *Mesh::node(size_t index) {
   if (index < this->numNodes()) {
     return &this->m_nodes[index];
   } else {
-    Adcirc::Error::throwError("Mesh: Node index " + to_string(index) +
-                              " out of bounds");
+    adcircmodules_throw_exception("Mesh: Node index " + to_string(index) +
+                                  " out of bounds");
     return nullptr;
   }
 }
@@ -577,7 +577,7 @@ Element *Mesh::element(size_t index) {
   if (index < this->numElements()) {
     return &this->m_elements[index];
   } else {
-    Adcirc::Error::throwError("Mesh: Element index out of bounds");
+    adcircmodules_throw_exception("Mesh: Element index out of bounds");
     return nullptr;
   }
 }
@@ -593,8 +593,8 @@ Node *Mesh::nodeById(size_t id) {
     if (id > 0 && id <= this->numNodes()) {
       return &this->m_nodes[id - 1];
     } else {
-      Adcirc::Error::throwError("Mesh: Node id " + to_string(id) +
-                                " not found");
+      adcircmodules_throw_exception("Mesh: Node id " + to_string(id) +
+                                    " not found");
       return nullptr;
     }
   } else {
@@ -613,7 +613,7 @@ Element *Mesh::elementById(size_t id) {
     if (id > 0 && id <= this->numElements()) {
       return &this->m_elements[id - 1];
     } else {
-      Adcirc::Error::throwError("Mesh: Element id not found");
+      adcircmodules_throw_exception("Mesh: Element id not found");
       return nullptr;
     }
   } else {
@@ -631,7 +631,7 @@ Boundary *Mesh::openBoundary(size_t index) {
   if (index < this->numOpenBoundaries()) {
     return &this->m_openBoundaries[index];
   } else {
-    Adcirc::Error::throwError("Mesh: Open boundary index out of bounds");
+    adcircmodules_throw_exception("Mesh: Open boundary index out of bounds");
     return nullptr;
   }
 }
@@ -646,7 +646,7 @@ Boundary *Mesh::landBoundary(size_t index) {
   if (index < this->numLandBoundaries()) {
     return &this->m_landBoundaries[index];
   } else {
-    Adcirc::Error::throwError("Mesh: Land boundary index out of bounds");
+    adcircmodules_throw_exception("Mesh: Land boundary index out of bounds");
     return nullptr;
   }
 }
@@ -696,11 +696,11 @@ void Mesh::reproject(int epsg) {
     inPoint.push_back(Point(n.x(), n.y()));
   }
 
-  int ierr = proj.transform(this->projection(), epsg, inPoint, outPoint,
-                            isLatLon);
+  int ierr =
+      proj.transform(this->projection(), epsg, inPoint, outPoint, isLatLon);
 
   if (ierr != Projection::NoError) {
-    Adcirc::Error::throwError("Mesh: Proj4 library error");
+    adcircmodules_throw_exception("Mesh: Proj4 library error");
   }
 
   for (size_t i = 0; i < this->numNodes(); ++i) {
@@ -834,7 +834,7 @@ void Mesh::buildNodalSearchTree() {
   this->m_nodalSearchTree = unique_ptr<QKdtree2>(new QKdtree2());
   ierr = this->m_nodalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
-    Adcirc::Error::throwError("Mesh: KDTree2 library error");
+    adcircmodules_throw_exception("Mesh: KDTree2 library error");
   }
 
   return;
@@ -872,7 +872,7 @@ void Mesh::buildElementalSearchTree() {
   this->m_elementalSearchTree = unique_ptr<QKdtree2>(new QKdtree2());
   int ierr = this->m_elementalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
-    Adcirc::Error::throwError("Mesh: KDTree2 library error");
+    adcircmodules_throw_exception("Mesh: KDTree2 library error");
   }
 
   return;
@@ -955,7 +955,7 @@ void Mesh::addNode(size_t index, Node &node) {
   if (index < this->numNodes()) {
     this->m_nodes[index] = node;
   } else {
-    Adcirc::Error::throwError("Mesh: Node index > number of nodes");
+    adcircmodules_throw_exception("Mesh: Node index > number of nodes");
   }
 
   return;
@@ -972,7 +972,7 @@ void Mesh::deleteNode(size_t index) {
     this->m_nodes.erase(this->m_nodes.begin() + index);
     this->setNumNodes(this->m_nodes.size());
   } else {
-    Adcirc::Error::throwError("Mesh: Node index > number of nodes");
+    adcircmodules_throw_exception("Mesh: Node index > number of nodes");
   }
   return;
 }
@@ -987,7 +987,7 @@ void Mesh::addElement(size_t index, Element &element) {
   if (index < this->numElements()) {
     this->m_elements[index] = element;
   } else {
-    Adcirc::Error::throwError("Mesh: Element index > number of nodes");
+    adcircmodules_throw_exception("Mesh: Element index > number of nodes");
   }
   return;
 }
@@ -1003,7 +1003,7 @@ void Mesh::deleteElement(size_t index) {
     this->m_elements.erase(this->m_elements.begin() + index);
     this->setNumElements(this->m_elements.size());
   } else {
-    Adcirc::Error::throwError("Mesh: Element index > number of nodes");
+    adcircmodules_throw_exception("Mesh: Element index > number of nodes");
   }
   return;
 }
@@ -1088,7 +1088,7 @@ bool Mesh::elementOrderingIsLogical() { return this->m_elementOrderingLogical; }
  */
 size_t Mesh::nodeIndexById(size_t id) {
   if (this->m_nodeOrderingLogical) {
-    return id;
+    return id - 1;
   } else {
     return this->m_nodeLookup[id];
   }

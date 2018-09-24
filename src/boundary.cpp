@@ -139,7 +139,7 @@ double Boundary::crestElevation(size_t index) const {
       return this->m_crestElevation[index];
     }
   }
-  Adcirc::Error::throwError("Index exceeds bounds");
+  adcircmodules_throw_exception("Index exceeds bounds");
   return -9999.0;
 }
 
@@ -158,10 +158,10 @@ void Boundary::setCrestElevation(size_t index, double crestElevation) {
     if (index < this->boundaryLength()) {
       this->m_crestElevation[index] = crestElevation;
     } else {
-      Adcirc::Error::throwError("Index exceeds bounds");
+      adcircmodules_throw_exception("Index exceeds bounds");
     }
   } else {
-    Adcirc::Error::throwError("Invalid attribute for boundary type");
+    adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
 }
 
@@ -179,7 +179,7 @@ double Boundary::subcriticalWeirCoefficient(size_t index) const {
       return this->m_subcriticalWeirCoefficient[index];
     }
   }
-  Adcirc::Error::throwError("Index exceeds bounds");
+  adcircmodules_throw_exception("Index exceeds bounds");
   return -9999.0;
 }
 /**
@@ -196,10 +196,10 @@ void Boundary::setSubcriticalWeirCoefficient(
     if (index < this->boundaryLength()) {
       this->m_subcriticalWeirCoefficient[index] = subcriticalWeirCoefficient;
     } else {
-      Adcirc::Error::throwError("Index exceeds bounds");
+      adcircmodules_throw_exception("Index exceeds bounds");
     }
   } else {
-    Adcirc::Error::throwError("Invalid attribute for boundary type");
+    adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
 }
 
@@ -219,7 +219,7 @@ double Boundary::supercriticalWeirCoefficient(size_t index) const {
       return this->m_supercriticalWeirCoefficient[index];
     }
   }
-  Adcirc::Error::throwError("Index exceeds bounds");
+  adcircmodules_throw_exception("Index exceeds bounds");
   return -9999.0;
 }
 
@@ -239,10 +239,10 @@ void Boundary::setSupercriticalWeirCoefficient(
       this->m_supercriticalWeirCoefficient[index] =
           supercriticalWeirCoefficient;
     } else {
-      Adcirc::Error::throwError("Index exceeds bounds");
+      adcircmodules_throw_exception("Index exceeds bounds");
     }
   } else {
-    Adcirc::Error::throwError("Invalid attribute for boundary type");
+    adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
 }
 
@@ -259,7 +259,7 @@ double Boundary::pipeHeight(size_t index) const {
       return this->m_pipeHeight[index];
     }
   }
-  Adcirc::Error::throwError("Index exceeds bounds");
+  adcircmodules_throw_exception("Index exceeds bounds");
   return -9999.0;
 }
 
@@ -275,10 +275,10 @@ void Boundary::setPipeHeight(size_t index, double pipeHeight) {
     if (index < this->boundaryLength()) {
       this->m_pipeHeight[index] = pipeHeight;
     } else {
-      Adcirc::Error::throwError("Index exceeds bounds");
+      adcircmodules_throw_exception("Index exceeds bounds");
     }
   } else {
-    Adcirc::Error::throwError("Invalid attribute for boundary type");
+    adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
 }
 
@@ -294,7 +294,7 @@ double Boundary::pipeDiameter(size_t index) const {
       return this->m_pipeDiameter[index];
     }
   }
-  Adcirc::Error::throwError("Index exceeds bounds");
+  adcircmodules_throw_exception("Index exceeds bounds");
   return -9999.0;
 }
 
@@ -309,10 +309,10 @@ void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
     if (index < this->boundaryLength()) {
       this->m_pipeDiameter[index] = pipeDiameter;
     } else {
-      Adcirc::Error::throwError("Index exceeds bounds");
+      adcircmodules_throw_exception("Index exceeds bounds");
     }
   } else {
-    Adcirc::Error::throwError("Index exceeds bounds");
+    adcircmodules_throw_exception("Index exceeds bounds");
   }
 }
 
@@ -328,7 +328,7 @@ double Boundary::pipeCoefficient(size_t index) const {
       return this->m_pipeCoefficient[index];
     }
   }
-  Adcirc::Error::throwError("Index exceeds bounds");
+  adcircmodules_throw_exception("Index exceeds bounds");
   return -9999.0;
 }
 
@@ -343,7 +343,7 @@ void Boundary::setPipeCoefficient(size_t index, double pipeCoefficient) {
     if (index < this->boundaryLength()) {
       this->m_pipeCoefficient[index] = pipeCoefficient;
     } else {
-      Adcirc::Error::throwError("Index exceeds bounds");
+      adcircmodules_throw_exception("Index exceeds bounds");
     }
   }
 }
@@ -358,7 +358,7 @@ Node *Boundary::node1(size_t index) const {
   if (index < this->boundaryLength()) {
     return this->m_node1[index];
   }
-  Adcirc::Error::throwError("Index exceeds bounds");
+  adcircmodules_throw_exception("Index exceeds bounds");
   return nullptr;
 }
 
@@ -372,7 +372,7 @@ void Boundary::setNode1(size_t index, Node *node1) {
   if (index < this->boundaryLength()) {
     this->m_node1[index] = node1;
   } else {
-    Adcirc::Error::throwError("Index exceeds bounds");
+    adcircmodules_throw_exception("Index exceeds bounds");
   }
 }
 
@@ -390,7 +390,7 @@ Node *Boundary::node2(size_t index) const {
       return this->m_node2[index];
     }
   }
-  Adcirc::Error::throwError("Index exceeds bounds");
+  adcircmodules_throw_exception("Index exceeds bounds");
   return nullptr;
 }
 
@@ -406,7 +406,7 @@ void Boundary::setNode2(size_t index, Node *node2) {
     if (index < this->boundaryLength()) {
       this->m_node2[index] = node2;
     } else {
-      Adcirc::Error::throwError("Index exceeds bounds");
+      adcircmodules_throw_exception("Index exceeds bounds");
     }
   }
 }

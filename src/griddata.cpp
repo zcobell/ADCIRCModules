@@ -115,7 +115,7 @@ void Griddata::readLookupTable(string lookupTableFile) {
     vector<string> ls = split::stringSplitToVector(l);
     if (ls.size() < 2) {
       fid.close();
-      Adcirc::Error::throwError("Could not read the lookup table.");
+      adcircmodules_throw_exception("Could not read the lookup table.");
     }
     bool ok;
     size_t cls = StringConversion::stringToSizet(ls[0], ok);
@@ -529,7 +529,7 @@ vector<double> Griddata::computeGridScale() {
       gridsize[i] = 0.0;
 
     if (gridsize[i] < 0.0) {
-      Adcirc::Error::throwError("Error computing mesh size table.");
+      adcircmodules_throw_exception("Error computing mesh size table.");
     }
   }
   return gridsize;
@@ -647,7 +647,7 @@ void Griddata::assignInterpolationFunctionPointer(bool useLookupTable) {
 
 void Griddata::checkMatchingCoorindateSystems() {
   if (this->m_epsg != this->m_mesh->projection()) {
-    Adcirc::Error::throwError(
+    adcircmodules_throw_exception(
         "You must use the same coordinate systems for mesh and raster.");
   }
 }
@@ -656,7 +656,7 @@ void Griddata::checkRasterOpen() {
   if (!this->m_raster.get()->isOpen()) {
     bool success = this->m_raster.get()->open();
     if (!success) {
-      Adcirc::Error::throwError("Could not open the raster file.");
+      adcircmodules_throw_exception("Could not open the raster file.");
     }
   }
 }

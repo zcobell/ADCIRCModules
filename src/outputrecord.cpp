@@ -96,7 +96,7 @@ void OutputRecord::setU(size_t index, double value) {
   if (index < this->numNodes() && this->isVector()) {
     this->m_u[index] = value;
   } else {
-    Adcirc::Error::throwError("OutputRecord: setU invalid input");
+    adcircmodules_throw_exception("OutputRecord: setU invalid input");
   }
   return;
 }
@@ -107,7 +107,7 @@ void OutputRecord::setV(size_t index, double value) {
   if (index < this->numNodes() && this->isVector()) {
     this->m_v[index] = value;
   } else {
-    Adcirc::Error::throwError("OutputRecord: setV invalid input");
+    adcircmodules_throw_exception("OutputRecord: setV invalid input");
   }
   return;
 }
@@ -118,7 +118,7 @@ void OutputRecord::set(size_t index, double value) {
   if (index < this->numNodes() && !this->isVector()) {
     this->m_u[index] = value;
   } else {
-    Adcirc::Error::throwError("OutputRecord: set invalid input");
+    adcircmodules_throw_exception("OutputRecord: set invalid input");
   }
   return;
 }
@@ -130,7 +130,7 @@ void OutputRecord::set(size_t index, double value_u, double value_v) {
     this->m_u[index] = value_u;
     this->m_v[index] = value_v;
   } else {
-    Adcirc::Error::throwError("OutputRecord: set invalid input");
+    adcircmodules_throw_exception("OutputRecord: set invalid input");
   }
 }
 
@@ -138,13 +138,13 @@ double OutputRecord::z(size_t index) {
   assert(index < this->numNodes());
   if (index < this->numNodes()) {
     if (this->isVector()) {
-      Adcirc::Error::throwError("OutputRecord: Datatype is a vector");
+      adcircmodules_throw_exception("OutputRecord: Datatype is a vector");
       return 0.0;
     } else {
       return this->m_u[index];
     }
   } else {
-    Adcirc::Error::throwError("OutputRecord: Index out of range");
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
     return 0.0;
   }
 }
@@ -153,13 +153,13 @@ double OutputRecord::magnitude(size_t index) {
   assert(index < this->numNodes());
   assert(this->isVector());
   if (!this->isVector()) {
-    Adcirc::Error::throwError("OutputRecord: Datatype not a vector");
+    adcircmodules_throw_exception("OutputRecord: Datatype not a vector");
     return 0.0;
   }
   if (index < this->numNodes()) {
     return pow(pow(this->m_u[index], 2.0) + pow(this->m_v[index], 2.0), 0.5);
   } else {
-    Adcirc::Error::throwError("OutputRecord: Index out of range");
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
     return 0.0;
   }
 }
@@ -180,7 +180,7 @@ double OutputRecord::angle(double x, double y, AngleUnits units) {
       a = a + _2pi;
     }
   } else {
-    Adcirc::Error::throwError("Invalid angle units");
+    adcircmodules_throw_exception("Invalid angle units");
     return 0.0;
   }
   return a;
@@ -190,13 +190,13 @@ double OutputRecord::direction(size_t index, AngleUnits angleType) {
   assert(this->isVector());
   assert(index < this->numNodes());
   if (!this->isVector()) {
-    Adcirc::Error::throwError("OutputRecord: Datatype is not a vector");
+    adcircmodules_throw_exception("OutputRecord: Datatype is not a vector");
     return 0.0;
   }
   if (index < this->numNodes()) {
     return this->angle(this->m_u[index], this->m_v[index], angleType);
   } else {
-    Adcirc::Error::throwError("OutputRecord: Index out of range");
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
     return 0.0;
   }
 }
@@ -205,13 +205,13 @@ double OutputRecord::u(size_t index) {
   assert(this->isVector());
   assert(index < this->numNodes());
   if (!this->isVector()) {
-    Adcirc::Error::throwError("OutputRecord: Datatype is not a vector");
+    adcircmodules_throw_exception("OutputRecord: Datatype is not a vector");
     return 0.0;
   }
   if (index < this->numNodes()) {
     return this->m_u[index];
   } else {
-    Adcirc::Error::throwError("OutputRecord: Index out of range");
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
     return 0.0;
   }
 }
@@ -220,13 +220,13 @@ double OutputRecord::v(size_t index) {
   assert(this->isVector());
   assert(index < this->numNodes());
   if (!this->isVector()) {
-    Adcirc::Error::throwError("OutputRecord: Datatype is not a vector");
+    adcircmodules_throw_exception("OutputRecord: Datatype is not a vector");
     return 0.0;
   }
   if (index < this->numNodes()) {
     return this->m_v[index];
   } else {
-    Adcirc::Error::throwError("OutputRecord: Index out of range");
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
     return 0.0;
   }
 }
@@ -235,11 +235,11 @@ void OutputRecord::setAllU(const vector<double>& values) {
   assert(this->isVector());
   assert(this->m_numNodes == values.size());
   if (!this->isVector()) {
-    Adcirc::Error::throwError("OutputRecord: Datatype is not a vector");
+    adcircmodules_throw_exception("OutputRecord: Datatype is not a vector");
     return;
   }
   if (values.size() != this->m_numNodes) {
-    Adcirc::Error::throwError("OutputRecord: Index out of range");
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
     return;
   }
   this->m_u = values;
@@ -250,11 +250,11 @@ void OutputRecord::setAllV(const vector<double>& values) {
   assert(this->isVector());
   assert(this->m_numNodes == values.size());
   if (!this->isVector()) {
-    Adcirc::Error::throwError("OutputRecord: Datatype is not a vector");
+    adcircmodules_throw_exception("OutputRecord: Datatype is not a vector");
     return;
   }
   if (values.size() != this->m_numNodes) {
-    Adcirc::Error::throwError("OutputRecord: Index out of range");
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
     return;
   }
   this->m_v = values;
@@ -267,15 +267,15 @@ void OutputRecord::setAll(const vector<double>& values_u,
   assert(this->m_numNodes == values_u.size());
   assert(this->m_numNodes == values_v.size());
   if (!this->isVector()) {
-    Adcirc::Error::throwError("OutputRecord: Datatype is not a vector");
+    adcircmodules_throw_exception("OutputRecord: Datatype is not a vector");
     return;
   }
   if (values_u.size() != this->m_numNodes) {
-    Adcirc::Error::throwError("OutputRecord: Index out of range");
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
     return;
   }
   if (values_v.size() != this->m_numNodes) {
-    Adcirc::Error::throwError("OutputRecord: Index out of range");
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
     return;
   }
   this->m_u = values_u;
@@ -287,11 +287,11 @@ void OutputRecord::setAll(const vector<double>& values) {
   assert(!this->isVector());
   assert(this->m_numNodes == values.size());
   if (this->isVector()) {
-    Adcirc::Error::throwError("OutputRecord: Datatype is a vector");
+    adcircmodules_throw_exception("OutputRecord: Datatype is a vector");
     return;
   }
   if (values.size() != this->m_numNodes) {
-    Adcirc::Error::throwError("OutputRecord: Index out of range");
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
     return;
   }
   this->m_u = values;
@@ -305,7 +305,7 @@ vector<double> OutputRecord::values(size_t column) {
     } else if (column == 1) {
       return this->m_v;
     } else {
-      Adcirc::Error::throwError("OutputRecord: Invalid column specified");
+      adcircmodules_throw_exception("OutputRecord: Invalid column specified");
       return vector<double>();
     }
   } else {
@@ -316,7 +316,7 @@ vector<double> OutputRecord::values(size_t column) {
 void OutputRecord::setAll(size_t size, const double* values) {
   assert(size == this->m_numNodes);
   if (this->m_numNodes != size) {
-    Adcirc::Error::throwError("OutputRecord: Array size mismatch");
+    adcircmodules_throw_exception("OutputRecord: Array size mismatch");
     return;
   }
   this->m_u = vector<double>(values, values + size);
@@ -327,7 +327,7 @@ void OutputRecord::setAll(size_t size, const double* values_u,
                           const double* values_v) {
   assert(size == this->m_numNodes);
   if (this->m_numNodes != size) {
-    Adcirc::Error::throwError("OutputRecord: Array size mismatch");
+    adcircmodules_throw_exception("OutputRecord: Array size mismatch");
     return;
   }
   this->m_u = vector<double>(values_u, values_u + size);
@@ -338,7 +338,7 @@ void OutputRecord::setAll(size_t size, const double* values_u,
 vector<double> OutputRecord::magnitudes() {
   assert(this->isVector());
   if (!this->isVector()) {
-    Adcirc::Error::throwError(
+    adcircmodules_throw_exception(
         "OutputRecord: Must be a vector to compute magnitude");
     return vector<double>();
   }
@@ -353,7 +353,7 @@ vector<double> OutputRecord::magnitudes() {
 vector<double> OutputRecord::directions(AngleUnits angleType) {
   assert(this->isVector());
   if (!this->isVector()) {
-    Adcirc::Error::throwError(
+    adcircmodules_throw_exception(
         "OutputRecord: Must be a vector to compute direction");
     return vector<double>();
   }

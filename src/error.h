@@ -29,13 +29,16 @@ enum _code { NoError, HasError };
 
 class Error {
  public:
-  Error();
+  Error() = default;
 
   static void throwError(const std::string &s);
+  static void throwError(const std::string &s, const char *file, int line);
 
   static void warning(const std::string &s);
 };
 
 }  // namespace Adcirc
+
+#define adcircmodules_throw_exception(arg) Adcirc::Error::throwError(arg, __FILE__, __LINE__);
 
 #endif  // ERROR_H

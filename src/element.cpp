@@ -110,7 +110,7 @@ Node *Element::node(int i) {
   if (i < this->n()) {
     return this->m_nodes.at(i);
   }
-  Adcirc::Error::throwError("Index out of bounds");
+  adcircmodules_throw_exception("Index out of bounds");
   return nullptr;
 }
 

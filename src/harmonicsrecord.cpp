@@ -66,7 +66,7 @@ double HarmonicsRecord::value(size_t index) {
   if (index < this->m_data.size()) {
     return this->m_data[index];
   } else {
-    Adcirc::Error::throwError("HarmonicsRecord: Index out of bounds");
+    adcircmodules_throw_exception("HarmonicsRecord: Index out of bounds");
     return -9999;
   }
 }
@@ -76,7 +76,7 @@ void HarmonicsRecord::set(size_t index, double data) {
   if (index < this->m_data.size()) {
     this->m_data[index] = data;
   } else {
-    Adcirc::Error::throwError("HarmonicsRecord: Index out of bounds");
+    adcircmodules_throw_exception("HarmonicsRecord: Index out of bounds");
     return;
   }
   return;
@@ -85,7 +85,7 @@ void HarmonicsRecord::set(size_t index, double data) {
 void HarmonicsRecord::set(const std::vector<double> &value) {
   assert(value.size() == this->m_data.size());
   if (value.size() != this->m_data.size()) {
-    Adcirc::Error::throwError("HarmonicsRecord: Invalid data size");
+    adcircmodules_throw_exception("HarmonicsRecord: Invalid data size");
     return;
   }
   this->m_data = value;

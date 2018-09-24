@@ -79,7 +79,7 @@ int IO::splitStringNodeFormat(string &data, size_t &id, double &x, double &y,
     z = n.z;
     return Adcirc::NoError;
   } else {
-    Adcirc::Error::throwError("Error parsing file data");
+    adcircmodules_throw_exception("Error parsing file data");
     return Adcirc::NoError;
   }
 }
@@ -99,7 +99,7 @@ int IO::splitStringElemFormat(string &data, size_t &id, size_t &n1, size_t &n2,
     n3 = e.n3;
     return Adcirc::NoError;
   } else {
-    Adcirc::Error::throwError("Error parsing file data");
+    adcircmodules_throw_exception("Error parsing file data");
     return Adcirc::NoError;
   }
 }
@@ -115,7 +115,7 @@ int IO::splitStringBoundary0Format(string &data, size_t &node1) {
     node1 = b.node1;
     return Adcirc::NoError;
   } else {
-    Adcirc::Error::throwError("Error parsing file data");
+    adcircmodules_throw_exception("Error parsing file data");
     return Adcirc::NoError;
   }
 }
@@ -134,7 +134,7 @@ int IO::splitStringBoundary23Format(string &data, size_t &node1, double &crest,
     supercritical = b.supercritical;
     return Adcirc::NoError;
   } else {
-    Adcirc::Error::throwError("Error parsing file data");
+    adcircmodules_throw_exception("Error parsing file data");
     return Adcirc::NoError;
   }
 }
@@ -156,7 +156,7 @@ int IO::splitStringBoundary24Format(string &data, size_t &node1, size_t &node2,
     supercritical = b.supercritical;
     return Adcirc::NoError;
   } else {
-    Adcirc::Error::throwError("Error parsing file data");
+    adcircmodules_throw_exception("Error parsing file data");
     return Adcirc::NoError;
   }
 }
@@ -182,7 +182,7 @@ int IO::splitStringBoundary25Format(string &data, size_t &node1, size_t &node2,
     pipediam = b.pipediam;
     return Adcirc::NoError;
   } else {
-    Adcirc::Error::throwError("Error parsing file data");
+    adcircmodules_throw_exception("Error parsing file data");
     return Adcirc::NoError;
   }
 }
@@ -199,7 +199,7 @@ int IO::splitStringAttribute1Format(string &data, size_t &node, double &value) {
     value = na.value;
     return Adcirc::NoError;
   } else {
-    Adcirc::Error::throwError("Error parsing file data");
+    adcircmodules_throw_exception("Error parsing file data");
     return Adcirc::NoError;
   }
 }
@@ -218,7 +218,7 @@ int IO::splitStringAttribute2Format(string &data, size_t &node, double &value1,
     value2 = na.value2;
     return Adcirc::NoError;
   } else {
-    Adcirc::Error::throwError("Error parsing file data");
+    adcircmodules_throw_exception("Error parsing file data");
     return Adcirc::NoError;
   }
 }
@@ -247,7 +247,7 @@ int IO::splitStringAttribute12Format(string &data, size_t &node,
     values[11] = na.value12;
     return Adcirc::NoError;
   } else {
-    Adcirc::Error::throwError("Error parsing file data");
+    adcircmodules_throw_exception("Error parsing file data");
     return Adcirc::NoError;
   }
 }
@@ -264,7 +264,7 @@ int IO::splitStringHarmonicsElevationFormat(string &data, double &amplitude,
     phase = harm.phase;
     return Adcirc::NoError;
   } else {
-    Adcirc::Error::throwError("Error parsing file data");
+    adcircmodules_throw_exception("Error parsing file data");
     return Adcirc::NoError;
   }
 }
@@ -284,7 +284,7 @@ int IO::splitStringHarmonicsVelocityFormat(string &data, double &u_magnitude,
     v_phase = harm.v_phase;
     return Adcirc::NoError;
   } else {
-    Adcirc::Error::throwError("Error parsing file data");
+    adcircmodules_throw_exception("Error parsing file data");
     return Adcirc::NoError;
   }
 }

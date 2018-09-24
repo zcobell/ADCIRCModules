@@ -50,9 +50,6 @@ class Attribute {
   void setId(size_t id);
 
  private:
-  /// Number of values in this dataset
-  size_t m_size;
-
   /// ID number in the Adcirc Nodal Attributes file
   size_t m_id;
 

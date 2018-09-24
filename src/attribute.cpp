@@ -36,20 +36,15 @@ Attribute::Attribute(size_t size) {
   this->resize(size);
 }
 
-void Attribute::resize(size_t size) {
-  if (size != this->m_size) {
-    this->m_values.resize(size);
-    this->m_size = size;
-  }
-}
+void Attribute::resize(size_t size) { this->m_values.resize(size); }
 
 double Attribute::value(size_t index) const {
-  assert(index < this->m_size);
+  assert(index < this->size());
 
-  if (index < this->m_size) {
+  if (index < this->size()) {
     return m_values[index];
   } else {
-    Adcirc::Error::throwError("Attribute: Index out of bounds");
+    adcircmodules_throw_exception("Attribute: Index out of bounds");
     return -9999.0;
   }
 }
@@ -61,22 +56,22 @@ void Attribute::setValue(const double &value) {
 }
 
 void Attribute::setValue(size_t index, const double &value) {
-  assert(index < this->m_size);
+  assert(index < this->size());
 
-  if (index < this->m_size) {
+  if (index < this->size()) {
     this->m_values[index] = value;
   } else {
-    Adcirc::Error::throwError("Attribute: Index out of bounds");
+    adcircmodules_throw_exception("Attribute: Index out of bounds");
   }
 }
 
 void Attribute::setValue(const vector<double> &values) {
-  assert(values.size() == this->m_size);
+  assert(values.size() == this->size());
 
-  if (values.size() == this->m_size) {
+  if (values.size() == this->size()) {
     this->m_values = values;
   } else {
-    Adcirc::Error::throwError("Attribute: Index out of bounds");
+    adcircmodules_throw_exception("Attribute: Index out of bounds");
   }
 }
 
@@ -84,7 +79,7 @@ Adcirc::Geometry::Node *Attribute::node() { return this->m_node; }
 
 void Attribute::setNode(Adcirc::Geometry::Node *node) { this->m_node = node; }
 
-size_t Attribute::size() const { return this->m_size; }
+size_t Attribute::size() const { return this->m_values.size(); }
 
 size_t Attribute::id() const { return this->m_id; }
 

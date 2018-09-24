@@ -99,7 +99,7 @@ void OutputFile::clearAt(size_t position) {
     this->m_records.erase(this->m_records.begin() + position);
     this->rebuildMap();
   } else {
-    Adcirc::Error::throwError("OutputFile: Index exceeds dimension");
+    adcircmodules_throw_exception("OutputFile: Index exceeds dimension");
   }
 }
 
@@ -109,7 +109,7 @@ void OutputFile::setFilename(const string& filename) {
   if (!this->isOpen()) {
     this->m_filename = filename;
   } else {
-    Adcirc::Error::throwError(
+    adcircmodules_throw_exception(
         "OutputFile: Cannot change filename since file currently open");
   }
 }
@@ -124,11 +124,11 @@ bool OutputFile::exists() {
 void OutputFile::open() {
 
   if (this->isOpen()) {
-    Adcirc::Error::throwError("OutputFile: File already open");
+    adcircmodules_throw_exception("OutputFile: File already open");
   }
 
   if (!this->exists()) {
-    Adcirc::Error::throwError("OutputFile: File does not exist");
+    adcircmodules_throw_exception("OutputFile: File does not exist");
   }
 
   this->m_filetype = this->getFiletype();
@@ -144,13 +144,13 @@ void OutputFile::open() {
   } else if (this->filetype() == Adcirc::Output::Xdmf) {
     this->openXdmf();
   } else {
-    Adcirc::Error::throwError("OutputFile: No valid file type detected");
+    adcircmodules_throw_exception("OutputFile: No valid file type detected");
   }
 
   if (this->isOpen()) {
     return;
   } else {
-    Adcirc::Error::throwError("OutputFile: Error opening file");
+    adcircmodules_throw_exception("OutputFile: Error opening file");
   }
   return;
 }
@@ -159,7 +159,7 @@ void OutputFile::close() {
   assert(this->m_open);
 
   if (!this->isOpen()) {
-    Adcirc::Error::throwError("OutputFile: File not open");
+    adcircmodules_throw_exception("OutputFile: File not open");
   }
 
   if (this->filetype() == Adcirc::Output::ASCIIFull ||
@@ -191,7 +191,7 @@ void OutputFile::read(size_t snap) {
           "record. Specified snap number ignored.");
     }
     if (this->m_currentSnap > this->m_numSnaps) {
-      Adcirc::Error::throwError(
+      adcircmodules_throw_exception(
           "OutputFile: Attempt to read past last record in file");
     }
     this->readAsciiRecord(record);
@@ -199,7 +199,7 @@ void OutputFile::read(size_t snap) {
              this->m_filetype == Adcirc::Output::Netcdf4) {
     this->readNetcdfRecord(snap, record);
   } else {
-    Adcirc::Error::throwError("OutputFile: Unknown filetype");
+    adcircmodules_throw_exception("OutputFile: Unknown filetype");
   }
 
   this->m_records.push_back(std::move(record));
@@ -208,20 +208,20 @@ void OutputFile::read(size_t snap) {
 }
 
 void OutputFile::write(size_t snap) {
-  Adcirc::Error::throwError("OutputFile: Not implemented");
+  adcircmodules_throw_exception("OutputFile: Not implemented");
   return;
 }
 
 void OutputFile::openAscii() {
   if (this->isOpen()) {
-    Adcirc::Error::throwError("OutputFile: File already open");
+    adcircmodules_throw_exception("OutputFile: File already open");
   }
   this->m_fid.open(this->filename());
   if (this->m_fid.is_open()) {
     this->m_open = true;
     return;
   } else {
-    Adcirc::Error::throwError("OutputFile: File could not be opened");
+    adcircmodules_throw_exception("OutputFile: File could not be opened");
   }
 }
 
@@ -229,18 +229,18 @@ void OutputFile::openNetcdf() {
   if (!this->isOpen()) {
     int ierr = nc_open(this->m_filename.c_str(), NC_NOWRITE, &this->m_ncid);
     if (ierr != NC_NOERR) {
-      Adcirc::Error::throwError("OutputFile: Error opening netcdf file");
+      adcircmodules_throw_exception("OutputFile: Error opening netcdf file");
     }
     this->m_open = true;
   } else {
-    Adcirc::Error::throwError("OutputFile: Error opening netcdf file");
+    adcircmodules_throw_exception("OutputFile: Error opening netcdf file");
     return;
   }
   return;
 }
 
 void OutputFile::openXdmf() {
-  Adcirc::Error::throwError("OutputFile: Not implemented");
+  adcircmodules_throw_exception("OutputFile: Not implemented");
   return;
 }
 
@@ -250,7 +250,7 @@ void OutputFile::closeAscii() {
     this->m_open = false;
     return;
   }
-  Adcirc::Error::throwError("OutputFile: Error closing ascii file");
+  adcircmodules_throw_exception("OutputFile: Error closing ascii file");
   return;
 }
 
@@ -260,12 +260,12 @@ void OutputFile::closeNetcdf() {
     this->m_open = false;
     return;
   }
-  Adcirc::Error::throwError("OutputFile: Error closing netcdf file");
+  adcircmodules_throw_exception("OutputFile: Error closing netcdf file");
   return;
 }
 
 void OutputFile::closeXdmf() {
-  Adcirc::Error::throwError("OutputFile: Not implemented");
+  adcircmodules_throw_exception("OutputFile: Not implemented");
   return;
 }
 
@@ -279,7 +279,7 @@ OutputRecord* OutputFile::data(size_t snap, bool& ok) {
 
   if (this->m_recordMap.find(snap) == this->m_recordMap.end()) {
     ok = false;
-    Adcirc::Error::throwError("OutputFile: Data requested is out of bounds");
+    adcircmodules_throw_exception("OutputFile: Data requested is out of bounds");
     return nullptr;
   } else {
     ok = true;
@@ -297,7 +297,7 @@ OutputRecord* OutputFile::dataAt(size_t position, bool& ok) {
 
   if (position < this->m_records.size()) {
     ok = false;
-    Adcirc::Error::throwError("OutputFile: Data requested is out of bounds");
+    adcircmodules_throw_exception("OutputFile: Data requested is out of bounds");
     return nullptr;
   } else {
     ok = true;
@@ -354,12 +354,12 @@ void OutputFile::findNetcdfVarId() {
          this->filetype() == Adcirc::Output::Netcdf4);
 
   if (!this->isOpen()) {
-    Adcirc::Error::throwError("OutputFile: Netcdf file not open");
+    adcircmodules_throw_exception("OutputFile: Netcdf file not open");
   }
 
   if (!(this->filetype() != Adcirc::Output::Netcdf3) ||
       !(this->filetype() == Adcirc::Output::Netcdf4)) {
-    Adcirc::Error::throwError("OutputFile: Filetype is not netcdf");
+    adcircmodules_throw_exception("OutputFile: Filetype is not netcdf");
   }
 
   int varid;
@@ -376,10 +376,10 @@ void OutputFile::findNetcdfVarId() {
   }
 
   if (this->m_varid_data.size() == 0) {
-    Adcirc::Error::throwError("OutputFile: No valid netcdf variables found");
+    adcircmodules_throw_exception("OutputFile: No valid netcdf variables found");
   }
   if (this->m_varid_data.size() > 2) {
-    Adcirc::Error::throwError("OutputFile: Too many netcdf variables found");
+    adcircmodules_throw_exception("OutputFile: Too many netcdf variables found");
   }
 
   if (this->m_varid_data.size() == 1) {
@@ -396,7 +396,7 @@ void OutputFile::readAsciiHeader() {
   assert(!this->m_filename.empty());
 
   if (this->m_filename.empty()) {
-    Adcirc::Error::throwError("OutputFile: No filename specified");
+    adcircmodules_throw_exception("OutputFile: No filename specified");
   }
 
   string line;
@@ -409,32 +409,32 @@ void OutputFile::readAsciiHeader() {
   int ierr = IO::splitString(line, list);
   if (ierr != Adcirc::NoError) {
     this->m_fid.close();
-    Adcirc::Error::throwError("OutputFile: Error reading ascii header");
+    adcircmodules_throw_exception("OutputFile: Error reading ascii header");
   }
 
   bool ok;
   this->setNumSnaps(StringConversion::stringToInt(list.at(0), ok));
   if (!ok) {
     this->m_fid.close();
-    Adcirc::Error::throwError("OutputFile: Error reading ascii header");
+    adcircmodules_throw_exception("OutputFile: Error reading ascii header");
   }
 
   this->setNumNodes(StringConversion::stringToSizet(list.at(1), ok));
   if (!ok) {
     this->m_fid.close();
-    Adcirc::Error::throwError("OutputFile: Error reading ascii header");
+    adcircmodules_throw_exception("OutputFile: Error reading ascii header");
   }
 
   this->setDt(StringConversion::stringToDouble(list.at(2), ok));
   if (!ok) {
     this->m_fid.close();
-    Adcirc::Error::throwError("OutputFile: Error reading ascii header");
+    adcircmodules_throw_exception("OutputFile: Error reading ascii header");
   }
 
   this->setDiteration(StringConversion::stringToInt(list.at(3), ok));
   if (!ok) {
     this->m_fid.close();
-    Adcirc::Error::throwError("OutputFile: Error reading ascii header");
+    adcircmodules_throw_exception("OutputFile: Error reading ascii header");
   }
 
   int numCols = StringConversion::stringToInt(list.at(4), ok);
@@ -444,7 +444,7 @@ void OutputFile::readAsciiHeader() {
     this->m_isVector = true;
   } else {
     this->m_fid.close();
-    Adcirc::Error::throwError("OutputFile: Invalid number of columns in file");
+    adcircmodules_throw_exception("OutputFile: Invalid number of columns in file");
   }
 
   return;
@@ -455,33 +455,33 @@ void OutputFile::readNetcdfHeader() {
 
   int ierr = nc_inq_dimid(this->m_ncid, "time", &this->m_dimid_time);
   if (ierr != NC_NOERR) {
-    Adcirc::Error::throwError("OutputFile: Time dimension not found");
+    adcircmodules_throw_exception("OutputFile: Time dimension not found");
   }
 
   ierr = nc_inq_varid(this->m_ncid, "time", &this->m_varid_time);
   if (ierr != NC_NOERR) {
-    Adcirc::Error::throwError("OutputFile: Time variable not found");
+    adcircmodules_throw_exception("OutputFile: Time variable not found");
   }
 
   ierr = nc_inq_dimlen(this->m_ncid, this->m_dimid_time, &this->m_numSnaps);
   if (ierr != NC_NOERR) {
-    Adcirc::Error::throwError("OutputFile: Error reading time dimension");
+    adcircmodules_throw_exception("OutputFile: Error reading time dimension");
   }
 
   ierr = nc_inq_dimid(this->m_ncid, "node", &this->m_dimid_node);
   if (ierr != NC_NOERR) {
-    Adcirc::Error::throwError("OutputFile: Node dimension not found");
+    adcircmodules_throw_exception("OutputFile: Node dimension not found");
   }
 
   ierr = nc_inq_dimlen(this->m_ncid, this->m_dimid_node, &this->m_numNodes);
   if (ierr != NC_NOERR) {
-    Adcirc::Error::throwError("OutputFile: Error reading node dimension");
+    adcircmodules_throw_exception("OutputFile: Error reading node dimension");
   }
 
   double dt;
   ierr = nc_get_att_double(this->m_ncid, NC_GLOBAL, "dt", &dt);
   if (ierr != NC_NOERR) {
-    Adcirc::Error::throwError("OutputFile: Error reading model dt");
+    adcircmodules_throw_exception("OutputFile: Error reading model dt");
   }
 
   double* t = new double[this->m_numSnaps];
@@ -489,7 +489,7 @@ void OutputFile::readNetcdfHeader() {
   ierr = nc_get_var_double(this->m_ncid, this->m_varid_time, t);
   if (ierr != NC_NOERR) {
     delete[] t;
-    Adcirc::Error::throwError("Error getting time variable");
+    adcircmodules_throw_exception("Error getting time variable");
     return;
   }
 
@@ -508,7 +508,7 @@ void OutputFile::readNetcdfHeader() {
   ierr = nc_inq_var_fill(this->m_ncid, this->m_varid_data[0], &nofill,
                          &this->m_defaultValue);
   if (ierr != NC_NOERR) {
-    Adcirc::Error::throwError("OutputFile: Error reading default value");
+    adcircmodules_throw_exception("OutputFile: Error reading default value");
   }
 
   return;
@@ -531,7 +531,7 @@ void OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
     record.get()->setTime(t);
   } else {
     record.reset(nullptr);
-    Adcirc::Error::throwError("OutputFile: Error reading ascii record");
+    adcircmodules_throw_exception("OutputFile: Error reading ascii record");
   }
 
   int it = StringConversion::stringToInt(list[1], ok);
@@ -539,7 +539,7 @@ void OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
     record.get()->setIteration(it);
   } else {
     record.reset(nullptr);
-    Adcirc::Error::throwError("OutputFile: Error reading ascii record");
+    adcircmodules_throw_exception("OutputFile: Error reading ascii record");
   }
 
   size_t numNonDefault = this->m_numNodes;
@@ -549,13 +549,13 @@ void OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
     numNonDefault = StringConversion::stringToSizet(list[2], ok);
     if (!ok) {
       record.reset(nullptr);
-      Adcirc::Error::throwError("OutputFile: Error reading ascii record");
+      adcircmodules_throw_exception("OutputFile: Error reading ascii record");
     }
 
     dflt = StringConversion::stringToDouble(list[3], ok);
     if (!ok) {
       record.reset(nullptr);
-      Adcirc::Error::throwError("OutputFile: Error reading ascii record");
+      adcircmodules_throw_exception("OutputFile: Error reading ascii record");
     }
   }
   record.get()->setDefaultValue(dflt);
@@ -573,7 +573,7 @@ void OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
         record.get()->set(id - 1, v1, v2);
       } else {
         record.reset(nullptr);
-        Adcirc::Error::throwError("OutputFile: Error reading ascii record");
+        adcircmodules_throw_exception("OutputFile: Error reading ascii record");
       }
     } else {
       size_t id;
@@ -583,7 +583,7 @@ void OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
         record.get()->set(id - 1, v1);
       } else {
         record.reset(nullptr);
-        Adcirc::Error::throwError("OutputFile: Error reading ascii record");
+        adcircmodules_throw_exception("OutputFile: Error reading ascii record");
       };
     }
   }
@@ -605,7 +605,7 @@ void OutputFile::readNetcdfRecord(size_t snap,
   assert(this->isOpen());
 
   if (snap > this->m_numSnaps) {
-    Adcirc::Error::throwError(
+    adcircmodules_throw_exception(
         "OutputFile: Record requested > number of records in file");
   }
   record = unique_ptr<OutputRecord>(
@@ -622,7 +622,7 @@ void OutputFile::readNetcdfRecord(size_t snap,
 
     if (ierr != NC_NOERR) {
       delete[] u;
-      Adcirc::Error::throwError("OutputFile: Error reading netcdf record");
+      adcircmodules_throw_exception("OutputFile: Error reading netcdf record");
       return;
     }
     record.get()->setAll(this->m_numNodes, u);
@@ -640,7 +640,7 @@ void OutputFile::readNetcdfRecord(size_t snap,
         nc_get_vara(this->m_ncid, this->m_varid_data[0], start, count, u);
     if (ierr != NC_NOERR) {
       delete[] u;
-      Adcirc::Error::throwError("OutputFile: Error reading netcdf record");
+      adcircmodules_throw_exception("OutputFile: Error reading netcdf record");
       return;
     }
 
@@ -650,7 +650,7 @@ void OutputFile::readNetcdfRecord(size_t snap,
       if (ierr != NC_NOERR) {
         delete[] u;
         delete[] v;
-        Adcirc::Error::throwError("OutputFile: Error reading netcdf record");
+        adcircmodules_throw_exception("OutputFile: Error reading netcdf record");
         return;
       }
       record.get()->setAll(this->m_numNodes, u, v);
