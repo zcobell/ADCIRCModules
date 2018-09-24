@@ -20,4 +20,4 @@ after_success:
 script:
 - mkdir build; cd build; cmake -DCOVERAGE=ON -DBUILD_TESTS=ON ..
 - cd build; make -j 4
-- cd build; CTEST_OUTPUT_ON_FAILURE=1 make test
+- travis_wait 30 cd build; CTEST_OUTPUT_ON_FAILURE=1 make test
