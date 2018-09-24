@@ -28,7 +28,6 @@
 #include "elementtable.h"
 #include "error.h"
 #include "harmonicsoutput.h"
-#include "ltea.h"
 #include "mesh.h"
 #include "meshchecker.h"
 #include "nodalattributes.h"

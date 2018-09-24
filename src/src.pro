@@ -98,7 +98,6 @@ SOURCES += \
     harmonicsrecord.cpp \
     error.cpp \
     filetypes.cpp \
-    ltea.cpp \
     meshchecker.cpp \
     elementtable.cpp \
     griddata.cpp \
@@ -126,7 +125,6 @@ HEADERS += \
     harmonicsrecord.h \
     error.h \
     filetypes.h \
-    ltea.h \
     meshchecker.h \
     elementtable.h \
     griddata.h \

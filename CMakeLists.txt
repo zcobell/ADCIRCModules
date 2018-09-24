@@ -571,7 +571,6 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/outputfile.cpp 
                 ${CMAKE_SOURCE_DIR}/src/harmonicsrecord.cpp
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.cpp 
-                ${CMAKE_SOURCE_DIR}/src/ltea.cpp 
                 ${CMAKE_SOURCE_DIR}/src/elementtable.cpp
                 ${CMAKE_SOURCE_DIR}/src/meshchecker.cpp 
                 ${CMAKE_SOURCE_DIR}/src/multithreading.cpp )
@@ -619,7 +618,6 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcirc.h
                 ${CMAKE_SOURCE_DIR}/src/node.h
                 ${CMAKE_SOURCE_DIR}/src/outputfile.h
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.h
-                ${CMAKE_SOURCE_DIR}/src/ltea.h
                 ${CMAKE_SOURCE_DIR}/src/meshchecker.h
                 ${CMAKE_SOURCE_DIR}/src/elementtable.h
                 ${CMAKE_SOURCE_DIR}/libraries/point/point.h 
