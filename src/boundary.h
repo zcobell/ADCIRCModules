@@ -16,15 +16,6 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-/**
- * @class Boundary
- * @author Zachary Cobell
- *
- * The Boundary class handles the interpretation of boundary
- * conditions used within the Adcirc model. The class is designed so that
- * it is generic and can handle both open and land boundaries.
- *
- */
 #ifndef BOUNDARY_H
 #define BOUNDARY_H
 
@@ -35,6 +26,19 @@
 
 namespace Adcirc {
 namespace Geometry {
+
+/**
+ * @class Boundary
+ * @author Zachary Cobell
+ * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * is released under the terms of the GNU General Public License v3
+ * @brief The boundary class handles ADCIRC mesh boundaries
+ *
+ * The Boundary class handles the interpretation of boundary
+ * conditions used within the Adcirc model. The class is designed so that
+ * it is generic and can handle both open and land boundaries.
+ *
+ */
 
 class Boundary {
  public:

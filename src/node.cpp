@@ -23,7 +23,7 @@ using namespace std;
 using namespace Adcirc::Geometry;
 
 /**
- * @name Node::Node
+ * @fn Node::Node
  * @brief Default constructor
  */
 Node::Node() {
@@ -49,7 +49,7 @@ Node::Node(size_t id, double x, double y, double z) {
 }
 
 /**
- * @name Node::setNode
+ * @fn Node::setNode
  * @brief Function taking the id, x, y, and z for the node
  * @param id nodal identifier. Can be either array index or label
  * @param x x positoin
@@ -65,63 +65,63 @@ void Node::setNode(size_t id, double x, double y, double z) {
 }
 
 /**
- * @name Node::x
+ * @fn Node::x
  * @brief Returns the x-location of the node
  * @return x-location
  */
 double Node::x() const { return this->m_x; }
 
 /**
- * @name Node::setX
+ * @fn Node::setX
  * @brief Sets the x-location of the node
  * @param x x-location
  */
 void Node::setX(double x) { this->m_x = x; }
 
 /**
- * @name Node::y
+ * @fn Node::y
  * @brief Returns the y-location of the node
  * @return y-location
  */
 double Node::y() const { return this->m_y; }
 
 /**
- * @name Node::setY
+ * @fn Node::setY
  * @brief Sets the y-location of the node
  * @param y y-location
  */
 void Node::setY(double y) { this->m_y = y; }
 
 /**
- * @name Node::z
+ * @fn Node::z
  * @brief Returns the z-elevation of the node
  * @return y-elevation
  */
 double Node::z() const { return this->m_z; }
 
 /**
- * @name Node::setZ
+ * @fn Node::setZ
  * @brief Sets the z-elevation of the node
  * @param z z-location
  */
 void Node::setZ(double z) { this->m_z = z; }
 
 /**
- * @name Node::id
+ * @fn Node::id
  * @brief Returns the nodal id/label
  * @return nodal id/label
  */
 size_t Node::id() const { return this->m_id; }
 
 /**
- * @name Node::setId
+ * @fn Node::setId
  * @brief Sets the nodal id/label
  * @param id nodal id/label
  */
 void Node::setId(size_t id) { this->m_id = id; }
 
 /**
- * @name Node::toString
+ * @fn Node::toString
  * @brief Formats the node for writing into an Adcirc ASCII mesh file
  * @param geographicCoordinates determins if the node is in geographic or
  * cartesian coordinate for significant figures

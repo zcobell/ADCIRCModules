@@ -28,6 +28,22 @@ namespace Adcirc {
 
 namespace ModelParameters {
 
+/**
+ * @class AttributeMetadata
+ * @author Zachary Cobell
+ * @brief Class handles the organization of nodal attribute metadata, i.e. name,
+ * default value, etc
+ * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved.
+ * @license This project is released under the terms of the GNU General Public
+ * License v3
+ *
+ * The AttributeMetadata class handles metadata found generally in the header
+ * of an adcirc unit 13 file (fort.13). Things like units, default values,
+ * number of values per node, and the name of the attribute itself are contained
+ * within
+ *
+ */
+
 class AttributeMetadata {
  public:
   explicit AttributeMetadata(const string &name = "defaultName",

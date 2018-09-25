@@ -16,13 +16,31 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
+#ifndef MESH_H
+#define MESH_H
+
+#include <fstream>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
+#include "adcircmodules_global.h"
+#include "boundary.h"
+#include "element.h"
+#include "node.h"
+#include "point.h"
+
+class QKdtree2;
+
+namespace Adcirc {
+namespace Geometry {
+
 /**
  * @class Mesh
  * @author Zachary Cobell
  * @brief Class that handles operations using Adcirc mesh files
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved.
- * @license This project is released under the terms of the GNU General Public
- * License v3
+ * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * is released under the terms of the GNU General Public License v3
  *
  * The Mesh class handles functions related to reading an
  * adcirc mesh into memory and provides some facilities for
@@ -44,24 +62,6 @@
  *
  *
  */
-#ifndef MESH_H
-#define MESH_H
-
-#include <fstream>
-#include <memory>
-#include <string>
-#include <unordered_map>
-#include <vector>
-#include "adcircmodules_global.h"
-#include "boundary.h"
-#include "element.h"
-#include "node.h"
-#include "point.h"
-
-class QKdtree2;
-
-namespace Adcirc {
-namespace Geometry {
 
 class Mesh {
  public:

@@ -24,20 +24,35 @@
 using namespace std;
 using namespace Adcirc::ModelParameters;
 
+/**
+ * @brief Default Constructor
+ */
 Attribute::Attribute() {
   this->m_node = nullptr;
   this->m_id = std::numeric_limits<size_t>::max();
   this->resize(1);
 }
 
+/**
+ * @brief Constructor that accepts the number of values in this nodal attribute
+ * @param size Number of nodal attributes to size this object for
+ */
 Attribute::Attribute(size_t size) {
   this->m_node = nullptr;
   this->m_id = std::numeric_limits<size_t>::max();
   this->resize(size);
 }
 
+/**
+ * @brief Resizes the object to a new number of values in this nodal attribute
+ */
 void Attribute::resize(size_t size) { this->m_values.resize(size); }
 
+/**
+ * @brief Returns the value of the nodal attribute at the specified index
+ * @param index Index of the value to return
+ * @return value of nodal attribute at specified index
+ */
 double Attribute::value(size_t index) const {
   assert(index < this->size());
 
@@ -49,12 +64,26 @@ double Attribute::value(size_t index) const {
   }
 }
 
+/**
+ * @brief Returns a vector of all values for this nodal parameter
+ * @return values for this nodal attribute
+ */
 vector<double> Attribute::values() const { return this->m_values; }
 
+/**
+ * @brief Set all values in the object to a single value
+ * @param value Value applied to all indicies in the nodal attribute for the
+ * present node
+ */
 void Attribute::setValue(const double &value) {
   std::fill(this->m_values.begin(), this->m_values.end(), value);
 }
 
+/**
+ * @brief Sets a specific index to a specified value for the nodal attribute
+ * @param index position to set to a value
+ * @param value to set at index
+ */
 void Attribute::setValue(size_t index, const double &value) {
   assert(index < this->size());
 
@@ -65,7 +94,11 @@ void Attribute::setValue(size_t index, const double &value) {
   }
 }
 
-void Attribute::setValue(const vector<double> &values) {
+/**
+ * @brief Uses a vector of values to set nodal attributes
+ * @param values Vector of values. Must have the same size has this->size()
+ */
+void Attribute::setValue(const std::vector<double> &values) {
   assert(values.size() == this->size());
 
   if (values.size() == this->size()) {
@@ -75,12 +108,32 @@ void Attribute::setValue(const vector<double> &values) {
   }
 }
 
+/**
+ * @brief Returns a pointer to the node for which the current nodal attribute
+ * applies
+ */
 Adcirc::Geometry::Node *Attribute::node() { return this->m_node; }
 
+/**
+ * @brief Sets the pointer to the node that this nodal attribute is applied to
+ */
 void Attribute::setNode(Adcirc::Geometry::Node *node) { this->m_node = node; }
 
+/**
+ * @brief Returns the current size of this nodal attribute
+ * @return size of nodal attribute
+ */
 size_t Attribute::size() const { return this->m_values.size(); }
 
+/**
+ * @brief Returns idenfitier for the current nodal attribute as specified in the
+ * fort.13, usually node number
+ * @return size of nodal attribute
+ */
 size_t Attribute::id() const { return this->m_id; }
 
+/**
+ * @brief Sets the identifier for the current nodal attribute, usually the node
+ * number specified in fort.13 file
+ */
 void Attribute::setId(size_t id) { this->m_id = id; }

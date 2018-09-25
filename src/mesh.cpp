@@ -31,20 +31,17 @@ using namespace Adcirc;
 using namespace Adcirc::Geometry;
 
 /**
- * @name Mesh::Mesh
  * @brief Default Constructor
  */
 Mesh::Mesh() : m_filename("none") { this->_init(); }
 
 /**
- * @overload Mesh::Mesh
  * @brief Default constructor with filename parameter
  * @param filename name of the mesh to read
  */
-Mesh::Mesh(const string &filename) : m_filename(filename) { this->_init(); }
+Mesh::Mesh(const std::string &filename) : m_filename(filename) { this->_init(); }
 
 /**
- * @name Mesh::_init
  * @brief Initialization routine called by all constructors
  */
 void Mesh::_init() {
@@ -74,44 +71,38 @@ Mesh::~Mesh() {
 }
 
 /**
- * @name Mesh::filename
  * @brief Filename of the mesh to be read
  * @return Return the name of the mesh to be read
  */
 string Mesh::filename() const { return this->m_filename; }
 
 /**
- * @name Mesh::setFilename
  * @brief Sets the name of the mesh to be read
  * @param filename Name of the mesh
  */
 void Mesh::setFilename(const string &filename) { this->m_filename = filename; }
 
 /**
- * @name Mesh::meshHeaderString
  * @brief Returns the mesh header from the processed mesh
  * @return mesh header
  */
 string Mesh::meshHeaderString() const { return this->m_meshHeaderString; }
 
 /**
- * @name Mesh::setMeshHeaderString
  * @brief Sets the header for the mesh
- * @param mesh header
+ * @param meshHeaderString header
  */
 void Mesh::setMeshHeaderString(const string &meshHeaderString) {
   this->m_meshHeaderString = meshHeaderString;
 }
 
 /**
- * @name Mesh::numNodes
  * @brief Returns the number of nodes currently in the mesh
  * @return number of nodes
  */
 size_t Mesh::numNodes() const { return this->m_numNodes; }
 
 /**
- * @name Mesh::setNumNodes
  * @brief Sets the number of nodes in the mesh. Note this does not resize the
  * mesh
  * @param numNodes number of nodes
@@ -119,14 +110,12 @@ size_t Mesh::numNodes() const { return this->m_numNodes; }
 void Mesh::setNumNodes(size_t numNodes) { this->m_numNodes = numNodes; }
 
 /**
- * @name Mesh::numElements
  * @brief Returns the number of elements in the mesh
  * @return number of elements
  */
 size_t Mesh::numElements() const { return this->m_numElements; }
 
 /**
- * @name Mesh::setNumElements
  * @brief Sets the number of elements in the mesh. Note: This does not resize
  * the mesh
  * @param numElements Number of elements
@@ -136,14 +125,12 @@ void Mesh::setNumElements(size_t numElements) {
 }
 
 /**
- * @name Mesh::numOpenBonudaries
  * @brief Returns the number of open boundaries in the model
  * @return number of open boundaries
  */
 size_t Mesh::numOpenBoundaries() const { return this->m_numOpenBoundaries; }
 
 /**
- * @name Mesh::setNumOpenBoundaries
  * @brief Sets the number of open boundaries in the model. Note this does not
  * resize the boundary array
  * @param numOpenBoundaries Number of open boundaries
@@ -153,14 +140,12 @@ void Mesh::setNumOpenBoundaries(size_t numOpenBoundaries) {
 }
 
 /**
- * @name Mesh::numLandBoundaries
  * @brief Returns the number of land boundaries in the model
  * @return number of land boundaries
  */
 size_t Mesh::numLandBoundaries() const { return this->m_numLandBoundaries; }
 
 /**
- * @name Mesh::setNumLandBoundaries
  * @brief Sets the number of land boundaries in the model. Note this does not
  * resize the boundary array
  * @param numLandBoundaries Number of land boundaries
@@ -170,7 +155,6 @@ void Mesh::setNumLandBoundaries(size_t numLandBoundaries) {
 }
 
 /**
- * @name Mesh::read
  * @brief Reads an ASCII formatted ADCIRC mesh. Note this will be extended in
  * the future to netCDF formatted meshes
  */
@@ -189,7 +173,6 @@ void Mesh::read() {
 }
 
 /**
- * @name Mesh::_readMeshHeader
  * @brief Reads the mesh title line and node/element dimensional data
  * @param fid std::fstream reference for the currently opened mesh
  */
@@ -228,7 +211,6 @@ void Mesh::_readMeshHeader(std::fstream &fid) {
 }
 
 /**
- * @name Mesh::_readNodes
  * @brief Reads the node section of the ASCII formatted mesh
  * @param fid std::fstream reference for the currently opened mesh
  */
@@ -267,10 +249,8 @@ void Mesh::_readNodes(std::fstream &fid) {
 }
 
 /**
- * @name Mesh::_readElements
  * @brief Reads the elements section of the ASCII mesh
  * @param fid std::fstream reference for the currently opened mesh
- * @return error code
  */
 void Mesh::_readElements(std::fstream &fid) {
   size_t id;
@@ -323,10 +303,8 @@ void Mesh::_readElements(std::fstream &fid) {
 }
 
 /**
- * @name Mesh::_readOpenBoundaries
  * @brief Reads the open boundaries section of the ASCII formatted mesh file
  * @param fid std::fstream reference for the currently opened mesh
- * @return error code
  */
 void Mesh::_readOpenBoundaries(std::fstream &fid) {
   string tempLine;
@@ -378,10 +356,8 @@ void Mesh::_readOpenBoundaries(std::fstream &fid) {
 }
 
 /**
- * @name Mesh::_readLandBoundaries
  * @brief Reads the land boundaries section of the ASCII formatted mesh file
  * @param fid std::fstream reference for the currently opened mesh
- * @return error code
  */
 void Mesh::_readLandBoundaries(std::fstream &fid) {
   string tempLine;
@@ -501,7 +477,6 @@ void Mesh::_readLandBoundaries(std::fstream &fid) {
 }
 
 /**
- * @name Mesh::elementalSearchTree
  * @brief Returns a reference to the elemental search kd-tree
  * @return kd-tree object with element centers as search locations
  */
@@ -510,14 +485,12 @@ QKdtree2 *Mesh::elementalSearchTree() const {
 }
 
 /**
- * @name Mesh::nodalSearchTree
  * @brief Returns a refrence to the nodal search kd-tree
  * @return kd-tree object with mesh nodes as serch locations
  */
 QKdtree2 *Mesh::nodalSearchTree() const { return m_nodalSearchTree.get(); }
 
 /**
- * @name Mesh::totalLandBonudaryNodes
  * @brief Returns the number of land boundary nodes in the mesh
  * @return Number of nodes that fall on a land boundary
  */
@@ -538,7 +511,6 @@ void Mesh::setZ(std::vector<double> z) {
 }
 
 /**
- * @name Mesh::totalOpenBoundaryNodes
  * @brief Returns the number of open boundary nodes in the mesh
  * @return Number of open boundary nodes
  */
@@ -551,7 +523,6 @@ size_t Mesh::totalOpenBoundaryNodes() {
 }
 
 /**
- * @name Mesh::node
  * @brief Returns a pointer to the requested node in the internal node vector
  * @param index location of the node in the vector
  * @return Node pointer
@@ -567,7 +538,6 @@ Node *Mesh::node(size_t index) {
 }
 
 /**
- * @name Mesh::element
  * @brief Returns a pointer to the requested element in the internal element
  * vector
  * @param index location of the node in the vector
@@ -583,7 +553,6 @@ Element *Mesh::element(size_t index) {
 }
 
 /**
- * @name Mesh::nodeById
  * @brief Returns a pointer to the requested node by its ID
  * @param id Nodal ID to return a reference to
  * @return Node pointer
@@ -603,7 +572,6 @@ Node *Mesh::nodeById(size_t id) {
 }
 
 /**
- * @name Mesh::elementById
  * @brief Returns an pointer to the requested element by its ID
  * @param id Elemental ID to return a reference to
  * @return Element pointer
@@ -622,7 +590,6 @@ Element *Mesh::elementById(size_t id) {
 }
 
 /**
- * @name Mesh::openBoundary
  * @brief Returns a pointer to an open boundary by index
  * @param index index in the open boundary array
  * @return Boundary pointer
@@ -637,7 +604,6 @@ Boundary *Mesh::openBoundary(size_t index) {
 }
 
 /**
- * @name Mesh::landBoundary
  * @brief Returns a pointer to a land boundary by index
  * @param index index in the land boundary array
  * @return Boundary pointer
@@ -652,7 +618,6 @@ Boundary *Mesh::landBoundary(size_t index) {
 }
 
 /**
- * @name Mesh::defineProjection
  * @brief Sets the mesh projection using an EPSG code. Note this does not
  * reproject the mesh.
  * @param epsg EPSG code for the mesh
@@ -666,24 +631,20 @@ void Mesh::defineProjection(int epsg, bool isLatLon) {
 }
 
 /**
- * @name Mesh::projection
  * @brief Returns the EPSG code for the current mesh projection
  * @return EPSG code
  */
 int Mesh::projection() { return this->m_epsg; }
 
 /**
- * @name Mesh::isLatLon
  * @brief Returns true if the mesh is in a geographic projection
  * @return boolean value for mesh projection type
  */
 bool Mesh::isLatLon() { return this->m_isLatLon; }
 
 /**
- * @name Mesh::reproject
  * @brief Reprojects a mesh into the specified projection
  * @param epsg EPSG coordinate system to convert the mesh into
- * @return error code
  */
 void Mesh::reproject(int epsg) {
   Projection proj;
@@ -714,10 +675,8 @@ void Mesh::reproject(int epsg) {
 }
 
 /**
- * @name Mesh::toNodeShapefile
  * @brief Writes the mesh nodes or elements into ESRI shapefile format
  * @param outputFile output file with .shp extension
- * @return error code
  */
 void Mesh::toNodeShapefile(const string outputFile) {
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POINT);
@@ -809,9 +768,7 @@ void Mesh::toConnectivityShapefile(const string outputFile) {
 }
 
 /**
- * @name Mesh::buildNodalSearchTree
  * @brief Builds a kd-tree object with the mesh nodes as the search locations
- * @return error code
  */
 void Mesh::buildNodalSearchTree() {
   int ierr;
@@ -841,10 +798,8 @@ void Mesh::buildNodalSearchTree() {
 }
 
 /**
- * @name Mesh::buildElementalSearchTree
  * @brief Builds a kd-tree object with the element centers as the search
  * locations
- * @return error code
  */
 void Mesh::buildElementalSearchTree() {
   vector<double> x, y;
@@ -893,7 +848,6 @@ void Mesh::deleteElementalSearchTree() {
 }
 
 /**
- * @name Mesh::nodalSearchTreeInitialized
  * @brief Returns a boolean value determining if the nodal search tree has been
  * initialized
  * @return true if the search tree is initialized
@@ -903,7 +857,6 @@ bool Mesh::nodalSearchTreeInitialized() {
 }
 
 /**
- * @name Mesh::elementalSearchTreeInitialized
  * @brief Returns a boolean value determining if the elemental search tree has
  * been initialized
  * @return true of the search tree is initialized
@@ -913,7 +866,6 @@ bool Mesh::elementalSearchTreeInitialized() {
 }
 
 /**
- * @name Mesh::resizeMesh
  * @brief Resizes the vectors within the mesh
  * @param numNodes Number of nodes
  * @param numElements Number of elements
@@ -946,7 +898,6 @@ void Mesh::resizeMesh(size_t numNodes, size_t numElements,
 }
 
 /**
- * @name Mesh::addNode
  * @brief Adds a node at the specified index in the node vector
  * @param index location where the node should be added
  * @param node Reference to an Node object
@@ -962,7 +913,6 @@ void Mesh::addNode(size_t index, Node &node) {
 }
 
 /**
- * @name Mesh::deleteNode
  * @brief Deletes an Node object at the specified index and shifts the
  * remaining nodes forward in the vector
  * @param index location where the node should be deleted from
@@ -978,7 +928,6 @@ void Mesh::deleteNode(size_t index) {
 }
 
 /**
- * @name Mesh::addElement
  * @brief Adds an Element at the specified position in the element vector
  * @param index location where the element should be added
  * @param element reference to the Element to add
@@ -993,7 +942,6 @@ void Mesh::addElement(size_t index, Element &element) {
 }
 
 /**
- * @name Mesh::deleteElement
  * @brief Deletes an Element object at the specified index and shifts the
  * remaining elements forward in the vector
  * @param index location where the element should be deleted from
@@ -1009,10 +957,8 @@ void Mesh::deleteElement(size_t index) {
 }
 
 /**
- * @name Mesh::write
  * @brief Writes an Mesh object to disk in ASCII format
  * @param filename name of the output file to write
- * @return error code
  */
 void Mesh::write(const string &filename) {
   string tempString;
@@ -1065,7 +1011,6 @@ void Mesh::write(const string &filename) {
 }
 
 /**
- * @name Mesh::nodeOrderingIsLogical
  * @brief Allows the user to know if the code has determined that the node
  * ordering is logcical (i.e. sequential) or not
  * @return true if node ordering is sequential
@@ -1073,7 +1018,6 @@ void Mesh::write(const string &filename) {
 bool Mesh::nodeOrderingIsLogical() { return this->m_nodeOrderingLogical; }
 
 /**
- * @name Mesh::elementOrderingIsLogical
  * @brief Allows the user to know if the code has determined that the element
  * ordering is logcical (i.e. sequential) or not
  * @return true if element ordering is sequential
@@ -1081,7 +1025,6 @@ bool Mesh::nodeOrderingIsLogical() { return this->m_nodeOrderingLogical; }
 bool Mesh::elementOrderingIsLogical() { return this->m_elementOrderingLogical; }
 
 /**
- * @name Mesh::nodeIndexById
  * @brief Returns the position in the array by node id
  * @param id nodal id
  * @return array position
@@ -1095,7 +1038,6 @@ size_t Mesh::nodeIndexById(size_t id) {
 }
 
 /**
- * @name Mesh::elementIndexById
  * @brief Returns the position in the array by element id
  * @param id element id
  * @return array position

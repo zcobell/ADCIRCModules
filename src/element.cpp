@@ -25,7 +25,7 @@ using namespace std;
 using namespace Adcirc::Geometry;
 
 /**
- * @name Element::Element
+ * @fn Element::Element
  * @brief Default constructor
  */
 Element::Element() {
@@ -34,7 +34,7 @@ Element::Element() {
 }
 
 /**
- * @name Element::Element
+ * @fn Element::Element
  * @brief Constructor using references to three Node objects
  * @param id element id/label
  * @param n1 pointer to node 1
@@ -50,7 +50,7 @@ Element::Element(size_t id, Node *n1, Node *n2, Node *n3) {
 }
 
 /**
- * @name Element::setElement
+ * @fn Element::setElement
  * @brief Function that sets up the element using three pointers and the element
  * id/label
  * @param id element id/label
@@ -66,7 +66,7 @@ void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3) {
 }
 
 /**
- * @name Element::n
+ * @fn Element::n
  * @brief Number of nodes in this element. In this case it is always 3, but this
  * is implemented for future use
  * @return number of nodes in element
@@ -74,7 +74,7 @@ void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3) {
 int Element::n() const { return this->m_n; }
 
 /**
- * @name Element::setNode
+ * @fn Element::setNode
  * @brief Sets the node at the specified position to the supplied pointer
  * @param i location in the node vector for this element
  * @param node pointer to an Node object
@@ -87,21 +87,21 @@ void Element::setNode(int i, Node *node) {
 }
 
 /**
- * @name Element::id
+ * @fn Element::id
  * @brief Returns the element id/flag
  * @return element id/flag
  */
 size_t Element::id() const { return this->m_id; }
 
 /**
- * @name Element::setId
+ * @fn Element::setId
  * @brief Sets the element id/flag
  * @param id element id/flag
  */
 void Element::setId(size_t id) { this->m_id = id; }
 
 /**
- * @name Element::node
+ * @fn Element::node
  * @brief returns a pointer to the node at the specified position
  * @param i position in node vector
  * @return Node pointer
@@ -115,7 +115,7 @@ Node *Element::node(int i) {
 }
 
 /**
- * @name Element::toString
+ * @fn Element::toString
  * @brief Formats the element for writing to an Adcirc ASCII mesh file
  * @return formatted string
  */

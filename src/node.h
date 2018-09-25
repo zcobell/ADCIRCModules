@@ -16,13 +16,6 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-/**
- * @class Node
- * @author Zachary Cobell
- * @brief The Node class describes the x, y, z position of a single mesh
- * node
- *
- */
 #ifndef NODE_H
 #define NODE_H
 
@@ -31,6 +24,16 @@
 
 namespace Adcirc {
 namespace Geometry {
+
+/**
+ * @class Node
+ * @author Zachary Cobell
+ * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * is released under the terms of the GNU General Public License v3
+ * @brief The Node class describes the x, y, z position of a single mesh
+ * node
+ *
+ */
 
 class Node {
  public:
@@ -54,10 +57,10 @@ class Node {
   std::string toString(bool geographicCoordinates);
 
  private:
-  size_t m_id;
-  double m_x;
-  double m_y;
-  double m_z;
+  size_t m_id; ///Integer name of a mesh node
+  double m_x; ///x position of a node
+  double m_y; ///y position of a node
+  double m_z; ///z position of a node
 };
 }  // namespace Geometry
 }  // namespace Adcirc

@@ -16,13 +16,6 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-/**
- * @class Element
- * @author Zachary Cobell
- * @brief The Element class describes an AdcircElement as an array
- * of Node pointers
- *
- */
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
@@ -35,6 +28,16 @@
 
 namespace Adcirc {
 namespace Geometry {
+
+/**
+ * @class Element
+ * @author Zachary Cobell
+ * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * is released under the terms of the GNU General Public License v3
+ * @brief The Element class describes an Element as an array
+ * of Node pointers
+ *
+ */
 
 class Element {
  public:

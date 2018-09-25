@@ -24,7 +24,6 @@ using namespace std;
 using namespace Adcirc::Geometry;
 
 /**
- * @name Boundary::Boundary
  * @brief Default constructor
  *
  * Initializes the boundary with code -1 and length 0.
@@ -32,7 +31,6 @@ using namespace Adcirc::Geometry;
 Boundary::Boundary() { this->setBoundary(-1, 0); }
 
 /**
- * @overload Boundary::Boundary
  * @brief Initializes the boundary with user specified boundary type and length
  * @param boundaryCode ADCIRC model boundary code
  * @param boundaryLength number of nodes along this boundary
@@ -43,7 +41,6 @@ Boundary::Boundary(int boundaryCode, size_t boundaryLength) {
 }
 
 /**
- * @name Boundary::setBoundary
  * @brief User specified initialization of the boundary
  * @param boundaryCode ADCIRC model boundary code
  * @param boundaryLength number of nodes along this boundary
@@ -54,14 +51,12 @@ void Boundary::setBoundary(int boundaryCode, size_t boundaryLength) {
 }
 
 /**
- * @name Boundary::boundaryLength
  * @brief Returns the length of the boundary
  * @return number of nodes in boundary
  */
 size_t Boundary::boundaryLength() const { return this->m_boundaryLength; }
 
 /**
- * @name Boundary::size
  * @brief Returns the length of the boundary. Same as
  * Boundary::bonudaryLength
  * @return number of nodes in boundary
@@ -69,7 +64,6 @@ size_t Boundary::boundaryLength() const { return this->m_boundaryLength; }
 size_t Boundary::size() const { return this->boundaryLength(); }
 
 /**
- * @name Boundary::length
  * @brief Returns the length of the boundary. Same as
  * Boundary::bonudaryLength
  * @return number of nodes in boundary
@@ -77,7 +71,6 @@ size_t Boundary::size() const { return this->boundaryLength(); }
 size_t Boundary::length() const { return this->boundaryLength(); }
 
 /**
- * @name Boundary::setBoundaryLength
  * @brief Allocates the arrays used by the bounary
  * @param boundaryLength number of nodes along the boundary
  */
@@ -108,14 +101,12 @@ void Boundary::setBoundaryLength(size_t boundaryLength) {
 }
 
 /**
- * @name Boundary::boundaryCode
  * @brief Returns the Adcirc model boundary code
  * @return Adcirc model boundary code
  */
 int Boundary::boundaryCode() const { return this->m_boundaryCode; }
 
 /**
- * @name Boundary::setBoundaryCode
  * @brief Sets the model boundary to the user specified code
  * @param boundaryCode Adcirc model boundary code
  */
@@ -124,7 +115,6 @@ void Boundary::setBoundaryCode(int boundaryCode) {
 }
 
 /**
- * @name Boundary::crestElevation
  * @brief Returns the crest elevation for boundary types 3, 13, 23, 4, 24, 5,
  * and 25
  * @param index position along the boundary
@@ -144,7 +134,6 @@ double Boundary::crestElevation(size_t index) const {
 }
 
 /**
- * @name Boundary::setCrestElevation
  * @brief Sets the crest elevation for boundary types 3, 13, 23, 4, 24, 5, and
  * 25
  * @param index position along the boundary
@@ -166,7 +155,6 @@ void Boundary::setCrestElevation(size_t index, double crestElevation) {
 }
 
 /**
- * @name Boundary::subcriticalWeirCoefficient
  * @brief Returns the coeffieicnt of subcritical weir flow for boundary types 4,
  * 24, 5, and 25
  * @param index position along the boundary
@@ -182,8 +170,8 @@ double Boundary::subcriticalWeirCoefficient(size_t index) const {
   adcircmodules_throw_exception("Index exceeds bounds");
   return -9999.0;
 }
+
 /**
- * @name Boundary::setSubcriticalWeirCoefficient
  * @brief Sets the coefficient of subcritical flow for boundary types 4, 24, 5,
  * and 25
  * @param index position along the boundary
@@ -204,7 +192,6 @@ void Boundary::setSubcriticalWeirCoefficient(
 }
 
 /**
- * @name Boundary::supercriticalWeirCoefficient
  * @brief Returns the coefficient of supercritical flow for the specified
  * position along the boundary for boundary types 3, 13, 23, 4, 24, 5, and 25
  * @param index position along the boundary
@@ -224,7 +211,6 @@ double Boundary::supercriticalWeirCoefficient(size_t index) const {
 }
 
 /**
- * @name Boundary::setSupercriticalWeirCoefficient
  * @param index position along the boundary
  * @param supercriticalWeirCoefficient coefficient of supercritical flow for
  * boundarytypes 3, 13, 23, 4, 24, 5, and 25
@@ -247,7 +233,6 @@ void Boundary::setSupercriticalWeirCoefficient(
 }
 
 /**
- * @name Boundary::pipeHeight
  * @brief Returns the elevation of the pipe above datum for type 5 and 25
  * boundaries
  * @param index position along the boundary
@@ -264,7 +249,6 @@ double Boundary::pipeHeight(size_t index) const {
 }
 
 /**
- * @name Boundary::setPipeHeight
  * @brief Sets the elevation of the pipe above datum for type 5 and 25
  * boundaries
  * @param index position along the boundary
@@ -283,7 +267,6 @@ void Boundary::setPipeHeight(size_t index, double pipeHeight) {
 }
 
 /**
- * @name Boundary::pipeDiameter
  * @brief Returns the diameter of the pipe
  * @param index position along the boundary
  * @return diameter of the pipe
@@ -299,7 +282,6 @@ double Boundary::pipeDiameter(size_t index) const {
 }
 
 /**
- * @name Boundary::setPipeDiameter
  * @brief Sets the diameter of the pipe
  * @param index postion along the boundary
  * @param pipeDiameter diameter of the pipe
@@ -317,7 +299,6 @@ void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
 }
 
 /**
- * @name Boundary::pipeCoefficient
  * @brief Returns the pipe coefficient
  * @param index position along the boundary
  * @return pipe coefficient
@@ -333,7 +314,6 @@ double Boundary::pipeCoefficient(size_t index) const {
 }
 
 /**
- * @name Boundary::setPipeCoefficient
  * @brief Sets the pipe coefficient
  * @param index position along boundary
  * @param pipeCoefficient pipe coefficient
@@ -349,7 +329,6 @@ void Boundary::setPipeCoefficient(size_t index, double pipeCoefficient) {
 }
 
 /**
- * @name Boundary::node1
  * @brief Returns a pointer to the node on the boundary
  * @param index position along the boundary
  * @return pointer to an Node object
@@ -363,7 +342,6 @@ Node *Boundary::node1(size_t index) const {
 }
 
 /**
- * @name Boundary::setNode1
  * @brief Sets a pointer to a node
  * @param index position along the boundary
  * @param node1 Pointer to an Node object
@@ -377,7 +355,6 @@ void Boundary::setNode1(size_t index, Node *node1) {
 }
 
 /**
- * @name Boundary::node2
  * @brief Returns a pointer to the paired node for type 4, 24, 5, and 25
  * boundaries
  * @param index position along the boundary
@@ -395,7 +372,6 @@ Node *Boundary::node2(size_t index) const {
 }
 
 /**
- * @name Boundary::setNode2
  * @brief Sets the node pair for type 4, 24, 5, and 25 boundaries
  * @param index position along the boundary
  * @param node2 pointer to an Node object
@@ -412,7 +388,6 @@ void Boundary::setNode2(size_t index, Node *node2) {
 }
 
 /**
- * @name Boundary::toStringList
  * @brief Writes the boundary into Adcirc ASCII mesh format and stores into a
  * string vector
  * @return vector of strings
