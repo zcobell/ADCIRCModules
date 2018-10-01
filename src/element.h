@@ -19,6 +19,7 @@
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
+#include <cmath>
 #include <string>
 #include <utility>
 #include <vector>
