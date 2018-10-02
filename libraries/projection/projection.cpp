@@ -126,7 +126,7 @@ int Projection::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
   for (size_t i = 0; i < input.size(); ++i) {
     PJ_COORD c, o;
 
-    if (proj_angular_input(pj1, PJ_FWD)) {
+    if (proj_angular_input(pj1, PJ_INV)) {
       c.lp.lam = proj_torad(input[i].x());
       c.lp.phi = proj_torad(input[i].y());
     } else {
