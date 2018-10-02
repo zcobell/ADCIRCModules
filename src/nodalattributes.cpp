@@ -23,11 +23,13 @@
 #include <iostream>
 #include <utility>
 #include "attribute.h"
+#include "boost/format.hpp"
 #include "error.h"
 #include "io.h"
 #include "stringconversion.h"
 
 using namespace Adcirc::ModelParameters;
+using namespace std;
 
 #define CHECK_RETURN_AND_CLOSE(ierr)                                           \
   if (ierr != Adcirc::NoError) {                                               \
@@ -364,8 +366,6 @@ Attribute *NodalAttributes::attribute(string parameter, size_t node) {
   return this->attribute(index, node);
 }
 
-void NodalAttributes::write(const string &outputFilename) { return; }
-
 string NodalAttributes::attributeNames(size_t index) {
   assert(index < this->m_nodalParameters.size());
   if (index < this->m_nodalParameters.size()) {
@@ -373,4 +373,52 @@ string NodalAttributes::attributeNames(size_t index) {
   }
   adcircmodules_throw_exception("NodalAttributes: Request out of bounds.");
   return string();
+}
+
+void NodalAttributes::write(const string &outputFilename) {
+  std::ofstream outputFile;
+  outputFile.open(outputFilename);
+  this->_writeFort13Header(outputFile);
+  this->_writeFort13Body(outputFile);
+  outputFile.close();
+  return;
+}
+
+void NodalAttributes::_writeFort13Header(std::ofstream &fid) {
+  fid << this->m_header << "\n";
+  fid << boost::str(boost::format("%11i\n") % this->numNodes());
+  fid << boost::str(boost::format("%11i\n") % this->numParameters());
+  for (auto &v : this->m_nodalParameters) {
+    fid << v.headerString();
+  }
+  return;
+}
+
+void NodalAttributes::_writeFort13Body(std::ofstream &fid) {
+  for (size_t i = 0; i < this->numParameters(); ++i) {
+    size_t ndefault =
+        this->_countDefault(this->m_nodalParameters[i], this->m_nodalData[i]);
+    fid << this->m_nodalParameters[i].name() << "\n";
+    fid << boost::str(boost::format("%11i\n") % ndefault);
+
+    for (size_t j = 0; j < this->numNodes(); ++j) {
+      if (!this->m_nodalParameters[i].checkIfDefaultValue(
+              this->m_nodalData[i][j])) {
+        fid << this->m_nodalData[i][j].write();
+      }
+    }
+  }
+  return;
+}
+
+size_t NodalAttributes::_countDefault(
+    Adcirc::ModelParameters::AttributeMetadata &metadata,
+    std::vector<Adcirc::ModelParameters::Attribute> &values) {
+  size_t n = 0;
+  for (const auto &v : values) {
+    if (!metadata.checkIfDefaultValue(v)) {
+      n++;
+    }
+  }
+  return n;
 }

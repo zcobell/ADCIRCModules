@@ -19,6 +19,7 @@
 #include "attribute.h"
 #include <cassert>
 #include <limits>
+#include "boost/format.hpp"
 #include "error.h"
 
 using namespace std;
@@ -137,3 +138,16 @@ size_t Attribute::id() const { return this->m_id; }
  * number specified in fort.13 file
  */
 void Attribute::setId(size_t id) { this->m_id = id; }
+
+/**
+ * @brief Generates a string to print in a nodal attributes file for this object
+ * @return string formatted attribute
+ */
+std::string Attribute::write() {
+  string f = boost::str(boost::format("%11i  ") % this->m_id);
+  for (auto &v : this->m_values) {
+    f = f + boost::str(boost::format("%12.6f  ") % v);
+  }
+  f = f + "\n";
+  return f;
+}

@@ -34,25 +34,25 @@ class NodalAttributes {
  public:
   explicit NodalAttributes();
 
-  explicit NodalAttributes(string filename,
+  explicit NodalAttributes(std::string filename,
                            Adcirc::Geometry::Mesh *mesh = nullptr);
 
   void read();
 
-  void setFilename(string filename);
-  string filename();
+  void setFilename(std::string filename);
+  std::string filename();
 
   void setMesh(Adcirc::Geometry::Mesh *mesh);
   Adcirc::Geometry::Mesh *mesh();
 
-  void write(const string &outputFilename);
+  void write(const std::string &outputFilename);
 
-  string attributeNames(size_t index);
+  std::string attributeNames(size_t index);
 
-  size_t locateAttribute(const string &attributeName);
+  size_t locateAttribute(const std::string &attributeName);
 
-  string header() const;
-  void setHeader(const string &title);
+  std::string header() const;
+  void setHeader(const std::string &title);
 
   size_t numParameters() const;
   void setNumParameters(size_t numParameters);
@@ -61,24 +61,28 @@ class NodalAttributes {
   void setNumNodes(size_t numNodes);
 
   Attribute *attribute(size_t parameter, size_t node);
-  Attribute *attribute(string parameter, size_t node);
+  Attribute *attribute(std::string parameter, size_t node);
 
  private:
   void _readFort13Header(std::fstream &fid);
   void _readFort13Defaults(std::fstream &fid);
   void _readFort13Body(std::fstream &fid);
+  void _writeFort13Body(std::ofstream &fid);
+  void _writeFort13Header(std::ofstream &fid);
   void _fillDefaultValues();
   void _mapNodes();
+  size_t _countDefault(Adcirc::ModelParameters::AttributeMetadata &metadata,
+                       std::vector<Adcirc::ModelParameters::Attribute> &values);
 
   /// Mapping function between the name of a nodal parameter and its position in
   /// the nodalParameters vector
-  std::unordered_map<string, size_t> m_attributeLocations;
+  std::unordered_map<std::string, size_t> m_attributeLocations;
 
   /// Filename of the file that will be read or was read
-  string m_filename;
+  std::string m_filename;
 
   /// Title/header found at the beginning of the nodal attributes file
-  string m_header;
+  std::string m_header;
 
   /// Number of nodal attributes found within this file
   size_t m_numParameters;
@@ -90,10 +94,10 @@ class NodalAttributes {
   Adcirc::Geometry::Mesh *m_mesh;
 
   /// Vector of objects containing the nodal parameters read from the file
-  vector<AttributeMetadata> m_nodalParameters;
+  std::vector<AttributeMetadata> m_nodalParameters;
 
   /// Vector of objects for the nodal parameters
-  vector<vector<Attribute> > m_nodalData;
+  std::vector<std::vector<Attribute> > m_nodalData;
 };
 }  // namespace ModelParameters
 }  // namespace Adcirc

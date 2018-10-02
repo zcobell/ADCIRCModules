@@ -62,6 +62,8 @@ class Attribute {
   size_t id() const;
   void setId(size_t id);
 
+  std::string write();
+
  private:
   /// ID number in the Adcirc Nodal Attributes file
   size_t m_id;

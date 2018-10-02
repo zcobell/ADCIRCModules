@@ -21,8 +21,7 @@
 
 #include <string>
 #include <vector>
-
-using namespace std;
+#include "attribute.h"
 
 namespace Adcirc {
 
@@ -46,37 +45,42 @@ namespace ModelParameters {
 
 class AttributeMetadata {
  public:
-  explicit AttributeMetadata(const string &name = "defaultName",
-                             const string &units = "none",
+  explicit AttributeMetadata(const std::string &name = "defaultName",
+                             const std::string &units = "none",
                              size_t numValues = 1);
 
-  string name() const;
-  void setName(const string &name);
+  std::string name() const;
+  void setName(const std::string &name);
 
-  string units() const;
-  void setUnits(const string &units);
+  std::string units() const;
+  void setUnits(const std::string &units);
 
   size_t numberOfValues() const;
   void setNumberOfValues(size_t numValues);
 
-  vector<double> getDefaultValues() const;
+  std::vector<double> getDefaultValues() const;
   double getDefaultValue(size_t index = 0) const;
   void setDefaultValue(const double &value);
   void setDefaultValue(size_t index, const double &value);
-  void setDefaultValue(const vector<double> &value);
+  void setDefaultValue(const std::vector<double> &value);
+  bool checkIfDefaultValue(const std::vector<double> &value);
+  bool checkIfDefaultValue(const double &value);
+  bool checkIfDefaultValue(const Adcirc::ModelParameters::Attribute &a);
+
+  std::string headerString();
 
  private:
   /// Name of the nodal attribute
-  string m_name;
+  std::string m_name;
 
   /// Units for the nodal parameter
-  string m_units;
+  std::string m_units;
 
   /// Number of values associated with each node for this nodal attribute
   size_t m_numValues;
 
   /// Default value(s) to be used when writing the fort.13 file
-  vector<double> m_defaultValue;
+  std::vector<double> m_defaultValue;
 };
 }  // namespace ModelParameters
 }  // namespace Adcirc

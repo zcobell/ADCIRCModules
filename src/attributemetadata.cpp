@@ -17,9 +17,12 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "attributemetadata.h"
+#include <algorithm>
 #include <cassert>
+#include "boost/format.hpp"
 
 using namespace Adcirc::ModelParameters;
+using namespace std;
 
 /**
  * @brief Constructor
@@ -124,4 +127,60 @@ void AttributeMetadata::setDefaultValue(const double &value) {
 void AttributeMetadata::setDefaultValue(size_t index, const double &value) {
   assert(index < this->m_numValues);
   this->m_defaultValue[index] = value;
+}
+
+/**
+ * @brief Creates the header string for writing a fort.13 file
+ * @return formatted string for a fort.13 file header
+ */
+std::string AttributeMetadata::headerString() {
+  string f = boost::str(boost::format("%s\n%s\n%11i\n") % this->m_name %
+                        this->m_units % this->m_numValues);
+  for (auto v : this->m_defaultValue) {
+    f = f + boost::str(boost::format("%12.6f") % v);
+  }
+  f = f + "\n";
+  return f;
+}
+
+/**
+ * @brief Checks if the supplied value is a default value for this nodal
+ *attribute
+ * @param value Value to check
+ * @return returns true if the supplied value is the default value
+ *
+ * Checks if the supplied value is the default value for this nodal attribute.
+ * Note that if the nodal attribute contains multiple values, every value is
+ *checked to ensure equality
+ **/
+bool AttributeMetadata::checkIfDefaultValue(const double &value) {
+  for (const auto &v : this->m_defaultValue) {
+    if (v != value) return false;
+  }
+  return true;
+}
+
+/**
+ * @param value Value to check
+ * @return returns true if the supplied value is the default value
+ *
+ * Vector version of above function. Checks to see if the supplied vector
+ * is equal to the default value vector
+ **/
+bool AttributeMetadata::checkIfDefaultValue(const std::vector<double> &value) {
+  if (value == this->m_defaultValue) return true;
+  return false;
+}
+
+/**
+ * @param value Value to check
+ * @return returns true if the supplied value is the default value
+ *
+ * Attribute class based version of above function. Checks to see if the
+ *supplied vector is equal to the default value vector
+ **/
+bool AttributeMetadata::checkIfDefaultValue(
+    const Adcirc::ModelParameters::Attribute &a) {
+  if (a.values() == this->m_defaultValue) return true;
+  return false;
 }
