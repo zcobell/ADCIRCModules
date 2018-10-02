@@ -7,7 +7,17 @@ int main(){
     m->defineProjection(4326,true);
     m->reproject(26915);
 
+
     Griddata *g = new Griddata(m,"test_files/lulc_samplelulcraster.tif");
+    
+    for(size_t i=0;i<100;++i){
+        if(i<m->numNodes()){
+            g->setInterpolationFlag(i,Griddata::Average);
+        } else {
+            g->setInterpolationFlag(i,Griddata::NoMethod);
+        }
+    }
+
     g->setShowProgressBar(true);
     g->readLookupTable("test_files/sample_lookup.table");
     g->setEpsg(26915);

@@ -727,8 +727,10 @@ vector<vector<double> > Griddata::computeDirectionalWindReduction(
       ++progress;
     }
 
-    Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
-    result[i] = (this->*m_calculateDwindPtr)(p);
+    if (this->m_interpolationFlags[i] != NoMethod) {
+      Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
+      result[i] = (this->*m_calculateDwindPtr)(p);
+    }
   }
 
   return result;

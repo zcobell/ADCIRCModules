@@ -111,7 +111,6 @@ set(ADCIRCMODULES_VERSION_STRING ${ADCIRCMODULES_VERSION_MAJOR}.${ADCIRCMODULES_
 # TESTING 
 ###########################################################################
 OPTION(BUILD_TESTS "Build test cases" OFF)
-OPTION(LONG_TESTS "Build long tests" OFF)
 ###########################################################################
 
 ###########################################################################
@@ -834,12 +833,9 @@ IF(UNIX OR CYGWIN)
                       cxx_readasciivector.cpp cxx_readnetcdf.cpp cxx_readnetcdfvector.cpp
                       cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp 
                       cxx_readnetcdfHarmonicsElevation.cpp  cxx_readnetcdfHarmonicsVelocity.cpp
-                      cxx_checkmesh.cpp cxx_interpolateRaster.cpp cxx_interpolateManning.cpp )
+                      cxx_checkmesh.cpp cxx_interpolateRaster.cpp cxx_interpolateManning.cpp 
+                      cxx_interpolateDwind.cpp )
 
-        IF(LONG_TESTS)
-            SET(TEST_LIST ${TEST_LIST} cxx_interpolateDwind.cpp)
-        ENDIF(LONG_TESTS)
-    
         FOREACH(TESTFILE ${TEST_LIST} ) 
             GET_FILENAME_COMPONENT( TESTNAME ${TESTFILE} NAME_WE )
             ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
