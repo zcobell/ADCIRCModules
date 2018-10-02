@@ -14,6 +14,9 @@ int main(){
     g->readLookupTable("test_files/sample_lookup.table");
     g->setEpsg(26915);
     g->setRasterInMemory(true);
+    for(size_t i=0;i<m->numNodes();++i){
+        g->setInterpolationFlag(i,i%6);
+    }
     std::vector<double> r = g->computeValuesFromRaster(true);
 
     delete m;

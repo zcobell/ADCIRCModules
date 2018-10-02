@@ -13,6 +13,11 @@ int main(){
     Griddata *g = new Griddata(m,"test_files/bathy_sampleraster.tif");
     g->setShowProgressBar(true);
     g->setEpsg(26915);
+
+    for(size_t i=0;i<m->numNodes();++i){
+        g->setInterpolationFlag(i,i%6);
+    }
+
     std::vector<double> r = g->computeValuesFromRaster();
 
     delete m;
