@@ -10,8 +10,8 @@ int main(){
 
     Griddata *g = new Griddata(m,"test_files/lulc_samplelulcraster.tif");
     
-    for(size_t i=0;i<100;++i){
-        if(i<m->numNodes()){
+    for(size_t i=0;i<m->numNodes();++i){
+        if(i<100){
             g->setInterpolationFlag(i,Griddata::Average);
         } else {
             g->setInterpolationFlag(i,Griddata::NoMethod);
