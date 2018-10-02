@@ -34,7 +34,7 @@ class NodalAttributes {
  public:
   explicit NodalAttributes();
 
-  explicit NodalAttributes(std::string filename,
+  explicit NodalAttributes(const std::string &filename,
                            Adcirc::Geometry::Mesh *mesh = nullptr);
 
   void read();

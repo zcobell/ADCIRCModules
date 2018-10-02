@@ -78,6 +78,8 @@ Griddata::Griddata(Mesh *mesh, string rasterFile) {
   this->m_epsg = 4326;
   this->m_showProgressBar = false;
   this->m_rasterMultiplier = 1.0;
+  this->m_calculateDwindPtr = nullptr;
+  this->m_calculatePointPtr = nullptr;
 }
 
 Griddata::~Griddata() { this->m_raster.reset(); }
@@ -104,7 +106,7 @@ int Griddata::epsg() const { return this->m_epsg; }
 
 void Griddata::setEpsg(int epsg) { this->m_epsg = epsg; }
 
-void Griddata::readLookupTable(string lookupTableFile) {
+void Griddata::readLookupTable(const string &lookupTableFile) {
   this->m_lookup.clear();
   std::fstream fid(lookupTableFile);
 
@@ -151,7 +153,7 @@ int Griddata::interpolationFlag(size_t index) {
 
 vector<double> Griddata::filterSizes() const { return this->m_filterSize; }
 
-void Griddata::setFilterSizes(vector<double> filterSize) {
+void Griddata::setFilterSizes(const vector<double> &filterSize) {
   this->m_filterSize = filterSize;
 }
 

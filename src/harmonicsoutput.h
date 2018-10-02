@@ -30,7 +30,8 @@ namespace Output {
 
 class HarmonicsOutput {
  public:
-  HarmonicsOutput(std::string filename = std::string(), bool velocity = false);
+  HarmonicsOutput(const std::string& filename = std::string(),
+                  bool velocity = false);
 
   void read();
 

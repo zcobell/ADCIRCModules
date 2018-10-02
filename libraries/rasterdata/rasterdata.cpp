@@ -29,7 +29,7 @@ Rasterdata::Rasterdata() : m_filename(std::string()) {
   return;
 }
 
-Rasterdata::Rasterdata(const std::string filename) : m_filename(filename) {
+Rasterdata::Rasterdata(const std::string &filename) : m_filename(filename) {
   this->init();
   return;
 }
@@ -44,6 +44,10 @@ void Rasterdata::init() {
   this->m_epsg = 4326;
   this->m_nx = std::numeric_limits<int>::min();
   this->m_ny = std::numeric_limits<int>::min();
+  this->m_xmin = std::numeric_limits<double>::max();
+  this->m_xmax = std::numeric_limits<double>::min();
+  this->m_ymin = std::numeric_limits<double>::max();
+  this->m_ymax = std::numeric_limits<double>::min();
   this->m_dx = 0.0;
   this->m_dy = 0.0;
   this->m_nodata = std::numeric_limits<double>::min();

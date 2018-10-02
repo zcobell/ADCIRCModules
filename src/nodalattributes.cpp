@@ -51,7 +51,8 @@ NodalAttributes::NodalAttributes() : m_filename(string()) {
   this->m_numNodes = 0;
 }
 
-NodalAttributes::NodalAttributes(string filename, Adcirc::Geometry::Mesh *mesh)
+NodalAttributes::NodalAttributes(const string &filename,
+                                 Adcirc::Geometry::Mesh *mesh)
     : m_filename(filename) {
   this->m_mesh = mesh;
   if (this->m_mesh != nullptr) {

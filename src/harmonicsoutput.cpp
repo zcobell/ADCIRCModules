@@ -32,7 +32,7 @@
 using namespace std;
 using namespace Adcirc::Output;
 
-HarmonicsOutput::HarmonicsOutput(string filename, bool velocity)
+HarmonicsOutput::HarmonicsOutput(const string& filename, bool velocity)
     : m_filename(filename) {
   this->m_numNodes = 0;
   this->m_numConstituents = 0;
@@ -317,7 +317,8 @@ void HarmonicsOutput::readAsciiFormat() {
         double um, up, vm, vp;
         ierr = IO::splitStringHarmonicsVelocityFormat(line, um, up, vm, vp);
         if (ierr != Adcirc::NoError) {
-          adcircmodules_throw_exception("Error reading harmonics velocity string");
+          adcircmodules_throw_exception(
+              "Error reading harmonics velocity string");
         }
 
         this->u_magnitude(j)->set(i, um);
@@ -328,7 +329,8 @@ void HarmonicsOutput::readAsciiFormat() {
         double a, p;
         ierr = IO::splitStringHarmonicsElevationFormat(line, a, p);
         if (ierr != Adcirc::NoError) {
-          adcircmodules_throw_exception("Error reading harmonics elevation string");
+          adcircmodules_throw_exception(
+              "Error reading harmonics elevation string");
         }
 
         this->amplitude(j)->set(i, a);
@@ -373,7 +375,8 @@ void HarmonicsOutput::readNetcdfFormatHeader(int ncid,
   ierr = nc_inq_dimid(ncid, "constlen", &dimid_constlen);
   if (ierr != NC_NOERR) {
     nc_close(ncid);
-    adcircmodules_throw_exception("Could not locate constituent length dimension");
+    adcircmodules_throw_exception(
+        "Could not locate constituent length dimension");
   }
 
   ierr = nc_inq_dimid(ncid, "node", &dimid_node);

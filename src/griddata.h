@@ -47,7 +47,7 @@ class Griddata {
   std::string rasterFile() const;
   void setRasterFile(const std::string &rasterFile);
 
-  void readLookupTable(std::string lookupTableFile);
+  void readLookupTable(const std::string &lookupTableFile);
 
   std::vector<int> interpolationFlags() const;
   void setInterpolationFlags(const std::vector<int> &interpolationFlags);
@@ -55,7 +55,7 @@ class Griddata {
   void setInterpolationFlag(size_t index, int flag);
 
   std::vector<double> filterSizes() const;
-  void setFilterSizes(std::vector<double> filterSize);
+  void setFilterSizes(const std::vector<double> &filterSize);
   double filterSize(size_t index);
   void setFilterSize(size_t index, double filterSize);
 

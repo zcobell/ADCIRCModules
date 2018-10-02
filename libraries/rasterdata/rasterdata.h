@@ -31,7 +31,7 @@ class Rasterdata {
  public:
   Rasterdata();
 
-  Rasterdata(const std::string filename);
+  Rasterdata(const std::string &filename);
 
   ~Rasterdata();
 

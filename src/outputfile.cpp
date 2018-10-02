@@ -122,7 +122,6 @@ bool OutputFile::exists() {
 }
 
 void OutputFile::open() {
-
   if (this->isOpen()) {
     adcircmodules_throw_exception("OutputFile: File already open");
   }
@@ -180,7 +179,6 @@ void OutputFile::close() {
 }
 
 void OutputFile::read(size_t snap) {
-
   unique_ptr<OutputRecord> record;
 
   if (this->m_filetype == Adcirc::Output::ASCIIFull ||
@@ -279,7 +277,8 @@ OutputRecord* OutputFile::data(size_t snap, bool& ok) {
 
   if (this->m_recordMap.find(snap) == this->m_recordMap.end()) {
     ok = false;
-    adcircmodules_throw_exception("OutputFile: Data requested is out of bounds");
+    adcircmodules_throw_exception(
+        "OutputFile: Data requested is out of bounds");
     return nullptr;
   } else {
     ok = true;
@@ -297,7 +296,8 @@ OutputRecord* OutputFile::dataAt(size_t position, bool& ok) {
 
   if (position < this->m_records.size()) {
     ok = false;
-    adcircmodules_throw_exception("OutputFile: Data requested is out of bounds");
+    adcircmodules_throw_exception(
+        "OutputFile: Data requested is out of bounds");
     return nullptr;
   } else {
     ok = true;
@@ -376,10 +376,12 @@ void OutputFile::findNetcdfVarId() {
   }
 
   if (this->m_varid_data.size() == 0) {
-    adcircmodules_throw_exception("OutputFile: No valid netcdf variables found");
+    adcircmodules_throw_exception(
+        "OutputFile: No valid netcdf variables found");
   }
   if (this->m_varid_data.size() > 2) {
-    adcircmodules_throw_exception("OutputFile: Too many netcdf variables found");
+    adcircmodules_throw_exception(
+        "OutputFile: Too many netcdf variables found");
   }
 
   if (this->m_varid_data.size() == 1) {
@@ -444,7 +446,8 @@ void OutputFile::readAsciiHeader() {
     this->m_isVector = true;
   } else {
     this->m_fid.close();
-    adcircmodules_throw_exception("OutputFile: Invalid number of columns in file");
+    adcircmodules_throw_exception(
+        "OutputFile: Invalid number of columns in file");
   }
 
   return;
@@ -650,7 +653,8 @@ void OutputFile::readNetcdfRecord(size_t snap,
       if (ierr != NC_NOERR) {
         delete[] u;
         delete[] v;
-        adcircmodules_throw_exception("OutputFile: Error reading netcdf record");
+        adcircmodules_throw_exception(
+            "OutputFile: Error reading netcdf record");
         return;
       }
       record.get()->setAll(this->m_numNodes, u, v);
