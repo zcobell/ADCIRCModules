@@ -59,6 +59,7 @@ Griddata::Griddata() {
   this->m_filterSize = vector<double>();
   this->m_defaultValue = -9999.0;
   this->m_epsg = 4326;
+  this->m_datumShift = 0.0;
   this->m_showProgressBar = false;
   this->m_rasterMultiplier = 1.0;
   this->m_calculateDwindPtr = nullptr;
@@ -78,6 +79,7 @@ Griddata::Griddata(Mesh *mesh, string rasterFile) {
   this->m_epsg = 4326;
   this->m_showProgressBar = false;
   this->m_rasterMultiplier = 1.0;
+  this->m_datumShift = 0.0;
   this->m_calculateDwindPtr = nullptr;
   this->m_calculatePointPtr = nullptr;
 }
@@ -649,6 +651,12 @@ void Griddata::assignInterpolationFunctionPointer(bool useLookupTable) {
   }
 }
 
+double Griddata::datumShift() const { return this->m_datumShift; }
+
+void Griddata::setDatumShift(double datumShift) {
+  this->m_datumShift = datumShift;
+}
+
 void Griddata::checkMatchingCoorindateSystems() {
   if (this->m_epsg != this->m_mesh->projection()) {
     adcircmodules_throw_exception(
@@ -700,7 +708,7 @@ vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
     Method m = static_cast<Method>(this->m_interpolationFlags[i]);
     double v = (this->*m_calculatePointPtr)(p, gridsize[i] * 0.5,
                                             this->m_filterSize[i], m);
-    result[i] = v * this->m_rasterMultiplier;
+    result[i] = v * this->m_rasterMultiplier + this->m_datumShift;
   }
 
   return result;
@@ -732,6 +740,9 @@ vector<vector<double> > Griddata::computeDirectionalWindReduction(
     if (this->m_interpolationFlags[i] != NoMethod) {
       Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
       result[i] = (this->*m_calculateDwindPtr)(p);
+      for (auto &r : result[i]) {
+        r += this->m_datumShift;
+      }
     }
   }
 

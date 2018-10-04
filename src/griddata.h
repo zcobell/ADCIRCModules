@@ -89,7 +89,10 @@ class Griddata {
     return sqrt(2.0 * Constants::pi() * Griddata::windSigma());
   }
 
- private:
+  double datumShift() const;
+  void setDatumShift(double datumShift);
+
+private:
   bool getKeyValue(size_t key, double &value);
   void buildWindDirectionLookup();
   double calculatePoint(Point &p, double searchRadius, double gsMultiplier,
@@ -155,6 +158,7 @@ class Griddata {
   std::vector<std::vector<int>> m_windDirections;
   int m_epsg;
   double m_rasterMultiplier;
+  double m_datumShift;
   bool m_showProgressBar;
   bool m_rasterInMemory;
 };
