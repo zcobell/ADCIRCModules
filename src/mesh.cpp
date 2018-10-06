@@ -39,7 +39,9 @@ Mesh::Mesh() : m_filename("none") { this->_init(); }
  * @brief Default constructor with filename parameter
  * @param filename name of the mesh to read
  */
-Mesh::Mesh(const std::string &filename) : m_filename(filename) { this->_init(); }
+Mesh::Mesh(const std::string &filename) : m_filename(filename) {
+  this->_init();
+}
 
 /**
  * @brief Initialization routine called by all constructors
@@ -223,8 +225,7 @@ void Mesh::_readNodes(std::fstream &fid) {
     double x, y, z;
     string tempLine;
     std::getline(fid, tempLine);
-    int ierr = IO::splitStringNodeFormat(tempLine, id, x, y, z);
-    if (ierr != Adcirc::NoError) {
+    if (!IO::splitStringNodeFormat(tempLine, id, x, y, z)) {
       fid.close();
       adcircmodules_throw_exception("Error reading nodes");
     }
@@ -254,7 +255,6 @@ void Mesh::_readNodes(std::fstream &fid) {
  */
 void Mesh::_readElements(std::fstream &fid) {
   size_t id;
-  size_t e1, e2, e3;
   string tempLine;
 
   this->m_elements.resize(this->numElements());
@@ -262,21 +262,27 @@ void Mesh::_readElements(std::fstream &fid) {
   if (this->m_nodeOrderingLogical) {
     for (auto &e : this->m_elements) {
       std::getline(fid, tempLine);
-      int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
-      if (ierr != Adcirc::NoError) {
+      std::vector<size_t> n;
+      n.reserve(4);
+      if (!IO::splitStringElemFormat(tempLine, id, n)) {
         fid.close();
         adcircmodules_throw_exception("Error reading elements");
       }
-
-      e.setElement(id, &this->m_nodes[e1 - 1], &this->m_nodes[e2 - 1],
-                   &this->m_nodes[e3 - 1]);
+      if (n.size() == 3) {
+        e.setElement(id, &this->m_nodes[n[0] - 1], &this->m_nodes[n[1] - 1],
+                     &this->m_nodes[n[2] - 1]);
+      } else if (n.size() == 4) {
+        e.setElement(id, &this->m_nodes[n[0] - 1], &this->m_nodes[n[1] - 1],
+                     &this->m_nodes[n[2] - 1], &this->m_nodes[n[3] - 1]);
+      }
     }
   } else {
     size_t i = 0;
     for (auto &e : this->m_elements) {
       std::getline(fid, tempLine);
-      int ierr = IO::splitStringElemFormat(tempLine, id, e1, e2, e3);
-      if (ierr != Adcirc::NoError) {
+      std::vector<size_t> n;
+      n.reserve(4);
+      if (!IO::splitStringElemFormat(tempLine, id, n)) {
         fid.close();
         adcircmodules_throw_exception("Error reading nodes");
       }
@@ -284,10 +290,16 @@ void Mesh::_readElements(std::fstream &fid) {
       if (i != id - 1) {
         this->m_elementOrderingLogical = false;
       }
-
-      e.setElement(id, &this->m_nodes[this->m_nodeLookup[e1]],
-                   &this->m_nodes[this->m_nodeLookup[e2]],
-                   &this->m_nodes[this->m_nodeLookup[e3]]);
+      if (n.size() == 3) {
+        e.setElement(id, &this->m_nodes[this->m_nodeLookup[n[0]]],
+                     &this->m_nodes[this->m_nodeLookup[n[1]]],
+                     &this->m_nodes[this->m_nodeLookup[n[2]]]);
+      } else if (n.size() == 4) {
+        e.setElement(id, &this->m_nodes[this->m_nodeLookup[n[0]]],
+                     &this->m_nodes[this->m_nodeLookup[n[1]]],
+                     &this->m_nodes[this->m_nodeLookup[n[2]]],
+                     &this->m_nodes[this->m_nodeLookup[n[3]]]);
+      }
       i++;
     }
   }
@@ -339,8 +351,7 @@ void Mesh::_readOpenBoundaries(std::fstream &fid) {
     for (size_t j = 0; j < b.length(); ++j) {
       std::getline(fid, tempLine);
       size_t nid;
-      int ierr = IO::splitStringBoundary0Format(tempLine, nid);
-      if (ierr != Adcirc::NoError) {
+      if (!IO::splitStringBoundary0Format(tempLine, nid)) {
         fid.close();
         adcircmodules_throw_exception("Error reading boundaries");
       }
@@ -401,9 +412,8 @@ void Mesh::_readLandBoundaries(std::fstream &fid) {
       std::getline(fid, tempLine);
 
       if (code == 3 || code == 13 || code == 23) {
-        int ierr =
-            IO::splitStringBoundary23Format(tempLine, n1, crest, supercritical);
-        if (ierr != Adcirc::NoError) {
+        if (!IO::splitStringBoundary23Format(tempLine, n1, crest,
+                                             supercritical)) {
           fid.close();
           adcircmodules_throw_exception("Error reading boundaries");
         }
@@ -417,9 +427,8 @@ void Mesh::_readLandBoundaries(std::fstream &fid) {
         b.setSupercriticalWeirCoefficient(j, supercritical);
 
       } else if (code == 4 || code == 24) {
-        int ierr = IO::splitStringBoundary24Format(tempLine, n1, n2, crest,
-                                                   subcritical, supercritical);
-        if (ierr != Adcirc::NoError) {
+        if (!IO::splitStringBoundary24Format(tempLine, n1, n2, crest,
+                                             subcritical, supercritical)) {
           fid.close();
           adcircmodules_throw_exception("Error reading boundaries");
         }
@@ -437,10 +446,9 @@ void Mesh::_readLandBoundaries(std::fstream &fid) {
         b.setSupercriticalWeirCoefficient(j, supercritical);
 
       } else if (code == 5 || code == 25) {
-        int ierr = IO::splitStringBoundary25Format(
-            tempLine, n1, n2, crest, subcritical, supercritical, pipeheight,
-            pipecoef, pipediam);
-        if (ierr != Adcirc::NoError) {
+        if (!IO::splitStringBoundary25Format(tempLine, n1, n2, crest,
+                                             subcritical, supercritical,
+                                             pipeheight, pipecoef, pipediam)) {
           fid.close();
           adcircmodules_throw_exception("Error reading boundaries");
         }
@@ -460,8 +468,7 @@ void Mesh::_readLandBoundaries(std::fstream &fid) {
         b.setPipeCoefficient(j, pipecoef);
         b.setPipeDiameter(j, pipediam);
       } else {
-        int ierr = IO::splitStringBoundary0Format(tempLine, n1);
-        if (ierr != Adcirc::NoError) {
+        if (!IO::splitStringBoundary0Format(tempLine, n1)) {
           fid.close();
           adcircmodules_throw_exception("Error reading boundaries");
         }
@@ -721,32 +728,20 @@ void Mesh::toConnectivityShapefile(const string outputFile) {
   DBFAddField(dbfid, "znode2", FTDouble, 16, 4);
 
   for (auto &e : this->m_elements) {
-    int n1, n2;
-
-    for (int j = 0; j < 3; ++j) {
-      if (j == 0) {
-        n1 = 0;
-        n2 = 1;
-      } else if (j == 1) {
-        n1 = 1;
-        n2 = 2;
-      } else if (j == 2) {
-        n1 = 2;
-        n2 = 0;
-      }
-
+    for (int j = 0; j < e.n(); ++j) {
       int elemid, nodeid[2];
       double latitude[2], longitude[2], elevation[2];
+      std::pair<Node *, Node *> p = e.elementLeg(j);
 
       elemid = e.id();
-      nodeid[0] = e.node(n1)->id();
-      nodeid[1] = e.node(n2)->id();
-      longitude[0] = e.node(n1)->x();
-      longitude[1] = e.node(n2)->x();
-      latitude[0] = e.node(n1)->y();
-      latitude[1] = e.node(n2)->y();
-      elevation[0] = e.node(n1)->z();
-      elevation[1] = e.node(n2)->z();
+      nodeid[0] = p.first->id();
+      nodeid[1] = p.second->id();
+      longitude[0] = p.first->x();
+      longitude[1] = p.second->x();
+      latitude[0] = p.first->y();
+      latitude[1] = p.second->y();
+      elevation[0] = p.first->z();
+      elevation[1] = p.second->z();
 
       SHPObject *shpobj =
           SHPCreateSimpleObject(SHPT_ARC, 2, longitude, latitude, elevation);

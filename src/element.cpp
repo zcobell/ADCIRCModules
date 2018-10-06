@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "element.h"
+#include <cmath>
 #include "boost/format.hpp"
 #include "constants.h"
 #include "error.h"
@@ -30,11 +31,21 @@ using namespace Adcirc::Geometry;
  */
 Element::Element() {
   this->m_id = 0;
-  this->m_nodes.resize(this->n());
+  this->resize(3);
 }
 
 /**
- * @fn Element::Element
+ * @brief Resizes the internal array of verticies
+ * @param nVertex number of verticies. Must be 3 or 4.
+ */
+void Element::resize(size_t nVertex) {
+  if (nVertex != 3 && nVertex != 4) {
+    adcircmodules_throw_exception("Invalid number of verticies");
+  }
+  this->m_nodes.resize(nVertex);
+}
+
+/**
  * @brief Constructor using references to three Node objects
  * @param id element id/label
  * @param n1 pointer to node 1
@@ -42,7 +53,7 @@ Element::Element() {
  * @param n3 pointer to node 3
  */
 Element::Element(size_t id, Node *n1, Node *n2, Node *n3) {
-  this->m_nodes.resize(3);
+  this->resize(3);
   this->m_id = id;
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;
@@ -50,7 +61,23 @@ Element::Element(size_t id, Node *n1, Node *n2, Node *n3) {
 }
 
 /**
- * @fn Element::setElement
+ * @brief Constructor using references to three Node objects
+ * @param id element id/label
+ * @param n1 pointer to node 1
+ * @param n2 pointer to node 2
+ * @param n3 pointer to node 3
+ * @param n4 pointer to node 4
+ */
+Element::Element(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) {
+  this->resize(4);
+  this->m_id = id;
+  this->m_nodes[0] = n1;
+  this->m_nodes[1] = n2;
+  this->m_nodes[2] = n3;
+  this->m_nodes[3] = n4;
+}
+
+/**
  * @brief Function that sets up the element using three pointers and the element
  * id/label
  * @param id element id/label
@@ -60,21 +87,37 @@ Element::Element(size_t id, Node *n1, Node *n2, Node *n3) {
  */
 void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3) {
   this->m_id = id;
+  this->m_nodes.resize(3);
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;
   this->m_nodes[2] = n3;
 }
 
 /**
- * @fn Element::n
- * @brief Number of nodes in this element. In this case it is always 3, but this
- * is implemented for future use
- * @return number of nodes in element
+ * @brief Function that sets up the element using three pointers and the element
+ * id/label
+ * @param id element id/label
+ * @param n1 pointer to node 1
+ * @param n2 pointer to node 2
+ * @param n3 pointer to node 3
+ * @param n4 pointer to node 4
  */
-int Element::n() const { return this->m_n; }
+void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) {
+  this->m_id = id;
+  this->m_nodes.resize(4);
+  this->m_nodes[0] = n1;
+  this->m_nodes[1] = n2;
+  this->m_nodes[2] = n3;
+  this->m_nodes[3] = n4;
+}
 
 /**
- * @fn Element::setNode
+ * @brief Number of verticies in this element
+ * @return number of nodes in element
+ */
+int Element::n() const { return this->m_nodes.size(); }
+
+/**
  * @brief Sets the node at the specified position to the supplied pointer
  * @param i location in the node vector for this element
  * @param node pointer to an Node object
@@ -87,21 +130,18 @@ void Element::setNode(int i, Node *node) {
 }
 
 /**
- * @fn Element::id
  * @brief Returns the element id/flag
  * @return element id/flag
  */
 size_t Element::id() const { return this->m_id; }
 
 /**
- * @fn Element::setId
  * @brief Sets the element id/flag
  * @param id element id/flag
  */
 void Element::setId(size_t id) { this->m_id = id; }
 
 /**
- * @fn Element::node
  * @brief returns a pointer to the node at the specified position
  * @param i position in node vector
  * @return Node pointer
@@ -115,20 +155,26 @@ Node *Element::node(int i) {
 }
 
 /**
- * @fn Element::toString
  * @brief Formats the element for writing to an Adcirc ASCII mesh file
  * @return formatted string
  */
 string Element::toString() {
-  return boost::str(boost::format("%11i %3i %11i %11i %11i") % this->id() %
-                    this->n() % this->node(0)->id() % this->node(1)->id() %
-                    this->node(2)->id());
+  if (this->n() == 3) {
+    return boost::str(boost::format("%11i %3i %11i %11i %11i") % this->id() %
+                      this->n() % this->node(0)->id() % this->node(1)->id() %
+                      this->node(2)->id());
+  } else if (this->n() == 4) {
+    return boost::str(boost::format("%11i %3i %11i %11i %11i %11i") %
+                      this->id() % this->n() % this->node(0)->id() %
+                      this->node(1)->id() % this->node(2)->id() %
+                      this->node(3)->id());
+  }
 }
 
-bool Element::isInside(double x, double y) {
-  return this->isInside(Point(x, y));
-}
-
+/**
+ * @brief Calculates the average size of the legs of an element
+ * @return average element leg size
+ */
 double Element::elementSize(bool geodesic) {
   double size = 0.0;
   for (int i = 0; i < this->n(); ++i) {
@@ -140,6 +186,11 @@ double Element::elementSize(bool geodesic) {
   return size / this->n();
 }
 
+/**
+ * @brief Returns a pair of nodes representing the leg of an element
+ * @param i index of the leg around the element
+ * @return pair of nodes
+ */
 std::pair<Node *, Node *> Element::elementLeg(size_t i) {
   assert(i < this->n());
 
@@ -156,23 +207,71 @@ std::pair<Node *, Node *> Element::elementLeg(size_t i) {
   return std::make_pair(np1, np2);
 }
 
+/**
+ * @brief Calculates the area of a triangle described by points a, b, and c
+ * @param a First point of triangle
+ * @param b Second point of triangle
+ * @param c Third point of triangle
+ * @return Area of triangle
+ */
+double Element::triangleArea(Point &a, Point &b, Point &c) {
+  return std::abs(a.x() * (b.y() - c.y()) + b.x() * (c.y() - a.y()) +
+                  c.x() * (a.y() - b.y()));
+}
+
+/**
+ * @brief Determine if a point lies within an element
+ * @param x x-coordinate
+ * @param y y-coordinate
+ * @return
+ */
+bool Element::isInside(double x, double y) {
+  return this->isInside(Point(x, y));
+}
+
+/**
+ * @param location Point to check
+ * @return
+ */
 bool Element::isInside(Point location) {
-  double x = location.x();
-  double y = location.y();
-  double x1 = this->node(0)->x();
-  double y1 = this->node(0)->y();
-  double x2 = this->node(1)->x();
-  double y2 = this->node(1)->y();
-  double x3 = this->node(2)->x();
-  double y3 = this->node(2)->y();
-  double s1 = abs((x2 * y3 - x3 * y2) - (x * y3 - x3 * y) + (x * y2 - x2 * y));
-  double s2 = abs((x * y3 - x3 * y) - (x1 * y3 - x3 * y1) + (x1 * y - x * y1));
-  double s3 = abs((x2 * y - x * y2) - (x1 * y - x * y1) + (x1 * y2 - x2 * y1));
-  double ta =
-      abs((x2 * y3 - x3 * y2) - (x1 * y3 - x3 * y1) + (x1 * y2 - x2 * y1));
-  if (s1 + s2 + s3 <= 1.001 * ta) {
-    return true;
-  } else {
-    return false;
+  if (this->n() == 3) {
+    return this->isInsideTriangle(location);
+  } else if (this->n() == 4) {
+    return this->isInsideQuad(location);
   }
+  return false;
+}
+
+/**
+ * @brief Checks if a point lies within a triangle
+ * @param location location to check
+ * @return true if inside, false if outside
+ */
+bool Element::isInsideTriangle(Point location) {
+  Point a = this->node(0)->toPoint();
+  Point b = this->node(1)->toPoint();
+  Point c = this->node(2)->toPoint();
+  double s1 = this->triangleArea(a, b, location);
+  double s2 = this->triangleArea(a, c, location);
+  double s3 = this->triangleArea(c, b, location);
+  double ta = this->triangleArea(a, b, c);
+  return (s1 + s2 + s3 <= 1.001 * ta);
+}
+
+/**
+ * @brief Checks if a point lies within a quadrilateral
+ * @param location location to check
+ * @return true if inside, false if outside
+ */
+bool Element::isInsideQuad(Point location) {
+  Point a = this->node(0)->toPoint();
+  Point b = this->node(1)->toPoint();
+  Point c = this->node(2)->toPoint();
+  Point d = this->node(3)->toPoint();
+  double s1 = this->triangleArea(a, b, location);
+  double s2 = this->triangleArea(b, c, location);
+  double s3 = this->triangleArea(c, d, location);
+  double s4 = this->triangleArea(d, a, location);
+  double ta = this->triangleArea(a, b, c) + this->triangleArea(c, d, a);
+  return (s1 + s2 + s3 + s4 <= 1.001 * ta);
 }

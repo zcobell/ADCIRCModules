@@ -240,13 +240,9 @@ void NodalAttributes::_mapNodes() {
 
 void NodalAttributes::_readFort13Body(std::fstream &fid) {
   string tempLine, name;
-  int ierr;
   size_t node;
   double value;
   bool ok;
-  vector<double> values;
-  vector<string> tempList;
-  values.resize(12);
 
   for (size_t i = 0; i < this->numParameters(); ++i) {
     std::getline(fid, name);
@@ -266,9 +262,7 @@ void NodalAttributes::_readFort13Body(std::fstream &fid) {
       std::getline(fid, tempLine);
 
       if (nValues == 1) {
-        ierr = IO::splitStringAttribute1Format(tempLine, node, value);
-        assert(ierr == 0);
-        if (ierr != 0) {
+        if (!IO::splitStringAttribute1Format(tempLine, node, value)) {
           adcircmodules_throw_exception(
               "NodalAttributes: Error reading file data");
         }
@@ -282,10 +276,10 @@ void NodalAttributes::_readFort13Body(std::fstream &fid) {
         a->setValue(value);
         a->setId(node);
 
-      } else if (nValues == 12) {
-        ierr = IO::splitStringAttribute12Format(tempLine, node, values);
-        assert(ierr == 0);
-        if (ierr != 0) {
+      } else {
+        vector<double> values;
+        values.reserve(nValues);
+        if (!IO::splitStringAttributeNFormat(tempLine, node, values)) {
           adcircmodules_throw_exception(
               "NodalAttributes: Error reading file data");
         };
@@ -298,34 +292,6 @@ void NodalAttributes::_readFort13Body(std::fstream &fid) {
         }
         a->setValue(values);
         a->setId(node);
-
-      } else {
-        //...Generic routine here is slower than above, but there is
-        //   no reason it will ever be used in ADCIRC's current state.
-        //   Placed here as future-proofing.
-        IO::splitString(tempLine, tempList);
-        node = StringConversion::stringToSizet(tempList[0], ok);
-        assert(ok);
-        if (!ok) {
-          adcircmodules_throw_exception(
-              "NodalAttributes: Error reading file data");
-        }
-
-        for (size_t j = 1; j < tempList.size(); ++j) {
-          value = StringConversion::stringToDouble(tempList[j], ok);
-          assert(ok);
-          if (!ok) {
-            adcircmodules_throw_exception(
-                "NodalAttributes: Error reading file data");
-          }
-
-          if (this->m_mesh != nullptr) {
-            this->m_nodalData[i][this->mesh()->nodeIndexById(node)].setValue(
-                j, value);
-          } else {
-            this->m_nodalData[i][node].setValue(j, value);
-          }
-        }
       }
     }
   }

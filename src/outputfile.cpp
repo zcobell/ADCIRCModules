@@ -571,8 +571,7 @@ void OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
     if (this->m_isVector) {
       size_t id;
       double v1, v2;
-      int ierr = IO::splitStringAttribute2Format(line, id, v1, v2);
-      if (ierr == 0) {
+      if (IO::splitStringAttribute2Format(line, id, v1, v2)) {
         record.get()->set(id - 1, v1, v2);
       } else {
         record.reset(nullptr);
@@ -581,8 +580,7 @@ void OutputFile::readAsciiRecord(unique_ptr<OutputRecord>& record) {
     } else {
       size_t id;
       double v1;
-      int ierr = IO::splitStringAttribute1Format(line, id, v1);
-      if (ierr == 0) {
+      if (IO::splitStringAttribute1Format(line, id, v1)) {
         record.get()->set(id - 1, v1);
       } else {
         record.reset(nullptr);

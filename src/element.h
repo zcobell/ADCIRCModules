@@ -45,11 +45,18 @@ class Element {
   explicit Element();
   explicit Element(size_t id, Adcirc::Geometry::Node *n1,
                    Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3);
+  explicit Element(size_t id, Adcirc::Geometry::Node *n1,
+                   Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3,
+                   Adcirc::Geometry::Node *n4);
 
   void setElement(size_t id, Adcirc::Geometry::Node *n1,
                   Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3);
+  void setElement(size_t id, Adcirc::Geometry::Node *n1,
+                  Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3,
+                  Adcirc::Geometry::Node *n4);
 
   int n() const;
+  void resize(size_t nVertex);
 
   Adcirc::Geometry::Node *node(int i);
   void setNode(int i, Adcirc::Geometry::Node *node);
@@ -68,7 +75,9 @@ class Element {
       size_t i);
 
  private:
-  int m_n = 3;
+  bool isInsideTriangle(Point location);
+  bool isInsideQuad(Point location);
+  double triangleArea(Point &a, Point &b, Point &c);
 
   size_t m_id;
   std::vector<Adcirc::Geometry::Node *> m_nodes;

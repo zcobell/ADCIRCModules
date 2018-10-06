@@ -305,9 +305,7 @@ void HarmonicsOutput::readAsciiFormat() {
     getline(fid, line);
 
     size_t node;
-    int ierr = IO::splitStringBoundary0Format(line, node);
-    if (ierr != Adcirc::NoError) {
-    }
+    IO::splitStringBoundary0Format(line, node);
 
     this->m_nodeIndex[node] = i;
 
@@ -315,8 +313,7 @@ void HarmonicsOutput::readAsciiFormat() {
       getline(fid, line);
       if (this->isVelocity()) {
         double um, up, vm, vp;
-        ierr = IO::splitStringHarmonicsVelocityFormat(line, um, up, vm, vp);
-        if (ierr != Adcirc::NoError) {
+        if (!IO::splitStringHarmonicsVelocityFormat(line, um, up, vm, vp)) {
           adcircmodules_throw_exception(
               "Error reading harmonics velocity string");
         }
@@ -327,8 +324,7 @@ void HarmonicsOutput::readAsciiFormat() {
         this->v_phase(j)->set(i, vp);
       } else {
         double a, p;
-        ierr = IO::splitStringHarmonicsElevationFormat(line, a, p);
-        if (ierr != Adcirc::NoError) {
+        if (!IO::splitStringHarmonicsElevationFormat(line, a, p)) {
           adcircmodules_throw_exception(
               "Error reading harmonics elevation string");
         }

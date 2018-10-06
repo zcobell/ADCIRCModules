@@ -108,7 +108,6 @@ HEADERS += \
     split.h \
     stringconversion.h \
     io.h \
-    parsers.h \
     boundary.h \
     element.h \
     adcirc.h \
