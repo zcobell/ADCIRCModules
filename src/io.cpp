@@ -21,29 +21,30 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include "error.h"
 #include "boost/algorithm/string/split.hpp"
 #include "boost/algorithm/string/trim.hpp"
-#include "parsers.h"
+#include "error.h"
+
+#if USE_BOOSTSPIRITX3
+#include "boost/spirit/home/x3.hpp"
+using namespace std;
+using boost::spirit::x3::_attr;
+using boost::spirit::x3::double_;
+using boost::spirit::x3::int_;
+using boost::spirit::x3::phrase_parse;
+using boost::spirit::x3::ascii::space;
+#else
+#include "boost/config/warning_disable.hpp"
+#include "boost/spirit/include/phoenix_core.hpp"
+#include "boost/spirit/include/phoenix_operator.hpp"
+#include "boost/spirit/include/phoenix_stl.hpp"
+#include "boost/spirit/include/qi.hpp"
+namespace qi = boost::spirit::qi;
+namespace ascii = boost::spirit::ascii;
+namespace phoenix = boost::phoenix;
+#endif
 
 using namespace std;
-
-//...Typedefs for boost parsers used in I/O
-using iterator_type = string::const_iterator;
-using node_parser = parse::node_parser<iterator_type>;
-using elem_parser = parse::elem_parser<iterator_type>;
-using boundary0_parser = parse::boundary0_parser<iterator_type>;
-using boundary23_parser = parse::boundary23_parser<iterator_type>;
-using boundary24_parser = parse::boundary24_parser<iterator_type>;
-using boundary25_parser = parse::boundary25_parser<iterator_type>;
-using nodalattribute1_parser = parse::nodalAttribute1_parser<iterator_type>;
-using nodalattribute2_parser = parse::nodalAttribute2_parser<iterator_type>;
-using nodalattribute12_parser = parse::nodalAttribute12_parser<iterator_type>;
-using harmonicsElevation_parser =
-    parse::harmonicsElevation_parser<iterator_type>;
-using harmonicsVelocity_parser = parse::harmonicsVelocity_parser<iterator_type>;
-
-IO::IO() = default;
 
 int IO::readFileData(const string &filename, vector<string> &data) {
   std::ifstream t(filename.c_str());
@@ -64,227 +65,218 @@ int IO::splitString(string &data, vector<string> &fresult) {
   return Adcirc::NoError;
 }
 
-int IO::splitStringNodeFormat(string &data, size_t &id, double &x, double &y,
-                              double &z) {
-  node_parser np;
-  parse::node n;
-  string::const_iterator iter = data.begin();
-  string::const_iterator end = data.end();
-
-  bool r = phrase_parse(iter, end, np, space, n);
-  if (r) {
-    id = n.id;
-    x = n.x;
-    y = n.y;
-    z = n.z;
-    return Adcirc::NoError;
-  } else {
-    adcircmodules_throw_exception("Error parsing file data");
-    return Adcirc::NoError;
-  }
+bool IO::splitStringNodeFormat(string &data, size_t &id, double &x, double &y,
+                               double &z) {
+#if USE_BOOSTSPIRITX3
+  auto assign_id = [&](auto &ctx) { id = _attr(ctx); };
+  auto assign_x = [&](auto &ctx) { x = _attr(ctx); };
+  auto assign_y = [&](auto &ctx) { y = _attr(ctx); };
+  auto assign_z = [&](auto &ctx) { z = _attr(ctx); };
+  return phrase_parse(data.begin(), data.end(),
+                      (int_[assign_id] >> double_[assign_x] >>
+                       double_[assign_y] >> double_[assign_z]),
+                      space);
+#else
+  return qi::phrase_parse(data.begin(), data.end(),
+                          (qi::int_[phoenix::ref(id) = qi::_1] >>
+                           qi::double_[phoenix::ref(x) = qi::_1] >>
+                           qi::double_[phoenix::ref(y) = qi::_1] >>
+                           qi::double_[phoenix::ref(z) = qi::_1]),
+                          ascii::space);
+#endif
 }
 
-int IO::splitStringElemFormat(string &data, size_t &id, size_t &n1, size_t &n2,
-                              size_t &n3) {
-  elem_parser ep;
-  parse::elem e;
-  string::const_iterator iter = data.begin();
-  string::const_iterator end = data.end();
-
-  bool r = phrase_parse(iter, end, ep, space, e);
-  if (r) {
-    id = e.id;
-    n1 = e.n1;
-    n2 = e.n2;
-    n3 = e.n3;
-    return Adcirc::NoError;
-  } else {
-    adcircmodules_throw_exception("Error parsing file data");
-    return Adcirc::NoError;
-  }
+bool IO::splitStringElemFormat(string &data, size_t &id,
+                               vector<size_t> &nodes) {
+#if USE_BOOSTSPIRITX3
+  auto assign_id = [&](auto &ctx) { id = _attr(ctx); };
+  auto push_back = [&](auto &ctx) { nodes.push_back(_attr(ctx)); };
+  return phrase_parse(data.begin(), data.end(),
+                      (int_[assign_id] >> int_ >> *(int_[push_back])),
+                      boost::spirit::x3::omit[+space]);
+#else
+  return qi::phrase_parse(
+      data.begin(), data.end(),
+      (qi::int_[phoenix::ref(id)] >> qi::int_ >>
+       *(qi::int_[phoenix::push_back(phoenix::ref(nodes), qi::_1)])),
+      ascii::space);
+#endif
 }
 
-int IO::splitStringBoundary0Format(string &data, size_t &node1) {
-  boundary0_parser bp;
-  parse::boundary0 b;
-  string::const_iterator iter = data.begin();
-  string::const_iterator end = data.end();
-
-  bool r = phrase_parse(iter, end, bp, space, b);
-  if (r) {
-    node1 = b.node1;
-    return Adcirc::NoError;
-  } else {
-    adcircmodules_throw_exception("Error parsing file data");
-    return Adcirc::NoError;
-  }
+bool IO::splitStringBoundary0Format(string &data, size_t &node1) {
+#if USE_BOOSTSPIRITX3
+  auto assign_id = [&](auto &ctx) { node1 = _attr(ctx); };
+  return phrase_parse(data.begin(), data.end(), (int_[assign_id]), space);
+#else
+  return qi::phrase_parse(data.begin(), data.end(),
+                          (qi::int_[phoenix::ref(node1) = qi::_1]),
+                          ascii::space);
+#endif
 }
 
-int IO::splitStringBoundary23Format(string &data, size_t &node1, double &crest,
-                                    double &supercritical) {
-  boundary23_parser bp;
-  parse::boundary23 b;
-  string::const_iterator iter = data.begin();
-  string::const_iterator end = data.end();
-
-  bool r = phrase_parse(iter, end, bp, space, b);
-  if (r) {
-    node1 = b.node1;
-    crest = b.crest;
-    supercritical = b.supercritical;
-    return Adcirc::NoError;
-  } else {
-    adcircmodules_throw_exception("Error parsing file data");
-    return Adcirc::NoError;
-  }
+bool IO::splitStringBoundary23Format(string &data, size_t &node1, double &crest,
+                                     double &supercritical) {
+#if USE_BOOSTSPIRITX3
+  auto assign_id = [&](auto &ctx) { node1 = _attr(ctx); };
+  auto assign_crest = [&](auto &ctx) { crest = _attr(ctx); };
+  auto assign_supercritical = [&](auto &ctx) { supercritical = _attr(ctx); };
+  return phrase_parse(data.begin(), data.end(),
+                      (int_[assign_id] >> double_[assign_crest] >>
+                       double_[assign_supercritical]),
+                      space);
+#else
+  return qi::phrase_parse(data.begin(), data.end(),
+                          (qi::int_[phoenix::ref(node1) = qi::_1] >>
+                           qi::double_[phoenix::ref(crest) = qi::_1] >>
+                           qi::double_[phoenix::ref(supercritical) = qi::_1]),
+                          ascii::space);
+#endif
 }
 
-int IO::splitStringBoundary24Format(string &data, size_t &node1, size_t &node2,
-                                    double &crest, double &subcritical,
-                                    double &supercritical) {
-  boundary24_parser bp;
-  parse::boundary24 b;
-  string::const_iterator iter = data.begin();
-  string::const_iterator end = data.end();
-
-  bool r = phrase_parse(iter, end, bp, space, b);
-  if (r) {
-    node1 = b.node1;
-    node2 = b.node2;
-    crest = b.crest;
-    subcritical = b.subcritical;
-    supercritical = b.supercritical;
-    return Adcirc::NoError;
-  } else {
-    adcircmodules_throw_exception("Error parsing file data");
-    return Adcirc::NoError;
-  }
+bool IO::splitStringBoundary24Format(string &data, size_t &node1, size_t &node2,
+                                     double &crest, double &subcritical,
+                                     double &supercritical) {
+#if USE_BOOSTSPIRITX3
+  auto assign_n1 = [&](auto &ctx) { node1 = _attr(ctx); };
+  auto assign_n2 = [&](auto &ctx) { node2 = _attr(ctx); };
+  auto assign_crest = [&](auto &ctx) { crest = _attr(ctx); };
+  auto assign_subcritical = [&](auto &ctx) { subcritical = _attr(ctx); };
+  auto assign_supercritical = [&](auto &ctx) { supercritical = _attr(ctx); };
+  return phrase_parse(
+      data.begin(), data.end(),
+      (int_[assign_n1] >> int_[assign_n2] >> double_[assign_crest] >>
+       double_[assign_subcritical] >> double_[assign_supercritical]),
+      space);
+#else
+  return qi::phrase_parse(data.begin(), data.end(),
+                          (qi::int_[phoenix::ref(node1) = qi::_1] >>
+                           qi::int_[phoenix::ref(node2) = qi::_1] >>
+                           qi::double_[phoenix::ref(crest) = qi::_1] >>
+                           qi::double_[phoenix::ref(subcritical) = qi::_1] >>
+                           qi::double_[phoenix::ref(supercritical) = qi::_1]),
+                          ascii::space);
+#endif
 }
 
-int IO::splitStringBoundary25Format(string &data, size_t &node1, size_t &node2,
-                                    double &crest, double &subcritical,
-                                    double &supercritical, double &pipeheight,
-                                    double &pipecoef, double &pipediam) {
-  boundary25_parser bp;
-  parse::boundary25 b;
-  string::const_iterator iter = data.begin();
-  string::const_iterator end = data.end();
-
-  bool r = phrase_parse(iter, end, bp, space, b);
-  if (r) {
-    node1 = b.node1;
-    node2 = b.node2;
-    crest = b.crest;
-    subcritical = b.subcritical;
-    supercritical = b.supercritical;
-    pipeheight = b.pipeheight;
-    pipecoef = b.pipecoef;
-    pipediam = b.pipediam;
-    return Adcirc::NoError;
-  } else {
-    adcircmodules_throw_exception("Error parsing file data");
-    return Adcirc::NoError;
-  }
+bool IO::splitStringBoundary25Format(string &data, size_t &node1, size_t &node2,
+                                     double &crest, double &subcritical,
+                                     double &supercritical, double &pipeheight,
+                                     double &pipecoef, double &pipediam) {
+#if USE_BOOSTSPIRITX3
+  auto assign_n1 = [&](auto &ctx) { node1 = _attr(ctx); };
+  auto assign_n2 = [&](auto &ctx) { node2 = _attr(ctx); };
+  auto assign_crest = [&](auto &ctx) { crest = _attr(ctx); };
+  auto assign_subcritical = [&](auto &ctx) { subcritical = _attr(ctx); };
+  auto assign_supercritical = [&](auto &ctx) { supercritical = _attr(ctx); };
+  auto assign_pipeheight = [&](auto &ctx) { pipeheight = _attr(ctx); };
+  auto assign_pipecoef = [&](auto &ctx) { pipecoef = _attr(ctx); };
+  auto assign_pipediam = [&](auto &ctx) { pipediam = _attr(ctx); };
+  return phrase_parse(
+      data.begin(), data.end(),
+      (int_[assign_n1] >> int_[assign_n2] >> double_[assign_crest] >>
+       double_[assign_subcritical] >> double_[assign_supercritical] >>
+       double_[assign_pipeheight] >> double_[assign_pipecoef] >>
+       double_[assign_pipediam]),
+      space);
+#else
+  return qi::phrase_parse(data.begin(), data.end(),
+                          (qi::int_[phoenix::ref(node1) = qi::_1] >>
+                           qi::int_[phoenix::ref(node2) = qi::_1] >>
+                           qi::double_[phoenix::ref(crest) = qi::_1] >>
+                           qi::double_[phoenix::ref(subcritical) = qi::_1] >>
+                           qi::double_[phoenix::ref(supercritical) = qi::_1] >>
+                           qi::double_[phoenix::ref(pipeheight) = qi::_1] >>
+                           qi::double_[phoenix::ref(pipecoef) = qi::_1] >>
+                           qi::double_[phoenix::ref(pipediam) = qi::_1]),
+                          ascii::space);
+#endif
 }
 
-int IO::splitStringAttribute1Format(string &data, size_t &node, double &value) {
-  nodalattribute1_parser nap;
-  parse::nodalAttribute1 na;
-  string::const_iterator iter = data.begin();
-  string::const_iterator end = data.end();
-
-  bool r = phrase_parse(iter, end, nap, space, na);
-  if (r) {
-    node = na.node;
-    value = na.value;
-    return Adcirc::NoError;
-  } else {
-    adcircmodules_throw_exception("Error parsing file data");
-    return Adcirc::NoError;
-  }
+bool IO::splitStringAttribute1Format(string &data, size_t &node,
+                                     double &value) {
+#if USE_BOOSTSPIRITX3
+  auto assign_id = [&](auto &ctx) { node = _attr(ctx); };
+  auto assign_value = [&](auto &ctx) { value = _attr(ctx); };
+  return phrase_parse(data.begin(), data.end(),
+                      (int_[assign_id] >> double_[assign_value]), space);
+#else
+  return qi::phrase_parse(data.begin(), data.end(),
+                          (qi::int_[phoenix::ref(node) = qi::_1] >>
+                           qi::double_[phoenix::ref(value) = qi::_1]),
+                          ascii::space);
+#endif
 }
 
-int IO::splitStringAttribute2Format(string &data, size_t &node, double &value1,
-                                    double &value2) {
-  nodalattribute2_parser nap;
-  parse::nodalAttribute2 na;
-  string::const_iterator iter = data.begin();
-  string::const_iterator end = data.end();
-
-  bool r = phrase_parse(iter, end, nap, space, na);
-  if (r) {
-    node = na.node;
-    value1 = na.value1;
-    value2 = na.value2;
-    return Adcirc::NoError;
-  } else {
-    adcircmodules_throw_exception("Error parsing file data");
-    return Adcirc::NoError;
-  }
+bool IO::splitStringAttribute2Format(string &data, size_t &node, double &value1,
+                                     double &value2) {
+#if USE_BOOSTSPIRITX3
+  auto assign_id = [&](auto &ctx) { node = _attr(ctx); };
+  auto assign_value1 = [&](auto &ctx) { value1 = _attr(ctx); };
+  auto assign_value2 = [&](auto &ctx) { value2 = _attr(ctx); };
+  return phrase_parse(
+      data.begin(), data.end(),
+      (int_[assign_id] >> double_[assign_value1] >> double_[assign_value2]),
+      space);
+#else
+  return qi::phrase_parse(data.begin(), data.end(),
+                          (qi::int_[phoenix::ref(node) = qi::_1] >>
+                           qi::double_[phoenix::ref(value1) = qi::_1] >>
+                           qi::double_[phoenix::ref(value2) = qi::_1]),
+                          ascii::space);
+#endif
 }
 
-int IO::splitStringAttribute12Format(string &data, size_t &node,
+bool IO::splitStringAttributeNFormat(string &data, size_t &node,
                                      vector<double> &values) {
-  nodalattribute12_parser nap;
-  parse::nodalAttribute12 na;
-  string::const_iterator iter = data.begin();
-  string::const_iterator end = data.end();
-
-  bool r = phrase_parse(iter, end, nap, space, na);
-  if (r) {
-    node = na.node;
-    values[0] = na.value1;
-    values[1] = na.value2;
-    values[2] = na.value3;
-    values[3] = na.value4;
-    values[4] = na.value5;
-    values[5] = na.value6;
-    values[6] = na.value7;
-    values[7] = na.value8;
-    values[8] = na.value9;
-    values[9] = na.value10;
-    values[10] = na.value11;
-    values[11] = na.value12;
-    return Adcirc::NoError;
-  } else {
-    adcircmodules_throw_exception("Error parsing file data");
-    return Adcirc::NoError;
-  }
+#if USE_BOOSTSPIRITX3
+  auto assign_id = [&](auto &ctx) { node = _attr(ctx); };
+  auto push_back = [&](auto &ctx) { values.push_back(_attr(ctx)); };
+  return phrase_parse(data.begin(), data.end(),
+                      (int_[assign_id] >> *(double_[push_back])),
+                      boost::spirit::x3::omit[+space]);
+#else
+  return qi::phrase_parse(
+      data.begin(), data.end(),
+      (qi::int_[phoenix::ref(node) = qi::_1] >>
+       *(qi::double_[phoenix::push_back(phoenix::ref(values), qi::_1)])),
+      ascii::space);
+#endif
 }
 
-int IO::splitStringHarmonicsElevationFormat(string &data, double &amplitude,
-                                            double &phase) {
-  harmonicsElevation_parser hp;
-  parse::harmonicsElevation harm;
-  string::const_iterator iter = data.begin();
-  string::const_iterator end = data.end();
-  bool r = phrase_parse(iter, end, hp, space, harm);
-  if (r) {
-    amplitude = harm.amplitude;
-    phase = harm.phase;
-    return Adcirc::NoError;
-  } else {
-    adcircmodules_throw_exception("Error parsing file data");
-    return Adcirc::NoError;
-  }
+bool IO::splitStringHarmonicsElevationFormat(string &data, double &amplitude,
+                                             double &phase) {
+#if USE_BOOSTSPIRITX3
+  auto assign_amp = [&](auto &ctx) { amplitude = _attr(ctx); };
+  auto assign_pha = [&](auto &ctx) { phase = _attr(ctx); };
+  return phrase_parse(data.begin(), data.end(),
+                      (double_[assign_amp] >> double_[assign_pha]), space);
+#else
+  return qi::phrase_parse(data.begin(), data.end(),
+                          (qi::double_[phoenix::ref(amplitude) = qi::_1] >>
+                           qi::double_[phoenix::ref(phase) = qi::_1]),
+                          ascii::space);
+#endif
 }
 
-int IO::splitStringHarmonicsVelocityFormat(string &data, double &u_magnitude,
-                                           double &u_phase, double &v_magnitude,
-                                           double &v_phase) {
-  harmonicsVelocity_parser hp;
-  parse::harmonicsVelocity harm;
-  string::const_iterator iter = data.begin();
-  string::const_iterator end = data.end();
-  bool r = phrase_parse(iter, end, hp, space, harm);
-  if (r) {
-    u_magnitude = harm.u_magnitude;
-    u_phase = harm.u_phase;
-    v_magnitude = harm.v_magnitude;
-    v_phase = harm.v_phase;
-    return Adcirc::NoError;
-  } else {
-    adcircmodules_throw_exception("Error parsing file data");
-    return Adcirc::NoError;
-  }
+bool IO::splitStringHarmonicsVelocityFormat(string &data, double &u_magnitude,
+                                            double &u_phase,
+                                            double &v_magnitude,
+                                            double &v_phase) {
+#if USE_BOOSTSPIRITX3
+  auto assign_umag = [&](auto &ctx) { u_magnitude = _attr(ctx); };
+  auto assign_upha = [&](auto &ctx) { u_phase = _attr(ctx); };
+  auto assign_vmag = [&](auto &ctx) { v_magnitude = _attr(ctx); };
+  auto assign_vpha = [&](auto &ctx) { v_phase = _attr(ctx); };
+  return phrase_parse(data.begin(), data.end(),
+                      (double_[assign_umag] >> double_[assign_upha] >>
+                       double_[assign_vmag] >> double_[assign_vpha]),
+                      space);
+#else
+  return qi::phrase_parse(data.begin(), data.end(),
+                          (qi::double_[phoenix::ref(u_magnitude) = qi::_1] >>
+                           qi::double_[phoenix::ref(u_phase) = qi::_1] >>
+                           qi::double_[phoenix::ref(v_magnitude) = qi::_1] >>
+                           qi::double_[phoenix::ref(v_phase) = qi::_1]),
+                          ascii::space);
+#endif
 }

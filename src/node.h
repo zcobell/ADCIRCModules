@@ -21,6 +21,7 @@
 
 #include <string>
 #include "adcircmodules_global.h"
+#include "point.h"
 
 namespace Adcirc {
 namespace Geometry {
@@ -56,11 +57,13 @@ class Node {
 
   std::string toString(bool geographicCoordinates);
 
+  Point toPoint();
+
  private:
-  size_t m_id; ///Integer name of a mesh node
-  double m_x; ///x position of a node
-  double m_y; ///y position of a node
-  double m_z; ///z position of a node
+  size_t m_id;  /// Integer name of a mesh node
+  double m_x;   /// x position of a node
+  double m_y;   /// y position of a node
+  double m_z;   /// z position of a node
 };
 }  // namespace Geometry
 }  // namespace Adcirc
