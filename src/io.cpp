@@ -25,10 +25,7 @@
 #include "boost/algorithm/string/trim.hpp"
 #include "error.h"
 
-// If we have c++14, we can use the faster
-// spirit::x3 parser. Otherwise, we'll default
-// back to spirit::qi which is slightly slower
-#if __cplusplus > 201103L
+#if USE_BOOSTSPIRITX3
 #include "boost/spirit/home/x3.hpp"
 using namespace std;
 using boost::spirit::x3::_attr;
@@ -70,7 +67,7 @@ int IO::splitString(string &data, vector<string> &fresult) {
 
 bool IO::splitStringNodeFormat(string &data, size_t &id, double &x, double &y,
                                double &z) {
-#if __cplusplus > 201103L
+#if USE_BOOSTSPIRITX3
   auto assign_id = [&](auto &ctx) { id = _attr(ctx); };
   auto assign_x = [&](auto &ctx) { x = _attr(ctx); };
   auto assign_y = [&](auto &ctx) { y = _attr(ctx); };
@@ -91,7 +88,7 @@ bool IO::splitStringNodeFormat(string &data, size_t &id, double &x, double &y,
 
 bool IO::splitStringElemFormat(string &data, size_t &id,
                                vector<size_t> &nodes) {
-#if __cplusplus > 201103L
+#if USE_BOOSTSPIRITX3
   auto assign_id = [&](auto &ctx) { id = _attr(ctx); };
   auto push_back = [&](auto &ctx) { nodes.push_back(_attr(ctx)); };
   return phrase_parse(data.begin(), data.end(),
@@ -107,7 +104,7 @@ bool IO::splitStringElemFormat(string &data, size_t &id,
 }
 
 bool IO::splitStringBoundary0Format(string &data, size_t &node1) {
-#if __cplusplus > 201103L
+#if USE_BOOSTSPIRITX3
   auto assign_id = [&](auto &ctx) { node1 = _attr(ctx); };
   return phrase_parse(data.begin(), data.end(), (int_[assign_id]), space);
 #else
@@ -119,7 +116,7 @@ bool IO::splitStringBoundary0Format(string &data, size_t &node1) {
 
 bool IO::splitStringBoundary23Format(string &data, size_t &node1, double &crest,
                                      double &supercritical) {
-#if __cplusplus > 201103L
+#if USE_BOOSTSPIRITX3
   auto assign_id = [&](auto &ctx) { node1 = _attr(ctx); };
   auto assign_crest = [&](auto &ctx) { crest = _attr(ctx); };
   auto assign_supercritical = [&](auto &ctx) { supercritical = _attr(ctx); };
@@ -139,7 +136,7 @@ bool IO::splitStringBoundary23Format(string &data, size_t &node1, double &crest,
 bool IO::splitStringBoundary24Format(string &data, size_t &node1, size_t &node2,
                                      double &crest, double &subcritical,
                                      double &supercritical) {
-#if __cplusplus > 201103L
+#if USE_BOOSTSPIRITX3
   auto assign_n1 = [&](auto &ctx) { node1 = _attr(ctx); };
   auto assign_n2 = [&](auto &ctx) { node2 = _attr(ctx); };
   auto assign_crest = [&](auto &ctx) { crest = _attr(ctx); };
@@ -165,7 +162,7 @@ bool IO::splitStringBoundary25Format(string &data, size_t &node1, size_t &node2,
                                      double &crest, double &subcritical,
                                      double &supercritical, double &pipeheight,
                                      double &pipecoef, double &pipediam) {
-#if __cplusplus > 201103L
+#if USE_BOOSTSPIRITX3
   auto assign_n1 = [&](auto &ctx) { node1 = _attr(ctx); };
   auto assign_n2 = [&](auto &ctx) { node2 = _attr(ctx); };
   auto assign_crest = [&](auto &ctx) { crest = _attr(ctx); };
@@ -197,7 +194,7 @@ bool IO::splitStringBoundary25Format(string &data, size_t &node1, size_t &node2,
 
 bool IO::splitStringAttribute1Format(string &data, size_t &node,
                                      double &value) {
-#if __cplusplus > 201103L
+#if USE_BOOSTSPIRITX3
   auto assign_id = [&](auto &ctx) { node = _attr(ctx); };
   auto assign_value = [&](auto &ctx) { value = _attr(ctx); };
   return phrase_parse(data.begin(), data.end(),
@@ -212,7 +209,7 @@ bool IO::splitStringAttribute1Format(string &data, size_t &node,
 
 bool IO::splitStringAttribute2Format(string &data, size_t &node, double &value1,
                                      double &value2) {
-#if __cplusplus > 201103L
+#if USE_BOOSTSPIRITX3
   auto assign_id = [&](auto &ctx) { node = _attr(ctx); };
   auto assign_value1 = [&](auto &ctx) { value1 = _attr(ctx); };
   auto assign_value2 = [&](auto &ctx) { value2 = _attr(ctx); };
@@ -231,7 +228,7 @@ bool IO::splitStringAttribute2Format(string &data, size_t &node, double &value1,
 
 bool IO::splitStringAttributeNFormat(string &data, size_t &node,
                                      vector<double> &values) {
-#if __cplusplus > 201103L
+#if USE_BOOSTSPIRITX3
   auto assign_id = [&](auto &ctx) { node = _attr(ctx); };
   auto push_back = [&](auto &ctx) { values.push_back(_attr(ctx)); };
   return phrase_parse(data.begin(), data.end(),
@@ -248,7 +245,7 @@ bool IO::splitStringAttributeNFormat(string &data, size_t &node,
 
 bool IO::splitStringHarmonicsElevationFormat(string &data, double &amplitude,
                                              double &phase) {
-#if __cplusplus > 201103L
+#if USE_BOOSTSPIRITX3
   auto assign_amp = [&](auto &ctx) { amplitude = _attr(ctx); };
   auto assign_pha = [&](auto &ctx) { phase = _attr(ctx); };
   return phrase_parse(data.begin(), data.end(),
@@ -265,7 +262,7 @@ bool IO::splitStringHarmonicsVelocityFormat(string &data, double &u_magnitude,
                                             double &u_phase,
                                             double &v_magnitude,
                                             double &v_phase) {
-#if __cplusplus > 201103L
+#if USE_BOOSTSPIRITX3
   auto assign_umag = [&](auto &ctx) { u_magnitude = _attr(ctx); };
   auto assign_upha = [&](auto &ctx) { u_phase = _attr(ctx); };
   auto assign_vmag = [&](auto &ctx) { v_magnitude = _attr(ctx); };
