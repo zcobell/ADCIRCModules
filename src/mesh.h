@@ -112,8 +112,9 @@ class Mesh {
   void cpp(double lambda, double phi);
   void inverseCpp(double lambda, double phi);
 
-  void toNodeShapefile(std::string outputFile);
-  void toConnectivityShapefile(std::string outputFile);
+  void toNodeShapefile(const std::string &outputFile);
+  void toConnectivityShapefile(const std::string &outputFile);
+  void toElementShapefile(const std::string &outputFile);
 
   void buildNodalSearchTree();
   void buildElementalSearchTree();

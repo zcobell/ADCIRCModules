@@ -23,7 +23,8 @@ int main(int argc, char *argv[]) {
   Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(string("test_files/ms-riv.grd"));
   mesh->read();
   mesh->toNodeShapefile("test_files/ms-riv-nodes.shp");
-  mesh->toConnectivityShapefile("test_files/ms-riv-elements.shp");
+  mesh->toConnectivityShapefile("test_files/ms-riv-connectivity.shp");
+  mesh->toElementShapefile("test_files/ms-riv-elements.shp");
   delete mesh;
   return 0;
 

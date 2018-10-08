@@ -17,6 +17,8 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "mesh.h"
+#include <algorithm>
+#include <list>
 #include <string>
 #include "boost/format.hpp"
 #include "error.h"
@@ -685,7 +687,7 @@ void Mesh::reproject(int epsg) {
  * @brief Writes the mesh nodes or elements into ESRI shapefile format
  * @param outputFile output file with .shp extension
  */
-void Mesh::toNodeShapefile(const string outputFile) {
+void Mesh::toNodeShapefile(const string &outputFile) {
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POINT);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
 
@@ -717,11 +719,13 @@ void Mesh::toNodeShapefile(const string outputFile) {
   return;
 }
 
-void Mesh::toConnectivityShapefile(const string outputFile) {
+void Mesh::toConnectivityShapefile(const string &outputFile) {
+  std::vector<std::pair<Node *, Node *>> legs;
+  legs.reserve(this->m_numElements * 4);
+
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_ARC);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
 
-  DBFAddField(dbfid, "elemid", FTInteger, 16, 0);
   DBFAddField(dbfid, "node1", FTInteger, 16, 0);
   DBFAddField(dbfid, "node2", FTInteger, 16, 0);
   DBFAddField(dbfid, "znode1", FTDouble, 16, 4);
@@ -729,31 +733,103 @@ void Mesh::toConnectivityShapefile(const string outputFile) {
 
   for (auto &e : this->m_elements) {
     for (int j = 0; j < e.n(); ++j) {
-      int elemid, nodeid[2];
-      double latitude[2], longitude[2], elevation[2];
-      std::pair<Node *, Node *> p = e.elementLeg(j);
-
-      elemid = e.id();
-      nodeid[0] = p.first->id();
-      nodeid[1] = p.second->id();
-      longitude[0] = p.first->x();
-      longitude[1] = p.second->x();
-      latitude[0] = p.first->y();
-      latitude[1] = p.second->y();
-      elevation[0] = p.first->z();
-      elevation[1] = p.second->z();
-
-      SHPObject *shpobj =
-          SHPCreateSimpleObject(SHPT_ARC, 2, longitude, latitude, elevation);
-      int shp_index = SHPWriteObject(shpid, -1, shpobj);
-      SHPDestroyObject(shpobj);
-
-      DBFWriteIntegerAttribute(dbfid, shp_index, 0, elemid);
-      DBFWriteIntegerAttribute(dbfid, shp_index, 1, nodeid[0]);
-      DBFWriteIntegerAttribute(dbfid, shp_index, 2, nodeid[1]);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 3, elevation[0]);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 4, elevation[1]);
+      std::pair<Node *, Node *> p1 = e.elementLeg(j);
+      std::pair<Node *, Node *> p2;
+      if (p1.first->id() > p1.second->id()) {
+        p2 = std::pair<Node *, Node *>(p1.second, p1.first);
+      } else {
+        p2 = std::move(p1);
+      }
+      if (std::find(legs.begin(), legs.end(), p2) == legs.end()) {
+        legs.push_back(p2);
+      }
     }
+  }
+
+  for (auto &l : legs) {
+    double latitude[2], longitude[2], elevation[2];
+    int nodeid[2];
+
+    nodeid[0] = l.first->id();
+    nodeid[1] = l.second->id();
+    longitude[0] = l.first->x();
+    longitude[1] = l.second->x();
+    latitude[0] = l.first->y();
+    latitude[1] = l.second->y();
+    elevation[0] = l.first->z();
+    elevation[1] = l.second->z();
+
+    SHPObject *shpobj =
+        SHPCreateSimpleObject(SHPT_ARC, 2, longitude, latitude, elevation);
+    int shp_index = SHPWriteObject(shpid, -1, shpobj);
+    SHPDestroyObject(shpobj);
+
+    DBFWriteIntegerAttribute(dbfid, shp_index, 0, nodeid[0]);
+    DBFWriteIntegerAttribute(dbfid, shp_index, 1, nodeid[1]);
+    DBFWriteDoubleAttribute(dbfid, shp_index, 2, elevation[0]);
+    DBFWriteDoubleAttribute(dbfid, shp_index, 3, elevation[1]);
+  }
+
+  DBFClose(dbfid);
+  SHPClose(shpid);
+
+  return;
+}
+
+void Mesh::toElementShapefile(const string &outputFile) {
+  SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POLYGON);
+  DBFHandle dbfid = DBFCreate(outputFile.c_str());
+  DBFAddField(dbfid, "elementid", FTInteger, 16, 0);
+  DBFAddField(dbfid, "node1", FTInteger, 16, 0);
+  DBFAddField(dbfid, "node2", FTInteger, 16, 0);
+  DBFAddField(dbfid, "node3", FTInteger, 16, 0);
+  DBFAddField(dbfid, "node4", FTInteger, 16, 0);
+  DBFAddField(dbfid, "znode1", FTDouble, 16, 4);
+  DBFAddField(dbfid, "znode2", FTDouble, 16, 4);
+  DBFAddField(dbfid, "znode3", FTDouble, 16, 4);
+  DBFAddField(dbfid, "znode4", FTDouble, 16, 4);
+  DBFAddField(dbfid, "zmean", FTDouble, 16, 4);
+
+  for (auto &e : this->m_elements) {
+    double zmean;
+    double *latitude = new double(e.n());
+    double *longitude = new double(e.n());
+    double nodeid[4], nodez[4];
+    int id = static_cast<int>(e.id());
+
+    zmean = 0.0;
+    for (size_t i = 0; i < e.n(); ++i) {
+      longitude[i] = e.node(i)->x();
+      latitude[i] = e.node(i)->y();
+      nodez[i] = e.node(i)->z();
+      nodeid[i] = e.node(i)->id();
+      zmean += nodez[i];
+    }
+    zmean = zmean / e.n();
+
+    if (e.n() == 3) {
+      nodez[3] = -9999.0;
+      nodeid[3] = -1;
+    }
+
+    SHPObject *shpobj =
+        SHPCreateSimpleObject(SHPT_POLYGON, e.n(), longitude, latitude, nodez);
+    int shp_index = SHPWriteObject(shpid, -1, shpobj);
+    SHPDestroyObject(shpobj);
+
+    DBFWriteIntegerAttribute(dbfid, shp_index, 0, id);
+    DBFWriteIntegerAttribute(dbfid, shp_index, 1, nodeid[0]);
+    DBFWriteIntegerAttribute(dbfid, shp_index, 2, nodeid[1]);
+    DBFWriteIntegerAttribute(dbfid, shp_index, 3, nodeid[2]);
+    DBFWriteIntegerAttribute(dbfid, shp_index, 4, nodeid[3]);
+    DBFWriteDoubleAttribute(dbfid, shp_index, 5, nodez[0]);
+    DBFWriteDoubleAttribute(dbfid, shp_index, 6, nodez[1]);
+    DBFWriteDoubleAttribute(dbfid, shp_index, 7, nodez[2]);
+    DBFWriteDoubleAttribute(dbfid, shp_index, 8, nodez[3]);
+    DBFWriteDoubleAttribute(dbfid, shp_index, 9, zmean);
+
+    delete latitude;
+    delete longitude;
   }
 
   DBFClose(dbfid);
