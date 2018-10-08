@@ -71,7 +71,7 @@ bool IO::splitStringElemFormat(string &data, size_t &id,
                                vector<size_t> &nodes) {
   return qi::phrase_parse(
       data.begin(), data.end(),
-      (qi::int_[phoenix::ref(id)] >> qi::int_ >>
+      (qi::int_[phoenix::ref(id) = qi::_1] >> qi::int_ >>
        *(qi::int_[phoenix::push_back(phoenix::ref(nodes), qi::_1)])),
       ascii::space);
 }
