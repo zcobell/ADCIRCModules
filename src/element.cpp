@@ -168,6 +168,9 @@ string Element::toString() {
                       this->id() % this->n() % this->node(0)->id() %
                       this->node(1)->id() % this->node(2)->id() %
                       this->node(3)->id());
+  } else {
+    adcircmodules_throw_exception("Invalid number of nodes in element");
+    return string();
   }
 }
 
