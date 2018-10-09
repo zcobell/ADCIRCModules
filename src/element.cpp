@@ -226,7 +226,7 @@ double Element::triangleArea(Point &a, Point &b, Point &c) {
  * @brief Determine if a point lies within an element
  * @param x x-coordinate
  * @param y y-coordinate
- * @return
+ * @return true if point lies within element, false otherwise
  */
 bool Element::isInside(double x, double y) {
   return this->isInside(Point(x, y));
@@ -234,7 +234,7 @@ bool Element::isInside(double x, double y) {
 
 /**
  * @param location Point to check
- * @return
+ * @return true if point lies within element, false otherwise
  */
 bool Element::isInside(Point location) {
   if (this->n() == 3) {

@@ -19,6 +19,7 @@
 #include "mesh.h"
 #include <algorithm>
 #include <list>
+#include <set>
 #include <string>
 #include "boost/format.hpp"
 #include "error.h"
@@ -511,6 +512,10 @@ size_t Mesh::totalLandBoundaryNodes() {
   return this->m_totalLandBoundaryNodes;
 }
 
+/**
+ * @brief Sets the z-values of the mesh to the values found within a vector
+ * @param z values that will be set to the mesh nodes z attribute
+ */
 void Mesh::setZ(std::vector<double> z) {
   assert(z.size() == this->m_numNodes);
   for (size_t i = 0; i < this->m_numNodes; ++i) {
@@ -684,7 +689,7 @@ void Mesh::reproject(int epsg) {
 }
 
 /**
- * @brief Writes the mesh nodes or elements into ESRI shapefile format
+ * @brief Writes the mesh nodes into ESRI shapefile format
  * @param outputFile output file with .shp extension
  */
 void Mesh::toNodeShapefile(const string &outputFile) {
@@ -719,6 +724,10 @@ void Mesh::toNodeShapefile(const string &outputFile) {
   return;
 }
 
+/**
+ * @brief Writes the mesh connectivity into ESRI shapefile format
+ * @param outputFile output file with .shp extension
+ */
 void Mesh::toConnectivityShapefile(const string &outputFile) {
   std::vector<std::pair<Node *, Node *>> legs;
   legs.reserve(this->m_numElements * 4);
@@ -740,11 +749,14 @@ void Mesh::toConnectivityShapefile(const string &outputFile) {
       } else {
         p2 = std::move(p1);
       }
-      if (std::find(legs.begin(), legs.end(), p2) == legs.end()) {
-        legs.push_back(p2);
-      }
+      legs.push_back(p2);
     }
   }
+
+  std::set<std::pair<Node *, Node *>> s(legs.begin(), legs.end());
+  legs.clear();
+  legs.assign(s.begin(), s.end());
+  s.clear();
 
   for (auto &l : legs) {
     double latitude[2], longitude[2], elevation[2];
@@ -776,8 +788,12 @@ void Mesh::toConnectivityShapefile(const string &outputFile) {
   return;
 }
 
+/**
+ * @brief Writes the mesh elements as polygons into ESRI shapefile format
+ * @param outputFile output file with .shp extension
+ */
 void Mesh::toElementShapefile(const string &outputFile) {
-  SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POLYGON);
+  SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POLYGONZ);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
   DBFAddField(dbfid, "elementid", FTInteger, 16, 0);
   DBFAddField(dbfid, "node1", FTInteger, 16, 0);
@@ -813,7 +829,7 @@ void Mesh::toElementShapefile(const string &outputFile) {
     }
 
     SHPObject *shpobj =
-        SHPCreateSimpleObject(SHPT_POLYGON, e.n(), longitude, latitude, nodez);
+        SHPCreateSimpleObject(SHPT_POLYGONZ, e.n(), longitude, latitude, nodez);
     int shp_index = SHPWriteObject(shpid, -1, shpobj);
     SHPDestroyObject(shpobj);
 
@@ -904,6 +920,9 @@ void Mesh::buildElementalSearchTree() {
   return;
 }
 
+/**
+ * @brief Deletes the nodal search tree
+ */
 void Mesh::deleteNodalSearchTree() {
   if (this->nodalSearchTreeInitialized()) {
     this->m_nodalSearchTree.reset();
@@ -911,6 +930,9 @@ void Mesh::deleteNodalSearchTree() {
   return;
 }
 
+/**
+ * @brief Deletes the elemental search tree
+ */
 void Mesh::deleteElementalSearchTree() {
   if (this->elementalSearchTreeInitialized()) {
     this->m_elementalSearchTree.reset();
@@ -1121,6 +1143,12 @@ size_t Mesh::elementIndexById(size_t id) {
   }
 }
 
+/**
+ * @brief Returns a vector of the x-coordinates
+ * @return vector of x coordinates
+ *
+ * Implemented mostly for the python interface
+ */
 vector<double> Mesh::x() {
   vector<double> x;
   x.reserve(this->numNodes());
@@ -1130,6 +1158,12 @@ vector<double> Mesh::x() {
   return x;
 }
 
+/**
+ * @brief Returns a vector of the y-coordinates
+ * @return vector of y coordinates
+ *
+ * Implemented mostly for the python interface
+ */
 vector<double> Mesh::y() {
   vector<double> y;
   y.reserve(this->numNodes());
@@ -1139,6 +1173,12 @@ vector<double> Mesh::y() {
   return y;
 }
 
+/**
+ * @brief Returns a vector of the z-coordinates
+ * @return vector of z coordinates
+ *
+ * Implemented mostly for the python interface
+ */
 vector<double> Mesh::z() {
   vector<double> z;
   z.reserve(this->numNodes());
@@ -1148,6 +1188,12 @@ vector<double> Mesh::z() {
   return z;
 }
 
+/**
+ * @brief Returns a 2d-vector of the xyz-coordinates
+ * @return 2d-vector of xyz coordinates
+ *
+ * Implemented mostly for the python interface
+ */
 vector<vector<double>> Mesh::xyz() {
   vector<vector<double>> xyz;
   xyz.resize(3);
@@ -1157,6 +1203,12 @@ vector<vector<double>> Mesh::xyz() {
   return xyz;
 }
 
+/**
+ * @brief Returns a 2d-vector of the mesh connectivity
+ * @return 2d-vector of mesh connectivity
+ *
+ * Implemented mostly for the python interface
+ */
 vector<vector<size_t>> Mesh::connectivity() {
   vector<vector<size_t>> conn;
   conn.reserve(this->numElements());
@@ -1171,6 +1223,11 @@ vector<vector<size_t>> Mesh::connectivity() {
   return conn;
 }
 
+/**
+ * @brief Convertes mesh to the carte parallelogrammatique projection
+ *
+ * This is the projection used within adcirc internally
+ */
 void Mesh::cpp(double lambda, double phi) {
   for (auto &n : this->m_nodes) {
     Point i = Point(n.x(), n.y());
@@ -1182,6 +1239,9 @@ void Mesh::cpp(double lambda, double phi) {
   return;
 }
 
+/**
+ * @brief Convertes mesh back from the carte parallelogrammatique projection
+ */
 void Mesh::inverseCpp(double lambda, double phi) {
   for (auto &n : this->m_nodes) {
     Point i = Point(n.x(), n.y());
@@ -1193,10 +1253,20 @@ void Mesh::inverseCpp(double lambda, double phi) {
   return;
 }
 
+/**
+ * @brief Finds the nearest mesh node to the provided x,y
+ * @param x location to search
+ * @param y location to search
+ * @return nearest node index
+ */
 size_t Mesh::findNearestNode(double x, double y) {
   return this->findNearestNode(Point(x, y));
 }
 
+/**
+ * @param location location to search
+ * @return nearest node index
+ */
 size_t Mesh::findNearestNode(Point location) {
   if (!this->nodalSearchTreeInitialized()) {
     this->buildNodalSearchTree();
@@ -1204,10 +1274,20 @@ size_t Mesh::findNearestNode(Point location) {
   return this->nodalSearchTree()->findNearest(location);
 }
 
+/**
+ * @brief Finds the nearest mesh element to the provided x,y
+ * @param x location to search
+ * @param y location to search
+ * @return nearest element index
+ */
 size_t Mesh::findNearestElement(double x, double y) {
   return this->findNearestElement(Point(x, y));
 }
 
+/**
+ * @param location location to search
+ * @return nearest element index
+ */
 size_t Mesh::findNearestElement(Point location) {
   if (!this->elementalSearchTreeInitialized()) {
     this->buildElementalSearchTree();
@@ -1215,10 +1295,21 @@ size_t Mesh::findNearestElement(Point location) {
   return this->elementalSearchTree()->findNearest(location);
 }
 
+/**
+ * @brief Finds the mesh element that a given location lies within
+ * @param x location to search
+ * @param y location to search
+ * @return index of nearest element, -1 if not found
+ */
 size_t Mesh::findElement(double x, double y) {
   return this->findElement(Point(x, y));
 }
 
+/**
+ * @brief Finds the mesh element that a given location lies within
+ * @param location location to search
+ * @return index of nearest element, -1 if not found
+ */
 size_t Mesh::findElement(Point location) {
   const int searchDepth = 20;
 
