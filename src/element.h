@@ -72,8 +72,12 @@ class Element {
 
   double elementSize(bool geodesic = true);
 
+  void sortVerticiesAboutCenter();
+
   std::pair<Adcirc::Geometry::Node *, Adcirc::Geometry::Node *> elementLeg(
       size_t i);
+
+  void getElementCenter(double &xc, double &yc);
 
  private:
   bool isInsideTriangle(Point location);

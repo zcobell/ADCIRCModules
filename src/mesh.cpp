@@ -245,6 +245,9 @@ void Mesh::read2dmMesh() {
   return;
 }
 
+/**
+ * @brief Read a DFlow-FM unstructured mesh file
+ */
 void Mesh::readDflowMesh() {
   int ncid;
   int ierr = nc_open(this->m_filename.c_str(), NC_NOWRITE, &ncid);
@@ -342,6 +345,7 @@ void Mesh::readDflowMesh() {
           Element(i + 1, &this->m_nodes[n[0] - 1], &this->m_nodes[n[1] - 1],
                   &this->m_nodes[n[2] - 1], &this->m_nodes[n[3] - 1]);
     }
+    this->m_elements[i].sortVerticiesAboutCenter();
   }
 
   free(elem);
@@ -349,6 +353,11 @@ void Mesh::readDflowMesh() {
   return;
 }
 
+/**
+ * @brief Reads the data from the 2dm file into the appropriate vector
+ * @param[out] nodes node cards vector
+ * @param[out] elements element cards vector
+ */
 void Mesh::read2dmData(std::vector<string> &nodes,
                        std::vector<string> &elements) {
   std::fstream fid(this->filename());
@@ -377,6 +386,10 @@ void Mesh::read2dmData(std::vector<string> &nodes,
   return;
 }
 
+/**
+ * @brief Parses the node data into data structures
+ * @param nodes vector of node data from 2dm file
+ */
 void Mesh::read2dmNodes(std::vector<string> &nodes) {
   this->m_nodes.reserve(nodes.size());
   this->m_numNodes = nodes.size();
@@ -388,6 +401,10 @@ void Mesh::read2dmNodes(std::vector<string> &nodes) {
   }
 }
 
+/**
+ * @brief Parses the element data into data structures
+ * @param elements vector of element data from the 2dm file
+ */
 void Mesh::read2dmElements(std::vector<string> &elements) {
   this->m_elements.reserve(elements.size());
   this->m_numElements = elements.size();
@@ -977,14 +994,16 @@ void Mesh::toNodeShapefile(const string &outputFile) {
 
 /**
  * @brief Generates a table containing the node-to-node links that form elements
- * @return legs vector of unique node pairs
+ * @return vector of unique node pairs
  */
 std::vector<std::pair<Node *, Node *>> Mesh::generateLinkTable() {
   vector<pair<Node *, Node *>> legs;
   legs.reserve(this->m_numElements * 4);
   for (auto &e : this->m_elements) {
-    for (int j = 0; j < e.n(); ++j) {
-      pair<Node *, Node *> p1 = e.elementLeg(j);
+    Element e_s = e;
+    e_s.sortVerticiesAboutCenter();
+    for (int j = 0; j < e_s.n(); ++j) {
+      pair<Node *, Node *> p1 = e_s.elementLeg(j);
       pair<Node *, Node *> p2;
       if (p1.first->id() > p1.second->id()) {
         p2 = pair<Node *, Node *>(p1.second, p1.first);
@@ -1431,7 +1450,7 @@ size_t Mesh::getMaxNodesPerElement() {
 
 /**
  * @brief Writes the mesh to the DFlow-FM format
- * @param filename name of the output file (_net.nc)
+ * @param filename name of the output file (*_net.nc)
  */
 void Mesh::writeDflowMesh(const string &filename) {
   vector<pair<Node *, Node *>> links = this->generateLinkTable();
