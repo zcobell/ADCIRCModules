@@ -661,6 +661,7 @@ vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
   this->checkRasterOpen();
   this->checkMatchingCoorindateSystems();
   this->assignInterpolationFunctionPointer(useLookupTable);
+  boost::progress_display *progress = nullptr;
 
   if (this->m_rasterInMemory) {
     this->m_raster.get()->read();
@@ -670,13 +671,15 @@ vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
   vector<double> result;
   result.resize(this->m_mesh->numNodes());
 
-  boost::progress_display progress(this->m_mesh->numNodes());
+  if (this->showProgressBar()) {
+    progress = new boost::progress_display(this->m_mesh->numNodes());
+  }
 
 #pragma omp parallel for schedule(dynamic) shared(progress)
   for (size_t i = 0; i < this->m_mesh->numNodes(); ++i) {
     if (this->m_showProgressBar) {
 #pragma omp critical
-      ++progress;
+       ++(*progress);
     }
 
     Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
@@ -686,11 +689,14 @@ vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
     result[i] = v * this->m_rasterMultiplier + this->m_datumShift;
   }
 
+  if (this->showProgressBar()) delete progress;
+
   return result;
 }
 
 vector<vector<double> > Griddata::computeDirectionalWindReduction(
     bool useLookupTable) {
+  boost::progress_display *progress = nullptr;
   this->checkRasterOpen();
   this->checkMatchingCoorindateSystems();
   this->buildWindDirectionLookup();
@@ -703,13 +709,15 @@ vector<vector<double> > Griddata::computeDirectionalWindReduction(
   vector<vector<double> > result;
   result.resize(this->m_mesh->numNodes());
 
-  boost::progress_display progress(this->m_mesh->numNodes());
+  if (this->showProgressBar()) {
+    progress = new boost::progress_display(this->m_mesh->numNodes());
+  }
 
 #pragma omp parallel for schedule(dynamic) shared(progress)
   for (size_t i = 0; i < this->m_mesh->numNodes(); ++i) {
     if (this->m_showProgressBar) {
 #pragma omp critical
-      ++progress;
+      ++(*progress);
     }
 
     if (this->m_interpolationFlags[i] != NoMethod) {
@@ -720,6 +728,8 @@ vector<vector<double> > Griddata::computeDirectionalWindReduction(
       }
     }
   }
+
+  if (this->showProgressBar()) delete progress;
 
   return result;
 }
