@@ -46,6 +46,19 @@ int IO::splitString(string &data, vector<string> &fresult) {
   return Adcirc::NoError;
 }
 
+std::string IO::getFileExtension(const string &filename) {
+  size_t pos = filename.rfind('.');
+  if (pos != std::string::npos) {
+    return filename.substr(pos);
+  }
+  return "";
+}
+
+bool IO::fileExists(const string &filename) {
+  std::ifstream ifile(filename.c_str());
+  return (bool)ifile;
+}
+
 #ifndef USE_BOOSTSPIRITX3
 
 #include "boost/config/warning_disable.hpp"
@@ -163,6 +176,25 @@ bool IO::splitStringHarmonicsVelocityFormat(string &data, double &u_magnitude,
                            qi::double_[phoenix::ref(v_magnitude) = qi::_1] >>
                            qi::double_[phoenix::ref(v_phase) = qi::_1]),
                           ascii::space);
+}
+
+bool IO::splitString2dmNodeFormat(string &data, size_t &id, double &x,
+                                  double &y, double &z) {
+  return qi::phrase_parse(data.begin() + 3, data.end(),
+                          (qi::int_[phoenix::ref(id) = qi::_1] >>
+                           qi::double_[phoenix::ref(x) = qi::_1] >>
+                           qi::double_[phoenix::ref(y) = qi::_1] >>
+                           qi::double_[phoenix::ref(z) = qi::_1]),
+                          ascii::space);
+}
+
+bool IO::splitString2dmElementFormat(string &data, size_t &id,
+                                     std::vector<size_t> &nodes) {
+  return qi::phrase_parse(
+      data.begin() + 3, data.end(),
+      (qi::int_[phoenix::ref(id) = qi::_1] >>
+       *(qi::int_[phoenix::push_back(phoenix::ref(nodes), qi::_1)])),
+      ascii::space);
 }
 
 #else

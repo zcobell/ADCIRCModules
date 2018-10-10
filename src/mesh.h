@@ -70,15 +70,26 @@ class Mesh {
 
   ~Mesh();
 
+  enum MeshFormat {
+    /// Unknown mesh format
+    MESH_UNKNOWN,
+    /// ADCIRC mesh format
+    MESH_ADCIRC,
+    /// Aquaveo generic mesh format
+    MESH_2DM,
+    /// Deltares D-Flow FM format (unavailable)
+    MESH_DFLOW
+  };
+
   std::vector<double> x();
   std::vector<double> y();
   std::vector<double> z();
   std::vector<std::vector<double>> xyz();
   std::vector<std::vector<size_t>> connectivity();
 
-  void read();
+  void read(MeshFormat format = MESH_UNKNOWN);
 
-  void write(const std::string &outputFile);
+  void write(const std::string &outputFile, MeshFormat = MESH_UNKNOWN);
 
   std::string filename() const;
   void setFilename(const std::string &filename);
@@ -158,16 +169,31 @@ class Mesh {
   QKdtree2 *nodalSearchTree() const;
   QKdtree2 *elementalSearchTree() const;
 
+  std::vector<double> computeMeshSize();
+
  private:
-  void _readMeshHeader(std::fstream &fid);
-  void _readNodes(std::fstream &fid);
-  void _readElements(std::fstream &fid);
-  void _readOpenBoundaries(std::fstream &fid);
-  void _readLandBoundaries(std::fstream &fid);
+  static Mesh::MeshFormat getMeshFormat(const std::string &filename);
+  void readAdcircMesh();
+  void readAdcircMeshHeader(std::fstream &fid);
+  void readAdcircNodes(std::fstream &fid);
+  void readAdcircElements(std::fstream &fid);
+  void readAdcircOpenBoundaries(std::fstream &fid);
+  void readAdcircLandBoundaries(std::fstream &fid);
+
+  void read2dmMesh();
+  void read2dmData(std::vector<std::string> &nodes,
+                   std::vector<std::string> &elements);
+  void read2dmNodes(std::vector<std::string> &nodes);
+  void read2dmElements(std::vector<std::string> &elements);
+
   void _init();
+
+  void writeAdcircMesh(const std::string &filename);
+  void write2dmMesh(const std::string &filename);
 
   std::string m_filename;
   std::string m_meshHeaderString;
+  std::string m_meshHeaderString2;
   std::vector<Adcirc::Geometry::Node> m_nodes;
   std::vector<Adcirc::Geometry::Element> m_elements;
   std::vector<Adcirc::Geometry::Boundary> m_openBoundaries;

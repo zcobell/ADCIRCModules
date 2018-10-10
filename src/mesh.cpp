@@ -22,6 +22,7 @@
 #include <set>
 #include <string>
 #include "boost/format.hpp"
+#include "elementtable.h"
 #include "error.h"
 #include "io.h"
 #include "kdtree2lib.h"
@@ -160,17 +161,54 @@ void Mesh::setNumLandBoundaries(size_t numLandBoundaries) {
 }
 
 /**
- * @brief Reads an ASCII formatted ADCIRC mesh. Note this will be extended in
- * the future to netCDF formatted meshes
+ * @brief Reads a specified mesh format
+ * @param[optional] format MeshFormat enum describing the format of the mesh
+ *
+ * Reads the unstructured mesh into a mesh object. If no format is
+ * specified, then it will be guessed from the file extension
  */
-void Mesh::read() {
+void Mesh::read(MeshFormat format) {
+  if (this->m_filename == string()) {
+    adcircmodules_throw_exception("No filename has been specified.");
+  }
+  if (!IO::fileExists(this->m_filename)) {
+    adcircmodules_throw_exception("File does not exist.");
+  }
+
+  MeshFormat fmt;
+  if (format == MESH_UNKNOWN) {
+    fmt = this->getMeshFormat(this->m_filename);
+  } else {
+    fmt = format;
+  }
+
+  switch (fmt) {
+    case MESH_ADCIRC:
+      this->readAdcircMesh();
+      break;
+    case MESH_2DM:
+      this->read2dmMesh();
+      break;
+    default:
+      adcircmodules_throw_exception("Invalid mesh format selected.");
+      break;
+  }
+  return;
+}
+
+/**
+ * @brief Reads an ASCII formatted ADCIRC mesh.
+ *
+ * Note this will be extended in the future to netCDF formatted meshes
+ */
+void Mesh::readAdcircMesh() {
   std::fstream fid(this->filename());
 
-  this->_readMeshHeader(fid);
-  this->_readNodes(fid);
-  this->_readElements(fid);
-  this->_readOpenBoundaries(fid);
-  this->_readLandBoundaries(fid);
+  this->readAdcircMeshHeader(fid);
+  this->readAdcircNodes(fid);
+  this->readAdcircElements(fid);
+  this->readAdcircOpenBoundaries(fid);
+  this->readAdcircLandBoundaries(fid);
 
   fid.close();
 
@@ -178,10 +216,102 @@ void Mesh::read() {
 }
 
 /**
+ * @brief Reads an Aquaveo generic mesh format (2dm)
+ *
+ */
+void Mesh::read2dmMesh() {
+  vector<string> nodes, elements;
+  this->read2dmData(nodes, elements);
+  this->read2dmNodes(nodes);
+  this->read2dmElements(elements);
+
+  //...The 2dm format doesn't correctly maintain all
+  //   boundary information (i.e. weirs, x-boundary pipes, etc).
+  //   Therefore, we're just ditching it completely and moving on
+  this->m_numOpenBoundaries = 0;
+  this->m_numLandBoundaries = 0;
+  this->m_totalOpenBoundaryNodes = 0;
+  this->m_totalLandBoundaryNodes = 0;
+  return;
+}
+
+void Mesh::read2dmData(std::vector<string> &nodes,
+                       std::vector<string> &elements) {
+  std::fstream fid(this->filename());
+
+  std::getline(fid, this->m_meshHeaderString);
+  std::getline(fid, this->m_meshHeaderString2);
+
+  string templine;
+  while (std::getline(fid, templine)) {
+    vector<string> templist;
+    IO::splitString(templine, templist);
+    if (templist[0] == "ND") {
+      nodes.push_back(templine);
+    } else if (templist[0] == "E4Q" || templist[0] == "E3T") {
+      elements.push_back(templine);
+    }
+  }
+  fid.close();
+  return;
+}
+
+void Mesh::read2dmNodes(std::vector<string> &nodes) {
+  this->m_nodes.reserve(nodes.size());
+  this->m_numNodes = nodes.size();
+  for (auto &n : nodes) {
+    size_t id;
+    double x, y, z;
+    IO::splitString2dmNodeFormat(n, id, x, y, z);
+    this->m_nodes.push_back(Node(id, x, y, z));
+  }
+}
+
+void Mesh::read2dmElements(std::vector<string> &elements) {
+  this->m_elements.reserve(elements.size());
+  this->m_numElements = elements.size();
+  for (auto &e : elements) {
+    size_t id;
+    vector<size_t> n;
+    n.reserve(5);
+    IO::splitString2dmElementFormat(e, id, n);
+    if (n.size() == 4) {
+      this->m_elements.push_back(Element(id, &this->m_nodes[n[0] - 1],
+                                         &this->m_nodes[n[1] - 1],
+                                         &this->m_nodes[n[2] - 1]));
+    } else if (n.size() == 5) {
+      this->m_elements.push_back(
+          Element(id, &this->m_nodes[n[0] - 1], &this->m_nodes[n[1] - 1],
+                  &this->m_nodes[n[2] - 1], &this->m_nodes[n[3] - 1]));
+    } else {
+      adcircmodules_throw_exception("Too many nodes detected in element.");
+    }
+  }
+  return;
+}
+
+/**
+ * @brief Determine the mesh format based upon file extension
+ * @return MeshFormat enum
+ */
+Mesh::MeshFormat Mesh::getMeshFormat(const string &filename) {
+  string extension = IO::getFileExtension(filename);
+  if (extension == ".14" || extension == ".grd") {
+    return MESH_ADCIRC;
+  } else if (extension == ".2dm") {
+    return MESH_2DM;
+  } else if (filename.find("_net.nc") != filename.npos) {
+    return MESH_DFLOW;
+  } else {
+    return MESH_UNKNOWN;
+  }
+}
+
+/**
  * @brief Reads the mesh title line and node/element dimensional data
  * @param fid std::fstream reference for the currently opened mesh
  */
-void Mesh::_readMeshHeader(std::fstream &fid) {
+void Mesh::readAdcircMeshHeader(std::fstream &fid) {
   bool ok;
   size_t tempInt;
   string tempLine;
@@ -219,7 +349,7 @@ void Mesh::_readMeshHeader(std::fstream &fid) {
  * @brief Reads the node section of the ASCII formatted mesh
  * @param fid std::fstream reference for the currently opened mesh
  */
-void Mesh::_readNodes(std::fstream &fid) {
+void Mesh::readAdcircNodes(std::fstream &fid) {
   this->m_nodes.resize(this->numNodes());
 
   size_t i = 0;
@@ -256,7 +386,7 @@ void Mesh::_readNodes(std::fstream &fid) {
  * @brief Reads the elements section of the ASCII mesh
  * @param fid std::fstream reference for the currently opened mesh
  */
-void Mesh::_readElements(std::fstream &fid) {
+void Mesh::readAdcircElements(std::fstream &fid) {
   size_t id;
   string tempLine;
 
@@ -321,7 +451,7 @@ void Mesh::_readElements(std::fstream &fid) {
  * @brief Reads the open boundaries section of the ASCII formatted mesh file
  * @param fid std::fstream reference for the currently opened mesh
  */
-void Mesh::_readOpenBoundaries(std::fstream &fid) {
+void Mesh::readAdcircOpenBoundaries(std::fstream &fid) {
   string tempLine;
   vector<string> tempList;
 
@@ -373,7 +503,7 @@ void Mesh::_readOpenBoundaries(std::fstream &fid) {
  * @brief Reads the land boundaries section of the ASCII formatted mesh file
  * @param fid std::fstream reference for the currently opened mesh
  */
-void Mesh::_readLandBoundaries(std::fstream &fid) {
+void Mesh::readAdcircLandBoundaries(std::fstream &fid) {
   string tempLine;
   vector<string> tempList;
 
@@ -941,8 +1071,8 @@ void Mesh::deleteElementalSearchTree() {
 }
 
 /**
- * @brief Returns a boolean value determining if the nodal search tree has been
- * initialized
+ * @brief Returns a boolean value determining if the nodal search tree has
+ * been initialized
  * @return true if the search tree is initialized
  */
 bool Mesh::nodalSearchTreeInitialized() {
@@ -1052,27 +1182,54 @@ void Mesh::deleteElement(size_t index) {
 /**
  * @brief Writes an Mesh object to disk in ASCII format
  * @param filename name of the output file to write
+ * @param format format specified for the output file
+ *
+ * If no output specifier is supplied, format is guessed from file extension.
  */
-void Mesh::write(const string &filename) {
-  string tempString;
+void Mesh::write(const string &outputFile, Mesh::MeshFormat format) {
+  MeshFormat fmt;
+  if (format == MESH_UNKNOWN) {
+    fmt = this->getMeshFormat(outputFile);
+  } else {
+    fmt = format;
+  }
+
+  switch (fmt) {
+    case MESH_ADCIRC:
+      this->writeAdcircMesh(outputFile);
+      break;
+    case MESH_2DM:
+      this->write2dmMesh(outputFile);
+      break;
+    default:
+      adcircmodules_throw_exception("No valid mesh format specified.");
+      break;
+  }
+}
+
+/**
+ * @brief Writes an Mesh object to disk in ADCIRC ASCII format
+ * @param filename name of the output file to write
+ */
+void Mesh::writeAdcircMesh(const string &filename) {
   std::ofstream outputFile;
 
   outputFile.open(filename);
 
   //...Write the header
   outputFile << this->meshHeaderString() << "\n";
-  tempString = boost::str(boost::format("%11i %11i") % this->numElements() %
-                          this->numNodes());
+  string tempString = boost::str(boost::format("%11i %11i") %
+                                 this->numElements() % this->numNodes());
   outputFile << tempString << "\n";
 
   //...Write the mesh nodes
   for (auto n : this->m_nodes) {
-    outputFile << n.toString(this->isLatLon()) << "\n";
+    outputFile << n.toAdcircString(this->isLatLon()) << "\n";
   }
 
   //...Write the mesh elements
   for (auto &e : this->m_elements) {
-    outputFile << e.toString() << "\n";
+    outputFile << e.toAdcircString() << "\n";
   }
 
   //...Write the open boundary header
@@ -1100,6 +1257,32 @@ void Mesh::write(const string &filename) {
   //...Close the file
   outputFile.close();
 
+  return;
+}
+
+/**
+ * @brief Writes an Mesh object to disk in Aquaveo 2dm ASCII format
+ * @param filename name of the output file to write
+ */
+void Mesh::write2dmMesh(const string &filename) {
+  std::ofstream outputFile;
+  outputFile.open(filename);
+
+  //...Write the header
+  outputFile << this->meshHeaderString() << "\n";
+  outputFile << this->m_meshHeaderString2 << "\n";
+
+  //...Elements
+  for (auto &e : this->m_elements) {
+    outputFile << e.to2dmString() << "\n";
+  }
+
+  //...Nodes
+  for (auto &n : this->m_nodes) {
+    outputFile << n.to2dmString(this->isLatLon()) << "\n";
+  }
+
+  outputFile.close();
   return;
 }
 
@@ -1327,4 +1510,32 @@ size_t Mesh::findElement(Point location) {
     }
   }
   return -1;
+}
+
+/**
+ * @brief Computes average size of the element edges connected to each node
+ * @return vector containing size at each node
+ */
+vector<double> Mesh::computeMeshSize() {
+  ElementTable e(this);
+  e.build();
+
+  vector<double> meshsize(this->numNodes());
+
+  for (size_t i = 0; i < this->numNodes(); ++i) {
+    vector<Element *> l = e.elementList(this->node(i));
+    double a = 0.0;
+    for (size_t j = 0; j < l.size(); ++j) {
+      a += l[j]->elementSize(false);
+    }
+    if (l.size() > 0)
+      meshsize[i] = a / l.size();
+    else
+      meshsize[i] = 0.0;
+
+    if (meshsize[i] < 0.0) {
+      adcircmodules_throw_exception("Error computing mesh size table.");
+    }
+  }
+  return meshsize;
 }

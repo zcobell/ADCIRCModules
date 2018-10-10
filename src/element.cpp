@@ -158,7 +158,7 @@ Node *Element::node(int i) {
  * @brief Formats the element for writing to an Adcirc ASCII mesh file
  * @return formatted string
  */
-string Element::toString() {
+string Element::toAdcircString() {
   if (this->n() == 3) {
     return boost::str(boost::format("%11i %3i %11i %11i %11i") % this->id() %
                       this->n() % this->node(0)->id() % this->node(1)->id() %
@@ -168,6 +168,25 @@ string Element::toString() {
                       this->id() % this->n() % this->node(0)->id() %
                       this->node(1)->id() % this->node(2)->id() %
                       this->node(3)->id());
+  } else {
+    adcircmodules_throw_exception("Invalid number of nodes in element");
+    return string();
+  }
+}
+
+/**
+ * @brief Formats the element for writing to an Aquaveo 2dm ASCII mesh file
+ * @return formatted string
+ */
+string Element::to2dmString() {
+  if (this->n() == 3) {
+    return boost::str(boost::format("%s %i %i %i %i %i") % "E3T" %
+                      this->id() % this->node(0)->id() % this->node(1)->id() %
+                      this->node(2)->id() % 0);
+  } else if (this->n() == 4) {
+    return boost::str(boost::format("%s %i %i %i %i %i") % "E4Q" %
+                      this->id() % this->node(0)->id() % this->node(1)->id() %
+                      this->node(2)->id() % this->node(3)->id());
   } else {
     adcircmodules_throw_exception("Invalid number of nodes in element");
     return string();

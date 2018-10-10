@@ -64,7 +64,8 @@ class Element {
   size_t id() const;
   void setId(size_t id);
 
-  std::string toString();
+  std::string toAdcircString();
+  std::string to2dmString();
 
   bool isInside(Point location);
   bool isInside(double x, double y);
