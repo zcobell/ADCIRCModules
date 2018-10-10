@@ -23,6 +23,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 #include "adcircmodules_global.h"
 #include "boundary.h"
@@ -43,9 +44,17 @@ namespace Geometry {
  * is released under the terms of the GNU General Public License v3
  *
  * The Mesh class handles functions related to reading an
- * adcirc mesh into memory and provides some facilities for
+ * unstructured mesh into memory and provides some facilities for
  * manipulation. The code is designed to be functional
  * with the python interface to the code.
+ *
+ * I/O functions are provided for three unstructured mesh formats:
+ *   1) ADCIRC ASCII formatted mesh
+ *   2) Aquaveo 2dm formatted mesh
+ *   3) DFlow-FM netcdf formatted mesh
+ * These meshes can be translated between formats using the i/o routines
+ * however, quadrilaterals are not officially supported in the adcirc format.
+ * Meshes may only contain triangles and quadrilaterals.
  *
  * The code is able to handle meshes that are traditional, that
  * is they contained order indicies. When the code detects unordered
@@ -60,7 +69,6 @@ namespace Geometry {
  * version to ensure that memory usage and cpu time is not adversely
  * affected.
  *
- *
  */
 
 class Mesh {
@@ -73,11 +81,11 @@ class Mesh {
   enum MeshFormat {
     /// Unknown mesh format
     MESH_UNKNOWN,
-    /// ADCIRC mesh format
+    /// ADCIRC mesh format (*.14, *.grd)
     MESH_ADCIRC,
-    /// Aquaveo generic mesh format
+    /// Aquaveo generic mesh format (*.2dm)
     MESH_2DM,
-    /// Deltares D-Flow FM format (unavailable)
+    /// Deltares D-Flow FM format (*_net.nc)
     MESH_DFLOW
   };
 
@@ -186,14 +194,19 @@ class Mesh {
   void read2dmNodes(std::vector<std::string> &nodes);
   void read2dmElements(std::vector<std::string> &elements);
 
+  void readDflowMesh();
+
   void _init();
 
   void writeAdcircMesh(const std::string &filename);
   void write2dmMesh(const std::string &filename);
+  void writeDflowMesh(const std::string &filename);
+
+  std::vector<std::pair<Node *, Node *>> generateLinkTable();
+  size_t getMaxNodesPerElement();
 
   std::string m_filename;
   std::string m_meshHeaderString;
-  std::string m_meshHeaderString2;
   std::vector<Adcirc::Geometry::Node> m_nodes;
   std::vector<Adcirc::Geometry::Element> m_elements;
   std::vector<Adcirc::Geometry::Boundary> m_openBoundaries;
