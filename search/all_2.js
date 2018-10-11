@@ -1,19 +1,8 @@
 var searchData=
 [
-  ['boundary',['Boundary',['../classAdcirc_1_1Geometry_1_1Boundary.html',1,'Adcirc::Geometry::Boundary'],['../classBoundary.html',1,'Boundary'],['../classAdcirc_1_1Geometry_1_1Boundary.html#a7c4c8db45b13dab630e4c6ed7a958e71',1,'Adcirc::Geometry::Boundary::Boundary()'],['../classAdcirc_1_1Geometry_1_1Boundary.html#a8e2303bfddabd328f8db386ed78962ea',1,'Adcirc::Geometry::Boundary::Boundary(int boundaryCode, int boundaryLength)']]],
-  ['boundary_2ecpp',['boundary.cpp',['../boundary_8cpp.html',1,'']]],
-  ['boundary_2eh',['boundary.h',['../boundary_8h.html',1,'']]],
-  ['boundary0',['boundary0',['../structparse_1_1boundary0.html',1,'parse']]],
-  ['boundary0_5fparser',['boundary0_parser',['../io_8cpp.html#a7067a4cadf1784dd472b926a7a318e1b',1,'io.cpp']]],
-  ['boundary23',['boundary23',['../structparse_1_1boundary23.html',1,'parse']]],
-  ['boundary23_5fparser',['boundary23_parser',['../io_8cpp.html#a8a0059b5048ab71ca0211d4eba470d31',1,'io.cpp']]],
-  ['boundary24',['boundary24',['../structparse_1_1boundary24.html',1,'parse']]],
-  ['boundary24_5fparser',['boundary24_parser',['../io_8cpp.html#a3971565e86260c1c74024def107e8b9d',1,'io.cpp']]],
-  ['boundary25',['boundary25',['../structparse_1_1boundary25.html',1,'parse']]],
-  ['boundary25_5fparser',['boundary25_parser',['../io_8cpp.html#a29b504faf77775f1a4ec97370b2c43ff',1,'io.cpp']]],
-  ['boundarycode',['boundaryCode',['../classAdcirc_1_1Geometry_1_1Boundary.html#abeb913e82f8b46df0bc2218aa2863b1e',1,'Adcirc::Geometry::Boundary']]],
-  ['boundarylength',['boundaryLength',['../classAdcirc_1_1Geometry_1_1Boundary.html#a5b35e499f533ad1d3af693b18c8e9960',1,'Adcirc::Geometry::Boundary']]],
-  ['build',['build',['../classQKdtree2.html#afe4892fc5fa7785021224b2d180be6bf',1,'QKdtree2::build(vector&lt; Point &gt; &amp;pointCloud)'],['../classQKdtree2.html#a8fd6a4f79fb6e5af442150c7f5a3ff86',1,'QKdtree2::build(vector&lt; double &gt; &amp;x, vector&lt; double &gt; &amp;y)']]],
-  ['buildelementalsearchtree',['buildElementalSearchTree',['../classAdcirc_1_1Geometry_1_1Mesh.html#a96683f35cd794d56c608029117ffa5e4',1,'Adcirc::Geometry::Mesh']]],
-  ['buildnodalsearchtree',['buildNodalSearchTree',['../classAdcirc_1_1Geometry_1_1Mesh.html#ab5bd23e96e409c0f5b090324a8c0f30f',1,'Adcirc::Geometry::Mesh']]]
+  ['checkifdefaultvalue',['checkIfDefaultValue',['../classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#a862969c6a30ce3173fe4b43731c2571a',1,'Adcirc::ModelParameters::AttributeMetadata::checkIfDefaultValue(const std::vector&lt; double &gt; &amp;value)'],['../classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#a64484c4a95440c67cd1ec2b199b6aa2d',1,'Adcirc::ModelParameters::AttributeMetadata::checkIfDefaultValue(const double &amp;value)'],['../classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#a70c1c7b973c421915fdcb2c6c40609e6',1,'Adcirc::ModelParameters::AttributeMetadata::checkIfDefaultValue(const Adcirc::ModelParameters::Attribute &amp;a)']]],
+  ['computemeshsize',['computeMeshSize',['../classAdcirc_1_1Geometry_1_1Mesh.html#a4559546c55f58af97d2d88cfb0bfebf4',1,'Adcirc::Geometry::Mesh']]],
+  ['connectivity',['connectivity',['../classAdcirc_1_1Geometry_1_1Mesh.html#ab1824b686b7cb36aa87a0c29336dc6ba',1,'Adcirc::Geometry::Mesh']]],
+  ['cpp',['cpp',['../classAdcirc_1_1Geometry_1_1Mesh.html#a24b9f110edb020b8ebde81a23bfdabe0',1,'Adcirc::Geometry::Mesh']]],
+  ['crestelevation',['crestElevation',['../classAdcirc_1_1Geometry_1_1Boundary.html#a59f7cc988b82bf993592aa4f84d36561',1,'Adcirc::Geometry::Boundary']]]
 ];

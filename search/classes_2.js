@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['elem',['elem',['../structparse_1_1elem.html',1,'parse']]],
-  ['element',['Element',['../classAdcirc_1_1Geometry_1_1Element.html',1,'Adcirc::Geometry::Element'],['../classElement.html',1,'Element']]]
+  ['element',['Element',['../classAdcirc_1_1Geometry_1_1Element.html',1,'Adcirc::Geometry']]],
+  ['elementtable',['ElementTable',['../classAdcirc_1_1Geometry_1_1ElementTable.html',1,'Adcirc::Geometry']]],
+  ['error',['Error',['../classAdcirc_1_1Error.html',1,'Adcirc']]]
 ];

@@ -1,0 +1,26 @@
+var files_dup =
+[
+    [ "adcirc.h", "adcirc_8h_source.html", null ],
+    [ "adcircmodules_global.h", "adcircmodules__global_8h_source.html", null ],
+    [ "attribute.h", "attribute_8h_source.html", null ],
+    [ "attributemetadata.h", "attributemetadata_8h_source.html", null ],
+    [ "boundary.h", "boundary_8h_source.html", null ],
+    [ "config.h", "config_8h_source.html", null ],
+    [ "element.h", "element_8h_source.html", null ],
+    [ "elementtable.h", "elementtable_8h_source.html", null ],
+    [ "error.h", "error_8h_source.html", null ],
+    [ "filetypes.h", "filetypes_8h_source.html", null ],
+    [ "griddata.h", "griddata_8h_source.html", null ],
+    [ "harmonicsoutput.h", "harmonicsoutput_8h_source.html", null ],
+    [ "harmonicsrecord.h", "harmonicsrecord_8h_source.html", null ],
+    [ "io.h", "io_8h_source.html", null ],
+    [ "mesh.h", "mesh_8h_source.html", null ],
+    [ "meshchecker.h", "meshchecker_8h_source.html", null ],
+    [ "multithreading.h", "multithreading_8h_source.html", null ],
+    [ "nodalattributes.h", "nodalattributes_8h_source.html", null ],
+    [ "node.h", "node_8h_source.html", null ],
+    [ "outputfile.h", "outputfile_8h_source.html", null ],
+    [ "outputrecord.h", "outputrecord_8h_source.html", null ],
+    [ "split.h", "split_8h_source.html", null ],
+    [ "stringconversion.h", "stringconversion_8h_source.html", null ]
+];

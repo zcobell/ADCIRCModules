@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['_5ferrors',['_errors',['../classQKdtree2.html#adddaba7c44fd547c090dcac6be96623f',1,'QKdtree2::_errors()'],['../classQProj4.html#a05db74138c746312b27dab773bbc5236',1,'QProj4::_errors()']]],
-  ['_5ffileio',['_fileio',['../namespaceFileIO.html#a60726b268bdef0cf614fa2d491a43faf',1,'FileIO']]],
-  ['_5ffiletypes',['_fileTypes',['../namespaceAdcirc_1_1Output.html#acf562a8619582ee9d3dcca8ada376bdd',1,'Adcirc::Output']]],
-  ['_5fgenericerrorcodes',['_genericErrorCodes',['../namespaceAdcirc.html#a3937e349639c6f3e36ab79e8d1010f0a',1,'Adcirc']]],
-  ['_5fgeometryerrorcodes',['_GeometryErrorCodes',['../namespaceAdcirc_1_1Geometry.html#a8edb1b10ff24b5bf23bbc2754691c481',1,'Adcirc::Geometry']]],
-  ['_5fmodelparamerrorcodes',['_modelParamErrorCodes',['../namespaceAdcirc_1_1ModelParameters.html#a882dfd6cd87c12d104b51fa2053b75ec',1,'Adcirc::ModelParameters']]]
+  ['addelement',['addElement',['../classAdcirc_1_1Geometry_1_1Mesh.html#aecd5fbed4437df6191c7aa8dc0624d4a',1,'Adcirc::Geometry::Mesh']]],
+  ['addnode',['addNode',['../classAdcirc_1_1Geometry_1_1Mesh.html#ae0d59e06c57e74954f72f1ed659b84ee',1,'Adcirc::Geometry::Mesh']]],
+  ['attribute',['Attribute',['../classAdcirc_1_1ModelParameters_1_1Attribute.html',1,'Attribute'],['../classAdcirc_1_1ModelParameters_1_1Attribute.html#a56444519edfeb3fa09e10eadc109cfec',1,'Adcirc::ModelParameters::Attribute::Attribute()'],['../classAdcirc_1_1ModelParameters_1_1Attribute.html#a28bdbd00d58018aab0ea439eeaabc4ce',1,'Adcirc::ModelParameters::Attribute::Attribute(size_t size)']]],
+  ['attributemetadata',['AttributeMetadata',['../classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html',1,'AttributeMetadata'],['../classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#afb2d0bd0856b0ab4c8dfd78ddcad9e57',1,'Adcirc::ModelParameters::AttributeMetadata::AttributeMetadata()']]]
 ];

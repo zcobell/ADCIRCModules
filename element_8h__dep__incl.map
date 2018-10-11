@@ -1,8 +1,0 @@
-<map id="element.h" name="element.h">
-<area shape="rect" id="node2" href="$element_8cpp.html" title="element.cpp" alt="" coords="17,81,110,107"/>
-<area shape="rect" id="node3" href="$mesh_8h.html" title="mesh.h" alt="" coords="135,81,200,107"/>
-<area shape="rect" id="node4" href="$mesh_8cpp.html" title="mesh.cpp" alt="" coords="5,155,84,182"/>
-<area shape="rect" id="node5" href="$nodalattributes_8h.html" title="nodalattributes.h" alt="" coords="108,155,227,182"/>
-<area shape="rect" id="node7" href="$adcirc_8h.html" title="adcirc.h" alt="" coords="231,230,299,257"/>
-<area shape="rect" id="node6" href="$nodalattributes_8cpp.html" title="nodalattributes.cpp" alt="" coords="75,230,207,257"/>
-</map>
