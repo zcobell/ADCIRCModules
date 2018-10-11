@@ -1,0 +1,4 @@
+<map id="deleteElement" name="deleteElement">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#afdfd28c4c1db0086eee0969cdc0409db" title="Returns the number of elements in the mesh. " alt="" coords="329,5,432,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ad0992102f30639a0c00fe07a9cdde487" title="Sets the number of elements in the mesh. Note: This does not resize the mesh. " alt="" coords="159,31,281,57"/>
+</map>

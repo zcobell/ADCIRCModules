@@ -1,0 +1,9 @@
+<map id="coordinateToPixel" name="coordinateToPixel">
+<area shape="rect" id="node2" href="$classRasterdata.html#aaf257244832c7dba44aefc6aea09a5cc" title="coordinateToPixel" alt="" coords="179,81,304,108"/>
+<area shape="rect" id="node7" href="$classPoint.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Point::x" alt="" coords="208,132,275,159"/>
+<area shape="rect" id="node8" href="$classPoint.html#aca424ddaf2902c1cde483f37813d4278" title="Point::y" alt="" coords="208,183,275,209"/>
+<area shape="rect" id="node3" href="$classRasterdata.html#a8ad6bb049f348feb818891249ff39d3b" title="xmax" alt="" coords="352,5,407,32"/>
+<area shape="rect" id="node4" href="$classRasterdata.html#a5f0ad34b88c2466b6508984522961e5c" title="xmin" alt="" coords="354,56,405,83"/>
+<area shape="rect" id="node5" href="$classRasterdata.html#a744f7797c62e0c6aed047f98268a4cc2" title="ymax" alt="" coords="352,107,407,133"/>
+<area shape="rect" id="node6" href="$classRasterdata.html#af22a422492905c5012d80a314cc9eeda" title="ymin" alt="" coords="354,157,405,184"/>
+</map>

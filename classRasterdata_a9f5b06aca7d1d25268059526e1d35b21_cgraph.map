@@ -1,0 +1,8 @@
+<map id="pixelValueDouble" name="pixelValueDouble">
+<area shape="rect" id="node2" href="$classRasterdata.html#a2378e6241d209cce3fa92fb84a401504" title="pixelValueDouble" alt="" coords="175,107,296,133"/>
+<area shape="rect" id="node3" href="$classPixel.html#a92b0b88b9a2c8ccada33e3fa7ce39244" title="Pixel::i" alt="" coords="344,5,407,32"/>
+<area shape="rect" id="node4" href="$classPixel.html#aaf29b851413b2cac5242b33a4b6c24fd" title="Pixel::j" alt="" coords="344,56,407,83"/>
+<area shape="rect" id="node5" href="$classRasterdata.html#a0ae524617adbd2d1763224670bb9ed45" title="nx" alt="" coords="356,107,395,133"/>
+<area shape="rect" id="node6" href="$classRasterdata.html#aaef978e68f2f09a688c328a56dc4b23a" title="ny" alt="" coords="356,157,395,184"/>
+<area shape="rect" id="node7" href="$classRasterdata.html#aef5a0633cf157be22ccf3553e07fc0a7" title="nodata" alt="" coords="345,208,406,235"/>
+</map>

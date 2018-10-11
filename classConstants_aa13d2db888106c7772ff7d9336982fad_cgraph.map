@@ -1,0 +1,6 @@
+<map id="radiusEarth" name="radiusEarth">
+<area shape="rect" id="node2" href="$classConstants.html#a8e8b5d1633dfb57d0d6056850bdd710c" title="toRadians" alt="" coords="157,5,237,32"/>
+<area shape="rect" id="node4" href="$classConstants.html#a1e46609687df04683e729d5eaafc5f44" title="equitoralRadius" alt="" coords="141,56,252,83"/>
+<area shape="rect" id="node5" href="$classConstants.html#a9477e49dbf52f4fdb5ccf1ee601a5616" title="polarRadius" alt="" coords="151,107,242,133"/>
+<area shape="rect" id="node3" href="$classConstants.html#a057d27214f343738fdb8f972b1ccea45" title="deg2rad" alt="" coords="300,5,368,32"/>
+</map>

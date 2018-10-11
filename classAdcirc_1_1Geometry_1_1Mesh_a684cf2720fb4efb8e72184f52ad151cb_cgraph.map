@@ -1,0 +1,4 @@
+<map id="deleteNode" name="deleteNode">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh. " alt="" coords="292,5,376,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#adc173e9926bed8f4bbc13ee2cc5c5378" title="Sets the number of nodes in the mesh. Note this does not resize the mesh. " alt="" coords="140,31,244,57"/>
+</map>

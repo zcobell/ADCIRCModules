@@ -1,0 +1,13 @@
+<map id="searchBoxAroundPoint" name="searchBoxAroundPoint">
+<area shape="rect" id="node2" href="$classRasterdata.html#aaf257244832c7dba44aefc6aea09a5cc" title="coordinateToPixel" alt="" coords="208,81,333,108"/>
+<area shape="rect" id="node7" href="$classPixel.html#afe93e17ac89cd97917811068ba2af214" title="Pixel::isValid" alt="" coords="222,132,319,159"/>
+<area shape="rect" id="node8" href="$classRasterdata.html#a0ae524617adbd2d1763224670bb9ed45" title="nx" alt="" coords="251,183,290,209"/>
+<area shape="rect" id="node9" href="$classRasterdata.html#aaef978e68f2f09a688c328a56dc4b23a" title="ny" alt="" coords="251,233,290,260"/>
+<area shape="rect" id="node10" href="$classPixel.html#a92b0b88b9a2c8ccada33e3fa7ce39244" title="Pixel::i" alt="" coords="239,284,302,311"/>
+<area shape="rect" id="node11" href="$classPixel.html#aaf29b851413b2cac5242b33a4b6c24fd" title="Pixel::j" alt="" coords="239,335,302,361"/>
+<area shape="rect" id="node12" href="$classPixel.html#a051bda95cf60584a1aa7aea3cb2d5215" title="Pixel::setInvalid" alt="" coords="213,385,328,412"/>
+<area shape="rect" id="node3" href="$classRasterdata.html#a8ad6bb049f348feb818891249ff39d3b" title="xmax" alt="" coords="381,5,436,32"/>
+<area shape="rect" id="node4" href="$classRasterdata.html#a5f0ad34b88c2466b6508984522961e5c" title="xmin" alt="" coords="383,56,434,83"/>
+<area shape="rect" id="node5" href="$classRasterdata.html#a744f7797c62e0c6aed047f98268a4cc2" title="ymax" alt="" coords="381,107,436,133"/>
+<area shape="rect" id="node6" href="$classRasterdata.html#af22a422492905c5012d80a314cc9eeda" title="ymin" alt="" coords="383,157,434,184"/>
+</map>

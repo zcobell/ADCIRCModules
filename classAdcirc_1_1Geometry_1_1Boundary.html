@@ -110,7 +110,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ae7d8bcd9bd98bb8b378d529da56cdf7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">User specified initialization of the boundary.  <a href="#ae7d8bcd9bd98bb8b378d529da56cdf7c">More...</a><br /></td></tr>
 <tr class="separator:ae7d8bcd9bd98bb8b378d529da56cdf7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7832baebc89d656c192f55b8a8248c5c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Boundary.html#a7832baebc89d656c192f55b8a8248c5c">boundaryCode</a> () const</td></tr>
-<tr class="memdesc:a7832baebc89d656c192f55b8a8248c5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Adcirc model boundary code.  <a href="#a7832baebc89d656c192f55b8a8248c5c">More...</a><br /></td></tr>
+<tr class="memdesc:a7832baebc89d656c192f55b8a8248c5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="namespaceAdcirc.html">Adcirc</a> model boundary code.  <a href="#a7832baebc89d656c192f55b8a8248c5c">More...</a><br /></td></tr>
 <tr class="separator:a7832baebc89d656c192f55b8a8248c5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a145ba98183d6fb9524a56e10f6805034"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Boundary.html#a145ba98183d6fb9524a56e10f6805034">setBoundaryCode</a> (int <a class="el" href="classAdcirc_1_1Geometry_1_1Boundary.html#a7832baebc89d656c192f55b8a8248c5c">boundaryCode</a>)</td></tr>
 <tr class="memdesc:a145ba98183d6fb9524a56e10f6805034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the model boundary to the user specified code.  <a href="#a145ba98183d6fb9524a56e10f6805034">More...</a><br /></td></tr>
@@ -175,13 +175,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a24478b4546ce5c2cc46bffaef71a0367"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the node pair for type 4, 24, 5, and 25 boundaries.  <a href="#a24478b4546ce5c2cc46bffaef71a0367">More...</a><br /></td></tr>
 <tr class="separator:a24478b4546ce5c2cc46bffaef71a0367"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38f288e6b03a550fc049455455ee0710"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Boundary.html#a38f288e6b03a550fc049455455ee0710">toStringList</a> ()</td></tr>
-<tr class="memdesc:a38f288e6b03a550fc049455455ee0710"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the boundary into Adcirc ASCII mesh format and stores into a string vector.  <a href="#a38f288e6b03a550fc049455455ee0710">More...</a><br /></td></tr>
+<tr class="memdesc:a38f288e6b03a550fc049455455ee0710"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the boundary into <a class="el" href="namespaceAdcirc.html">Adcirc</a> ASCII mesh format and stores into a string vector.  <a href="#a38f288e6b03a550fc049455455ee0710">More...</a><br /></td></tr>
 <tr class="separator:a38f288e6b03a550fc049455455ee0710"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The boundary class handles ADCIRC mesh boundaries. </p>
 <dl class="section author"><dt>Author</dt><dd>Zachary Cobell </dd></dl>
-<dl class="section copyright"><dt>Copyright</dt><dd>Copyright 2018 Zachary Cobell. All Rights Reserved. This project is released under the terms of the GNU General Public License v3 The <a class="el" href="classAdcirc_1_1Geometry_1_1Boundary.html" title="The boundary class handles ADCIRC mesh boundaries. ">Boundary</a> class handles the interpretation of boundary conditions used within the Adcirc model. The class is designed so that it is generic and can handle both open and land boundaries. </dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright 2018 Zachary Cobell. All Rights Reserved. This project is released under the terms of the GNU General Public License v3 The <a class="el" href="classAdcirc_1_1Geometry_1_1Boundary.html" title="The boundary class handles ADCIRC mesh boundaries. ">Boundary</a> class handles the interpretation of boundary conditions used within the <a class="el" href="namespaceAdcirc.html">Adcirc</a> model. The class is designed so that it is generic and can handle both open and land boundaries. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9eadb05aefcbdcd82ccb53c1b2e9769c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9eadb05aefcbdcd82ccb53c1b2e9769c">&#9670;&nbsp;</a></span>Boundary() <span class="overload">[1/2]</span></h2>
@@ -272,8 +272,17 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the Adcirc model boundary code. </p>
-<dl class="section return"><dt>Returns</dt><dd>Adcirc model boundary code </dd></dl>
+<p>Returns the <a class="el" href="namespaceAdcirc.html">Adcirc</a> model boundary code. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="namespaceAdcirc.html">Adcirc</a> model boundary code </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Boundary_a7832baebc89d656c192f55b8a8248c5c_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Boundary_a7832baebc89d656c192f55b8a8248c5c_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Boundary_a7832baebc89d656c192f55b8a8248c5c_icgraph" id="classAdcirc_1_1Geometry_1_1Boundary_a7832baebc89d656c192f55b8a8248c5c_icgraph">
+<area shape="rect" id="node2" href="classMeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="MeshChecker::checkLeveeHeights" alt="" coords="159,5,383,32"/>
+<area shape="rect" id="node3" href="classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="163,56,378,83"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -321,6 +330,15 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>crest elevation if applicable, otherwise -9999.0. </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Boundary_a59f7cc988b82bf993592aa4f84d36561_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Boundary_a59f7cc988b82bf993592aa4f84d36561_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Boundary_a59f7cc988b82bf993592aa4f84d36561_icgraph" id="classAdcirc_1_1Geometry_1_1Boundary_a59f7cc988b82bf993592aa4f84d36561_icgraph">
+<area shape="rect" id="node2" href="classMeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="MeshChecker::checkLeveeHeights" alt="" coords="159,5,383,32"/>
+<area shape="rect" id="node3" href="classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="163,56,378,83"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -341,6 +359,15 @@ Public Member Functions</h2></td></tr>
 
 <p>Returns the length of the boundary. Same as Boundary::bonudaryLength. </p>
 <dl class="section return"><dt>Returns</dt><dd>number of nodes in boundary </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Boundary_a71beef478599935add531a7866ad9908_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Boundary_a71beef478599935add531a7866ad9908_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Boundary_a71beef478599935add531a7866ad9908_icgraph" id="classAdcirc_1_1Geometry_1_1Boundary_a71beef478599935add531a7866ad9908_icgraph">
+<area shape="rect" id="node2" href="classMeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="MeshChecker::checkLeveeHeights" alt="" coords="111,5,335,32"/>
+<area shape="rect" id="node3" href="classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="115,56,330,83"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -368,6 +395,15 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer to an <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html" title="The Node class describes the x, y, z position of a single mesh node. ">Node</a> object </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Boundary_aa7799ac01d283677f63d2d42fd1f0336_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Boundary_aa7799ac01d283677f63d2d42fd1f0336_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Boundary_aa7799ac01d283677f63d2d42fd1f0336_icgraph" id="classAdcirc_1_1Geometry_1_1Boundary_aa7799ac01d283677f63d2d42fd1f0336_icgraph">
+<area shape="rect" id="node2" href="classMeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="MeshChecker::checkLeveeHeights" alt="" coords="111,5,335,32"/>
+<area shape="rect" id="node3" href="classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="115,56,330,83"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -395,6 +431,15 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classAdcirc_1_1Geometry_1_1Node.html" title="The Node class describes the x, y, z position of a single mesh node. ">Node</a> pointer </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Boundary_a33b7b2f946d35b2e28d367631606bb61_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Boundary_a33b7b2f946d35b2e28d367631606bb61_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Boundary_a33b7b2f946d35b2e28d367631606bb61_icgraph" id="classAdcirc_1_1Geometry_1_1Boundary_a33b7b2f946d35b2e28d367631606bb61_icgraph">
+<area shape="rect" id="node2" href="classMeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="MeshChecker::checkLeveeHeights" alt="" coords="111,5,335,32"/>
+<area shape="rect" id="node3" href="classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="115,56,330,83"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -449,6 +494,14 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>diameter of the pipe </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Boundary_af1dc9caf2049168de2d6106807d3a905_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Boundary_af1dc9caf2049168de2d6106807d3a905_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Boundary_af1dc9caf2049168de2d6106807d3a905_icgraph" id="classAdcirc_1_1Geometry_1_1Boundary_af1dc9caf2049168de2d6106807d3a905_icgraph">
+<area shape="rect" id="node2" href="classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="152,5,367,32"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -476,6 +529,14 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>height of pipe center above datum </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Boundary_ab9ca75c0810e19275649635a2ac5934d_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Boundary_ab9ca75c0810e19275649635a2ac5934d_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Boundary_ab9ca75c0810e19275649635a2ac5934d_icgraph" id="classAdcirc_1_1Geometry_1_1Boundary_ab9ca75c0810e19275649635a2ac5934d_icgraph">
+<area shape="rect" id="node2" href="classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="136,5,351,32"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -535,7 +596,7 @@ Public Member Functions</h2></td></tr>
 <p>Sets the model boundary to the user specified code. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">boundaryCode</td><td>Adcirc model boundary code </td></tr>
+    <tr><td class="paramname">boundaryCode</td><td><a class="el" href="namespaceAdcirc.html">Adcirc</a> model boundary code </td></tr>
   </table>
   </dd>
 </dl>
@@ -951,21 +1012,21 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. </p>
+<p>Writes the boundary into <a class="el" href="namespaceAdcirc.html">Adcirc</a> ASCII mesh format and stores into a string vector. </p>
 <dl class="section return"><dt>Returns</dt><dd>vector of strings </dd></dl>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="boundary_8h_source.html">boundary.h</a></li>
-<li>boundary.cpp</li>
+<li><a class="el" href="boundary_8cpp.html">boundary.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>Adcirc</b></li><li class="navelem"><b>Geometry</b></li><li class="navelem"><a class="el" href="classAdcirc_1_1Geometry_1_1Boundary.html">Boundary</a></li>
+    <li class="navelem"><a class="el" href="namespaceAdcirc.html">Adcirc</a></li><li class="navelem"><a class="el" href="namespaceAdcirc_1_1Geometry.html">Geometry</a></li><li class="navelem"><a class="el" href="classAdcirc_1_1Geometry_1_1Boundary.html">Boundary</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>

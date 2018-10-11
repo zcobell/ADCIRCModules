@@ -1,4 +1,4 @@
 var classStringConversion =
 [
-    [ "StringConversion", "classStringConversion.html#a3d5507113e1e9e2586fc386ee1c3ac03", null ]
+    [ "StringConversion", "classStringConversion.html#af4f5253918c77c4194bac880bb11dcbc", null ]
 ];
