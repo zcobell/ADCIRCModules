@@ -460,7 +460,7 @@ void Mesh::readAdcircMeshHeader(std::fstream &fid) {
   std::getline(fid, tempLine);
 
   //...Set the mesh file header
-  this->setMeshHeaderString(tempLine);
+  this->setMeshHeaderString(StringConversion::sanitizeString(tempLine));
 
   //..Get the size of the mesh
   std::getline(fid, tempLine);
@@ -1421,7 +1421,7 @@ void Mesh::write2dmMesh(const string &filename) {
 
   //...Write the header
   outputFile << "MESH2D\n";
-  outputFile << "MESHNAME \"" << this->meshHeaderString() << "\"\n";
+  outputFile << "MESHNAME \"" << this->m_meshHeaderString << "\"\n";
 
   //...Elements
   for (auto &e : this->m_elements) {

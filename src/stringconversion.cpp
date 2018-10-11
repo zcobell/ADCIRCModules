@@ -23,8 +23,6 @@
 
 using namespace std;
 
-StringConversion::StringConversion() = default;
-
 double StringConversion::stringToDouble(const string& a, bool& ok) {
   ok = true;
   try {

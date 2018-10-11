@@ -1,4 +1,4 @@
-/*------------------------------GPL---------------------------------------//
+//------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,21 +15,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------*/
-#ifndef STRINGCONVERSION_H
-#define STRINGCONVERSION_H
+//------------------------------------------------------------------------//
+#include "adcirc.h"
+#include <iostream>
 
-#include <string>
+int main(int argc, char *argv[]) {
+  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(string("test_files/ms-riv_quad.2dm"));
+  mesh->read();
+  mesh->write("test_files/ms-riv_quad_net.nc");
+  delete mesh;
+  
+  mesh = new Adcirc::Geometry::Mesh("test_files/ms-riv_quad_net.nc");
+  mesh->read();
+  delete mesh;
 
-class StringConversion {
- public:
-  StringConversion() = default;
-
-  static int stringToInt(const std::string& a, bool& ok);
-  static size_t stringToSizet(const std::string& a, bool& ok);
-  static float stringToFloat(const std::string& a, bool& ok);
-  static double stringToDouble(const std::string& a, bool& ok);
-  static std::string sanitizeString(const std::string& a);
-};
-
-#endif  // STRINGCONVERSION_H
+  return 0;
+}

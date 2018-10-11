@@ -23,6 +23,8 @@ int main(int argc, char *argv[]) {
   Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(string("test_files/ms-riv.grd"));
   mesh->read();
   mesh->write("test_files/ms-riv_write.grd");
+  mesh->write("test_files/ms-riv_write.2dm");
+  mesh->write("test_files/ms-riv_write_net.nc");
   delete mesh;
   return 0;
 
