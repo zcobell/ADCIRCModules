@@ -94,6 +94,7 @@ class Mesh {
   std::vector<double> z();
   std::vector<std::vector<double>> xyz();
   std::vector<std::vector<size_t>> connectivity();
+  std::vector<std::vector<double>> orthogonality();
 
   void read(MeshFormat format = MESH_UNKNOWN);
 

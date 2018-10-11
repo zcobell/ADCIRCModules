@@ -214,6 +214,8 @@ double Element::elementSize(bool geodesic) {
  * @param[out] yc y-coordinate of element center
  */
 void Element::getElementCenter(double &xc, double &yc) {
+  xc = 0.0;
+  yc = 0.0;
   for (auto &n : this->m_nodes) {
     xc += n->x();
     yc += n->y();
@@ -230,7 +232,7 @@ void Element::sortVerticiesAboutCenter() {
   double xc = 0.0, yc = 0.0;
   this->getElementCenter(xc, yc);
 
-  auto compare = [&](Node *a, Node *b) -> bool {
+  auto compareClockwise = [&](Node *a, Node *b) -> bool {
     if (a->x() - xc >= 0 && b->x() - xc < 0) return true;
     if (a->x() - xc < 0 && b->x() - xc >= 0) return false;
     if (a->x() - xc == 0 && b->x() - xc == 0) {
@@ -250,7 +252,27 @@ void Element::sortVerticiesAboutCenter() {
     return d1 > d2;
   };
 
-  std::sort(this->m_nodes.begin(), this->m_nodes.end(), compare);
+  //  auto compareAntiClockwise = [&](Node *b, Node *a) -> bool {
+  //    if (a->x() - xc >= 0 && b->x() - xc < 0) return true;
+  //    if (a->x() - xc < 0 && b->x() - xc >= 0) return false;
+  //    if (a->x() - xc == 0 && b->x() - xc == 0) {
+  //      if (a->y() - yc >= 0 || b->y() - yc >= 0) return a->y() > b->y();
+  //      return b->y() > a->y();
+  //    }
+
+  //    // compute the cross product of vectors (center -> a) x (center -> b)
+  //    int det = (a->x() - xc) * (b->y() - yc) - (b->x() - xc) * (a->y() - yc);
+  //    if (det < 0) return true;
+  //    if (det > 0) return false;
+
+  //    // points a and b are on the same line from the center
+  //    // check which point is closer to the center
+  //    int d1 = (a->x() - xc) * (a->x() - xc) + (a->y() - yc) * (a->y() - yc);
+  //    int d2 = (b->x() - xc) * (b->x() - xc) + (b->y() - yc) * (b->y() - yc);
+  //    return d1 > d2;
+  //  };
+
+  std::sort(this->m_nodes.begin(), this->m_nodes.end(), compareClockwise);
 
   return;
 }

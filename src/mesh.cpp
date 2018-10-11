@@ -20,6 +20,7 @@
 #include <algorithm>
 #include <set>
 #include <string>
+#include <tuple>
 #include "boost/format.hpp"
 #include "elementtable.h"
 #include "error.h"
@@ -1884,4 +1885,101 @@ vector<double> Mesh::computeMeshSize() {
     }
   }
   return meshsize;
+}
+
+/**
+ * @brief comparison function for sorting the tuples of element edges
+ * @param a first
+ * @param b second
+ * @return  true of a < b
+ */
+bool sortEdgeTuple(const tuple<Node *, Node *, Element *> &a,
+                   const tuple<Node *, Node *, Element *> &b) {
+  Node *n11, *n12;
+  Node *n21, *n22;
+  Element *e1, *e2;
+  std::tie(n11, n12, e1) = a;
+  std::tie(n21, n22, e2) = b;
+  if (n11->id() < n21->id()) return true;
+  if (n12->id() < n22->id()) return true;
+  return false;
+}
+
+/**
+ * @brief Determines if two tuples of element edges refer to the same edge
+ * @param a first
+ * @param b second
+ * @return true of a == b
+ */
+bool edgeTupleEqual(const tuple<Node *, Node *, Element *> &a,
+                    const tuple<Node *, Node *, Element *> &b) {
+  Node *n11, *n12;
+  Node *n21, *n22;
+  Element *e1, *e2;
+  std::tie(n11, n12, e1) = a;
+  std::tie(n21, n22, e2) = b;
+  if (n11->id() == n21->id() && n12->id() == n22->id()) return true;
+  return false;
+}
+
+/**
+ * @brief Calculates the element orthogonality
+ * @return vector containing orthogonality values between 0 and 1 and the x, y
+ * of the midpoint for the element edge
+ *
+ * Orthogonality is the angle between an element edge and the a line
+ * between the two element centers on either side of the edge. Orthogonality
+ * is measured as deviation from cos(0)
+ */
+std::vector<std::vector<double>> Mesh::orthogonality() {
+  std::vector<std::vector<double>> o;
+  o.reserve(this->m_numElements * 2);
+
+  //...Build the node pairs with duplicates
+  vector<tuple<Node *, Node *, Element *>> edg;
+  edg.reserve(this->m_numElements * 4);
+  for (auto &e : this->m_elements) {
+    e.sortVerticiesAboutCenter();
+    for (size_t i = 0; i < e.n(); i++) {
+      pair<Node *, Node *> p = e.elementLeg(i);
+      Node *a = p.first;
+      Node *b = p.second;
+      if (a->id() < b->id()) {
+        edg.push_back(tuple<Node *, Node *, Element *>(a, b, &e));
+      } else {
+        edg.push_back(tuple<Node *, Node *, Element *>(b, a, &e));
+      }
+    }
+  }
+
+  //...Sort the node pairs so we can iterate
+  std::sort(edg.begin(), edg.end(), sortEdgeTuple);
+
+  //...Iterate over the edges which now are back to back
+  //   and calculate the orthogonality
+  for (size_t i = 0; i < edg.size() - 1; ++i) {
+    if (edgeTupleEqual(edg[i], edg[i + 1])) {
+      Node *n11, *n12;
+      Node *n21, *n22;
+      Element *e1, *e2;
+      std::tie(n11, n12, e1) = edg[i];
+      std::tie(n21, n22, e2) = edg[i + 1];
+      double xc1, xc2, yc1, yc2;
+      e1->getElementCenter(xc1, yc1);
+      e2->getElementCenter(xc2, yc2);
+      double outx = (n11->x() + n12->x()) / 2.0;
+      double outy = (n11->y() + n12->y()) / 2.0;
+      double dx1 = n12->x() - n11->x();
+      double dy1 = n12->y() - n11->y();
+      double dx2 = xc2 - xc1;
+      double dy2 = yc2 - yc1;
+      double r1 = dx1 * dx1 + dy1 * dy1;
+      double r2 = dx2 * dx2 + dy2 * dy2;
+      double ortho = (dx1 * dx2 + dy1 * dy2) / std::sqrt(r1 * r2);
+      vector<double> v = {outx, outy, abs(max(min(ortho, 1.0), -1.0))};
+      o.push_back(v);
+    }
+  }
+
+  return o;
 }
