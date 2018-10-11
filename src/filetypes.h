@@ -5,6 +5,7 @@
 
 namespace Adcirc {
 namespace Output {
+
 enum _fileTypes {
   ASCIIFull,
   ASCIISparse,
@@ -14,6 +15,16 @@ enum _fileTypes {
   Xdmf,
   Unknown
 };
+
+/**
+ * @class Filetypes
+ * @author Zachary Cobell
+ * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * is released under the terms of the GNU General Public License v3
+ * @brief The Filetypes class is used to determine the type of adcirc format
+ * output file that is being read
+ *
+ */
 class Filetypes {
  public:
   Filetypes();

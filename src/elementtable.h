@@ -26,6 +26,16 @@
 namespace Adcirc {
 namespace Geometry {
 
+/**
+ * @class ElementTable
+ * @author Zachary Cobell
+ * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * is released under the terms of the GNU General Public License v3
+ * @brief The ElementTable class is used to develop a list of the elements that
+ * surround each node
+ *
+ */
+
 class ElementTable {
  public:
   ElementTable();

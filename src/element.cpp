@@ -26,7 +26,6 @@ using namespace std;
 using namespace Adcirc::Geometry;
 
 /**
- * @fn Element::Element
  * @brief Default constructor
  */
 Element::Element() {

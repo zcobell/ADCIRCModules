@@ -27,6 +27,16 @@ namespace Adcirc {
 
 enum _code { NoError, HasError };
 
+/**
+ * @class Error
+ * @author Zachary Cobell
+ * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * is released under the terms of the GNU General Public License v3
+ * @brief The Error class is used to throw errors that can be caught in C++ or
+ * python. The macro adcircmodules_throw_exception will describe the position in
+ * the code that the error was thrown from
+ */
+
 class Error {
  public:
   Error() = default;
@@ -39,6 +49,13 @@ class Error {
 
 }  // namespace Adcirc
 
-#define adcircmodules_throw_exception(arg) Adcirc::Error::throwError(arg, __FILE__, __LINE__);
+/**
+ * @def adcircmodules_throw_exception
+ * @brief Throws an exception to the user with the file and line number sources
+ * from which the exception was thrown
+ * @param arg string describing the error that is being thrown
+ */
+#define adcircmodules_throw_exception(arg) \
+  Adcirc::Error::throwError(arg, __FILE__, __LINE__);
 
 #endif  // ERROR_H

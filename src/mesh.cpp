@@ -1929,7 +1929,8 @@ bool edgeTupleEqual(const tuple<Node *, Node *, Element *> &a,
  *
  * Orthogonality is the angle between an element edge and the a line
  * between the two element centers on either side of the edge. Orthogonality
- * is measured as deviation from cos(0)
+ * is measured as deviation from cos(0) and is important in finite volume
+ * calculations
  */
 std::vector<std::vector<double>> Mesh::orthogonality() {
   std::vector<std::vector<double>> o;

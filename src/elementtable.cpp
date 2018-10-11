@@ -21,16 +21,34 @@
 
 using namespace Adcirc::Geometry;
 
+/**
+ * @brief Default constructor
+ */
 ElementTable::ElementTable() { this->m_mesh = nullptr; }
 
+/**
+ * @brief Constructor with mesh as a parameter
+ * @param mesh sets the mesh used to generate the ElementTable
+ */
 ElementTable::ElementTable(Mesh *mesh) { this->m_mesh = mesh; }
 
+/**
+ * @brief Returns the pointer to the mesh used to build the table
+ * @return pointer to mesh used in this table
+ */
 Adcirc::Geometry::Mesh *ElementTable::mesh() const { return this->m_mesh; }
 
+/**
+ * @brief Sets the mesh used in the element table
+ * @param mesh to use to build the table
+ */
 void ElementTable::setMesh(Adcirc::Geometry::Mesh *mesh) {
   this->m_mesh = mesh;
 }
 
+/**
+ * @brief Begin building the table
+ */
 void ElementTable::build() {
   if (this->m_mesh == nullptr) {
     return;
@@ -44,6 +62,11 @@ void ElementTable::build() {
   return;
 }
 
+/**
+ * @brief Returns the list of elements around a specified node
+ * @param n node to return the element table for
+ * @return vector of element pointers around the node
+ */
 std::vector<Element *> ElementTable::elementList(Node *n) {
   if (this->m_elementTable.find(n) != this->m_elementTable.end())
     return this->m_elementTable[n];
@@ -52,10 +75,22 @@ std::vector<Element *> ElementTable::elementList(Node *n) {
   return std::vector<Element *>();
 }
 
+/**
+ * @brief Returns the number of elements around a specified node pointer
+ * @param n pointer to node to return the number of elements for
+ * @return number of elements around a specified node
+ */
 size_t ElementTable::numElementsAroundNode(Adcirc::Geometry::Node *n) {
-  return this->m_elementTable[n].size();
+  if (this->m_elementTable.find(n) != this->m_elementTable.end())
+    return this->m_elementTable[n].size();
+  else
+    return -1;
 }
 
+/**
+ * @param nodeIndex node index in the mesh to return the number of elements for
+ * @return number of elements around a specified node
+ */
 size_t ElementTable::numElementsAroundNode(size_t nodeIndex) {
   if (nodeIndex < this->mesh()->numNodes()) {
     return this->m_elementTable[this->mesh()->node(nodeIndex)].size();
@@ -65,16 +100,30 @@ size_t ElementTable::numElementsAroundNode(size_t nodeIndex) {
   return -1;
 }
 
+/**
+ * @brief Returns a pointer to the element at a position in the list for the
+ * specified node
+ * @param n pointer to node
+ * @param listIndex index in list of elements
+ * @return pointer to element
+ */
 Adcirc::Geometry::Element *ElementTable::elementTable(Adcirc::Geometry::Node *n,
                                                       size_t listIndex) {
-  if (listIndex < this->m_elementTable[n].size()) {
-    return this->m_elementTable[n].at(listIndex);
-  } else {
-    adcircmodules_throw_exception("Out of element table request");
+  if (this->m_elementTable.find(n) != this->m_elementTable.end()) {
+    if (listIndex < this->m_elementTable[n].size()) {
+      return this->m_elementTable[n].at(listIndex);
+    } else {
+      adcircmodules_throw_exception("Out of element table request");
+    }
   }
   return nullptr;
 }
 
+/**
+ * @param nodeIndex node index in the mesh to return the number of elements for
+ * @param listIndex index in list of elements
+ * @return pointer to element
+ */
 Adcirc::Geometry::Element *ElementTable::elementTable(size_t nodeIndex,
                                                       size_t listIndex) {
   if (nodeIndex < this->mesh()->numNodes()) {

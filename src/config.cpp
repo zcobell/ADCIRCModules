@@ -27,6 +27,10 @@ using namespace std;
 
 namespace Adcirc {
 
+/**
+ * @brief Returns the git version for the library
+ * @return current build number
+ */
 string version() { return GIT_VERSION; }
 
 }  // namespace Adcirc
