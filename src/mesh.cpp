@@ -1086,8 +1086,7 @@ void Mesh::toElementShapefile(const string &outputFile) {
 
   for (auto &e : this->m_elements) {
     double zmean;
-    double *latitude = new double(e.n());
-    double *longitude = new double(e.n());
+    double longitude[4], latitude[4];
     double nodeid[4], nodez[4];
     int id = static_cast<int>(e.id());
 
@@ -1122,8 +1121,6 @@ void Mesh::toElementShapefile(const string &outputFile) {
     DBFWriteDoubleAttribute(dbfid, shp_index, 8, nodez[3]);
     DBFWriteDoubleAttribute(dbfid, shp_index, 9, zmean);
 
-    delete latitude;
-    delete longitude;
   }
 
   DBFClose(dbfid);
