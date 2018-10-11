@@ -23,6 +23,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 #include "adcircmodules_global.h"
 #include "boundary.h"
@@ -43,9 +44,17 @@ namespace Geometry {
  * is released under the terms of the GNU General Public License v3
  *
  * The Mesh class handles functions related to reading an
- * adcirc mesh into memory and provides some facilities for
+ * unstructured mesh into memory and provides some facilities for
  * manipulation. The code is designed to be functional
  * with the python interface to the code.
+ *
+ * I/O functions are provided for three unstructured mesh formats:
+ *   1) ADCIRC ASCII formatted mesh
+ *   2) Aquaveo 2dm formatted mesh
+ *   3) DFlow-FM netcdf formatted mesh
+ * These meshes can be translated between formats using the i/o routines
+ * however, quadrilaterals are not officially supported in the adcirc format.
+ * Meshes may only contain triangles and quadrilaterals.
  *
  * The code is able to handle meshes that are traditional, that
  * is they contained order indicies. When the code detects unordered
@@ -60,7 +69,6 @@ namespace Geometry {
  * version to ensure that memory usage and cpu time is not adversely
  * affected.
  *
- *
  */
 
 class Mesh {
@@ -70,15 +78,27 @@ class Mesh {
 
   ~Mesh();
 
+  enum MeshFormat {
+    /// Unknown mesh format
+    MESH_UNKNOWN,
+    /// ADCIRC mesh format (*.14, *.grd)
+    MESH_ADCIRC,
+    /// Aquaveo generic mesh format (*.2dm)
+    MESH_2DM,
+    /// Deltares D-Flow FM format (*_net.nc)
+    MESH_DFLOW
+  };
+
   std::vector<double> x();
   std::vector<double> y();
   std::vector<double> z();
   std::vector<std::vector<double>> xyz();
   std::vector<std::vector<size_t>> connectivity();
+  std::vector<std::vector<double>> orthogonality();
 
-  void read();
+  void read(MeshFormat format = MESH_UNKNOWN);
 
-  void write(const std::string &outputFile);
+  void write(const std::string &outputFile, MeshFormat = MESH_UNKNOWN);
 
   std::string filename() const;
   void setFilename(const std::string &filename);
@@ -158,13 +178,33 @@ class Mesh {
   QKdtree2 *nodalSearchTree() const;
   QKdtree2 *elementalSearchTree() const;
 
+  std::vector<double> computeMeshSize();
+
  private:
-  void _readMeshHeader(std::fstream &fid);
-  void _readNodes(std::fstream &fid);
-  void _readElements(std::fstream &fid);
-  void _readOpenBoundaries(std::fstream &fid);
-  void _readLandBoundaries(std::fstream &fid);
+  static Mesh::MeshFormat getMeshFormat(const std::string &filename);
+  void readAdcircMesh();
+  void readAdcircMeshHeader(std::fstream &fid);
+  void readAdcircNodes(std::fstream &fid);
+  void readAdcircElements(std::fstream &fid);
+  void readAdcircOpenBoundaries(std::fstream &fid);
+  void readAdcircLandBoundaries(std::fstream &fid);
+
+  void read2dmMesh();
+  void read2dmData(std::vector<std::string> &nodes,
+                   std::vector<std::string> &elements);
+  void read2dmNodes(std::vector<std::string> &nodes);
+  void read2dmElements(std::vector<std::string> &elements);
+
+  void readDflowMesh();
+
   void _init();
+
+  void writeAdcircMesh(const std::string &filename);
+  void write2dmMesh(const std::string &filename);
+  void writeDflowMesh(const std::string &filename);
+
+  std::vector<std::pair<Node *, Node *>> generateLinkTable();
+  size_t getMaxNodesPerElement();
 
   std::string m_filename;
   std::string m_meshHeaderString;

@@ -140,7 +140,6 @@ private:
                                             std::vector<double> &wind,
                                             double nearWeight);
 
-  std::vector<double> computeGridScale();
   int windDirection(int i, int j);
 
   void checkMatchingCoorindateSystems();

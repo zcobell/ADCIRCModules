@@ -26,7 +26,6 @@ using namespace std;
 using namespace Adcirc::Geometry;
 
 /**
- * @fn Element::Element
  * @brief Default constructor
  */
 Element::Element() {
@@ -158,7 +157,7 @@ Node *Element::node(int i) {
  * @brief Formats the element for writing to an Adcirc ASCII mesh file
  * @return formatted string
  */
-string Element::toString() {
+string Element::toAdcircString() {
   if (this->n() == 3) {
     return boost::str(boost::format("%11i %3i %11i %11i %11i") % this->id() %
                       this->n() % this->node(0)->id() % this->node(1)->id() %
@@ -168,6 +167,25 @@ string Element::toString() {
                       this->id() % this->n() % this->node(0)->id() %
                       this->node(1)->id() % this->node(2)->id() %
                       this->node(3)->id());
+  } else {
+    adcircmodules_throw_exception("Invalid number of nodes in element");
+    return string();
+  }
+}
+
+/**
+ * @brief Formats the element for writing to an Aquaveo 2dm ASCII mesh file
+ * @return formatted string
+ */
+string Element::to2dmString() {
+  if (this->n() == 3) {
+    return boost::str(boost::format("%s %i %i %i %i %i") % "E3T" % this->id() %
+                      this->node(0)->id() % this->node(1)->id() %
+                      this->node(2)->id() % 0);
+  } else if (this->n() == 4) {
+    return boost::str(boost::format("%s %i %i %i %i %i") % "E4Q" % this->id() %
+                      this->node(0)->id() % this->node(1)->id() %
+                      this->node(2)->id() % this->node(3)->id());
   } else {
     adcircmodules_throw_exception("Invalid number of nodes in element");
     return string();
@@ -187,6 +205,75 @@ double Element::elementSize(bool geodesic) {
     size += Constants::distance(n1->x(), n1->y(), n2->x(), n2->y(), geodesic);
   }
   return size / this->n();
+}
+
+/**
+ * @brief Computes the center position of the element
+ * @param[out] xc x-coordinate of element center
+ * @param[out] yc y-coordinate of element center
+ */
+void Element::getElementCenter(double &xc, double &yc) {
+  xc = 0.0;
+  yc = 0.0;
+  for (auto &n : this->m_nodes) {
+    xc += n->x();
+    yc += n->y();
+  }
+  xc = xc / this->n();
+  yc = yc / this->n();
+  return;
+}
+
+/**
+ * @brief Sorts the verticies in clockwise order around the element center
+ */
+void Element::sortVerticiesAboutCenter() {
+  double xc = 0.0, yc = 0.0;
+  this->getElementCenter(xc, yc);
+
+  auto compareClockwise = [&](Node *a, Node *b) -> bool {
+    if (a->x() - xc >= 0 && b->x() - xc < 0) return true;
+    if (a->x() - xc < 0 && b->x() - xc >= 0) return false;
+    if (a->x() - xc == 0 && b->x() - xc == 0) {
+      if (a->y() - yc >= 0 || b->y() - yc >= 0) return a->y() > b->y();
+      return b->y() > a->y();
+    }
+
+    // compute the cross product of vectors (center -> a) x (center -> b)
+    int det = (a->x() - xc) * (b->y() - yc) - (b->x() - xc) * (a->y() - yc);
+    if (det < 0) return true;
+    if (det > 0) return false;
+
+    // points a and b are on the same line from the center
+    // check which point is closer to the center
+    int d1 = (a->x() - xc) * (a->x() - xc) + (a->y() - yc) * (a->y() - yc);
+    int d2 = (b->x() - xc) * (b->x() - xc) + (b->y() - yc) * (b->y() - yc);
+    return d1 > d2;
+  };
+
+  //  auto compareAntiClockwise = [&](Node *b, Node *a) -> bool {
+  //    if (a->x() - xc >= 0 && b->x() - xc < 0) return true;
+  //    if (a->x() - xc < 0 && b->x() - xc >= 0) return false;
+  //    if (a->x() - xc == 0 && b->x() - xc == 0) {
+  //      if (a->y() - yc >= 0 || b->y() - yc >= 0) return a->y() > b->y();
+  //      return b->y() > a->y();
+  //    }
+
+  //    // compute the cross product of vectors (center -> a) x (center -> b)
+  //    int det = (a->x() - xc) * (b->y() - yc) - (b->x() - xc) * (a->y() - yc);
+  //    if (det < 0) return true;
+  //    if (det > 0) return false;
+
+  //    // points a and b are on the same line from the center
+  //    // check which point is closer to the center
+  //    int d1 = (a->x() - xc) * (a->x() - xc) + (a->y() - yc) * (a->y() - yc);
+  //    int d2 = (b->x() - xc) * (b->x() - xc) + (b->y() - yc) * (b->y() - yc);
+  //    return d1 > d2;
+  //  };
+
+  std::sort(this->m_nodes.begin(), this->m_nodes.end(), compareClockwise);
+
+  return;
 }
 
 /**

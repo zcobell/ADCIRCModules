@@ -55,7 +55,8 @@ class Node {
   size_t id() const;
   void setId(size_t id);
 
-  std::string toString(bool geographicCoordinates);
+  std::string toAdcircString(bool geographicCoordinates);
+  std::string to2dmString(bool geographicCoordinates);
 
   Point toPoint();
 

@@ -14,6 +14,8 @@ import PyAdcirc
 m = PyAdcirc.Mesh("mymesh.grd")
 m.read()
 ```
+## Documentation
+There is a Doxygen site available [Here](http://zcobell.github.io/ADCIRCModules/). The documentation is not yet complete, however, it is slowly progressing. The Python interface is not explicitly documentated, however, the Python interaction is generated using SWIG, so the function calls are identical. 
 
 ## Note
 This project is still under development.

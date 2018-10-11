@@ -23,7 +23,6 @@ using namespace std;
 using namespace Adcirc::Geometry;
 
 /**
- * @fn Node::Node
  * @brief Default constructor
  */
 Node::Node() {
@@ -34,7 +33,6 @@ Node::Node() {
 }
 
 /**
- * @overload Node::Node
  * @brief Constructor taking the id, x, y, and z for the node
  * @param id nodal identifier. Can be either array index or label
  * @param x x positoin
@@ -49,7 +47,6 @@ Node::Node(size_t id, double x, double y, double z) {
 }
 
 /**
- * @fn Node::setNode
  * @brief Function taking the id, x, y, and z for the node
  * @param id nodal identifier. Can be either array index or label
  * @param x x positoin
@@ -65,69 +62,60 @@ void Node::setNode(size_t id, double x, double y, double z) {
 }
 
 /**
- * @fn Node::x
  * @brief Returns the x-location of the node
  * @return x-location
  */
 double Node::x() const { return this->m_x; }
 
 /**
- * @fn Node::setX
  * @brief Sets the x-location of the node
  * @param x x-location
  */
 void Node::setX(double x) { this->m_x = x; }
 
 /**
- * @fn Node::y
  * @brief Returns the y-location of the node
  * @return y-location
  */
 double Node::y() const { return this->m_y; }
 
 /**
- * @fn Node::setY
  * @brief Sets the y-location of the node
  * @param y y-location
  */
 void Node::setY(double y) { this->m_y = y; }
 
 /**
- * @fn Node::z
  * @brief Returns the z-elevation of the node
  * @return y-elevation
  */
 double Node::z() const { return this->m_z; }
 
 /**
- * @fn Node::setZ
  * @brief Sets the z-elevation of the node
  * @param z z-location
  */
 void Node::setZ(double z) { this->m_z = z; }
 
 /**
- * @fn Node::id
  * @brief Returns the nodal id/label
  * @return nodal id/label
  */
 size_t Node::id() const { return this->m_id; }
 
 /**
- * @fn Node::setId
  * @brief Sets the nodal id/label
  * @param id nodal id/label
  */
 void Node::setId(size_t id) { this->m_id = id; }
 
 /**
- * @fn Node::toString
  * @brief Formats the node for writing into an Adcirc ASCII mesh file
  * @param geographicCoordinates determins if the node is in geographic or
  * cartesian coordinate for significant figures
  * @return formatted string
  */
-string Node::toString(bool geographicCoordinates) {
+string Node::toAdcircString(bool geographicCoordinates) {
   if (geographicCoordinates) {
     return boost::str(boost::format("%11i   %14.10f   %14.10f  %14.10f") %
                       this->id() % this->x() % this->y() % this->z());
@@ -135,6 +123,17 @@ string Node::toString(bool geographicCoordinates) {
     return boost::str(boost::format("%11i   %14.4f   %14.4f  %14.4f") %
                       this->id() % this->x() % this->y() % this->z());
   }
+}
+
+/**
+ * @brief Formats the node for writing into an Aquaveo 2dm ASCII mesh file
+ * @param geographicCoordinates determins if the node is in geographic or
+ * cartesian coordinate for significant figures
+ * @return formatted string
+ */
+string Node::to2dmString(bool geographicCoordinates) {
+  return boost::str(boost::format("%s  %i %14.8e %14.8e %14.8e") % "ND" % this->id() %
+                    this->x() % this->y() % this->z());
 }
 
 /**

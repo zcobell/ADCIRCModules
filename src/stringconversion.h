@@ -23,7 +23,7 @@
 
 class StringConversion {
  public:
-  StringConversion();
+  StringConversion() = default;
 
   static int stringToInt(const std::string& a, bool& ok);
   static size_t stringToSizet(const std::string& a, bool& ok);

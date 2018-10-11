@@ -1,4 +1,4 @@
-/*------------------------------GPL---------------------------------------//
+//------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
 // (c) 2015-2018 Zachary Cobell
@@ -15,22 +15,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
-//------------------------------------------------------------------------*/
-#include "config.h"
-#include <string>
+//------------------------------------------------------------------------//
+#include "adcirc.h"
+#include <iostream>
 
-#ifndef GIT_VERSION
-#define GIT_VERSION "unknown"
-#endif
+int main(int argc, char *argv[]) {
+  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(string("test_files/ms-riv_quad.2dm"));
+  mesh->read();
+  mesh->write("test_files/ms-riv_quad_net.nc");
+  delete mesh;
+  
+  mesh = new Adcirc::Geometry::Mesh("test_files/ms-riv_quad_net.nc");
+  mesh->read();
+  delete mesh;
 
-using namespace std;
-
-namespace Adcirc {
-
-/**
- * @brief Returns the git version for the library
- * @return current build number
- */
-string version() { return GIT_VERSION; }
-
-}  // namespace Adcirc
+  return 0;
+}

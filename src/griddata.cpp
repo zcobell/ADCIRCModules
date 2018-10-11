@@ -516,31 +516,6 @@ double Griddata::calculateHighestFromLookup(Point &p, double w) {
   return this->defaultValue();
 }
 
-vector<double> Griddata::computeGridScale() {
-  ElementTable e(this->m_mesh);
-  e.build();
-
-  vector<double> gridsize;
-  gridsize.resize(this->m_mesh->numNodes());
-
-  for (size_t i = 0; i < this->m_mesh->numNodes(); i++) {
-    vector<Element *> l = e.elementList(this->m_mesh->node(i));
-    double a = 0.0;
-    for (size_t j = 0; j < l.size(); ++j) {
-      a += l[j]->elementSize(false);
-    }
-    if (l.size() > 0)
-      gridsize[i] = a / l.size();
-    else
-      gridsize[i] = 0.0;
-
-    if (gridsize[i] < 0.0) {
-      adcircmodules_throw_exception("Error computing mesh size table.");
-    }
-  }
-  return gridsize;
-}
-
 bool Griddata::computeWindDirectionAndWeight(Point &p, double x, double y,
                                              double &w, int &dir) {
   double dx = (x - p.x()) * 0.001;
@@ -692,7 +667,7 @@ vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
     this->m_raster.get()->read();
   }
 
-  vector<double> gridsize = this->computeGridScale();
+  vector<double> gridsize = this->m_mesh->computeMeshSize();
   vector<double> result;
   result.resize(this->m_mesh->numNodes());
 
