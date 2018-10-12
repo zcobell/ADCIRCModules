@@ -75,9 +75,12 @@ OutputFile::OutputFile(const std::string& filename) : m_filename(filename) {
   this->m_currentSnap = 0;
   this->m_numNodes = 0;
   this->m_numSnaps = 0;
+  this->m_dt = 0;
+  this->m_dit = 0;
   this->m_open = false;
   this->m_isVector = false;
   this->m_isMax = false;
+  this->m_defaultValue = Adcirc::Output::DefaultOutputValue;
   this->m_filetype = Adcirc::Output::Unknown;
 }
 
