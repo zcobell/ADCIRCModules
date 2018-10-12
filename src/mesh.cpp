@@ -31,7 +31,6 @@
 #include "shapefil.h"
 #include "stringconversion.h"
 
-using namespace std;
 using namespace Adcirc;
 using namespace Adcirc::Geometry;
 
@@ -85,25 +84,27 @@ Mesh::~Mesh() {
  * @brief Filename of the mesh to be read
  * @return Return the name of the mesh to be read
  */
-string Mesh::filename() const { return this->m_filename; }
+std::string Mesh::filename() const { return this->m_filename; }
 
 /**
  * @brief Sets the name of the mesh to be read
  * @param filename Name of the mesh
  */
-void Mesh::setFilename(const string &filename) { this->m_filename = filename; }
+void Mesh::setFilename(const std::string &filename) {
+  this->m_filename = filename;
+}
 
 /**
  * @brief Returns the mesh header from the processed mesh
  * @return mesh header
  */
-string Mesh::meshHeaderString() const { return this->m_meshHeaderString; }
+std::string Mesh::meshHeaderString() const { return this->m_meshHeaderString; }
 
 /**
  * @brief Sets the header for the mesh
  * @param meshHeaderString header
  */
-void Mesh::setMeshHeaderString(const string &meshHeaderString) {
+void Mesh::setMeshHeaderString(const std::string &meshHeaderString) {
   this->m_meshHeaderString = meshHeaderString;
 }
 
@@ -173,7 +174,7 @@ void Mesh::setNumLandBoundaries(size_t numLandBoundaries) {
  * specified, then it will be guessed from the file extension
  */
 void Mesh::read(MeshFormat format) {
-  if (this->m_filename == string()) {
+  if (this->m_filename == std::string()) {
     adcircmodules_throw_exception("No filename has been specified.");
   }
   if (!IO::fileExists(this->m_filename)) {
@@ -231,7 +232,7 @@ void Mesh::readAdcircMesh() {
  *
  */
 void Mesh::read2dmMesh() {
-  vector<string> nodes, elements;
+  std::vector<std::string> nodes, elements;
   this->read2dmData(nodes, elements);
   this->read2dmNodes(nodes);
   this->read2dmElements(elements);
@@ -322,7 +323,7 @@ void Mesh::readDflowMesh() {
   free(zcoor);
 
   for (size_t i = 0; i < this->m_numElements; ++i) {
-    vector<size_t> n(nmaxnode);
+    std::vector<size_t> n(nmaxnode);
     size_t nfill = 0;
     for (size_t j = 0; j < nmaxnode; ++j) {
       n[j] = elem[i * nmaxnode + j];
@@ -359,23 +360,23 @@ void Mesh::readDflowMesh() {
  * @param[out] nodes node cards vector
  * @param[out] elements element cards vector
  */
-void Mesh::read2dmData(std::vector<string> &nodes,
-                       std::vector<string> &elements) {
+void Mesh::read2dmData(std::vector<std::string> &nodes,
+                       std::vector<std::string> &elements) {
   std::fstream fid(this->filename());
 
-  string junk;
+  std::string junk;
   std::getline(fid, junk);
   std::getline(fid, junk);
   junk = junk.substr(8, junk.size());
   junk.erase(std::remove(junk.begin(), junk.end(), '\"'), junk.end());
   this->m_meshHeaderString = StringConversion::sanitizeString(junk);
-  if (this->m_meshHeaderString == string()) {
+  if (this->m_meshHeaderString == std::string()) {
     this->m_meshHeaderString = "Mesh";
   }
 
-  string templine;
+  std::string templine;
   while (std::getline(fid, templine)) {
-    vector<string> templist;
+    std::vector<std::string> templist;
     IO::splitString(templine, templist);
     if (templist[0] == "ND") {
       nodes.push_back(templine);
@@ -391,7 +392,7 @@ void Mesh::read2dmData(std::vector<string> &nodes,
  * @brief Parses the node data into data structures
  * @param nodes vector of node data from 2dm file
  */
-void Mesh::read2dmNodes(std::vector<string> &nodes) {
+void Mesh::read2dmNodes(std::vector<std::string> &nodes) {
   this->m_nodes.reserve(nodes.size());
   this->m_numNodes = nodes.size();
   for (auto &n : nodes) {
@@ -406,12 +407,12 @@ void Mesh::read2dmNodes(std::vector<string> &nodes) {
  * @brief Parses the element data into data structures
  * @param elements vector of element data from the 2dm file
  */
-void Mesh::read2dmElements(std::vector<string> &elements) {
+void Mesh::read2dmElements(std::vector<std::string> &elements) {
   this->m_elements.reserve(elements.size());
   this->m_numElements = elements.size();
   for (auto &e : elements) {
     size_t id;
-    vector<size_t> n;
+    std::vector<size_t> n;
     n.reserve(5);
     IO::splitString2dmElementFormat(e, id, n);
     if (n.size() == 4) {
@@ -433,8 +434,8 @@ void Mesh::read2dmElements(std::vector<string> &elements) {
  * @brief Determine the mesh format based upon file extension
  * @return MeshFormat enum
  */
-Mesh::MeshFormat Mesh::getMeshFormat(const string &filename) {
-  string extension = IO::getFileExtension(filename);
+Mesh::MeshFormat Mesh::getMeshFormat(const std::string &filename) {
+  std::string extension = IO::getFileExtension(filename);
   if (extension == ".14" || extension == ".grd") {
     return MESH_ADCIRC;
   } else if (extension == ".2dm") {
@@ -453,8 +454,8 @@ Mesh::MeshFormat Mesh::getMeshFormat(const string &filename) {
 void Mesh::readAdcircMeshHeader(std::fstream &fid) {
   bool ok;
   size_t tempInt;
-  string tempLine;
-  vector<string> tempList;
+  std::string tempLine;
+  std::vector<std::string> tempList;
 
   //...Read mesh header
   std::getline(fid, tempLine);
@@ -495,7 +496,7 @@ void Mesh::readAdcircNodes(std::fstream &fid) {
   for (auto &n : this->m_nodes) {
     size_t id;
     double x, y, z;
-    string tempLine;
+    std::string tempLine;
     std::getline(fid, tempLine);
     if (!IO::splitStringNodeFormat(tempLine, id, x, y, z)) {
       fid.close();
@@ -527,7 +528,7 @@ void Mesh::readAdcircNodes(std::fstream &fid) {
  */
 void Mesh::readAdcircElements(std::fstream &fid) {
   size_t id;
-  string tempLine;
+  std::string tempLine;
 
   this->m_elements.resize(this->numElements());
 
@@ -591,8 +592,8 @@ void Mesh::readAdcircElements(std::fstream &fid) {
  * @param fid std::fstream reference for the currently opened mesh
  */
 void Mesh::readAdcircOpenBoundaries(std::fstream &fid) {
-  string tempLine;
-  vector<string> tempList;
+  std::string tempLine;
+  std::vector<std::string> tempList;
 
   std::getline(fid, tempLine);
   IO::splitString(tempLine, tempList);
@@ -643,8 +644,8 @@ void Mesh::readAdcircOpenBoundaries(std::fstream &fid) {
  * @param fid std::fstream reference for the currently opened mesh
  */
 void Mesh::readAdcircLandBoundaries(std::fstream &fid) {
-  string tempLine;
-  vector<string> tempList;
+  std::string tempLine;
+  std::vector<std::string> tempList;
 
   size_t n1, n2;
   double supercritical, subcritical, crest, pipeheight, pipediam, pipecoef;
@@ -814,7 +815,7 @@ Node *Mesh::node(size_t index) {
   if (index < this->numNodes()) {
     return &this->m_nodes[index];
   } else {
-    adcircmodules_throw_exception("Mesh: Node index " + to_string(index) +
+    adcircmodules_throw_exception("Mesh: Node index " + std::to_string(index) +
                                   " out of bounds");
     return nullptr;
   }
@@ -845,7 +846,7 @@ Node *Mesh::nodeById(size_t id) {
     if (id > 0 && id <= this->numNodes()) {
       return &this->m_nodes[id - 1];
     } else {
-      adcircmodules_throw_exception("Mesh: Node id " + to_string(id) +
+      adcircmodules_throw_exception("Mesh: Node id " + std::to_string(id) +
                                     " not found");
       return nullptr;
     }
@@ -932,7 +933,7 @@ bool Mesh::isLatLon() { return this->m_isLatLon; }
 void Mesh::reproject(int epsg) {
   Projection proj;
   bool isLatLon;
-  vector<Point> inPoint, outPoint;
+  std::vector<Point> inPoint, outPoint;
   inPoint.reserve(this->numNodes());
   outPoint.resize(this->numNodes());
 
@@ -961,7 +962,7 @@ void Mesh::reproject(int epsg) {
  * @brief Writes the mesh nodes into ESRI shapefile format
  * @param outputFile output file with .shp extension
  */
-void Mesh::toNodeShapefile(const string &outputFile) {
+void Mesh::toNodeShapefile(const std::string &outputFile) {
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POINT);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
 
@@ -998,23 +999,23 @@ void Mesh::toNodeShapefile(const string &outputFile) {
  * @return vector of unique node pairs
  */
 std::vector<std::pair<Node *, Node *>> Mesh::generateLinkTable() {
-  vector<pair<Node *, Node *>> legs;
+  std::vector<std::pair<Node *, Node *>> legs;
   legs.reserve(this->m_numElements * 4);
   for (auto &e : this->m_elements) {
     Element e_s = e;
     e_s.sortVerticiesAboutCenter();
     for (int j = 0; j < e_s.n(); ++j) {
-      pair<Node *, Node *> p1 = e_s.elementLeg(j);
-      pair<Node *, Node *> p2;
+      std::pair<Node *, Node *> p1 = e_s.elementLeg(j);
+      std::pair<Node *, Node *> p2;
       if (p1.first->id() > p1.second->id()) {
-        p2 = pair<Node *, Node *>(p1.second, p1.first);
+        p2 = std::pair<Node *, Node *>(p1.second, p1.first);
       } else {
         p2 = move(p1);
       }
       legs.push_back(p2);
     }
   }
-  set<pair<Node *, Node *>> s(legs.begin(), legs.end());
+  std::set<std::pair<Node *, Node *>> s(legs.begin(), legs.end());
   legs.clear();
   legs.assign(s.begin(), s.end());
   s.clear();
@@ -1025,7 +1026,7 @@ std::vector<std::pair<Node *, Node *>> Mesh::generateLinkTable() {
  * @brief Writes the mesh connectivity into ESRI shapefile format
  * @param outputFile output file with .shp extension
  */
-void Mesh::toConnectivityShapefile(const string &outputFile) {
+void Mesh::toConnectivityShapefile(const std::string &outputFile) {
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_ARC);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
 
@@ -1034,7 +1035,7 @@ void Mesh::toConnectivityShapefile(const string &outputFile) {
   DBFAddField(dbfid, "znode1", FTDouble, 16, 4);
   DBFAddField(dbfid, "znode2", FTDouble, 16, 4);
 
-  vector<pair<Node *, Node *>> legs = this->generateLinkTable();
+  std::vector<std::pair<Node *, Node *>> legs = this->generateLinkTable();
 
   for (auto &l : legs) {
     double latitude[2], longitude[2], elevation[2];
@@ -1070,7 +1071,7 @@ void Mesh::toConnectivityShapefile(const string &outputFile) {
  * @brief Writes the mesh elements as polygons into ESRI shapefile format
  * @param outputFile output file with .shp extension
  */
-void Mesh::toElementShapefile(const string &outputFile) {
+void Mesh::toElementShapefile(const std::string &outputFile) {
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POLYGONZ);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
   DBFAddField(dbfid, "elementid", FTInteger, 16, 0);
@@ -1120,7 +1121,6 @@ void Mesh::toElementShapefile(const string &outputFile) {
     DBFWriteDoubleAttribute(dbfid, shp_index, 7, nodez[2]);
     DBFWriteDoubleAttribute(dbfid, shp_index, 8, nodez[3]);
     DBFWriteDoubleAttribute(dbfid, shp_index, 9, zmean);
-
   }
 
   DBFClose(dbfid);
@@ -1134,7 +1134,7 @@ void Mesh::toElementShapefile(const string &outputFile) {
  */
 void Mesh::buildNodalSearchTree() {
   int ierr;
-  vector<double> x, y;
+  std::vector<double> x, y;
 
   x.reserve(this->numNodes());
   y.reserve(this->numNodes());
@@ -1150,7 +1150,7 @@ void Mesh::buildNodalSearchTree() {
     }
   }
 
-  this->m_nodalSearchTree = unique_ptr<QKdtree2>(new QKdtree2());
+  this->m_nodalSearchTree = std::unique_ptr<QKdtree2>(new QKdtree2());
   ierr = this->m_nodalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
     adcircmodules_throw_exception("Mesh: KDTree2 library error");
@@ -1164,7 +1164,7 @@ void Mesh::buildNodalSearchTree() {
  * locations
  */
 void Mesh::buildElementalSearchTree() {
-  vector<double> x, y;
+  std::vector<double> x, y;
 
   x.reserve(this->numElements());
   y.reserve(this->numElements());
@@ -1186,7 +1186,7 @@ void Mesh::buildElementalSearchTree() {
     }
   }
 
-  this->m_elementalSearchTree = unique_ptr<QKdtree2>(new QKdtree2());
+  this->m_elementalSearchTree = std::unique_ptr<QKdtree2>(new QKdtree2());
   int ierr = this->m_elementalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
     adcircmodules_throw_exception("Mesh: KDTree2 library error");
@@ -1331,7 +1331,7 @@ void Mesh::deleteElement(size_t index) {
  *
  * If no output specifier is supplied, format is guessed from file extension.
  */
-void Mesh::write(const string &outputFile, Mesh::MeshFormat format) {
+void Mesh::write(const std::string &outputFile, Mesh::MeshFormat format) {
   MeshFormat fmt;
   if (format == MESH_UNKNOWN) {
     fmt = this->getMeshFormat(outputFile);
@@ -1359,15 +1359,15 @@ void Mesh::write(const string &outputFile, Mesh::MeshFormat format) {
  * @brief Writes an Mesh object to disk in ADCIRC ASCII format
  * @param filename name of the output file to write
  */
-void Mesh::writeAdcircMesh(const string &filename) {
+void Mesh::writeAdcircMesh(const std::string &filename) {
   std::ofstream outputFile;
 
   outputFile.open(filename);
 
   //...Write the header
   outputFile << this->meshHeaderString() << "\n";
-  string tempString = boost::str(boost::format("%11i %11i") %
-                                 this->numElements() % this->numNodes());
+  std::string tempString = boost::str(boost::format("%11i %11i") %
+                                      this->numElements() % this->numNodes());
   outputFile << tempString << "\n";
 
   //...Write the mesh nodes
@@ -1412,7 +1412,7 @@ void Mesh::writeAdcircMesh(const string &filename) {
  * @brief Writes an Mesh object to disk in Aquaveo 2dm ASCII format
  * @param filename name of the output file to write
  */
-void Mesh::write2dmMesh(const string &filename) {
+void Mesh::write2dmMesh(const std::string &filename) {
   std::ofstream outputFile;
   outputFile.open(filename);
 
@@ -1450,8 +1450,8 @@ size_t Mesh::getMaxNodesPerElement() {
  * @brief Writes the mesh to the DFlow-FM format
  * @param filename name of the output file (*_net.nc)
  */
-void Mesh::writeDflowMesh(const string &filename) {
-  vector<pair<Node *, Node *>> links = this->generateLinkTable();
+void Mesh::writeDflowMesh(const std::string &filename) {
+  std::vector<std::pair<Node *, Node *>> links = this->generateLinkTable();
   size_t nlinks = links.size();
   size_t maxelemnode = this->getMaxNodesPerElement();
 
@@ -1676,8 +1676,8 @@ size_t Mesh::elementIndexById(size_t id) {
  *
  * Implemented mostly for the python interface
  */
-vector<double> Mesh::x() {
-  vector<double> x;
+std::vector<double> Mesh::x() {
+  std::vector<double> x;
   x.reserve(this->numNodes());
   for (const auto &n : this->m_nodes) {
     x.push_back(n.x());
@@ -1691,8 +1691,8 @@ vector<double> Mesh::x() {
  *
  * Implemented mostly for the python interface
  */
-vector<double> Mesh::y() {
-  vector<double> y;
+std::vector<double> Mesh::y() {
+  std::vector<double> y;
   y.reserve(this->numNodes());
   for (const auto &n : this->m_nodes) {
     y.push_back(n.y());
@@ -1706,8 +1706,8 @@ vector<double> Mesh::y() {
  *
  * Implemented mostly for the python interface
  */
-vector<double> Mesh::z() {
-  vector<double> z;
+std::vector<double> Mesh::z() {
+  std::vector<double> z;
   z.reserve(this->numNodes());
   for (const auto &n : this->m_nodes) {
     z.push_back(n.z());
@@ -1721,8 +1721,8 @@ vector<double> Mesh::z() {
  *
  * Implemented mostly for the python interface
  */
-vector<vector<double>> Mesh::xyz() {
-  vector<vector<double>> xyz;
+std::vector<std::vector<double>> Mesh::xyz() {
+  std::vector<std::vector<double>> xyz;
   xyz.resize(3);
   xyz[0] = this->x();
   xyz[1] = this->y();
@@ -1736,11 +1736,11 @@ vector<vector<double>> Mesh::xyz() {
  *
  * Implemented mostly for the python interface
  */
-vector<vector<size_t>> Mesh::connectivity() {
-  vector<vector<size_t>> conn;
+std::vector<std::vector<size_t>> Mesh::connectivity() {
+  std::vector<std::vector<size_t>> conn;
   conn.reserve(this->numElements());
   for (auto &e : this->m_elements) {
-    vector<size_t> v;
+    std::vector<size_t> v;
     v.resize(e.n());
     for (int i = 0; i < e.n(); ++i) {
       v[i] = e.node(i)->id();
@@ -1844,7 +1844,7 @@ size_t Mesh::findElement(Point location) {
     this->buildElementalSearchTree();
   }
 
-  vector<size_t> indicies;
+  std::vector<size_t> indicies;
   indicies = this->elementalSearchTree()->findXNearest(location, searchDepth);
 
   for (auto i : indicies) {
@@ -1860,14 +1860,14 @@ size_t Mesh::findElement(Point location) {
  * @brief Computes average size of the element edges connected to each node
  * @return vector containing size at each node
  */
-vector<double> Mesh::computeMeshSize() {
+std::vector<double> Mesh::computeMeshSize() {
   ElementTable e(this);
   e.build();
 
-  vector<double> meshsize(this->numNodes());
+  std::vector<double> meshsize(this->numNodes());
 
   for (size_t i = 0; i < this->numNodes(); ++i) {
-    vector<Element *> l = e.elementList(this->node(i));
+    std::vector<Element *> l = e.elementList(this->node(i));
     double a = 0.0;
     for (size_t j = 0; j < l.size(); ++j) {
       a += l[j]->elementSize(false);
@@ -1890,8 +1890,8 @@ vector<double> Mesh::computeMeshSize() {
  * @param b second
  * @return  true of a < b
  */
-bool sortEdgeTuple(const tuple<Node *, Node *, Element *> &a,
-                   const tuple<Node *, Node *, Element *> &b) {
+bool sortEdgeTuple(const std::tuple<Node *, Node *, Element *> &a,
+                   const std::tuple<Node *, Node *, Element *> &b) {
   Node *n11, *n12;
   Node *n21, *n22;
   Element *e1, *e2;
@@ -1908,8 +1908,8 @@ bool sortEdgeTuple(const tuple<Node *, Node *, Element *> &a,
  * @param b second
  * @return true of a == b
  */
-bool edgeTupleEqual(const tuple<Node *, Node *, Element *> &a,
-                    const tuple<Node *, Node *, Element *> &b) {
+bool edgeTupleEqual(const std::tuple<Node *, Node *, Element *> &a,
+                    const std::tuple<Node *, Node *, Element *> &b) {
   Node *n11, *n12;
   Node *n21, *n22;
   Element *e1, *e2;
@@ -1934,18 +1934,18 @@ std::vector<std::vector<double>> Mesh::orthogonality() {
   o.reserve(this->m_numElements * 2);
 
   //...Build the node pairs with duplicates
-  vector<tuple<Node *, Node *, Element *>> edg;
+  std::vector<std::tuple<Node *, Node *, Element *>> edg;
   edg.reserve(this->m_numElements * 4);
   for (auto &e : this->m_elements) {
     e.sortVerticiesAboutCenter();
     for (size_t i = 0; i < e.n(); i++) {
-      pair<Node *, Node *> p = e.elementLeg(i);
+      std::pair<Node *, Node *> p = e.elementLeg(i);
       Node *a = p.first;
       Node *b = p.second;
       if (a->id() < b->id()) {
-        edg.push_back(tuple<Node *, Node *, Element *>(a, b, &e));
+        edg.push_back(std::tuple<Node *, Node *, Element *>(a, b, &e));
       } else {
-        edg.push_back(tuple<Node *, Node *, Element *>(b, a, &e));
+        edg.push_back(std::tuple<Node *, Node *, Element *>(b, a, &e));
       }
     }
   }
@@ -1974,7 +1974,8 @@ std::vector<std::vector<double>> Mesh::orthogonality() {
       double r1 = dx1 * dx1 + dy1 * dy1;
       double r2 = dx2 * dx2 + dy2 * dy2;
       double ortho = (dx1 * dx2 + dy1 * dy2) / std::sqrt(r1 * r2);
-      vector<double> v = {outx, outy, abs(max(min(ortho, 1.0), -1.0))};
+      std::vector<double> v = {outx, outy,
+                               std::abs(std::max(std::min(ortho, 1.0), -1.0))};
       o.push_back(v);
     }
   }

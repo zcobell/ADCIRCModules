@@ -82,12 +82,6 @@ class Griddata {
 
   static constexpr double windRadius() { return 10000.0; }
   static constexpr double windSigma() { return 6.0; }
-  static constexpr double windSigmaSquared() {
-    return Griddata::windSigma() * Griddata::windSigma();
-  }
-  static double windSigma2pi() {
-    return sqrt(2.0 * Constants::pi() * Griddata::windSigma());
-  }
 
   double datumShift() const;
   void setDatumShift(double datumShift);

@@ -22,7 +22,6 @@
 #include "constants.h"
 #include "error.h"
 
-using namespace std;
 using namespace Adcirc::Geometry;
 
 /**
@@ -157,7 +156,7 @@ Node *Element::node(int i) {
  * @brief Formats the element for writing to an Adcirc ASCII mesh file
  * @return formatted string
  */
-string Element::toAdcircString() {
+std::string Element::toAdcircString() {
   if (this->n() == 3) {
     return boost::str(boost::format("%11i %3i %11i %11i %11i") % this->id() %
                       this->n() % this->node(0)->id() % this->node(1)->id() %
@@ -169,7 +168,7 @@ string Element::toAdcircString() {
                       this->node(3)->id());
   } else {
     adcircmodules_throw_exception("Invalid number of nodes in element");
-    return string();
+    return std::string();
   }
 }
 
@@ -177,7 +176,7 @@ string Element::toAdcircString() {
  * @brief Formats the element for writing to an Aquaveo 2dm ASCII mesh file
  * @return formatted string
  */
-string Element::to2dmString() {
+std::string Element::to2dmString() {
   if (this->n() == 3) {
     return boost::str(boost::format("%s %i %i %i %i %i") % "E3T" % this->id() %
                       this->node(0)->id() % this->node(1)->id() %
@@ -188,7 +187,7 @@ string Element::to2dmString() {
                       this->node(2)->id() % this->node(3)->id());
   } else {
     adcircmodules_throw_exception("Invalid number of nodes in element");
-    return string();
+    return std::string();
   }
 }
 

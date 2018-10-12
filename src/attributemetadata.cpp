@@ -22,7 +22,6 @@
 #include "boost/format.hpp"
 
 using namespace Adcirc::ModelParameters;
-using namespace std;
 
 /**
  * @brief Constructor
@@ -31,8 +30,8 @@ using namespace std;
  * default values.
  *
  */
-AttributeMetadata::AttributeMetadata(const string &name, const string &units,
-                                     size_t numValues)
+AttributeMetadata::AttributeMetadata(const std::string &name,
+                                     const std::string &units, size_t numValues)
     : m_name(name), m_units(units) {
   this->setNumberOfValues(numValues);
 }
@@ -41,25 +40,29 @@ AttributeMetadata::AttributeMetadata(const string &name, const string &units,
  * @brief Returns the name of the nodal attribute
  * @return name of nodal attribute
  */
-string AttributeMetadata::name() const { return this->m_name; }
+std::string AttributeMetadata::name() const { return this->m_name; }
 
 /**
  * @brief Sets the name of the nodal attribute
  * @param name string to use for name
  */
-void AttributeMetadata::setName(const string &name) { this->m_name = name; }
+void AttributeMetadata::setName(const std::string &name) {
+  this->m_name = name;
+}
 
 /**
  * @brief Returns the units for the nodal attribute
  * @return units for the nodal attribute
  */
-string AttributeMetadata::units() const { return this->m_units; }
+std::string AttributeMetadata::units() const { return this->m_units; }
 
 /**
  * @brief Sets the units for the nodal attribute
  * @param units value to set for the units string
  */
-void AttributeMetadata::setUnits(const string &units) { this->m_units = units; }
+void AttributeMetadata::setUnits(const std::string &units) {
+  this->m_units = units;
+}
 
 /**
  * @brief Returns the number of values for the nodal attribute
@@ -83,7 +86,7 @@ void AttributeMetadata::setNumberOfValues(size_t numValues) {
  * @brief Returns the default value vector
  * @return vector of default values for the nodal attribute
  */
-vector<double> AttributeMetadata::getDefaultValues() const {
+std::vector<double> AttributeMetadata::getDefaultValues() const {
   return this->m_defaultValue;
 }
 
@@ -106,7 +109,7 @@ double AttributeMetadata::getDefaultValue(size_t index) const {
  * @brief Sets the default value to the data contained within a vector
  * @param value vector to use to fill the default values vector
  */
-void AttributeMetadata::setDefaultValue(const vector<double> &value) {
+void AttributeMetadata::setDefaultValue(const std::vector<double> &value) {
   assert(value.size() == this->m_numValues);
   this->m_defaultValue = value;
 }
@@ -134,8 +137,8 @@ void AttributeMetadata::setDefaultValue(size_t index, const double &value) {
  * @return formatted string for a fort.13 file header
  */
 std::string AttributeMetadata::headerString() {
-  string f = boost::str(boost::format("%s\n%s\n%11i\n") % this->m_name %
-                        this->m_units % this->m_numValues);
+  std::string f = boost::str(boost::format("%s\n%s\n%11i\n") % this->m_name %
+                             this->m_units % this->m_numValues);
   for (auto v : this->m_defaultValue) {
     f = f + boost::str(boost::format("%12.6f") % v);
   }

@@ -20,7 +20,6 @@
 #include "error.h"
 #include "boost/format.hpp"
 
-using namespace std;
 using namespace Adcirc::Geometry;
 
 /**
@@ -392,8 +391,8 @@ void Boundary::setNode2(size_t index, Node *node2) {
  * string vector
  * @return vector of strings
  */
-vector<string> Boundary::toStringList() {
-  vector<string> outputList;
+std::vector<std::string> Boundary::toStringList() {
+  std::vector<std::string> outputList;
 
   if (this->boundaryCode() == -1) {
     outputList.push_back(boost::str(boost::format("%11i") % this->length()));

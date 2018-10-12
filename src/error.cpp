@@ -17,23 +17,22 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "error.h"
-#include <string>
 #include <stdexcept>
+#include <string>
 
 using namespace Adcirc;
-using namespace std;
 
-static const string errorHeading("[ADCIRCModules runtime error]: ");
+static const std::string errorHeading("[ADCIRCModules runtime error]: ");
 
-static const string warningHeading("[ADCIRCModules Warning]: ");
+static const std::string warningHeading("[ADCIRCModules Warning]: ");
 
-void Error::throwError(const string &s) {
-  throw runtime_error(errorHeading + s);
+void Error::throwError(const std::string &s) {
+  throw std::runtime_error(errorHeading + s);
 }
 
-void Error::throwError(const string &s, const char *file, int line) {
-  throw runtime_error(errorHeading + s + " at " + file + ", line " +
-                      to_string(line));
+void Error::throwError(const std::string &s, const char *file, int line) {
+  throw std::runtime_error(errorHeading + s + " at " + file + ", line " +
+                           std::to_string(line));
 }
 
 void Error::warning(const std::string &s) {

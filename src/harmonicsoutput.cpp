@@ -29,10 +29,9 @@
 #include "outputfile.h"
 #include "stringconversion.h"
 
-using namespace std;
 using namespace Adcirc::Output;
 
-HarmonicsOutput::HarmonicsOutput(const string& filename, bool velocity)
+HarmonicsOutput::HarmonicsOutput(const std::string& filename, bool velocity)
     : m_filename(filename) {
   this->m_numNodes = 0;
   this->m_numConstituents = 0;
@@ -40,13 +39,13 @@ HarmonicsOutput::HarmonicsOutput(const string& filename, bool velocity)
   this->m_filetype = Adcirc::Output::Unknown;
 }
 
-string HarmonicsOutput::filename() const { return this->m_filename; }
+std::string HarmonicsOutput::filename() const { return this->m_filename; }
 
-void HarmonicsOutput::setFilename(const string& filename) {
+void HarmonicsOutput::setFilename(const std::string& filename) {
   this->m_filename = filename;
 }
 
-size_t HarmonicsOutput::index(string name) {
+size_t HarmonicsOutput::index(std::string name) {
   boost::to_upper(name);
   auto i = this->m_index.find(name);
   if (i == this->m_index.end()) {
@@ -57,17 +56,17 @@ size_t HarmonicsOutput::index(string name) {
   }
 }
 
-string HarmonicsOutput::name(size_t index) {
+std::string HarmonicsOutput::name(size_t index) {
   assert(index < this->m_consituentNames.size());
   if (index < this->m_consituentNames.size()) {
     return this->m_consituentNames[index];
   } else {
     adcircmodules_throw_exception("Index out of bounds");
-    return string();
+    return std::string();
   }
 }
 
-HarmonicsRecord* HarmonicsOutput::amplitude(string name) {
+HarmonicsRecord* HarmonicsOutput::amplitude(std::string name) {
   return this->amplitude(this->index(std::move(name)));
 }
 
@@ -81,7 +80,7 @@ HarmonicsRecord* HarmonicsOutput::amplitude(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutput::phase(string name) {
+HarmonicsRecord* HarmonicsOutput::phase(std::string name) {
   return this->phase(this->index(std::move(name)));
 }
 
@@ -95,7 +94,7 @@ HarmonicsRecord* HarmonicsOutput::phase(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutput::u_magnitude(string name) {
+HarmonicsRecord* HarmonicsOutput::u_magnitude(std::string name) {
   return this->u_magnitude(this->index(std::move(name)));
 }
 HarmonicsRecord* HarmonicsOutput::u_magnitude(size_t index) {
@@ -108,7 +107,7 @@ HarmonicsRecord* HarmonicsOutput::u_magnitude(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutput::u_phase(string name) {
+HarmonicsRecord* HarmonicsOutput::u_phase(std::string name) {
   return this->u_phase(this->index(std::move(name)));
 }
 
@@ -122,7 +121,7 @@ HarmonicsRecord* HarmonicsOutput::u_phase(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutput::v_magnitude(string name) {
+HarmonicsRecord* HarmonicsOutput::v_magnitude(std::string name) {
   return this->v_magnitude(this->index(std::move(name)));
 }
 
@@ -136,7 +135,7 @@ HarmonicsRecord* HarmonicsOutput::v_magnitude(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutput::v_phase(string name) {
+HarmonicsRecord* HarmonicsOutput::v_phase(std::string name) {
   return this->v_phase(this->index(std::move(name)));
 }
 
@@ -215,16 +214,16 @@ void HarmonicsOutput::getFiletype() {
 }
 
 void HarmonicsOutput::readAsciiFormat() {
-  fstream fid;
+  std::fstream fid;
   fid.open(this->m_filename);
   if (!fid.is_open()) {
     adcircmodules_throw_exception("File is not open");
   }
 
-  string line;
+  std::string line;
   bool ok;
 
-  getline(fid, line);
+  std::getline(fid, line);
   size_t n = StringConversion::stringToSizet(line, ok);
   if (ok) {
     this->setNumConstituents(n);
@@ -236,7 +235,7 @@ void HarmonicsOutput::readAsciiFormat() {
   std::vector<double> frequency;
   std::vector<double> nodalFactor;
   std::vector<double> equilibriumArg;
-  std::vector<string> names;
+  std::vector<std::string> names;
 
   frequency.resize(this->numConstituents());
   nodalFactor.resize(this->numConstituents());
@@ -244,8 +243,8 @@ void HarmonicsOutput::readAsciiFormat() {
   names.resize(this->numConstituents());
 
   for (size_t i = 0; i < this->numConstituents(); ++i) {
-    std::vector<string> list;
-    getline(fid, line);
+    std::vector<std::string> list;
+    std::getline(fid, line);
     IO::splitString(line, list);
     frequency[i] = StringConversion::stringToDouble(list[0], ok);
     nodalFactor[i] = StringConversion::stringToDouble(list[1], ok);
@@ -253,7 +252,7 @@ void HarmonicsOutput::readAsciiFormat() {
     names[i] = boost::to_upper_copy<std::string>(list[3]);
   }
 
-  getline(fid, line);
+  std::getline(fid, line);
   n = StringConversion::stringToSizet(line, ok);
   if (ok) {
     this->setNumNodes(n);
@@ -302,7 +301,7 @@ void HarmonicsOutput::readAsciiFormat() {
   }
 
   for (size_t i = 0; i < this->numNodes(); ++i) {
-    getline(fid, line);
+    std::getline(fid, line);
 
     size_t node;
     IO::splitStringBoundary0Format(line, node);
@@ -310,7 +309,7 @@ void HarmonicsOutput::readAsciiFormat() {
     this->m_nodeIndex[node] = i;
 
     for (size_t j = 0; j < this->numConstituents(); ++j) {
-      getline(fid, line);
+      std::getline(fid, line);
       if (this->isVelocity()) {
         double um, up, vm, vp;
         if (!IO::splitStringHarmonicsVelocityFormat(line, um, up, vm, vp)) {
@@ -347,7 +346,7 @@ void HarmonicsOutput::readNetcdfFormat() {
     adcircmodules_throw_exception("Could not open netcdf file");
   }
 
-  vector<int> varids;
+  std::vector<int> varids;
   this->readNetcdfFormatHeader(ncid, varids);
 
   if (this->isVelocity()) {
@@ -609,14 +608,14 @@ void HarmonicsOutput::readNetcdfElevationData(int ncid,
       delete[] v;
       adcircmodules_throw_exception("Error reading harmonic elevation data");
     }
-    vector<double> amp(v, v + this->numNodes());
+    std::vector<double> amp(v, v + this->numNodes());
     this->amplitude(i)->set(amp);
     ierr = nc_get_vara(ncid, varids[1], start, count, v);
     if (ierr != NC_NOERR) {
       delete[] v;
       adcircmodules_throw_exception("Error reading harmonic elevation data");
     }
-    vector<double> phs(v, v + this->numNodes());
+    std::vector<double> phs(v, v + this->numNodes());
     this->phase(i)->set(phs);
   }
 
@@ -643,7 +642,7 @@ void HarmonicsOutput::readNetcdfVelocityData(int ncid,
       delete[] v;
       adcircmodules_throw_exception("Error reading harmonic velocity data");
     }
-    vector<double> ua(v, v + this->numNodes());
+    std::vector<double> ua(v, v + this->numNodes());
     this->u_magnitude(i)->set(ua);
 
     ierr = nc_get_vara(ncid, varids[1], start, count, v);
@@ -651,7 +650,7 @@ void HarmonicsOutput::readNetcdfVelocityData(int ncid,
       delete[] v;
       adcircmodules_throw_exception("Error reading harmonic velocity data");
     }
-    vector<double> up(v, v + this->numNodes());
+    std::vector<double> up(v, v + this->numNodes());
     this->u_phase(i)->set(up);
 
     ierr = nc_get_vara(ncid, varids[2], start, count, v);
@@ -659,7 +658,7 @@ void HarmonicsOutput::readNetcdfVelocityData(int ncid,
       delete[] v;
       adcircmodules_throw_exception("Error reading harmonic velocity data");
     }
-    vector<double> va(v, v + this->numNodes());
+    std::vector<double> va(v, v + this->numNodes());
     this->v_magnitude(i)->set(va);
 
     ierr = nc_get_vara(ncid, varids[3], start, count, v);
@@ -667,7 +666,7 @@ void HarmonicsOutput::readNetcdfVelocityData(int ncid,
       delete[] v;
       adcircmodules_throw_exception("Error reading harmonic velocity data");
     }
-    vector<double> vp(v, v + this->numNodes());
+    std::vector<double> vp(v, v + this->numNodes());
     this->v_phase(i)->set(vp);
   }
 
@@ -675,4 +674,4 @@ void HarmonicsOutput::readNetcdfVelocityData(int ncid,
   return;
 }
 
-void HarmonicsOutput::write(const string& filename) { return; }
+void HarmonicsOutput::write(const std::string& filename) { return; }

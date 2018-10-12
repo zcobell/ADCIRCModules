@@ -24,7 +24,6 @@
 #include <vector>
 
 using namespace Adcirc::Geometry;
-using namespace std;
 
 MeshChecker::MeshChecker(Mesh *mesh) { this->m_mesh = mesh; }
 
@@ -175,7 +174,7 @@ void MeshChecker::printFailedLeveeStatus(
 }
 
 bool MeshChecker::checkOverlappingElements(Mesh *mesh) {
-  vector<Element *> overlappingList;
+  std::vector<Element *> overlappingList;
 
   ElementTable elementsAroundNode = ElementTable(mesh);
   elementsAroundNode.build();
@@ -219,7 +218,7 @@ bool MeshChecker::checkOverlappingElements(Mesh *mesh) {
 
 bool MeshChecker::checkDisjointNodes(Mesh *mesh) {
   bool passed = true;
-  vector<bool> found;
+  std::vector<bool> found;
   found.resize(mesh->numNodes());
   std::fill(found.begin(), found.end(), false);
 
@@ -279,7 +278,7 @@ bool MeshChecker::checkPipeHeights(Mesh *mesh) {
 
 bool MeshChecker::checkElementSizes(Mesh *mesh, double minimumElementSize) {
   bool passed = true;
-  vector<double> element_size;
+  std::vector<double> element_size;
   element_size.resize(mesh->numElements());
   for (size_t i = 0; i < mesh->numElements(); i++) {
     double size = mesh->element(i)->elementSize();

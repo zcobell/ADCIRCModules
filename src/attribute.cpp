@@ -22,7 +22,6 @@
 #include "boost/format.hpp"
 #include "error.h"
 
-using namespace std;
 using namespace Adcirc::ModelParameters;
 
 /**
@@ -69,7 +68,7 @@ double Attribute::value(size_t index) const {
  * @brief Returns a vector of all values for this nodal parameter
  * @return values for this nodal attribute
  */
-vector<double> Attribute::values() const { return this->m_values; }
+std::vector<double> Attribute::values() const { return this->m_values; }
 
 /**
  * @brief Set all values in the object to a single value
@@ -144,7 +143,7 @@ void Attribute::setId(size_t id) { this->m_id = id; }
  * @return string formatted attribute
  */
 std::string Attribute::write() {
-  string f = boost::str(boost::format("%11i  ") % this->m_id);
+  std::string f = boost::str(boost::format("%11i  ") % this->m_id);
   for (auto &v : this->m_values) {
     f = f + boost::str(boost::format("%12.6f  ") % v);
   }

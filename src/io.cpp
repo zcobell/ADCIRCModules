@@ -23,15 +23,22 @@
 #include <string>
 #include "boost/algorithm/string/split.hpp"
 #include "boost/algorithm/string/trim.hpp"
+#include "boost/config/warning_disable.hpp"
+#include "boost/spirit/include/phoenix_core.hpp"
+#include "boost/spirit/include/phoenix_operator.hpp"
+#include "boost/spirit/include/phoenix_stl.hpp"
+#include "boost/spirit/include/qi.hpp"
 #include "error.h"
+namespace qi = boost::spirit::qi;
+namespace ascii = boost::spirit::ascii;
+namespace phoenix = boost::phoenix;
 
-using namespace std;
-
-int IO::readFileData(const string &filename, vector<string> &data) {
+int IO::readFileData(const std::string &filename,
+                     std::vector<std::string> &data) {
   std::ifstream t(filename.c_str());
   t.seekg(0, std::ios::end);
   size_t size = t.tellg();
-  string buffer(size, ' ');
+  std::string buffer(size, ' ');
   t.seekg(0);
   t.read(&buffer[0], size);
   boost::algorithm::split(data, buffer, boost::is_any_of("\n"));
@@ -39,14 +46,14 @@ int IO::readFileData(const string &filename, vector<string> &data) {
   return Adcirc::NoError;
 }
 
-int IO::splitString(string &data, vector<string> &fresult) {
+int IO::splitString(std::string &data, std::vector<std::string> &fresult) {
   boost::trim_if(data, boost::is_any_of(" "));
   boost::algorithm::split(fresult, data, boost::is_any_of(" "),
                           boost::token_compress_on);
   return Adcirc::NoError;
 }
 
-std::string IO::getFileExtension(const string &filename) {
+std::string IO::getFileExtension(const std::string &filename) {
   size_t pos = filename.rfind('.');
   if (pos != std::string::npos) {
     return filename.substr(pos);
@@ -54,24 +61,13 @@ std::string IO::getFileExtension(const string &filename) {
   return "";
 }
 
-bool IO::fileExists(const string &filename) {
+bool IO::fileExists(const std::string &filename) {
   std::ifstream ifile(filename.c_str());
   return (bool)ifile;
 }
 
-#ifndef USE_BOOSTSPIRITX3
-
-#include "boost/config/warning_disable.hpp"
-#include "boost/spirit/include/phoenix_core.hpp"
-#include "boost/spirit/include/phoenix_operator.hpp"
-#include "boost/spirit/include/phoenix_stl.hpp"
-#include "boost/spirit/include/qi.hpp"
-namespace qi = boost::spirit::qi;
-namespace ascii = boost::spirit::ascii;
-namespace phoenix = boost::phoenix;
-
-bool IO::splitStringNodeFormat(string &data, size_t &id, double &x, double &y,
-                               double &z) {
+bool IO::splitStringNodeFormat(std::string &data, size_t &id, double &x,
+                               double &y, double &z) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(id) = qi::_1] >>
                            qi::double_[phoenix::ref(x) = qi::_1] >>
@@ -80,8 +76,8 @@ bool IO::splitStringNodeFormat(string &data, size_t &id, double &x, double &y,
                           ascii::space);
 }
 
-bool IO::splitStringElemFormat(string &data, size_t &id,
-                               vector<size_t> &nodes) {
+bool IO::splitStringElemFormat(std::string &data, size_t &id,
+                               std::vector<size_t> &nodes) {
   return qi::phrase_parse(
       data.begin(), data.end(),
       (qi::int_[phoenix::ref(id) = qi::_1] >> qi::int_ >>
@@ -89,14 +85,14 @@ bool IO::splitStringElemFormat(string &data, size_t &id,
       ascii::space);
 }
 
-bool IO::splitStringBoundary0Format(string &data, size_t &node1) {
+bool IO::splitStringBoundary0Format(std::string &data, size_t &node1) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node1) = qi::_1]),
                           ascii::space);
 }
 
-bool IO::splitStringBoundary23Format(string &data, size_t &node1, double &crest,
-                                     double &supercritical) {
+bool IO::splitStringBoundary23Format(std::string &data, size_t &node1,
+                                     double &crest, double &supercritical) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node1) = qi::_1] >>
                            qi::double_[phoenix::ref(crest) = qi::_1] >>
@@ -104,8 +100,9 @@ bool IO::splitStringBoundary23Format(string &data, size_t &node1, double &crest,
                           ascii::space);
 }
 
-bool IO::splitStringBoundary24Format(string &data, size_t &node1, size_t &node2,
-                                     double &crest, double &subcritical,
+bool IO::splitStringBoundary24Format(std::string &data, size_t &node1,
+                                     size_t &node2, double &crest,
+                                     double &subcritical,
                                      double &supercritical) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node1) = qi::_1] >>
@@ -116,10 +113,11 @@ bool IO::splitStringBoundary24Format(string &data, size_t &node1, size_t &node2,
                           ascii::space);
 }
 
-bool IO::splitStringBoundary25Format(string &data, size_t &node1, size_t &node2,
-                                     double &crest, double &subcritical,
-                                     double &supercritical, double &pipeheight,
-                                     double &pipecoef, double &pipediam) {
+bool IO::splitStringBoundary25Format(std::string &data, size_t &node1,
+                                     size_t &node2, double &crest,
+                                     double &subcritical, double &supercritical,
+                                     double &pipeheight, double &pipecoef,
+                                     double &pipediam) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node1) = qi::_1] >>
                            qi::int_[phoenix::ref(node2) = qi::_1] >>
@@ -132,7 +130,7 @@ bool IO::splitStringBoundary25Format(string &data, size_t &node1, size_t &node2,
                           ascii::space);
 }
 
-bool IO::splitStringAttribute1Format(string &data, size_t &node,
+bool IO::splitStringAttribute1Format(std::string &data, size_t &node,
                                      double &value) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node) = qi::_1] >>
@@ -140,7 +138,7 @@ bool IO::splitStringAttribute1Format(string &data, size_t &node,
                           ascii::space);
 }
 
-bool IO::splitStringAttribute2Format(string &data, size_t &node, double &value1,
+bool IO::splitStringAttribute2Format(std::string &data, size_t &node, double &value1,
                                      double &value2) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node) = qi::_1] >>
@@ -149,8 +147,8 @@ bool IO::splitStringAttribute2Format(string &data, size_t &node, double &value1,
                           ascii::space);
 }
 
-bool IO::splitStringAttributeNFormat(string &data, size_t &node,
-                                     vector<double> &values) {
+bool IO::splitStringAttributeNFormat(std::string &data, size_t &node,
+                                     std::vector<double> &values) {
   return qi::phrase_parse(
       data.begin(), data.end(),
       (qi::int_[phoenix::ref(node) = qi::_1] >>
@@ -158,15 +156,16 @@ bool IO::splitStringAttributeNFormat(string &data, size_t &node,
       ascii::space);
 }
 
-bool IO::splitStringHarmonicsElevationFormat(string &data, double &amplitude,
-                                             double &phase) {
+bool IO::splitStringHarmonicsElevationFormat(std::string &data,
+                                             double &amplitude, double &phase) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::double_[phoenix::ref(amplitude) = qi::_1] >>
                            qi::double_[phoenix::ref(phase) = qi::_1]),
                           ascii::space);
 }
 
-bool IO::splitStringHarmonicsVelocityFormat(string &data, double &u_magnitude,
+bool IO::splitStringHarmonicsVelocityFormat(std::string &data,
+                                            double &u_magnitude,
                                             double &u_phase,
                                             double &v_magnitude,
                                             double &v_phase) {
@@ -178,7 +177,7 @@ bool IO::splitStringHarmonicsVelocityFormat(string &data, double &u_magnitude,
                           ascii::space);
 }
 
-bool IO::splitString2dmNodeFormat(string &data, size_t &id, double &x,
+bool IO::splitString2dmNodeFormat(std::string &data, size_t &id, double &x,
                                   double &y, double &z) {
   return qi::phrase_parse(data.begin() + 3, data.end(),
                           (qi::int_[phoenix::ref(id) = qi::_1] >>
@@ -188,7 +187,7 @@ bool IO::splitString2dmNodeFormat(string &data, size_t &id, double &x,
                           ascii::space);
 }
 
-bool IO::splitString2dmElementFormat(string &data, size_t &id,
+bool IO::splitString2dmElementFormat(std::string &data, size_t &id,
                                      std::vector<size_t> &nodes) {
   return qi::phrase_parse(
       data.begin() + 3, data.end(),
@@ -196,137 +195,3 @@ bool IO::splitString2dmElementFormat(string &data, size_t &id,
        *(qi::int_[phoenix::push_back(phoenix::ref(nodes), qi::_1)])),
       ascii::space);
 }
-
-#else
-
-#include "boost/spirit/home/x3.hpp"
-using namespace std;
-using boost::spirit::x3::_attr;
-using boost::spirit::x3::double_;
-using boost::spirit::x3::int_;
-using boost::spirit::x3::phrase_parse;
-using boost::spirit::x3::ascii::space;
-
-bool IO::splitStringNodeFormat(string &data, size_t &id, double &x, double &y,
-                               double &z) {
-  auto assign_id = [&](auto &ctx) { id = _attr(ctx); };
-  auto assign_x = [&](auto &ctx) { x = _attr(ctx); };
-  auto assign_y = [&](auto &ctx) { y = _attr(ctx); };
-  auto assign_z = [&](auto &ctx) { z = _attr(ctx); };
-  return phrase_parse(data.begin(), data.end(),
-                      (int_[assign_id] >> double_[assign_x] >>
-                       double_[assign_y] >> double_[assign_z]),
-                      space);
-}
-
-bool IO::splitStringElemFormat(string &data, size_t &id,
-                               vector<size_t> &nodes) {
-  auto assign_id = [&](auto &ctx) { id = _attr(ctx); };
-  auto push_back = [&](auto &ctx) { nodes.push_back(_attr(ctx)); };
-  return phrase_parse(data.begin(), data.end(),
-                      (int_[assign_id] >> int_ >> *(int_[push_back])),
-                      boost::spirit::x3::omit[+space]);
-}
-
-bool IO::splitStringBoundary0Format(string &data, size_t &node1) {
-  auto assign_id = [&](auto &ctx) { node1 = _attr(ctx); };
-  return phrase_parse(data.begin(), data.end(), (int_[assign_id]), space);
-}
-
-bool IO::splitStringBoundary23Format(string &data, size_t &node1, double &crest,
-                                     double &supercritical) {
-  auto assign_id = [&](auto &ctx) { node1 = _attr(ctx); };
-  auto assign_crest = [&](auto &ctx) { crest = _attr(ctx); };
-  auto assign_supercritical = [&](auto &ctx) { supercritical = _attr(ctx); };
-  return phrase_parse(data.begin(), data.end(),
-                      (int_[assign_id] >> double_[assign_crest] >>
-                       double_[assign_supercritical]),
-                      space);
-}
-
-bool IO::splitStringBoundary24Format(string &data, size_t &node1, size_t &node2,
-                                     double &crest, double &subcritical,
-                                     double &supercritical) {
-  auto assign_n1 = [&](auto &ctx) { node1 = _attr(ctx); };
-  auto assign_n2 = [&](auto &ctx) { node2 = _attr(ctx); };
-  auto assign_crest = [&](auto &ctx) { crest = _attr(ctx); };
-  auto assign_subcritical = [&](auto &ctx) { subcritical = _attr(ctx); };
-  auto assign_supercritical = [&](auto &ctx) { supercritical = _attr(ctx); };
-  return phrase_parse(
-      data.begin(), data.end(),
-      (int_[assign_n1] >> int_[assign_n2] >> double_[assign_crest] >>
-       double_[assign_subcritical] >> double_[assign_supercritical]),
-      space);
-}
-
-bool IO::splitStringBoundary25Format(string &data, size_t &node1, size_t &node2,
-                                     double &crest, double &subcritical,
-                                     double &supercritical, double &pipeheight,
-                                     double &pipecoef, double &pipediam) {
-  auto assign_n1 = [&](auto &ctx) { node1 = _attr(ctx); };
-  auto assign_n2 = [&](auto &ctx) { node2 = _attr(ctx); };
-  auto assign_crest = [&](auto &ctx) { crest = _attr(ctx); };
-  auto assign_subcritical = [&](auto &ctx) { subcritical = _attr(ctx); };
-  auto assign_supercritical = [&](auto &ctx) { supercritical = _attr(ctx); };
-  auto assign_pipeheight = [&](auto &ctx) { pipeheight = _attr(ctx); };
-  auto assign_pipecoef = [&](auto &ctx) { pipecoef = _attr(ctx); };
-  auto assign_pipediam = [&](auto &ctx) { pipediam = _attr(ctx); };
-  return phrase_parse(
-      data.begin(), data.end(),
-      (int_[assign_n1] >> int_[assign_n2] >> double_[assign_crest] >>
-       double_[assign_subcritical] >> double_[assign_supercritical] >>
-       double_[assign_pipeheight] >> double_[assign_pipecoef] >>
-       double_[assign_pipediam]),
-      space);
-}
-
-bool IO::splitStringAttribute1Format(string &data, size_t &node,
-                                     double &value) {
-  auto assign_id = [&](auto &ctx) { node = _attr(ctx); };
-  auto assign_value = [&](auto &ctx) { value = _attr(ctx); };
-  return phrase_parse(data.begin(), data.end(),
-                      (int_[assign_id] >> double_[assign_value]), space);
-}
-
-bool IO::splitStringAttribute2Format(string &data, size_t &node, double &value1,
-                                     double &value2) {
-  auto assign_id = [&](auto &ctx) { node = _attr(ctx); };
-  auto assign_value1 = [&](auto &ctx) { value1 = _attr(ctx); };
-  auto assign_value2 = [&](auto &ctx) { value2 = _attr(ctx); };
-  return phrase_parse(
-      data.begin(), data.end(),
-      (int_[assign_id] >> double_[assign_value1] >> double_[assign_value2]),
-      space);
-}
-
-bool IO::splitStringAttributeNFormat(string &data, size_t &node,
-                                     vector<double> &values) {
-  auto assign_id = [&](auto &ctx) { node = _attr(ctx); };
-  auto push_back = [&](auto &ctx) { values.push_back(_attr(ctx)); };
-  return phrase_parse(data.begin(), data.end(),
-                      (int_[assign_id] >> *(double_[push_back])),
-                      boost::spirit::x3::omit[+space]);
-}
-
-bool IO::splitStringHarmonicsElevationFormat(string &data, double &amplitude,
-                                             double &phase) {
-  auto assign_amp = [&](auto &ctx) { amplitude = _attr(ctx); };
-  auto assign_pha = [&](auto &ctx) { phase = _attr(ctx); };
-  return phrase_parse(data.begin(), data.end(),
-                      (double_[assign_amp] >> double_[assign_pha]), space);
-}
-
-bool IO::splitStringHarmonicsVelocityFormat(string &data, double &u_magnitude,
-                                            double &u_phase,
-                                            double &v_magnitude,
-                                            double &v_phase) {
-  auto assign_umag = [&](auto &ctx) { u_magnitude = _attr(ctx); };
-  auto assign_upha = [&](auto &ctx) { u_phase = _attr(ctx); };
-  auto assign_vmag = [&](auto &ctx) { v_magnitude = _attr(ctx); };
-  auto assign_vpha = [&](auto &ctx) { v_phase = _attr(ctx); };
-  return phrase_parse(data.begin(), data.end(),
-                      (double_[assign_umag] >> double_[assign_upha] >>
-                       double_[assign_vmag] >> double_[assign_vpha]),
-                      space);
-}
-#endif
