@@ -20,7 +20,7 @@
 #include <iostream>
 
 int main(int argc, char *argv[]) {
-  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(string("test_files/ms-riv.grd"));
+  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh("test_files/ms-riv.grd");
   mesh->read();
   mesh->write("test_files/ms-riv_write.grd");
   mesh->write("test_files/ms-riv_write.2dm");

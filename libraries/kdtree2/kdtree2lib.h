@@ -39,8 +39,6 @@
 #include <memory>
 #include <vector>
 
-using namespace std;
-
 class kdtree2;
 class Point;
 
@@ -52,14 +50,14 @@ class QKdtree2 {
 
   ~QKdtree2();
 
-  int build(vector<Point> &pointCloud);
-  int build(vector<double> &x, vector<double> &y);
+  int build(std::vector<Point> &pointCloud);
+  int build(std::vector<double> &x, std::vector<double> &y);
 
   size_t findNearest(Point pointLocation);
   size_t findNearest(double x, double y);
 
-  vector<size_t> findXNearest(Point pointLocation, int nn);
-  vector<size_t> findXNearest(double x, double y, int nn);
+  std::vector<size_t> findXNearest(Point pointLocation, int nn);
+  std::vector<size_t> findXNearest(double x, double y, int nn);
 
   size_t size() const;
 
