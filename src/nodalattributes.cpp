@@ -314,10 +314,7 @@ Attribute *NodalAttributes::attribute(size_t parameter, size_t node) {
 }
 
 Attribute *NodalAttributes::attribute(const std::string &name, size_t node) {
-  std::string n = name;
-  std::cerr << n << "\n";
-  std::cerr.flush();
-  size_t index = this->locateAttribute(n);
+  size_t index = this->locateAttribute(name);
   return this->attribute(index, node);
 }
 
@@ -366,11 +363,10 @@ void NodalAttributes::_writeFort13Body(std::ofstream &fid) {
   return;
 }
 
-size_t NodalAttributes::_countDefault(
-    Adcirc::ModelParameters::AttributeMetadata &metadata,
-    std::vector<Adcirc::ModelParameters::Attribute> &values) {
+size_t NodalAttributes::_countDefault(AttributeMetadata &metadata,
+                                      std::vector<Attribute> &values) {
   size_t n = 0;
-  for (const auto &v : values) {
+  for (auto &v : values) {
     if (!metadata.checkIfDefaultValue(v)) {
       n++;
     }

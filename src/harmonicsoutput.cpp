@@ -45,9 +45,9 @@ void HarmonicsOutput::setFilename(const std::string& filename) {
   this->m_filename = filename;
 }
 
-size_t HarmonicsOutput::index(std::string name) {
-  boost::to_upper(name);
-  auto i = this->m_index.find(name);
+size_t HarmonicsOutput::index(const std::string& name) {
+  std::string n = boost::to_upper_copy<std::string>(name);
+  auto i = this->m_index.find(n);
   if (i == this->m_index.end()) {
     adcircmodules_throw_exception("Harmonic consituent not found in data");
     return std::numeric_limits<size_t>::max();
@@ -66,8 +66,8 @@ std::string HarmonicsOutput::name(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutput::amplitude(std::string name) {
-  return this->amplitude(this->index(std::move(name)));
+HarmonicsRecord* HarmonicsOutput::amplitude(const std::string& name) {
+  return this->amplitude(this->index(name));
 }
 
 HarmonicsRecord* HarmonicsOutput::amplitude(size_t index) {
@@ -80,8 +80,8 @@ HarmonicsRecord* HarmonicsOutput::amplitude(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutput::phase(std::string name) {
-  return this->phase(this->index(std::move(name)));
+HarmonicsRecord* HarmonicsOutput::phase(const std::string& name) {
+  return this->phase(this->index(name));
 }
 
 HarmonicsRecord* HarmonicsOutput::phase(size_t index) {
@@ -94,8 +94,8 @@ HarmonicsRecord* HarmonicsOutput::phase(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutput::u_magnitude(std::string name) {
-  return this->u_magnitude(this->index(std::move(name)));
+HarmonicsRecord* HarmonicsOutput::u_magnitude(const std::string& name) {
+  return this->u_magnitude(this->index(name));
 }
 HarmonicsRecord* HarmonicsOutput::u_magnitude(size_t index) {
   assert(index < this->m_umagnitude.size());
@@ -107,8 +107,8 @@ HarmonicsRecord* HarmonicsOutput::u_magnitude(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutput::u_phase(std::string name) {
-  return this->u_phase(this->index(std::move(name)));
+HarmonicsRecord* HarmonicsOutput::u_phase(const std::string& name) {
+  return this->u_phase(this->index(name));
 }
 
 HarmonicsRecord* HarmonicsOutput::u_phase(size_t index) {
@@ -121,8 +121,8 @@ HarmonicsRecord* HarmonicsOutput::u_phase(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutput::v_magnitude(std::string name) {
-  return this->v_magnitude(this->index(std::move(name)));
+HarmonicsRecord* HarmonicsOutput::v_magnitude(const std::string& name) {
+  return this->v_magnitude(this->index(name));
 }
 
 HarmonicsRecord* HarmonicsOutput::v_magnitude(size_t index) {
@@ -135,8 +135,8 @@ HarmonicsRecord* HarmonicsOutput::v_magnitude(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutput::v_phase(std::string name) {
-  return this->v_phase(this->index(std::move(name)));
+HarmonicsRecord* HarmonicsOutput::v_phase(const std::string& name) {
+  return this->v_phase(this->index(name));
 }
 
 HarmonicsRecord* HarmonicsOutput::v_phase(size_t index) {

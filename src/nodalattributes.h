@@ -71,8 +71,8 @@ class NodalAttributes {
   void _writeFort13Header(std::ofstream &fid);
   void _fillDefaultValues();
   void _mapNodes();
-  size_t _countDefault(Adcirc::ModelParameters::AttributeMetadata &metadata,
-                       std::vector<Adcirc::ModelParameters::Attribute> &values);
+  size_t _countDefault(AttributeMetadata &metadata,
+                       std::vector<Attribute> &values);
 
   /// Mapping function between the name of a nodal parameter and its position in
   /// the nodalParameters vector

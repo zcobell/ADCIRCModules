@@ -21,9 +21,7 @@
 #include <utility>
 #include "boost/algorithm/string.hpp"
 
-using namespace std;
-
-double StringConversion::stringToDouble(const string& a, bool& ok) {
+double StringConversion::stringToDouble(const std::string& a, bool& ok) {
   ok = true;
   try {
     return std::stod(a);
@@ -33,7 +31,7 @@ double StringConversion::stringToDouble(const string& a, bool& ok) {
   }
 }
 
-float StringConversion::stringToFloat(const string& a, bool& ok) {
+float StringConversion::stringToFloat(const std::string& a, bool& ok) {
   ok = true;
   try {
     return std::stof(a);
@@ -43,7 +41,7 @@ float StringConversion::stringToFloat(const string& a, bool& ok) {
   }
 }
 
-int StringConversion::stringToInt(const string& a, bool& ok) {
+int StringConversion::stringToInt(const std::string& a, bool& ok) {
   ok = true;
   try {
     return std::stoi(a);
@@ -53,7 +51,7 @@ int StringConversion::stringToInt(const string& a, bool& ok) {
   }
 }
 
-size_t StringConversion::stringToSizet(const string& a, bool& ok) {
+size_t StringConversion::stringToSizet(const std::string& a, bool& ok) {
   ok = true;
   try {
     return std::stoull(a);
@@ -63,8 +61,8 @@ size_t StringConversion::stringToSizet(const string& a, bool& ok) {
   }
 }
 
-string StringConversion::sanitizeString(const string& a) {
-  string b = a;
+std::string StringConversion::sanitizeString(const std::string& a) {
+  std::string b = a;
   boost::algorithm::trim(b);
   b.erase(std::remove(b.begin(), b.end(), '\r'), b.end());
   return b;

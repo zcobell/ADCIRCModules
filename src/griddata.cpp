@@ -32,13 +32,13 @@
 using namespace Adcirc::Geometry;
 
 //...A couple constants used within
-constexpr double c_oneOverWindSigmaSquared =
+static const double c_oneOverWindSigmaSquared =
     1.0 / pow(Griddata::windSigma(), 2.0);
-constexpr double c_oneOver2MinusRoot3 = 1.0 / (2.0 - sqrt(3));
-constexpr double c_oneOver2PlusRoot3 = 1.0 / (2.0 + sqrt(3));
-constexpr double c_rootWindSigmaTwoPi =
+static const double c_oneOver2MinusRoot3 = 1.0 / (2.0 - sqrt(3));
+static const double c_oneOver2PlusRoot3 = 1.0 / (2.0 + sqrt(3));
+static const double c_rootWindSigmaTwoPi =
     sqrt(2.0 * 4.0 * atan2(1.0, 1.0) * Griddata::windSigma());
-constexpr double c_epsilonSquared =
+static const double c_epsilonSquared =
     pow(std::numeric_limits<double>::epsilon(), 2.0);
 
 template <typename T>
@@ -67,7 +67,7 @@ Griddata::Griddata() {
   this->m_calculatePointPtr = nullptr;
 }
 
-Griddata::Griddata(Mesh *mesh, string rasterFile) {
+Griddata::Griddata(Mesh *mesh, std::string rasterFile) {
   this->m_mesh = mesh;
   this->m_rasterFile = rasterFile;
   this->m_raster.reset(new Rasterdata(this->m_rasterFile));
@@ -109,7 +109,7 @@ int Griddata::epsg() const { return this->m_epsg; }
 
 void Griddata::setEpsg(int epsg) { this->m_epsg = epsg; }
 
-void Griddata::readLookupTable(const string &lookupTableFile) {
+void Griddata::readLookupTable(const std::string &lookupTableFile) {
   this->m_lookup.clear();
   std::fstream fid(lookupTableFile);
 
@@ -534,9 +534,9 @@ bool Griddata::computeWindDirectionAndWeight(Point &p, double x, double y,
       tanxy = std::abs(dy / dx);
     }
 
-    int64_t k = min<int64_t>(1.0, tanxy * c_oneOver2MinusRoot3) +
-                min<int64_t>(1.0, tanxy) +
-                min<int64_t>(1.0, tanxy * c_oneOver2PlusRoot3);
+    int64_t k = std::min<int64_t>(1.0, tanxy * c_oneOver2MinusRoot3) +
+                std::min<int64_t>(1.0, tanxy) +
+                std::min<int64_t>(1.0, tanxy * c_oneOver2PlusRoot3);
 
     int a = static_cast<int>(sgn(dx));
     int b = static_cast<int>(k * sgn(dy));
