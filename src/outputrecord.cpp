@@ -23,8 +23,8 @@
 
 using namespace Adcirc::Output;
 
-constexpr double _pi = 4.0 * atan(1.0);
-constexpr double _2pi = 2.0 * _pi;
+static const double _pi = 4.0 * std::atan(1.0);
+static const double _2pi = 2.0 * _pi;
 
 OutputRecord::OutputRecord() {
   this->m_record = 0;
