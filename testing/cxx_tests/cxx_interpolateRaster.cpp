@@ -15,7 +15,7 @@ int main(){
     g->setEpsg(26915);
 
     for(size_t i=0;i<m->numNodes();++i){
-        g->setInterpolationFlag(i,i%6);
+        g->setInterpolationFlag(i,i%7);
     }
 
     std::vector<double> r = g->computeValuesFromRaster();

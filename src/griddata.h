@@ -37,7 +37,8 @@ class Griddata {
     Nearest = 2,
     Highest = 3,
     PlusTwoSigma = 4,
-    BilskieEtAll = 5
+    BilskieEtAll = 5,
+    InverseDistanceWeighted = 6
   };
 
   Griddata();
@@ -96,6 +97,7 @@ class Griddata {
   double calculateHighest(Point &p, double w);
   double calculateOutsideStandardDeviation(Point &p, double w, int n);
   double calculateBilskieAveraging(Point &p, double w, double gsMultiplier);
+  double calculateInverseDistanceWeighted(Point &p, double w);
 
   double calculatePointFromLookup(Point &p, double w, double gsMultiplier,
                                   Griddata::Method method);
@@ -105,6 +107,7 @@ class Griddata {
   double calculateOutsideStandardDeviationFromLookup(Point &p, double w, int n);
   double calculateBilskieAveragingFromLookup(Point &p, double w,
                                              double gsMultiplier);
+  double calculateInverseDistanceWeightedFromLookup(Point &p, double w);
 
   double (Griddata::*m_calculatePointPtr)(Point &p, double w,
                                           double gsMultiplier,

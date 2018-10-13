@@ -271,6 +271,7 @@ double Griddata::calculatePoint(Point &p, double searchRadius,
     case BilskieEtAll:
       return this->calculateBilskieAveraging(p, searchRadius, gsMultiplier);
       break;
+    case InverseDistanceWeighted:
     default:
       return this->defaultValue();
       break;
@@ -298,6 +299,9 @@ double Griddata::calculatePointFromLookup(Point &p, double searchRadius,
       return this->calculateBilskieAveragingFromLookup(p, searchRadius,
                                                        gsMultiplier);
       break;
+    case InverseDistanceWeighted:
+      return this->calculateInverseDistanceWeightedFromLookup(
+          p, searchRadius * gsMultiplier);
     default:
       return this->defaultValue();
       break;
@@ -361,6 +365,53 @@ double Griddata::calculateBilskieAveragingFromLookup(Point &p, double w,
     return this->calculateAverageFromLookup(p, r * gsMultiplier);
   } else {
     return this->calculateNearestFromLookup(p, r * gsMultiplier);
+  }
+}
+
+double Griddata::calculateInverseDistanceWeighted(Point &p, double w) {
+  std::vector<double> x, y, z;
+  std::vector<bool> v;
+  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+    double n = 0.0;
+    double d = 0.0;
+    size_t num = 0;
+    for (size_t i = 0; i < z.size(); ++i) {
+      if (v[i]) {
+        double dis = Constants::distance(p.x(), p.y(), x[i], y[i]);
+        n += z[i] / dis;
+        d += 1.0 / dis;
+        n++;
+      }
+    }
+    return num > 0 ? n / d : this->defaultValue();
+  } else {
+    return this->defaultValue();
+  }
+}
+
+double Griddata::calculateInverseDistanceWeightedFromLookup(Point &p,
+                                                            double w) {
+  std::vector<double> x, y;
+  std::vector<int> z;
+  std::vector<bool> v;
+  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+    double n = 0.0;
+    double d = 0.0;
+    size_t num = 0;
+    for (size_t i = 0; i < z.size(); ++i) {
+      if (v[i]) {
+        double zl;
+        if (this->getKeyValue(z[i], zl)) {
+          double dis = Constants::distance(p.x(), p.y(), x[i], y[i]);
+          n += zl / dis;
+          d += 1.0 / dis;
+          n++;
+        }
+      }
+    }
+    return num > 0 ? n / d : this->defaultValue();
+  } else {
+    return this->defaultValue();
   }
 }
 
@@ -507,13 +558,13 @@ bool Griddata::computeWindDirectionAndWeight(Point &p, double x, double y,
       tanxy = std::abs(dy / dx);
     }
 
-    short k = std::min<short>(1.0, tanxy * c_oneOver2MinusRoot3) +
-              std::min<short>(1.0, tanxy) +
-              std::min<short>(1.0, tanxy * c_oneOver2PlusRoot3);
+    uint64_t k = std::min(1.0, tanxy * c_oneOver2MinusRoot3) +
+                 std::min(1.0, tanxy) +
+                 std::min(1.0, tanxy * c_oneOver2PlusRoot3);
 
     short a = static_cast<short>(sgn(dx));
     short b = static_cast<short>(k * sgn(dy));
-    dir = c_windDirectionLookup[a + 1][b + 3];
+    dir = c_windDirectionLookup[a + 1][b + 3] - 1;
     return true;
   }
   return false;

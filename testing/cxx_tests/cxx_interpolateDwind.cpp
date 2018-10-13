@@ -9,7 +9,9 @@ int main(){
 
 
     Griddata *g = new Griddata(m,"test_files/lulc_samplelulcraster.tif");
-    
+    //Multithreading::disable();
+   
+#if 1   
     for(size_t i=0;i<m->numNodes();++i){
         if(i<100){
             g->setInterpolationFlag(i,Griddata::Average);
@@ -17,6 +19,7 @@ int main(){
             g->setInterpolationFlag(i,Griddata::NoMethod);
         }
     }
+#endif    
 
     g->setShowProgressBar(true);
     g->readLookupTable("test_files/sample_lookup.table");

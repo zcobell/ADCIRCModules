@@ -40,7 +40,9 @@ int main(int argc, char *argv[]) {
   std::cout << buffer3 << std::endl;
   sprintf(buffer4,"Projected Y coordinate: %f",newy);
   std::cout << buffer4 << std::endl;
-  if(fabs(newx-753922.922116)>0.000001 || fabs(newy-3328065.712818)>0.000001){
+  if(std::abs(newx-753922.922116)>0.000001 || std::abs(newy-3328065.712818)>0.000001){
+    std::cout << "Expected: 753922.922116, 3328065.712818" << std::endl;
+    printf("Got: %14.2f, %14.2f\n",newx,newy);
     return 1;
   }else{
     return 0;
