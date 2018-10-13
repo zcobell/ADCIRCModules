@@ -20,7 +20,7 @@
 #include <iostream>
 
 int main(int argc, char *argv[]) {
-  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(string("test_files/ms-riv2.grd"));
+  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh("test_files/ms-riv2.grd");
   mesh->read();
   MeshChecker checker(mesh);
   checker.checkMesh();

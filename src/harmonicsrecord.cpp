@@ -20,7 +20,6 @@
 #include <cassert>
 #include "error.h"
 
-using namespace std;
 using namespace Adcirc::Output;
 
 HarmonicsRecord::HarmonicsRecord() : m_name("none") {
@@ -55,11 +54,11 @@ void HarmonicsRecord::setEquilibriumArg(double equilibriumArg) {
   this->m_equilibriumArg = equilibriumArg;
 }
 
-string HarmonicsRecord::name() const { return this->m_name; }
+std::string HarmonicsRecord::name() const { return this->m_name; }
 
-void HarmonicsRecord::setName(const string &name) { this->m_name = name; }
+void HarmonicsRecord::setName(const std::string &name) { this->m_name = name; }
 
-vector<double> HarmonicsRecord::values() { return this->m_data; }
+std::vector<double> HarmonicsRecord::values() { return this->m_data; }
 
 double HarmonicsRecord::value(size_t index) {
   assert(index < this->m_data.size());

@@ -29,29 +29,14 @@
 #include "stringconversion.h"
 
 using namespace Adcirc::ModelParameters;
-using namespace std;
 
-#define CHECK_RETURN_AND_CLOSE(ierr)                                           \
-  if (ierr != Adcirc::NoError) {                                               \
-    fid.close();                                                               \
-    adcircmodules_throw_exception("NodalAttributes: Error reading file data"); \
-    return Adcirc::HasError;                                                   \
-  }
-
-#define CHECK_FILEREAD_RETURN(ok)                                              \
-  if (!ok) {                                                                   \
-    fid.close();                                                               \
-    adcircmodules_throw_exception("NodalAttributes: Error reading file data"); \
-    return Adcirc::HasError                                                    \
-  }
-
-NodalAttributes::NodalAttributes() : m_filename(string()) {
+NodalAttributes::NodalAttributes() : m_filename(std::string()) {
   this->m_mesh = nullptr;
   this->m_numParameters = 0;
   this->m_numNodes = 0;
 }
 
-NodalAttributes::NodalAttributes(const string &filename,
+NodalAttributes::NodalAttributes(const std::string &filename,
                                  Adcirc::Geometry::Mesh *mesh)
     : m_filename(filename) {
   this->m_mesh = mesh;
@@ -61,11 +46,11 @@ NodalAttributes::NodalAttributes(const string &filename,
   this->m_numParameters = 0;
 }
 
-void NodalAttributes::setFilename(string filename) {
-  this->m_filename = std::move(filename);
+void NodalAttributes::setFilename(const std::string &filename) {
+  this->m_filename = filename;
 }
 
-string NodalAttributes::filename() { return this->m_filename; }
+std::string NodalAttributes::filename() { return this->m_filename; }
 
 void NodalAttributes::setMesh(Adcirc::Geometry::Mesh *mesh) {
   this->m_mesh = mesh;
@@ -73,7 +58,7 @@ void NodalAttributes::setMesh(Adcirc::Geometry::Mesh *mesh) {
 
 Adcirc::Geometry::Mesh *NodalAttributes::mesh() { return this->m_mesh; }
 
-size_t NodalAttributes::locateAttribute(const string &attributeName) {
+size_t NodalAttributes::locateAttribute(const std::string &attributeName) {
   assert(this->m_attributeLocations.find(attributeName) !=
          this->m_attributeLocations.end());
   if (this->m_attributeLocations.find(attributeName) ==
@@ -102,7 +87,7 @@ void NodalAttributes::read() {
 }
 
 void NodalAttributes::_readFort13Header(std::fstream &fid) {
-  string tempLine;
+  std::string tempLine;
   bool ok;
 
   std::getline(fid, tempLine);
@@ -151,10 +136,10 @@ void NodalAttributes::_readFort13Header(std::fstream &fid) {
 }
 
 void NodalAttributes::_readFort13Defaults(std::fstream &fid) {
-  string name, units, tempLine;
-  vector<string> tempList;
+  std::string name, units, tempLine;
+  std::vector<std::string> tempList;
   double defaultValue;
-  vector<double> defaultValueVector;
+  std::vector<double> defaultValueVector;
 
   for (size_t i = 0; i < this->numParameters(); ++i) {
     std::getline(fid, name);
@@ -239,7 +224,7 @@ void NodalAttributes::_mapNodes() {
 }
 
 void NodalAttributes::_readFort13Body(std::fstream &fid) {
-  string tempLine, name;
+  std::string tempLine, name;
   size_t node;
   double value;
   bool ok;
@@ -277,7 +262,7 @@ void NodalAttributes::_readFort13Body(std::fstream &fid) {
         a->setId(node);
 
       } else {
-        vector<double> values;
+        std::vector<double> values;
         values.reserve(nValues);
         if (!IO::splitStringAttributeNFormat(tempLine, node, values)) {
           adcircmodules_throw_exception(
@@ -310,9 +295,9 @@ void NodalAttributes::setNumParameters(size_t numParameters) {
   this->m_numParameters = numParameters;
 }
 
-string NodalAttributes::header() const { return this->m_header; }
+std::string NodalAttributes::header() const { return this->m_header; }
 
-void NodalAttributes::setHeader(const string &header) {
+void NodalAttributes::setHeader(const std::string &header) {
   this->m_header = header;
 }
 
@@ -328,21 +313,21 @@ Attribute *NodalAttributes::attribute(size_t parameter, size_t node) {
   return nullptr;
 }
 
-Attribute *NodalAttributes::attribute(string parameter, size_t node) {
-  size_t index = this->locateAttribute(std::move(parameter));
+Attribute *NodalAttributes::attribute(const std::string &name, size_t node) {
+  size_t index = this->locateAttribute(name);
   return this->attribute(index, node);
 }
 
-string NodalAttributes::attributeNames(size_t index) {
+std::string NodalAttributes::attributeNames(size_t index) {
   assert(index < this->m_nodalParameters.size());
   if (index < this->m_nodalParameters.size()) {
     return this->m_nodalParameters[index].name();
   }
   adcircmodules_throw_exception("NodalAttributes: Request out of bounds.");
-  return string();
+  return std::string();
 }
 
-void NodalAttributes::write(const string &outputFilename) {
+void NodalAttributes::write(const std::string &outputFilename) {
   std::ofstream outputFile;
   outputFile.open(outputFilename);
   this->_writeFort13Header(outputFile);
@@ -378,11 +363,10 @@ void NodalAttributes::_writeFort13Body(std::ofstream &fid) {
   return;
 }
 
-size_t NodalAttributes::_countDefault(
-    Adcirc::ModelParameters::AttributeMetadata &metadata,
-    std::vector<Adcirc::ModelParameters::Attribute> &values) {
+size_t NodalAttributes::_countDefault(AttributeMetadata &metadata,
+                                      std::vector<Attribute> &values) {
   size_t n = 0;
-  for (const auto &v : values) {
+  for (auto &v : values) {
     if (!metadata.checkIfDefaultValue(v)) {
       n++;
     }

@@ -21,11 +21,10 @@
 #include <cmath>
 #include "error.h"
 
-using namespace std;
 using namespace Adcirc::Output;
 
-const double _pi = 4.0 * atan(1.0);
-const double _2pi = 2.0 * _pi;
+static const double _pi = 4.0 * std::atan(1.0);
+static const double _2pi = 2.0 * _pi;
 
 OutputRecord::OutputRecord() {
   this->m_record = 0;
@@ -231,7 +230,7 @@ double OutputRecord::v(size_t index) {
   }
 }
 
-void OutputRecord::setAllU(const vector<double>& values) {
+void OutputRecord::setAllU(const std::vector<double>& values) {
   assert(this->isVector());
   assert(this->m_numNodes == values.size());
   if (!this->isVector()) {
@@ -246,7 +245,7 @@ void OutputRecord::setAllU(const vector<double>& values) {
   return;
 }
 
-void OutputRecord::setAllV(const vector<double>& values) {
+void OutputRecord::setAllV(const std::vector<double>& values) {
   assert(this->isVector());
   assert(this->m_numNodes == values.size());
   if (!this->isVector()) {
@@ -261,8 +260,8 @@ void OutputRecord::setAllV(const vector<double>& values) {
   return;
 }
 
-void OutputRecord::setAll(const vector<double>& values_u,
-                          const vector<double>& values_v) {
+void OutputRecord::setAll(const std::vector<double>& values_u,
+                          const std::vector<double>& values_v) {
   assert(this->isVector());
   assert(this->m_numNodes == values_u.size());
   assert(this->m_numNodes == values_v.size());
@@ -283,7 +282,7 @@ void OutputRecord::setAll(const vector<double>& values_u,
   return;
 }
 
-void OutputRecord::setAll(const vector<double>& values) {
+void OutputRecord::setAll(const std::vector<double>& values) {
   assert(!this->isVector());
   assert(this->m_numNodes == values.size());
   if (this->isVector()) {
@@ -298,7 +297,7 @@ void OutputRecord::setAll(const vector<double>& values) {
   return;
 }
 
-vector<double> OutputRecord::values(size_t column) {
+std::vector<double> OutputRecord::values(size_t column) {
   if (this->isVector()) {
     if (column == 0) {
       return this->m_u;
@@ -306,7 +305,7 @@ vector<double> OutputRecord::values(size_t column) {
       return this->m_v;
     } else {
       adcircmodules_throw_exception("OutputRecord: Invalid column specified");
-      return vector<double>();
+      return std::vector<double>();
     }
   } else {
     return this->m_u;
@@ -319,7 +318,7 @@ void OutputRecord::setAll(size_t size, const double* values) {
     adcircmodules_throw_exception("OutputRecord: Array size mismatch");
     return;
   }
-  this->m_u = vector<double>(values, values + size);
+  this->m_u = std::vector<double>(values, values + size);
   return;
 }
 
@@ -330,19 +329,19 @@ void OutputRecord::setAll(size_t size, const double* values_u,
     adcircmodules_throw_exception("OutputRecord: Array size mismatch");
     return;
   }
-  this->m_u = vector<double>(values_u, values_u + size);
-  this->m_v = vector<double>(values_v, values_v + size);
+  this->m_u = std::vector<double>(values_u, values_u + size);
+  this->m_v = std::vector<double>(values_v, values_v + size);
   return;
 }
 
-vector<double> OutputRecord::magnitudes() {
+std::vector<double> OutputRecord::magnitudes() {
   assert(this->isVector());
   if (!this->isVector()) {
     adcircmodules_throw_exception(
         "OutputRecord: Must be a vector to compute magnitude");
-    return vector<double>();
+    return std::vector<double>();
   }
-  vector<double> m;
+  std::vector<double> m;
   m.resize(this->m_numNodes);
   for (size_t i = 0; i < this->m_numNodes; ++i) {
     m[i] = pow(pow(this->m_u[i], 2.0) + pow(this->m_v[i], 2.0), 0.5);
@@ -350,14 +349,14 @@ vector<double> OutputRecord::magnitudes() {
   return m;
 }
 
-vector<double> OutputRecord::directions(AngleUnits angleType) {
+std::vector<double> OutputRecord::directions(AngleUnits angleType) {
   assert(this->isVector());
   if (!this->isVector()) {
     adcircmodules_throw_exception(
         "OutputRecord: Must be a vector to compute direction");
-    return vector<double>();
+    return std::vector<double>();
   }
-  vector<double> d;
+  std::vector<double> d;
   d.resize(this->m_numNodes);
   for (size_t i = 0; i < this->m_numNodes; ++i) {
     d[i] = this->angle(this->m_u[i], this->m_v[i], angleType);

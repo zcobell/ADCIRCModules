@@ -19,7 +19,6 @@
 #include "node.h"
 #include "boost/format.hpp"
 
-using namespace std;
 using namespace Adcirc::Geometry;
 
 /**
@@ -115,7 +114,7 @@ void Node::setId(size_t id) { this->m_id = id; }
  * cartesian coordinate for significant figures
  * @return formatted string
  */
-string Node::toAdcircString(bool geographicCoordinates) {
+std::string Node::toAdcircString(bool geographicCoordinates) {
   if (geographicCoordinates) {
     return boost::str(boost::format("%11i   %14.10f   %14.10f  %14.10f") %
                       this->id() % this->x() % this->y() % this->z());
@@ -131,7 +130,7 @@ string Node::toAdcircString(bool geographicCoordinates) {
  * cartesian coordinate for significant figures
  * @return formatted string
  */
-string Node::to2dmString(bool geographicCoordinates) {
+std::string Node::to2dmString(bool geographicCoordinates) {
   return boost::str(boost::format("%s  %i %14.8e %14.8e %14.8e") % "ND" % this->id() %
                     this->x() % this->y() % this->z());
 }

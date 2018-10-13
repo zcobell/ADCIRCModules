@@ -21,7 +21,7 @@
 #include <cmath>
 
 int main(int argc, char *argv[]) {
-  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh(string("test_files/ms-riv.grd"));
+  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh("test_files/ms-riv.grd");
   mesh->read();
   double oldx = mesh->node(0)->x();
   double oldy = mesh->node(0)->y();

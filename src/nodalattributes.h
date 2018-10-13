@@ -39,7 +39,7 @@ class NodalAttributes {
 
   void read();
 
-  void setFilename(std::string filename);
+  void setFilename(const std::string &filename);
   std::string filename();
 
   void setMesh(Adcirc::Geometry::Mesh *mesh);
@@ -61,7 +61,7 @@ class NodalAttributes {
   void setNumNodes(size_t numNodes);
 
   Attribute *attribute(size_t parameter, size_t node);
-  Attribute *attribute(std::string parameter, size_t node);
+  Attribute *attribute(const std::string &name, size_t node);
 
  private:
   void _readFort13Header(std::fstream &fid);
@@ -71,8 +71,8 @@ class NodalAttributes {
   void _writeFort13Header(std::ofstream &fid);
   void _fillDefaultValues();
   void _mapNodes();
-  size_t _countDefault(Adcirc::ModelParameters::AttributeMetadata &metadata,
-                       std::vector<Adcirc::ModelParameters::Attribute> &values);
+  size_t _countDefault(AttributeMetadata &metadata,
+                       std::vector<Attribute> &values);
 
   /// Mapping function between the name of a nodal parameter and its position in
   /// the nodalParameters vector

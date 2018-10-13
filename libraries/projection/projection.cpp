@@ -23,11 +23,6 @@
 #include "point.h"
 #include "proj.h"
 
-using namespace std;
-
-//-----------------------------------------------------------------------------------------//
-// Initializer
-//-----------------------------------------------------------------------------------------//
 /** \brief Constructor for the proj4 wrapper class
  *
  * Constructs an object used to convert coordinates. The initialization function
@@ -35,13 +30,8 @@ using namespace std;
  *determine the parameters to pass to the Proj4 API
  *
  **/
-//-----------------------------------------------------------------------------------------//
 Projection::Projection() { this->_initialize(); }
-//-----------------------------------------------------------------------------------------//
 
-//-----------------------------------------------------------------------------------------//
-// Function to execute a coordinate system transformation using Proj4
-//-----------------------------------------------------------------------------------------//
 /** \brief Function to execute a coordinate system transformation using Proj4
  *
  * @param[in]  inputEPSG  EPSG that coordinates are currently in
@@ -54,7 +44,6 @@ Projection::Projection() { this->_initialize(); }
  * Function to execute a coordinate system transformation using Proj4
  *
  **/
-//-----------------------------------------------------------------------------------------//
 int Projection::transform(int inputEPSG, int outputEPSG, Point &input,
                           Point &output, bool &isLatLon) {
   std::vector<Point> in, out;
@@ -64,7 +53,6 @@ int Projection::transform(int inputEPSG, int outputEPSG, Point &input,
   output = out.at(0);
   return ierr;
 }
-//-----------------------------------------------------------------------------------------//
 
 int Projection::transform(int inputEPSG, int outputEPSG, double x, double y,
                           double &outx, double &outy, bool &isLatLon) {
@@ -76,9 +64,6 @@ int Projection::transform(int inputEPSG, int outputEPSG, double x, double y,
   return ierr;
 }
 
-//-----------------------------------------------------------------------------------------//
-// Function to execute a coordinate system transformation using Proj4
-//-----------------------------------------------------------------------------------------//
 /** \brief Function to execute a coordinate system transformation using Proj4
  *
  * @param[in]  inputEPSG  EPSG that coordinates are currently in
@@ -93,9 +78,9 @@ int Projection::transform(int inputEPSG, int outputEPSG, double x, double y,
  * Function to execute a coordinate system transformation using Proj4
  *
  **/
-//-----------------------------------------------------------------------------------------//
-int Projection::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
-                          vector<Point> &output, bool &isLatLon) {
+int Projection::transform(int inputEPSG, int outputEPSG,
+                          std::vector<Point> &input, std::vector<Point> &output,
+                          bool &isLatLon) {
   assert(input.size() > 0);
   if (input.size() <= 0) return Projection::NoData;
 
@@ -107,8 +92,8 @@ int Projection::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
     return NoSuchProjection;
   }
 
-  string p1 = this->m_epsgMapping[inputEPSG];
-  string p2 = this->m_epsgMapping[outputEPSG];
+  std::string p1 = this->m_epsgMapping[inputEPSG];
+  std::string p2 = this->m_epsgMapping[outputEPSG];
 
   PJ *pj1 = proj_create(PJ_DEFAULT_CTX, p1.c_str());
   if (pj1 == nullptr) {
@@ -151,7 +136,6 @@ int Projection::transform(int inputEPSG, int outputEPSG, vector<Point> &input,
   proj_destroy(pj2);
   return NoError;
 }
-//-----------------------------------------------------------------------------------------//
 
 int Projection::cpp(double lambda0, double phi0, double x, double y,
                     double &outx, double &outy) {
@@ -164,15 +148,15 @@ int Projection::cpp(double lambda0, double phi0, double x, double y,
 }
 
 int Projection::cpp(double lambda0, double phi0, Point &input, Point &output) {
-  vector<Point> in, out;
+  std::vector<Point> in, out;
   in.push_back(input);
   int ierr = Projection::cpp(lambda0, phi0, in, out);
   if (ierr == Projection::NoError) output = out.at(0);
   return ierr;
 }
 
-int Projection::cpp(double lambda0, double phi0, vector<Point> &input,
-                    vector<Point> &output) {
+int Projection::cpp(double lambda0, double phi0, std::vector<Point> &input,
+                    std::vector<Point> &output) {
   assert(input.size() > 0);
   if (input.size() <= 0) return Projection::NoData;
 
@@ -200,15 +184,16 @@ int Projection::inverseCpp(double lambda0, double phi0, double x, double y,
 
 int Projection::inverseCpp(double lambda0, double phi0, Point &input,
                            Point &output) {
-  vector<Point> in, out;
+  std::vector<Point> in, out;
   in.push_back(input);
   int ierr = Projection::inverseCpp(lambda0, phi0, in, out);
   if (ierr == Projection::NoError) output = out.at(0);
   return ierr;
 }
 
-int Projection::inverseCpp(double lambda0, double phi0, vector<Point> &input,
-                           vector<Point> &output) {
+int Projection::inverseCpp(double lambda0, double phi0,
+                           std::vector<Point> &input,
+                           std::vector<Point> &output) {
   assert(input.size() > 0);
   if (input.size() <= 0) return Projection::NoData;
 

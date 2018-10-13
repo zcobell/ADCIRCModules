@@ -7,23 +7,20 @@
 #include "netcdf.h"
 #include "stringconversion.h"
 
-using namespace std;
 using namespace Adcirc::Output;
 
-Filetypes::Filetypes() = default;
-
-bool Filetypes::checkFiletypeAsciiSparse(const string& filename) {
+bool Filetypes::checkFiletypeAsciiSparse(const std::string& filename) {
   assert(!filename.empty());
 
-  fstream fid(filename);
+  std::fstream fid(filename);
 
   try {
-    string line;
+    std::string line;
     std::getline(fid, line);  // header
     std::getline(fid, line);  // header
     std::getline(fid, line);  // first record
 
-    vector<string> list;
+    std::vector<std::string> list;
     int ierr = IO::splitString(line, list);
     if (ierr != 0) {
       fid.close();
@@ -45,19 +42,19 @@ bool Filetypes::checkFiletypeAsciiSparse(const string& filename) {
   }
 }
 
-bool Filetypes::checkFiletypeAsciiFull(const string& filename) {
+bool Filetypes::checkFiletypeAsciiFull(const std::string& filename) {
   assert(!filename.empty());
 
-  fstream fid(filename);
+  std::fstream fid(filename);
 
   try {
-    string line;
+    std::string line;
 
-    getline(fid, line);  // header
-    getline(fid, line);  // header
-    getline(fid, line);  // first record header
+    std::getline(fid, line);  // header
+    std::getline(fid, line);  // header
+    std::getline(fid, line);  // first record header
 
-    vector<string> list;
+    std::vector<std::string> list;
     int ierr = IO::splitString(line, list);
     if (ierr != 0) {
       fid.close();
@@ -79,7 +76,7 @@ bool Filetypes::checkFiletypeAsciiFull(const string& filename) {
   }
 }
 
-bool Filetypes::inquireNetcdfFormat(const string& filename, int& format) {
+bool Filetypes::inquireNetcdfFormat(const std::string& filename, int& format) {
   int ncid;
   format = Adcirc::Output::Unknown;
   int ierr = nc_open(filename.c_str(), NC_NOWRITE, &ncid);
@@ -95,7 +92,7 @@ bool Filetypes::inquireNetcdfFormat(const string& filename, int& format) {
   return true;
 }
 
-bool Filetypes::checkFiletypeNetcdf3(const string &filename) {
+bool Filetypes::checkFiletypeNetcdf3(const std::string &filename) {
   int format;
   bool b = Filetypes::inquireNetcdfFormat(filename, format);
   if (b && format == NC_FORMAT_CLASSIC) {
@@ -104,7 +101,7 @@ bool Filetypes::checkFiletypeNetcdf3(const string &filename) {
   return false;
 }
 
-bool Filetypes::checkFiletypeNetcdf4(const string &filename) {
+bool Filetypes::checkFiletypeNetcdf4(const std::string &filename) {
   int format;
   bool b = Filetypes::inquireNetcdfFormat(filename, format);
   if (b) {
@@ -118,19 +115,19 @@ bool Filetypes::checkFiletypeNetcdf4(const string &filename) {
   }
 }
 
-bool Filetypes::checkFiletypeXdmf(const string& filename) { return false; }
+bool Filetypes::checkFiletypeXdmf(const std::string& filename) { return false; }
 
-bool Filetypes::checkFiletypeAsciiHarmonics(const string& filename) {
-  fstream fid;
+bool Filetypes::checkFiletypeAsciiHarmonics(const std::string& filename) {
+  std::fstream fid;
   fid.open(filename);
   if (!fid.is_open()) {
     return false;
   }
 
-  string line;
+  std::string line;
   bool ok;
 
-  getline(fid, line);
+  std::getline(fid, line);
   size_t n = StringConversion::stringToSizet(line, ok);
   if (ok) {
   } else {
@@ -139,8 +136,8 @@ bool Filetypes::checkFiletypeAsciiHarmonics(const string& filename) {
   }
 
   for (size_t i = 0; i < n; ++i) {
-    std::vector<string> list;
-    getline(fid, line);
+    std::vector<std::string> list;
+    std::getline(fid, line);
     int ierr = IO::splitString(line, list);
     if (ierr != Adcirc::NoError) {
       return false;
@@ -149,7 +146,7 @@ bool Filetypes::checkFiletypeAsciiHarmonics(const string& filename) {
   return true;
 }
 
-bool Filetypes::checkFiletypeNetcdfHarmonics(const string &filename) {
+bool Filetypes::checkFiletypeNetcdfHarmonics(const std::string &filename) {
   int ncid;
   int ierr = nc_open(filename.c_str(), NC_NOWRITE, &ncid);
   if (ierr != NC_NOERR) {

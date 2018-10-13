@@ -27,7 +27,7 @@ enum _fileTypes {
  */
 class Filetypes {
  public:
-  Filetypes();
+  Filetypes() = default;
   static bool checkFiletypeAsciiFull(const std::string &filename);
   static bool checkFiletypeAsciiSparse(const std::string &filename);
   static bool checkFiletypeAsciiHarmonics(const std::string &filename);

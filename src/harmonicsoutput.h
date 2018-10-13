@@ -40,28 +40,28 @@ class HarmonicsOutput {
   std::string filename() const;
   void setFilename(const std::string& filename);
 
-  size_t index(std::string name);
+  size_t index(const std::string &name);
 
   std::string name(size_t index);
 
   //...fort.53 type parameters
-  Adcirc::Output::HarmonicsRecord* amplitude(std::string name);
+  Adcirc::Output::HarmonicsRecord* amplitude(const std::string &name);
   Adcirc::Output::HarmonicsRecord* amplitude(size_t index);
 
-  Adcirc::Output::HarmonicsRecord* phase(std::string name);
+  Adcirc::Output::HarmonicsRecord* phase(const std::string &name);
   Adcirc::Output::HarmonicsRecord* phase(size_t index);
 
   //...fort.54 type parameters
-  Adcirc::Output::HarmonicsRecord* u_magnitude(std::string name);
+  Adcirc::Output::HarmonicsRecord* u_magnitude(const std::string &name);
   Adcirc::Output::HarmonicsRecord* u_magnitude(size_t index);
 
-  Adcirc::Output::HarmonicsRecord* u_phase(std::string name);
+  Adcirc::Output::HarmonicsRecord* u_phase(const std::string &name);
   Adcirc::Output::HarmonicsRecord* u_phase(size_t index);
 
-  Adcirc::Output::HarmonicsRecord* v_magnitude(std::string name);
+  Adcirc::Output::HarmonicsRecord* v_magnitude(const std::string &name);
   Adcirc::Output::HarmonicsRecord* v_magnitude(size_t index);
 
-  Adcirc::Output::HarmonicsRecord* v_phase(std::string name);
+  Adcirc::Output::HarmonicsRecord* v_phase(const std::string &name);
   Adcirc::Output::HarmonicsRecord* v_phase(size_t index);
 
   size_t numConstituents() const;
