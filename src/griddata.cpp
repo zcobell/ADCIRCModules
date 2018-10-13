@@ -19,6 +19,7 @@
 
 #include "griddata.h"
 #include <algorithm>
+#include <array>
 #include <fstream>
 #include <numeric>
 #include <utility>
@@ -40,6 +41,11 @@ static const double c_rootWindSigmaTwoPi =
     sqrt(2.0 * 4.0 * atan2(1.0, 1.0) * Griddata::windSigma());
 static const double c_epsilonSquared =
     pow(std::numeric_limits<double>::epsilon(), 2.0);
+
+constexpr std::array<std::array<short, 7>, 3> c_windDirectionLookup = {
+    {{{4, 3, 2, 1, 12, 11, 10}},
+     {{4, 0, 0, 0, 0, 0, 10}},
+     {{4, 5, 6, 7, 8, 9, 10}}}};
 
 template <typename T>
 int sgn(T val) {
@@ -176,39 +182,6 @@ double Griddata::defaultValue() const { return this->m_defaultValue; }
 
 void Griddata::setDefaultValue(double defaultValue) {
   this->m_defaultValue = defaultValue;
-}
-
-void Griddata::buildWindDirectionLookup() {
-  this->m_windDirections.resize(3);
-  this->m_windDirections[0].resize(7);
-  this->m_windDirections[1].resize(7);
-  this->m_windDirections[2].resize(7);
-  this->m_windDirections[1 + 1][0 + 3] = 7;
-  this->m_windDirections[1 + 1][1 + 3] = 8;
-  this->m_windDirections[1 + 1][2 + 3] = 9;
-  this->m_windDirections[1 + 1][3 + 3] = 10;
-  this->m_windDirections[0 + 1][3 + 3] = 10;
-  this->m_windDirections[-1 + 1][3 + 3] = 10;
-  this->m_windDirections[-1 + 1][2 + 3] = 11;
-  this->m_windDirections[-1 + 1][1 + 3] = 12;
-  this->m_windDirections[-1 + 1][0 + 3] = 1;
-  this->m_windDirections[-1 + 1][-1 + 3] = 2;
-  this->m_windDirections[-1 + 1][-2 + 3] = 3;
-  this->m_windDirections[-1 + 1][-3 + 3] = 4;
-  this->m_windDirections[0 + 1][-3 + 3] = 4;
-  this->m_windDirections[1 + 1][-3 + 3] = 4;
-  this->m_windDirections[1 + 1][-2 + 3] = 5;
-  this->m_windDirections[1 + 1][-1 + 3] = 6;
-  this->m_windDirections[0 + 1][2 + 3] = 0;
-  this->m_windDirections[0 + 1][1 + 3] = 0;
-  this->m_windDirections[0 + 1][0 + 3] = 0;
-  this->m_windDirections[0 + 1][-1 + 3] = 0;
-  this->m_windDirections[0 + 1][-2 + 3] = 0;
-  return;
-}
-
-int Griddata::windDirection(int i, int j) {
-  return this->m_windDirections[i + 1][j + 3];
 }
 
 bool Griddata::rasterInMemory() const { return this->m_rasterInMemory; }
@@ -534,13 +507,13 @@ bool Griddata::computeWindDirectionAndWeight(Point &p, double x, double y,
       tanxy = std::abs(dy / dx);
     }
 
-    int64_t k = std::min<int64_t>(1.0, tanxy * c_oneOver2MinusRoot3) +
-                std::min<int64_t>(1.0, tanxy) +
-                std::min<int64_t>(1.0, tanxy * c_oneOver2PlusRoot3);
+    short k = std::min<short>(1.0, tanxy * c_oneOver2MinusRoot3) +
+              std::min<short>(1.0, tanxy) +
+              std::min<short>(1.0, tanxy * c_oneOver2PlusRoot3);
 
-    int a = static_cast<int>(sgn(dx));
-    int b = static_cast<int>(k * sgn(dy));
-    dir = this->windDirection(a, b) - 1;
+    short a = static_cast<short>(sgn(dx));
+    short b = static_cast<short>(k * sgn(dy));
+    dir = c_windDirectionLookup[a + 1][b + 3];
     return true;
   }
   return false;
@@ -705,7 +678,6 @@ std::vector<std::vector<double> > Griddata::computeDirectionalWindReduction(
   boost::progress_display *progress = nullptr;
   this->checkRasterOpen();
   this->checkMatchingCoorindateSystems();
-  this->buildWindDirectionLookup();
   this->assignDirectionalWindReductionFunctionPointer(useLookupTable);
 
   if (this->m_rasterInMemory) {

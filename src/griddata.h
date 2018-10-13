@@ -86,9 +86,9 @@ class Griddata {
   double datumShift() const;
   void setDatumShift(double datumShift);
 
-private:
+ private:
   bool getKeyValue(size_t key, double &value);
-  void buildWindDirectionLookup();
+
   double calculatePoint(Point &p, double searchRadius, double gsMultiplier,
                         Griddata::Method method);
   double calculateAverage(Point &p, double w);
@@ -134,7 +134,7 @@ private:
                                             std::vector<double> &wind,
                                             double nearWeight);
 
-  int windDirection(int i, int j);
+  short windDirection(short i, short j);
 
   void checkMatchingCoorindateSystems();
   void checkRasterOpen();
@@ -148,7 +148,6 @@ private:
   std::string m_rasterFile;
   std::vector<int> m_interpolationFlags;
   std::unordered_map<size_t, double> m_lookup;
-  std::vector<std::vector<int>> m_windDirections;
   int m_epsg;
   double m_rasterMultiplier;
   double m_datumShift;
