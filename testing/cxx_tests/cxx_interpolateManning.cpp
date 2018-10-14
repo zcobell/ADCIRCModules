@@ -9,7 +9,7 @@ int main(){
 
     Multithreading::disable();
 
-    Griddata *g = new Griddata(m,"test_files/lulc_samplelulcraster.tif");
+    Interpolation::Griddata *g = new Interpolation::Griddata(m,"test_files/lulc_samplelulcraster.tif");
     g->setShowProgressBar(true);
     g->readLookupTable("test_files/sample_lookup.table");
     g->setEpsg(26915);

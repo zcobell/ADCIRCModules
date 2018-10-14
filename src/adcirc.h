@@ -33,6 +33,7 @@
 #include "nodalattributes.h"
 #include "outputfile.h"
 #include "griddata.h"
+#include "interpolationmethods.h"
 #include "multithreading.h"
 
 #endif  // ADCIRC_H

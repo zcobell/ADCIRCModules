@@ -7,16 +7,15 @@ int main(){
     m->defineProjection(4326,true);
     m->reproject(26915);
 
-
-    Griddata *g = new Griddata(m,"test_files/lulc_samplelulcraster.tif");
+    Interpolation::Griddata *g = new Interpolation::Griddata(m,"test_files/lulc_samplelulcraster.tif");
     //Multithreading::disable();
    
-#if 1   
+#if 0   
     for(size_t i=0;i<m->numNodes();++i){
         if(i<100){
-            g->setInterpolationFlag(i,Griddata::Average);
+            g->setInterpolationFlag(i,Interpolation::Average);
         } else {
-            g->setInterpolationFlag(i,Griddata::NoMethod);
+            g->setInterpolationFlag(i,Interpolation::NoMethod);
         }
     }
 #endif    

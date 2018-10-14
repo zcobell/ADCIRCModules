@@ -95,6 +95,25 @@ EXECUTE_PROCESS( COMMAND git describe --always --tags
                     OUTPUT_STRIP_TRAILING_WHITESPACE )
 ###########################################################################
 
+
+###########################################################################
+# ABSEIL SWISS TABLES
+###########################################################################
+OPTION(USE_GOOGLE_FLAT_MAP "Use Google's hash table to increase speed" ON)
+IF(USE_GOOGLE_FLAT_MAP)
+    if(MSVC)
+      # /wd4005  macro-redefinition
+      # /wd4068  unknown pragma
+      # /wd4244  conversion from 'type1' to 'type2'
+      # /wd4267  conversion from 'size_t' to 'type2'
+      # /wd4800  force value to bool 'true' or 'false' (performance warning)
+      add_compile_options(/wd4005 /wd4068 /wd4244 /wd4267 /wd4800)
+      add_definitions(/DNOMINMAX /DWIN32_LEAN_AND_MEAN=1 /D_CRT_SECURE_NO_WARNINGS)
+    endif(MSVC)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/thirdparty/abseil)
+ENDIF(USE_GOOGLE_FLAT_MAP)    
+###########################################################################
+
 ###########################################################################
 #  LIBRARY VERSION
 ###########################################################################
@@ -573,7 +592,8 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/multithreading.cpp )
 
 IF( GDAL_FOUND )
-    SET( ADCIRCMODULES_SOURCES ${ADCIRCMODULES_SOURCES} ${CMAKE_SOURCE_DIR}/src/griddata.cpp )
+    SET( ADCIRCMODULES_SOURCES ${ADCIRCMODULES_SOURCES} ${CMAKE_SOURCE_DIR}/src/griddata.cpp 
+                                                        ${CMAKE_SOURCE_DIR}/src/griddataimpl.cpp )
 ENDIF( GDAL_FOUND )
 
 ADD_LIBRARY( adcircmodules SHARED ${ADCIRCMODULES_SOURCES} )
@@ -584,6 +604,7 @@ TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/libraries/projection
                                 ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
                                 ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 
+                                ${CMAKE_SOURCE_DIR}/thirdparty/abseil
                                 ${CMAKE_SOURCE_DIR}/libraries/constants
                                 ${NETCDF_INCLUDE_DIR} ) 
 
@@ -642,6 +663,12 @@ ELSE(WIN32)
 ENDIF(WIN32)
 
 TARGET_LINK_LIBRARIES( adcircmodules projection point kdtree2 shapelib constants ${NETCDF_LIBRARIES} )
+
+IF(USE_GOOGLE_FLAT_MAP)
+    TARGET_LINK_LIBRARIES(adcircmodules absl::base absl::container absl::hash)
+    TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE USE_GOOGLE_FLAT_MAP )
+ENDIF(USE_GOOGLE_FLAT_MAP)
+
 IF(OPENMP_FOUND)
     TARGET_COMPILE_OPTIONS( adcircmodules PRIVATE ${OpenMP_CXX_FLAGS})
     TARGET_LINK_LIBRARIES(  adcircmodules ${OpenMP_CXX_LIB_NAMES} ${OpenMP_CXX_FLAGS} )
@@ -820,7 +847,7 @@ ENDIF(TEST_PERL)
 ###########################################################################
 IF(UNIX OR CYGWIN)
     IF(BUILD_TESTS)
-        #...C++ Testingc
+        #...C++ Testing
         FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases)
 
         SET(TEST_LIST cxx_readmesh.cpp cxx_writemesh.cpp cxx_writeshapefile.cpp
