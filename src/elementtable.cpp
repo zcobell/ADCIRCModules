@@ -30,7 +30,7 @@ ElementTable::ElementTable() { this->m_mesh = nullptr; }
  * @brief Constructor with mesh as a parameter
  * @param mesh sets the mesh used to generate the ElementTable
  */
-ElementTable::ElementTable(Mesh *mesh) { this->m_mesh = mesh; }
+ElementTable::ElementTable(Adcirc::Geometry::Mesh *mesh) { this->m_mesh = mesh; }
 
 /**
  * @brief Returns the pointer to the mesh used to build the table

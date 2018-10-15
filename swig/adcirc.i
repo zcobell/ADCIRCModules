@@ -59,6 +59,7 @@
 %{
 #include "rasterdata.h"
 #include "griddata.h"
+#include "interpolationmethods.h"
 %}
 #endif
 
@@ -107,5 +108,6 @@ namespace std {
 #ifdef _USE_GDAL
 %include "rasterdata.h"
 %include "griddata.h"
+%include "interpolationmethods.h"
 #endif
 

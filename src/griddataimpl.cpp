@@ -436,14 +436,14 @@ double GriddataImpl::calculateOutsideStandardDeviation(Point &p, double w,
         (mean * mean));
     double cutoff = mean + n * stddev;
     double a = 0;
-    size_t n = 0;
+    size_t np = 0;
     for (size_t i = 0; i < z2.size(); i++) {
       if (z[i] >= cutoff) {
         a += z[i];
-        n++;
+        np++;
       }
     }
-    return n > 0 ? a / n : this->defaultValue();
+    return np > 0 ? a / np : this->defaultValue();
   }
   return this->defaultValue();
 }
@@ -470,14 +470,14 @@ double GriddataImpl::calculateOutsideStandardDeviationFromLookup(Point &p,
         (mean * mean));
     double cutoff = mean + n * stddev;
     double a = 0;
-    size_t n = 0;
+    size_t np = 0;
     for (size_t i = 0; i < z2.size(); i++) {
       if (z[i] >= cutoff) {
         a += z[i];
-        n++;
+        np++;
       }
     }
-    return n > 0 ? a / n : this->defaultValue();
+    return np > 0 ? a / np : this->defaultValue();
   }
   return this->defaultValue();
 }

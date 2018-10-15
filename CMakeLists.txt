@@ -99,19 +99,23 @@ EXECUTE_PROCESS( COMMAND git describe --always --tags
 ###########################################################################
 # ABSEIL SWISS TABLES
 ###########################################################################
-OPTION(USE_GOOGLE_FLAT_MAP "Use Google's hash table to increase speed" ON)
-IF(USE_GOOGLE_FLAT_MAP)
-    if(MSVC)
-      # /wd4005  macro-redefinition
-      # /wd4068  unknown pragma
-      # /wd4244  conversion from 'type1' to 'type2'
-      # /wd4267  conversion from 'size_t' to 'type2'
-      # /wd4800  force value to bool 'true' or 'false' (performance warning)
-      add_compile_options(/wd4005 /wd4068 /wd4244 /wd4267 /wd4800)
-      add_definitions(/DNOMINMAX /DWIN32_LEAN_AND_MEAN=1 /D_CRT_SECURE_NO_WARNINGS)
-    endif(MSVC)
-    add_subdirectory(${CMAKE_SOURCE_DIR}/thirdparty/abseil)
-ENDIF(USE_GOOGLE_FLAT_MAP)    
+IF(NOT CYGWIN)
+    OPTION(USE_GOOGLE_FLAT_MAP "Use Google's hash table to increase speed" ON)
+    IF(USE_GOOGLE_FLAT_MAP)
+        if(MSVC)
+          # /wd4005  macro-redefinition
+          # /wd4068  unknown pragma
+          # /wd4244  conversion from 'type1' to 'type2'
+          # /wd4267  conversion from 'size_t' to 'type2'
+          # /wd4800  force value to bool 'true' or 'false' (performance warning)
+          add_compile_options(/wd4005 /wd4068 /wd4244 /wd4267 /wd4800)
+          add_definitions(/DNOMINMAX /DWIN32_LEAN_AND_MEAN=1 /D_CRT_SECURE_NO_WARNINGS)
+        endif(MSVC)
+        add_subdirectory(${CMAKE_SOURCE_DIR}/thirdparty/abseil)
+    ENDIF(USE_GOOGLE_FLAT_MAP)    
+ELSE(NOT CYGWIN)
+    SET(USE_GOOGLE_FLAT_MAP FALSE)
+ENDIF(NOT CYGWIN)
 ###########################################################################
 
 ###########################################################################
