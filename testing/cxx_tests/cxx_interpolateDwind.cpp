@@ -10,7 +10,7 @@ int main(){
     Interpolation::Griddata *g = new Interpolation::Griddata(m,"test_files/lulc_samplelulcraster.tif");
     //Multithreading::disable();
    
-#if 0   
+#if 1   
     for(size_t i=0;i<m->numNodes();++i){
         if(i<100){
             g->setInterpolationFlag(i,Interpolation::Average);
