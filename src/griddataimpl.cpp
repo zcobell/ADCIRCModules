@@ -250,9 +250,9 @@ bool GriddataImpl::pixelDataInRadius(Point &p, double radius,
 bool GriddataImpl::calculateBilskieRadius(double meshSize,
                                           double rasterCellSize,
                                           double &radius) {
-  double n = (0.25 * meshSize) / rasterCellSize;
-  radius = pow(2 * n + 1.0, 2.0) * rasterCellSize;
-  return n >= 1.0;
+  //...Note: Mesh size is passed in as a radius, so multiplied by 2 here
+  radius = (0.25 * 2.0 * meshSize);
+  return radius / rasterCellSize >= 1.0;
 }
 
 double GriddataImpl::calculatePoint(Point &p, double searchRadius,
@@ -358,7 +358,7 @@ double GriddataImpl::calculateBilskieAveraging(Point &p, double w,
   if (this->calculateBilskieRadius(w, this->m_raster.get()->dx(), r)) {
     return this->calculateAverage(p, r * gsMultiplier);
   } else {
-    return this->calculateNearest(p, r * gsMultiplier);
+    return this->calculateNearest(p, w * gsMultiplier);
   }
 }
 
@@ -368,7 +368,7 @@ double GriddataImpl::calculateBilskieAveragingFromLookup(Point &p, double w,
   if (this->calculateBilskieRadius(w, this->m_raster.get()->dx(), r)) {
     return this->calculateAverageFromLookup(p, r * gsMultiplier);
   } else {
-    return this->calculateNearestFromLookup(p, r * gsMultiplier);
+    return this->calculateNearestFromLookup(p, w * gsMultiplier);
   }
 }
 

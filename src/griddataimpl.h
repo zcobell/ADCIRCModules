@@ -111,8 +111,6 @@ class GriddataImpl {
 
   std::vector<double> (GriddataImpl::*m_calculateDwindPtr)(Point &p);
 
-  double mean(std::vector<double> &v);
-  double standardDeviation(std::vector<double> &v);
   bool calculateBilskieRadius(double meshSize, double rasterCellSize,
                               double &radius);
 
