@@ -49,9 +49,9 @@
 #include "kdtree2lib.h"
 #include "projection.h"
 #include "point.h"
-#include "elementtable.h"
 #include "meshchecker.h"
 #include "multithreading.h"
+#include "meshformats.h"
 #include "constants.h"
 %}
 
@@ -102,8 +102,8 @@ namespace std {
 %include "projection.h"
 %include "point.h"
 %include "meshchecker.h"
-%include "elementtable.h"
 %include "multithreading.h"
+%include "meshformats.h"
 %include "constants.h"
 #ifdef _USE_GDAL
 %include "rasterdata.h"

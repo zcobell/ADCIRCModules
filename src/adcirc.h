@@ -25,7 +25,6 @@
 
 #include "config.h"
 #include "constants.h"
-#include "elementtable.h"
 #include "error.h"
 #include "harmonicsoutput.h"
 #include "mesh.h"
@@ -34,6 +33,7 @@
 #include "outputfile.h"
 #include "griddata.h"
 #include "interpolationmethods.h"
+#include "meshformats.h"
 #include "multithreading.h"
 
 #endif  // ADCIRC_H

@@ -578,6 +578,7 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/error.cpp
                 ${CMAKE_SOURCE_DIR}/src/filetypes.cpp
                 ${CMAKE_SOURCE_DIR}/src/mesh.cpp 
+                ${CMAKE_SOURCE_DIR}/src/meshimpl.cpp 
                 ${CMAKE_SOURCE_DIR}/src/node.cpp
                 ${CMAKE_SOURCE_DIR}/src/element.cpp
                 ${CMAKE_SOURCE_DIR}/src/boundary.cpp

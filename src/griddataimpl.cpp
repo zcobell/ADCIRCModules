@@ -443,7 +443,7 @@ double GriddataImpl::calculateOutsideStandardDeviation(Point &p, double w,
         np++;
       }
     }
-    return np > 0 ? a / np : this->defaultValue();
+    return np > 0 ? a / np : this->calculateAverage(p, w);
   }
   return this->defaultValue();
 }
@@ -477,7 +477,7 @@ double GriddataImpl::calculateOutsideStandardDeviationFromLookup(Point &p,
         np++;
       }
     }
-    return np > 0 ? a / np : this->defaultValue();
+    return np > 0 ? a / np : this->calculateAverageFromLookup(p, w);
   }
   return this->defaultValue();
 }

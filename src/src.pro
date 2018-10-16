@@ -88,7 +88,6 @@ SOURCES += \
     stringconversion.cpp \
     io.cpp \
     boundary.cpp \
-    mesh.cpp \
     element.cpp \
     node.cpp \
     attribute.cpp \
@@ -105,7 +104,9 @@ SOURCES += \
     elementtable.cpp \
     multithreading.cpp \
     griddataimpl.cpp \
-    griddata.cpp
+    griddata.cpp \
+    meshimpl.cpp \
+    mesh.cpp
 
 HEADERS += \
     adcircmodules_global.h \
@@ -115,7 +116,6 @@ HEADERS += \
     boundary.h \
     element.h \
     adcirc.h \
-    mesh.h \
     node.h \
     attribute.h \
     attributemetadata.h \
@@ -133,7 +133,10 @@ HEADERS += \
     multithreading.h \
     griddataimpl.h \
     griddata.h \
-    interpolationmethods.h
+    interpolationmethods.h \
+    meshformats.h \
+    meshimpl.h \
+    mesh.h
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib

@@ -21,7 +21,12 @@
 
 #include <vector>
 #include "element.h"
-#include "mesh.h"
+
+#ifdef USE_GOOGLE_FLAT_MAP
+#include "absl/container/flat_hash_map.h"
+#else
+#include <unordered_map>
+#endif
 
 namespace Adcirc {
 namespace Geometry {
@@ -36,10 +41,12 @@ namespace Geometry {
  *
  */
 
+class MeshImpl;
+
 class ElementTable {
  public:
   ElementTable();
-  ElementTable(Adcirc::Geometry::Mesh *mesh);
+  ElementTable(Adcirc::Geometry::MeshImpl *mesh);
 
   std::vector<Adcirc::Geometry::Element *> elementList(
       Adcirc::Geometry::Node *n);
@@ -52,15 +59,25 @@ class ElementTable {
 
   void build();
 
-  Adcirc::Geometry::Mesh *mesh() const;
-  void setMesh(Adcirc::Geometry::Mesh *mesh);
+  bool initialized();
+
+  Adcirc::Geometry::MeshImpl *mesh() const;
+  void setMesh(Adcirc::Geometry::MeshImpl *mesh);
 
  private:
+#ifdef USE_GOOGLE_FLAT_MAP
+  absl::flat_hash_map<Adcirc::Geometry::Node *,
+                      std::vector<Adcirc::Geometry::Element *>>
+      m_elementTable;
+#else
   std::unordered_map<Adcirc::Geometry::Node *,
                      std::vector<Adcirc::Geometry::Element *>>
       m_elementTable;
+#endif
 
-  Adcirc::Geometry::Mesh *m_mesh;
+  Adcirc::Geometry::MeshImpl *m_mesh;
+
+  bool m_initialized;
 };
 }  // namespace Geometry
 }  // namespace Adcirc
