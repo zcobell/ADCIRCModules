@@ -2020,30 +2020,60 @@ std::vector<std::vector<double>> MeshImpl::orthogonality() {
   return o;
 }
 
+/**
+ * @brief Builds a list of elements connected to each node
+ */
 void MeshImpl::buildElementTable() {
   this->m_elementTable.setMesh(this);
   this->m_elementTable.build();
   return;
 }
 
+/**
+ * @brief Returns the number of elements surrounding a specified node
+ * @param n address of node
+ * @return number of elements
+ */
 size_t MeshImpl::numElementsAroundNode(Adcirc::Geometry::Node *n) {
   return this->m_elementTable.numElementsAroundNode(n);
 }
 
+/**
+ * @brief Returns the number of elements surrounding a specified node
+ * @param n index of node
+ * @return number of elements
+ */
 size_t MeshImpl::numElementsAroundNode(size_t nodeIndex) {
   return this->m_elementTable.numElementsAroundNode(nodeIndex);
 }
 
+/**
+ * @brief Returns the nth element in the list of elements surrounding a node
+ * @param n node pointer
+ * @param listIndex index of the element to return
+ * @return element pointer
+ */
 Adcirc::Geometry::Element *MeshImpl::elementTable(Adcirc::Geometry::Node *n,
                                                   size_t listIndex) {
   return this->m_elementTable.elementTable(n, listIndex);
 }
 
+/**
+ * @brief Returns the nth element in the list of elements surrounding a node
+ * @param n node index
+ * @param listIndex index of the element to return
+ * @return element pointer
+ */
 Adcirc::Geometry::Element *MeshImpl::elementTable(size_t nodeIndex,
                                                   size_t listIndex) {
   return this->m_elementTable.elementTable(nodeIndex, listIndex);
 }
 
+/**
+ * @brief Returns a vector of pointers to the elements surrouding a node
+ * @param n node pointer
+ * @return vector of element references
+ */
 std::vector<Adcirc::Geometry::Element *> MeshImpl::elementsAroundNode(
     Adcirc::Geometry::Node *n) {
   return std::move(this->m_elementTable.elementList(n));

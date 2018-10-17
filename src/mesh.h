@@ -1,3 +1,21 @@
+/*------------------------------GPL---------------------------------------//
+// This file is part of ADCIRCModules.
+//
+// (c) 2015-2018 Zachary Cobell
+//
+// ADCIRCModules is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// ADCIRCModules is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
+//------------------------------------------------------------------------*/
 #ifndef MESH_H
 #define MESH_H
 
@@ -15,7 +33,45 @@ namespace Geometry {
 
 class MeshImpl;
 
+/**
+ * @class Mesh
+ * @author Zachary Cobell
+ * @brief Class that handles operations using Adcirc mesh files
+ * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * is released under the terms of the GNU General Public License v3
+ *
+ * The Mesh class handles functions related to reading an
+ * unstructured mesh into memory and provides some facilities for
+ * manipulation. The code is designed to be functional
+ * with the python interface to the code.
+ *
+ * I/O functions are provided for three unstructured mesh formats:
+ *   1) ADCIRC ASCII formatted mesh
+ *   2) Aquaveo 2dm formatted mesh
+ *   3) DFlow-FM netcdf formatted mesh
+ * These meshes can be translated between formats using the i/o routines
+ * however, quadrilaterals are not officially supported in the adcirc format.
+ * Meshes may only contain triangles and quadrilaterals.
+ *
+ * The code is able to handle meshes that are traditional, that
+ * is they contained order indicies. When the code detects unordered
+ * indicies, a translation table is automatically generated that allows
+ * the code to continue to function appropriately and the id column of
+ * the mesh will be considered a label.
+ *
+ * Performance is considered to be of the greatest importance and
+ * therefore the Boost libraries have been utilized for reading
+ * and writing of mesh data over the standard C++ functions.
+ * All edits to this code should be benchmarked against a prior
+ * version to ensure that memory usage and cpu time is not adversely
+ * affected.
+ *
+ * This class uses the PIMPL idiom and the implementation of the
+ * class is contained in the MeshImpl class.
+ *
+ */
 class Mesh {
+
  public:
   Mesh();
   explicit Mesh(const std::string &filename);
