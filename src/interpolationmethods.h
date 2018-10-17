@@ -38,7 +38,11 @@ enum Method {
   BilskieEtAll = 5,
   /// Uses an inverse distance weighting approach for the points available
   /// within the radius defined by the mesh size and any multipliers
-  InverseDistanceWeighted = 6
+  InverseDistanceWeighted = 6,
+  /// Uses an inverse distance weighting approach but does not require a
+  /// specified radius size. Instead, the nearest 'filterSize' (i.e. number) of
+  /// points will be selected.
+  InverseDistanceWeightedNoRadius = 7
 };
 }
 

@@ -15,7 +15,10 @@ int main(){
     g->setEpsg(26915);
     g->setRasterInMemory(true);
     for(size_t i=0;i<m->numNodes();++i){
-        g->setInterpolationFlag(i,i%6);
+        g->setInterpolationFlag(i,i%8);
+        if(g->interpolationFlag(i)==7){
+            g->setFilterSize(i,16.0);
+        }
     }
     std::vector<double> r = g->computeValuesFromRaster(true);
 

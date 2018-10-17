@@ -67,11 +67,13 @@ class Griddata {
 
   std::vector<int> interpolationFlags() const;
   void setInterpolationFlags(const std::vector<int> &interpolationFlags);
+  void setInterpolationFlags(int interpolationFlag);
   int interpolationFlag(size_t index);
   void setInterpolationFlag(size_t index, int flag);
 
   std::vector<double> filterSizes() const;
   void setFilterSizes(const std::vector<double> &filterSize);
+  void setFilterSizes(double filterSize);
   double filterSize(size_t index);
   void setFilterSize(size_t index, double filterSize);
 

@@ -149,6 +149,11 @@ void GriddataImpl::setInterpolationFlags(
   this->m_interpolationFlags = interpolationFlags;
 }
 
+void GriddataImpl::setInterpolationFlags(int interpolationFlag) {
+  std::fill(this->m_interpolationFlags.begin(),
+            this->m_interpolationFlags.end(), interpolationFlag);
+}
+
 void GriddataImpl::setInterpolationFlag(size_t index, int flag) {
   if (index < this->m_interpolationFlags.size()) {
     this->m_interpolationFlags[index] =
@@ -169,6 +174,10 @@ std::vector<double> GriddataImpl::filterSizes() const {
 
 void GriddataImpl::setFilterSizes(const std::vector<double> &filterSize) {
   this->m_filterSize = filterSize;
+}
+
+void GriddataImpl::setFilterSizes(double &filterSize) {
+  std::fill(this->m_filterSize.begin(), this->m_filterSize.end(), filterSize);
 }
 
 double GriddataImpl::filterSize(size_t index) {
@@ -276,6 +285,12 @@ double GriddataImpl::calculatePoint(Point &p, double searchRadius,
       return this->calculateBilskieAveraging(p, searchRadius, gsMultiplier);
       break;
     case InverseDistanceWeighted:
+      return this->calculateInverseDistanceWeighted(
+          p, searchRadius * gsMultiplier);
+      break;
+    case InverseDistanceWeightedNoRadius:
+      return this->calculateInverseDistanceWeightedNoRadius(p, gsMultiplier);
+      break;
     default:
       return this->defaultValue();
       break;
@@ -306,6 +321,10 @@ double GriddataImpl::calculatePointFromLookup(Point &p, double searchRadius,
     case InverseDistanceWeighted:
       return this->calculateInverseDistanceWeightedFromLookup(
           p, searchRadius * gsMultiplier);
+    case InverseDistanceWeightedNoRadius:
+      return this->calculateInverseDistanceWeightedNoRadiusFromLookup(
+          p, gsMultiplier);
+      break;
     default:
       return this->defaultValue();
       break;
@@ -388,9 +407,34 @@ double GriddataImpl::calculateInverseDistanceWeighted(Point &p, double w) {
       }
     }
     return num > 0 ? n / d : this->defaultValue();
-  } else {
-    return this->defaultValue();
   }
+  return this->defaultValue();
+}
+
+double GriddataImpl::calculateInverseDistanceWeightedNoRadius(Point &p,
+                                                              double n) {
+  std::vector<double> x, y, z;
+  std::vector<bool> v;
+  int maxPoints = static_cast<size_t>(n);
+
+  double w = this->calculateExpansionLevelForPoints(maxPoints);
+
+  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+    double val = 0.0;
+    double d = 0.0;
+    size_t np = 0;
+    for (size_t i = 0; i < z.size(); ++i) {
+      if (v[i]) {
+        double dis = Constants::distance(p.x(), p.y(), x[i], y[i]);
+        val += z[i] / dis;
+        d += 1.0 / dis;
+        np++;
+      }
+      if (np >= maxPoints) break;
+    }
+    return np > 0 ? val / d : this->defaultValue();
+  }
+  return this->defaultValue();
 }
 
 double GriddataImpl::calculateInverseDistanceWeightedFromLookup(Point &p,
@@ -414,9 +458,48 @@ double GriddataImpl::calculateInverseDistanceWeightedFromLookup(Point &p,
       }
     }
     return num > 0 ? n / d : this->defaultValue();
-  } else {
-    return this->defaultValue();
   }
+  return this->defaultValue();
+}
+
+double GriddataImpl::calculateExpansionLevelForPoints(size_t n) {
+  //...This tries to build out a box around a point at the
+  // resolution of the raster. The hope is that by going 2
+  // additional levels outside of what would be needed for the
+  // requested number of points, we'll always hit the request
+  // unless we're in a severe nodata region
+  int levels = std::floor(n / 8.0) + 2;
+  return this->m_raster.get()->dx() * static_cast<double>(levels);
+}
+
+double GriddataImpl::calculateInverseDistanceWeightedNoRadiusFromLookup(
+    Point &p, double n) {
+  std::vector<double> x, y;
+  std::vector<int> z;
+  std::vector<bool> v;
+  int maxPoints = static_cast<size_t>(n);
+
+  double w = calculateExpansionLevelForPoints(n);
+
+  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+    double val = 0.0;
+    double d = 0.0;
+    size_t np = 0;
+    for (size_t i = 0; i < z.size(); ++i) {
+      if (v[i]) {
+        double zl;
+        if (this->getKeyValue(z[i], zl)) {
+          double dis = Constants::distance(p.x(), p.y(), x[i], y[i]);
+          val += zl / dis;
+          d += 1.0 / dis;
+          np++;
+        }
+      }
+      if (np >= maxPoints) break;
+    }
+    return np > 0 ? val / d : this->defaultValue();
+  }
+  return this->defaultValue();
 }
 
 double GriddataImpl::calculateOutsideStandardDeviation(Point &p, double w,

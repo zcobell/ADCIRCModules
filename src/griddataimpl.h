@@ -50,11 +50,13 @@ class GriddataImpl {
 
   std::vector<int> interpolationFlags() const;
   void setInterpolationFlags(const std::vector<int> &interpolationFlags);
+  void setInterpolationFlags(int interpolationFlag);
   int interpolationFlag(size_t index);
   void setInterpolationFlag(size_t index, int flag);
 
   std::vector<double> filterSizes() const;
   void setFilterSizes(const std::vector<double> &filterSize);
+  void setFilterSizes(double &filterSize);
   double filterSize(size_t index);
   void setFilterSize(size_t index, double filterSize);
 
@@ -94,6 +96,7 @@ class GriddataImpl {
   double calculateOutsideStandardDeviation(Point &p, double w, int n);
   double calculateBilskieAveraging(Point &p, double w, double gsMultiplier);
   double calculateInverseDistanceWeighted(Point &p, double w);
+  double calculateInverseDistanceWeightedNoRadius(Point &p, double n);
 
   double calculatePointFromLookup(Point &p, double w, double gsMultiplier,
                                   Interpolation::Method method);
@@ -104,6 +107,7 @@ class GriddataImpl {
   double calculateBilskieAveragingFromLookup(Point &p, double w,
                                              double gsMultiplier);
   double calculateInverseDistanceWeightedFromLookup(Point &p, double w);
+  double calculateInverseDistanceWeightedNoRadiusFromLookup(Point &p, double n);
 
   double (GriddataImpl::*m_calculatePointPtr)(Point &p, double w,
                                               double gsMultiplier,
@@ -137,6 +141,7 @@ class GriddataImpl {
   void checkRasterOpen();
   void assignDirectionalWindReductionFunctionPointer(bool useLookupTable);
   void assignInterpolationFunctionPointer(bool useLookupTable);
+  double calculateExpansionLevelForPoints(size_t n);
 
   std::vector<double> m_filterSize;
   double m_defaultValue;

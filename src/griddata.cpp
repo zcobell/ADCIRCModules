@@ -83,6 +83,14 @@ void Griddata::setInterpolationFlags(
 }
 
 /**
+ * @brief Sets the interpolation flags to a uniform value
+ * @param interpolationFlag flag that will be set for all nodes
+ */
+void Griddata::setInterpolationFlags(int interpolationFlag) {
+  this->m_impl->setInterpolationFlags(interpolationFlag);
+}
+
+/**
  * @brief Retrieves the interpolation flag for a specified node
  * @param index position to retrieve flag for
  * @return interpolation flag
@@ -117,6 +125,15 @@ std::vector<double> Griddata::filterSizes() const {
  * @param filterSize mesh size multiplier
  */
 void Griddata::setFilterSizes(const std::vector<double> &filterSize) {
+  this->m_impl->setFilterSizes(filterSize);
+}
+
+/**
+ * @brief Sets the relative filter sizes used to identify pixels of interest
+ * when interpolating data to a mesh. All nodes set to a uniform value
+ * @param filterSize mesh size multiplier
+ */
+void Griddata::setFilterSizes(double filterSize) {
   this->m_impl->setFilterSizes(filterSize);
 }
 
