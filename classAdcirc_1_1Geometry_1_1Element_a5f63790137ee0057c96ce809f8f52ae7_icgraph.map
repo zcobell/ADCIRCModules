@@ -1,5 +1,8 @@
 <map id="id" name="id">
-<area shape="rect" id="node2" href="$classMeshChecker.html#a6cc4b5e332f1a761d93ce7a616dc4bdd" title="MeshChecker::checkElement\lNumbering" alt="" coords="103,5,296,47"/>
-<area shape="rect" id="node3" href="$classMeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="MeshChecker::checkOverlapping\lElements" alt="" coords="92,71,307,112"/>
-<area shape="rect" id="node4" href="$classMeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="MeshChecker::checkElement\lSizes" alt="" coords="103,136,296,177"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#a18dc9fc473bebcc70e414047bec4677e" title="Constructor using references to three Node objects. " alt="" coords="164,5,235,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Element.html#af008cb5c3f5096f17966c89cea512124" title="Function that sets up the element using three pointers and the element id/label. " alt="" coords="155,56,243,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Element.html#ae83f8bf0246a70095cce1ba86523a6fe" title="Sets the element id/flag. " alt="" coords="174,107,225,133"/>
+<area shape="rect" id="node5" href="$classMeshChecker.html#a6cc4b5e332f1a761d93ce7a616dc4bdd" title="MeshChecker::checkElement\lNumbering" alt="" coords="103,158,296,199"/>
+<area shape="rect" id="node6" href="$classMeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="MeshChecker::checkOverlapping\lElements" alt="" coords="92,223,307,265"/>
+<area shape="rect" id="node7" href="$classMeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="MeshChecker::checkElement\lSizes" alt="" coords="103,289,296,330"/>
 </map>

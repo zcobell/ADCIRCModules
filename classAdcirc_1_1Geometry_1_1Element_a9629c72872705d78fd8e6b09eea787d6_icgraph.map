@@ -1,3 +1,5 @@
 <map id="elementLeg" name="elementLeg">
-<area shape="rect" id="node2" href="$classMeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="MeshChecker::checkOverlapping\lElements" alt="" coords="143,5,357,47"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#aea91ac1ba5cbc0a0b6970c9758f804a2" title="Calculates the average size of the legs of an element. " alt="" coords="203,13,297,39"/>
+<area shape="rect" id="node4" href="$classMeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="MeshChecker::checkOverlapping\lElements" alt="" coords="143,64,357,105"/>
+<area shape="rect" id="node3" href="$classMeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="MeshChecker::checkElement\lSizes" alt="" coords="405,5,599,47"/>
 </map>

@@ -1,3 +1,5 @@
 <map id="pipeDiameter" name="pipeDiameter">
-<area shape="rect" id="node2" href="$classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="152,5,367,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ab2e079368d5f118127045dcc62c149fb" title="Sets the diameter of the pipe. " alt="" coords="200,5,319,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="215,56,303,83"/>
+<area shape="rect" id="node4" href="$classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="152,107,367,133"/>
 </map>

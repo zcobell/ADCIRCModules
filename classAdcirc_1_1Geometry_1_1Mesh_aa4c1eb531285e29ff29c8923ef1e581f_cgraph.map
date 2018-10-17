@@ -1,8 +1,0 @@
-<map id="orthogonality" name="orthogonality">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the nodal id/label. " alt="" coords="377,38,557,65"/>
-<area shape="rect" id="node3" href="$mesh_8cpp.html#af15289d427f43b235d032dbb10ede211" title="comparison function for sorting the tuples of element edges " alt="" coords="186,38,293,65"/>
-<area shape="rect" id="node4" href="$mesh_8cpp.html#a86354a68a24cb1ffc35cd41e7e624c28" title="Determines if two tuples of element edges refer to the same edge. " alt="" coords="182,89,297,116"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Element.html#a07f34be4674125bc14f69abf7e2f4d51" title="Computes the center position of the element. " alt="" coords="149,140,329,182"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="151,206,328,233"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="151,257,328,284"/>
-</map>

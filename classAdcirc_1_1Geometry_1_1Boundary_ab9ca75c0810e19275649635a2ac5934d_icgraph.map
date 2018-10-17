@@ -1,3 +1,5 @@
 <map id="pipeHeight" name="pipeHeight">
-<area shape="rect" id="node2" href="$classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="136,5,351,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a90a50786df9a09253f87cff7bab91849" title="Sets the elevation of the pipe above datum for type 5 and 25 boundaries. " alt="" coords="192,5,295,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="199,56,287,83"/>
+<area shape="rect" id="node4" href="$classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="136,107,351,133"/>
 </map>

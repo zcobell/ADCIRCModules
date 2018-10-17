@@ -1,0 +1,4 @@
+<map id="subcriticalWeirCoefficient" name="subcriticalWeirCoefficient">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad5f6ca7fbae39942af18a74b1bf0e048" title="Sets the coefficient of subcritical flow for boundary types 4, 24, 5, and 25. " alt="" coords="223,5,412,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="273,56,361,83"/>
+</map>

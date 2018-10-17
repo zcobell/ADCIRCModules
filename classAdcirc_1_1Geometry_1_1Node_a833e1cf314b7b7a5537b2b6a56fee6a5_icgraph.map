@@ -1,6 +1,10 @@
 <map id="x" name="x">
 <area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#aea91ac1ba5cbc0a0b6970c9758f804a2" title="Calculates the average size of the legs of an element. " alt="" coords="92,5,272,47"/>
 <area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Element.html#a9e42cda1d41194ce3b1d434ae5a6dac1" title="Sorts the verticies in clockwise order around the element center. " alt="" coords="92,71,272,112"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Mesh.html#aa4c1eb531285e29ff29c8923ef1e581f" title="Calculates the element orthogonality. " alt="" coords="100,136,264,177"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Node.html#a39f0382b034242fad618eba00c551f9e" title="Constructor taking the id, x, y, and z for the node. " alt="" coords="156,137,208,163"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Node.html#ae75c04393d9b583587960be477a44168" title="Function taking the id, x, y, and z for the node. " alt="" coords="147,187,217,214"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Node.html#a9c18fcc579333bf9653d13ad2b372e39" title="Sets the x&#45;location of the node. " alt="" coords="157,238,207,265"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1Node.html#aa2643047b5fc60af3bac3d0e458c24d8" title="Formats the node for writing into an Adcirc ASCII mesh file. " alt="" coords="130,289,234,315"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Geometry_1_1Node.html#a23d80ca14b4eb8fde2a399ebb291e826" title="Formats the node for writing into an Aquaveo 2dm ASCII mesh file. " alt="" coords="136,339,228,366"/>
 <area shape="rect" id="node3" href="$classMeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="MeshChecker::checkElement\lSizes" alt="" coords="320,5,513,47"/>
 </map>

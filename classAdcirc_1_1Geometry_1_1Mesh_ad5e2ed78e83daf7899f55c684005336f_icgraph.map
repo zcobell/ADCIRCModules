@@ -1,7 +1,6 @@
 <map id="numLandBoundaries" name="numLandBoundaries">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a52ae2b43d42b6910647f3f7804e72c11" title="Sets the number of land boundaries in the model. Note this does not resize the boundary array..." alt="" coords="193,5,353,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="469,51,558,77"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a7230510e75d658c99606622e19ff7be6" title="Returns a pointer to a land boundary by index. " alt="" coords="223,157,324,184"/>
-<area shape="rect" id="node5" href="$classMeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="MeshChecker::checkLeveeHeights" alt="" coords="401,113,625,140"/>
-<area shape="rect" id="node6" href="$classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="406,189,621,216"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a52ae2b43d42b6910647f3f7804e72c11" title="Sets the number of land boundaries in the model. Note this does not resize the boundary array..." alt="" coords="225,5,385,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="261,56,350,83"/>
+<area shape="rect" id="node4" href="$classMeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="MeshChecker::checkLeveeHeights" alt="" coords="193,107,417,133"/>
+<area shape="rect" id="node5" href="$classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="198,157,413,184"/>
 </map>

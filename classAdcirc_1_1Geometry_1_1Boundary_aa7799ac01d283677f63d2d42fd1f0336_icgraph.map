@@ -1,4 +1,6 @@
 <map id="node1" name="node1">
-<area shape="rect" id="node2" href="$classMeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="MeshChecker::checkLeveeHeights" alt="" coords="111,5,335,32"/>
-<area shape="rect" id="node3" href="$classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="115,56,330,83"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a8abfa660598650ce793cc33c4b8761ae" title="Sets a pointer to a node. " alt="" coords="184,5,261,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="179,56,267,83"/>
+<area shape="rect" id="node4" href="$classMeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="MeshChecker::checkLeveeHeights" alt="" coords="111,107,335,133"/>
+<area shape="rect" id="node5" href="$classMeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="MeshChecker::checkPipeHeights" alt="" coords="115,157,330,184"/>
 </map>

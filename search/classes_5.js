@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['griddata',['Griddata',['../classGriddata.html',1,'']]]
+  ['griddata',['Griddata',['../classInterpolation_1_1Griddata.html',1,'Interpolation']]]
 ];

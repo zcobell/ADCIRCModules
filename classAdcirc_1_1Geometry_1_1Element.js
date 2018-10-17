@@ -17,6 +17,6 @@ var classAdcirc_1_1Geometry_1_1Element =
     [ "setId", "classAdcirc_1_1Geometry_1_1Element.html#ae83f8bf0246a70095cce1ba86523a6fe", null ],
     [ "setNode", "classAdcirc_1_1Geometry_1_1Element.html#a470ec0a757480e57f2e226723804d0c8", null ],
     [ "sortVerticiesAboutCenter", "classAdcirc_1_1Geometry_1_1Element.html#a9e42cda1d41194ce3b1d434ae5a6dac1", null ],
-    [ "to2dmString", "classAdcirc_1_1Geometry_1_1Element.html#a549b2f787ac98254c12f0697e40c7a16", null ],
-    [ "toAdcircString", "classAdcirc_1_1Geometry_1_1Element.html#a48f807ef0df09192a21473a9acff946f", null ]
+    [ "to2dmString", "classAdcirc_1_1Geometry_1_1Element.html#a2ab375c4994ef40c502c665132c732b9", null ],
+    [ "toAdcircString", "classAdcirc_1_1Geometry_1_1Element.html#a4a56f4095253738477eef9a6b821e843", null ]
 ];

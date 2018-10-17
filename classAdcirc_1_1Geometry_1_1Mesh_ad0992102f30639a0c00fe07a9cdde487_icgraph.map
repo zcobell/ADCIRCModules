@@ -1,4 +1,0 @@
-<map id="setNumElements" name="setNumElements">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="184,5,273,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a16a30ccab02802c1bf373907dfda2c05" title="Deletes an Element object at the specified index and shifts the remaining elements forward in the vec..." alt="" coords="176,56,281,83"/>
-</map>

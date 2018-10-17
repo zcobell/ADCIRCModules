@@ -1,20 +1,8 @@
 <map id="numElements" name="numElements">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#a7740c7ab195c03ac140f1f75f633470f" title="Begin building the table. " alt="" coords="385,5,565,47"/>
-<area shape="rect" id="node4" href="$classMeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="MeshChecker::checkOverlapping\lElements" alt="" coords="620,181,835,223"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ad0992102f30639a0c00fe07a9cdde487" title="Sets the number of elements in the mesh. Note: This does not resize the mesh. " alt="" coords="182,523,305,550"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="431,523,520,550"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a16a30ccab02802c1bf373907dfda2c05" title="Deletes an Element object at the specified index and shifts the remaining elements forward in the vec..." alt="" coords="423,574,528,601"/>
-<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a14aa75a7dd91534b6b886769e21e2c89" title="Returns a pointer to the requested element in the internal element vector. " alt="" coords="209,198,277,225"/>
-<area shape="rect" id="node9" href="$classAdcirc_1_1Geometry_1_1Mesh.html#aecd5fbed4437df6191c7aa8dc0624d4a" title="Adds an Element at the specified position in the element vector. " alt="" coords="430,71,521,98"/>
-<area shape="rect" id="node12" href="$classMeshChecker.html#a6cc4b5e332f1a761d93ce7a616dc4bdd" title="MeshChecker::checkElement\lNumbering" alt="" coords="379,123,572,164"/>
-<area shape="rect" id="node13" href="$classMeshChecker.html#ae03f3887258a57e08f2f6f259c03ce03" title="MeshChecker::checkDisjoint\lNodes" alt="" coords="381,240,569,281"/>
-<area shape="rect" id="node14" href="$classMeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="MeshChecker::checkElement\lSizes" alt="" coords="379,305,572,347"/>
-<area shape="rect" id="node15" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a8d4e20cdae81f95a5dde23c018782ceb" title="Returns an pointer to the requested element by its ID. " alt="" coords="196,625,291,651"/>
-<area shape="rect" id="node16" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a76e76634991fe2ec7d6504760f7a6082" title="Builds a kd&#45;tree object with the element centers as the search locations. " alt="" coords="156,422,331,449"/>
-<area shape="rect" id="node19" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ab1824b686b7cb36aa87a0c29336dc6ba" title="Returns a 2d&#45;vector of the mesh connectivity. " alt="" coords="197,675,289,702"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a4559546c55f58af97d2d88cfb0bfebf4" title="Computes average size of the element edges connected to each node. " alt="" coords="662,13,793,39"/>
-<area shape="rect" id="node10" href="$classAdcirc_1_1Geometry_1_1Mesh.html#afc8a7071a350f0e47178c77e10323dcc" title="Finds the mesh element that a given location lies within. " alt="" coords="430,422,521,449"/>
-<area shape="rect" id="node11" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a6f06589c2439af5b4e5da2fa7e7ff261" title="Finds the mesh element that a given location lies within. " alt="" coords="682,422,773,449"/>
-<area shape="rect" id="node17" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a692aa821ebbe1d4d3ac0a3769eeae006" title="findNearestElement" alt="" coords="407,473,543,499"/>
-<area shape="rect" id="node18" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a81c61aafd5fb5a9fcda48fbd503764ca" title="Finds the nearest mesh element to the provided x,y. " alt="" coords="659,473,795,499"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ad0992102f30639a0c00fe07a9cdde487" title="Sets the number of elements in the mesh. Note: This does not resize the mesh. " alt="" coords="202,5,325,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="219,56,308,83"/>
+<area shape="rect" id="node4" href="$classMeshChecker.html#a6cc4b5e332f1a761d93ce7a616dc4bdd" title="MeshChecker::checkElement\lNumbering" alt="" coords="167,107,360,149"/>
+<area shape="rect" id="node5" href="$classMeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="MeshChecker::checkOverlapping\lElements" alt="" coords="156,173,371,214"/>
+<area shape="rect" id="node6" href="$classMeshChecker.html#ae03f3887258a57e08f2f6f259c03ce03" title="MeshChecker::checkDisjoint\lNodes" alt="" coords="169,238,357,279"/>
+<area shape="rect" id="node7" href="$classMeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="MeshChecker::checkElement\lSizes" alt="" coords="167,303,360,345"/>
 </map>

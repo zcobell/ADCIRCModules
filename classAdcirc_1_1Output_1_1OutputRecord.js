@@ -4,12 +4,12 @@ var classAdcirc_1_1Output_1_1OutputRecord =
     [ "OutputRecord", "classAdcirc_1_1Output_1_1OutputRecord.html#a40ca928b665195deefed93c4859addec", null ],
     [ "defaultValue", "classAdcirc_1_1Output_1_1OutputRecord.html#af3c6e7460235c8bda8126219d3bcfef4", null ],
     [ "direction", "classAdcirc_1_1Output_1_1OutputRecord.html#a4d57746c34b8773a08701e372fe376bb", null ],
-    [ "directions", "classAdcirc_1_1Output_1_1OutputRecord.html#a860fc075b43489ef5865ac0f0252df4a", null ],
+    [ "directions", "classAdcirc_1_1Output_1_1OutputRecord.html#a2ff38e09941218dd1cb2a04ee60109f9", null ],
     [ "fill", "classAdcirc_1_1Output_1_1OutputRecord.html#a4ef92b2ced9fdeb531a443645f14263a", null ],
     [ "isVector", "classAdcirc_1_1Output_1_1OutputRecord.html#a434d8fdd91756a54ea935ba21de4f4f6", null ],
     [ "iteration", "classAdcirc_1_1Output_1_1OutputRecord.html#aee04535d5665c8c5a3c2a70dab99c7c0", null ],
     [ "magnitude", "classAdcirc_1_1Output_1_1OutputRecord.html#a85c14693efd32e7f2e05a0f997492fee", null ],
-    [ "magnitudes", "classAdcirc_1_1Output_1_1OutputRecord.html#aa61e74170567a8c09bfa85d2aa7a5e09", null ],
+    [ "magnitudes", "classAdcirc_1_1Output_1_1OutputRecord.html#aa58626ebb99011ee8e4e6ee4fbed9f69", null ],
     [ "numNodes", "classAdcirc_1_1Output_1_1OutputRecord.html#ae8487e719ad1109f6db746e96a37c498", null ],
     [ "record", "classAdcirc_1_1Output_1_1OutputRecord.html#add606e96d55bdfcca39d5aa59d9d01ba", null ],
     [ "set", "classAdcirc_1_1Output_1_1OutputRecord.html#a18d1bfcb85cf34bd346d2339c1a6ab6a", null ],
@@ -31,6 +31,6 @@ var classAdcirc_1_1Output_1_1OutputRecord =
     [ "time", "classAdcirc_1_1Output_1_1OutputRecord.html#aa5259182c646d0c7936af1cc374f5f46", null ],
     [ "u", "classAdcirc_1_1Output_1_1OutputRecord.html#aba291a5f6e624d6a7eb7ab0c1888737b", null ],
     [ "v", "classAdcirc_1_1Output_1_1OutputRecord.html#a686cd4bc40b320b5e956a924f5e155c0", null ],
-    [ "values", "classAdcirc_1_1Output_1_1OutputRecord.html#a08ad3632d8806be4dd98b1f062b4819c", null ],
+    [ "values", "classAdcirc_1_1Output_1_1OutputRecord.html#ad54d470fa60c15aef915ffc8201783d3", null ],
     [ "z", "classAdcirc_1_1Output_1_1OutputRecord.html#a8998475212765d0d0f75174b187d46d1", null ]
 ];

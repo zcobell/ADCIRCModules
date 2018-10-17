@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['phase',['phase',['../classAdcirc_1_1Output_1_1HarmonicsOutput.html#a3b20529a4a9f4720169b709505071dbc',1,'Adcirc::Output::HarmonicsOutput::phase(std::string name)'],['../classAdcirc_1_1Output_1_1HarmonicsOutput.html#a6199a428769e1316b8f4b9233a628fa0',1,'Adcirc::Output::HarmonicsOutput::phase(size_t index)']]],
+  ['phase',['phase',['../classAdcirc_1_1Output_1_1HarmonicsOutput.html#aba66ae7d1c357b29e871dae112a326b8',1,'Adcirc::Output::HarmonicsOutput::phase(const std::string &amp;name)'],['../classAdcirc_1_1Output_1_1HarmonicsOutput.html#a6199a428769e1316b8f4b9233a628fa0',1,'Adcirc::Output::HarmonicsOutput::phase(size_t index)']]],
   ['pi',['pi',['../classConstants.html#a19481c763d7a0b56b40eade0a21daab7',1,'Constants']]],
   ['pipecoefficient',['pipeCoefficient',['../classAdcirc_1_1Geometry_1_1Boundary.html#a5dfa1ccbf386471f392a5ad9dd46f547',1,'Adcirc::Geometry::Boundary']]],
   ['pipediameter',['pipeDiameter',['../classAdcirc_1_1Geometry_1_1Boundary.html#af1dc9caf2049168de2d6106807d3a905',1,'Adcirc::Geometry::Boundary']]],

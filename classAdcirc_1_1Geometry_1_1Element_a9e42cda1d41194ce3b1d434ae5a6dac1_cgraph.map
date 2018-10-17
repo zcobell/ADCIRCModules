@@ -1,4 +1,6 @@
 <map id="sortVerticiesAboutCenter" name="sortVerticiesAboutCenter">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="220,5,397,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="220,56,397,83"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#a07f34be4674125bc14f69abf7e2f4d51" title="Computes the center position of the element. " alt="" coords="245,5,372,32"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="220,56,397,83"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="220,107,397,133"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Element.html#a841b7b7f4c7b50931fabb298cfb7bed3" title="Number of verticies in this element. " alt="" coords="445,5,484,32"/>
 </map>

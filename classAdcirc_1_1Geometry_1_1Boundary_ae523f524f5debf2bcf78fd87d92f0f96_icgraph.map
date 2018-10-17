@@ -1,0 +1,4 @@
+<map id="supercriticalWeirCoefficient" name="supercriticalWeirCoefficient">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a716dea22b33aab1956f40e316ab2fb7c" title="setSupercriticalWeirCoefficient" alt="" coords="233,5,433,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="289,56,377,83"/>
+</map>

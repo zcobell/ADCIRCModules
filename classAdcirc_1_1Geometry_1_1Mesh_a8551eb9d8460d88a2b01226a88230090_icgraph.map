@@ -1,5 +1,0 @@
-<map id="nodalSearchTreeInitialized" name="nodalSearchTreeInitialized">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a138d7b286466422790ecbc054c8b0c35" title="Deletes the nodal search tree. " alt="" coords="228,5,385,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a1b3442d6d4f83fb44069874a829446f2" title="findNearestNode" alt="" coords="247,56,366,83"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a4504d27718bd1f3e2a3ce8457d9b01e9" title="Finds the nearest mesh node to the provided x,y. " alt="" coords="433,56,552,83"/>
-</map>

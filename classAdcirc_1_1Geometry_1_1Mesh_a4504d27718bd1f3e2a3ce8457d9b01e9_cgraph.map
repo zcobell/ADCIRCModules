@@ -1,12 +1,4 @@
 <map id="findNearestNode" name="findNearestNode">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a1b3442d6d4f83fb44069874a829446f2" title="findNearestNode" alt="" coords="172,157,291,184"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a29442690eb42e7be3212ccb1237c8954" title="Returns a vector of the x&#45;coordinates. " alt="" coords="575,56,614,83"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a378f8493bb95ef332c393a76e44757e3" title="Returns a vector of the y&#45;coordinates. " alt="" coords="575,5,614,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a8551eb9d8460d88a2b01226a88230090" title="Returns a boolean value determining if the nodal search tree has been initialized. " alt="" coords="339,208,513,235"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ab1710b55657f368bbebe1c9ad7c36f08" title="Builds a kd&#45;tree object with the mesh nodes as the search locations. " alt="" coords="351,107,501,133"/>
-<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1Mesh.html#af0544b865ea80f919b7e7c9f35b69093" title="Returns a refrence to the nodal search kd&#45;tree. " alt="" coords="366,259,486,285"/>
-<area shape="rect" id="node9" href="$classQKdtree2.html#ad8c0cfa80a7e0d18d095bdd84c96b860" title="QKdtree2::findNearest" alt="" coords="351,157,501,184"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh. " alt="" coords="676,56,760,83"/>
-<area shape="rect" id="node10" href="$classPoint.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Point::x" alt="" coords="561,157,628,184"/>
-<area shape="rect" id="node11" href="$classPoint.html#aca424ddaf2902c1cde483f37813d4278" title="Point::y" alt="" coords="561,208,628,235"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#afdeef43f911a631b40c7bd6de3c8ce6f" title="Returns a vector of the x&#45;coordinates. " alt="" coords="172,5,211,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ac226a4441605d69e0cc5564e7f0805ad" title="Returns a vector of the y&#45;coordinates. " alt="" coords="172,56,211,83"/>
 </map>

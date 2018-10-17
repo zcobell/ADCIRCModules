@@ -1,0 +1,5 @@
+<map id="findXNearest" name="findXNearest">
+<area shape="rect" id="node2" href="$classQKdtree2.html#a5ad0833f7487eb43465a276aad13405d" title="Function that uses a kd&#45;tree to find the N&#45;nearest point to a given set of coordinates. " alt="" coords="151,31,248,57"/>
+<area shape="rect" id="node3" href="$classPoint.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Point::x" alt="" coords="296,5,363,32"/>
+<area shape="rect" id="node4" href="$classPoint.html#aca424ddaf2902c1cde483f37813d4278" title="Point::y" alt="" coords="296,56,363,83"/>
+</map>

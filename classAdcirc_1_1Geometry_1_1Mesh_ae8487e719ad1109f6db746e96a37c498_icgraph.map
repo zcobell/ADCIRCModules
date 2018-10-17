@@ -1,28 +1,8 @@
 <map id="numNodes" name="numNodes">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#adc173e9926bed8f4bbc13ee2cc5c5378" title="Sets the number of nodes in the mesh. Note this does not resize the mesh. " alt="" coords="137,61,241,88"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="364,10,453,37"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a684cf2720fb4efb8e72184f52ad151cb" title="Deletes an Node object at the specified index and shifts the remaining nodes forward in the vector..." alt="" coords="365,61,452,88"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a83611a572514d6b2f73e9ee6431744c8" title="Returns a pointer to the requested node in the internal node vector. " alt="" coords="164,294,215,321"/>
-<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1Mesh.html#abaa0c62f37f1b32f8524ddc12f2f1a64" title="Reprojects a mesh into the specified projection. " alt="" coords="373,513,445,540"/>
-<area shape="rect" id="node9" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ae0d59e06c57e74954f72f1ed659b84ee" title="Adds a node at the specified index in the node vector. " alt="" coords="372,112,445,138"/>
-<area shape="rect" id="node10" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a4559546c55f58af97d2d88cfb0bfebf4" title="Computes average size of the element edges connected to each node. " alt="" coords="343,162,474,189"/>
-<area shape="rect" id="node11" href="$classMeshChecker.html#a6e648568e6a73879a9da4bed2d8419d6" title="MeshChecker::checkNodeNumbering" alt="" coords="290,345,527,372"/>
-<area shape="rect" id="node12" href="$classMeshChecker.html#ab1b91509c7fc8ca25704765f687aeb00" title="MeshChecker::checkNodalElevations" alt="" coords="289,396,528,422"/>
-<area shape="rect" id="node13" href="$classMeshChecker.html#ae03f3887258a57e08f2f6f259c03ce03" title="MeshChecker::checkDisjoint\lNodes" alt="" coords="315,447,503,488"/>
-<area shape="rect" id="node14" href="$classAdcirc_1_1Geometry_1_1Mesh.html#abd3331e78f95f4c6e0535aa99a6523f5" title="Returns a pointer to the requested node by its ID. " alt="" coords="151,548,228,574"/>
-<area shape="rect" id="node15" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ab1710b55657f368bbebe1c9ad7c36f08" title="Builds a kd&#45;tree object with the mesh nodes as the search locations. " alt="" coords="334,564,483,590"/>
-<area shape="rect" id="node18" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a29442690eb42e7be3212ccb1237c8954" title="Returns a vector of the x&#45;coordinates. " alt="" coords="170,682,209,709"/>
-<area shape="rect" id="node25" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a378f8493bb95ef332c393a76e44757e3" title="Returns a vector of the y&#45;coordinates. " alt="" coords="170,758,209,785"/>
-<area shape="rect" id="node26" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a4754c4f68ff1313eb5e2fe6cbe721d73" title="Returns a vector of the z&#45;coordinates. " alt="" coords="170,868,209,894"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#ac0775565a8826077707a94a3611bbf3f" title="Adcirc::Geometry::Element\lTable::numElementsAroundNode" alt="" coords="303,214,515,255"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#a477aeec054b51540ab70382872bd56ee" title="Adcirc::Geometry::Element\lTable::elementTable" alt="" coords="319,279,499,320"/>
-<area shape="rect" id="node16" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a1b3442d6d4f83fb44069874a829446f2" title="findNearestNode" alt="" coords="585,564,703,590"/>
-<area shape="rect" id="node17" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a4504d27718bd1f3e2a3ce8457d9b01e9" title="Finds the nearest mesh node to the provided x,y. " alt="" coords="769,614,887,641"/>
-<area shape="rect" id="node19" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a76e76634991fe2ec7d6504760f7a6082" title="Builds a kd&#45;tree object with the element centers as the search locations. " alt="" coords="321,817,496,844"/>
-<area shape="rect" id="node21" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a81c61aafd5fb5a9fcda48fbd503764ca" title="Finds the nearest mesh element to the provided x,y. " alt="" coords="760,766,896,793"/>
-<area shape="rect" id="node23" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a6f06589c2439af5b4e5da2fa7e7ff261" title="Finds the mesh element that a given location lies within. " alt="" coords="783,918,873,945"/>
-<area shape="rect" id="node24" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a7d2d72aa17868479a2e5bbfc70c5b6b3" title="Returns a 2d&#45;vector of the xyz&#45;coordinates. " alt="" coords="387,868,430,894"/>
-<area shape="rect" id="node20" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a692aa821ebbe1d4d3ac0a3769eeae006" title="findNearestElement" alt="" coords="576,766,712,793"/>
-<area shape="rect" id="node22" href="$classAdcirc_1_1Geometry_1_1Mesh.html#afc8a7071a350f0e47178c77e10323dcc" title="Finds the mesh element that a given location lies within. " alt="" coords="599,918,689,945"/>
-<area shape="rect" id="node27" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a3c3bdd41a18605c2ee0fff48b2e595d4" title="Sets the z&#45;values of the mesh to the values found within a vector. " alt="" coords="385,1020,433,1046"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#adc173e9926bed8f4bbc13ee2cc5c5378" title="Sets the number of nodes in the mesh. Note this does not resize the mesh. " alt="" coords="205,5,309,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="212,56,301,83"/>
+<area shape="rect" id="node4" href="$classMeshChecker.html#a6e648568e6a73879a9da4bed2d8419d6" title="MeshChecker::checkNodeNumbering" alt="" coords="138,107,375,133"/>
+<area shape="rect" id="node5" href="$classMeshChecker.html#ab1b91509c7fc8ca25704765f687aeb00" title="MeshChecker::checkNodalElevations" alt="" coords="137,157,376,184"/>
+<area shape="rect" id="node6" href="$classMeshChecker.html#ae03f3887258a57e08f2f6f259c03ce03" title="MeshChecker::checkDisjoint\lNodes" alt="" coords="163,209,351,250"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a151aeb508d3998f15ec469a201d662f8" title="Adcirc::ModelParameters\l::NodalAttributes::NodalAttributes" alt="" coords="149,274,365,315"/>
 </map>

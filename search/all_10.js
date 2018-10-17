@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['phase',['phase',['../classAdcirc_1_1Output_1_1HarmonicsOutput.html#a3b20529a4a9f4720169b709505071dbc',1,'Adcirc::Output::HarmonicsOutput::phase(std::string name)'],['../classAdcirc_1_1Output_1_1HarmonicsOutput.html#a6199a428769e1316b8f4b9233a628fa0',1,'Adcirc::Output::HarmonicsOutput::phase(size_t index)']]],
+  ['phase',['phase',['../classAdcirc_1_1Output_1_1HarmonicsOutput.html#aba66ae7d1c357b29e871dae112a326b8',1,'Adcirc::Output::HarmonicsOutput::phase(const std::string &amp;name)'],['../classAdcirc_1_1Output_1_1HarmonicsOutput.html#a6199a428769e1316b8f4b9233a628fa0',1,'Adcirc::Output::HarmonicsOutput::phase(size_t index)']]],
   ['pi',['pi',['../classConstants.html#a19481c763d7a0b56b40eade0a21daab7',1,'Constants']]],
   ['pipecoefficient',['pipeCoefficient',['../classAdcirc_1_1Geometry_1_1Boundary.html#a5dfa1ccbf386471f392a5ad9dd46f547',1,'Adcirc::Geometry::Boundary']]],
   ['pipediameter',['pipeDiameter',['../classAdcirc_1_1Geometry_1_1Boundary.html#af1dc9caf2049168de2d6106807d3a905',1,'Adcirc::Geometry::Boundary']]],
@@ -12,7 +12,7 @@ var searchData=
   ['pixelvaluedouble',['pixelValueDouble',['../classRasterdata.html#a2378e6241d209cce3fa92fb84a401504',1,'Rasterdata::pixelValueDouble(Pixel &amp;p)'],['../classRasterdata.html#a9f5b06aca7d1d25268059526e1d35b21',1,'Rasterdata::pixelValueDouble(size_t i, size_t j)']]],
   ['pixelvalueint',['pixelValueInt',['../classRasterdata.html#ac02b87d88128e11a5af2cdb2840b3ef3',1,'Rasterdata::pixelValueInt(Pixel p)'],['../classRasterdata.html#a1d231138de7708f66d58d3604ef6eee6',1,'Rasterdata::pixelValueInt(size_t i, size_t j)']]],
   ['pixelvalues',['pixelValues',['../classRasterdata.html#a084ed567ec84153400d530141f96a6c0',1,'Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend, size_t jend, std::vector&lt; double &gt; &amp;x, std::vector&lt; double &gt; &amp;y, std::vector&lt; int &gt; &amp;z)'],['../classRasterdata.html#afec9d7d17697232258a7d34c54246a43',1,'Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend, size_t jend, std::vector&lt; double &gt; &amp;x, std::vector&lt; double &gt; &amp;y, std::vector&lt; double &gt; &amp;z)']]],
-  ['plustwosigma',['PlusTwoSigma',['../classGriddata.html#a2a3c0067e44c5ef3210a256d06c16b0fa9c9672eaf2e0c09ee0b25c7a30a5a246',1,'Griddata']]],
+  ['plustwosigma',['PlusTwoSigma',['../namespaceInterpolation.html#a2a3c0067e44c5ef3210a256d06c16b0fa9c9672eaf2e0c09ee0b25c7a30a5a246',1,'Interpolation']]],
   ['point',['Point',['../classPoint.html',1,'Point'],['../classPoint.html#ae08c5f0c5b4c75a3e0f33dada5f2fcba',1,'Point::Point()'],['../classPoint.html#a8eb76552ab4daf01a92da58843a0253b',1,'Point::Point(double x, double y)']]],
   ['point_2ecpp',['point.cpp',['../point_8cpp.html',1,'']]],
   ['point_2eh',['point.h',['../point_8h.html',1,'']]],
