@@ -18,31 +18,38 @@
 //------------------------------------------------------------------------*/
 #include "elementtable.h"
 #include "error.h"
+#include "meshimpl.h"
 
 using namespace Adcirc::Geometry;
 
 /**
  * @brief Default constructor
  */
-ElementTable::ElementTable() { this->m_mesh = nullptr; }
+ElementTable::ElementTable() {
+  this->m_mesh = nullptr;
+  this->m_initialized = false;
+}
 
 /**
  * @brief Constructor with mesh as a parameter
  * @param mesh sets the mesh used to generate the ElementTable
  */
-ElementTable::ElementTable(Mesh *mesh) { this->m_mesh = mesh; }
+ElementTable::ElementTable(Adcirc::Geometry::MeshImpl *mesh) {
+  this->m_mesh = mesh;
+  this->m_initialized = false;
+}
 
 /**
  * @brief Returns the pointer to the mesh used to build the table
  * @return pointer to mesh used in this table
  */
-Adcirc::Geometry::Mesh *ElementTable::mesh() const { return this->m_mesh; }
+Adcirc::Geometry::MeshImpl *ElementTable::mesh() const { return this->m_mesh; }
 
 /**
  * @brief Sets the mesh used in the element table
  * @param mesh to use to build the table
  */
-void ElementTable::setMesh(Adcirc::Geometry::Mesh *mesh) {
+void ElementTable::setMesh(Adcirc::Geometry::MeshImpl *mesh) {
   this->m_mesh = mesh;
 }
 
@@ -53,12 +60,14 @@ void ElementTable::build() {
   if (this->m_mesh == nullptr) {
     return;
   }
+  this->m_elementTable.reserve(this->m_mesh->numNodes());
   for (size_t i = 0; i < this->m_mesh->numElements(); ++i) {
     for (int j = 0; j < this->m_mesh->element(i)->n(); ++j) {
       Node *n = this->m_mesh->element(i)->node(j);
       this->m_elementTable[n].push_back(this->m_mesh->element(i));
     }
   }
+  this->m_initialized = true;
   return;
 }
 
@@ -71,7 +80,8 @@ std::vector<Element *> ElementTable::elementList(Node *n) {
   if (this->m_elementTable.find(n) != this->m_elementTable.end())
     return this->m_elementTable[n];
   else
-    adcircmodules_throw_exception("Node pointer not part of mesh");
+    adcircmodules_throw_exception("Node " + std::to_string(n->id()) +
+                                  " not part of mesh");
   return std::vector<Element *>();
 }
 
@@ -138,3 +148,5 @@ Adcirc::Geometry::Element *ElementTable::elementTable(size_t nodeIndex,
   }
   return nullptr;
 }
+
+bool ElementTable::initialized() { return this->m_initialized; }

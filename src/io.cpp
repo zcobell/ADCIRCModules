@@ -138,8 +138,8 @@ bool IO::splitStringAttribute1Format(std::string &data, size_t &node,
                           ascii::space);
 }
 
-bool IO::splitStringAttribute2Format(std::string &data, size_t &node, double &value1,
-                                     double &value2) {
+bool IO::splitStringAttribute2Format(std::string &data, size_t &node,
+                                     double &value1, double &value2) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node) = qi::_1] >>
                            qi::double_[phoenix::ref(value1) = qi::_1] >>
@@ -190,7 +190,7 @@ bool IO::splitString2dmNodeFormat(std::string &data, size_t &id, double &x,
 bool IO::splitString2dmElementFormat(std::string &data, size_t &id,
                                      std::vector<size_t> &nodes) {
   return qi::phrase_parse(
-      data.begin() + 3, data.end(),
+      data.begin() + 4, data.end(),
       (qi::int_[phoenix::ref(id) = qi::_1] >>
        *(qi::int_[phoenix::push_back(phoenix::ref(nodes), qi::_1)])),
       ascii::space);

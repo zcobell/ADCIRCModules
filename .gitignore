@@ -41,3 +41,10 @@ CMakeLists.txt.user*
 pyadcirc/pyadcirc.py
 pyadcirc/pyadcirc_wrap.cxx
 libadcircmodules*
+
+# Doxygen
+doc-html
+doc-latex
+
+# Build Directories
+build

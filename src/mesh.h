@@ -19,22 +19,19 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include <fstream>
-#include <memory>
 #include <string>
-#include <unordered_map>
-#include <utility>
 #include <vector>
-#include "adcircmodules_global.h"
 #include "boundary.h"
 #include "element.h"
+#include "meshformats.h"
 #include "node.h"
-#include "point.h"
 
 class QKdtree2;
 
 namespace Adcirc {
 namespace Geometry {
+
+class MeshImpl;
 
 /**
  * @class Mesh
@@ -69,25 +66,17 @@ namespace Geometry {
  * version to ensure that memory usage and cpu time is not adversely
  * affected.
  *
+ * This class uses the PIMPL idiom and the implementation of the
+ * class is contained in the MeshImpl class.
+ *
  */
-
 class Mesh {
+
  public:
-  explicit Mesh();
+  Mesh();
   explicit Mesh(const std::string &filename);
 
   ~Mesh();
-
-  enum MeshFormat {
-    /// Unknown mesh format
-    MESH_UNKNOWN,
-    /// ADCIRC mesh format (*.14, *.grd)
-    MESH_ADCIRC,
-    /// Aquaveo generic mesh format (*.2dm)
-    MESH_2DM,
-    /// Deltares D-Flow FM format (*_net.nc)
-    MESH_DFLOW
-  };
 
   std::vector<double> x();
   std::vector<double> y();
@@ -96,9 +85,10 @@ class Mesh {
   std::vector<std::vector<size_t>> connectivity();
   std::vector<std::vector<double>> orthogonality();
 
-  void read(MeshFormat format = MESH_UNKNOWN);
+  void read(Adcirc::Geometry::MeshFormat format = MESH_UNKNOWN);
 
-  void write(const std::string &outputFile, MeshFormat = MESH_UNKNOWN);
+  void write(const std::string &outputFile,
+             Adcirc::Geometry::MeshFormat format = MESH_UNKNOWN);
 
   std::string filename() const;
   void setFilename(const std::string &filename);
@@ -180,56 +170,22 @@ class Mesh {
 
   std::vector<double> computeMeshSize();
 
+  void buildElementTable();
+
+  size_t numElementsAroundNode(Adcirc::Geometry::Node *n);
+  size_t numElementsAroundNode(size_t nodeIndex);
+  Adcirc::Geometry::Element *elementTable(Adcirc::Geometry::Node *n,
+                                          size_t listIndex);
+  Adcirc::Geometry::Element *elementTable(size_t nodeIndex, size_t listIndex);
+  std::vector<Adcirc::Geometry::Element *> elementsAroundNode(
+      Adcirc::Geometry::Node *n);
+
  private:
-  static Mesh::MeshFormat getMeshFormat(const std::string &filename);
-  void readAdcircMesh();
-  void readAdcircMeshHeader(std::fstream &fid);
-  void readAdcircNodes(std::fstream &fid);
-  void readAdcircElements(std::fstream &fid);
-  void readAdcircOpenBoundaries(std::fstream &fid);
-  void readAdcircLandBoundaries(std::fstream &fid);
-
-  void read2dmMesh();
-  void read2dmData(std::vector<std::string> &nodes,
-                   std::vector<std::string> &elements);
-  void read2dmNodes(std::vector<std::string> &nodes);
-  void read2dmElements(std::vector<std::string> &elements);
-
-  void readDflowMesh();
-
-  void _init();
-
-  void writeAdcircMesh(const std::string &filename);
-  void write2dmMesh(const std::string &filename);
-  void writeDflowMesh(const std::string &filename);
-
-  std::vector<std::pair<Node *, Node *>> generateLinkTable();
-  size_t getMaxNodesPerElement();
-
-  std::string m_filename;
-  std::string m_meshHeaderString;
-  std::vector<Adcirc::Geometry::Node> m_nodes;
-  std::vector<Adcirc::Geometry::Element> m_elements;
-  std::vector<Adcirc::Geometry::Boundary> m_openBoundaries;
-  std::vector<Adcirc::Geometry::Boundary> m_landBoundaries;
-  std::unordered_map<size_t, size_t> m_nodeLookup;
-  std::unordered_map<size_t, size_t> m_elementLookup;
-  size_t m_numNodes;
-  size_t m_numElements;
-  size_t m_numOpenBoundaries;
-  size_t m_numLandBoundaries;
-  size_t m_totalOpenBoundaryNodes;
-  size_t m_totalLandBoundaryNodes;
-  int m_epsg;
-  bool m_isLatLon;
-
-  bool m_nodeOrderingLogical;
-  bool m_elementOrderingLogical;
-
-  std::unique_ptr<QKdtree2> m_nodalSearchTree;
-  std::unique_ptr<QKdtree2> m_elementalSearchTree;
+  MeshImpl *m_impl;
 };
+
 }  // namespace Geometry
+
 }  // namespace Adcirc
 
 #endif  // MESH_H

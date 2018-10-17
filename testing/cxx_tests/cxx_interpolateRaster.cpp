@@ -10,7 +10,7 @@ int main(){
 
     Multithreading::disable();
 
-    Griddata *g = new Griddata(m,"test_files/bathy_sampleraster.tif");
+    Interpolation::Griddata *g = new Interpolation::Griddata(m,"test_files/bathy_sampleraster.tif");
     g->setShowProgressBar(true);
     g->setEpsg(26915);
 

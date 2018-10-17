@@ -19,28 +19,18 @@
 #ifndef GRIDDATA_H
 #define GRIDDATA_H
 
-#include <cmath>
+#include <mesh.h>
 #include <memory>
 #include <string>
-#include <unordered_map>
-#include <utility>
-#include "constants.h"
-#include "mesh.h"
-#include "point.h"
-#include "rasterdata.h"
+#include <vector>
+#include "interpolationmethods.h"
+
+namespace Interpolation {
+
+class GriddataImpl;
 
 class Griddata {
  public:
-  enum Method {
-    NoMethod = 0,
-    Average = 1,
-    Nearest = 2,
-    Highest = 3,
-    PlusTwoSigma = 4,
-    BilskieEtAll = 5,
-    InverseDistanceWeighted = 6
-  };
-
   Griddata();
   Griddata(Adcirc::Geometry::Mesh *mesh, std::string rasterFile);
   ~Griddata();
@@ -76,86 +66,14 @@ class Griddata {
   double rasterMultiplier() const;
   void setRasterMultiplier(double rasterMultiplier);
 
-  std::unordered_map<size_t, double> lookup() const;
-
   bool rasterInMemory() const;
   void setRasterInMemory(bool rasterInMemory);
-
-  static constexpr double windRadius() { return 10000.0; }
-  static constexpr double windSigma() { return 6.0; }
 
   double datumShift() const;
   void setDatumShift(double datumShift);
 
  private:
-  bool getKeyValue(size_t key, double &value);
-
-  double calculatePoint(Point &p, double searchRadius, double gsMultiplier,
-                        Griddata::Method method);
-  double calculateAverage(Point &p, double w);
-  double calculateNearest(Point &p, double w);
-  double calculateHighest(Point &p, double w);
-  double calculateOutsideStandardDeviation(Point &p, double w, int n);
-  double calculateBilskieAveraging(Point &p, double w, double gsMultiplier);
-  double calculateInverseDistanceWeighted(Point &p, double w);
-
-  double calculatePointFromLookup(Point &p, double w, double gsMultiplier,
-                                  Griddata::Method method);
-  double calculateAverageFromLookup(Point &p, double w);
-  double calculateNearestFromLookup(Point &p, double w);
-  double calculateHighestFromLookup(Point &p, double w);
-  double calculateOutsideStandardDeviationFromLookup(Point &p, double w, int n);
-  double calculateBilskieAveragingFromLookup(Point &p, double w,
-                                             double gsMultiplier);
-  double calculateInverseDistanceWeightedFromLookup(Point &p, double w);
-
-  double (Griddata::*m_calculatePointPtr)(Point &p, double w,
-                                          double gsMultiplier,
-                                          Griddata::Method method);
-
-  std::vector<double> (Griddata::*m_calculateDwindPtr)(Point &p);
-
-  double mean(std::vector<double> &v);
-  double standardDeviation(std::vector<double> &v);
-  bool calculateBilskieRadius(double meshSize, double rasterCellSize,
-                              double &radius);
-
-  bool pixelDataInRadius(Point &p, double radius, std::vector<double> &x,
-                         std::vector<double> &y, std::vector<double> &z,
-                         std::vector<bool> &valid);
-  bool pixelDataInRadius(Point &p, double radius, std::vector<double> &x,
-                         std::vector<double> &y, std::vector<int> &z,
-                         std::vector<bool> &valid);
-
-  std::vector<double> calculateDirectionalWindFromRaster(Point &p);
-  std::vector<double> calculateDirectionalWindFromLookup(Point &p);
-
-  bool computeWindDirectionAndWeight(Point &p, double x, double y, double &w,
-                                     int &dir);
-
-  void computeWeightedDirectionalWindValues(std::vector<double> &weight,
-                                            std::vector<double> &wind,
-                                            double nearWeight);
-
-  short windDirection(short i, short j);
-
-  void checkMatchingCoorindateSystems();
-  void checkRasterOpen();
-  void assignDirectionalWindReductionFunctionPointer(bool useLookupTable);
-  void assignInterpolationFunctionPointer(bool useLookupTable);
-
-  std::vector<double> m_filterSize;
-  double m_defaultValue;
-  Adcirc::Geometry::Mesh *m_mesh;
-  std::unique_ptr<Rasterdata> m_raster;
-  std::string m_rasterFile;
-  std::vector<int> m_interpolationFlags;
-  std::unordered_map<size_t, double> m_lookup;
-  int m_epsg;
-  double m_rasterMultiplier;
-  double m_datumShift;
-  bool m_showProgressBar;
-  bool m_rasterInMemory;
+  GriddataImpl *m_impl;
 };
-
+}  // namespace Interpolation
 #endif  // GRIDDATA_H

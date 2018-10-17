@@ -17,7 +17,6 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "meshchecker.h"
-#include <elementtable.h>
 #include <algorithm>
 #include <cassert>
 #include <iostream>
@@ -175,9 +174,7 @@ void MeshChecker::printFailedLeveeStatus(
 
 bool MeshChecker::checkOverlappingElements(Mesh *mesh) {
   std::vector<Element *> overlappingList;
-
-  ElementTable elementsAroundNode = ElementTable(mesh);
-  elementsAroundNode.build();
+  mesh->buildElementTable();
 
   for (size_t i = 0; i < mesh->numElements(); ++i) {
     for (int j = 0; j < mesh->element(i)->n(); ++j) {
@@ -187,12 +184,10 @@ bool MeshChecker::checkOverlappingElements(Mesh *mesh) {
       Node *n1 = p.first;
       Node *n2 = p.second;
 
-      for (size_t i1 = 0; i1 < elementsAroundNode.elementList(n1).size();
-           ++i1) {
-        Element *m1 = elementsAroundNode.elementList(n1).at(i1);
-        for (size_t i2 = 0; i2 < elementsAroundNode.elementList(n2).size();
-             ++i2) {
-          Element *m2 = elementsAroundNode.elementList(n2).at(i2);
+      for (size_t i1 = 0; i1 < mesh->elementsAroundNode(n1).size(); ++i1) {
+        Element *m1 = mesh->elementsAroundNode(n1).at(i1);
+        for (size_t i2 = 0; i2 < mesh->elementsAroundNode(n2).size(); ++i2) {
+          Element *m2 = mesh->elementsAroundNode(n2).at(i2);
           if (m1->id() == m2->id()) {
             count++;
             break;

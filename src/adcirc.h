@@ -19,20 +19,20 @@
 #ifndef ADCIRC_H
 #define ADCIRC_H
 
-#include "kdtree2lib.h"
-#include "point.h"
-#include "projection.h"
-
 #include "config.h"
 #include "constants.h"
-#include "elementtable.h"
 #include "error.h"
+#include "griddata.h"
 #include "harmonicsoutput.h"
+#include "interpolationmethods.h"
+#include "kdtree2lib.h"
 #include "mesh.h"
 #include "meshchecker.h"
+#include "meshformats.h"
+#include "multithreading.h"
 #include "nodalattributes.h"
 #include "outputfile.h"
-#include "griddata.h"
-#include "multithreading.h"
+#include "point.h"
+#include "projection.h"
 
 #endif  // ADCIRC_H

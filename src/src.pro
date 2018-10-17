@@ -28,6 +28,9 @@ CONFIG += c++11
 
 DEFINES += ADCIRCMODULES_LIBRARY
 
+#...Abseil path
+ABSEILPATH = $$PWD/../thirdparty/abseil
+
 #...Boost Library
 BOOSTPATH     = $$PWD/../thirdparty/boost_1_66_0
 
@@ -85,7 +88,6 @@ SOURCES += \
     stringconversion.cpp \
     io.cpp \
     boundary.cpp \
-    mesh.cpp \
     element.cpp \
     node.cpp \
     attribute.cpp \
@@ -100,8 +102,11 @@ SOURCES += \
     filetypes.cpp \
     meshchecker.cpp \
     elementtable.cpp \
+    multithreading.cpp \
+    griddataimpl.cpp \
     griddata.cpp \
-    multithreading.cpp
+    meshimpl.cpp \
+    mesh.cpp
 
 HEADERS += \
     adcircmodules_global.h \
@@ -111,7 +116,6 @@ HEADERS += \
     boundary.h \
     element.h \
     adcirc.h \
-    mesh.h \
     node.h \
     attribute.h \
     attributemetadata.h \
@@ -126,10 +130,15 @@ HEADERS += \
     filetypes.h \
     meshchecker.h \
     elementtable.h \
+    multithreading.h \
+    griddataimpl.h \
     griddata.h \
-    multithreading.h
+    interpolationmethods.h \
+    meshformats.h \
+    meshimpl.h \
+    mesh.h
 
-INCLUDEPATH += $$BOOSTPATH
+INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib
 
 win32{
