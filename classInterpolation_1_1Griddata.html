@@ -93,6 +93,9 @@ $(document).ready(function(){initNavTree('classInterpolation_1_1Griddata.html','
 </div><!--header-->
 <div class="contents">
 
+<p>Class that handles interpolation on unstructured meshes.  
+ <a href="classInterpolation_1_1Griddata.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="griddata_8h_source.html">griddata.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -104,57 +107,88 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5444eb584eb8d73970123b69f8954bc3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a5444eb584eb8d73970123b69f8954bc3">~Griddata</a> ()</td></tr>
 <tr class="separator:a5444eb584eb8d73970123b69f8954bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb8d2e3026ba65b02af212c74ca39ed7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#acb8d2e3026ba65b02af212c74ca39ed7">rasterFile</a> () const</td></tr>
+<tr class="memdesc:acb8d2e3026ba65b02af212c74ca39ed7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the filename of the raster currently being used for interpolation.  <a href="#acb8d2e3026ba65b02af212c74ca39ed7">More...</a><br /></td></tr>
 <tr class="separator:acb8d2e3026ba65b02af212c74ca39ed7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac30f11e17d7aa109823b7b718c630c58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#ac30f11e17d7aa109823b7b718c630c58">setRasterFile</a> (const std::string &amp;<a class="el" href="classInterpolation_1_1Griddata.html#acb8d2e3026ba65b02af212c74ca39ed7">rasterFile</a>)</td></tr>
 <tr class="separator:ac30f11e17d7aa109823b7b718c630c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5cf3db546cb9a735bd63b082deaf962"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#ab5cf3db546cb9a735bd63b082deaf962">readLookupTable</a> (const std::string &amp;lookupTableFile)</td></tr>
+<tr class="memdesc:ab5cf3db546cb9a735bd63b082deaf962"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a lookup table to be used with the interpolation.  <a href="#ab5cf3db546cb9a735bd63b082deaf962">More...</a><br /></td></tr>
 <tr class="separator:ab5cf3db546cb9a735bd63b082deaf962"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad902b277acf919e0551372c5a63fa265"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#ad902b277acf919e0551372c5a63fa265">interpolationFlags</a> () const</td></tr>
+<tr class="memdesc:ad902b277acf919e0551372c5a63fa265"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current interpolation flags for all nodes being used by the code. By default all interpolation flags are set to <a class="el" href="namespaceInterpolation.html#a2a3c0067e44c5ef3210a256d06c16b0fab3c87ec2c47256239220b24e46acda7f" title="Mesh sized based averaging defined by the mesh size and any multipliers. ">Interpolation::Average</a>.  <a href="#ad902b277acf919e0551372c5a63fa265">More...</a><br /></td></tr>
 <tr class="separator:ad902b277acf919e0551372c5a63fa265"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64237f1c5cba2f984a167a8e36896197"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a64237f1c5cba2f984a167a8e36896197">setInterpolationFlags</a> (const std::vector&lt; int &gt; &amp;<a class="el" href="classInterpolation_1_1Griddata.html#ad902b277acf919e0551372c5a63fa265">interpolationFlags</a>)</td></tr>
+<tr class="memdesc:a64237f1c5cba2f984a167a8e36896197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the interpolation flags to a vector. The vector must be equal length to the number of nodes in the mesh.  <a href="#a64237f1c5cba2f984a167a8e36896197">More...</a><br /></td></tr>
 <tr class="separator:a64237f1c5cba2f984a167a8e36896197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47deb90b609751c911992bd4f8893399"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a47deb90b609751c911992bd4f8893399">interpolationFlag</a> (size_t index)</td></tr>
+<tr class="memdesc:a47deb90b609751c911992bd4f8893399"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the interpolation flag for a specified node.  <a href="#a47deb90b609751c911992bd4f8893399">More...</a><br /></td></tr>
 <tr class="separator:a47deb90b609751c911992bd4f8893399"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa24ede62a9cc933a2176a3743611f6f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#aa24ede62a9cc933a2176a3743611f6f2">setInterpolationFlag</a> (size_t index, int flag)</td></tr>
+<tr class="memdesc:aa24ede62a9cc933a2176a3743611f6f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the interpolation flag at a specified node.  <a href="#aa24ede62a9cc933a2176a3743611f6f2">More...</a><br /></td></tr>
 <tr class="separator:aa24ede62a9cc933a2176a3743611f6f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b2aa4a06be32df13dd51bb299c97698"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a4b2aa4a06be32df13dd51bb299c97698">filterSizes</a> () const</td></tr>
+<tr class="memdesc:a4b2aa4a06be32df13dd51bb299c97698"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the sizes of the relative window (mean element size around node.  <a href="#a4b2aa4a06be32df13dd51bb299c97698">More...</a><br /></td></tr>
 <tr class="separator:a4b2aa4a06be32df13dd51bb299c97698"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3557b4e742a74c2ff9a5fb15f3a2b67f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a3557b4e742a74c2ff9a5fb15f3a2b67f">setFilterSizes</a> (const std::vector&lt; double &gt; &amp;<a class="el" href="classInterpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f">filterSize</a>)</td></tr>
+<tr class="memdesc:a3557b4e742a74c2ff9a5fb15f3a2b67f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the relative filter sizes (mean element size around node * [x]) used to identify pixels of interest when interpolating data to the mesh.  <a href="#a3557b4e742a74c2ff9a5fb15f3a2b67f">More...</a><br /></td></tr>
 <tr class="separator:a3557b4e742a74c2ff9a5fb15f3a2b67f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a354a3b83056231148e3a2a5e2fe0c04f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f">filterSize</a> (size_t index)</td></tr>
+<tr class="memdesc:a354a3b83056231148e3a2a5e2fe0c04f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the filter size (mean element size around node * [x]) at a specified index.  <a href="#a354a3b83056231148e3a2a5e2fe0c04f">More...</a><br /></td></tr>
 <tr class="separator:a354a3b83056231148e3a2a5e2fe0c04f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a823bc5d8642f927068127a62f211f5b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a823bc5d8642f927068127a62f211f5b8">setFilterSize</a> (size_t index, double <a class="el" href="classInterpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f">filterSize</a>)</td></tr>
+<tr class="memdesc:a823bc5d8642f927068127a62f211f5b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the relative filter size (mean element size around node * [x]) at a specified node.  <a href="#a823bc5d8642f927068127a62f211f5b8">More...</a><br /></td></tr>
 <tr class="separator:a823bc5d8642f927068127a62f211f5b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3c6e7460235c8bda8126219d3bcfef4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#af3c6e7460235c8bda8126219d3bcfef4">defaultValue</a> () const</td></tr>
+<tr class="memdesc:af3c6e7460235c8bda8126219d3bcfef4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default value that will be applied to the output arrays when no interpolation method is selected or the specified interpolation method fails.  <a href="#af3c6e7460235c8bda8126219d3bcfef4">More...</a><br /></td></tr>
 <tr class="separator:af3c6e7460235c8bda8126219d3bcfef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4505afa16445ac8fbab372a523b794f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a4505afa16445ac8fbab372a523b794f7">setDefaultValue</a> (double <a class="el" href="classInterpolation_1_1Griddata.html#af3c6e7460235c8bda8126219d3bcfef4">defaultValue</a>)</td></tr>
+<tr class="memdesc:a4505afa16445ac8fbab372a523b794f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the default value that will be applied to the output arrays when no interpolation method is selected or the specified interpolation method fails.  <a href="#a4505afa16445ac8fbab372a523b794f7">More...</a><br /></td></tr>
 <tr class="separator:a4505afa16445ac8fbab372a523b794f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3df24eb71ae599907c0b36b6ba88ffe"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#aa3df24eb71ae599907c0b36b6ba88ffe">computeValuesFromRaster</a> (bool useLookupTable=false)</td></tr>
+<tr class="memdesc:aa3df24eb71ae599907c0b36b6ba88ffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the interpolation process provided a mesh and raster have been supplied. Returns the interpolated values in an array matching the node indidices. This process is recommended but not required to be carried out in planar (i.e. UTM) coordinates.  <a href="#aa3df24eb71ae599907c0b36b6ba88ffe">More...</a><br /></td></tr>
 <tr class="separator:aa3df24eb71ae599907c0b36b6ba88ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00f335f6098ab32130e41f51eea50813"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a00f335f6098ab32130e41f51eea50813">computeDirectionalWindReduction</a> (bool useLookupTable=false)</td></tr>
+<tr class="memdesc:a00f335f6098ab32130e41f51eea50813"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the upwind directional wind roughness in 12 directions and returns a 2d array of values indexed [1:numNodes][1:12]. This process is required to be carried out in planar coordinates (i.e. UTM)  <a href="#a00f335f6098ab32130e41f51eea50813">More...</a><br /></td></tr>
 <tr class="separator:a00f335f6098ab32130e41f51eea50813"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fe36ee88237850f56d26023ac57e261"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a2fe36ee88237850f56d26023ac57e261">epsg</a> () const</td></tr>
+<tr class="memdesc:a2fe36ee88237850f56d26023ac57e261"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the epsg code used for the current raster. Note that this MUST match the mesh's epsg code.  <a href="#a2fe36ee88237850f56d26023ac57e261">More...</a><br /></td></tr>
 <tr class="separator:a2fe36ee88237850f56d26023ac57e261"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25fd6d02dfa33660a5d4580cac12514f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a25fd6d02dfa33660a5d4580cac12514f">setEpsg</a> (int <a class="el" href="classInterpolation_1_1Griddata.html#a2fe36ee88237850f56d26023ac57e261">epsg</a>)</td></tr>
+<tr class="memdesc:a25fd6d02dfa33660a5d4580cac12514f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the EPSG code used for the mesh.  <a href="#a25fd6d02dfa33660a5d4580cac12514f">More...</a><br /></td></tr>
 <tr class="separator:a25fd6d02dfa33660a5d4580cac12514f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1dc87d55edf7471387cbfcb692f1f68"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#ab1dc87d55edf7471387cbfcb692f1f68">showProgressBar</a> () const</td></tr>
+<tr class="memdesc:ab1dc87d55edf7471387cbfcb692f1f68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Status of the progress bar boolean.  <a href="#ab1dc87d55edf7471387cbfcb692f1f68">More...</a><br /></td></tr>
 <tr class="separator:ab1dc87d55edf7471387cbfcb692f1f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a051c39ccaf91fa24cb963ec73addb5d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a051c39ccaf91fa24cb963ec73addb5d5">setShowProgressBar</a> (bool <a class="el" href="classInterpolation_1_1Griddata.html#ab1dc87d55edf7471387cbfcb692f1f68">showProgressBar</a>)</td></tr>
+<tr class="memdesc:a051c39ccaf91fa24cb963ec73addb5d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows the user to enable or disable the progress bar.  <a href="#a051c39ccaf91fa24cb963ec73addb5d5">More...</a><br /></td></tr>
 <tr class="separator:a051c39ccaf91fa24cb963ec73addb5d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f8855ed3066516ffff4b19c2ac945ab"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a5f8855ed3066516ffff4b19c2ac945ab">rasterMultiplier</a> () const</td></tr>
+<tr class="memdesc:a5f8855ed3066516ffff4b19c2ac945ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the raster multiplier applied after interpolation is complete.  <a href="#a5f8855ed3066516ffff4b19c2ac945ab">More...</a><br /></td></tr>
 <tr class="separator:a5f8855ed3066516ffff4b19c2ac945ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5daf30619549ba12723af89b2d900e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#af5daf30619549ba12723af89b2d900e5">setRasterMultiplier</a> (double <a class="el" href="classInterpolation_1_1Griddata.html#a5f8855ed3066516ffff4b19c2ac945ab">rasterMultiplier</a>)</td></tr>
+<tr class="memdesc:af5daf30619549ba12723af89b2d900e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the raster multiplier that is applied when interpolation is complete. Useful to define a unit conversion.  <a href="#af5daf30619549ba12723af89b2d900e5">More...</a><br /></td></tr>
 <tr class="separator:af5daf30619549ba12723af89b2d900e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10a64ad4b6b950d27b05e654495b72e8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a10a64ad4b6b950d27b05e654495b72e8">rasterInMemory</a> () const</td></tr>
+<tr class="memdesc:a10a64ad4b6b950d27b05e654495b72e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the code will read the raster into memory instead of reading as required from the disk.  <a href="#a10a64ad4b6b950d27b05e654495b72e8">More...</a><br /></td></tr>
 <tr class="separator:a10a64ad4b6b950d27b05e654495b72e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1355b376de31a187a949f41a2754dc2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#ad1355b376de31a187a949f41a2754dc2">setRasterInMemory</a> (bool <a class="el" href="classInterpolation_1_1Griddata.html#a10a64ad4b6b950d27b05e654495b72e8">rasterInMemory</a>)</td></tr>
+<tr class="memdesc:ad1355b376de31a187a949f41a2754dc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets to true, the code will read the raster into memory instead of reading as required from disk.  <a href="#ad1355b376de31a187a949f41a2754dc2">More...</a><br /></td></tr>
 <tr class="separator:ad1355b376de31a187a949f41a2754dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40504fb5f09ccc665f9cf82b327f0349"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a40504fb5f09ccc665f9cf82b327f0349">datumShift</a> () const</td></tr>
+<tr class="memdesc:a40504fb5f09ccc665f9cf82b327f0349"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the datum shift that is added to the interpolated value.  <a href="#a40504fb5f09ccc665f9cf82b327f0349">More...</a><br /></td></tr>
 <tr class="separator:a40504fb5f09ccc665f9cf82b327f0349"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21def567ea95299c16f475906aa46d30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a21def567ea95299c16f475906aa46d30">setDatumShift</a> (double <a class="el" href="classInterpolation_1_1Griddata.html#a40504fb5f09ccc665f9cf82b327f0349">datumShift</a>)</td></tr>
+<tr class="memdesc:a21def567ea95299c16f475906aa46d30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a datum shift that is added to the interpolated value.  <a href="#a21def567ea95299c16f475906aa46d30">More...</a><br /></td></tr>
 <tr class="separator:a21def567ea95299c16f475906aa46d30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Class that handles interpolation on unstructured meshes. </p>
+<dl class="section author"><dt>Author</dt><dd>Zachary Cobell </dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright 2018 Zachary Cobell. All Rights Reserved. This project is released under the terms of the GNU General Public License v3</dd></dl>
+<p>The <a class="el" href="classInterpolation_1_1Griddata.html" title="Class that handles interpolation on unstructured meshes. ">Griddata</a> class is used to interpolate data to unstructured meshes containing either quadrilaterals or triangles. There are a number of schemes that can be used to interpolate the data to the mesh, including: (1) Grid cell averaging (2) Nearest point (3) Maximum point (4) Average of data outside two standard deviations (5) Average within optimal radius (6) Inverse distance weighting (7) Upwind directional roughness (12 directions)</p>
+<p>The interpolated values come from any raster format that can be accessed using the GDAL library. The raster data can either be values (floating point numbers) or classifications that require a lookup table. The lookup table is stored as a hashtable internally. For optimium performance, Google's Swiss Tables are used where available (Cygwin is not available and will use the stl unordered_map structure instead).</p>
+<p>This class uses the PIMPL idiom and the implementation of the class is contained in the MeshImpl class. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af94a9cc41bb85a7ea3c896dd796090a4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af94a9cc41bb85a7ea3c896dd796090a4">&#9670;&nbsp;</a></span>Griddata() <span class="overload">[1/2]</span></h2>
 
@@ -234,6 +268,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Computes the upwind directional wind roughness in 12 directions and returns a 2d array of values indexed [1:numNodes][1:12]. This process is required to be carried out in planar coordinates (i.e. UTM) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">useLookupTable</td><td>determines if the code uses a lookup table or the values from the raster directly. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>2d vector of interpolated values</dd></dl>
+<p>Note that the code may perform better with the raster in memory and using parallel code under certain situations. This will depend on raster size and disk I/O speed </p>
+
 </div>
 </div>
 <a id="aa3df24eb71ae599907c0b36b6ba88ffe"></a>
@@ -252,6 +296,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Runs the interpolation process provided a mesh and raster have been supplied. Returns the interpolated values in an array matching the node indidices. This process is recommended but not required to be carried out in planar (i.e. UTM) coordinates. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">useLookupTable</td><td>determines if the code uses a lookup table or the values from the raster directly. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Vector of interpolated values</dd></dl>
+<p>Note that it is possible for the code to perform better or worse depending upon the system being used with the raster in memory and with parallel code enabled. </p>
+
 </div>
 </div>
 <a id="a40504fb5f09ccc665f9cf82b327f0349"></a>
@@ -268,12 +322,15 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Returns the datum shift that is added to the interpolated value. </p>
+<dl class="section return"><dt>Returns</dt><dd>datum shift value </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_a40504fb5f09ccc665f9cf82b327f0349_icgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a40504fb5f09ccc665f9cf82b327f0349_icgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_a40504fb5f09ccc665f9cf82b327f0349_icgraph" id="classInterpolation_1_1Griddata_a40504fb5f09ccc665f9cf82b327f0349_icgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a21def567ea95299c16f475906aa46d30" title="setDatumShift" alt="" coords="139,5,244,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a21def567ea95299c16f475906aa46d30" title="Sets a datum shift that is added to the interpolated value. " alt="" coords="139,5,244,32"/>
 </map>
 </div>
 
@@ -293,12 +350,15 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Returns the default value that will be applied to the output arrays when no interpolation method is selected or the specified interpolation method fails. </p>
+<dl class="section return"><dt>Returns</dt><dd>default value </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_af3c6e7460235c8bda8126219d3bcfef4_icgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_af3c6e7460235c8bda8126219d3bcfef4_icgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_af3c6e7460235c8bda8126219d3bcfef4_icgraph" id="classInterpolation_1_1Griddata_af3c6e7460235c8bda8126219d3bcfef4_icgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a4505afa16445ac8fbab372a523b794f7" title="setDefaultValue" alt="" coords="147,5,260,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a4505afa16445ac8fbab372a523b794f7" title="Sets the default value that will be applied to the output arrays when no interpolation method is sele..." alt="" coords="147,5,260,32"/>
 </map>
 </div>
 
@@ -318,12 +378,15 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Returns the epsg code used for the current raster. Note that this MUST match the mesh's epsg code. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_a2fe36ee88237850f56d26023ac57e261_icgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a2fe36ee88237850f56d26023ac57e261_icgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_a2fe36ee88237850f56d26023ac57e261_icgraph" id="classInterpolation_1_1Griddata_a2fe36ee88237850f56d26023ac57e261_icgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a25fd6d02dfa33660a5d4580cac12514f" title="setEpsg" alt="" coords="104,5,175,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a25fd6d02dfa33660a5d4580cac12514f" title="Sets the EPSG code used for the mesh. " alt="" coords="104,5,175,32"/>
 </map>
 </div>
 
@@ -344,13 +407,22 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Returns the filter size (mean element size around node * [x]) at a specified index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>node position </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>mesh size multiplier </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_a354a3b83056231148e3a2a5e2fe0c04f_icgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a354a3b83056231148e3a2a5e2fe0c04f_icgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_a354a3b83056231148e3a2a5e2fe0c04f_icgraph" id="classInterpolation_1_1Griddata_a354a3b83056231148e3a2a5e2fe0c04f_icgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a3557b4e742a74c2ff9a5fb15f3a2b67f" title="setFilterSizes" alt="" coords="127,5,229,32"/>
-<area shape="rect" id="node3" href="classInterpolation_1_1Griddata.html#a823bc5d8642f927068127a62f211f5b8" title="setFilterSize" alt="" coords="131,56,225,83"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a3557b4e742a74c2ff9a5fb15f3a2b67f" title="Sets the relative filter sizes (mean element size around node * [x]) used to identify pixels of inter..." alt="" coords="127,5,229,32"/>
+<area shape="rect" id="node3" href="classInterpolation_1_1Griddata.html#a823bc5d8642f927068127a62f211f5b8" title="Sets the relative filter size (mean element size around node * [x]) at a specified node..." alt="" coords="131,56,225,83"/>
 </map>
 </div>
 
@@ -371,6 +443,12 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Returns the sizes of the relative window (mean element size around node. </p>
+<ul>
+<li>[x]) used to identify pixels of interest when interpolating data to the mesh <dl class="section return"><dt>Returns</dt><dd>mesh size multiplier </dd></dl>
+</li>
+</ul>
+
 </div>
 </div>
 <a id="a47deb90b609751c911992bd4f8893399"></a>
@@ -389,6 +467,15 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Retrieves the interpolation flag for a specified node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>position to retrieve flag for </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>interpolation flag </dd></dl>
+
 </div>
 </div>
 <a id="ad902b277acf919e0551372c5a63fa265"></a>
@@ -405,12 +492,15 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Returns the current interpolation flags for all nodes being used by the code. By default all interpolation flags are set to <a class="el" href="namespaceInterpolation.html#a2a3c0067e44c5ef3210a256d06c16b0fab3c87ec2c47256239220b24e46acda7f" title="Mesh sized based averaging defined by the mesh size and any multipliers. ">Interpolation::Average</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>Vector of interpolation flags </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_ad902b277acf919e0551372c5a63fa265_icgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_ad902b277acf919e0551372c5a63fa265_icgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_ad902b277acf919e0551372c5a63fa265_icgraph" id="classInterpolation_1_1Griddata_ad902b277acf919e0551372c5a63fa265_icgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a64237f1c5cba2f984a167a8e36896197" title="setInterpolationFlags" alt="" coords="177,5,320,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a64237f1c5cba2f984a167a8e36896197" title="Sets the interpolation flags to a vector. The vector must be equal length to the number of nodes in t..." alt="" coords="177,5,320,32"/>
 </map>
 </div>
 
@@ -430,6 +520,9 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Retrieves the filename of the raster currently being used for interpolation. </p>
+<dl class="section return"><dt>Returns</dt><dd>raster file name </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -455,12 +548,16 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Returns true if the code will read the raster into memory instead of reading as required from the disk. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if raster will be placed in memory</dd></dl>
+<p>Note that large rasters can exhaust the system memory and this should be used only if the raster can safely be placed in RAM </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_a10a64ad4b6b950d27b05e654495b72e8_icgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a10a64ad4b6b950d27b05e654495b72e8_icgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_a10a64ad4b6b950d27b05e654495b72e8_icgraph" id="classInterpolation_1_1Griddata_a10a64ad4b6b950d27b05e654495b72e8_icgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#ad1355b376de31a187a949f41a2754dc2" title="setRasterInMemory" alt="" coords="167,5,303,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#ad1355b376de31a187a949f41a2754dc2" title="Sets to true, the code will read the raster into memory instead of reading as required from disk..." alt="" coords="167,5,303,32"/>
 </map>
 </div>
 
@@ -480,12 +577,15 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Returns the raster multiplier applied after interpolation is complete. </p>
+<dl class="section return"><dt>Returns</dt><dd>raster multiplier </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_a5f8855ed3066516ffff4b19c2ac945ab_icgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a5f8855ed3066516ffff4b19c2ac945ab_icgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_a5f8855ed3066516ffff4b19c2ac945ab_icgraph" id="classInterpolation_1_1Griddata_a5f8855ed3066516ffff4b19c2ac945ab_icgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#af5daf30619549ba12723af89b2d900e5" title="setRasterMultiplier" alt="" coords="160,5,291,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#af5daf30619549ba12723af89b2d900e5" title="Sets the raster multiplier that is applied when interpolation is complete. Useful to define a unit co..." alt="" coords="160,5,291,32"/>
 </map>
 </div>
 
@@ -507,6 +607,17 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Reads a lookup table to be used with the interpolation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lookupTableFile</td><td>name of lookup table</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>The format for the lookup table should be:</p>
+<p>[key_1] [value_1] [description](optional) [key_2] [value_2] [description](optional)[key_n] [value_3] [description](optional)</p>
+<p>The key and value fields are required. The description is not used by the code but does make the tables more understandable when being read by a human. The key value must be an integer and the value must be a floating point number. </p>
+
 </div>
 </div>
 <a id="a21def567ea95299c16f475906aa46d30"></a>
@@ -524,12 +635,20 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets a datum shift that is added to the interpolated value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">datumShift</td><td>datum shift value </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_a21def567ea95299c16f475906aa46d30_cgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a21def567ea95299c16f475906aa46d30_cgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_a21def567ea95299c16f475906aa46d30_cgraph" id="classInterpolation_1_1Griddata_a21def567ea95299c16f475906aa46d30_cgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a40504fb5f09ccc665f9cf82b327f0349" title="datumShift" alt="" coords="159,5,244,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a40504fb5f09ccc665f9cf82b327f0349" title="Returns the datum shift that is added to the interpolated value. " alt="" coords="159,5,244,32"/>
 </map>
 </div>
 
@@ -550,12 +669,20 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the default value that will be applied to the output arrays when no interpolation method is selected or the specified interpolation method fails. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">defaultValue</td><td>default value to use. Default is -9999.0 </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_a4505afa16445ac8fbab372a523b794f7_cgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a4505afa16445ac8fbab372a523b794f7_cgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_a4505afa16445ac8fbab372a523b794f7_cgraph" id="classInterpolation_1_1Griddata_a4505afa16445ac8fbab372a523b794f7_cgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#af3c6e7460235c8bda8126219d3bcfef4" title="defaultValue" alt="" coords="167,5,260,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#af3c6e7460235c8bda8126219d3bcfef4" title="Returns the default value that will be applied to the output arrays when no interpolation method is s..." alt="" coords="167,5,260,32"/>
 </map>
 </div>
 
@@ -576,12 +703,20 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the EPSG code used for the mesh. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">epsg</td><td>coordinate system code </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_a25fd6d02dfa33660a5d4580cac12514f_cgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a25fd6d02dfa33660a5d4580cac12514f_cgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_a25fd6d02dfa33660a5d4580cac12514f_cgraph" id="classInterpolation_1_1Griddata_a25fd6d02dfa33660a5d4580cac12514f_cgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a2fe36ee88237850f56d26023ac57e261" title="epsg" alt="" coords="124,5,175,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a2fe36ee88237850f56d26023ac57e261" title="Returns the epsg code used for the current raster. Note that this MUST match the mesh&#39;s epsg code..." alt="" coords="124,5,175,32"/>
 </map>
 </div>
 
@@ -612,12 +747,21 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the relative filter size (mean element size around node * [x]) at a specified node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>node position </td></tr>
+    <tr><td class="paramname">filterSize</td><td>mesh size multiplier </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_a823bc5d8642f927068127a62f211f5b8_cgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a823bc5d8642f927068127a62f211f5b8_cgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_a823bc5d8642f927068127a62f211f5b8_cgraph" id="classInterpolation_1_1Griddata_a823bc5d8642f927068127a62f211f5b8_cgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f" title="filterSize" alt="" coords="148,5,221,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f" title="Returns the filter size (mean element size around node * [x]) at a specified index. " alt="" coords="148,5,221,32"/>
 </map>
 </div>
 
@@ -638,12 +782,20 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the relative filter sizes (mean element size around node * [x]) used to identify pixels of interest when interpolating data to the mesh. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filterSize</td><td>mesh size multiplier </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_a3557b4e742a74c2ff9a5fb15f3a2b67f_cgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a3557b4e742a74c2ff9a5fb15f3a2b67f_cgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_a3557b4e742a74c2ff9a5fb15f3a2b67f_cgraph" id="classInterpolation_1_1Griddata_a3557b4e742a74c2ff9a5fb15f3a2b67f_cgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f" title="filterSize" alt="" coords="156,5,229,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f" title="Returns the filter size (mean element size around node * [x]) at a specified index. " alt="" coords="156,5,229,32"/>
 </map>
 </div>
 
@@ -675,6 +827,15 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Sets the interpolation flag at a specified node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>node position to set the flag </td></tr>
+    <tr><td class="paramname">flag</td><td>interpolation method to use </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a64237f1c5cba2f984a167a8e36896197"></a>
@@ -692,12 +853,20 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the interpolation flags to a vector. The vector must be equal length to the number of nodes in the mesh. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">interpolationFlags</td><td>Vector of flags equal to the number of nodes in the mesh </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_a64237f1c5cba2f984a167a8e36896197_cgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a64237f1c5cba2f984a167a8e36896197_cgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_a64237f1c5cba2f984a167a8e36896197_cgraph" id="classInterpolation_1_1Griddata_a64237f1c5cba2f984a167a8e36896197_cgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#ad902b277acf919e0551372c5a63fa265" title="interpolationFlags" alt="" coords="196,5,320,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#ad902b277acf919e0551372c5a63fa265" title="Returns the current interpolation flags for all nodes being used by the code. By default all interpol..." alt="" coords="196,5,320,32"/>
 </map>
 </div>
 
@@ -723,7 +892,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_ac30f11e17d7aa109823b7b718c630c58_cgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_ac30f11e17d7aa109823b7b718c630c58_cgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_ac30f11e17d7aa109823b7b718c630c58_cgraph" id="classInterpolation_1_1Griddata_ac30f11e17d7aa109823b7b718c630c58_cgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#acb8d2e3026ba65b02af212c74ca39ed7" title="rasterFile" alt="" coords="152,5,228,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#acb8d2e3026ba65b02af212c74ca39ed7" title="Retrieves the filename of the raster currently being used for interpolation. " alt="" coords="152,5,228,32"/>
 </map>
 </div>
 
@@ -744,12 +913,21 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets to true, the code will read the raster into memory instead of reading as required from disk. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rasterInMemory</td><td>true if raster should be read into RAM</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Note that large rasters can exhaust the system memory and this should be used only if the raster can safely be placed in RAM </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_ad1355b376de31a187a949f41a2754dc2_cgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_ad1355b376de31a187a949f41a2754dc2_cgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_ad1355b376de31a187a949f41a2754dc2_cgraph" id="classInterpolation_1_1Griddata_ad1355b376de31a187a949f41a2754dc2_cgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a10a64ad4b6b950d27b05e654495b72e8" title="rasterInMemory" alt="" coords="189,5,303,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a10a64ad4b6b950d27b05e654495b72e8" title="Returns true if the code will read the raster into memory instead of reading as required from the dis..." alt="" coords="189,5,303,32"/>
 </map>
 </div>
 
@@ -770,12 +948,20 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the raster multiplier that is applied when interpolation is complete. Useful to define a unit conversion. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rasterMultiplier</td><td>multiplier </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_af5daf30619549ba12723af89b2d900e5_cgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_af5daf30619549ba12723af89b2d900e5_cgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_af5daf30619549ba12723af89b2d900e5_cgraph" id="classInterpolation_1_1Griddata_af5daf30619549ba12723af89b2d900e5_cgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a5f8855ed3066516ffff4b19c2ac945ab" title="rasterMultiplier" alt="" coords="184,5,291,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a5f8855ed3066516ffff4b19c2ac945ab" title="Returns the raster multiplier applied after interpolation is complete. " alt="" coords="184,5,291,32"/>
 </map>
 </div>
 
@@ -796,12 +982,20 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Allows the user to enable or disable the progress bar. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">showProgressBar</td><td>set to true if progress bar should be shown, false if not </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_a051c39ccaf91fa24cb963ec73addb5d5_cgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a051c39ccaf91fa24cb963ec73addb5d5_cgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_a051c39ccaf91fa24cb963ec73addb5d5_cgraph" id="classInterpolation_1_1Griddata_a051c39ccaf91fa24cb963ec73addb5d5_cgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#ab1dc87d55edf7471387cbfcb692f1f68" title="showProgressBar" alt="" coords="197,5,321,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#ab1dc87d55edf7471387cbfcb692f1f68" title="Status of the progress bar boolean. " alt="" coords="197,5,321,32"/>
 </map>
 </div>
 
@@ -821,12 +1015,15 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Status of the progress bar boolean. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if the progress bar will be shown, false if it will not </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_ab1dc87d55edf7471387cbfcb692f1f68_icgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_ab1dc87d55edf7471387cbfcb692f1f68_icgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_ab1dc87d55edf7471387cbfcb692f1f68_icgraph" id="classInterpolation_1_1Griddata_ab1dc87d55edf7471387cbfcb692f1f68_icgraph">
-<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a051c39ccaf91fa24cb963ec73addb5d5" title="setShowProgressBar" alt="" coords="177,5,321,32"/>
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a051c39ccaf91fa24cb963ec73addb5d5" title="Allows the user to enable or disable the progress bar. " alt="" coords="177,5,321,32"/>
 </map>
 </div>
 
