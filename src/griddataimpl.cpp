@@ -384,7 +384,7 @@ double GriddataImpl::calculateInverseDistanceWeighted(Point &p, double w) {
         double dis = Constants::distance(p.x(), p.y(), x[i], y[i]);
         n += z[i] / dis;
         d += 1.0 / dis;
-        n++;
+        num++;
       }
     }
     return num > 0 ? n / d : this->defaultValue();
@@ -409,7 +409,7 @@ double GriddataImpl::calculateInverseDistanceWeightedFromLookup(Point &p,
           double dis = Constants::distance(p.x(), p.y(), x[i], y[i]);
           n += zl / dis;
           d += 1.0 / dis;
-          n++;
+          num++;
         }
       }
     }
