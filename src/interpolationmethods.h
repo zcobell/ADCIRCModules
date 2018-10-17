@@ -42,7 +42,10 @@ enum Method {
   /// Uses an inverse distance weighting approach but does not require a
   /// specified radius size. Instead, the nearest 'filterSize' (i.e. number) of
   /// points will be selected.
-  InverseDistanceWeightedNoRadius = 7
+  InverseDistanceWeightedNPoints = 7,
+  /// Creates a selection box that will select and average the nearest
+  /// 'filterSize' (i.e. number of) points
+  AverageNearestNPoints = 8
 };
 }
 

@@ -288,8 +288,11 @@ double GriddataImpl::calculatePoint(Point &p, double searchRadius,
       return this->calculateInverseDistanceWeighted(
           p, searchRadius * gsMultiplier);
       break;
-    case InverseDistanceWeightedNoRadius:
-      return this->calculateInverseDistanceWeightedNoRadius(p, gsMultiplier);
+    case InverseDistanceWeightedNPoints:
+      return this->calculateInverseDistanceWeightedNPoints(p, gsMultiplier);
+      break;
+    case AverageNearestNPoints:
+      return this->calculateAverageNearestN(p, gsMultiplier);
       break;
     default:
       return this->defaultValue();
@@ -321,9 +324,12 @@ double GriddataImpl::calculatePointFromLookup(Point &p, double searchRadius,
     case InverseDistanceWeighted:
       return this->calculateInverseDistanceWeightedFromLookup(
           p, searchRadius * gsMultiplier);
-    case InverseDistanceWeightedNoRadius:
-      return this->calculateInverseDistanceWeightedNoRadiusFromLookup(
+    case InverseDistanceWeightedNPoints:
+      return this->calculateInverseDistanceWeightedNPointsFromLookup(
           p, gsMultiplier);
+      break;
+    case AverageNearestNPoints:
+      return this->calculateAverageNearestNFromLookup(p, gsMultiplier);
       break;
     default:
       return this->defaultValue();
@@ -411,7 +417,7 @@ double GriddataImpl::calculateInverseDistanceWeighted(Point &p, double w) {
   return this->defaultValue();
 }
 
-double GriddataImpl::calculateInverseDistanceWeightedNoRadius(Point &p,
+double GriddataImpl::calculateInverseDistanceWeightedNPoints(Point &p,
                                                               double n) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
@@ -433,6 +439,85 @@ double GriddataImpl::calculateInverseDistanceWeightedNoRadius(Point &p,
       if (np >= maxPoints) break;
     }
     return np > 0 ? val / d : this->defaultValue();
+  }
+  return this->defaultValue();
+}
+
+bool sortTuplePointsByIncreasingDistance(std::tuple<double, double> &a,
+                                         std::tuple<double, double> &b) {
+  double z1, dis1;
+  double z2, dis2;
+  std::tie(dis1, z1) = a;
+  std::tie(dis2, z2) = b;
+  return dis1 < dis2;
+}
+
+double GriddataImpl::calculateAverageNearestN(Point &p, double n) {
+  std::vector<double> x, y, z;
+  std::vector<bool> v;
+  size_t maxPoints = static_cast<size_t>(n);
+  double w = this->calculateExpansionLevelForPoints(maxPoints);
+  std::vector<std::tuple<double, double>> pts;
+
+  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+    pts.reserve(z.size());
+    for (size_t i = 0; i < z.size(); ++i) {
+      if (v[i]) {
+        pts.push_back(std::tuple<double, double>(
+            Constants::distance(p.x(), p.y(), x[i], y[i]), z[i]));
+      }
+    }
+
+    if (pts.size() == 0) return this->defaultValue();
+
+    size_t np = std::min(pts.size(), maxPoints);
+    std::partial_sort(pts.begin(), pts.begin() + np, pts.end(),
+                      sortTuplePointsByIncreasingDistance);
+
+    double val = 0.0;
+    for (size_t i = 0; i < np; i++) {
+      double dis, zval;
+      std::tie(dis, zval) = pts[i];
+      val += zval;
+    }
+    return val / static_cast<double>(np);
+  }
+  return this->defaultValue();
+}
+
+double GriddataImpl::calculateAverageNearestNFromLookup(Point &p, double n) {
+  std::vector<double> x, y;
+  std::vector<int> z;
+  std::vector<bool> v;
+  size_t maxPoints = static_cast<size_t>(n);
+  double w = this->calculateExpansionLevelForPoints(maxPoints);
+  std::vector<std::tuple<double, double>> pts;
+
+  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+    pts.reserve(z.size());
+    for (size_t i = 0; i < z.size(); ++i) {
+      if (v[i]) {
+        double zl;
+        if (this->getKeyValue(z[i], zl)) {
+          pts.push_back(std::tuple<double, double>(
+              Constants::distance(p.x(), p.y(), x[i], y[i]), zl));
+        }
+      }
+    }
+
+    if (pts.size() == 0) return this->defaultValue();
+
+    size_t np = std::min(pts.size(), maxPoints);
+    std::partial_sort(pts.begin(), pts.begin() + np, pts.end(),
+                      sortTuplePointsByIncreasingDistance);
+
+    double val = 0.0;
+    for (size_t i = 0; i < np; i++) {
+      double dis, zval;
+      std::tie(dis, zval) = pts[i];
+      val += zval;
+    }
+    return val / static_cast<double>(np);
   }
   return this->defaultValue();
 }
@@ -472,7 +557,7 @@ double GriddataImpl::calculateExpansionLevelForPoints(size_t n) {
   return this->m_raster.get()->dx() * static_cast<double>(levels);
 }
 
-double GriddataImpl::calculateInverseDistanceWeightedNoRadiusFromLookup(
+double GriddataImpl::calculateInverseDistanceWeightedNPointsFromLookup(
     Point &p, double n) {
   std::vector<double> x, y;
   std::vector<int> z;

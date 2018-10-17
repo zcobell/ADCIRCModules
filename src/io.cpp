@@ -189,9 +189,24 @@ bool IO::splitString2dmNodeFormat(std::string &data, size_t &id, double &x,
 
 bool IO::splitString2dmElementFormat(std::string &data, size_t &id,
                                      std::vector<size_t> &nodes) {
-  return qi::phrase_parse(
-      data.begin() + 4, data.end(),
-      (qi::int_[phoenix::ref(id) = qi::_1] >>
-       *(qi::int_[phoenix::push_back(phoenix::ref(nodes), qi::_1)])),
-      ascii::space);
+  std::string key = data.substr(0, 3);
+  if (key == "E3T") {
+    nodes.resize(3);
+    return qi::phrase_parse(data.begin() + 3, data.end(),
+                            (qi::int_[phoenix::ref(id) = qi::_1] >>
+                             qi::int_[phoenix::ref(nodes[0]) = qi::_1] >>
+                             qi::int_[phoenix::ref(nodes[1]) = qi::_1] >>
+                             qi::int_[phoenix::ref(nodes[2]) = qi::_1]),
+                            qi::space);
+  } else if (key == "E4Q") {
+    nodes.resize(4);
+    return qi::phrase_parse(data.begin() + 3, data.end(),
+                            (qi::int_[phoenix::ref(id) = qi::_1] >>
+                             qi::int_[phoenix::ref(nodes[0]) = qi::_1] >>
+                             qi::int_[phoenix::ref(nodes[1]) = qi::_1] >>
+                             qi::int_[phoenix::ref(nodes[2]) = qi::_1] >>
+                             qi::int_[phoenix::ref(nodes[3]) = qi::_1]),
+                            qi::space);
+  }
+  return false;
 }

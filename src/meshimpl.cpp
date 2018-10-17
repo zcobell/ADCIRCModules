@@ -435,33 +435,37 @@ void MeshImpl::read2dmElements(std::vector<std::string> &elements) {
   for (auto &e : elements) {
     size_t id;
     std::vector<size_t> n;
-    n.reserve(5);
-    IO::splitString2dmElementFormat(e, id, n);
-    if (n.size() == 4) {
-      if (this->m_nodeOrderingLogical) {
-        this->m_elements.push_back(Element(id, &this->m_nodes[n[0] - 1],
-                                           &this->m_nodes[n[1] - 1],
-                                           &this->m_nodes[n[2] - 1]));
+    if (IO::splitString2dmElementFormat(e, id, n)) {
+      if (n.size() == 3) {
+        if (this->m_nodeOrderingLogical) {
+          this->m_elements.push_back(Element(id, &this->m_nodes[n[0] - 1],
+                                             &this->m_nodes[n[1] - 1],
+                                             &this->m_nodes[n[2] - 1]));
+        } else {
+          this->m_elements.push_back(
+              Element(id, &this->m_nodes[this->m_nodeLookup[n[0]]],
+                      &this->m_nodes[this->m_nodeLookup[n[1]]],
+                      &this->m_nodes[this->m_nodeLookup[n[2]]]));
+        }
+      } else if (n.size() == 4) {
+        if (this->m_nodeOrderingLogical) {
+          this->m_elements.push_back(
+              Element(id, &this->m_nodes[n[0] - 1], &this->m_nodes[n[1] - 1],
+                      &this->m_nodes[n[2] - 1], &this->m_nodes[n[3] - 1]));
+        } else {
+          this->m_elements.push_back(
+              Element(id, &this->m_nodes[this->m_nodeLookup[n[0]]],
+                      &this->m_nodes[this->m_nodeLookup[n[1]]],
+                      &this->m_nodes[this->m_nodeLookup[n[2]]],
+                      &this->m_nodes[this->m_nodeLookup[n[3]]]));
+        }
       } else {
-        this->m_elements.push_back(
-            Element(id, &this->m_nodes[this->m_nodeLookup[n[0]]],
-                    &this->m_nodes[this->m_nodeLookup[n[1]]],
-                    &this->m_nodes[this->m_nodeLookup[n[2]]]));
-      }
-    } else if (n.size() == 5) {
-      if (this->m_nodeOrderingLogical) {
-        this->m_elements.push_back(
-            Element(id, &this->m_nodes[n[0] - 1], &this->m_nodes[n[1] - 1],
-                    &this->m_nodes[n[2] - 1], &this->m_nodes[n[3] - 1]));
-      } else {
-        this->m_elements.push_back(
-            Element(id, &this->m_nodes[this->m_nodeLookup[n[0]]],
-                    &this->m_nodes[this->m_nodeLookup[n[1]]],
-                    &this->m_nodes[this->m_nodeLookup[n[2]]],
-                    &this->m_nodes[this->m_nodeLookup[n[3]]]));
+        adcircmodules_throw_exception("Too many nodes (" +
+                                      std::to_string(n.size()) +
+                                      ") detected in element.");
       }
     } else {
-      adcircmodules_throw_exception("Too many nodes detected in element.");
+      adcircmodules_throw_exception("Error reading 2dm element");
     }
   }
   return;

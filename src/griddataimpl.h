@@ -96,7 +96,8 @@ class GriddataImpl {
   double calculateOutsideStandardDeviation(Point &p, double w, int n);
   double calculateBilskieAveraging(Point &p, double w, double gsMultiplier);
   double calculateInverseDistanceWeighted(Point &p, double w);
-  double calculateInverseDistanceWeightedNoRadius(Point &p, double n);
+  double calculateInverseDistanceWeightedNPoints(Point &p, double n);
+  double calculateAverageNearestN(Point &p, double n);
 
   double calculatePointFromLookup(Point &p, double w, double gsMultiplier,
                                   Interpolation::Method method);
@@ -107,7 +108,8 @@ class GriddataImpl {
   double calculateBilskieAveragingFromLookup(Point &p, double w,
                                              double gsMultiplier);
   double calculateInverseDistanceWeightedFromLookup(Point &p, double w);
-  double calculateInverseDistanceWeightedNoRadiusFromLookup(Point &p, double n);
+  double calculateInverseDistanceWeightedNPointsFromLookup(Point &p, double n);
+  double calculateAverageNearestNFromLookup(Point &p, double n);
 
   double (GriddataImpl::*m_calculatePointPtr)(Point &p, double w,
                                               double gsMultiplier,
