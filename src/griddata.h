@@ -29,6 +29,31 @@ namespace Interpolation {
 
 class GriddataImpl;
 
+/**
+ * @class Griddata
+ * @author Zachary Cobell
+ * @brief Class that handles interpolation on unstructured meshes
+ * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * is released under the terms of the GNU General Public License v3
+ *
+ * The Griddata class is used to interpolate data to unstructured meshes
+ * containing either quadrilaterals or triangles. There are a number of schemes
+ * that can be used to interpolate the data to the mesh, including: (1) Grid
+ * cell averaging (2) Nearest point (3) Maximum point (4) Average of data
+ * outside two standard deviations (5) Average within optimal radius (6) Inverse
+ * distance weighting (7) Upwind directional roughness (12 directions)
+ *
+ * The interpolated values come from any raster format that can be accessed
+ * using the GDAL library. The raster data can either be values (floating point
+ * numbers) or classifications that require a lookup table. The lookup table
+ * is stored as a hashtable internally. For optimium performance, Google's
+ * Swiss Tables are used where available (Cygwin is not available and will
+ * use the stl unordered_map structure instead).
+ *
+ * This class uses the PIMPL idiom and the implementation of the
+ * class is contained in the MeshImpl class.
+ *
+ */
 class Griddata {
  public:
   Griddata();
