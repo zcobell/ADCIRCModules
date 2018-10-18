@@ -120,6 +120,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a64237f1c5cba2f984a167a8e36896197"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a64237f1c5cba2f984a167a8e36896197">setInterpolationFlags</a> (const std::vector&lt; int &gt; &amp;<a class="el" href="classInterpolation_1_1Griddata.html#ad902b277acf919e0551372c5a63fa265">interpolationFlags</a>)</td></tr>
 <tr class="memdesc:a64237f1c5cba2f984a167a8e36896197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the interpolation flags to a vector. The vector must be equal length to the number of nodes in the mesh.  <a href="#a64237f1c5cba2f984a167a8e36896197">More...</a><br /></td></tr>
 <tr class="separator:a64237f1c5cba2f984a167a8e36896197"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdbc56979865f9340bca4a03a9387b4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#acdbc56979865f9340bca4a03a9387b4e">setInterpolationFlags</a> (int <a class="el" href="classInterpolation_1_1Griddata.html#a47deb90b609751c911992bd4f8893399">interpolationFlag</a>)</td></tr>
+<tr class="memdesc:acdbc56979865f9340bca4a03a9387b4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the interpolation flags to a uniform value.  <a href="#acdbc56979865f9340bca4a03a9387b4e">More...</a><br /></td></tr>
+<tr class="separator:acdbc56979865f9340bca4a03a9387b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47deb90b609751c911992bd4f8893399"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a47deb90b609751c911992bd4f8893399">interpolationFlag</a> (size_t index)</td></tr>
 <tr class="memdesc:a47deb90b609751c911992bd4f8893399"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the interpolation flag for a specified node.  <a href="#a47deb90b609751c911992bd4f8893399">More...</a><br /></td></tr>
 <tr class="separator:a47deb90b609751c911992bd4f8893399"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,6 +135,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3557b4e742a74c2ff9a5fb15f3a2b67f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a3557b4e742a74c2ff9a5fb15f3a2b67f">setFilterSizes</a> (const std::vector&lt; double &gt; &amp;<a class="el" href="classInterpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f">filterSize</a>)</td></tr>
 <tr class="memdesc:a3557b4e742a74c2ff9a5fb15f3a2b67f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the relative filter sizes (mean element size around node * [x]) used to identify pixels of interest when interpolating data to the mesh.  <a href="#a3557b4e742a74c2ff9a5fb15f3a2b67f">More...</a><br /></td></tr>
 <tr class="separator:a3557b4e742a74c2ff9a5fb15f3a2b67f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a577adf7551b34a91cb85af62ad2defb3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a577adf7551b34a91cb85af62ad2defb3">setFilterSizes</a> (double <a class="el" href="classInterpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f">filterSize</a>)</td></tr>
+<tr class="memdesc:a577adf7551b34a91cb85af62ad2defb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the relative filter sizes used to identify pixels of interest when interpolating data to a mesh. All nodes set to a uniform value.  <a href="#a577adf7551b34a91cb85af62ad2defb3">More...</a><br /></td></tr>
+<tr class="separator:a577adf7551b34a91cb85af62ad2defb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a354a3b83056231148e3a2a5e2fe0c04f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInterpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f">filterSize</a> (size_t index)</td></tr>
 <tr class="memdesc:a354a3b83056231148e3a2a5e2fe0c04f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the filter size (mean element size around node * [x]) at a specified index.  <a href="#a354a3b83056231148e3a2a5e2fe0c04f">More...</a><br /></td></tr>
 <tr class="separator:a354a3b83056231148e3a2a5e2fe0c04f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -475,6 +481,14 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>interpolation flag </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classInterpolation_1_1Griddata_a47deb90b609751c911992bd4f8893399_icgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a47deb90b609751c911992bd4f8893399_icgraph" alt=""/></div>
+<map name="classInterpolation_1_1Griddata_a47deb90b609751c911992bd4f8893399_icgraph" id="classInterpolation_1_1Griddata_a47deb90b609751c911992bd4f8893399_icgraph">
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#acdbc56979865f9340bca4a03a9387b4e" title="Sets the interpolation flags to a uniform value. " alt="" coords="171,5,313,32"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -768,7 +782,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="a3557b4e742a74c2ff9a5fb15f3a2b67f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3557b4e742a74c2ff9a5fb15f3a2b67f">&#9670;&nbsp;</a></span>setFilterSizes()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3557b4e742a74c2ff9a5fb15f3a2b67f">&#9670;&nbsp;</a></span>setFilterSizes() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -795,6 +809,40 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classInterpolation_1_1Griddata_a3557b4e742a74c2ff9a5fb15f3a2b67f_cgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a3557b4e742a74c2ff9a5fb15f3a2b67f_cgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_a3557b4e742a74c2ff9a5fb15f3a2b67f_cgraph" id="classInterpolation_1_1Griddata_a3557b4e742a74c2ff9a5fb15f3a2b67f_cgraph">
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f" title="Returns the filter size (mean element size around node * [x]) at a specified index. " alt="" coords="156,5,229,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a577adf7551b34a91cb85af62ad2defb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a577adf7551b34a91cb85af62ad2defb3">&#9670;&nbsp;</a></span>setFilterSizes() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setFilterSizes </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>filterSize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the relative filter sizes used to identify pixels of interest when interpolating data to a mesh. All nodes set to a uniform value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filterSize</td><td>mesh size multiplier </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classInterpolation_1_1Griddata_a577adf7551b34a91cb85af62ad2defb3_cgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a577adf7551b34a91cb85af62ad2defb3_cgraph" alt=""/></div>
+<map name="classInterpolation_1_1Griddata_a577adf7551b34a91cb85af62ad2defb3_cgraph" id="classInterpolation_1_1Griddata_a577adf7551b34a91cb85af62ad2defb3_cgraph">
 <area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f" title="Returns the filter size (mean element size around node * [x]) at a specified index. " alt="" coords="156,5,229,32"/>
 </map>
 </div>
@@ -839,7 +887,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="a64237f1c5cba2f984a167a8e36896197"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64237f1c5cba2f984a167a8e36896197">&#9670;&nbsp;</a></span>setInterpolationFlags()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a64237f1c5cba2f984a167a8e36896197">&#9670;&nbsp;</a></span>setInterpolationFlags() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -867,6 +915,40 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classInterpolation_1_1Griddata_a64237f1c5cba2f984a167a8e36896197_cgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_a64237f1c5cba2f984a167a8e36896197_cgraph" alt=""/></div>
 <map name="classInterpolation_1_1Griddata_a64237f1c5cba2f984a167a8e36896197_cgraph" id="classInterpolation_1_1Griddata_a64237f1c5cba2f984a167a8e36896197_cgraph">
 <area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#ad902b277acf919e0551372c5a63fa265" title="Returns the current interpolation flags for all nodes being used by the code. By default all interpol..." alt="" coords="196,5,320,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="acdbc56979865f9340bca4a03a9387b4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdbc56979865f9340bca4a03a9387b4e">&#9670;&nbsp;</a></span>setInterpolationFlags() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setInterpolationFlags </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>interpolationFlag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the interpolation flags to a uniform value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">interpolationFlag</td><td>flag that will be set for all nodes </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classInterpolation_1_1Griddata_acdbc56979865f9340bca4a03a9387b4e_cgraph.png" border="0" usemap="#classInterpolation_1_1Griddata_acdbc56979865f9340bca4a03a9387b4e_cgraph" alt=""/></div>
+<map name="classInterpolation_1_1Griddata_acdbc56979865f9340bca4a03a9387b4e_cgraph" id="classInterpolation_1_1Griddata_acdbc56979865f9340bca4a03a9387b4e_cgraph">
+<area shape="rect" id="node2" href="classInterpolation_1_1Griddata.html#a47deb90b609751c911992bd4f8893399" title="Retrieves the interpolation flag for a specified node. " alt="" coords="196,5,313,32"/>
 </map>
 </div>
 

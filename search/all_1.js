@@ -20,6 +20,7 @@ var searchData=
   ['attributemetadata_2eh',['attributemetadata.h',['../attributemetadata_8h.html',1,'']]],
   ['attributenames',['attributeNames',['../classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#acf8131178b0dccbc704a0111391bb69a',1,'Adcirc::ModelParameters::NodalAttributes']]],
   ['average',['Average',['../namespaceInterpolation.html#a2a3c0067e44c5ef3210a256d06c16b0fab3c87ec2c47256239220b24e46acda7f',1,'Interpolation']]],
+  ['averagenearestnpoints',['AverageNearestNPoints',['../namespaceInterpolation.html#a2a3c0067e44c5ef3210a256d06c16b0fae0f58b7bc29505d18d3115d64ac1f941',1,'Interpolation']]],
   ['geometry',['Geometry',['../namespaceAdcirc_1_1Geometry.html',1,'Adcirc']]],
   ['modelparameters',['ModelParameters',['../namespaceAdcirc_1_1ModelParameters.html',1,'Adcirc']]],
   ['output',['Output',['../namespaceAdcirc_1_1Output.html',1,'Adcirc']]]

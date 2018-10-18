@@ -362,8 +362,10 @@
                 <section title="setEpsg" ref="classInterpolation_1_1Griddata.html#a25fd6d02dfa33660a5d4580cac12514f" />
                 <section title="setFilterSize" ref="classInterpolation_1_1Griddata.html#a823bc5d8642f927068127a62f211f5b8" />
                 <section title="setFilterSizes" ref="classInterpolation_1_1Griddata.html#a3557b4e742a74c2ff9a5fb15f3a2b67f" />
+                <section title="setFilterSizes" ref="classInterpolation_1_1Griddata.html#a577adf7551b34a91cb85af62ad2defb3" />
                 <section title="setInterpolationFlag" ref="classInterpolation_1_1Griddata.html#aa24ede62a9cc933a2176a3743611f6f2" />
                 <section title="setInterpolationFlags" ref="classInterpolation_1_1Griddata.html#a64237f1c5cba2f984a167a8e36896197" />
+                <section title="setInterpolationFlags" ref="classInterpolation_1_1Griddata.html#acdbc56979865f9340bca4a03a9387b4e" />
                 <section title="setRasterFile" ref="classInterpolation_1_1Griddata.html#ac30f11e17d7aa109823b7b718c630c58" />
                 <section title="setRasterInMemory" ref="classInterpolation_1_1Griddata.html#ad1355b376de31a187a949f41a2754dc2" />
                 <section title="setRasterMultiplier" ref="classInterpolation_1_1Griddata.html#af5daf30619549ba12723af89b2d900e5" />
@@ -705,8 +707,10 @@
                 <section title="setEpsg" ref="classInterpolation_1_1Griddata.html#a25fd6d02dfa33660a5d4580cac12514f" />
                 <section title="setFilterSize" ref="classInterpolation_1_1Griddata.html#a823bc5d8642f927068127a62f211f5b8" />
                 <section title="setFilterSizes" ref="classInterpolation_1_1Griddata.html#a3557b4e742a74c2ff9a5fb15f3a2b67f" />
+                <section title="setFilterSizes" ref="classInterpolation_1_1Griddata.html#a577adf7551b34a91cb85af62ad2defb3" />
                 <section title="setInterpolationFlag" ref="classInterpolation_1_1Griddata.html#aa24ede62a9cc933a2176a3743611f6f2" />
                 <section title="setInterpolationFlags" ref="classInterpolation_1_1Griddata.html#a64237f1c5cba2f984a167a8e36896197" />
+                <section title="setInterpolationFlags" ref="classInterpolation_1_1Griddata.html#acdbc56979865f9340bca4a03a9387b4e" />
                 <section title="setRasterFile" ref="classInterpolation_1_1Griddata.html#ac30f11e17d7aa109823b7b718c630c58" />
                 <section title="setRasterInMemory" ref="classInterpolation_1_1Griddata.html#ad1355b376de31a187a949f41a2754dc2" />
                 <section title="setRasterMultiplier" ref="classInterpolation_1_1Griddata.html#af5daf30619549ba12723af89b2d900e5" />
@@ -716,6 +720,7 @@
             </section>
             <section title="griddataimpl.cpp" ref="griddataimpl_8cpp.html">
               <section title="sgn" ref="griddataimpl_8cpp.html#a1ab31b90bc584c635ec159468ceed9b2" />
+              <section title="sortTuplePointsByIncreasingDistance" ref="griddataimpl_8cpp.html#afd092d91737c6383c7c68f13ab66ff91" />
               <section title="c_windDirectionLookup" ref="griddataimpl_8cpp.html#a353c08037b96f309897d2f66e7152a00" />
             </section>
             <section title="griddataimpl.h" ref="griddataimpl_8h.html" />
@@ -778,6 +783,8 @@
                 <section title="PlusTwoSigma" ref="interpolationmethods_8h.html#a2a3c0067e44c5ef3210a256d06c16b0fa9c9672eaf2e0c09ee0b25c7a30a5a246" />
                 <section title="BilskieEtAll" ref="interpolationmethods_8h.html#a2a3c0067e44c5ef3210a256d06c16b0fa901ed9dfade94e082496714df15abd1f" />
                 <section title="InverseDistanceWeighted" ref="interpolationmethods_8h.html#a2a3c0067e44c5ef3210a256d06c16b0fa0209de9d158b8ed91777efc4cfed9201" />
+                <section title="InverseDistanceWeightedNPoints" ref="interpolationmethods_8h.html#a2a3c0067e44c5ef3210a256d06c16b0fa353f30b28b90f491fd1a0124be6732f4" />
+                <section title="AverageNearestNPoints" ref="interpolationmethods_8h.html#a2a3c0067e44c5ef3210a256d06c16b0fae0f58b7bc29505d18d3115d64ac1f941" />
               </section>
             </section>
             <section title="io.cpp" ref="io_8cpp.html" />
@@ -1130,6 +1137,7 @@
       <keyword name="EPSG_H" id="epsg.cpp::EPSG_H" ref="epsg_8cpp.html#ae19831745c8a6b60d84ddecbc72b2734" />
       <keyword name="adcircmodules_throw_exception" id="error.h::adcircmodules_throw_exception" ref="error_8h.html#ab59da9aa35281c2a6c911f317dcb14e8" />
       <keyword name="sgn" id="griddataimpl.cpp::sgn" ref="griddataimpl_8cpp.html#a1ab31b90bc584c635ec159468ceed9b2" />
+      <keyword name="sortTuplePointsByIncreasingDistance" id="griddataimpl.cpp::sortTuplePointsByIncreasingDistance" ref="griddataimpl_8cpp.html#afd092d91737c6383c7c68f13ab66ff91" />
       <keyword name="c_windDirectionLookup" id="griddataimpl.cpp::c_windDirectionLookup" ref="griddataimpl_8cpp.html#a353c08037b96f309897d2f66e7152a00" />
       <keyword name="sortEdgeTuple" id="meshimpl.cpp::sortEdgeTuple" ref="meshimpl_8cpp.html#ad51955257c4aa06d7fa054abeca675ba" />
       <keyword name="edgeTupleEqual" id="meshimpl.cpp::edgeTupleEqual" ref="meshimpl_8cpp.html#a456a6a2972521c8901fc96db4f4d3282" />
@@ -1593,6 +1601,8 @@
       <keyword name="PlusTwoSigma" id="Interpolation::PlusTwoSigma" ref="namespaceInterpolation.html#a2a3c0067e44c5ef3210a256d06c16b0fa9c9672eaf2e0c09ee0b25c7a30a5a246" />
       <keyword name="BilskieEtAll" id="Interpolation::BilskieEtAll" ref="namespaceInterpolation.html#a2a3c0067e44c5ef3210a256d06c16b0fa901ed9dfade94e082496714df15abd1f" />
       <keyword name="InverseDistanceWeighted" id="Interpolation::InverseDistanceWeighted" ref="namespaceInterpolation.html#a2a3c0067e44c5ef3210a256d06c16b0fa0209de9d158b8ed91777efc4cfed9201" />
+      <keyword name="InverseDistanceWeightedNPoints" id="Interpolation::InverseDistanceWeightedNPoints" ref="namespaceInterpolation.html#a2a3c0067e44c5ef3210a256d06c16b0fa353f30b28b90f491fd1a0124be6732f4" />
+      <keyword name="AverageNearestNPoints" id="Interpolation::AverageNearestNPoints" ref="namespaceInterpolation.html#a2a3c0067e44c5ef3210a256d06c16b0fae0f58b7bc29505d18d3115d64ac1f941" />
       <keyword name="Interpolation::Griddata" id="Interpolation::Griddata" ref="classInterpolation_1_1Griddata.html" />
       <keyword name="Griddata" id="Interpolation::Griddata::Griddata" ref="classInterpolation_1_1Griddata.html#af94a9cc41bb85a7ea3c896dd796090a4" />
       <keyword name="Griddata" id="Interpolation::Griddata::Griddata" ref="classInterpolation_1_1Griddata.html#aced3dd758bfed0ed2a890782f704eb3e" />
@@ -1602,10 +1612,12 @@
       <keyword name="readLookupTable" id="Interpolation::Griddata::readLookupTable" ref="classInterpolation_1_1Griddata.html#ab5cf3db546cb9a735bd63b082deaf962" />
       <keyword name="interpolationFlags" id="Interpolation::Griddata::interpolationFlags" ref="classInterpolation_1_1Griddata.html#ad902b277acf919e0551372c5a63fa265" />
       <keyword name="setInterpolationFlags" id="Interpolation::Griddata::setInterpolationFlags" ref="classInterpolation_1_1Griddata.html#a64237f1c5cba2f984a167a8e36896197" />
+      <keyword name="setInterpolationFlags" id="Interpolation::Griddata::setInterpolationFlags" ref="classInterpolation_1_1Griddata.html#acdbc56979865f9340bca4a03a9387b4e" />
       <keyword name="interpolationFlag" id="Interpolation::Griddata::interpolationFlag" ref="classInterpolation_1_1Griddata.html#a47deb90b609751c911992bd4f8893399" />
       <keyword name="setInterpolationFlag" id="Interpolation::Griddata::setInterpolationFlag" ref="classInterpolation_1_1Griddata.html#aa24ede62a9cc933a2176a3743611f6f2" />
       <keyword name="filterSizes" id="Interpolation::Griddata::filterSizes" ref="classInterpolation_1_1Griddata.html#a4b2aa4a06be32df13dd51bb299c97698" />
       <keyword name="setFilterSizes" id="Interpolation::Griddata::setFilterSizes" ref="classInterpolation_1_1Griddata.html#a3557b4e742a74c2ff9a5fb15f3a2b67f" />
+      <keyword name="setFilterSizes" id="Interpolation::Griddata::setFilterSizes" ref="classInterpolation_1_1Griddata.html#a577adf7551b34a91cb85af62ad2defb3" />
       <keyword name="filterSize" id="Interpolation::Griddata::filterSize" ref="classInterpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f" />
       <keyword name="setFilterSize" id="Interpolation::Griddata::setFilterSize" ref="classInterpolation_1_1Griddata.html#a823bc5d8642f927068127a62f211f5b8" />
       <keyword name="defaultValue" id="Interpolation::Griddata::defaultValue" ref="classInterpolation_1_1Griddata.html#af3c6e7460235c8bda8126219d3bcfef4" />
@@ -2596,6 +2608,8 @@
       <file>classInterpolation_1_1Griddata_a2fe36ee88237850f56d26023ac57e261_icgraph.png</file>
       <file>classInterpolation_1_1Griddata_a354a3b83056231148e3a2a5e2fe0c04f_icgraph.png</file>
       <file>classInterpolation_1_1Griddata_a354a3b83056231148e3a2a5e2fe0c04f_icgraph.png</file>
+      <file>classInterpolation_1_1Griddata_a47deb90b609751c911992bd4f8893399_icgraph.png</file>
+      <file>classInterpolation_1_1Griddata_a47deb90b609751c911992bd4f8893399_icgraph.png</file>
       <file>classInterpolation_1_1Griddata_ad902b277acf919e0551372c5a63fa265_icgraph.png</file>
       <file>classInterpolation_1_1Griddata_ad902b277acf919e0551372c5a63fa265_icgraph.png</file>
       <file>classInterpolation_1_1Griddata_acb8d2e3026ba65b02af212c74ca39ed7_icgraph.png</file>
@@ -2614,8 +2628,12 @@
       <file>classInterpolation_1_1Griddata_a823bc5d8642f927068127a62f211f5b8_cgraph.png</file>
       <file>classInterpolation_1_1Griddata_a3557b4e742a74c2ff9a5fb15f3a2b67f_cgraph.png</file>
       <file>classInterpolation_1_1Griddata_a3557b4e742a74c2ff9a5fb15f3a2b67f_cgraph.png</file>
+      <file>classInterpolation_1_1Griddata_a577adf7551b34a91cb85af62ad2defb3_cgraph.png</file>
+      <file>classInterpolation_1_1Griddata_a577adf7551b34a91cb85af62ad2defb3_cgraph.png</file>
       <file>classInterpolation_1_1Griddata_a64237f1c5cba2f984a167a8e36896197_cgraph.png</file>
       <file>classInterpolation_1_1Griddata_a64237f1c5cba2f984a167a8e36896197_cgraph.png</file>
+      <file>classInterpolation_1_1Griddata_acdbc56979865f9340bca4a03a9387b4e_cgraph.png</file>
+      <file>classInterpolation_1_1Griddata_acdbc56979865f9340bca4a03a9387b4e_cgraph.png</file>
       <file>classInterpolation_1_1Griddata_ac30f11e17d7aa109823b7b718c630c58_cgraph.png</file>
       <file>classInterpolation_1_1Griddata_ac30f11e17d7aa109823b7b718c630c58_cgraph.png</file>
       <file>classInterpolation_1_1Griddata_ad1355b376de31a187a949f41a2754dc2_cgraph.png</file>

@@ -60,7 +60,7 @@ var NAVTREEINDEX =
 [
 "adcirc_8h.html",
 "classAdcirc_1_1Output_1_1OutputFile.html#a36cae0836d7364aa8f866dd40057e953",
-"functions_func_y.html"
+"functions_func_w.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

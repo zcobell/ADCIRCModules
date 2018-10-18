@@ -7,6 +7,8 @@ var interpolationmethods_8h =
       [ "Highest", "interpolationmethods_8h.html#a2a3c0067e44c5ef3210a256d06c16b0fa4bf5c35ed60c6d5584981ba1688d3eca", null ],
       [ "PlusTwoSigma", "interpolationmethods_8h.html#a2a3c0067e44c5ef3210a256d06c16b0fa9c9672eaf2e0c09ee0b25c7a30a5a246", null ],
       [ "BilskieEtAll", "interpolationmethods_8h.html#a2a3c0067e44c5ef3210a256d06c16b0fa901ed9dfade94e082496714df15abd1f", null ],
-      [ "InverseDistanceWeighted", "interpolationmethods_8h.html#a2a3c0067e44c5ef3210a256d06c16b0fa0209de9d158b8ed91777efc4cfed9201", null ]
+      [ "InverseDistanceWeighted", "interpolationmethods_8h.html#a2a3c0067e44c5ef3210a256d06c16b0fa0209de9d158b8ed91777efc4cfed9201", null ],
+      [ "InverseDistanceWeightedNPoints", "interpolationmethods_8h.html#a2a3c0067e44c5ef3210a256d06c16b0fa353f30b28b90f491fd1a0124be6732f4", null ],
+      [ "AverageNearestNPoints", "interpolationmethods_8h.html#a2a3c0067e44c5ef3210a256d06c16b0fae0f58b7bc29505d18d3115d64ac1f941", null ]
     ] ]
 ];
