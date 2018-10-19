@@ -67,6 +67,8 @@ void MeshImpl::_init() {
   this->m_elements.clear();
   this->m_openBoundaries.clear();
   this->m_landBoundaries.clear();
+  this->m_elementalSearchTree = std::unique_ptr<QKdtree2>(new QKdtree2());
+  this->m_nodalSearchTree = std::unique_ptr<QKdtree2>(new QKdtree2());
 }
 
 /**
@@ -1187,7 +1189,6 @@ void MeshImpl::buildNodalSearchTree() {
     }
   }
 
-  this->m_nodalSearchTree = std::unique_ptr<QKdtree2>(new QKdtree2());
   ierr = this->m_nodalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
     adcircmodules_throw_exception("Mesh: KDTree2 library error");
@@ -1223,7 +1224,6 @@ void MeshImpl::buildElementalSearchTree() {
     }
   }
 
-  this->m_elementalSearchTree = std::unique_ptr<QKdtree2>(new QKdtree2());
   int ierr = this->m_elementalSearchTree->build(x, y);
   if (ierr != QKdtree2::NoError) {
     adcircmodules_throw_exception("Mesh: KDTree2 library error");
