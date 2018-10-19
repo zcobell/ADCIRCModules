@@ -59,6 +59,7 @@ int QKdtree2::build(std::vector<Point> &pointCloud) {
     data[i][1] = static_cast<float>(pointCloud[i].y());
   }
 
+  this->m_tree.reset(nullptr);
   this->m_tree = std::unique_ptr<kdtree2>(new kdtree2(data, true));
   this->m_initialized = true;
 
@@ -91,6 +92,7 @@ int QKdtree2::build(std::vector<double> &x, std::vector<double> &y) {
     data[i][1] = static_cast<float>(y[i]);
   }
 
+  this->m_tree.reset(nullptr);
   this->m_tree = std::unique_ptr<kdtree2>(new kdtree2(data, true));
   this->m_initialized = true;
 

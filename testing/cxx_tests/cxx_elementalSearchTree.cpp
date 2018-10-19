@@ -23,12 +23,15 @@ int main(int argc, char *argv[]) {
   Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh("test_files/ms-riv.grd");
   mesh->read();
   
-  int index = mesh->findNearestNode(-90.766116,30.002113);
-  int nid = mesh->node(index)->id();
-  
+  int index = mesh->findElement(-90.766116,30.002113);
+  int eid = mesh->element(index)->id();
+
   delete mesh;
 
-  if(nid!=14494)return 1;
+  std::cout << "KDTREE Search returned index: " << index << std::endl;
+  std::cout << "Found point inside element " << eid << std::endl;
+  
+  if(eid!=23748)return 1;
 
   return 0;
 
