@@ -28,10 +28,10 @@ int main(int argc, char *argv[]) {
 
   delete mesh;
 
-  if(eid!=23748)return 1;
-  
   std::cout << "KDTREE Search returned index: " << index << std::endl;
   std::cout << "Found point inside element " << eid << std::endl;
+  
+  if(eid!=23748)return 1;
 
   return 0;
 

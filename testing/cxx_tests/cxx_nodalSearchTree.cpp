@@ -22,12 +22,13 @@
 int main(int argc, char *argv[]) {
   Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh("test_files/ms-riv.grd");
   mesh->read();
-  mesh->buildNodalSearchTree();
-
-  QKdtree2 *searchTree = mesh->nodalSearchTree();
-  int index = searchTree->findNearest(-95.0,27.0);
-
+  
+  int index = mesh->findNearestNode(-90.766116,30.002113);
+  int nid = mesh->node(index)->id();
+  
   delete mesh;
+
+  if(nid!=14494)return 1;
 
   return 0;
 
