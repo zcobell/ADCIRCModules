@@ -16,21 +16,20 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "adcirc.h"
 #include <iostream>
-#include <cmath>
+#include <memory>
+#include "adcirc.h"
 
-int main(int argc, char *argv[]) {
-    Adcirc::Output::OutputFile *output = new Adcirc::Output::OutputFile("test_files/fort.63.nc");
-    output->open();
-    output->read();
-    output->read();
-    output->read();
-    std::cout << "Expected: 1.84674, Got: " << output->data(2)->z(925) << std::endl;
-    if(fabs(output->data(2)->z(925)-1.84674)>0.00001){
-        delete output;
-        return 1;
-    }
-    delete output;
-    return 0;
+int main() {
+  using namespace Adcirc::Geometry;
+  using namespace Adcirc::Output;
+  std::unique_ptr<OutputFile> output(new OutputFile("test_files/fort.63.nc"));
+  output->open();
+  output->read();
+  output->read();
+  output->read();
+  std::cout << "Expected: 1.84674, Got: " << output->data(2)->z(925)
+            << std::endl;
+  if (std::fabs(output->data(2)->z(925) - 1.84674) > 0.00001) return 1;
+  return 0;
 }

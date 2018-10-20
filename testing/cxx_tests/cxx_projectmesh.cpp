@@ -16,12 +16,16 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "adcirc.h"
-#include <iostream>
 #include <cmath>
+#include <iostream>
+#include <memory>
+#include "adcirc.h"
 
-int main(int argc, char *argv[]) {
-  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh("test_files/ms-riv.grd");
+int main() {
+  using namespace Adcirc::Geometry;
+  using namespace Interpolation;
+
+  std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));
   mesh->read();
   double oldx = mesh->node(0)->x();
   double oldy = mesh->node(0)->y();
@@ -29,24 +33,22 @@ int main(int argc, char *argv[]) {
   mesh->reproject(26915);
   double newx = mesh->node(0)->x();
   double newy = mesh->node(0)->y();
-  delete mesh;
-  
-  char buffer1[50],buffer2[50],buffer3[50],buffer4[50];
-  sprintf(buffer1,"Original X coordinate: %f",oldx);
+
+  char buffer1[50], buffer2[50], buffer3[50], buffer4[50];
+  sprintf(buffer1, "Original X coordinate: %f", oldx);
   std::cout << buffer1 << std::endl;
-  sprintf(buffer2,"Projected X coordinate: %f",newx);
+  sprintf(buffer2, "Projected X coordinate: %f", newx);
   std::cout << buffer2 << std::endl;
-  sprintf(buffer3,"Original Y coordinate: %f",oldy);
+  sprintf(buffer3, "Original Y coordinate: %f", oldy);
   std::cout << buffer3 << std::endl;
-  sprintf(buffer4,"Projected Y coordinate: %f",newy);
+  sprintf(buffer4, "Projected Y coordinate: %f", newy);
   std::cout << buffer4 << std::endl;
-  if(std::abs(newx-753922.922116)>0.000001 || std::abs(newy-3328065.712818)>0.000001){
+  if (std::abs(newx - 753922.922116) > 0.000001 ||
+      std::abs(newy - 3328065.712818) > 0.000001) {
     std::cout << "Expected: 753922.922116, 3328065.712818" << std::endl;
-    printf("Got: %14.2f, %14.2f\n",newx,newy);
+    printf("Got: %14.2f, %14.2f\n", newx, newy);
     return 1;
-  }else{
+  } else {
     return 0;
   }
-
-
 }

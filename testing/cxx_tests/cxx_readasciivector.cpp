@@ -16,33 +16,33 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "adcirc.h"
-#include <iostream>
 #include <cmath>
+#include <iostream>
+#include <memory>
+#include "adcirc.h"
 
-int main(int argc, char *argv[]) {
-    Adcirc::Output::OutputFile *output = new Adcirc::Output::OutputFile("test_files/sparse_fort.64");
+int main() {
+  using namespace Adcirc::Output;
 
-    //...Open file
-    output->open();
-    
-    //...Read snap 1
-    output->read();
-    
-    //...Read snap 2
-    output->read();
-    
-    //...Read snap 3
-    output->read();
-    
-    //...Check output
-    std::cout << "Expected: -0.000333917, Got: " << output->data(2)->v(1220) << std::endl;
-    if(fabs(output->data(2)->v(1220)-(-0.000333917))<0.0000001){
-        delete output;
-        return 0;
-    } else {
-        delete output;
-        return 3;
-    }
+  std::unique_ptr<OutputFile> output(
+      new OutputFile("test_files/sparse_fort.64"));
 
+  //...Open file
+  output->open();
+
+  //...Read snap 1
+  output->read();
+
+  //...Read snap 2
+  output->read();
+
+  //...Read snap 3
+  output->read();
+
+  //...Check output
+  std::cout << "Expected: -0.000333917, Got: " << output->data(2)->v(1220)
+            << std::endl;
+
+  if (std::abs(output->data(2)->v(1220) - (-0.000333917)) < 0.0000001) return 0;
+  return 1;
 }

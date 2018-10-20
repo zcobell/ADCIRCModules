@@ -16,17 +16,22 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "adcirc.h"
 #include <iostream>
+#include <memory>
+#include "adcirc.h"
 
-int main(int argc, char *argv[]) {
-  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh("test_files/ms-riv.grd");
+int main() {
+  using namespace Adcirc::Geometry;
+  using namespace Adcirc::ModelParameters;
+  std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));
   mesh->read();
 
-  Adcirc::ModelParameters::NodalAttributes *fort13 = new Adcirc::ModelParameters::NodalAttributes("test_files/ms-riv.13",mesh);
+  std::unique_ptr<NodalAttributes> fort13(
+      new NodalAttributes("test_files/ms-riv.13", mesh.get()));
   fort13->read();
-  delete mesh;
-  delete fort13;
-  return 0;
 
+  int id = fort13->attribute(0, 0)->node()->id();
+  if (id != 1) return 1;
+
+  return 0;
 }

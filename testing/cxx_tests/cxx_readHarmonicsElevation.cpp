@@ -16,12 +16,16 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "adcirc.h"
 #include <iostream>
+#include <memory>
+#include "adcirc.h"
 
-int main(int argc, char *argv[]) {
+int main() {
+  using namespace Adcirc::Geometry;
+  using namespace Adcirc::Output;
 
-  Adcirc::Output::HarmonicsOutput *harm = new Adcirc::Output::HarmonicsOutput("test_files/fort.53");
+  std::unique_ptr<HarmonicsOutput> harm(
+      new Adcirc::Output::HarmonicsOutput("test_files/fort.53"));
   harm->read();
 
   double m2_amp_value = harm->amplitude("M2")->value(0);
@@ -29,13 +33,10 @@ int main(int argc, char *argv[]) {
   double k1_amp_value = harm->amplitude("K1")->value(0);
   double k1_pha_value = harm->phase("K1")->value(0);
 
-  if(m2_amp_value!=8.22651718E-001 || m2_pha_value != 247.8750 || 
-     k1_amp_value != 9.36588108E-002 || k1_pha_value != 138.2870) {
-      delete harm;
-      return 1;
+  if (m2_amp_value != 8.22651718E-001 || m2_pha_value != 247.8750 ||
+      k1_amp_value != 9.36588108E-002 || k1_pha_value != 138.2870) {
+    return 1;
   }
 
-  delete harm;
   return 0;
-
 }

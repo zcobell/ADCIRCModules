@@ -16,23 +16,22 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "adcirc.h"
 #include <iostream>
+#include <memory>
+#include "adcirc.h"
 
 int main(int argc, char *argv[]) {
-  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh("test_files/ms-riv.grd");
+  using namespace Adcirc::Geometry;
+  std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));
   mesh->read();
-  
-  int index = mesh->findElement(-90.766116,30.002113);
-  int eid = mesh->element(index)->id();
 
-  delete mesh;
+  int index = mesh->findElement(-90.766116, 30.002113);
+  int eid = mesh->element(index)->id();
 
   std::cout << "KDTREE Search returned index: " << index << std::endl;
   std::cout << "Found point inside element " << eid << std::endl;
-  
-  if(eid!=23748)return 1;
+
+  if (eid != 23748) return 1;
 
   return 0;
-
 }

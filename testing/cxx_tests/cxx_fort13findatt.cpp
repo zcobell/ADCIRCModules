@@ -16,24 +16,21 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "adcirc.h"
 #include <iostream>
+#include <memory>
+#include "adcirc.h"
 
 int main(int argc, char *argv[]) {
-
-  Adcirc::ModelParameters::NodalAttributes *fort13 = new Adcirc::ModelParameters::NodalAttributes("test_files/ms-riv.13");
+  using namespace Adcirc::ModelParameters;
+  std::unique_ptr<NodalAttributes> fort13(
+      new NodalAttributes("test_files/ms-riv.13"));
   fort13->read();
 
-  double manning_value = fort13->attribute("mannings_n_at_sea_floor",0)->value(0);
+  double manning_value =
+      fort13->attribute("mannings_n_at_sea_floor", 0)->value(0);
   std::cout << manning_value << std::endl;
   std::cout.flush();
-  if(manning_value != 0.036067){
-      delete fort13;
-      return 1;
-  }
-  else {
-      delete fort13;
-      return 0;
-  }
+  if (manning_value != 0.036067) return 1;
 
+  return 0;
 }

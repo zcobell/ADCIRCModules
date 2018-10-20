@@ -16,14 +16,15 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "adcirc.h"
 #include <iostream>
+#include <memory>
+#include "adcirc.h"
 
 int main(int argc, char *argv[]) {
-  Adcirc::Geometry::Mesh *mesh = new Adcirc::Geometry::Mesh("test_files/ms-riv2.grd");
+  using namespace Adcirc::Geometry;
+  std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv2.grd"));
   mesh->read();
-  MeshChecker checker(mesh);
+  MeshChecker checker(mesh.get());
   checker.checkMesh();
-  delete mesh;
   return 0;
 }

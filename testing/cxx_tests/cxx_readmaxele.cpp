@@ -16,25 +16,22 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "adcirc.h"
 #include <iostream>
+#include <memory>
+#include "adcirc.h"
 
-int main(int argc, char *argv[]) {
-    Adcirc::Output::OutputFile *output = new Adcirc::Output::OutputFile("test_files/maxele.63");
+int main() {
+  using namespace Adcirc::Geometry;
+  using namespace Adcirc::Output;
+  std::unique_ptr<OutputFile> output(new OutputFile("test_files/maxele.63"));
 
-    //...Open file
-    output->open();
-    
-    //...Read snap 1
-    output->read();
-    
-    //...Check output
-    if(output->data(0)->z(42)==5.0328082883E-001){
-        delete output;
-        return 0;
-    } else {
-        delete output;
-        return 3;
-    }
+  //...Open file
+  output->open();
 
+  //...Read snap 1
+  output->read();
+
+  //...Check output
+  if (output->data(0)->z(42) == 5.0328082883E-001) return 0;
+  return 1;
 }
