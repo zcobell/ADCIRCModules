@@ -23,6 +23,34 @@ int main(int argc, char *argv[]) {
 
   Adcirc::ModelParameters::NodalAttributes *fort13 = new Adcirc::ModelParameters::NodalAttributes("test_files/ms-riv.13");
   fort13->read();
+  
+  int idx = fort13->locateAttribute("mannings_n_at_sea_floor");
+
+  double n = fort13->attribute(idx,10)->value(0);
+
+  std::cout << "Manning n before: " << n << std::endl;
+  std::cout << "Manning n expected: 0.020922" << std::endl;
+
+  if(n!=0.020922)return 1;
+
+  fort13->attribute(idx,10)->setValue(0,0.022);
+  n = fort13->attribute(idx,10)->value(0);
+
+  std::cout << "Attempted to set value to 0.022 and got " << n << std::endl;
+
+  if(n!=0.022)return 1;
+
+  double dv = fort13->metadata("mannings_n_at_sea_floor")->defaultValue();
+  if(dv!=0.012)return 1;
+
+  fort13->metadata("mannings_n_at_sea_floor")->setDefaultValue(0.022);
+  dv = fort13->metadata(idx)->defaultValue();
+  
+  if(dv!=0.022)return 1;
+
+  std::cout << "Now attempting to re-write fort.13..." << std::endl;
+  fort13->write("test_files/ms-riv-rewrite.13");
+
   delete fort13;
   return 0;
 }

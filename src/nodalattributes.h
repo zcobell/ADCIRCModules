@@ -63,6 +63,9 @@ class NodalAttributes {
   Attribute *attribute(size_t parameter, size_t node);
   Attribute *attribute(const std::string &name, size_t node);
 
+  AttributeMetadata *metadata(size_t parameter);
+  AttributeMetadata *metadata(const std::string &name);
+
  private:
   void _readFort13Header(std::fstream &fid);
   void _readFort13Defaults(std::fstream &fid);

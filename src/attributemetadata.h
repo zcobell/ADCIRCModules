@@ -59,7 +59,7 @@ class AttributeMetadata {
   void setNumberOfValues(size_t numValues);
 
   std::vector<double> getDefaultValues() const;
-  double getDefaultValue(size_t index = 0) const;
+  double defaultValue(size_t index = 0) const;
   void setDefaultValue(const double &value);
   void setDefaultValue(size_t index, const double &value);
   void setDefaultValue(const std::vector<double> &value);

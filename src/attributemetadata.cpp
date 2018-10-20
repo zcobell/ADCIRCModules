@@ -95,7 +95,7 @@ std::vector<double> AttributeMetadata::getDefaultValues() const {
  * @param index position to return
  * @return default value at position index
  */
-double AttributeMetadata::getDefaultValue(size_t index) const {
+double AttributeMetadata::defaultValue(size_t index) const {
   assert(index < this->m_numValues);
 
   if (index < this->m_numValues) {

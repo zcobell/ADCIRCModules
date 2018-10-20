@@ -200,7 +200,7 @@ void NodalAttributes::_fillDefaultValues() {
       for (size_t j = 0; j < this->numNodes(); ++j) {
         this->m_nodalData[i][j].resize(1);
         this->m_nodalData[i][j].setValue(
-            this->m_nodalParameters[i].getDefaultValue());
+            this->m_nodalParameters[i].defaultValue());
       }
     } else {
       for (size_t j = 0; j < this->numNodes(); ++j) {
@@ -372,4 +372,20 @@ size_t NodalAttributes::_countDefault(AttributeMetadata &metadata,
     }
   }
   return n;
+}
+
+AttributeMetadata *NodalAttributes::metadata(size_t parameter) {
+  assert(parameter < this->numParameters());
+
+  if (parameter < this->numParameters()) {
+    return &this->m_nodalParameters[parameter];
+  }
+  adcircmodules_throw_exception(
+      "NodalAttributes: Attribute could not be located");
+  return nullptr;
+}
+
+AttributeMetadata *NodalAttributes::metadata(const std::string &name) {
+  size_t index = this->locateAttribute(name);
+  return this->metadata(index);
 }
