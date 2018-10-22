@@ -6,5 +6,6 @@ var searchData=
   ['mesh',['Mesh',['../classAdcirc_1_1Geometry_1_1Mesh.html#a2a23c7c0c4e0da252b7bc0e13b6f81d8',1,'Adcirc::Geometry::Mesh::Mesh()'],['../classAdcirc_1_1Geometry_1_1Mesh.html#aa3779779541213fc635ffb1afe6c7ac8',1,'Adcirc::Geometry::Mesh::Mesh(const std::string &amp;filename)'],['../classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a795a5bff1664a6a7cd4763058953ca0c',1,'Adcirc::ModelParameters::NodalAttributes::mesh()']]],
   ['meshchecker',['MeshChecker',['../classMeshChecker.html#a5359c7f65b9c81f8cd1adc10fa437ea0',1,'MeshChecker']]],
   ['meshheaderstring',['meshHeaderString',['../classAdcirc_1_1Geometry_1_1Mesh.html#adc2bf9b67aabc0b183e50a5bb34bea32',1,'Adcirc::Geometry::Mesh']]],
+  ['metadata',['metadata',['../classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#ac334bfa12a080bc297775fc23c67185a',1,'Adcirc::ModelParameters::NodalAttributes::metadata(size_t parameter)'],['../classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a56122089aed59f8f177a39ea477fbbaf',1,'Adcirc::ModelParameters::NodalAttributes::metadata(const std::string &amp;name)']]],
   ['multithreading',['Multithreading',['../classMultithreading.html#a12baeb5443773ee4602cd4cf105d40a7',1,'Multithreading']]]
 ];

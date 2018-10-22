@@ -9,6 +9,8 @@ var classAdcirc_1_1ModelParameters_1_1NodalAttributes =
     [ "header", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a3b63d55d57e1d7ee98d3acdd3e74e2a5", null ],
     [ "locateAttribute", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#aab35596d1061e7afb6f90e3376c47534", null ],
     [ "mesh", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a795a5bff1664a6a7cd4763058953ca0c", null ],
+    [ "metadata", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#ac334bfa12a080bc297775fc23c67185a", null ],
+    [ "metadata", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a56122089aed59f8f177a39ea477fbbaf", null ],
     [ "numNodes", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#ae8487e719ad1109f6db746e96a37c498", null ],
     [ "numParameters", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a1fa4cf4363fce060d4887fb79ab08073", null ],
     [ "read", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#aaa936da334e29618ece019bd8a9aa06f", null ],
