@@ -71,12 +71,13 @@ class MeshImpl;
  *
  */
 class Mesh {
-
  public:
   Mesh();
   explicit Mesh(const std::string &filename);
 
   ~Mesh();
+
+  const size_t ELEMENT_NOT_FOUND = std::numeric_limits<size_t>::max();
 
   std::vector<double> x();
   std::vector<double> y();

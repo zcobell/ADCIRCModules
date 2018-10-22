@@ -1892,7 +1892,7 @@ size_t MeshImpl::findElement(Point location) {
       return i;
     }
   }
-  return -1;
+  return std::numeric_limits<size_t>::max();
 }
 
 /**

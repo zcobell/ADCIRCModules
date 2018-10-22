@@ -19,6 +19,8 @@
 #ifndef MESHFORMATS_H
 #define MESHFORMATS_H
 
+#include <limits>
+
 namespace Adcirc {
 
 namespace Geometry {
