@@ -5,6 +5,7 @@ var searchData=
   ['element',['Element',['../classAdcirc_1_1Geometry_1_1Element.html',1,'Element'],['../classAdcirc_1_1Geometry_1_1Element.html#ab6edd5ea4f400b450f07203f432d1c81',1,'Adcirc::Geometry::Element::Element()'],['../classAdcirc_1_1Geometry_1_1Element.html#a18dc9fc473bebcc70e414047bec4677e',1,'Adcirc::Geometry::Element::Element(size_t id, Adcirc::Geometry::Node *n1, Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3)'],['../classAdcirc_1_1Geometry_1_1Element.html#a46c6ce82702b6406072ec4f4a05baf5d',1,'Adcirc::Geometry::Element::Element(size_t id, Adcirc::Geometry::Node *n1, Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3, Adcirc::Geometry::Node *n4)'],['../classAdcirc_1_1Geometry_1_1Mesh.html#a3543bba752ce5bb6f2a4ce69c0f09c3d',1,'Adcirc::Geometry::Mesh::element()']]],
   ['element_2ecpp',['element.cpp',['../element_8cpp.html',1,'']]],
   ['element_2eh',['element.h',['../element_8h.html',1,'']]],
+  ['element_5fnot_5ffound',['ELEMENT_NOT_FOUND',['../classAdcirc_1_1Geometry_1_1Mesh.html#ae54f241567cab19d7202cf4dbcec5448',1,'Adcirc::Geometry::Mesh']]],
   ['elementalsearchtree',['elementalSearchTree',['../classAdcirc_1_1Geometry_1_1Mesh.html#a5597245319a1df8138d8b72b8c273b26',1,'Adcirc::Geometry::Mesh']]],
   ['elementalsearchtreeinitialized',['elementalSearchTreeInitialized',['../classAdcirc_1_1Geometry_1_1Mesh.html#a1ffd396d8afd6fe0ad4ffdf484749394',1,'Adcirc::Geometry::Mesh']]],
   ['elementbyid',['elementById',['../classAdcirc_1_1Geometry_1_1Mesh.html#af68be00c397b27f8adf3bc8f41240b55',1,'Adcirc::Geometry::Mesh']]],

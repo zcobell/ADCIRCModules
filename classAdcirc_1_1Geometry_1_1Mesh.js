@@ -26,8 +26,8 @@ var classAdcirc_1_1Geometry_1_1Mesh =
     [ "elementTable", "classAdcirc_1_1Geometry_1_1Mesh.html#ae453d6762b580f82f13b3343b394a189", null ],
     [ "elementTable", "classAdcirc_1_1Geometry_1_1Mesh.html#a477aeec054b51540ab70382872bd56ee", null ],
     [ "filename", "classAdcirc_1_1Geometry_1_1Mesh.html#a94c732bb0f167eab349228237a8fbe3c", null ],
-    [ "findElement", "classAdcirc_1_1Geometry_1_1Mesh.html#ac1b79ac7ca82ba0e5cbbef37f2f75b3e", null ],
-    [ "findElement", "classAdcirc_1_1Geometry_1_1Mesh.html#a545ebf5bcfbf72f92d2d4b32194ab9b2", null ],
+    [ "findElement", "classAdcirc_1_1Geometry_1_1Mesh.html#afc8a7071a350f0e47178c77e10323dcc", null ],
+    [ "findElement", "classAdcirc_1_1Geometry_1_1Mesh.html#a6f06589c2439af5b4e5da2fa7e7ff261", null ],
     [ "findNearestElement", "classAdcirc_1_1Geometry_1_1Mesh.html#a692aa821ebbe1d4d3ac0a3769eeae006", null ],
     [ "findNearestElement", "classAdcirc_1_1Geometry_1_1Mesh.html#a81c61aafd5fb5a9fcda48fbd503764ca", null ],
     [ "findNearestNode", "classAdcirc_1_1Geometry_1_1Mesh.html#a1b3442d6d4f83fb44069874a829446f2", null ],
@@ -70,5 +70,6 @@ var classAdcirc_1_1Geometry_1_1Mesh =
     [ "x", "classAdcirc_1_1Geometry_1_1Mesh.html#afdeef43f911a631b40c7bd6de3c8ce6f", null ],
     [ "xyz", "classAdcirc_1_1Geometry_1_1Mesh.html#a94d25c891983ee909aafdecf34bcbfec", null ],
     [ "y", "classAdcirc_1_1Geometry_1_1Mesh.html#ac226a4441605d69e0cc5564e7f0805ad", null ],
-    [ "z", "classAdcirc_1_1Geometry_1_1Mesh.html#ab93aa60ac4b272c586a0681478416aee", null ]
+    [ "z", "classAdcirc_1_1Geometry_1_1Mesh.html#ab93aa60ac4b272c586a0681478416aee", null ],
+    [ "ELEMENT_NOT_FOUND", "classAdcirc_1_1Geometry_1_1Mesh.html#ae54f241567cab19d7202cf4dbcec5448", null ]
 ];

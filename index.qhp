@@ -103,8 +103,8 @@
                   <section title="elementTable" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ae453d6762b580f82f13b3343b394a189" />
                   <section title="elementTable" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a477aeec054b51540ab70382872bd56ee" />
                   <section title="filename" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a94c732bb0f167eab349228237a8fbe3c" />
-                  <section title="findElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ac1b79ac7ca82ba0e5cbbef37f2f75b3e" />
-                  <section title="findElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a545ebf5bcfbf72f92d2d4b32194ab9b2" />
+                  <section title="findElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#afc8a7071a350f0e47178c77e10323dcc" />
+                  <section title="findElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a6f06589c2439af5b4e5da2fa7e7ff261" />
                   <section title="findNearestElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a692aa821ebbe1d4d3ac0a3769eeae006" />
                   <section title="findNearestElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a81c61aafd5fb5a9fcda48fbd503764ca" />
                   <section title="findNearestNode" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a1b3442d6d4f83fb44069874a829446f2" />
@@ -148,6 +148,7 @@
                   <section title="xyz" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a94d25c891983ee909aafdecf34bcbfec" />
                   <section title="y" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ac226a4441605d69e0cc5564e7f0805ad" />
                   <section title="z" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ab93aa60ac4b272c586a0681478416aee" />
+                  <section title="ELEMENT_NOT_FOUND" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ae54f241567cab19d7202cf4dbcec5448" />
                 </section>
                 <section title="Node" ref="classAdcirc_1_1Geometry_1_1Node.html">
                   <section title="Node" ref="classAdcirc_1_1Geometry_1_1Node.html#a0d313fac56abd7ebe58a17f1530b879e" />
@@ -536,6 +537,7 @@
               <section title="z" ref="functions_func_z.html" />
               <section title="~" ref="functions_func_0x7e.html" />
             </section>
+            <section title="Variables" ref="functions_vars.html" />
             <section title="Enumerations" ref="functions_enum.html" />
             <section title="Enumerator" ref="functions_eval.html" />
           </section>
@@ -839,8 +841,8 @@
                 <section title="elementTable" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ae453d6762b580f82f13b3343b394a189" />
                 <section title="elementTable" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a477aeec054b51540ab70382872bd56ee" />
                 <section title="filename" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a94c732bb0f167eab349228237a8fbe3c" />
-                <section title="findElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ac1b79ac7ca82ba0e5cbbef37f2f75b3e" />
-                <section title="findElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a545ebf5bcfbf72f92d2d4b32194ab9b2" />
+                <section title="findElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#afc8a7071a350f0e47178c77e10323dcc" />
+                <section title="findElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a6f06589c2439af5b4e5da2fa7e7ff261" />
                 <section title="findNearestElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a692aa821ebbe1d4d3ac0a3769eeae006" />
                 <section title="findNearestElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a81c61aafd5fb5a9fcda48fbd503764ca" />
                 <section title="findNearestNode" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a1b3442d6d4f83fb44069874a829446f2" />
@@ -884,6 +886,7 @@
                 <section title="xyz" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a94d25c891983ee909aafdecf34bcbfec" />
                 <section title="y" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ac226a4441605d69e0cc5564e7f0805ad" />
                 <section title="z" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ab93aa60ac4b272c586a0681478416aee" />
+                <section title="ELEMENT_NOT_FOUND" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ae54f241567cab19d7202cf4dbcec5448" />
               </section>
             </section>
             <section title="meshchecker.cpp" ref="meshchecker_8cpp.html" />
@@ -1380,8 +1383,8 @@
       <keyword name="findNearestNode" id="Adcirc::Geometry::Mesh::findNearestNode" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a4504d27718bd1f3e2a3ce8457d9b01e9" />
       <keyword name="findNearestElement" id="Adcirc::Geometry::Mesh::findNearestElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a692aa821ebbe1d4d3ac0a3769eeae006" />
       <keyword name="findNearestElement" id="Adcirc::Geometry::Mesh::findNearestElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a81c61aafd5fb5a9fcda48fbd503764ca" />
-      <keyword name="findElement" id="Adcirc::Geometry::Mesh::findElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ac1b79ac7ca82ba0e5cbbef37f2f75b3e" />
-      <keyword name="findElement" id="Adcirc::Geometry::Mesh::findElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a545ebf5bcfbf72f92d2d4b32194ab9b2" />
+      <keyword name="findElement" id="Adcirc::Geometry::Mesh::findElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#afc8a7071a350f0e47178c77e10323dcc" />
+      <keyword name="findElement" id="Adcirc::Geometry::Mesh::findElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a6f06589c2439af5b4e5da2fa7e7ff261" />
       <keyword name="node" id="Adcirc::Geometry::Mesh::node" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a96bbda0a22e51f4ca5cf2364126956b9" />
       <keyword name="element" id="Adcirc::Geometry::Mesh::element" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a3543bba752ce5bb6f2a4ce69c0f09c3d" />
       <keyword name="openBoundary" id="Adcirc::Geometry::Mesh::openBoundary" ref="classAdcirc_1_1Geometry_1_1Mesh.html#abb00d35a302cdae528db75c07bfffb98" />
@@ -1404,6 +1407,7 @@
       <keyword name="elementTable" id="Adcirc::Geometry::Mesh::elementTable" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ae453d6762b580f82f13b3343b394a189" />
       <keyword name="elementTable" id="Adcirc::Geometry::Mesh::elementTable" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a477aeec054b51540ab70382872bd56ee" />
       <keyword name="elementsAroundNode" id="Adcirc::Geometry::Mesh::elementsAroundNode" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a386079f1610441ec3a150b6eb1378f5c" />
+      <keyword name="ELEMENT_NOT_FOUND" id="Adcirc::Geometry::Mesh::ELEMENT_NOT_FOUND" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ae54f241567cab19d7202cf4dbcec5448" />
       <keyword name="Adcirc::Geometry::Node" id="Adcirc::Geometry::Node" ref="classAdcirc_1_1Geometry_1_1Node.html" />
       <keyword name="Node" id="Adcirc::Geometry::Node::Node" ref="classAdcirc_1_1Geometry_1_1Node.html#a0d313fac56abd7ebe58a17f1530b879e" />
       <keyword name="Node" id="Adcirc::Geometry::Node::Node" ref="classAdcirc_1_1Geometry_1_1Node.html#a39f0382b034242fad618eba00c551f9e" />
@@ -1846,6 +1850,8 @@
       <file>meshchecker_8h__dep__incl.png</file>
       <file>meshchecker_8h__dep__incl.png</file>
       <file>meshformats_8h.html</file>
+      <file>meshformats_8h__incl.png</file>
+      <file>meshformats_8h__incl.png</file>
       <file>meshformats_8h__dep__incl.png</file>
       <file>meshformats_8h__dep__incl.png</file>
       <file>meshimpl_8cpp.html</file>
@@ -2279,8 +2285,8 @@
       <file>classAdcirc_1_1Geometry_1_1Mesh_a386079f1610441ec3a150b6eb1378f5c_icgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Mesh_a94c732bb0f167eab349228237a8fbe3c_icgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Mesh_a94c732bb0f167eab349228237a8fbe3c_icgraph.png</file>
-      <file>classAdcirc_1_1Geometry_1_1Mesh_a545ebf5bcfbf72f92d2d4b32194ab9b2_cgraph.png</file>
-      <file>classAdcirc_1_1Geometry_1_1Mesh_a545ebf5bcfbf72f92d2d4b32194ab9b2_cgraph.png</file>
+      <file>classAdcirc_1_1Geometry_1_1Mesh_a6f06589c2439af5b4e5da2fa7e7ff261_cgraph.png</file>
+      <file>classAdcirc_1_1Geometry_1_1Mesh_a6f06589c2439af5b4e5da2fa7e7ff261_cgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Mesh_a81c61aafd5fb5a9fcda48fbd503764ca_cgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Mesh_a81c61aafd5fb5a9fcda48fbd503764ca_cgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Mesh_a4504d27718bd1f3e2a3ce8457d9b01e9_cgraph.png</file>
@@ -2768,6 +2774,7 @@
       <file>functions_func_y.html</file>
       <file>functions_func_z.html</file>
       <file>functions_func_0x7e.html</file>
+      <file>functions_vars.html</file>
       <file>functions_enum.html</file>
       <file>functions_enum.html</file>
       <file>functions_eval.html</file>
