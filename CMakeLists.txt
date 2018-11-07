@@ -671,6 +671,7 @@ TARGET_LINK_LIBRARIES( adcircmodules projection point kdtree2 shapelib constants
 
 IF(USE_GOOGLE_FLAT_MAP)
     TARGET_LINK_LIBRARIES(adcircmodules absl::base absl::container absl::hash)
+    ADD_DEPENDENCIES(adcircmodules absl::base absl::container absl::hash)
     TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE USE_GOOGLE_FLAT_MAP )
 ENDIF(USE_GOOGLE_FLAT_MAP)
 
@@ -862,8 +863,11 @@ IF(UNIX OR CYGWIN)
                       cxx_readasciivector.cpp cxx_readnetcdf.cpp cxx_readnetcdfvector.cpp
                       cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp 
                       cxx_readnetcdfHarmonicsElevation.cpp  cxx_readnetcdfHarmonicsVelocity.cpp
-                      cxx_checkmesh.cpp cxx_read2dm.cpp cxx_interpolateRaster.cpp 
-                      cxx_interpolateManning.cpp cxx_interpolateDwind.cpp )
+                      cxx_checkmesh.cpp cxx_read2dm.cpp )
+
+        IF(ENABLE_GDAL)
+            SET(TEST_LIST ${TEST_LIST} cxx_interpolateRaster.cpp cxx_interpolateManning.cpp cxx_interpolateDwind.cpp ) 
+        ENDIF(ENABLE_GDAL)
 
         FOREACH(TESTFILE ${TEST_LIST} ) 
             GET_FILENAME_COMPONENT( TESTNAME ${TESTFILE} NAME_WE )
