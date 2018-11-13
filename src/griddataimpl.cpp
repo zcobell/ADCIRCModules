@@ -418,7 +418,7 @@ double GriddataImpl::calculateInverseDistanceWeighted(Point &p, double w) {
 }
 
 double GriddataImpl::calculateInverseDistanceWeightedNPoints(Point &p,
-                                                              double n) {
+                                                             double n) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
   int maxPoints = static_cast<size_t>(n);
@@ -930,6 +930,9 @@ std::vector<std::vector<double>> GriddataImpl::computeDirectionalWindReduction(
       for (auto &r : result[i]) {
         r += this->m_datumShift;
       }
+    } else {
+      result[i] = std::vector<double>(12);
+      std::fill(result[i].begin(), result[i].end(), this->defaultValue());
     }
   }
 
