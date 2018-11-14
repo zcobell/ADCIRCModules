@@ -92,8 +92,8 @@ int Projection::transform(int inputEPSG, int outputEPSG,
     return NoSuchProjection;
   }
 
-  std::string p1 = this->m_epsgMapping[inputEPSG];
-  std::string p2 = this->m_epsgMapping[outputEPSG];
+  std::string p1 = this->m_epsgMapping[inputEPSG].first;
+  std::string p2 = this->m_epsgMapping[outputEPSG].first;
 
   PJ *pj1 = proj_create(PJ_DEFAULT_CTX, p1.c_str());
   if (pj1 == nullptr) {
@@ -207,4 +207,26 @@ int Projection::inverseCpp(double lambda0, double phi0,
     output.push_back(Point(x, y));
   }
   return Projection::NoError;
+}
+
+std::string Projection::projInitializationString(int epsg) {
+  if (this->m_epsgMapping.find(epsg) == this->m_epsgMapping.end()) {
+    return "EPSG Not found";
+  } else {
+    return this->m_epsgMapping[epsg].first;
+  }
+}
+
+std::string Projection::description(int epsg) {
+  if (this->m_epsgMapping.find(epsg) == this->m_epsgMapping.end()) {
+    return "EPSG Not found";
+  } else {
+    return this->m_epsgMapping[epsg].second;
+  }
+}
+
+std::string Projection::projVersion() {
+  return std::to_string(PROJ_VERSION_MAJOR) + "." +
+         std::to_string(PROJ_VERSION_MINOR) + "." +
+         std::to_string(PROJ_VERSION_PATCH);
 }

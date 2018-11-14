@@ -33,15 +33,23 @@
 #define PROJECTION_H
 
 #include <string>
-#include <unordered_map>
+#include <tuple>
 #include <vector>
 #include "point.h"
+
+#ifdef USE_GOOGLE_FLAT_MAP
+#include "absl/container/flat_hash_map.h"
+#else
+#include <unordered_map>
+#endif
 
 class Projection {
  public:
   enum _errors { NoError, NoSuchProjection, NoData, Proj4InternalError };
 
   explicit Projection();
+
+  std::string projVersion();
 
   int transform(int inputEPSG, int outputEPSG, double x, double y, double &outx,
                 double &outy, bool &isLatLon);
@@ -51,6 +59,9 @@ class Projection {
 
   int transform(int inputEPSG, int outputEPSG, std::vector<Point> &input,
                 std::vector<Point> &output, bool &isLatLon);
+
+  std::string description(int epsg);
+  std::string projInitializationString(int epsg);
 
   static int cpp(double lambda0, double phi0, double x, double y, double &outx,
                  double &outy);
@@ -67,7 +78,12 @@ class Projection {
 
  private:
   void _initialize();
-  std::unordered_map<int, std::string> m_epsgMapping;
+
+#ifdef USE_GOOGLE_FLAT_MAP
+  absl::flat_hash_map<int, std::pair<std::string, std::string>> m_epsgMapping;
+#else
+  std::unordered_map<int, std::pair<std::string, std::string>> m_epsgMapping;
+#endif
 };
 
 #endif  // Projection_H
