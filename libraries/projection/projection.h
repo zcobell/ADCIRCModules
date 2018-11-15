@@ -33,15 +33,18 @@
 #define PROJECTION_H
 
 #include <string>
-#include <unordered_map>
+#include <tuple>
 #include <vector>
 #include "point.h"
+#include <unordered_map>
 
 class Projection {
  public:
   enum _errors { NoError, NoSuchProjection, NoData, Proj4InternalError };
 
   explicit Projection();
+
+  std::string projVersion();
 
   int transform(int inputEPSG, int outputEPSG, double x, double y, double &outx,
                 double &outy, bool &isLatLon);
@@ -51,6 +54,9 @@ class Projection {
 
   int transform(int inputEPSG, int outputEPSG, std::vector<Point> &input,
                 std::vector<Point> &output, bool &isLatLon);
+
+  std::string description(int epsg);
+  std::string projInitializationString(int epsg);
 
   static int cpp(double lambda0, double phi0, double x, double y, double &outx,
                  double &outy);
@@ -67,7 +73,13 @@ class Projection {
 
  private:
   void _initialize();
-  std::unordered_map<int, std::string> m_epsgMapping;
+
+  size_t position(int epsg);
+
+  std::vector<std::string> m_epsgDescriptions;
+  std::vector<std::string> m_epsgInit;
+  std::unordered_map<int, size_t> m_epsgMapping;
+
 };
 
 #endif  // Projection_H

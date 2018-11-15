@@ -541,6 +541,7 @@ TARGET_INCLUDE_DIRECTORIES( projection PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/pr
 
 TARGET_LINK_LIBRARIES( projection point constants )
 ADD_DEPENDENCIES( projection point constants )
+
 IF (C99_MATH)
   TARGET_COMPILE_DEFINITIONS (projection PRIVATE "HAVE_C99_MATH=1")
 ELSE ()
