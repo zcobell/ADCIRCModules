@@ -542,12 +542,6 @@ TARGET_INCLUDE_DIRECTORIES( projection PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/pr
 TARGET_LINK_LIBRARIES( projection point constants )
 ADD_DEPENDENCIES( projection point constants )
 
-IF(USE_GOOGLE_FLAT_MAP)
-    TARGET_LINK_LIBRARIES(projection absl::base absl::container absl::hash)
-    ADD_DEPENDENCIES(projection absl::base absl::container absl::hash)
-    TARGET_COMPILE_DEFINITIONS( projection PRIVATE USE_GOOGLE_FLAT_MAP )
-ENDIF(USE_GOOGLE_FLAT_MAP)
-
 IF (C99_MATH)
   TARGET_COMPILE_DEFINITIONS (projection PRIVATE "HAVE_C99_MATH=1")
 ELSE ()

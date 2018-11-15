@@ -19,6 +19,7 @@
 #include "projection.h"
 #include <cassert>
 #include <cmath>
+#include <limits>
 #include "constants.h"
 #include "point.h"
 #include "proj.h"
@@ -92,8 +93,8 @@ int Projection::transform(int inputEPSG, int outputEPSG,
     return NoSuchProjection;
   }
 
-  std::string p1 = this->m_epsgMapping[inputEPSG].first;
-  std::string p2 = this->m_epsgMapping[outputEPSG].first;
+  std::string p1 = this->projInitializationString(inputEPSG);
+  std::string p2 = this->projInitializationString(outputEPSG);
 
   PJ *pj1 = proj_create(PJ_DEFAULT_CTX, p1.c_str());
   if (pj1 == nullptr) {
@@ -210,18 +211,20 @@ int Projection::inverseCpp(double lambda0, double phi0,
 }
 
 std::string Projection::projInitializationString(int epsg) {
-  if (this->m_epsgMapping.find(epsg) == this->m_epsgMapping.end()) {
-    return "EPSG Not found";
+  size_t i = this->position(epsg);
+  if (i == std::numeric_limits<size_t>::max()) {
+    return "No EPSG found";
   } else {
-    return this->m_epsgMapping[epsg].first;
+    return this->m_epsgInit[i];
   }
 }
 
 std::string Projection::description(int epsg) {
-  if (this->m_epsgMapping.find(epsg) == this->m_epsgMapping.end()) {
-    return "EPSG Not found";
+  size_t i = this->position(epsg);
+  if (i == std::numeric_limits<size_t>::max()) {
+    return "No EPSG found";
   } else {
-    return this->m_epsgMapping[epsg].second;
+    return this->m_epsgDescriptions[i];
   }
 }
 
@@ -229,4 +232,13 @@ std::string Projection::projVersion() {
   return std::to_string(PROJ_VERSION_MAJOR) + "." +
          std::to_string(PROJ_VERSION_MINOR) + "." +
          std::to_string(PROJ_VERSION_PATCH);
+}
+
+size_t Projection::position(int epsg) {
+  auto it = this->m_epsgMapping.find(epsg);
+  if (it == this->m_epsgMapping.end()) {
+    return std::numeric_limits<size_t>::max();
+  } else {
+    return this->m_epsgMapping[epsg];
+  }
 }

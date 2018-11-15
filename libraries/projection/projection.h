@@ -36,12 +36,7 @@
 #include <tuple>
 #include <vector>
 #include "point.h"
-
-#ifdef USE_GOOGLE_FLAT_MAP
-#include "absl/container/flat_hash_map.h"
-#else
 #include <unordered_map>
-#endif
 
 class Projection {
  public:
@@ -79,11 +74,12 @@ class Projection {
  private:
   void _initialize();
 
-#ifdef USE_GOOGLE_FLAT_MAP
-  absl::flat_hash_map<int, std::pair<std::string, std::string>> m_epsgMapping;
-#else
-  std::unordered_map<int, std::pair<std::string, std::string>> m_epsgMapping;
-#endif
+  size_t position(int epsg);
+
+  std::vector<std::string> m_epsgDescriptions;
+  std::vector<std::string> m_epsgInit;
+  std::unordered_map<int, size_t> m_epsgMapping;
+
 };
 
 #endif  // Projection_H
