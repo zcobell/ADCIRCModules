@@ -19,10 +19,12 @@
 #include <iostream>
 #include <memory>
 #include "adcirc.h"
+#include <vector>
 
 int main() {
   using namespace Adcirc::Geometry;
   std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));
   mesh->read();
+  std::vector<std::vector<double>> orthog = mesh->orthogonality();
   return 0;
 }
