@@ -33,12 +33,12 @@ int main() {
   double oldx = mesh->node(0)->x();
   double oldy = mesh->node(0)->y();
   mesh->defineProjection(4326,true);
+  
+  std::cout << "Transforming to " << p.description(26915) << "...\n";
 
   mesh->reproject(26915);
   double newx = mesh->node(0)->x();
   double newy = mesh->node(0)->y();
-
-  std::cout << "Transforming to UTM-Zone 15...\n";
 
   char buffer1[50], buffer2[50], buffer3[50], buffer4[50];
   sprintf(buffer1, "Original X coordinate: %f", oldx);
