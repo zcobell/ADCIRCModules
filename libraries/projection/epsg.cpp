@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 #include "projection.h"
+  
 
 void Projection::_initialize() {
   using namespace std;
@@ -1578,8 +1579,7 @@ void Projection::_initialize() {
       {104104, 6216}, {104105, 6217}, {104106, 6218}, {104107, 6219},
       {104108, 6220}, {104261, 6221}, {104304, 6222}, {104305, 6223}};
 
-  // clang-format off
-  this->m_epsgInit = {
+      this->m_epsgInit = {
         "+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.999500 +x_0=400000 +y_0=0 +ellps=clrk80 +units=m +no_defs",
         "+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.999500 +x_0=400000 +y_0=0 +ellps=clrk80 +towgs84=-255,-15,71,0,0,0,0 +units=m +no_defs",
         "+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.999500 +x_0=400000 +y_0=0 +ellps=clrk80 +towgs84=725,685,536,0,0,0,0 +units=m +no_defs",
@@ -7805,7 +7805,7 @@ void Projection::_initialize() {
         "+proj=longlat +a=6378249.2 +b=6356514.999904194 +no_defs",
         "+proj=longlat +ellps=clrk80 +no_defs"};
 
-    this->m_epsgDescriptions = {
+        this->m_epsgDescriptions = {
         "Anguilla 1957 / British West Indies Grid",
         "Antigua 1943 / British West Indies Grid",
         "Dominica 1945 / British West Indies Grid",
@@ -14030,5 +14030,7 @@ void Projection::_initialize() {
         "GCS Merchich Degree",
         "GCS Voirol 1875 Degree",
         "GCS Voirol Unifie 1960 Degree"};
+
+  // clang-format off
   // clang-format on
 }
