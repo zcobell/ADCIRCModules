@@ -16,14 +16,12 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#ifndef EPSG_H
-#define EPSG_H
-
 #include "projection.h"
 
 void Projection::_initialize() {
   using namespace std;
   // clang-format off
+  this->m_epsgMapping.reserve(6223);
   this->m_epsgMapping.insert(pair<int,pair<string,string>>(2000,pair<string,string>("+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.999500 +x_0=400000 +y_0=0 +ellps=clrk80 +units=m +no_defs","Anguilla 1957 / British West Indies Grid")));
   this->m_epsgMapping.insert(pair<int,pair<string,string>>(2001,pair<string,string>("+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.999500 +x_0=400000 +y_0=0 +ellps=clrk80 +towgs84=-255,-15,71,0,0,0,0 +units=m +no_defs","Antigua 1943 / British West Indies Grid")));
   this->m_epsgMapping.insert(pair<int,pair<string,string>>(2002,pair<string,string>("+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.999500 +x_0=400000 +y_0=0 +ellps=clrk80 +towgs84=725,685,536,0,0,0,0 +units=m +no_defs","Dominica 1945 / British West Indies Grid")));
@@ -6250,4 +6248,3 @@ void Projection::_initialize() {
   this->m_epsgMapping.insert(pair<int,pair<string,string>>(104305,pair<string,string>("+proj=longlat +ellps=clrk80 +no_defs","GCS Voirol Unifie 1960 Degree")));
   // clang-format on
 }
-#endif  // EPSG_H
