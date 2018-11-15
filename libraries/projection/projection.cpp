@@ -85,11 +85,11 @@ int Projection::transform(int inputEPSG, int outputEPSG,
   assert(input.size() > 0);
   if (input.size() <= 0) return Projection::NoData;
 
-  if (this->m_epsgMapping.find(inputEPSG) == this->m_epsgMapping.end()) {
+  if (this->m_epsgMapping->find(inputEPSG) == this->m_epsgMapping->end()) {
     return NoSuchProjection;
   }
 
-  if (this->m_epsgMapping.find(outputEPSG) == this->m_epsgMapping.end()) {
+  if (this->m_epsgMapping->find(outputEPSG) == this->m_epsgMapping->end()) {
     return NoSuchProjection;
   }
 
@@ -215,7 +215,7 @@ std::string Projection::projInitializationString(int epsg) {
   if (i == std::numeric_limits<size_t>::max()) {
     return "No EPSG found";
   } else {
-    return this->m_epsgInit[i];
+    return std::string(this->m_epsgInit->at(i));
   }
 }
 
@@ -224,7 +224,7 @@ std::string Projection::description(int epsg) {
   if (i == std::numeric_limits<size_t>::max()) {
     return "No EPSG found";
   } else {
-    return this->m_epsgDescriptions[i];
+    return std::string(this->m_epsgDescriptions->at(i));
   }
 }
 
@@ -235,10 +235,10 @@ std::string Projection::projVersion() {
 }
 
 size_t Projection::position(int epsg) {
-  auto it = this->m_epsgMapping.find(epsg);
-  if (it == this->m_epsgMapping.end()) {
+  auto it = this->m_epsgMapping->find(epsg);
+  if (it == this->m_epsgMapping->end()) {
     return std::numeric_limits<size_t>::max();
   } else {
-    return this->m_epsgMapping[epsg];
+    return this->m_epsgMapping->at(epsg);
   }
 }

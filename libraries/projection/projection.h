@@ -76,9 +76,9 @@ class Projection {
 
   size_t position(int epsg);
 
-  std::vector<const char*> m_epsgDescriptions;
-  std::vector<const char*> m_epsgInit;
-  std::unordered_map<int, size_t> m_epsgMapping;
+  const std::vector<const char*> *m_epsgDescriptions;
+  const std::vector<const char*> *m_epsgInit;
+  const std::unordered_map<int, size_t> *m_epsgMapping;
 
 };
 
