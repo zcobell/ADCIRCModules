@@ -79,11 +79,9 @@ class Element {
 
   void getElementCenter(double &xc, double &yc);
 
- private:
-  bool isInsideTriangle(Point location);
-  bool isInsideQuad(Point location);
-  double triangleArea(Point &a, Point &b, Point &c);
+  double area();
 
+ private:
   size_t m_id;
   std::vector<Adcirc::Geometry::Node *> m_nodes;
 };
