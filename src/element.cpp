@@ -19,10 +19,22 @@
 #include "element.h"
 #include <cmath>
 #include "boost/format.hpp"
+#include "boost/geometry.hpp"
 #include "constants.h"
 #include "error.h"
 
 using namespace Adcirc::Geometry;
+namespace bg = boost::geometry;
+typedef bg::model::point<double, 2, bg::cs::cartesian> point_t;
+typedef bg::model::polygon<point_t> polygon_t;
+
+polygon_t element2polygon(std::vector<Node *> n) {
+  polygon_t a;
+  for (auto i : n) {
+    bg::append(a, point_t(i->x(), i->y()));
+  }
+  return a;
+}
 
 /**
  * @brief Default constructor
@@ -212,14 +224,10 @@ double Element::elementSize(bool geodesic) {
  * @param[out] yc y-coordinate of element center
  */
 void Element::getElementCenter(double &xc, double &yc) {
-  xc = 0.0;
-  yc = 0.0;
-  for (auto &n : this->m_nodes) {
-    xc += n->x();
-    yc += n->y();
-  }
-  xc = xc / this->n();
-  yc = yc / this->n();
+  point_t p;
+  bg::centroid(element2polygon(this->m_nodes), p);
+  xc = p.get<0>();
+  yc = p.get<1>();
   return;
 }
 
@@ -297,16 +305,10 @@ std::pair<Node *, Node *> Element::elementLeg(size_t i) {
 }
 
 /**
- * @brief Calculates the area of a triangle described by points a, b, and c
- * @param a First point of triangle
- * @param b Second point of triangle
- * @param c Third point of triangle
+ * @brief Calculates the area of the element
  * @return Area of triangle
  */
-double Element::triangleArea(Point &a, Point &b, Point &c) {
-  return std::abs(a.x() * (b.y() - c.y()) + b.x() * (c.y() - a.y()) +
-                  c.x() * (a.y() - b.y()));
-}
+double Element::area() { return bg::area(element2polygon(this->m_nodes)); }
 
 /**
  * @brief Determine if a point lies within an element
@@ -323,44 +325,6 @@ bool Element::isInside(double x, double y) {
  * @return true if point lies within element, false otherwise
  */
 bool Element::isInside(Point location) {
-  if (this->n() == 3) {
-    return this->isInsideTriangle(location);
-  } else if (this->n() == 4) {
-    return this->isInsideQuad(location);
-  }
-  return false;
-}
-
-/**
- * @brief Checks if a point lies within a triangle
- * @param location location to check
- * @return true if inside, false if outside
- */
-bool Element::isInsideTriangle(Point location) {
-  Point a = this->node(0)->toPoint();
-  Point b = this->node(1)->toPoint();
-  Point c = this->node(2)->toPoint();
-  double s1 = this->triangleArea(a, b, location);
-  double s2 = this->triangleArea(a, c, location);
-  double s3 = this->triangleArea(c, b, location);
-  double ta = this->triangleArea(a, b, c);
-  return (s1 + s2 + s3 <= 1.001 * ta);
-}
-
-/**
- * @brief Checks if a point lies within a quadrilateral
- * @param location location to check
- * @return true if inside, false if outside
- */
-bool Element::isInsideQuad(Point location) {
-  Point a = this->node(0)->toPoint();
-  Point b = this->node(1)->toPoint();
-  Point c = this->node(2)->toPoint();
-  Point d = this->node(3)->toPoint();
-  double s1 = this->triangleArea(a, b, location);
-  double s2 = this->triangleArea(b, c, location);
-  double s3 = this->triangleArea(c, d, location);
-  double s4 = this->triangleArea(d, a, location);
-  double ta = this->triangleArea(a, b, c) + this->triangleArea(c, d, a);
-  return (s1 + s2 + s3 + s4 <= 1.001 * ta);
+  return bg::within(point_t(location.x(), location.y()),
+                    element2polygon(this->m_nodes));
 }
