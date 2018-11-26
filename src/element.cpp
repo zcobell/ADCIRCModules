@@ -28,14 +28,6 @@ namespace bg = boost::geometry;
 typedef bg::model::point<double, 2, bg::cs::cartesian> point_t;
 typedef bg::model::polygon<point_t> polygon_t;
 
-polygon_t element2polygon(std::vector<Node *> n) {
-  polygon_t a;
-  for (auto i : n) {
-    bg::append(a, point_t(i->x(), i->y()));
-  }
-  return a;
-}
-
 /**
  * @brief Default constructor
  */
@@ -219,19 +211,6 @@ double Element::elementSize(bool geodesic) {
 }
 
 /**
- * @brief Computes the center position of the element
- * @param[out] xc x-coordinate of element center
- * @param[out] yc y-coordinate of element center
- */
-void Element::getElementCenter(double &xc, double &yc) {
-  point_t p;
-  bg::centroid(element2polygon(this->m_nodes), p);
-  xc = p.get<0>();
-  yc = p.get<1>();
-  return;
-}
-
-/**
  * @brief Sorts the verticies in clockwise order around the element center
  */
 void Element::sortVerticiesAboutCenter() {
@@ -305,6 +284,34 @@ std::pair<Node *, Node *> Element::elementLeg(size_t i) {
 }
 
 /**
+ * @brief Creates a boost::geometry element from the element
+ * @param n vector of node pointers to use to create the geometry
+ * @return boost::geometry polygon
+ */
+polygon_t element2polygon(std::vector<Node *> n) {
+  polygon_t a;
+  for (auto i : n) {
+    bg::append(a, point_t(i->x(), i->y()));
+  }
+  bg::append(a, point_t(n[0]->x(), n[0]->y()));
+  bg::correct(a);
+  return a;
+}
+
+/**
+ * @brief Computes the center position of the element
+ * @param[out] xc x-coordinate of element center
+ * @param[out] yc y-coordinate of element center
+ */
+void Element::getElementCenter(double &xc, double &yc) {
+  point_t p;
+  bg::centroid(element2polygon(this->m_nodes), p);
+  xc = p.get<0>();
+  yc = p.get<1>();
+  return;
+}
+
+/**
  * @brief Calculates the area of the element
  * @return Area of triangle
  */
@@ -323,6 +330,9 @@ bool Element::isInside(double x, double y) {
 /**
  * @param location Point to check
  * @return true if point lies within element, false otherwise
+ *
+ * This function uses the boost::geometry library to determine
+ * if a point lies within an element
  */
 bool Element::isInside(Point location) {
   return bg::within(point_t(location.x(), location.y()),
