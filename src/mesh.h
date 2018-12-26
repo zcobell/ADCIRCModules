@@ -27,11 +27,10 @@
 #include "node.h"
 
 class QKdtree2;
+class MeshImpl;
 
 namespace Adcirc {
 namespace Geometry {
-
-class MeshImpl;
 
 /**
  * @class Mesh

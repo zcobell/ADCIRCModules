@@ -332,19 +332,19 @@ void OutputFile::setHeader(const std::string& header) {
 }
 
 int OutputFile::getFiletype() {
-  if (Filetypes::checkFiletypeNetcdf3(this->filename())) {
+  if (Adcirc::Output::checkFiletypeNetcdf3(this->filename())) {
     return Adcirc::Output::Netcdf3;
   }
-  if (Filetypes::checkFiletypeNetcdf4(this->filename())) {
+  if (Adcirc::Output::checkFiletypeNetcdf4(this->filename())) {
     return Adcirc::Output::Netcdf4;
   }
-  if (Filetypes::checkFiletypeXdmf(this->filename())) {
+  if (Adcirc::Output::checkFiletypeXdmf(this->filename())) {
     return Adcirc::Output::Xdmf;
   }
-  if (Filetypes::checkFiletypeAsciiFull(this->filename())) {
+  if (Adcirc::Output::checkFiletypeAsciiFull(this->filename())) {
     return Adcirc::Output::ASCIIFull;
   }
-  if (Filetypes::checkFiletypeAsciiSparse(this->filename())) {
+  if (Adcirc::Output::checkFiletypeAsciiSparse(this->filename())) {
     return Adcirc::Output::ASCIISparse;
   }
   return Adcirc::Output::Unknown;

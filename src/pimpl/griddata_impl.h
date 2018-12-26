@@ -35,8 +35,6 @@
 #include <unordered_map>
 #endif
 
-namespace Interpolation {
-
 class GriddataImpl {
  public:
   GriddataImpl();
@@ -164,6 +162,5 @@ class GriddataImpl {
   bool m_showProgressBar;
   bool m_rasterInMemory;
 };
-}  // namespace Interpolation
 
-#endif  // GRIDDATA_H
+#endif  // GRIDDATAIMPL_H

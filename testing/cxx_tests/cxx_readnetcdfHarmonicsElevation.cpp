@@ -22,7 +22,7 @@
 
 int main() {
   using namespace Adcirc::Geometry;
-  using namespace Adcirc::Output;
+  using namespace Adcirc::Harmonics;
 
   std::unique_ptr<HarmonicsOutput> harm(
       new HarmonicsOutput("test_files/fort.53.nc"));

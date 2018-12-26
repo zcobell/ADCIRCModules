@@ -7,9 +7,14 @@
 #include "netcdf.h"
 #include "stringconversion.h"
 
-using namespace Adcirc::Output;
-
-bool Filetypes::checkFiletypeAsciiSparse(const std::string& filename) {
+namespace Adcirc {
+namespace Output {
+/**
+ * @brief Check if the file type is ADCIRC ASCII Sparse
+ * @param filename name of file to check format
+ * @return true if the file format is ADCIRC ASCII Sparse
+ */
+bool checkFiletypeAsciiSparse(const std::string& filename) {
   assert(!filename.empty());
 
   std::fstream fid(filename);
@@ -42,7 +47,12 @@ bool Filetypes::checkFiletypeAsciiSparse(const std::string& filename) {
   }
 }
 
-bool Filetypes::checkFiletypeAsciiFull(const std::string& filename) {
+/**
+ * @brief Check if the file type is ADCIRC ASCII fill
+ * @param filename name of file to check format
+ * @return true if the file format is ADCIRC ASCII full
+ */
+bool checkFiletypeAsciiFull(const std::string& filename) {
   assert(!filename.empty());
 
   std::fstream fid(filename);
@@ -76,7 +86,12 @@ bool Filetypes::checkFiletypeAsciiFull(const std::string& filename) {
   }
 }
 
-bool Filetypes::inquireNetcdfFormat(const std::string& filename, int& format) {
+/**
+ * @brief Check if the file type is netCDF
+ * @param filename name of file to check format
+ * @return true if the file format is netCDF
+ */
+bool inquireNetcdfFormat(const std::string& filename, int& format) {
   int ncid;
   format = Adcirc::Output::Unknown;
   int ierr = nc_open(filename.c_str(), NC_NOWRITE, &ncid);
@@ -92,18 +107,28 @@ bool Filetypes::inquireNetcdfFormat(const std::string& filename, int& format) {
   return true;
 }
 
-bool Filetypes::checkFiletypeNetcdf3(const std::string &filename) {
+/**
+ * @brief Check if the file type is netcdf3
+ * @param filename name of file to check format
+ * @return true if the file format is netCDF3
+ */
+bool checkFiletypeNetcdf3(const std::string& filename) {
   int format;
-  bool b = Filetypes::inquireNetcdfFormat(filename, format);
+  bool b = inquireNetcdfFormat(filename, format);
   if (b && format == NC_FORMAT_CLASSIC) {
     return true;
   }
   return false;
 }
 
-bool Filetypes::checkFiletypeNetcdf4(const std::string &filename) {
+/**
+ * @brief Check if the file type is netCDF4
+ * @param filename name of file to check format
+ * @return true if the file format is netCDF4
+ */
+bool checkFiletypeNetcdf4(const std::string& filename) {
   int format;
-  bool b = Filetypes::inquireNetcdfFormat(filename, format);
+  bool b = inquireNetcdfFormat(filename, format);
   if (b) {
     if (format == NC_FORMAT_NETCDF4_CLASSIC || format == NC_FORMAT_NETCDF4) {
       return true;
@@ -115,9 +140,24 @@ bool Filetypes::checkFiletypeNetcdf4(const std::string &filename) {
   }
 }
 
-bool Filetypes::checkFiletypeXdmf(const std::string& filename) { return false; }
+/**
+ * @brief Check if the file type is ADCIRC XDMF
+ * @param filename name of file to check format
+ * @return true if the file format is XDMF
+ *
+ * [NOT IMPLEMENTED]
+ */
+bool checkFiletypeXdmf(const std::string& filename) { return false; }
 
-bool Filetypes::checkFiletypeAsciiHarmonics(const std::string& filename) {
+/**
+ * @brief Check if the file type is ADCIRC ASCII harmonics
+ * @param filename name of file to check format
+ * @return true if the file format is ADCIRC ASCII Harmonics
+ */
+}  // namespace Output
+
+namespace Harmonics {
+bool checkFiletypeAsciiHarmonics(const std::string& filename) {
   std::fstream fid;
   fid.open(filename);
   if (!fid.is_open()) {
@@ -146,7 +186,12 @@ bool Filetypes::checkFiletypeAsciiHarmonics(const std::string& filename) {
   return true;
 }
 
-bool Filetypes::checkFiletypeNetcdfHarmonics(const std::string &filename) {
+/**
+ * @brief Check if the file type is ADCIRC netCDF harmonics
+ * @param filename name of file to check format
+ * @return true if the file format is ADCIRC netCDF Harmonics
+ */
+bool checkFiletypeNetcdfHarmonics(const std::string& filename) {
   int ncid;
   int ierr = nc_open(filename.c_str(), NC_NOWRITE, &ncid);
   if (ierr != NC_NOERR) {
@@ -167,3 +212,5 @@ bool Filetypes::checkFiletypeNetcdfHarmonics(const std::string &filename) {
   }
   return true;
 }
+}  // namespace Harmonics
+}  // namespace Adcirc

@@ -22,10 +22,10 @@
 
 int main() {
   using namespace Adcirc::Geometry;
-  using namespace Adcirc::Output;
+  using namespace Adcirc::Harmonics;
 
   std::unique_ptr<HarmonicsOutput> harm(
-      new Adcirc::Output::HarmonicsOutput("test_files/fort.53"));
+      new HarmonicsOutput("test_files/fort.53"));
   harm->read();
 
   double m2_amp_value = harm->amplitude("M2")->value(0);

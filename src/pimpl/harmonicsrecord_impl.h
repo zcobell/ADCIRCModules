@@ -16,25 +16,44 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#include "error.h"
-#include <stdexcept>
+#ifndef HARMONICSRECORDIMPL_H
+#define HARMONICSRECORDIMPL_H
+
 #include <string>
+#include <vector>
 
-using namespace Adcirc;
+class HarmonicsRecordImpl {
+ public:
+  HarmonicsRecordImpl();
 
-static const std::string errorHeading("[ADCIRCModules Runtime Error]: ");
+  std::string name() const;
+  void setName(const std::string& name);
 
-static const std::string warningHeading("[ADCIRCModules Warning]: ");
+  double value(size_t index);
+  std::vector<double> values();
 
-void Error::throwError(const std::string &s) {
-  throw std::runtime_error(errorHeading + s);
-}
+  void set(size_t index, double value);
+  void set(const std::vector<double>& value);
 
-void Error::throwError(const std::string &s, const char *file, int line) {
-  throw std::runtime_error(errorHeading + s + " at " + file + ", line " +
-                           std::to_string(line));
-}
+  void resize(size_t numNodes);
 
-void Error::warning(const std::string &s) {
-  std::cerr << warningHeading << s << std::endl;
-}
+  double frequency() const;
+  void setFrequency(double frequency);
+
+  double nodalFactor() const;
+  void setNodalFactor(double nodalFactor);
+
+  double equilibriumArg() const;
+  void setEquilibriumArg(double equilibriumArg);
+
+ private:
+  size_t m_numNodes;
+  std::string m_name;
+  std::vector<double> m_data;
+  double m_frequency;
+  double m_nodalFactor;
+  double m_equilibriumArg;
+};
+
+
+#endif  // HARMONICSRECORD_H

@@ -28,6 +28,8 @@
 #include <unordered_map>
 #endif
 
+class MeshImpl;
+
 namespace Adcirc {
 namespace Geometry {
 
@@ -41,12 +43,10 @@ namespace Geometry {
  *
  */
 
-class MeshImpl;
-
 class ElementTable {
  public:
   ElementTable();
-  ElementTable(Adcirc::Geometry::MeshImpl *mesh);
+  ElementTable(MeshImpl *mesh);
 
   std::vector<Adcirc::Geometry::Element *> elementList(
       Adcirc::Geometry::Node *n);
@@ -61,8 +61,8 @@ class ElementTable {
 
   bool initialized();
 
-  Adcirc::Geometry::MeshImpl *mesh() const;
-  void setMesh(Adcirc::Geometry::MeshImpl *mesh);
+  MeshImpl *mesh() const;
+  void setMesh(MeshImpl *mesh);
 
  private:
 #ifdef USE_GOOGLE_FLAT_MAP
@@ -75,7 +75,7 @@ class ElementTable {
       m_elementTable;
 #endif
 
-  Adcirc::Geometry::MeshImpl *m_mesh;
+  MeshImpl *m_mesh;
 
   bool m_initialized;
 };

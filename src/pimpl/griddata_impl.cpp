@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 
-#include "griddataimpl.h"
+#include "griddata_impl.h"
 #include <algorithm>
 #include <array>
 #include <fstream>

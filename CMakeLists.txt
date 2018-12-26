@@ -150,7 +150,7 @@ IF(SWIG_FOUND)
     FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
     IF(PythonLibs_FOUND)
         FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
-        INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH})
+#        INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH})
         OPTION(PYTHON_TESTING "Test the Python Libraries with CTest" OFF)
         EXECUTE_PROCESS( COMMAND ${PYTHON_EXECUTABLE} -m site --user-site 
                          OUTPUT_VARIABLE temp_PYTHON_SITE_DIRECTORY OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -579,7 +579,6 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/error.cpp
                 ${CMAKE_SOURCE_DIR}/src/filetypes.cpp
                 ${CMAKE_SOURCE_DIR}/src/mesh.cpp 
-                ${CMAKE_SOURCE_DIR}/src/meshimpl.cpp 
                 ${CMAKE_SOURCE_DIR}/src/node.cpp
                 ${CMAKE_SOURCE_DIR}/src/element.cpp
                 ${CMAKE_SOURCE_DIR}/src/boundary.cpp
@@ -595,16 +594,20 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.cpp 
                 ${CMAKE_SOURCE_DIR}/src/elementtable.cpp
                 ${CMAKE_SOURCE_DIR}/src/meshchecker.cpp 
-                ${CMAKE_SOURCE_DIR}/src/multithreading.cpp )
+                ${CMAKE_SOURCE_DIR}/src/multithreading.cpp 
+                ${CMAKE_SOURCE_DIR}/src/pimpl/mesh_impl.cpp 
+                ${CMAKE_SOURCE_DIR}/src/pimpl/harmonicsoutput_impl.cpp 
+                ${CMAKE_SOURCE_DIR}/src/pimpl/harmonicsrecord_impl.cpp )
 
 IF( GDAL_FOUND )
     SET( ADCIRCMODULES_SOURCES ${ADCIRCMODULES_SOURCES} ${CMAKE_SOURCE_DIR}/src/griddata.cpp 
-                                                        ${CMAKE_SOURCE_DIR}/src/griddataimpl.cpp )
+                                                        ${CMAKE_SOURCE_DIR}/src/pimpl/griddata_impl.cpp )
 ENDIF( GDAL_FOUND )
 
 ADD_LIBRARY( adcircmodules SHARED ${ADCIRCMODULES_SOURCES} )
 
 TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
+                                ${CMAKE_SOURCE_DIR}/src/pimpl
                                 ${CMAKE_SOURCE_DIR}/libraries/point
                                 ${CMAKE_SOURCE_DIR}/libraries/kdtree2
                                 ${CMAKE_SOURCE_DIR}/libraries/projection
@@ -741,7 +744,7 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
     ENDIF(WIN32)
 
     ADD_LIBRARY( PyAdcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx )
-    TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_DIRECTORIES} ${CMAKE_SOURCE_DIR}/src 
+    TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src 
                                     ${CMAKE_SOURCE_DIR}/libraries/point ${CMAKE_SOURCE_DIR}/libraries/kdtree2
                                     ${CMAKE_SOURCE_DIR}/libraries/projection ${CMAKE_SOURCE_DIR}/libraries/constants 
                                     ${CMAKE_SOURCE_DIR}/libraries/rasterdata )

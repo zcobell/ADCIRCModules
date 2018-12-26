@@ -17,14 +17,14 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "griddata.h"
-#include "griddataimpl.h"
+#include "pimpl/griddata_impl.h"
 
 using namespace Interpolation;
 
-Griddata::Griddata() : m_impl(new Interpolation::GriddataImpl) {}
+Griddata::Griddata() : m_impl(new GriddataImpl) {}
 
 Griddata::Griddata(Adcirc::Geometry::Mesh *mesh, std::string rasterFile)
-    : m_impl(new Interpolation::GriddataImpl(mesh, rasterFile)) {}
+    : m_impl(new GriddataImpl(mesh, rasterFile)) {}
 
 Griddata::~Griddata() { delete this->m_impl; }
 

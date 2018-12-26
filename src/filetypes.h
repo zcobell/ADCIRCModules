@@ -4,6 +4,13 @@
 #include <string>
 
 namespace Adcirc {
+
+namespace Harmonics {
+enum HarmonicsFormat { ASCII, NETCDF4 };
+bool checkFiletypeAsciiHarmonics(const std::string &filename);
+bool checkFiletypeNetcdfHarmonics(const std::string &filename);
+}  // namespace Harmonics
+
 namespace Output {
 
 enum _fileTypes {
@@ -16,27 +23,12 @@ enum _fileTypes {
   Unknown
 };
 
-/**
- * @class Filetypes
- * @author Zachary Cobell
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
- * is released under the terms of the GNU General Public License v3
- * @brief The Filetypes class is used to determine the type of adcirc format
- * output file that is being read
- *
- */
-class Filetypes {
- public:
-  Filetypes() = default;
-  static bool checkFiletypeAsciiFull(const std::string &filename);
-  static bool checkFiletypeAsciiSparse(const std::string &filename);
-  static bool checkFiletypeAsciiHarmonics(const std::string &filename);
-  static bool checkFiletypeNetcdf3(const std::string &filename);
-  static bool checkFiletypeNetcdf4(const std::string &filename);
-  static bool checkFiletypeNetcdfHarmonics(const std::string &filename);
-  static bool checkFiletypeXdmf(const std::string &filename);
-  static bool inquireNetcdfFormat(const std::string &filename, int &format);
-};
+bool checkFiletypeAsciiFull(const std::string &filename);
+bool checkFiletypeAsciiSparse(const std::string &filename);
+bool checkFiletypeNetcdf3(const std::string &filename);
+bool checkFiletypeNetcdf4(const std::string &filename);
+bool checkFiletypeXdmf(const std::string &filename);
+bool inquireNetcdfFormat(const std::string &filename, int &format);
 
 }  // namespace Output
 }  // namespace Adcirc

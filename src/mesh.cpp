@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "mesh.h"
-#include "meshimpl.h"
+#include "pimpl/mesh_impl.h"
 
 using namespace Adcirc::Geometry;
 

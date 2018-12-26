@@ -18,7 +18,7 @@
 //------------------------------------------------------------------------*/
 #include "elementtable.h"
 #include "error.h"
-#include "meshimpl.h"
+#include "pimpl/mesh_impl.h"
 
 using namespace Adcirc::Geometry;
 
@@ -34,7 +34,7 @@ ElementTable::ElementTable() {
  * @brief Constructor with mesh as a parameter
  * @param mesh sets the mesh used to generate the ElementTable
  */
-ElementTable::ElementTable(Adcirc::Geometry::MeshImpl *mesh) {
+ElementTable::ElementTable(MeshImpl *mesh) {
   this->m_mesh = mesh;
   this->m_initialized = false;
 }
@@ -43,13 +43,13 @@ ElementTable::ElementTable(Adcirc::Geometry::MeshImpl *mesh) {
  * @brief Returns the pointer to the mesh used to build the table
  * @return pointer to mesh used in this table
  */
-Adcirc::Geometry::MeshImpl *ElementTable::mesh() const { return this->m_mesh; }
+MeshImpl *ElementTable::mesh() const { return this->m_mesh; }
 
 /**
  * @brief Sets the mesh used in the element table
  * @param mesh to use to build the table
  */
-void ElementTable::setMesh(Adcirc::Geometry::MeshImpl *mesh) {
+void ElementTable::setMesh(MeshImpl *mesh) {
   this->m_mesh = mesh;
 }
 

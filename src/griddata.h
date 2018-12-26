@@ -25,9 +25,9 @@
 #include <vector>
 #include "interpolationmethods.h"
 
-namespace Interpolation {
-
 class GriddataImpl;
+
+namespace Interpolation {
 
 /**
  * @class Griddata

@@ -39,9 +39,6 @@
 #include <unordered_map>
 #endif
 
-namespace Adcirc {
-namespace Geometry {
-
 class MeshImpl {
  public:
   explicit MeshImpl();
@@ -56,9 +53,11 @@ class MeshImpl {
   std::vector<std::vector<size_t>> connectivity();
   std::vector<std::vector<double>> orthogonality();
 
-  void read(MeshFormat format = MESH_UNKNOWN);
+  void read(
+      Adcirc::Geometry::MeshFormat format = Adcirc::Geometry::MESH_UNKNOWN);
 
-  void write(const std::string &outputFile, MeshFormat = MESH_UNKNOWN);
+  void write(const std::string &outputFile,
+             Adcirc::Geometry::MeshFormat = Adcirc::Geometry::MESH_UNKNOWN);
 
   std::string filename() const;
   void setFilename(const std::string &filename);
@@ -151,7 +150,8 @@ class MeshImpl {
       Adcirc::Geometry::Node *n);
 
  private:
-  static MeshFormat getMeshFormat(const std::string &filename);
+  static Adcirc::Geometry::MeshFormat getMeshFormat(
+      const std::string &filename);
   void readAdcircMesh();
   void readAdcircMeshHeader(std::fstream &fid);
   void readAdcircNodes(std::fstream &fid);
@@ -173,7 +173,9 @@ class MeshImpl {
   void write2dmMesh(const std::string &filename);
   void writeDflowMesh(const std::string &filename);
 
-  std::vector<std::pair<Node *, Node *>> generateLinkTable();
+  std::vector<std::pair<Adcirc::Geometry::Node *, Adcirc::Geometry::Node *>>
+  generateLinkTable();
+
   size_t getMaxNodesPerElement();
   void buildNodeLookupTable();
 
@@ -203,12 +205,10 @@ class MeshImpl {
   bool m_nodeOrderingLogical;
   bool m_elementOrderingLogical;
 
-  ElementTable m_elementTable;
+  Adcirc::Geometry::ElementTable m_elementTable;
 
   std::unique_ptr<QKdtree2> m_nodalSearchTree;
   std::unique_ptr<QKdtree2> m_elementalSearchTree;
 };
-}  // namespace Geometry
-}  // namespace Adcirc
 
 #endif  // MESHIMPL_H
