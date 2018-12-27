@@ -18,7 +18,7 @@
 //------------------------------------------------------------------------//
 #include <iostream>
 #include <memory>
-#include "adcirc.h"
+#include "adcircmodules.h"
 
 int main(int argc, char *argv[]) {
   using namespace Adcirc::Geometry;

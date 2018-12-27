@@ -118,7 +118,6 @@ HEADERS += \
     io.h \
     boundary.h \
     element.h \
-    adcirc.h \
     node.h \
     attribute.h \
     attributemetadata.h \
@@ -142,7 +141,8 @@ HEADERS += \
     pimpl/griddata_impl.h \
     pimpl/harmonicsrecord_impl.h \
     pimpl/nodalattributes_impl.h \
-    nodalattributes.h
+    nodalattributes.h \
+    adcircmodules.h
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib

@@ -18,7 +18,7 @@
 //------------------------------------------------------------------------//
 #include <iostream>
 #include <memory>
-#include "adcirc.h"
+#include "adcircmodules.h"
 #include <vector>
 
 int main() {

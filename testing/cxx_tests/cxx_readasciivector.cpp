@@ -19,7 +19,7 @@
 #include <cmath>
 #include <iostream>
 #include <memory>
-#include "adcirc.h"
+#include "adcircmodules.h"
 
 int main() {
   using namespace Adcirc::Output;

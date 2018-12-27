@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCIRC_H
-#define ADCIRC_H
+#ifndef ADCIRCMODULES_H
+#define ADCIRCMODULES_H
 
 #include "config.h"
 #include "constants.h"
@@ -35,4 +35,4 @@
 #include "point.h"
 #include "projection.h"
 
-#endif  // ADCIRC_H
+#endif  // ADCIRCMODULES_H

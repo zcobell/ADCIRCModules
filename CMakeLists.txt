@@ -632,7 +632,7 @@ ENDIF(GDAL_FOUND)
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING} SOVERSION ${ADCIRCMODULES_VERSION_MAJOR} )
 
-SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcirc.h
+SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/attribute.h
                 ${CMAKE_SOURCE_DIR}/src/attributemetadata.h
                 ${CMAKE_SOURCE_DIR}/src/boundary.h
