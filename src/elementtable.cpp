@@ -18,26 +18,32 @@
 //------------------------------------------------------------------------*/
 #include "elementtable.h"
 #include "error.h"
+#include "mesh.h"
 #include "pimpl/mesh_impl.h"
 
 using namespace Adcirc::Geometry;
 
+namespace Adcirc {
+namespace Geometry {
+
 /**
  * @brief Default constructor
  */
-ElementTable::ElementTable() {
-  this->m_mesh = nullptr;
-  this->m_initialized = false;
-}
+ElementTable::ElementTable() : m_mesh(nullptr), m_initialized(false) {}
+
+/**
+ * @brief Constructor with meshimpl as a parameter
+ * @param mesh sets the mesh used to generate the ElementTable
+ */
+ElementTable::ElementTable(MeshImpl *mesh)
+    : m_mesh(mesh), m_initialized(false) {}
 
 /**
  * @brief Constructor with mesh as a parameter
  * @param mesh sets the mesh used to generate the ElementTable
  */
-ElementTable::ElementTable(MeshImpl *mesh) {
-  this->m_mesh = mesh;
-  this->m_initialized = false;
-}
+ElementTable::ElementTable(Adcirc::Geometry::Mesh *mesh)
+    : m_mesh(mesh->m_impl), m_initialized(false) {}
 
 /**
  * @brief Returns the pointer to the mesh used to build the table
@@ -49,9 +55,7 @@ MeshImpl *ElementTable::mesh() const { return this->m_mesh; }
  * @brief Sets the mesh used in the element table
  * @param mesh to use to build the table
  */
-void ElementTable::setMesh(MeshImpl *mesh) {
-  this->m_mesh = mesh;
-}
+void ElementTable::setMesh(MeshImpl *mesh) { this->m_mesh = mesh; }
 
 /**
  * @brief Begin building the table
@@ -150,3 +154,6 @@ Adcirc::Geometry::Element *ElementTable::elementTable(size_t nodeIndex,
 }
 
 bool ElementTable::initialized() { return this->m_initialized; }
+
+}  // namespace Geometry
+}  // namespace Adcirc

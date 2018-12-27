@@ -92,7 +92,6 @@ SOURCES += \
     node.cpp \
     attribute.cpp \
     attributemetadata.cpp \
-    nodalattributes.cpp \
     outputfile.cpp \
     outputrecord.cpp \
     config.cpp \
@@ -103,12 +102,14 @@ SOURCES += \
     multithreading.cpp \
     griddata.cpp \
     mesh.cpp \
+    harmonicsoutput.cpp \
+    harmonicsrecord.cpp \
     pimpl/griddata_impl.cpp \
     pimpl/mesh_impl.cpp \
     pimpl/harmonicsoutput_impl.cpp \
     pimpl/harmonicsrecord_impl.cpp \
-    harmonicsoutput.cpp \
-    harmonicsrecord.cpp
+    pimpl/nodalattributes_impl.cpp \
+    nodalattributes.cpp
 
 HEADERS += \
     adcircmodules_global.h \
@@ -121,7 +122,6 @@ HEADERS += \
     node.h \
     attribute.h \
     attributemetadata.h \
-    nodalattributes.h \
     outputfile.h \
     outputrecord.h \
     adcirc_codes.h \
@@ -135,12 +135,14 @@ HEADERS += \
     interpolationmethods.h \
     meshformats.h \
     mesh.h \
+    harmonicsoutput.h \
+    harmonicsrecord.h \
     pimpl/harmonicsoutput_impl.h \
     pimpl/mesh_impl.h \
     pimpl/griddata_impl.h \
     pimpl/harmonicsrecord_impl.h \
-    harmonicsoutput.h \
-    harmonicsrecord.h
+    pimpl/nodalattributes_impl.h \
+    nodalattributes.h
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib

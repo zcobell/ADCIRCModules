@@ -16,25 +16,35 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
+#include "adcircmodules_global.h"
 #include "mesh.h"
+
+namespace Adcirc {
+
+namespace Utility {
 
 class MeshChecker {
  public:
-  MeshChecker(Adcirc::Geometry::Mesh *mesh);
+  ADCIRCMODULES_EXPORT MeshChecker(Adcirc::Geometry::Mesh *mesh);
 
-  bool checkMesh();
+  bool ADCIRCMODULES_EXPORT checkMesh();
 
-  static bool checkLeveeHeights(Adcirc::Geometry::Mesh *mesh,
-                                double minimumCrestElevationOverTopography);
-  static bool checkNodeNumbering(Adcirc::Geometry::Mesh *mesh);
-  static bool checkElementNumbering(Adcirc::Geometry::Mesh *mesh);
-  static bool checkNodalElevations(Adcirc::Geometry::Mesh *mesh,
-                                   double minimumNodalelevation);
-  static bool checkOverlappingElements(Adcirc::Geometry::Mesh *mesh);
-  static bool checkDisjointNodes(Adcirc::Geometry::Mesh *mesh);
-  static bool checkPipeHeights(Adcirc::Geometry::Mesh *mesh);
-  static bool checkElementSizes(Adcirc::Geometry::Mesh *mesh,
-                                double minimumElementSize);
+  static bool ADCIRCMODULES_EXPORT checkLeveeHeights(
+      Adcirc::Geometry::Mesh *mesh, double minimumCrestElevationOverTopography);
+  static bool ADCIRCMODULES_EXPORT
+  checkNodeNumbering(Adcirc::Geometry::Mesh *mesh);
+  static bool ADCIRCMODULES_EXPORT
+  checkElementNumbering(Adcirc::Geometry::Mesh *mesh);
+  static bool ADCIRCMODULES_EXPORT checkNodalElevations(
+      Adcirc::Geometry::Mesh *mesh, double minimumNodalelevation);
+  static bool ADCIRCMODULES_EXPORT
+  checkOverlappingElements(Adcirc::Geometry::Mesh *mesh);
+  static bool ADCIRCMODULES_EXPORT
+  checkDisjointNodes(Adcirc::Geometry::Mesh *mesh);
+  static bool ADCIRCMODULES_EXPORT
+  checkPipeHeights(Adcirc::Geometry::Mesh *mesh);
+  static bool ADCIRCMODULES_EXPORT
+  checkElementSizes(Adcirc::Geometry::Mesh *mesh, double minimumElementSize);
 
  private:
   Adcirc::Geometry::Mesh *m_mesh;
@@ -43,3 +53,5 @@ class MeshChecker {
       Adcirc::Geometry::Boundary *bc, int index,
       double minimumCrestElevationOverTopography);
 };
+}  // namespace Utility
+}  // namespace Adcirc

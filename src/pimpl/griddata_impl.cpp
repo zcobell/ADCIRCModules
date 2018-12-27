@@ -60,38 +60,37 @@ bool GriddataImpl::getKeyValue(unsigned short key, double &value) {
   return true;
 }
 
-GriddataImpl::GriddataImpl() {
-  this->m_raster.reset(nullptr);
-  this->m_rasterFile = std::string();
-  this->m_interpolationFlags = std::vector<int>();
-  this->m_filterSize = std::vector<double>();
-  this->m_defaultValue = -9999.0;
-  this->m_epsg = 4326;
-  this->m_datumShift = 0.0;
-  this->m_showProgressBar = false;
-  this->m_rasterMultiplier = 1.0;
-  this->m_calculateDwindPtr = nullptr;
-  this->m_calculatePointPtr = nullptr;
-}
-GriddataImpl::GriddataImpl(Mesh *mesh, std::string rasterFile) {
-  this->m_mesh = mesh;
-  this->m_rasterFile = rasterFile;
+GriddataImpl::GriddataImpl()
+    : m_mesh(nullptr),
+      m_raster(nullptr),
+      m_rasterFile(std::string()),
+      m_interpolationFlags(std::vector<int>()),
+      m_filterSize(std::vector<double>()),
+      m_defaultValue(-9999.0),
+      m_epsg(4326),
+      m_datumShift(0.0),
+      m_showProgressBar(false),
+      m_rasterMultiplier(1.0),
+      m_calculateDwindPtr(nullptr),
+      m_calculatePointPtr(nullptr) {}
+
+GriddataImpl::GriddataImpl(Mesh *mesh, std::string rasterFile)
+    : m_mesh(mesh),
+      m_rasterFile(rasterFile),
+      m_defaultValue(-9999.0),
+      m_epsg(4326),
+      m_datumShift(0.0),
+      m_showProgressBar(false),
+      m_rasterMultiplier(1.0),
+      m_calculateDwindPtr(nullptr),
+      m_calculatePointPtr(nullptr) {
   this->m_raster.reset(new Rasterdata(this->m_rasterFile));
   this->m_interpolationFlags.resize(this->m_mesh->numNodes());
   std::fill(this->m_interpolationFlags.begin(),
             this->m_interpolationFlags.end(), Average);
   this->m_filterSize.resize(this->m_mesh->numNodes());
   std::fill(this->m_filterSize.begin(), this->m_filterSize.end(), 1.0);
-  this->m_defaultValue = -9999;
-  this->m_epsg = 4326;
-  this->m_showProgressBar = false;
-  this->m_rasterMultiplier = 1.0;
-  this->m_datumShift = 0.0;
-  this->m_calculateDwindPtr = nullptr;
-  this->m_calculatePointPtr = nullptr;
 }
-
-GriddataImpl::~GriddataImpl() {}
 
 std::string GriddataImpl::rasterFile() const { return this->m_rasterFile; }
 
@@ -126,7 +125,7 @@ void GriddataImpl::readLookupTable(const std::string &lookupTableFile) {
     if (l.length() == 0) {
       break;
     }
-    std::vector<std::string> ls = split::stringSplitToVector(l);
+    std::vector<std::string> ls = Split::stringSplitToVector(l);
     if (ls.size() < 2) {
       fid.close();
       adcircmodules_throw_exception("Could not read the lookup table.");

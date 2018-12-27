@@ -30,6 +30,11 @@
 #   else
 #       define DLL_LOCAL
 #   endif
+#elif defined(SWIG)
+// When compiling the SWIG interface,
+// ignore the DLL_IMPORT/DLL_EXPORT Macros
+#   define DLL_EXPORT
+#   define DLL_IMPORT
 #else
 #   error("Don't know how to export shared object libraries")
 #endif

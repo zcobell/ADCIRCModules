@@ -56,48 +56,52 @@ namespace Interpolation {
  */
 class Griddata {
  public:
-  Griddata();
-  Griddata(Adcirc::Geometry::Mesh *mesh, std::string rasterFile);
-  ~Griddata();
+  ADCIRCMODULES_EXPORT Griddata();
+  ADCIRCMODULES_EXPORT Griddata(Adcirc::Geometry::Mesh *mesh,
+                                std::string rasterFile);
+  ADCIRCMODULES_EXPORT ~Griddata();
 
-  std::string rasterFile() const;
-  void setRasterFile(const std::string &rasterFile);
+  std::string ADCIRCMODULES_EXPORT rasterFile() const;
+  void ADCIRCMODULES_EXPORT setRasterFile(const std::string &rasterFile);
 
-  void readLookupTable(const std::string &lookupTableFile);
+  void ADCIRCMODULES_EXPORT readLookupTable(const std::string &lookupTableFile);
 
-  std::vector<int> interpolationFlags() const;
-  void setInterpolationFlags(const std::vector<int> &interpolationFlags);
-  void setInterpolationFlags(int interpolationFlag);
-  int interpolationFlag(size_t index);
-  void setInterpolationFlag(size_t index, int flag);
+  std::vector<int> ADCIRCMODULES_EXPORT interpolationFlags() const;
+  void ADCIRCMODULES_EXPORT
+  setInterpolationFlags(const std::vector<int> &interpolationFlags);
+  void ADCIRCMODULES_EXPORT setInterpolationFlags(int interpolationFlag);
+  int ADCIRCMODULES_EXPORT interpolationFlag(size_t index);
+  void ADCIRCMODULES_EXPORT setInterpolationFlag(size_t index, int flag);
 
-  std::vector<double> filterSizes() const;
-  void setFilterSizes(const std::vector<double> &filterSize);
-  void setFilterSizes(double filterSize);
-  double filterSize(size_t index);
-  void setFilterSize(size_t index, double filterSize);
+  std::vector<double> ADCIRCMODULES_EXPORT filterSizes() const;
+  void ADCIRCMODULES_EXPORT
+  setFilterSizes(const std::vector<double> &filterSize);
+  void ADCIRCMODULES_EXPORT setFilterSizes(double filterSize);
+  double ADCIRCMODULES_EXPORT filterSize(size_t index);
+  void ADCIRCMODULES_EXPORT setFilterSize(size_t index, double filterSize);
 
-  double defaultValue() const;
-  void setDefaultValue(double defaultValue);
+  double ADCIRCMODULES_EXPORT defaultValue() const;
+  void ADCIRCMODULES_EXPORT setDefaultValue(double defaultValue);
 
-  std::vector<double> computeValuesFromRaster(bool useLookupTable = false);
-  std::vector<std::vector<double>> computeDirectionalWindReduction(
-      bool useLookupTable = false);
+  std::vector<double> ADCIRCMODULES_EXPORT
+  computeValuesFromRaster(bool useLookupTable = false);
+  std::vector<std::vector<double>> ADCIRCMODULES_EXPORT
+  computeDirectionalWindReduction(bool useLookupTable = false);
 
-  int epsg() const;
-  void setEpsg(int epsg);
+  int ADCIRCMODULES_EXPORT epsg() const;
+  void ADCIRCMODULES_EXPORT setEpsg(int epsg);
 
-  bool showProgressBar() const;
-  void setShowProgressBar(bool showProgressBar);
+  bool ADCIRCMODULES_EXPORT showProgressBar() const;
+  void ADCIRCMODULES_EXPORT setShowProgressBar(bool showProgressBar);
 
-  double rasterMultiplier() const;
-  void setRasterMultiplier(double rasterMultiplier);
+  double ADCIRCMODULES_EXPORT rasterMultiplier() const;
+  void ADCIRCMODULES_EXPORT setRasterMultiplier(double rasterMultiplier);
 
-  bool rasterInMemory() const;
-  void setRasterInMemory(bool rasterInMemory);
+  bool ADCIRCMODULES_EXPORT rasterInMemory() const;
+  void ADCIRCMODULES_EXPORT setRasterInMemory(bool rasterInMemory);
 
-  double datumShift() const;
-  void setDatumShift(double datumShift);
+  double ADCIRCMODULES_EXPORT datumShift() const;
+  void ADCIRCMODULES_EXPORT setDatumShift(double datumShift);
 
  private:
   GriddataImpl *m_impl;

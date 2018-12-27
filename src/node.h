@@ -38,27 +38,27 @@ namespace Geometry {
 
 class Node {
  public:
-  explicit Node();
-  explicit Node(size_t id, double x, double y, double z);
+  ADCIRCMODULES_EXPORT Node();
+  ADCIRCMODULES_EXPORT Node(size_t id, double x, double y, double z);
 
-  void setNode(size_t id, double x, double y, double z);
+  void ADCIRCMODULES_EXPORT setNode(size_t id, double x, double y, double z);
 
-  double x() const;
-  void setX(double x);
+  double ADCIRCMODULES_EXPORT x() const;
+  void ADCIRCMODULES_EXPORT setX(double x);
 
-  double y() const;
-  void setY(double y);
+  double ADCIRCMODULES_EXPORT y() const;
+  void ADCIRCMODULES_EXPORT setY(double y);
 
-  double z() const;
-  void setZ(double z);
+  double ADCIRCMODULES_EXPORT z() const;
+  void ADCIRCMODULES_EXPORT setZ(double z);
 
-  size_t id() const;
-  void setId(size_t id);
+  size_t ADCIRCMODULES_EXPORT id() const;
+  void ADCIRCMODULES_EXPORT setId(size_t id);
 
-  std::string toAdcircString(bool geographicCoordinates);
-  std::string to2dmString(bool geographicCoordinates);
+  std::string ADCIRCMODULES_EXPORT toAdcircString(bool geographicCoordinates);
+  std::string ADCIRCMODULES_EXPORT to2dmString(bool geographicCoordinates);
 
-  Point toPoint();
+  Point ADCIRCMODULES_EXPORT toPoint();
 
  private:
   size_t m_id;  /// Integer name of a mesh node

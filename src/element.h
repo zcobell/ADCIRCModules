@@ -42,44 +42,48 @@ namespace Geometry {
 
 class Element {
  public:
-  explicit Element();
-  explicit Element(size_t id, Adcirc::Geometry::Node *n1,
-                   Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3);
-  explicit Element(size_t id, Adcirc::Geometry::Node *n1,
-                   Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3,
-                   Adcirc::Geometry::Node *n4);
+  ADCIRCMODULES_EXPORT Element();
+  ADCIRCMODULES_EXPORT Element(size_t id, Adcirc::Geometry::Node *n1,
+                               Adcirc::Geometry::Node *n2,
+                               Adcirc::Geometry::Node *n3);
+  ADCIRCMODULES_EXPORT Element(size_t id, Adcirc::Geometry::Node *n1,
+                               Adcirc::Geometry::Node *n2,
+                               Adcirc::Geometry::Node *n3,
+                               Adcirc::Geometry::Node *n4);
 
-  void setElement(size_t id, Adcirc::Geometry::Node *n1,
-                  Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3);
-  void setElement(size_t id, Adcirc::Geometry::Node *n1,
-                  Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3,
-                  Adcirc::Geometry::Node *n4);
+  void ADCIRCMODULES_EXPORT setElement(size_t id, Adcirc::Geometry::Node *n1,
+                                       Adcirc::Geometry::Node *n2,
+                                       Adcirc::Geometry::Node *n3);
+  void ADCIRCMODULES_EXPORT setElement(size_t id, Adcirc::Geometry::Node *n1,
+                                       Adcirc::Geometry::Node *n2,
+                                       Adcirc::Geometry::Node *n3,
+                                       Adcirc::Geometry::Node *n4);
 
-  int n() const;
-  void resize(size_t nVertex);
+  int ADCIRCMODULES_EXPORT n() const;
+  void ADCIRCMODULES_EXPORT resize(size_t nVertex);
 
-  Adcirc::Geometry::Node *node(int i);
-  void setNode(int i, Adcirc::Geometry::Node *node);
+  Adcirc::Geometry::Node ADCIRCMODULES_EXPORT *node(int i);
+  void ADCIRCMODULES_EXPORT setNode(int i, Adcirc::Geometry::Node *node);
 
-  size_t id() const;
-  void setId(size_t id);
+  size_t ADCIRCMODULES_EXPORT id() const;
+  void ADCIRCMODULES_EXPORT setId(size_t id);
 
-  std::string toAdcircString();
-  std::string to2dmString();
+  std::string ADCIRCMODULES_EXPORT toAdcircString();
+  std::string ADCIRCMODULES_EXPORT to2dmString();
 
-  bool isInside(Point location);
-  bool isInside(double x, double y);
+  bool ADCIRCMODULES_EXPORT isInside(Point location);
+  bool ADCIRCMODULES_EXPORT isInside(double x, double y);
 
-  double elementSize(bool geodesic = true);
+  double ADCIRCMODULES_EXPORT elementSize(bool geodesic = true);
 
-  void sortVerticiesAboutCenter();
+  void ADCIRCMODULES_EXPORT sortVerticiesAboutCenter();
 
-  std::pair<Adcirc::Geometry::Node *, Adcirc::Geometry::Node *> elementLeg(
-      size_t i);
+  std::pair<Adcirc::Geometry::Node *, Adcirc::Geometry::Node *>
+      ADCIRCMODULES_EXPORT elementLeg(size_t i);
 
-  void getElementCenter(double &xc, double &yc);
+  void ADCIRCMODULES_EXPORT getElementCenter(double &xc, double &yc);
 
-  double area();
+  double ADCIRCMODULES_EXPORT area();
 
  private:
   size_t m_id;

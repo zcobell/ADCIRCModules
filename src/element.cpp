@@ -31,21 +31,7 @@ typedef bg::model::polygon<point_t> polygon_t;
 /**
  * @brief Default constructor
  */
-Element::Element() {
-  this->m_id = 0;
-  this->resize(3);
-}
-
-/**
- * @brief Resizes the internal array of verticies
- * @param nVertex number of verticies. Must be 3 or 4.
- */
-void Element::resize(size_t nVertex) {
-  if (nVertex != 3 && nVertex != 4) {
-    adcircmodules_throw_exception("Invalid number of verticies");
-  }
-  this->m_nodes.resize(nVertex);
-}
+Element::Element() : m_id(0) { this->resize(3); }
 
 /**
  * @brief Constructor using references to three Node objects
@@ -54,9 +40,8 @@ void Element::resize(size_t nVertex) {
  * @param n2 pointer to node 2
  * @param n3 pointer to node 3
  */
-Element::Element(size_t id, Node *n1, Node *n2, Node *n3) {
+Element::Element(size_t id, Node *n1, Node *n2, Node *n3) : m_id(id) {
   this->resize(3);
-  this->m_id = id;
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;
   this->m_nodes[2] = n3;
@@ -70,13 +55,23 @@ Element::Element(size_t id, Node *n1, Node *n2, Node *n3) {
  * @param n3 pointer to node 3
  * @param n4 pointer to node 4
  */
-Element::Element(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) {
+Element::Element(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) : m_id(id) {
   this->resize(4);
-  this->m_id = id;
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;
   this->m_nodes[2] = n3;
   this->m_nodes[3] = n4;
+}
+
+/**
+ * @brief Resizes the internal array of verticies
+ * @param nVertex number of verticies. Must be 3 or 4.
+ */
+void Element::resize(size_t nVertex) {
+  if (nVertex != 3 && nVertex != 4) {
+    adcircmodules_throw_exception("Invalid number of verticies");
+  }
+  this->m_nodes.resize(nVertex);
 }
 
 /**

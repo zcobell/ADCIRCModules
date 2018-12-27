@@ -21,7 +21,6 @@
 
 #include <iostream>
 #include <string>
-#include "adcircmodules_global.h"
 
 namespace Adcirc {
 

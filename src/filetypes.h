@@ -6,7 +6,7 @@
 namespace Adcirc {
 
 namespace Harmonics {
-enum HarmonicsFormat { ASCII, NETCDF4 };
+enum HarmonicsFormat { ASCII = 0x101, NETCDF4 = 0x102, Unknown = 0x999 };
 bool checkFiletypeAsciiHarmonics(const std::string &filename);
 bool checkFiletypeNetcdfHarmonics(const std::string &filename);
 }  // namespace Harmonics
@@ -14,13 +14,13 @@ bool checkFiletypeNetcdfHarmonics(const std::string &filename);
 namespace Output {
 
 enum _fileTypes {
-  ASCIIFull,
-  ASCIISparse,
-  ASCIIHarmonics,
-  Netcdf3,
-  Netcdf4,
-  Xdmf,
-  Unknown
+  ASCIIFull = 0x001,
+  ASCIISparse = 0x002,
+  ASCIIHarmonics = 0x003,
+  Netcdf3 = 0x004,
+  Netcdf4 = 0x005,
+  Xdmf = 0x006,
+  Unknown = 0x999
 };
 
 bool checkFiletypeAsciiFull(const std::string &filename);

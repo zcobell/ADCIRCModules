@@ -20,11 +20,11 @@
 #include <stdexcept>
 #include <string>
 
-using namespace Adcirc;
-
 static const std::string errorHeading("[ADCIRCModules Runtime Error]: ");
 
 static const std::string warningHeading("[ADCIRCModules Warning]: ");
+
+namespace Adcirc {
 
 void Error::throwError(const std::string &s) {
   throw std::runtime_error(errorHeading + s);
@@ -38,3 +38,5 @@ void Error::throwError(const std::string &s, const char *file, int line) {
 void Error::warning(const std::string &s) {
   std::cerr << warningHeading << s << std::endl;
 }
+
+}  // namespace Adcirc

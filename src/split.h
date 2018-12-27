@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-class split {
+class Split {
  public:
   static std::vector<std::string> stringSplitToVector(std::string s,
                                                       const std::string& delim);

@@ -21,7 +21,7 @@
 #include "boost/algorithm/string/split.hpp"
 #include "boost/algorithm/string/trim.hpp"
 
-std::vector<std::string> split::stringSplitToVector(std::string s,
+std::vector<std::string> Split::stringSplitToVector(std::string s,
                                                     const std::string &delim) {
   std::vector<std::string> elems;
   boost::trim_if(s, boost::is_any_of(delim));
@@ -30,7 +30,7 @@ std::vector<std::string> split::stringSplitToVector(std::string s,
   return elems;
 }
 
-std::vector<std::string> split::stringSplitToVector(std::string s) {
+std::vector<std::string> Split::stringSplitToVector(std::string s) {
   std::vector<std::string> elems;
   boost::trim_if(s, boost::is_any_of(" "));
   boost::algorithm::split(elems, s, boost::is_any_of(" "),

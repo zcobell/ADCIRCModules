@@ -71,18 +71,18 @@ static const std::vector<std::string> netcdfVarNames = {"sigmat",
                                                         "swan_TMM10",
                                                         "swan_TMM10_max"};
 
-OutputFile::OutputFile(const std::string& filename) : m_filename(filename) {
-  this->m_currentSnap = 0;
-  this->m_numNodes = 0;
-  this->m_numSnaps = 0;
-  this->m_dt = 0;
-  this->m_dit = 0;
-  this->m_open = false;
-  this->m_isVector = false;
-  this->m_isMax = false;
-  this->m_defaultValue = Adcirc::Output::DefaultOutputValue;
-  this->m_filetype = Adcirc::Output::Unknown;
-}
+OutputFile::OutputFile(const std::string& filename)
+    : m_filename(filename),
+      m_currentSnap(0),
+      m_numNodes(0),
+      m_numSnaps(0),
+      m_dt(0),
+      m_dit(0),
+      m_open(false),
+      m_isVector(false),
+      m_isMax(false),
+      m_defaultValue(Adcirc::Output::DefaultOutputValue),
+      m_filetype(Adcirc::Output::Unknown) {}
 
 OutputFile::~OutputFile() { this->clear(); }
 

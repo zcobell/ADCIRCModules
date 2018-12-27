@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "adcircmodules_global.h"
 
 class HarmonicsRecordImpl;
 
@@ -10,31 +11,31 @@ namespace Adcirc {
 namespace Harmonics {
 class HarmonicsRecord {
  public:
-  HarmonicsRecord();
-  ~HarmonicsRecord();
+  ADCIRCMODULES_EXPORT HarmonicsRecord();
+  ADCIRCMODULES_EXPORT ~HarmonicsRecord();
 
-  std::string name() const;
-  void setName(const std::string& name);
+  std::string ADCIRCMODULES_EXPORT name() const;
+  void ADCIRCMODULES_EXPORT setName(const std::string& name);
 
-  double value(size_t index);
-  std::vector<double> values();
+  double ADCIRCMODULES_EXPORT value(size_t index);
+  std::vector<double> ADCIRCMODULES_EXPORT values();
 
-  void set(size_t index, double value);
-  void set(const std::vector<double>& value);
+  void ADCIRCMODULES_EXPORT set(size_t index, double value);
+  void ADCIRCMODULES_EXPORT set(const std::vector<double>& value);
 
-  void resize(size_t numNodes);
+  void ADCIRCMODULES_EXPORT resize(size_t numNodes);
 
-  double frequency() const;
-  void setFrequency(double frequency);
+  double ADCIRCMODULES_EXPORT frequency() const;
+  void ADCIRCMODULES_EXPORT setFrequency(double frequency);
 
-  double nodalFactor() const;
-  void setNodalFactor(double nodalFactor);
+  double ADCIRCMODULES_EXPORT nodalFactor() const;
+  void ADCIRCMODULES_EXPORT setNodalFactor(double nodalFactor);
 
-  double equilibriumArg() const;
-  void setEquilibriumArg(double equilibriumArg);
+  double ADCIRCMODULES_EXPORT equilibriumArg() const;
+  void ADCIRCMODULES_EXPORT setEquilibriumArg(double equilibriumArg);
 
  private:
-  HarmonicsRecordImpl *m_impl;
+  HarmonicsRecordImpl* m_impl;
 };
 }  // namespace Harmonics
 }  // namespace Adcirc

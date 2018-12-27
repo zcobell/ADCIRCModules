@@ -21,10 +21,11 @@
 
 #include <string>
 #include <vector>
+#include "adcircmodules_global.h"
 
 class IO {
  public:
-  explicit IO() = default;
+  IO() = default;
 
   static int readFileData(const std::string &filename,
                           std::vector<std::string> &data);

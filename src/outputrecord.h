@@ -20,6 +20,7 @@
 #define OUTPUTRECORD_H
 
 #include <vector>
+#include "adcircmodules_global.h"
 #include "node.h"
 
 namespace Adcirc {
@@ -33,8 +34,8 @@ enum AngleUnits { Degrees, Radians };
 
 class OutputRecord {
  public:
-  explicit OutputRecord();
-  explicit OutputRecord(size_t record, size_t numNodes, bool isVector);
+  OutputRecord();
+  OutputRecord(size_t record, size_t numNodes, bool isVector);
 
   void fill(double z);
 

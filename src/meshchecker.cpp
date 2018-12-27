@@ -22,9 +22,12 @@
 #include <iostream>
 #include <vector>
 
+namespace Adcirc {
+namespace Utility {
+
 using namespace Adcirc::Geometry;
 
-MeshChecker::MeshChecker(Mesh *mesh) { this->m_mesh = mesh; }
+MeshChecker::MeshChecker(Mesh *mesh) : m_mesh(mesh) {}
 
 bool MeshChecker::checkMesh() {
   bool passed = true;
@@ -287,3 +290,5 @@ bool MeshChecker::checkElementSizes(Mesh *mesh, double minimumElementSize) {
   }
   return passed;
 }
+}  // namespace Utility
+}  // namespace Adcirc

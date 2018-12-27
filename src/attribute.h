@@ -20,6 +20,7 @@
 #define ATTRIBUTE_H
 
 #include <vector>
+#include "adcircmodules_global.h"
 #include "attribute.h"
 #include "node.h"
 
@@ -41,28 +42,28 @@ namespace ModelParameters {
 
 class Attribute {
  public:
-  explicit Attribute();
+  ADCIRCMODULES_EXPORT Attribute();
 
-  explicit Attribute(size_t size);
+  ADCIRCMODULES_EXPORT Attribute(size_t size);
 
-  void resize(size_t size);
+  void ADCIRCMODULES_EXPORT resize(size_t size);
 
-  double value(size_t index) const;
-  std::vector<double> values() const;
+  double ADCIRCMODULES_EXPORT value(size_t index) const;
+  std::vector<double> ADCIRCMODULES_EXPORT values() const;
 
-  void setValue(const double &value);
-  void setValue(size_t index, const double &value);
-  void setValue(const std::vector<double> &values);
+  void ADCIRCMODULES_EXPORT setValue(const double &value);
+  void ADCIRCMODULES_EXPORT setValue(size_t index, const double &value);
+  void ADCIRCMODULES_EXPORT setValue(const std::vector<double> &values);
 
-  Adcirc::Geometry::Node *node();
-  void setNode(Adcirc::Geometry::Node *node);
+  Adcirc::Geometry::Node ADCIRCMODULES_EXPORT *node();
+  void ADCIRCMODULES_EXPORT setNode(Adcirc::Geometry::Node *node);
 
-  size_t size() const;
+  size_t ADCIRCMODULES_EXPORT size() const;
 
-  size_t id() const;
-  void setId(size_t id);
+  size_t ADCIRCMODULES_EXPORT id() const;
+  void ADCIRCMODULES_EXPORT setId(size_t id);
 
-  std::string write();
+  std::string ADCIRCMODULES_EXPORT write();
 
  private:
   /// ID number in the Adcirc Nodal Attributes file

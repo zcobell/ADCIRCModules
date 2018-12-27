@@ -20,11 +20,8 @@
 #define CONFIG_H
 
 #include <string>
+#include "adcircmodules_global.h"
 
-namespace Adcirc {
-
-std::string version();
-
-}  // namespace Adcirc
+std::string ADCIRCMODULES_EXPORT version();
 
 #endif  // CONFIG_H

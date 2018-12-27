@@ -27,9 +27,8 @@ using namespace Adcirc::ModelParameters;
 /**
  * @brief Default Constructor
  */
-Attribute::Attribute() {
-  this->m_node = nullptr;
-  this->m_id = std::numeric_limits<size_t>::max();
+Attribute::Attribute()
+    : m_node(nullptr), m_id(std::numeric_limits<size_t>::max()) {
   this->resize(1);
 }
 
@@ -37,9 +36,8 @@ Attribute::Attribute() {
  * @brief Constructor that accepts the number of values in this nodal attribute
  * @param size Number of nodal attributes to size this object for
  */
-Attribute::Attribute(size_t size) {
-  this->m_node = nullptr;
-  this->m_id = std::numeric_limits<size_t>::max();
+Attribute::Attribute(size_t size)
+    : m_node(nullptr), m_id(std::numeric_limits<size_t>::max()) {
   this->resize(size);
 }
 

@@ -18,18 +18,18 @@
 //------------------------------------------------------------------------*/
 #ifndef MULTITHREADING_H
 #define MULTITHREADING_H
+#include "adcircmodules_global.h"
 
 class Multithreading {
  public:
   Multithreading() = default;
 
-  static void disable();
-  static void enable(int numThreads = 0);
-  static int numThreads();
-  static int maxThreads();
-  static void setNumThreads(int numThreads);
-  static void setMaximumThreads();
-
+  static void ADCIRCMODULES_EXPORT disable();
+  static void ADCIRCMODULES_EXPORT enable(int numThreads = 0);
+  static int ADCIRCMODULES_EXPORT numThreads();
+  static int ADCIRCMODULES_EXPORT maxThreads();
+  static void ADCIRCMODULES_EXPORT setNumThreads(int numThreads);
+  static void ADCIRCMODULES_EXPORT setMaximumThreads();
 };
 
 #endif  // MULTITHREADING_H

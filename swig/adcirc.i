@@ -33,6 +33,7 @@
 
 %{
 #define SWIG_FILE_WITH_INIT
+#include "adcircmodules_global.h"
 #include "config.h"
 #include "error.h"
 #include "mesh.h"
@@ -66,6 +67,7 @@
 %include <std_string.i>
 %include <exception.i>
 %include <std_vector.i>
+%include <windows.i>
 
 %exception { 
   try { 
@@ -85,6 +87,7 @@ namespace std {
     %template(SizetSizetVector) vector<vector<size_t>>;
 }
 
+%include "adcircmodules_global.h"
 %include "config.h"
 %include "error.h"
 %include "mesh.h"

@@ -42,47 +42,52 @@ namespace Geometry {
 
 class Boundary {
  public:
-  explicit Boundary();
+  ADCIRCMODULES_EXPORT Boundary();
 
-  explicit Boundary(int boundaryCode, size_t boundaryLength);
+  ADCIRCMODULES_EXPORT Boundary(int boundaryCode, size_t boundaryLength);
 
-  void setBoundary(int boundaryCode, size_t boundaryLength);
+  void ADCIRCMODULES_EXPORT setBoundary(int boundaryCode,
+                                        size_t boundaryLength);
 
-  int boundaryCode() const;
-  void setBoundaryCode(int boundaryCode);
+  int ADCIRCMODULES_EXPORT boundaryCode() const;
+  void ADCIRCMODULES_EXPORT setBoundaryCode(int boundaryCode);
 
-  size_t boundaryLength() const;
-  void setBoundaryLength(size_t boundaryLength);
-  size_t size() const;
-  size_t length() const;
+  size_t ADCIRCMODULES_EXPORT boundaryLength() const;
+  void ADCIRCMODULES_EXPORT setBoundaryLength(size_t boundaryLength);
+  size_t ADCIRCMODULES_EXPORT size() const;
+  size_t ADCIRCMODULES_EXPORT length() const;
 
-  double crestElevation(size_t index) const;
-  void setCrestElevation(size_t index, double crestElevation);
+  double ADCIRCMODULES_EXPORT crestElevation(size_t index) const;
+  void ADCIRCMODULES_EXPORT setCrestElevation(size_t index,
+                                              double crestElevation);
 
-  double subcriticalWeirCoefficient(size_t index) const;
-  void setSubcriticalWeirCoefficient(size_t index,
-                                     double subcriticalWeirCoefficient);
+  double ADCIRCMODULES_EXPORT subcriticalWeirCoefficient(size_t index) const;
+  void ADCIRCMODULES_EXPORT setSubcriticalWeirCoefficient(
+      size_t index, double subcriticalWeirCoefficient);
 
-  double supercriticalWeirCoefficient(size_t index) const;
-  void setSupercriticalWeirCoefficient(size_t index,
-                                       double supercriticalWeirCoefficient);
+  double ADCIRCMODULES_EXPORT supercriticalWeirCoefficient(size_t index) const;
+  void ADCIRCMODULES_EXPORT setSupercriticalWeirCoefficient(
+      size_t index, double supercriticalWeirCoefficient);
 
-  double pipeHeight(size_t index) const;
-  void setPipeHeight(size_t index, double pipeHeight);
+  double ADCIRCMODULES_EXPORT pipeHeight(size_t index) const;
+  void ADCIRCMODULES_EXPORT setPipeHeight(size_t index, double pipeHeight);
 
-  double pipeDiameter(size_t index) const;
-  void setPipeDiameter(size_t index, double pipeDiameter);
+  double ADCIRCMODULES_EXPORT pipeDiameter(size_t index) const;
+  void ADCIRCMODULES_EXPORT setPipeDiameter(size_t index, double pipeDiameter);
 
-  double pipeCoefficient(size_t index) const;
-  void setPipeCoefficient(size_t index, double pipeCoefficient);
+  double ADCIRCMODULES_EXPORT pipeCoefficient(size_t index) const;
+  void ADCIRCMODULES_EXPORT setPipeCoefficient(size_t index,
+                                               double pipeCoefficient);
 
-  Adcirc::Geometry::Node *node1(size_t index) const;
-  void setNode1(size_t index, Adcirc::Geometry::Node *node1);
+  Adcirc::Geometry::Node ADCIRCMODULES_EXPORT *node1(size_t index) const;
+  void ADCIRCMODULES_EXPORT setNode1(size_t index,
+                                     Adcirc::Geometry::Node *node1);
 
-  Adcirc::Geometry::Node *node2(size_t index) const;
-  void setNode2(size_t index, Adcirc::Geometry::Node *node2);
+  Adcirc::Geometry::Node ADCIRCMODULES_EXPORT *node2(size_t index) const;
+  void ADCIRCMODULES_EXPORT setNode2(size_t index,
+                                     Adcirc::Geometry::Node *node2);
 
-  std::vector<std::string> toStringList();
+  std::vector<std::string> ADCIRCMODULES_EXPORT toStringList();
 
  private:
   int m_boundaryCode;

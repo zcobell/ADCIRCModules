@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
   using namespace Adcirc::Geometry;
   std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv2.grd"));
   mesh->read();
-  MeshChecker checker(mesh.get());
+  Adcirc::Utility::MeshChecker checker(mesh.get());
   checker.checkMesh();
   return 0;
 }

@@ -33,6 +33,8 @@ class MeshImpl;
 namespace Adcirc {
 namespace Geometry {
 
+class Mesh;
+
 /**
  * @class ElementTable
  * @author Zachary Cobell
@@ -47,6 +49,7 @@ class ElementTable {
  public:
   ElementTable();
   ElementTable(MeshImpl *mesh);
+  ElementTable(Adcirc::Geometry::Mesh *mesh);
 
   std::vector<Adcirc::Geometry::Element *> elementList(
       Adcirc::Geometry::Node *n);

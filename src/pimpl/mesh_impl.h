@@ -41,8 +41,8 @@
 
 class MeshImpl {
  public:
-  explicit MeshImpl();
-  explicit MeshImpl(const std::string &filename);
+  MeshImpl();
+  MeshImpl(const std::string &filename);
 
   ~MeshImpl();
 

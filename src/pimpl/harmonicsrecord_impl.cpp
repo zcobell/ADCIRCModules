@@ -20,12 +20,12 @@
 #include <cassert>
 #include "error.h"
 
-HarmonicsRecordImpl::HarmonicsRecordImpl() : m_name("none") {
-  this->m_numNodes = 0;
-  this->m_frequency = 0.0;
-  this->m_equilibriumArg = 0.0;
-  this->m_nodalFactor = 0.0;
-}
+HarmonicsRecordImpl::HarmonicsRecordImpl()
+    : m_name("none"),
+      m_numNodes(0),
+      m_frequency(0.0),
+      m_equilibriumArg(0.0),
+      m_nodalFactor(0.0) {}
 
 void HarmonicsRecordImpl::resize(size_t numNodes) {
   this->m_numNodes = numNodes;
@@ -54,7 +54,9 @@ void HarmonicsRecordImpl::setEquilibriumArg(double equilibriumArg) {
 
 std::string HarmonicsRecordImpl::name() const { return this->m_name; }
 
-void HarmonicsRecordImpl::setName(const std::string &name) { this->m_name = name; }
+void HarmonicsRecordImpl::setName(const std::string &name) {
+  this->m_name = name;
+}
 
 std::vector<double> HarmonicsRecordImpl::values() { return this->m_data; }
 

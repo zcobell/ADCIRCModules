@@ -2,6 +2,7 @@
 #define HARMONICSOUTPUT_H
 
 #include <string>
+#include "adcircmodules_global.h"
 #include "harmonicsrecord.h"
 
 class HarmonicsOutputImpl;
@@ -11,53 +12,72 @@ namespace Harmonics {
 
 class HarmonicsOutput {
  public:
-  HarmonicsOutput(const std::string& filename = std::string(),
-                  bool velocity = false);
+  ADCIRCMODULES_EXPORT HarmonicsOutput(
+      const std::string& filename = std::string(), bool velocity = false);
 
-  ~HarmonicsOutput();
+  ADCIRCMODULES_EXPORT ~HarmonicsOutput();
 
-  void read();
+  void ADCIRCMODULES_EXPORT read();
 
-  void write(const std::string& filename);
+  void ADCIRCMODULES_EXPORT write(const std::string& filename);
 
-  std::string filename() const;
-  void setFilename(const std::string& filename);
+  std::string ADCIRCMODULES_EXPORT filename() const;
+  void ADCIRCMODULES_EXPORT setFilename(const std::string& filename);
 
-  size_t index(const std::string& name);
+  size_t ADCIRCMODULES_EXPORT index(const std::string& name);
 
-  std::string name(size_t index);
+  std::string ADCIRCMODULES_EXPORT name(size_t index);
 
   //...fort.53 type parameters
-  Adcirc::Harmonics::HarmonicsRecord* amplitude(const std::string& name);
-  Adcirc::Harmonics::HarmonicsRecord* amplitude(size_t index);
+  Adcirc::Harmonics::HarmonicsRecord ADCIRCMODULES_EXPORT* amplitude(
+      const std::string& name);
 
-  Adcirc::Harmonics::HarmonicsRecord* phase(const std::string& name);
-  Adcirc::Harmonics::HarmonicsRecord* phase(size_t index);
+  Adcirc::Harmonics::HarmonicsRecord ADCIRCMODULES_EXPORT* amplitude(
+      size_t index);
+
+  Adcirc::Harmonics::HarmonicsRecord ADCIRCMODULES_EXPORT* phase(
+      const std::string& name);
+
+  Adcirc::Harmonics::HarmonicsRecord ADCIRCMODULES_EXPORT* phase(size_t index);
 
   //...fort.54 type parameters
-  Adcirc::Harmonics::HarmonicsRecord* u_magnitude(const std::string& name);
-  Adcirc::Harmonics::HarmonicsRecord* u_magnitude(size_t index);
+  Adcirc::Harmonics::HarmonicsRecord ADCIRCMODULES_EXPORT* u_magnitude(
+      const std::string& name);
 
-  Adcirc::Harmonics::HarmonicsRecord* u_phase(const std::string& name);
-  Adcirc::Harmonics::HarmonicsRecord* u_phase(size_t index);
+  Adcirc::Harmonics::HarmonicsRecord ADCIRCMODULES_EXPORT* u_magnitude(
+      size_t index);
 
-  Adcirc::Harmonics::HarmonicsRecord* v_magnitude(const std::string& name);
-  Adcirc::Harmonics::HarmonicsRecord* v_magnitude(size_t index);
+  Adcirc::Harmonics::HarmonicsRecord ADCIRCMODULES_EXPORT* u_phase(
+      const std::string& name);
 
-  Adcirc::Harmonics::HarmonicsRecord* v_phase(const std::string& name);
-  Adcirc::Harmonics::HarmonicsRecord* v_phase(size_t index);
+  Adcirc::Harmonics::HarmonicsRecord ADCIRCMODULES_EXPORT* u_phase(
+      size_t index);
 
-  size_t numConstituents() const;
-  void setNumConstituents(const size_t& numConstituents);
+  Adcirc::Harmonics::HarmonicsRecord ADCIRCMODULES_EXPORT* v_magnitude(
+      const std::string& name);
 
-  size_t numNodes() const;
-  void setNumNodes(const size_t& numNodes);
+  Adcirc::Harmonics::HarmonicsRecord ADCIRCMODULES_EXPORT* v_magnitude(
+      size_t index);
 
-  bool isVelocity() const;
+  Adcirc::Harmonics::HarmonicsRecord ADCIRCMODULES_EXPORT* v_phase(
+      const std::string& name);
 
-  size_t nodeIdToArrayIndex(size_t id);
+  Adcirc::Harmonics::HarmonicsRecord ADCIRCMODULES_EXPORT* v_phase(
+      size_t index);
 
-  int filetype() const;
+  size_t ADCIRCMODULES_EXPORT numConstituents() const;
+
+  void ADCIRCMODULES_EXPORT setNumConstituents(const size_t& numConstituents);
+
+  size_t ADCIRCMODULES_EXPORT numNodes() const;
+
+  void ADCIRCMODULES_EXPORT setNumNodes(const size_t& numNodes);
+
+  bool ADCIRCMODULES_EXPORT isVelocity() const;
+
+  size_t ADCIRCMODULES_EXPORT nodeIdToArrayIndex(size_t id);
+
+  int ADCIRCMODULES_EXPORT filetype() const;
 
  private:
   HarmonicsOutputImpl* m_impl;

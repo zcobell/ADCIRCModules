@@ -23,6 +23,7 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
+#include "adcircmodules_global.h"
 #include "node.h"
 #include "outputrecord.h"
 
@@ -32,7 +33,7 @@ namespace Output {
 
 class OutputFile {
  public:
-  explicit OutputFile(const std::string &filename);
+  OutputFile(const std::string &filename);
 
   ~OutputFile();
 

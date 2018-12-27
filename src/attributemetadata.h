@@ -21,6 +21,7 @@
 
 #include <string>
 #include <vector>
+#include "adcircmodules_global.h"
 #include "attribute.h"
 
 namespace Adcirc {
@@ -45,29 +46,31 @@ namespace ModelParameters {
 
 class AttributeMetadata {
  public:
-  explicit AttributeMetadata(const std::string &name = "defaultName",
-                             const std::string &units = "none",
-                             size_t numValues = 1);
+  ADCIRCMODULES_EXPORT AttributeMetadata(
+      const std::string &name = "defaultName",
+      const std::string &units = "none", size_t numValues = 1);
 
-  std::string name() const;
-  void setName(const std::string &name);
+  std::string ADCIRCMODULES_EXPORT name() const;
+  void ADCIRCMODULES_EXPORT setName(const std::string &name);
 
-  std::string units() const;
-  void setUnits(const std::string &units);
+  std::string ADCIRCMODULES_EXPORT units() const;
+  void ADCIRCMODULES_EXPORT setUnits(const std::string &units);
 
-  size_t numberOfValues() const;
-  void setNumberOfValues(size_t numValues);
+  size_t ADCIRCMODULES_EXPORT numberOfValues() const;
+  void ADCIRCMODULES_EXPORT setNumberOfValues(size_t numValues);
 
-  std::vector<double> getDefaultValues() const;
-  double defaultValue(size_t index = 0) const;
-  void setDefaultValue(const double &value);
-  void setDefaultValue(size_t index, const double &value);
-  void setDefaultValue(const std::vector<double> &value);
-  bool checkIfDefaultValue(const std::vector<double> &value);
-  bool checkIfDefaultValue(const double &value);
-  bool checkIfDefaultValue(const Adcirc::ModelParameters::Attribute &a);
+  std::vector<double> ADCIRCMODULES_EXPORT getDefaultValues() const;
+  double ADCIRCMODULES_EXPORT defaultValue(size_t index = 0) const;
+  void ADCIRCMODULES_EXPORT setDefaultValue(const double &value);
+  void ADCIRCMODULES_EXPORT setDefaultValue(size_t index, const double &value);
+  void ADCIRCMODULES_EXPORT setDefaultValue(const std::vector<double> &value);
+  bool ADCIRCMODULES_EXPORT
+  checkIfDefaultValue(const std::vector<double> &value);
+  bool ADCIRCMODULES_EXPORT checkIfDefaultValue(const double &value);
+  bool ADCIRCMODULES_EXPORT
+  checkIfDefaultValue(const Adcirc::ModelParameters::Attribute &a);
 
-  std::string headerString();
+  std::string ADCIRCMODULES_EXPORT headerString();
 
  private:
   /// Name of the nodal attribute

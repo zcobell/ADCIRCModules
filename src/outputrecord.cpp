@@ -26,25 +26,22 @@ using namespace Adcirc::Output;
 static const double _pi = 4.0 * std::atan(1.0);
 static const double _2pi = 2.0 * _pi;
 
-OutputRecord::OutputRecord() {
-  this->m_record = 0;
-  this->m_isVector = false;
-  this->m_time = 0;
-  this->m_iteration = 0;
-  this->m_defaultValue = Adcirc::Output::DefaultOutputValue;
-  this->m_numNodes = 0;
-}
+OutputRecord::OutputRecord()
+    : m_record(0),
+      m_isVector(false),
+      m_time(0),
+      m_iteration(0),
+      m_defaultValue(Adcirc::Output::DefaultOutputValue),
+      m_numNodes(0) {}
 
-OutputRecord::OutputRecord(size_t record, size_t numNodes, bool isVector) {
+OutputRecord::OutputRecord(size_t record, size_t numNodes, bool isVector)
+    : m_record(record),
+      m_isVector(isVector),
+      m_time(0),
+      m_numNodes(numNodes),
+      m_iteration(0),
+      m_defaultValue(Adcirc::Output::DefaultOutputValue) {
   assert(numNodes != 0);
-
-  this->m_record = record;
-  this->m_isVector = isVector;
-  this->m_time = 0;
-  this->m_iteration = 0;
-  this->m_numNodes = numNodes;
-  this->m_defaultValue = Adcirc::Output::DefaultOutputValue;
-
   if (this->isVector()) {
     this->m_u.resize(this->numNodes());
     this->m_v.resize(this->numNodes());

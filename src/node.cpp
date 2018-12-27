@@ -24,12 +24,7 @@ using namespace Adcirc::Geometry;
 /**
  * @brief Default constructor
  */
-Node::Node() {
-  this->m_id = 0;
-  this->m_x = -9999.0;
-  this->m_y = -9999.0;
-  this->m_z = -9999.0;
-}
+Node::Node() : m_id(0), m_x(-9999.0), m_y(-9999.0), m_z(-9999.0) {}
 
 /**
  * @brief Constructor taking the id, x, y, and z for the node
@@ -38,12 +33,8 @@ Node::Node() {
  * @param y y position
  * @param z z elevation
  */
-Node::Node(size_t id, double x, double y, double z) {
-  this->m_id = id;
-  this->m_x = x;
-  this->m_y = y;
-  this->m_z = z;
-}
+Node::Node(size_t id, double x, double y, double z)
+    : m_id(id), m_x(x), m_y(y), m_z(z) {}
 
 /**
  * @brief Function taking the id, x, y, and z for the node
@@ -131,8 +122,8 @@ std::string Node::toAdcircString(bool geographicCoordinates) {
  * @return formatted string
  */
 std::string Node::to2dmString(bool geographicCoordinates) {
-  return boost::str(boost::format("%s  %i %14.8e %14.8e %14.8e") % "ND" % this->id() %
-                    this->x() % this->y() % this->z());
+  return boost::str(boost::format("%s  %i %14.8e %14.8e %14.8e") % "ND" %
+                    this->id() % this->x() % this->y() % this->z());
 }
 
 /**

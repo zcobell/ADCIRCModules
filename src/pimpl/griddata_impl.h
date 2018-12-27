@@ -39,7 +39,6 @@ class GriddataImpl {
  public:
   GriddataImpl();
   GriddataImpl(Adcirc::Geometry::Mesh *mesh, std::string rasterFile);
-  ~GriddataImpl();
 
   std::string rasterFile() const;
   void setRasterFile(const std::string &rasterFile);

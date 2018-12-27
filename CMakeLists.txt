@@ -585,9 +585,9 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/split.cpp
                 ${CMAKE_SOURCE_DIR}/src/io.cpp
                 ${CMAKE_SOURCE_DIR}/src/stringconversion.cpp
+                ${CMAKE_SOURCE_DIR}/src/nodalattributes.cpp
                 ${CMAKE_SOURCE_DIR}/src/attribute.cpp
                 ${CMAKE_SOURCE_DIR}/src/attributemetadata.cpp
-                ${CMAKE_SOURCE_DIR}/src/nodalattributes.cpp 
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.cpp 
                 ${CMAKE_SOURCE_DIR}/src/outputfile.cpp 
                 ${CMAKE_SOURCE_DIR}/src/harmonicsrecord.cpp
@@ -597,7 +597,8 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/multithreading.cpp 
                 ${CMAKE_SOURCE_DIR}/src/pimpl/mesh_impl.cpp 
                 ${CMAKE_SOURCE_DIR}/src/pimpl/harmonicsoutput_impl.cpp 
-                ${CMAKE_SOURCE_DIR}/src/pimpl/harmonicsrecord_impl.cpp )
+                ${CMAKE_SOURCE_DIR}/src/pimpl/harmonicsrecord_impl.cpp 
+                ${CMAKE_SOURCE_DIR}/src/pimpl/nodalattributes_impl.cpp )
 
 IF( GDAL_FOUND )
     SET( ADCIRCMODULES_SOURCES ${ADCIRCMODULES_SOURCES} ${CMAKE_SOURCE_DIR}/src/griddata.cpp 
@@ -620,6 +621,7 @@ TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
 ADD_DEPENDENCIES( adcircmodules point projection kdtree2 shapelib constants )
 
 TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE GIT_VERSION="${GIT_VERSION}")
+TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE ADCIRCMODULES_LIBRARY )
 
 IF(GDAL_FOUND)
     TARGET_LINK_LIBRARIES( adcircmodules rasterdata ${GDAL_LIBRARY} ) 
