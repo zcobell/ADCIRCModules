@@ -114,6 +114,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a27b33b81070ff7684bf12bf5ac3ef7bf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProjection.html#a27b33b81070ff7684bf12bf5ac3ef7bf">Projection</a> ()</td></tr>
 <tr class="memdesc:a27b33b81070ff7684bf12bf5ac3ef7bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for the proj4 wrapper class.  <a href="#a27b33b81070ff7684bf12bf5ac3ef7bf">More...</a><br /></td></tr>
 <tr class="separator:a27b33b81070ff7684bf12bf5ac3ef7bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a88b0cc9d1a47cb97df4032766073b1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProjection.html#a1a88b0cc9d1a47cb97df4032766073b1">projVersion</a> ()</td></tr>
+<tr class="separator:a1a88b0cc9d1a47cb97df4032766073b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a586089b05670e2276dbbbcdcb35d37b3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProjection.html#a586089b05670e2276dbbbcdcb35d37b3">transform</a> (int inputEPSG, int outputEPSG, double x, double y, double &amp;outx, double &amp;outy, bool &amp;isLatLon)</td></tr>
 <tr class="separator:a586089b05670e2276dbbbcdcb35d37b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c0c0b4e8a9542c8142eaabecf2d42dc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProjection.html#a9c0c0b4e8a9542c8142eaabecf2d42dc">transform</a> (int inputEPSG, int outputEPSG, <a class="el" href="classPoint.html">Point</a> &amp;input, <a class="el" href="classPoint.html">Point</a> &amp;output, bool &amp;isLatLon)</td></tr>
@@ -122,6 +124,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad227d0653d781e4a95314f13d30b3e1a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProjection.html#ad227d0653d781e4a95314f13d30b3e1a">transform</a> (int inputEPSG, int outputEPSG, std::vector&lt; <a class="el" href="classPoint.html">Point</a> &gt; &amp;input, std::vector&lt; <a class="el" href="classPoint.html">Point</a> &gt; &amp;output, bool &amp;isLatLon)</td></tr>
 <tr class="memdesc:ad227d0653d781e4a95314f13d30b3e1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to execute a coordinate system transformation using Proj4.  <a href="#ad227d0653d781e4a95314f13d30b3e1a">More...</a><br /></td></tr>
 <tr class="separator:ad227d0653d781e4a95314f13d30b3e1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9979a3968ac7c2c144e62b84b2722bba"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProjection.html#a9979a3968ac7c2c144e62b84b2722bba">description</a> (int epsg)</td></tr>
+<tr class="separator:a9979a3968ac7c2c144e62b84b2722bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4f90e8dd87b1417fe60e97d87af55cd"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProjection.html#ab4f90e8dd87b1417fe60e97d87af55cd">projInitializationString</a> (int epsg)</td></tr>
+<tr class="separator:ab4f90e8dd87b1417fe60e97d87af55cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -387,6 +393,24 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a9979a3968ac7c2c144e62b84b2722bba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9979a3968ac7c2c144e62b84b2722bba">&#9670;&nbsp;</a></span>description()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string description </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>epsg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ab67e075529ef7774ee63357cd3c23d6e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab67e075529ef7774ee63357cd3c23d6e">&#9670;&nbsp;</a></span>inverseCpp() <span class="overload">[1/3]</span></h2>
 
@@ -582,6 +606,49 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="ab4f90e8dd87b1417fe60e97d87af55cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4f90e8dd87b1417fe60e97d87af55cd">&#9670;&nbsp;</a></span>projInitializationString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string projInitializationString </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>epsg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classProjection_ab4f90e8dd87b1417fe60e97d87af55cd_icgraph.png" border="0" usemap="#classProjection_ab4f90e8dd87b1417fe60e97d87af55cd_icgraph" alt=""/></div>
+<map name="classProjection_ab4f90e8dd87b1417fe60e97d87af55cd_icgraph" id="classProjection_ab4f90e8dd87b1417fe60e97d87af55cd_icgraph">
+<area shape="rect" id="node2" href="classProjection.html#ad227d0653d781e4a95314f13d30b3e1a" title="Function to execute a coordinate system transformation using Proj4. " alt="" coords="200,5,277,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a1a88b0cc9d1a47cb97df4032766073b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a88b0cc9d1a47cb97df4032766073b1">&#9670;&nbsp;</a></span>projVersion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string projVersion </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a586089b05670e2276dbbbcdcb35d37b3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a586089b05670e2276dbbbcdcb35d37b3">&#9670;&nbsp;</a></span>transform() <span class="overload">[1/3]</span></h2>
 
@@ -644,14 +711,6 @@ Here is the call graph for this function:</div>
 <map name="classProjection_a586089b05670e2276dbbbcdcb35d37b3_cgraph" id="classProjection_a586089b05670e2276dbbbcdcb35d37b3_cgraph">
 <area shape="rect" id="node2" href="classPoint.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Point::x" alt="" coords="131,5,197,32"/>
 <area shape="rect" id="node3" href="classPoint.html#aca424ddaf2902c1cde483f37813d4278" title="Point::y" alt="" coords="131,56,197,83"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classProjection_a586089b05670e2276dbbbcdcb35d37b3_icgraph.png" border="0" usemap="#classProjection_a586089b05670e2276dbbbcdcb35d37b3_icgraph" alt=""/></div>
-<map name="classProjection_a586089b05670e2276dbbbcdcb35d37b3_icgraph" id="classProjection_a586089b05670e2276dbbbcdcb35d37b3_icgraph">
-<area shape="rect" id="node2" href="classProjection.html#a9c0c0b4e8a9542c8142eaabecf2d42dc" title="Function to execute a coordinate system transformation using Proj4. " alt="" coords="131,5,208,32"/>
 </map>
 </div>
 
@@ -718,9 +777,13 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classProjection_a9c0c0b4e8a9542c8142eaabecf2d42dc_cgraph.png" border="0" usemap="#classProjection_a9c0c0b4e8a9542c8142eaabecf2d42dc_cgraph" alt=""/></div>
 <map name="classProjection_a9c0c0b4e8a9542c8142eaabecf2d42dc_cgraph" id="classProjection_a9c0c0b4e8a9542c8142eaabecf2d42dc_cgraph">
-<area shape="rect" id="node2" href="classProjection.html#a586089b05670e2276dbbbcdcb35d37b3" title="transform" alt="" coords="131,31,208,57"/>
-<area shape="rect" id="node3" href="classPoint.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Point::x" alt="" coords="256,5,323,32"/>
-<area shape="rect" id="node4" href="classPoint.html#aca424ddaf2902c1cde483f37813d4278" title="Point::y" alt="" coords="256,56,323,83"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classProjection_a9c0c0b4e8a9542c8142eaabecf2d42dc_icgraph.png" border="0" usemap="#classProjection_a9c0c0b4e8a9542c8142eaabecf2d42dc_icgraph" alt=""/></div>
+<map name="classProjection_a9c0c0b4e8a9542c8142eaabecf2d42dc_icgraph" id="classProjection_a9c0c0b4e8a9542c8142eaabecf2d42dc_icgraph">
 </map>
 </div>
 
@@ -782,6 +845,14 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 <p>Function to execute a coordinate system transformation using Proj4 </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classProjection_ad227d0653d781e4a95314f13d30b3e1a_cgraph.png" border="0" usemap="#classProjection_ad227d0653d781e4a95314f13d30b3e1a_cgraph" alt=""/></div>
+<map name="classProjection_ad227d0653d781e4a95314f13d30b3e1a_cgraph" id="classProjection_ad227d0653d781e4a95314f13d30b3e1a_cgraph">
+<area shape="rect" id="node2" href="classProjection.html#ab4f90e8dd87b1417fe60e97d87af55cd" title="projInitializationString" alt="" coords="131,5,277,32"/>
+</map>
+</div>
 
 </div>
 </div>

@@ -88,6 +88,7 @@ $(document).ready(function(){initNavTree('namespaceAdcirc_1_1Output.html','');})
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">Adcirc::Output Namespace Reference</div>  </div>
@@ -96,13 +97,6 @@ $(document).ready(function(){initNavTree('namespaceAdcirc_1_1Output.html','');})
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Output_1_1Filetypes.html">Filetypes</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classAdcirc_1_1Output_1_1Filetypes.html" title="The Filetypes class is used to determine the type of adcirc format output file that is being read...">Filetypes</a> class is used to determine the type of adcirc format output file that is being read.  <a href="classAdcirc_1_1Output_1_1Filetypes.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Output_1_1HarmonicsOutput.html">HarmonicsOutput</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Output_1_1HarmonicsRecord.html">HarmonicsRecord</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Output_1_1OutputFile.html">OutputFile</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Output_1_1OutputRecord.html">OutputRecord</a></td></tr>
@@ -111,14 +105,14 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a18c27a6c18af6bf9b4b2062887d2cefe"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefe">_fileTypes</a> { <br />
-&#160;&#160;<a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefea278d2feb44c07f745eff0e8a77f2b762">ASCIIFull</a>, 
-<a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefea8d747d2272e64bc878ceeb5485c5ecf8">ASCIISparse</a>, 
-<a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefea33612481fed267a0a8a19646d601b1db">ASCIIHarmonics</a>, 
-<a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefea3399a42cacb9393a78135bfe7832363b">Netcdf3</a>, 
+&#160;&#160;<a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefea278d2feb44c07f745eff0e8a77f2b762">ASCIIFull</a> = 0x001, 
+<a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefea8d747d2272e64bc878ceeb5485c5ecf8">ASCIISparse</a> = 0x002, 
+<a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefea33612481fed267a0a8a19646d601b1db">ASCIIHarmonics</a> = 0x003, 
+<a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefea3399a42cacb9393a78135bfe7832363b">Netcdf3</a> = 0x004, 
 <br />
-&#160;&#160;<a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefeafc8fad76af5bdd300e3b0191f5586157">Netcdf4</a>, 
-<a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefea0010ee275fe3cc0b5d9fb06399f4bec2">Xdmf</a>, 
-<a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefea4e81c184ac3ad48a389cd4454c4a05bb">Unknown</a>
+&#160;&#160;<a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefeafc8fad76af5bdd300e3b0191f5586157">Netcdf4</a> = 0x005, 
+<a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefea0010ee275fe3cc0b5d9fb06399f4bec2">Xdmf</a> = 0x006, 
+<a class="el" href="namespaceAdcirc_1_1Output.html#a18c27a6c18af6bf9b4b2062887d2cefea4e81c184ac3ad48a389cd4454c4a05bb">Unknown</a> = 0x999
 <br />
  }</td></tr>
 <tr class="separator:a18c27a6c18af6bf9b4b2062887d2cefe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,6 +120,27 @@ Enumerations</h2></td></tr>
 <a class="el" href="namespaceAdcirc_1_1Output.html#aa5cc04351ad30238688fe60022a9bb35a7c56d276dd7a90a3833c60981af430b2">Radians</a>
  }</td></tr>
 <tr class="separator:aa5cc04351ad30238688fe60022a9bb35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a1d373bed670fe893c3f9db77edc7a5e7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceAdcirc_1_1Output.html#a1d373bed670fe893c3f9db77edc7a5e7">checkFiletypeAsciiSparse</a> (const std::string &amp;filename)</td></tr>
+<tr class="memdesc:a1d373bed670fe893c3f9db77edc7a5e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the file type is ADCIRC ASCII Sparse.  <a href="#a1d373bed670fe893c3f9db77edc7a5e7">More...</a><br /></td></tr>
+<tr class="separator:a1d373bed670fe893c3f9db77edc7a5e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad1c404bfa300aff87219aaec15925f7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceAdcirc_1_1Output.html#aad1c404bfa300aff87219aaec15925f7">checkFiletypeAsciiFull</a> (const std::string &amp;filename)</td></tr>
+<tr class="memdesc:aad1c404bfa300aff87219aaec15925f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the file type is ADCIRC ASCII fill.  <a href="#aad1c404bfa300aff87219aaec15925f7">More...</a><br /></td></tr>
+<tr class="separator:aad1c404bfa300aff87219aaec15925f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af41dc2d15526c64a454d83c1b734cf2f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceAdcirc_1_1Output.html#af41dc2d15526c64a454d83c1b734cf2f">inquireNetcdfFormat</a> (const std::string &amp;filename, int &amp;format)</td></tr>
+<tr class="memdesc:af41dc2d15526c64a454d83c1b734cf2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the file type is netCDF.  <a href="#af41dc2d15526c64a454d83c1b734cf2f">More...</a><br /></td></tr>
+<tr class="separator:af41dc2d15526c64a454d83c1b734cf2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62411d0197558488285f37e6df988204"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceAdcirc_1_1Output.html#a62411d0197558488285f37e6df988204">checkFiletypeNetcdf3</a> (const std::string &amp;filename)</td></tr>
+<tr class="memdesc:a62411d0197558488285f37e6df988204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the file type is netcdf3.  <a href="#a62411d0197558488285f37e6df988204">More...</a><br /></td></tr>
+<tr class="separator:a62411d0197558488285f37e6df988204"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bd3fbcb779d65691c84deaee10fc460"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceAdcirc_1_1Output.html#a0bd3fbcb779d65691c84deaee10fc460">checkFiletypeNetcdf4</a> (const std::string &amp;filename)</td></tr>
+<tr class="memdesc:a0bd3fbcb779d65691c84deaee10fc460"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the file type is netCDF4.  <a href="#a0bd3fbcb779d65691c84deaee10fc460">More...</a><br /></td></tr>
+<tr class="separator:a0bd3fbcb779d65691c84deaee10fc460"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac346cae8310e3c3988c65bfc0f987604"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceAdcirc_1_1Output.html#ac346cae8310e3c3988c65bfc0f987604">checkFiletypeXdmf</a> (const std::string &amp;filename)</td></tr>
+<tr class="memdesc:ac346cae8310e3c3988c65bfc0f987604"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the file type is ADCIRC XDMF.  <a href="#ac346cae8310e3c3988c65bfc0f987604">More...</a><br /></td></tr>
+<tr class="separator:ac346cae8310e3c3988c65bfc0f987604"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -173,6 +188,205 @@ Variables</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa5cc04351ad30238688fe60022a9bb35ab28ef12cbe7643cb9eb5bc1151006013"></a>Degrees&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aa5cc04351ad30238688fe60022a9bb35a7c56d276dd7a90a3833c60981af430b2"></a>Radians&#160;</td><td class="fielddoc"></td></tr>
 </table>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="aad1c404bfa300aff87219aaec15925f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad1c404bfa300aff87219aaec15925f7">&#9670;&nbsp;</a></span>checkFiletypeAsciiFull()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool checkFiletypeAsciiFull </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if the file type is ADCIRC ASCII fill. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>name of file to check format </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the file format is ADCIRC ASCII full </dd></dl>
+
+</div>
+</div>
+<a id="a1d373bed670fe893c3f9db77edc7a5e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d373bed670fe893c3f9db77edc7a5e7">&#9670;&nbsp;</a></span>checkFiletypeAsciiSparse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool checkFiletypeAsciiSparse </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if the file type is ADCIRC ASCII Sparse. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>name of file to check format </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the file format is ADCIRC ASCII Sparse </dd></dl>
+
+</div>
+</div>
+<a id="a62411d0197558488285f37e6df988204"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62411d0197558488285f37e6df988204">&#9670;&nbsp;</a></span>checkFiletypeNetcdf3()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool checkFiletypeNetcdf3 </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if the file type is netcdf3. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>name of file to check format </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the file format is netCDF3 </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespaceAdcirc_1_1Output_a62411d0197558488285f37e6df988204_cgraph.png" border="0" usemap="#namespaceAdcirc_1_1Output_a62411d0197558488285f37e6df988204_cgraph" alt=""/></div>
+<map name="namespaceAdcirc_1_1Output_a62411d0197558488285f37e6df988204_cgraph" id="namespaceAdcirc_1_1Output_a62411d0197558488285f37e6df988204_cgraph">
+<area shape="rect" id="node2" href="namespaceAdcirc_1_1Output.html#af41dc2d15526c64a454d83c1b734cf2f" title="Check if the file type is netCDF. " alt="" coords="201,5,340,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a0bd3fbcb779d65691c84deaee10fc460"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0bd3fbcb779d65691c84deaee10fc460">&#9670;&nbsp;</a></span>checkFiletypeNetcdf4()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool checkFiletypeNetcdf4 </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if the file type is netCDF4. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>name of file to check format </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the file format is netCDF4 </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespaceAdcirc_1_1Output_a0bd3fbcb779d65691c84deaee10fc460_cgraph.png" border="0" usemap="#namespaceAdcirc_1_1Output_a0bd3fbcb779d65691c84deaee10fc460_cgraph" alt=""/></div>
+<map name="namespaceAdcirc_1_1Output_a0bd3fbcb779d65691c84deaee10fc460_cgraph" id="namespaceAdcirc_1_1Output_a0bd3fbcb779d65691c84deaee10fc460_cgraph">
+<area shape="rect" id="node2" href="namespaceAdcirc_1_1Output.html#af41dc2d15526c64a454d83c1b734cf2f" title="Check if the file type is netCDF. " alt="" coords="201,5,340,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ac346cae8310e3c3988c65bfc0f987604"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac346cae8310e3c3988c65bfc0f987604">&#9670;&nbsp;</a></span>checkFiletypeXdmf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool checkFiletypeXdmf </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if the file type is ADCIRC XDMF. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>name of file to check format </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the file format is XDMF</dd></dl>
+<p>[NOT IMPLEMENTED] </p>
+
+</div>
+</div>
+<a id="af41dc2d15526c64a454d83c1b734cf2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af41dc2d15526c64a454d83c1b734cf2f">&#9670;&nbsp;</a></span>inquireNetcdfFormat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool inquireNetcdfFormat </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>format</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if the file type is netCDF. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>name of file to check format </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the file format is netCDF </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespaceAdcirc_1_1Output_af41dc2d15526c64a454d83c1b734cf2f_icgraph.png" border="0" usemap="#namespaceAdcirc_1_1Output_af41dc2d15526c64a454d83c1b734cf2f_icgraph" alt=""/></div>
+<map name="namespaceAdcirc_1_1Output_af41dc2d15526c64a454d83c1b734cf2f_icgraph" id="namespaceAdcirc_1_1Output_af41dc2d15526c64a454d83c1b734cf2f_icgraph">
+<area shape="rect" id="node2" href="namespaceAdcirc_1_1Output.html#a62411d0197558488285f37e6df988204" title="Check if the file type is netcdf3. " alt="" coords="192,5,340,32"/>
+<area shape="rect" id="node3" href="namespaceAdcirc_1_1Output.html#a0bd3fbcb779d65691c84deaee10fc460" title="Check if the file type is netCDF4. " alt="" coords="192,56,340,83"/>
+</map>
+</div>
 
 </div>
 </div>

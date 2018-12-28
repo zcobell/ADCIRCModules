@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['phase',['phase',['../classAdcirc_1_1Output_1_1HarmonicsOutput.html#aba66ae7d1c357b29e871dae112a326b8',1,'Adcirc::Output::HarmonicsOutput::phase(const std::string &amp;name)'],['../classAdcirc_1_1Output_1_1HarmonicsOutput.html#a6199a428769e1316b8f4b9233a628fa0',1,'Adcirc::Output::HarmonicsOutput::phase(size_t index)']]],
+  ['phase',['phase',['../classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#aa06fc6b5c05a23f3305640fafc4bbcdf',1,'Adcirc::Harmonics::HarmonicsOutput::phase(const std::string &amp;name)'],['../classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a5c1bcd1c72eb28791e9be177ac58cc2e',1,'Adcirc::Harmonics::HarmonicsOutput::phase(size_t index)']]],
   ['pi',['pi',['../classConstants.html#a19481c763d7a0b56b40eade0a21daab7',1,'Constants']]],
   ['pipecoefficient',['pipeCoefficient',['../classAdcirc_1_1Geometry_1_1Boundary.html#a5dfa1ccbf386471f392a5ad9dd46f547',1,'Adcirc::Geometry::Boundary']]],
   ['pipediameter',['pipeDiameter',['../classAdcirc_1_1Geometry_1_1Boundary.html#af1dc9caf2049168de2d6106807d3a905',1,'Adcirc::Geometry::Boundary']]],
@@ -12,6 +12,8 @@ var searchData=
   ['pixelvalues',['pixelValues',['../classRasterdata.html#a084ed567ec84153400d530141f96a6c0',1,'Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend, size_t jend, std::vector&lt; double &gt; &amp;x, std::vector&lt; double &gt; &amp;y, std::vector&lt; int &gt; &amp;z)'],['../classRasterdata.html#afec9d7d17697232258a7d34c54246a43',1,'Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend, size_t jend, std::vector&lt; double &gt; &amp;x, std::vector&lt; double &gt; &amp;y, std::vector&lt; double &gt; &amp;z)']]],
   ['point',['Point',['../classPoint.html#ae08c5f0c5b4c75a3e0f33dada5f2fcba',1,'Point::Point()'],['../classPoint.html#a8eb76552ab4daf01a92da58843a0253b',1,'Point::Point(double x, double y)']]],
   ['polarradius',['polarRadius',['../classConstants.html#a9477e49dbf52f4fdb5ccf1ee601a5616',1,'Constants']]],
-  ['projection',['Projection',['../classProjection.html#a27b33b81070ff7684bf12bf5ac3ef7bf',1,'Projection::Projection()'],['../classAdcirc_1_1Geometry_1_1Mesh.html#a559e1425143b68b7092668c9a6c66ed7',1,'Adcirc::Geometry::Mesh::projection()']]],
-  ['projectionstring',['projectionString',['../classRasterdata.html#a9da4766a4495da822804c83ce4d044ef',1,'Rasterdata']]]
+  ['projection',['projection',['../classAdcirc_1_1Geometry_1_1Mesh.html#a559e1425143b68b7092668c9a6c66ed7',1,'Adcirc::Geometry::Mesh::projection()'],['../classProjection.html#a27b33b81070ff7684bf12bf5ac3ef7bf',1,'Projection::Projection()']]],
+  ['projectionstring',['projectionString',['../classRasterdata.html#a9da4766a4495da822804c83ce4d044ef',1,'Rasterdata']]],
+  ['projinitializationstring',['projInitializationString',['../classProjection.html#ab4f90e8dd87b1417fe60e97d87af55cd',1,'Projection']]],
+  ['projversion',['projVersion',['../classProjection.html#a1a88b0cc9d1a47cb97df4032766073b1',1,'Projection']]]
 ];

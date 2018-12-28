@@ -3,6 +3,7 @@ var classAdcirc_1_1Geometry_1_1Element =
     [ "Element", "classAdcirc_1_1Geometry_1_1Element.html#ab6edd5ea4f400b450f07203f432d1c81", null ],
     [ "Element", "classAdcirc_1_1Geometry_1_1Element.html#a18dc9fc473bebcc70e414047bec4677e", null ],
     [ "Element", "classAdcirc_1_1Geometry_1_1Element.html#a46c6ce82702b6406072ec4f4a05baf5d", null ],
+    [ "area", "classAdcirc_1_1Geometry_1_1Element.html#a86f85bbe6c99780208efd39ca10275b4", null ],
     [ "elementLeg", "classAdcirc_1_1Geometry_1_1Element.html#a9629c72872705d78fd8e6b09eea787d6", null ],
     [ "elementSize", "classAdcirc_1_1Geometry_1_1Element.html#aea91ac1ba5cbc0a0b6970c9758f804a2", null ],
     [ "getElementCenter", "classAdcirc_1_1Geometry_1_1Element.html#a07f34be4674125bc14f69abf7e2f4d51", null ],

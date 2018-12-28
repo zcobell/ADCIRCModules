@@ -12,6 +12,6 @@ var searchData=
   ['griddata',['Griddata',['../classInterpolation_1_1Griddata.html',1,'Griddata'],['../classInterpolation_1_1Griddata.html#af94a9cc41bb85a7ea3c896dd796090a4',1,'Interpolation::Griddata::Griddata()'],['../classInterpolation_1_1Griddata.html#aced3dd758bfed0ed2a890782f704eb3e',1,'Interpolation::Griddata::Griddata(Adcirc::Geometry::Mesh *mesh, std::string rasterFile)']]],
   ['griddata_2ecpp',['griddata.cpp',['../griddata_8cpp.html',1,'']]],
   ['griddata_2eh',['griddata.h',['../griddata_8h.html',1,'']]],
-  ['griddataimpl_2ecpp',['griddataimpl.cpp',['../griddataimpl_8cpp.html',1,'']]],
-  ['griddataimpl_2eh',['griddataimpl.h',['../griddataimpl_8h.html',1,'']]]
+  ['griddata_5fimpl_2ecpp',['griddata_impl.cpp',['../griddata__impl_8cpp.html',1,'']]],
+  ['griddata_5fimpl_2eh',['griddata_impl.h',['../griddata__impl_8h.html',1,'']]]
 ];

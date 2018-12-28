@@ -1,10 +1,11 @@
 var searchData=
 [
   ['e',['e',['../classConstants.html#a65ac695890aab263ca7d614972d6c245',1,'Constants']]],
-  ['edgetupleequal',['edgeTupleEqual',['../meshimpl_8cpp.html#a456a6a2972521c8901fc96db4f4d3282',1,'meshimpl.cpp']]],
-  ['element',['Element',['../classAdcirc_1_1Geometry_1_1Element.html',1,'Element'],['../classAdcirc_1_1Geometry_1_1Element.html#ab6edd5ea4f400b450f07203f432d1c81',1,'Adcirc::Geometry::Element::Element()'],['../classAdcirc_1_1Geometry_1_1Element.html#a18dc9fc473bebcc70e414047bec4677e',1,'Adcirc::Geometry::Element::Element(size_t id, Adcirc::Geometry::Node *n1, Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3)'],['../classAdcirc_1_1Geometry_1_1Element.html#a46c6ce82702b6406072ec4f4a05baf5d',1,'Adcirc::Geometry::Element::Element(size_t id, Adcirc::Geometry::Node *n1, Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3, Adcirc::Geometry::Node *n4)'],['../classAdcirc_1_1Geometry_1_1Mesh.html#a3543bba752ce5bb6f2a4ce69c0f09c3d',1,'Adcirc::Geometry::Mesh::element()']]],
+  ['edgetupleequal',['edgeTupleEqual',['../mesh__impl_8cpp.html#a456a6a2972521c8901fc96db4f4d3282',1,'mesh_impl.cpp']]],
+  ['element',['Element',['../classAdcirc_1_1Geometry_1_1Element.html',1,'Element'],['../classAdcirc_1_1Geometry_1_1Mesh.html#a3543bba752ce5bb6f2a4ce69c0f09c3d',1,'Adcirc::Geometry::Mesh::element()'],['../classAdcirc_1_1Geometry_1_1Element.html#ab6edd5ea4f400b450f07203f432d1c81',1,'Adcirc::Geometry::Element::Element()'],['../classAdcirc_1_1Geometry_1_1Element.html#a18dc9fc473bebcc70e414047bec4677e',1,'Adcirc::Geometry::Element::Element(size_t id, Adcirc::Geometry::Node *n1, Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3)'],['../classAdcirc_1_1Geometry_1_1Element.html#a46c6ce82702b6406072ec4f4a05baf5d',1,'Adcirc::Geometry::Element::Element(size_t id, Adcirc::Geometry::Node *n1, Adcirc::Geometry::Node *n2, Adcirc::Geometry::Node *n3, Adcirc::Geometry::Node *n4)']]],
   ['element_2ecpp',['element.cpp',['../element_8cpp.html',1,'']]],
   ['element_2eh',['element.h',['../element_8h.html',1,'']]],
+  ['element2polygon',['element2polygon',['../element_8cpp.html#a4ae1e9eaa73978e19f9b5b2f49371dc4',1,'element.cpp']]],
   ['element_5fnot_5ffound',['ELEMENT_NOT_FOUND',['../classAdcirc_1_1Geometry_1_1Mesh.html#ae54f241567cab19d7202cf4dbcec5448',1,'Adcirc::Geometry::Mesh']]],
   ['elementalsearchtree',['elementalSearchTree',['../classAdcirc_1_1Geometry_1_1Mesh.html#a5597245319a1df8138d8b72b8c273b26',1,'Adcirc::Geometry::Mesh']]],
   ['elementalsearchtreeinitialized',['elementalSearchTreeInitialized',['../classAdcirc_1_1Geometry_1_1Mesh.html#a1ffd396d8afd6fe0ad4ffdf484749394',1,'Adcirc::Geometry::Mesh']]],
@@ -20,8 +21,7 @@ var searchData=
   ['enable',['enable',['../classMultithreading.html#ad2e31e4bf0252120defc78f9db995896',1,'Multithreading']]],
   ['epsg',['epsg',['../classInterpolation_1_1Griddata.html#a2fe36ee88237850f56d26023ac57e261',1,'Interpolation::Griddata::epsg()'],['../classRasterdata.html#a2fe36ee88237850f56d26023ac57e261',1,'Rasterdata::epsg()']]],
   ['epsg_2ecpp',['epsg.cpp',['../epsg_8cpp.html',1,'']]],
-  ['epsg_5fh',['EPSG_H',['../epsg_8cpp.html#ae19831745c8a6b60d84ddecbc72b2734',1,'epsg.cpp']]],
-  ['equilibriumarg',['equilibriumArg',['../classAdcirc_1_1Output_1_1HarmonicsRecord.html#a37329eb348be32fb197dbda4a7442612',1,'Adcirc::Output::HarmonicsRecord']]],
+  ['equilibriumarg',['equilibriumArg',['../classAdcirc_1_1Harmonics_1_1HarmonicsRecord.html#a37329eb348be32fb197dbda4a7442612',1,'Adcirc::Harmonics::HarmonicsRecord']]],
   ['equitoralradius',['equitoralRadius',['../classConstants.html#a1e46609687df04683e729d5eaafc5f44',1,'Constants']]],
   ['error',['Error',['../classAdcirc_1_1Error.html',1,'Error'],['../classAdcirc_1_1Error.html#a2605b9d054fe04afe5b3b7426bc31a1f',1,'Adcirc::Error::Error()']]],
   ['error_2ecpp',['error.cpp',['../error_8cpp.html',1,'']]],

@@ -1,6 +1,8 @@
 <map id="attributemetadata.h" name="attributemetadata.h">
-<area shape="rect" id="node2" href="$nodalattributes_8h.html" title="nodalattributes.h" alt="" coords="41,80,160,107"/>
-<area shape="rect" id="node5" href="$attributemetadata_8cpp.html" title="attributemetadata.cpp" alt="" coords="184,80,332,107"/>
-<area shape="rect" id="node3" href="$adcirc_8h.html" title="adcirc.h" alt="" coords="5,155,73,181"/>
-<area shape="rect" id="node4" href="$nodalattributes_8cpp.html" title="nodalattributes.cpp" alt="" coords="97,155,229,181"/>
+<area shape="rect" id="node2" href="$nodalattributes_8h.html" title="nodalattributes.h" alt="" coords="5,80,124,107"/>
+<area shape="rect" id="node5" href="$attributemetadata_8cpp.html" title="attributemetadata.cpp" alt="" coords="148,80,296,107"/>
+<area shape="rect" id="node6" href="$nodalattributes__impl_8h.html" title="nodalattributes_impl.h" alt="" coords="321,80,470,107"/>
+<area shape="rect" id="node3" href="$adcircmodules_8h.html" title="adcircmodules.h" alt="" coords="6,155,123,181"/>
+<area shape="rect" id="node4" href="$nodalattributes_8cpp.html" title="nodalattributes.cpp" alt="" coords="153,155,285,181"/>
+<area shape="rect" id="node7" href="$nodalattributes__impl_8cpp.html" title="nodalattributes_impl.cpp" alt="" coords="314,155,477,181"/>
 </map>

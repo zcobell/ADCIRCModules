@@ -1,0 +1,4 @@
+<map id="inquireNetcdfFormat" name="inquireNetcdfFormat">
+<area shape="rect" id="node2" href="$namespaceAdcirc_1_1Output.html#a62411d0197558488285f37e6df988204" title="Check if the file type is netcdf3. " alt="" coords="192,5,340,32"/>
+<area shape="rect" id="node3" href="$namespaceAdcirc_1_1Output.html#a0bd3fbcb779d65691c84deaee10fc460" title="Check if the file type is netCDF4. " alt="" coords="192,56,340,83"/>
+</map>

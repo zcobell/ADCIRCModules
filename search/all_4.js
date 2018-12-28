@@ -12,6 +12,7 @@ var searchData=
   ['deleteelementalsearchtree',['deleteElementalSearchTree',['../classAdcirc_1_1Geometry_1_1Mesh.html#a02902ed98b55158a49421242950d9933',1,'Adcirc::Geometry::Mesh']]],
   ['deletenodalsearchtree',['deleteNodalSearchTree',['../classAdcirc_1_1Geometry_1_1Mesh.html#a138d7b286466422790ecbc054c8b0c35',1,'Adcirc::Geometry::Mesh']]],
   ['deletenode',['deleteNode',['../classAdcirc_1_1Geometry_1_1Mesh.html#a684cf2720fb4efb8e72184f52ad151cb',1,'Adcirc::Geometry::Mesh']]],
+  ['description',['description',['../classProjection.html#a9979a3968ac7c2c144e62b84b2722bba',1,'Projection']]],
   ['direction',['direction',['../classAdcirc_1_1Output_1_1OutputRecord.html#a4d57746c34b8773a08701e372fe376bb',1,'Adcirc::Output::OutputRecord']]],
   ['directions',['directions',['../classAdcirc_1_1Output_1_1OutputRecord.html#a2ff38e09941218dd1cb2a04ee60109f9',1,'Adcirc::Output::OutputRecord']]],
   ['disable',['disable',['../classMultithreading.html#a8cfbbe53c1cf6e3054736daea3044c0f',1,'Multithreading']]],

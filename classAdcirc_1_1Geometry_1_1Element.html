@@ -156,6 +156,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a07f34be4674125bc14f69abf7e2f4d51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Element.html#a07f34be4674125bc14f69abf7e2f4d51">getElementCenter</a> (double &amp;xc, double &amp;yc)</td></tr>
 <tr class="memdesc:a07f34be4674125bc14f69abf7e2f4d51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the center position of the element.  <a href="#a07f34be4674125bc14f69abf7e2f4d51">More...</a><br /></td></tr>
 <tr class="separator:a07f34be4674125bc14f69abf7e2f4d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86f85bbe6c99780208efd39ca10275b4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Element.html#a86f85bbe6c99780208efd39ca10275b4">area</a> ()</td></tr>
+<tr class="memdesc:a86f85bbe6c99780208efd39ca10275b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the area of the element.  <a href="#a86f85bbe6c99780208efd39ca10275b4">More...</a><br /></td></tr>
+<tr class="separator:a86f85bbe6c99780208efd39ca10275b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classAdcirc_1_1Geometry_1_1Element.html" title="The Element class describes an Element as an array of Node pointers. ">Element</a> class describes an <a class="el" href="classAdcirc_1_1Geometry_1_1Element.html" title="The Element class describes an Element as an array of Node pointers. ">Element</a> as an array of <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html" title="The Node class describes the x, y, z position of a single mesh node. ">Node</a> pointers. </p>
@@ -167,9 +170,6 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Element</a> </td>
@@ -178,11 +178,6 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
@@ -202,9 +197,6 @@ Here is the call graph for this function:</div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Element</a> </td>
@@ -236,11 +228,6 @@ Here is the call graph for this function:</div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Constructor using references to three <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html" title="The Node class describes the x, y, z position of a single mesh node. ">Node</a> objects. </p>
@@ -259,7 +246,6 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Element_a18dc9fc473bebcc70e414047bec4677e_cgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Element_a18dc9fc473bebcc70e414047bec4677e_cgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Element_a18dc9fc473bebcc70e414047bec4677e_cgraph" id="classAdcirc_1_1Geometry_1_1Element_a18dc9fc473bebcc70e414047bec4677e_cgraph">
 <area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#a415c25edac668536d7d4ccd1f5b694f5" title="Resizes the internal array of verticies. " alt="" coords="124,5,181,32"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the element id/flag. " alt="" coords="133,56,172,83"/>
 </map>
 </div>
 
@@ -270,9 +256,6 @@ Here is the call graph for this function:</div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Element</a> </td>
@@ -310,11 +293,6 @@ Here is the call graph for this function:</div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Constructor using references to three <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html" title="The Node class describes the x, y, z position of a single mesh node. ">Node</a> objects. </p>
@@ -334,13 +312,40 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Element_a46c6ce82702b6406072ec4f4a05baf5d_cgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Element_a46c6ce82702b6406072ec4f4a05baf5d_cgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Element_a46c6ce82702b6406072ec4f4a05baf5d_cgraph" id="classAdcirc_1_1Geometry_1_1Element_a46c6ce82702b6406072ec4f4a05baf5d_cgraph">
 <area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#a415c25edac668536d7d4ccd1f5b694f5" title="Resizes the internal array of verticies. " alt="" coords="124,5,181,32"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the element id/flag. " alt="" coords="133,56,172,83"/>
 </map>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a86f85bbe6c99780208efd39ca10275b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86f85bbe6c99780208efd39ca10275b4">&#9670;&nbsp;</a></span>area()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double area </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculates the area of the element. </p>
+<dl class="section return"><dt>Returns</dt><dd>Area of triangle </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Element_a86f85bbe6c99780208efd39ca10275b4_cgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Element_a86f85bbe6c99780208efd39ca10275b4_cgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Element_a86f85bbe6c99780208efd39ca10275b4_cgraph" id="classAdcirc_1_1Geometry_1_1Element_a86f85bbe6c99780208efd39ca10275b4_cgraph">
+<area shape="rect" id="node2" href="element_8cpp.html#a4ae1e9eaa73978e19f9b5b2f49371dc4" title="Creates a boost::geometry element from the element. " alt="" coords="100,5,220,32"/>
+</map>
+</div>
+
+</div>
+</div>
 <a id="a9629c72872705d78fd8e6b09eea787d6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9629c72872705d78fd8e6b09eea787d6">&#9670;&nbsp;</a></span>elementLeg()</h2>
 
@@ -379,9 +384,10 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Element_a9629c72872705d78fd8e6b09eea787d6_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Element_a9629c72872705d78fd8e6b09eea787d6_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Element_a9629c72872705d78fd8e6b09eea787d6_icgraph" id="classAdcirc_1_1Geometry_1_1Element_a9629c72872705d78fd8e6b09eea787d6_icgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#aea91ac1ba5cbc0a0b6970c9758f804a2" title="Calculates the average size of the legs of an element. " alt="" coords="203,13,297,39"/>
-<area shape="rect" id="node4" href="classMeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="MeshChecker::checkOverlapping\lElements" alt="" coords="143,64,357,105"/>
-<area shape="rect" id="node3" href="classMeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="MeshChecker::checkElement\lSizes" alt="" coords="405,5,599,47"/>
+<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#aea91ac1ba5cbc0a0b6970c9758f804a2" title="Calculates the average size of the legs of an element. " alt="" coords="143,17,237,43"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="285,71,475,112"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="286,5,474,47"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="523,39,711,80"/>
 </map>
 </div>
 
@@ -423,7 +429,8 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Element_aea91ac1ba5cbc0a0b6970c9758f804a2_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Element_aea91ac1ba5cbc0a0b6970c9758f804a2_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Element_aea91ac1ba5cbc0a0b6970c9758f804a2_icgraph" id="classAdcirc_1_1Geometry_1_1Element_aea91ac1ba5cbc0a0b6970c9758f804a2_icgraph">
-<area shape="rect" id="node2" href="classMeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="MeshChecker::checkElement\lSizes" alt="" coords="148,5,341,47"/>
+<area shape="rect" id="node2" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="148,5,336,47"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="384,5,572,47"/>
 </map>
 </div>
 
@@ -468,7 +475,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Element_a07f34be4674125bc14f69abf7e2f4d51_cgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Element_a07f34be4674125bc14f69abf7e2f4d51_cgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Element_a07f34be4674125bc14f69abf7e2f4d51_cgraph" id="classAdcirc_1_1Geometry_1_1Element_a07f34be4674125bc14f69abf7e2f4d51_cgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#a841b7b7f4c7b50931fabb298cfb7bed3" title="Number of verticies in this element. " alt="" coords="180,5,219,32"/>
+<area shape="rect" id="node2" href="element_8cpp.html#a4ae1e9eaa73978e19f9b5b2f49371dc4" title="Creates a boost::geometry element from the element. " alt="" coords="180,5,300,32"/>
 </map>
 </div>
 <div class="dynheader">
@@ -504,12 +511,12 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Element_a5f63790137ee0057c96ce809f8f52ae7_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Element_a5f63790137ee0057c96ce809f8f52ae7_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Element_a5f63790137ee0057c96ce809f8f52ae7_icgraph" id="classAdcirc_1_1Geometry_1_1Element_a5f63790137ee0057c96ce809f8f52ae7_icgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#a18dc9fc473bebcc70e414047bec4677e" title="Constructor using references to three Node objects. " alt="" coords="164,5,235,32"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#af008cb5c3f5096f17966c89cea512124" title="Function that sets up the element using three pointers and the element id/label. " alt="" coords="155,56,243,83"/>
-<area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Element.html#ae83f8bf0246a70095cce1ba86523a6fe" title="Sets the element id/flag. " alt="" coords="174,107,225,133"/>
-<area shape="rect" id="node5" href="classMeshChecker.html#a6cc4b5e332f1a761d93ce7a616dc4bdd" title="MeshChecker::checkElement\lNumbering" alt="" coords="103,158,296,199"/>
-<area shape="rect" id="node6" href="classMeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="MeshChecker::checkOverlapping\lElements" alt="" coords="92,223,307,265"/>
-<area shape="rect" id="node7" href="classMeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="MeshChecker::checkElement\lSizes" alt="" coords="103,289,296,330"/>
+<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#af008cb5c3f5096f17966c89cea512124" title="Function that sets up the element using three pointers and the element id/label. " alt="" coords="143,5,231,32"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#ae83f8bf0246a70095cce1ba86523a6fe" title="Sets the element id/flag. " alt="" coords="161,56,212,83"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a6cc4b5e332f1a761d93ce7a616dc4bdd" title="Adcirc::Utility::MeshChecker\l::checkElementNumbering" alt="" coords="93,107,281,149"/>
+<area shape="rect" id="node6" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="92,173,281,214"/>
+<area shape="rect" id="node7" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="93,238,281,279"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="329,173,517,214"/>
 </map>
 </div>
 
@@ -536,13 +543,16 @@ Here is the caller graph for this function:</div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if point lies within element, false otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if point lies within element, false otherwise</dd></dl>
+<p>This function uses the boost::geometry library to determine if a point lies within an element </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Element_a7e0ddef13575394a4107c682dd26e72d_cgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Element_a7e0ddef13575394a4107c682dd26e72d_cgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Element_a7e0ddef13575394a4107c682dd26e72d_cgraph" id="classAdcirc_1_1Geometry_1_1Element_a7e0ddef13575394a4107c682dd26e72d_cgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#a841b7b7f4c7b50931fabb298cfb7bed3" title="Number of verticies in this element. " alt="" coords="120,5,159,32"/>
+<area shape="rect" id="node2" href="classPoint.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Point::x" alt="" coords="147,5,213,32"/>
+<area shape="rect" id="node3" href="classPoint.html#aca424ddaf2902c1cde483f37813d4278" title="Point::y" alt="" coords="147,56,213,83"/>
+<area shape="rect" id="node4" href="element_8cpp.html#a4ae1e9eaa73978e19f9b5b2f49371dc4" title="Creates a boost::geometry element from the element. " alt="" coords="120,107,240,133"/>
 </map>
 </div>
 <div class="dynheader">
@@ -596,8 +606,10 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Element_a38a50f4eaa28b0d8979c92d8628c30d4_cgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Element_a38a50f4eaa28b0d8979c92d8628c30d4_cgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Element_a38a50f4eaa28b0d8979c92d8628c30d4_cgraph" id="classAdcirc_1_1Geometry_1_1Element_a38a50f4eaa28b0d8979c92d8628c30d4_cgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#a7e0ddef13575394a4107c682dd26e72d" title="isInside" alt="" coords="120,5,187,32"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#a841b7b7f4c7b50931fabb298cfb7bed3" title="Number of verticies in this element. " alt="" coords="235,5,273,32"/>
+<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#a7e0ddef13575394a4107c682dd26e72d" title="isInside" alt="" coords="120,56,187,83"/>
+<area shape="rect" id="node3" href="classPoint.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Point::x" alt="" coords="261,5,328,32"/>
+<area shape="rect" id="node4" href="classPoint.html#aca424ddaf2902c1cde483f37813d4278" title="Point::y" alt="" coords="261,56,328,83"/>
+<area shape="rect" id="node5" href="element_8cpp.html#a4ae1e9eaa73978e19f9b5b2f49371dc4" title="Creates a boost::geometry element from the element. " alt="" coords="235,107,355,133"/>
 </map>
 </div>
 
@@ -625,19 +637,16 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Element_a841b7b7f4c7b50931fabb298cfb7bed3_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Element_a841b7b7f4c7b50931fabb298cfb7bed3_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Element_a841b7b7f4c7b50931fabb298cfb7bed3_icgraph" id="classAdcirc_1_1Geometry_1_1Element_a841b7b7f4c7b50931fabb298cfb7bed3_icgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#a470ec0a757480e57f2e226723804d0c8" title="Sets the node at the specified position to the supplied pointer. " alt="" coords="325,5,396,32"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#a770d2da26cd281fb390158ea5f024d03" title="returns a pointer to the node at the specified position " alt="" coords="130,104,181,131"/>
-<area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Element.html#a4a56f4095253738477eef9a6b821e843" title="Formats the element for writing to an Adcirc ASCII mesh file. " alt="" coords="309,59,413,85"/>
-<area shape="rect" id="node5" href="classAdcirc_1_1Geometry_1_1Element.html#a2ab375c4994ef40c502c665132c732b9" title="Formats the element for writing to an Aquaveo 2dm ASCII mesh file. " alt="" coords="315,113,407,140"/>
-<area shape="rect" id="node6" href="classAdcirc_1_1Geometry_1_1Element.html#a9629c72872705d78fd8e6b09eea787d6" title="Returns a pair of nodes representing the leg of an element. " alt="" coords="316,307,405,333"/>
-<area shape="rect" id="node7" href="classAdcirc_1_1Geometry_1_1Element.html#aea91ac1ba5cbc0a0b6970c9758f804a2" title="Calculates the average size of the legs of an element. " alt="" coords="563,267,657,293"/>
-<area shape="rect" id="node9" href="classMeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="MeshChecker::checkOverlapping\lElements" alt="" coords="503,329,717,370"/>
-<area shape="rect" id="node10" href="classMeshChecker.html#ae03f3887258a57e08f2f6f259c03ce03" title="MeshChecker::checkDisjoint\lNodes" alt="" coords="267,173,455,214"/>
-<area shape="rect" id="node11" href="classAdcirc_1_1Geometry_1_1Element.html#a07f34be4674125bc14f69abf7e2f4d51" title="Computes the center position of the element. " alt="" coords="92,408,219,435"/>
-<area shape="rect" id="node13" href="classAdcirc_1_1Geometry_1_1Element.html#a7e0ddef13575394a4107c682dd26e72d" title="isInside" alt="" coords="122,459,189,485"/>
-<area shape="rect" id="node8" href="classMeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="MeshChecker::checkElement\lSizes" alt="" coords="765,259,959,301"/>
-<area shape="rect" id="node12" href="classAdcirc_1_1Geometry_1_1Element.html#a9e42cda1d41194ce3b1d434ae5a6dac1" title="Sorts the verticies in clockwise order around the element center. " alt="" coords="277,408,444,435"/>
-<area shape="rect" id="node14" href="classAdcirc_1_1Geometry_1_1Element.html#a38a50f4eaa28b0d8979c92d8628c30d4" title="Determine if a point lies within an element. " alt="" coords="327,459,394,485"/>
+<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#a470ec0a757480e57f2e226723804d0c8" title="Sets the node at the specified position to the supplied pointer. " alt="" coords="249,5,320,32"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#a770d2da26cd281fb390158ea5f024d03" title="returns a pointer to the node at the specified position " alt="" coords="92,152,143,179"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Element.html#a4a56f4095253738477eef9a6b821e843" title="Formats the element for writing to an Adcirc ASCII mesh file. " alt="" coords="233,60,337,87"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Geometry_1_1Element.html#a2ab375c4994ef40c502c665132c732b9" title="Formats the element for writing to an Aquaveo 2dm ASCII mesh file. " alt="" coords="239,119,331,145"/>
+<area shape="rect" id="node6" href="classAdcirc_1_1Geometry_1_1Element.html#a9629c72872705d78fd8e6b09eea787d6" title="Returns a pair of nodes representing the leg of an element. " alt="" coords="240,304,329,331"/>
+<area shape="rect" id="node7" href="classAdcirc_1_1Geometry_1_1Element.html#aea91ac1ba5cbc0a0b6970c9758f804a2" title="Calculates the average size of the legs of an element. " alt="" coords="474,253,569,280"/>
+<area shape="rect" id="node10" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="427,305,616,346"/>
+<area shape="rect" id="node11" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ae03f3887258a57e08f2f6f259c03ce03" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="191,187,379,229"/>
+<area shape="rect" id="node8" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="664,246,852,287"/>
+<area shape="rect" id="node9" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="900,246,1088,287"/>
 </map>
 </div>
 
@@ -680,14 +689,15 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Element_a770d2da26cd281fb390158ea5f024d03_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Element_a770d2da26cd281fb390158ea5f024d03_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Element_a770d2da26cd281fb390158ea5f024d03_icgraph" id="classAdcirc_1_1Geometry_1_1Element_a770d2da26cd281fb390158ea5f024d03_icgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#a470ec0a757480e57f2e226723804d0c8" title="Sets the node at the specified position to the supplied pointer. " alt="" coords="163,5,233,32"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#a4a56f4095253738477eef9a6b821e843" title="Formats the element for writing to an Adcirc ASCII mesh file. " alt="" coords="146,56,250,83"/>
-<area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Element.html#a2ab375c4994ef40c502c665132c732b9" title="Formats the element for writing to an Aquaveo 2dm ASCII mesh file. " alt="" coords="152,107,244,133"/>
-<area shape="rect" id="node5" href="classAdcirc_1_1Geometry_1_1Element.html#a9629c72872705d78fd8e6b09eea787d6" title="Returns a pair of nodes representing the leg of an element. " alt="" coords="153,157,243,184"/>
-<area shape="rect" id="node9" href="classMeshChecker.html#ae03f3887258a57e08f2f6f259c03ce03" title="MeshChecker::checkDisjoint\lNodes" alt="" coords="104,209,292,250"/>
-<area shape="rect" id="node6" href="classAdcirc_1_1Geometry_1_1Element.html#aea91ac1ba5cbc0a0b6970c9758f804a2" title="Calculates the average size of the legs of an element. " alt="" coords="400,128,495,155"/>
-<area shape="rect" id="node8" href="classMeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="MeshChecker::checkOverlapping\lElements" alt="" coords="340,179,555,221"/>
-<area shape="rect" id="node7" href="classMeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="MeshChecker::checkElement\lSizes" alt="" coords="603,121,796,162"/>
+<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#a470ec0a757480e57f2e226723804d0c8" title="Sets the node at the specified position to the supplied pointer. " alt="" coords="121,5,191,32"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#a4a56f4095253738477eef9a6b821e843" title="Formats the element for writing to an Adcirc ASCII mesh file. " alt="" coords="104,56,208,83"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Element.html#a2ab375c4994ef40c502c665132c732b9" title="Formats the element for writing to an Aquaveo 2dm ASCII mesh file. " alt="" coords="110,107,202,133"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Geometry_1_1Element.html#a9629c72872705d78fd8e6b09eea787d6" title="Returns a pair of nodes representing the leg of an element. " alt="" coords="111,157,201,184"/>
+<area shape="rect" id="node10" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ae03f3887258a57e08f2f6f259c03ce03" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="256,209,444,250"/>
+<area shape="rect" id="node6" href="classAdcirc_1_1Geometry_1_1Element.html#aea91ac1ba5cbc0a0b6970c9758f804a2" title="Calculates the average size of the legs of an element. " alt="" coords="303,100,397,127"/>
+<area shape="rect" id="node9" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="492,150,681,191"/>
+<area shape="rect" id="node7" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="493,85,681,126"/>
+<area shape="rect" id="node8" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="729,150,917,191"/>
 </map>
 </div>
 
@@ -956,7 +966,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#a07f34be4674125bc14f69abf7e2f4d51" title="Computes the center position of the element. " alt="" coords="245,5,372,32"/>
 <area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="220,56,397,83"/>
 <area shape="rect" id="node5" href="classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="220,107,397,133"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#a841b7b7f4c7b50931fabb298cfb7bed3" title="Number of verticies in this element. " alt="" coords="445,5,484,32"/>
+<area shape="rect" id="node3" href="element_8cpp.html#a4ae1e9eaa73978e19f9b5b2f49371dc4" title="Creates a boost::geometry element from the element. " alt="" coords="445,5,565,32"/>
 </map>
 </div>
 

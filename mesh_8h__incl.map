@@ -1,8 +1,7 @@
 <map id="mesh.h" name="mesh.h">
-<area shape="rect" id="node4" href="$boundary_8h.html" title="boundary.h" alt="" coords="32,80,118,107"/>
-<area shape="rect" id="node6" href="$node_8h.html" title="node.h" alt="" coords="175,155,236,181"/>
-<area shape="rect" id="node8" href="$element_8h.html" title="element.h" alt="" coords="272,80,350,107"/>
-<area shape="rect" id="node11" href="$meshformats_8h.html" title="meshformats.h" alt="" coords="459,80,568,107"/>
-<area shape="rect" id="node5" href="$adcircmodules__global_8h.html" title="adcircmodules_global.h" alt="" coords="126,229,285,256"/>
-<area shape="rect" id="node7" href="$point_8h.html" title="point.h" alt="" coords="407,229,468,256"/>
+<area shape="rect" id="node5" href="$boundary_8h.html" title="boundary.h" alt="" coords="355,80,440,107"/>
+<area shape="rect" id="node6" href="$node_8h.html" title="node.h" alt="" coords="428,155,490,181"/>
+<area shape="rect" id="node8" href="$element_8h.html" title="element.h" alt="" coords="184,80,262,107"/>
+<area shape="rect" id="node11" href="$meshformats_8h.html" title="meshformats.h" alt="" coords="615,80,724,107"/>
+<area shape="rect" id="node7" href="$point_8h.html" title="point.h" alt="" coords="251,229,312,256"/>
 </map>

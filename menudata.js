@@ -30,6 +30,7 @@ var menudata={children:[
 {text:"_",url:"namespacemembers.html#index__"},
 {text:"a",url:"namespacemembers.html#index_a"},
 {text:"b",url:"namespacemembers.html#index_b"},
+{text:"c",url:"namespacemembers.html#index_c"},
 {text:"d",url:"namespacemembers.html#index_d"},
 {text:"h",url:"namespacemembers.html#index_h"},
 {text:"i",url:"namespacemembers.html#index_i"},
@@ -38,7 +39,6 @@ var menudata={children:[
 {text:"p",url:"namespacemembers.html#index_p"},
 {text:"r",url:"namespacemembers.html#index_r"},
 {text:"u",url:"namespacemembers.html#index_u"},
-{text:"v",url:"namespacemembers.html#index_v"},
 {text:"x",url:"namespacemembers.html#index_x"}]},
 {text:"Functions",url:"namespacemembers_func.html"},
 {text:"Variables",url:"namespacemembers_vars.html"},
@@ -112,4 +112,5 @@ var menudata={children:[
 {text:"All",url:"globals.html"},
 {text:"Functions",url:"globals_func.html"},
 {text:"Variables",url:"globals_vars.html"},
+{text:"Typedefs",url:"globals_type.html"},
 {text:"Macros",url:"globals_defs.html"}]}]}]}

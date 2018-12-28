@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['nodalattributes',['NodalAttributes',['../classAdcirc_1_1ModelParameters_1_1NodalAttributes.html',1,'Adcirc::ModelParameters']]],
-  ['node',['Node',['../classAdcirc_1_1Geometry_1_1Node.html',1,'Adcirc::Geometry']]]
+  ['outputfile',['OutputFile',['../classAdcirc_1_1Output_1_1OutputFile.html',1,'Adcirc::Output']]],
+  ['outputrecord',['OutputRecord',['../classAdcirc_1_1Output_1_1OutputRecord.html',1,'Adcirc::Output']]]
 ];
