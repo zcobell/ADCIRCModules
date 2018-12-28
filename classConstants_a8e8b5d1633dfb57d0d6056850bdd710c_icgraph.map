@@ -1,5 +1,5 @@
 <map id="toRadians" name="toRadians">
-<area shape="rect" id="node2" href="$classConstants.html#aa13d2db888106c7772ff7d9336982fad" title="radiusEarth" alt="" coords="166,5,254,32"/>
-<area shape="rect" id="node3" href="$classProjection.html#a614ca00914ea4c60dce4a5c38fea0817" title="Projection::cpp" alt="" coords="155,56,265,83"/>
-<area shape="rect" id="node4" href="$classProjection.html#a1a9a2109d8ce62359556d862fde20344" title="Projection::inverseCpp" alt="" coords="133,107,287,133"/>
+<area shape="rect" id="node2" href="$classConstants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude. " alt="" coords="133,31,221,57"/>
+<area shape="rect" id="node3" href="$classProjection.html#a614ca00914ea4c60dce4a5c38fea0817" title="Projection::cpp" alt="" coords="291,5,401,32"/>
+<area shape="rect" id="node4" href="$classProjection.html#a1a9a2109d8ce62359556d862fde20344" title="Projection::inverseCpp" alt="" coords="269,68,423,95"/>
 </map>

@@ -107,12 +107,13 @@ var NAVTREEINDEX1 =
 "classPixel.html#afd42a4495dbeb316b2174b6da9f53d5b":[1,0,4,5],
 "classPixel.html#afe93e17ac89cd97917811068ba2af214":[1,0,4,3],
 "classPoint.html":[1,0,5],
-"classPoint.html#a7d57e2a5c35d27feb58fd498a3cf82b9":[1,0,5,3],
-"classPoint.html#a833e1cf314b7b7a5537b2b6a56fee6a5":[1,0,5,4],
+"classPoint.html#a7d57e2a5c35d27feb58fd498a3cf82b9":[1,0,5,4],
+"classPoint.html#a833e1cf314b7b7a5537b2b6a56fee6a5":[1,0,5,5],
 "classPoint.html#a8eb76552ab4daf01a92da58843a0253b":[1,0,5,1],
-"classPoint.html#a9c18fcc579333bf9653d13ad2b372e39":[1,0,5,2],
-"classPoint.html#aca424ddaf2902c1cde483f37813d4278":[1,0,5,5],
+"classPoint.html#a9c18fcc579333bf9653d13ad2b372e39":[1,0,5,3],
+"classPoint.html#aca424ddaf2902c1cde483f37813d4278":[1,0,5,6],
 "classPoint.html#ae08c5f0c5b4c75a3e0f33dada5f2fcba":[1,0,5,0],
+"classPoint.html#ae69f5dfa0badc3bf3301f8798ce228eb":[1,0,5,2],
 "classProjection.html":[1,0,6],
 "classProjection.html#a1a88b0cc9d1a47cb97df4032766073b1":[1,0,6,4],
 "classProjection.html#a27b33b81070ff7684bf12bf5ac3ef7bf":[1,0,6,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "functions.html":[1,2,0],
 "functions_0x7e.html":[1,2,0,26],
 "functions_a.html":[1,2,0,1],
-"functions_b.html":[1,2,0,2],
-"functions_c.html":[1,2,0,3]
+"functions_b.html":[1,2,0,2]
 };

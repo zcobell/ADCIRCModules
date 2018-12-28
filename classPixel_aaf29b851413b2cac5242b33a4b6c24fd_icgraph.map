@@ -1,10 +1,9 @@
 <map id="j" name="j">
-<area shape="rect" id="node2" href="$classPixel.html#a6881306fdeca3f00b9ffdaf8a58fc5ed" title="Pixel" alt="" coords="165,5,215,32"/>
-<area shape="rect" id="node3" href="$classPixel.html#afd42a4495dbeb316b2174b6da9f53d5b" title="set" alt="" coords="170,56,210,83"/>
-<area shape="rect" id="node4" href="$classRasterdata.html#aa82c1b4e2cd9fcd75f8375facefec365" title="Rasterdata::pixelToCoordinate" alt="" coords="92,107,288,133"/>
-<area shape="rect" id="node5" href="$classRasterdata.html#ac02b87d88128e11a5af2cdb2840b3ef3" title="Rasterdata::pixelValueInt" alt="" coords="107,157,273,184"/>
-<area shape="rect" id="node7" href="$classRasterdata.html#a2378e6241d209cce3fa92fb84a401504" title="Rasterdata::pixelValueDouble" alt="" coords="94,208,286,235"/>
-<area shape="rect" id="node9" href="$classRasterdata.html#ab8f51c470b8f9503defa8dcdbe3e1df7" title="Rasterdata::searchBoxAround\lPoint" alt="" coords="92,259,288,301"/>
-<area shape="rect" id="node6" href="$classRasterdata.html#a1d231138de7708f66d58d3604ef6eee6" title="Rasterdata::pixelValueInt" alt="" coords="349,157,515,184"/>
-<area shape="rect" id="node8" href="$classRasterdata.html#a9f5b06aca7d1d25268059526e1d35b21" title="Rasterdata::pixelValueDouble" alt="" coords="336,208,528,235"/>
+<area shape="rect" id="node2" href="$classPixel.html#afd42a4495dbeb316b2174b6da9f53d5b" title="Sets the pixel indicies. " alt="" coords="170,5,210,32"/>
+<area shape="rect" id="node3" href="$classRasterdata.html#aa82c1b4e2cd9fcd75f8375facefec365" title="Calculates the coordinate of the pixel center. " alt="" coords="92,56,288,83"/>
+<area shape="rect" id="node4" href="$classRasterdata.html#ac02b87d88128e11a5af2cdb2840b3ef3" title="Returns the pixel value for the i,j index. " alt="" coords="107,107,273,133"/>
+<area shape="rect" id="node6" href="$classRasterdata.html#a2378e6241d209cce3fa92fb84a401504" title="Returns the pixel value for the i,j index. " alt="" coords="94,157,286,184"/>
+<area shape="rect" id="node8" href="$classRasterdata.html#ab8f51c470b8f9503defa8dcdbe3e1df7" title="Returns a search box of a given size around a given point. " alt="" coords="92,209,288,250"/>
+<area shape="rect" id="node5" href="$classRasterdata.html#a1d231138de7708f66d58d3604ef6eee6" title="Returns the pixel value for the i,j index. " alt="" coords="349,107,515,133"/>
+<area shape="rect" id="node7" href="$classRasterdata.html#a9f5b06aca7d1d25268059526e1d35b21" title="Returns the pixel value for the i,j index. " alt="" coords="336,157,528,184"/>
 </map>

@@ -31,7 +31,7 @@
 <area shape="rect" id="node30" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ab9ca75c0810e19275649635a2ac5934d" title="Returns the elevation of the pipe above datum for type 5 and 25 boundaries. " alt="" coords="378,1005,565,1047"/>
 <area shape="rect" id="node31" href="$classAdcirc_1_1Geometry_1_1Boundary.html#af1dc9caf2049168de2d6106807d3a905" title="Returns the diameter of the pipe. " alt="" coords="378,940,565,981"/>
 <area shape="rect" id="node33" href="$classAdcirc_1_1Geometry_1_1Element.html#aea91ac1ba5cbc0a0b6970c9758f804a2" title="Calculates the average size of the legs of an element. " alt="" coords="381,487,561,528"/>
-<area shape="rect" id="node34" href="$classConstants.html#a67bb34165d68f1fe958b93511d5ede05" title="Constants::distance" alt="" coords="643,545,781,571"/>
+<area shape="rect" id="node34" href="$classConstants.html#a67bb34165d68f1fe958b93511d5ede05" title="Calculates the distance between two points. " alt="" coords="643,545,781,571"/>
 <area shape="rect" id="node35" href="$classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="623,393,801,419"/>
 <area shape="rect" id="node36" href="$classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="623,443,801,470"/>
 </map>

@@ -1,4 +1,4 @@
 <map id="nodata" name="nodata">
-<area shape="rect" id="node2" href="$classRasterdata.html#a2378e6241d209cce3fa92fb84a401504" title="pixelValueDouble" alt="" coords="115,5,236,32"/>
-<area shape="rect" id="node3" href="$classRasterdata.html#a9f5b06aca7d1d25268059526e1d35b21" title="pixelValueDouble" alt="" coords="284,5,405,32"/>
+<area shape="rect" id="node2" href="$classRasterdata.html#a2378e6241d209cce3fa92fb84a401504" title="Returns the pixel value for the i,j index. " alt="" coords="115,5,236,32"/>
+<area shape="rect" id="node3" href="$classRasterdata.html#a9f5b06aca7d1d25268059526e1d35b21" title="Returns the pixel value for the i,j index. " alt="" coords="284,5,405,32"/>
 </map>

@@ -1,15 +1,15 @@
 <map id="index" name="index">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a9ed3ca88dd2104aaca079e3a807b671f" title="name" alt="" coords="127,132,182,159"/>
-<area shape="rect" id="node9" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#adf8096ea8fd3649840dcd202bb9fb520" title="amplitude" alt="" coords="115,183,194,209"/>
-<area shape="rect" id="node10" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a5c1bcd1c72eb28791e9be177ac58cc2e" title="phase" alt="" coords="126,233,183,260"/>
-<area shape="rect" id="node11" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a7e293d473da58a711f28ff1cc0edfc2d" title="u_magnitude" alt="" coords="107,284,203,311"/>
-<area shape="rect" id="node12" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a8a26c15c1b912cdcada97c7e10371bb3" title="u_phase" alt="" coords="119,335,190,361"/>
-<area shape="rect" id="node13" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#aaebc88d17252f6e9b479a538daf26c15" title="v_magnitude" alt="" coords="107,385,203,412"/>
-<area shape="rect" id="node14" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a276a4d29c260f3e75440827fb4972a8a" title="v_phase" alt="" coords="119,436,190,463"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a5cae7e4e56b5348f563fc6d00e72724b" title="amplitude" alt="" coords="259,5,338,32"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#aa06fc6b5c05a23f3305640fafc4bbcdf" title="phase" alt="" coords="270,56,327,83"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a7b31c7e8e80e0c632c1f75e87ed7b5dd" title="u_magnitude" alt="" coords="251,107,347,133"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#acba78897c928f4d44887fd119434b8c7" title="u_phase" alt="" coords="263,157,334,184"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a323a163e869f9ddffaf617150b98ab49" title="v_magnitude" alt="" coords="251,208,347,235"/>
-<area shape="rect" id="node8" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#ac59d54830c42d5eb40a55cd5223a593c" title="v_phase" alt="" coords="263,259,334,285"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a9ed3ca88dd2104aaca079e3a807b671f" title="Returns the name of the harmonic constituent at the specified index. " alt="" coords="127,132,182,159"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#adf8096ea8fd3649840dcd202bb9fb520" title="Returns the amplitude for a specified harmonic constituent. " alt="" coords="115,183,194,209"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a5c1bcd1c72eb28791e9be177ac58cc2e" title="Returns the phase for a specified harmonic constituent. " alt="" coords="126,233,183,260"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a7e293d473da58a711f28ff1cc0edfc2d" title="Returns the u&#45;magnitude for a specified harmonic constituent. " alt="" coords="107,284,203,311"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a8a26c15c1b912cdcada97c7e10371bb3" title="Returns the u&#45;phase for a specified harmonic constituent. " alt="" coords="119,335,190,361"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#aaebc88d17252f6e9b479a538daf26c15" title="Returns the v&#45;magnitude for a specified harmonic constituent. " alt="" coords="107,385,203,412"/>
+<area shape="rect" id="node14" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a276a4d29c260f3e75440827fb4972a8a" title="Returns the v&#45;phase for a specified harmonic constituent. " alt="" coords="119,436,190,463"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a5cae7e4e56b5348f563fc6d00e72724b" title="Returns the amplitude for a specified harmonic constituent. " alt="" coords="259,5,338,32"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#aa06fc6b5c05a23f3305640fafc4bbcdf" title="Returns the phase for a specified harmonic constituent. " alt="" coords="270,56,327,83"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a7b31c7e8e80e0c632c1f75e87ed7b5dd" title="Returns the u&#45;magnitude for a specified harmonic constituent. " alt="" coords="251,107,347,133"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#acba78897c928f4d44887fd119434b8c7" title="Returns the u&#45;phase for a specified harmonic constituent. " alt="" coords="263,157,334,184"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a323a163e869f9ddffaf617150b98ab49" title="Returns the v&#45;magnitude for a specified harmonic constituent. " alt="" coords="251,208,347,235"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#ac59d54830c42d5eb40a55cd5223a593c" title="Returns the v&#45;phase for a specified harmonic constituent. " alt="" coords="263,259,334,285"/>
 </map>

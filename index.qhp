@@ -405,6 +405,7 @@
             <section title="Point" ref="classPoint.html">
               <section title="Point" ref="classPoint.html#ae08c5f0c5b4c75a3e0f33dada5f2fcba" />
               <section title="Point" ref="classPoint.html#a8eb76552ab4daf01a92da58843a0253b" />
+              <section title="set" ref="classPoint.html#ae69f5dfa0badc3bf3301f8798ce228eb" />
               <section title="setX" ref="classPoint.html#a9c18fcc579333bf9653d13ad2b372e39" />
               <section title="setY" ref="classPoint.html#a7d57e2a5c35d27feb58fd498a3cf82b9" />
               <section title="x" ref="classPoint.html#a833e1cf314b7b7a5537b2b6a56fee6a5" />
@@ -1091,6 +1092,7 @@
               <section title="Point" ref="classPoint.html">
                 <section title="Point" ref="classPoint.html#ae08c5f0c5b4c75a3e0f33dada5f2fcba" />
                 <section title="Point" ref="classPoint.html#a8eb76552ab4daf01a92da58843a0253b" />
+                <section title="set" ref="classPoint.html#ae69f5dfa0badc3bf3301f8798ce228eb" />
                 <section title="setX" ref="classPoint.html#a9c18fcc579333bf9653d13ad2b372e39" />
                 <section title="setY" ref="classPoint.html#a7d57e2a5c35d27feb58fd498a3cf82b9" />
                 <section title="x" ref="classPoint.html#a833e1cf314b7b7a5537b2b6a56fee6a5" />
@@ -1214,23 +1216,23 @@
       <keyword name="DefaultOutputValue" id="outputrecord.h::DefaultOutputValue" ref="outputrecord_8h.html#aeda4e1a8d48ae91cc775c18cc817bde1" />
       <keyword name="Constants" id="Constants" ref="classConstants.html" />
       <keyword name="Constants" id="Constants::Constants" ref="classConstants.html#a964cf1f6be44c2c3f05c7343e51abff5" />
-      <keyword name="equitoralRadius" id="Constants::equitoralRadius" ref="classConstants.html#a1e46609687df04683e729d5eaafc5f44" />
-      <keyword name="polarRadius" id="Constants::polarRadius" ref="classConstants.html#a9477e49dbf52f4fdb5ccf1ee601a5616" />
-      <keyword name="e" id="Constants::e" ref="classConstants.html#a65ac695890aab263ca7d614972d6c245" />
-      <keyword name="pi" id="Constants::pi" ref="classConstants.html#a19481c763d7a0b56b40eade0a21daab7" />
-      <keyword name="twoPi" id="Constants::twoPi" ref="classConstants.html#a4987dbdbd430fc2f146c13c29dcb7234" />
-      <keyword name="halfPi" id="Constants::halfPi" ref="classConstants.html#afbf0002debb7981dcb4859ae49bec0e0" />
-      <keyword name="deg2rad" id="Constants::deg2rad" ref="classConstants.html#a057d27214f343738fdb8f972b1ccea45" />
-      <keyword name="rad2deg" id="Constants::rad2deg" ref="classConstants.html#a20ef27da1c83fd914b32a56d6212bd87" />
+      <keyword name="equitoralRadius" id="Constants::equitoralRadius" ref="classConstants.html#ac4170b1989bcda498ea9ea95bf25d583" />
+      <keyword name="polarRadius" id="Constants::polarRadius" ref="classConstants.html#a1b684ff37a85f7e328c6b027ee95bc10" />
+      <keyword name="meanRadiusEarth" id="Constants::meanRadiusEarth" ref="classConstants.html#a527c8cf98fafa39c4f756f33fcfb7eec" />
+      <keyword name="e" id="Constants::e" ref="classConstants.html#a8256b0ba2078e4f506268b7a9d18c8bc" />
+      <keyword name="pi" id="Constants::pi" ref="classConstants.html#a8916e00cc71692658a0a355b2f142274" />
+      <keyword name="twoPi" id="Constants::twoPi" ref="classConstants.html#ace2ba48ef6d244fa44705aff5ba24974" />
+      <keyword name="halfPi" id="Constants::halfPi" ref="classConstants.html#a95a4ba06d4c9d035e3323436c9753b0d" />
+      <keyword name="deg2rad" id="Constants::deg2rad" ref="classConstants.html#ae43063ac7bf556cb933a0206301b9748" />
+      <keyword name="rad2deg" id="Constants::rad2deg" ref="classConstants.html#aa8f2ca4ad36dc6b5f53e25e9e746d008" />
+      <keyword name="g" id="Constants::g" ref="classConstants.html#a8475eaf4bc87bfa8958122727014a72c" />
+      <keyword name="rhoAir" id="Constants::rhoAir" ref="classConstants.html#aad2b9f195b6512f3156a21eacc1c726b" />
+      <keyword name="root2" id="Constants::root2" ref="classConstants.html#a1f89bdd4db934291ec8f093cd174efb3" />
+      <keyword name="root3" id="Constants::root3" ref="classConstants.html#a62d050d6a06ff0262d04bd705e45c517" />
       <keyword name="toRadians" id="Constants::toRadians" ref="classConstants.html#a8e8b5d1633dfb57d0d6056850bdd710c" />
       <keyword name="toDegrees" id="Constants::toDegrees" ref="classConstants.html#a743ea7ec7653fe3ee75df86682edbb04" />
       <keyword name="radiusEarth" id="Constants::radiusEarth" ref="classConstants.html#aa13d2db888106c7772ff7d9336982fad" />
-      <keyword name="radiusEarth" id="Constants::radiusEarth" ref="classConstants.html#a3a86db9f4b39989120ffd7ba1a42d8e4" />
-      <keyword name="g" id="Constants::g" ref="classConstants.html#a630427090c84f49ccb0bbbdc75da0f42" />
-      <keyword name="rhoAir" id="Constants::rhoAir" ref="classConstants.html#a755dec807e7494942a84e62dd8ed16c6" />
       <keyword name="distance" id="Constants::distance" ref="classConstants.html#a67bb34165d68f1fe958b93511d5ede05" />
-      <keyword name="root2" id="Constants::root2" ref="classConstants.html#a89243ccb0e4fa679f5062c81c4f75623" />
-      <keyword name="root3" id="Constants::root3" ref="classConstants.html#a02c1753058ffacff31d92dc439029b74" />
       <keyword name="Multithreading" id="Multithreading" ref="classMultithreading.html" />
       <keyword name="Multithreading" id="Multithreading::Multithreading" ref="classMultithreading.html#a12baeb5443773ee4602cd4cf105d40a7" />
       <keyword name="disable" id="Multithreading::disable" ref="classMultithreading.html#a8cfbbe53c1cf6e3054736daea3044c0f" />
@@ -1254,6 +1256,7 @@
       <keyword name="setX" id="Point::setX" ref="classPoint.html#a9c18fcc579333bf9653d13ad2b372e39" />
       <keyword name="y" id="Point::y" ref="classPoint.html#aca424ddaf2902c1cde483f37813d4278" />
       <keyword name="setY" id="Point::setY" ref="classPoint.html#a7d57e2a5c35d27feb58fd498a3cf82b9" />
+      <keyword name="set" id="Point::set" ref="classPoint.html#ae69f5dfa0badc3bf3301f8798ce228eb" />
       <keyword name="Projection" id="Projection" ref="classProjection.html" />
       <keyword name="Projection" id="Projection::Projection" ref="classProjection.html#a27b33b81070ff7684bf12bf5ac3ef7bf" />
       <keyword name="projVersion" id="Projection::projVersion" ref="classProjection.html#a1a88b0cc9d1a47cb97df4032766073b1" />
@@ -2052,20 +2055,28 @@
       <file>stringconversion_8h__dep__incl.png</file>
       <file>stringconversion_8h__dep__incl.png</file>
       <file>classConstants.html</file>
-      <file>classConstants_a057d27214f343738fdb8f972b1ccea45_icgraph.png</file>
-      <file>classConstants_a057d27214f343738fdb8f972b1ccea45_icgraph.png</file>
+      <file>classConstants_ae43063ac7bf556cb933a0206301b9748_cgraph.png</file>
+      <file>classConstants_ae43063ac7bf556cb933a0206301b9748_cgraph.png</file>
+      <file>classConstants_ae43063ac7bf556cb933a0206301b9748_icgraph.png</file>
+      <file>classConstants_ae43063ac7bf556cb933a0206301b9748_icgraph.png</file>
       <file>classConstants_a67bb34165d68f1fe958b93511d5ede05_icgraph.png</file>
       <file>classConstants_a67bb34165d68f1fe958b93511d5ede05_icgraph.png</file>
-      <file>classConstants_a1e46609687df04683e729d5eaafc5f44_icgraph.png</file>
-      <file>classConstants_a1e46609687df04683e729d5eaafc5f44_icgraph.png</file>
-      <file>classConstants_a9477e49dbf52f4fdb5ccf1ee601a5616_icgraph.png</file>
-      <file>classConstants_a9477e49dbf52f4fdb5ccf1ee601a5616_icgraph.png</file>
-      <file>classConstants_a20ef27da1c83fd914b32a56d6212bd87_icgraph.png</file>
-      <file>classConstants_a20ef27da1c83fd914b32a56d6212bd87_icgraph.png</file>
+      <file>classConstants_ac4170b1989bcda498ea9ea95bf25d583_icgraph.png</file>
+      <file>classConstants_ac4170b1989bcda498ea9ea95bf25d583_icgraph.png</file>
+      <file>classConstants_a95a4ba06d4c9d035e3323436c9753b0d_cgraph.png</file>
+      <file>classConstants_a95a4ba06d4c9d035e3323436c9753b0d_cgraph.png</file>
+      <file>classConstants_a8916e00cc71692658a0a355b2f142274_icgraph.png</file>
+      <file>classConstants_a8916e00cc71692658a0a355b2f142274_icgraph.png</file>
+      <file>classConstants_a1b684ff37a85f7e328c6b027ee95bc10_icgraph.png</file>
+      <file>classConstants_a1b684ff37a85f7e328c6b027ee95bc10_icgraph.png</file>
+      <file>classConstants_aa8f2ca4ad36dc6b5f53e25e9e746d008_cgraph.png</file>
+      <file>classConstants_aa8f2ca4ad36dc6b5f53e25e9e746d008_cgraph.png</file>
+      <file>classConstants_aa8f2ca4ad36dc6b5f53e25e9e746d008_icgraph.png</file>
+      <file>classConstants_aa8f2ca4ad36dc6b5f53e25e9e746d008_icgraph.png</file>
       <file>classConstants_aa13d2db888106c7772ff7d9336982fad_cgraph.png</file>
       <file>classConstants_aa13d2db888106c7772ff7d9336982fad_cgraph.png</file>
-      <file>classConstants_a3a86db9f4b39989120ffd7ba1a42d8e4_icgraph.png</file>
-      <file>classConstants_a3a86db9f4b39989120ffd7ba1a42d8e4_icgraph.png</file>
+      <file>classConstants_aa13d2db888106c7772ff7d9336982fad_icgraph.png</file>
+      <file>classConstants_aa13d2db888106c7772ff7d9336982fad_icgraph.png</file>
       <file>classConstants_a743ea7ec7653fe3ee75df86682edbb04_cgraph.png</file>
       <file>classConstants_a743ea7ec7653fe3ee75df86682edbb04_cgraph.png</file>
       <file>classConstants_a743ea7ec7653fe3ee75df86682edbb04_icgraph.png</file>
@@ -2074,6 +2085,8 @@
       <file>classConstants_a8e8b5d1633dfb57d0d6056850bdd710c_cgraph.png</file>
       <file>classConstants_a8e8b5d1633dfb57d0d6056850bdd710c_icgraph.png</file>
       <file>classConstants_a8e8b5d1633dfb57d0d6056850bdd710c_icgraph.png</file>
+      <file>classConstants_ace2ba48ef6d244fa44705aff5ba24974_cgraph.png</file>
+      <file>classConstants_ace2ba48ef6d244fa44705aff5ba24974_cgraph.png</file>
       <file>classConstants-members.html</file>
       <file>classMultithreading.html</file>
       <file>classMultithreading_a8cfbbe53c1cf6e3054736daea3044c0f_cgraph.png</file>
@@ -2098,8 +2111,6 @@
       <file>classPixel.html</file>
       <file>classPixel_a3d22dc2630f1c1c69ec973cd4648b5d5_cgraph.png</file>
       <file>classPixel_a3d22dc2630f1c1c69ec973cd4648b5d5_cgraph.png</file>
-      <file>classPixel_a6881306fdeca3f00b9ffdaf8a58fc5ed_cgraph.png</file>
-      <file>classPixel_a6881306fdeca3f00b9ffdaf8a58fc5ed_cgraph.png</file>
       <file>classPixel_a92b0b88b9a2c8ccada33e3fa7ce39244_icgraph.png</file>
       <file>classPixel_a92b0b88b9a2c8ccada33e3fa7ce39244_icgraph.png</file>
       <file>classPixel_afe93e17ac89cd97917811068ba2af214_icgraph.png</file>
@@ -2112,16 +2123,12 @@
       <file>classPixel_a051bda95cf60584a1aa7aea3cb2d5215_icgraph.png</file>
       <file>classPixel-members.html</file>
       <file>classPoint.html</file>
-      <file>classPoint_a8eb76552ab4daf01a92da58843a0253b_cgraph.png</file>
-      <file>classPoint_a8eb76552ab4daf01a92da58843a0253b_cgraph.png</file>
+      <file>classPoint_ae69f5dfa0badc3bf3301f8798ce228eb_cgraph.png</file>
+      <file>classPoint_ae69f5dfa0badc3bf3301f8798ce228eb_cgraph.png</file>
       <file>classPoint_a9c18fcc579333bf9653d13ad2b372e39_cgraph.png</file>
       <file>classPoint_a9c18fcc579333bf9653d13ad2b372e39_cgraph.png</file>
-      <file>classPoint_a9c18fcc579333bf9653d13ad2b372e39_icgraph.png</file>
-      <file>classPoint_a9c18fcc579333bf9653d13ad2b372e39_icgraph.png</file>
       <file>classPoint_a7d57e2a5c35d27feb58fd498a3cf82b9_cgraph.png</file>
       <file>classPoint_a7d57e2a5c35d27feb58fd498a3cf82b9_cgraph.png</file>
-      <file>classPoint_a7d57e2a5c35d27feb58fd498a3cf82b9_icgraph.png</file>
-      <file>classPoint_a7d57e2a5c35d27feb58fd498a3cf82b9_icgraph.png</file>
       <file>classPoint_a833e1cf314b7b7a5537b2b6a56fee6a5_icgraph.png</file>
       <file>classPoint_a833e1cf314b7b7a5537b2b6a56fee6a5_icgraph.png</file>
       <file>classPoint_aca424ddaf2902c1cde483f37813d4278_icgraph.png</file>
