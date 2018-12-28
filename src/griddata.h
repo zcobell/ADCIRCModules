@@ -85,6 +85,7 @@ class Griddata {
 
   std::vector<double> ADCIRCMODULES_EXPORT
   computeValuesFromRaster(bool useLookupTable = false);
+
   std::vector<std::vector<double>> ADCIRCMODULES_EXPORT
   computeDirectionalWindReduction(bool useLookupTable = false);
 

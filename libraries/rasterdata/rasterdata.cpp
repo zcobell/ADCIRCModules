@@ -24,11 +24,18 @@
 #include "cpl_error.h"
 #include "gdal_priv.h"
 
+/**
+ * @brief Default constructor without a filename
+ */
 Rasterdata::Rasterdata() : m_filename(std::string()) {
   this->init();
   return;
 }
 
+/**
+ * @brief Default constructor that takes a filename
+ * @param filename name of raster file
+ */
 Rasterdata::Rasterdata(const std::string &filename) : m_filename(filename) {
   this->init();
   return;
@@ -36,6 +43,12 @@ Rasterdata::Rasterdata(const std::string &filename) : m_filename(filename) {
 
 Rasterdata::~Rasterdata() { this->close(); }
 
+/**
+ * @brief Initialization routine.
+ *
+ * Sets all internals to default values, many of which are just extreme values
+ * that can be easily detected
+ */
 void Rasterdata::init() {
   this->m_file = nullptr;
   this->m_band = nullptr;
@@ -55,6 +68,10 @@ void Rasterdata::init() {
   return;
 }
 
+/**
+ * @brief Opens a raster using the GDAL library
+ * @return true if the file was successfully opened
+ */
 bool Rasterdata::open() {
   GDALAllRegister();
   this->m_file = static_cast<GDALDataset *>(
@@ -67,6 +84,12 @@ bool Rasterdata::open() {
   }
 }
 
+/**
+ * @brief Reads the raster metadata
+ * @return true if metadata was successfully read
+ *
+ * This will get the nodata value, raster band pointer, data type, and x,y sizes
+ */
 bool Rasterdata::getRasterMetadata() {
   int successNoData;
   assert(this->m_file != nullptr);
@@ -103,14 +126,30 @@ bool Rasterdata::getRasterMetadata() {
   return true;
 }
 
+/**
+ * @brief Returns the raster type information
+ * @return RasterType enum
+ */
 int Rasterdata::rasterType() const { return this->m_rasterType; }
 
+/**
+ * @brief Filename of raster being used in this object
+ * @return filename
+ */
 std::string Rasterdata::filename() const { return this->m_filename; }
 
+/**
+ * @brief Sets the filename for the raster to use in the object
+ * @param filename name of file
+ */
 void Rasterdata::setFilename(const std::string &filename) {
   this->m_filename = filename;
 }
 
+/**
+ * @brief Closes the GDAL raster object
+ * @return true if object was successfully closed
+ */
 bool Rasterdata::close() {
   if (this->m_file != nullptr) {
     GDALClose((GDALDatasetH)this->m_file);
@@ -120,6 +159,12 @@ bool Rasterdata::close() {
   return false;
 }
 
+/**
+ * @brief Calculates the coordinate of the pixel center
+ * @param i i-index
+ * @param j j-index
+ * @return Point object with coordinate information for the pixel
+ */
 Point Rasterdata::pixelToCoordinate(size_t i, size_t j) {
   if (i <= this->m_nx && j <= this->m_ny) {
     return Point(
@@ -131,10 +176,21 @@ Point Rasterdata::pixelToCoordinate(size_t i, size_t j) {
   }
 }
 
+/**
+ * @brief Calculates the coordinate of the pixel center
+ * @param p Pixel object with i,j indicies
+ * @return Point object with coordinate information for the pixel
+ */
 Point Rasterdata::pixelToCoordinate(Pixel &p) {
   return this->pixelToCoordinate(p.i(), p.j());
 }
 
+/**
+ * @brief Converts an x,y coordinate to the pixel i,j
+ * @param x x-coordinate
+ * @param y y-coordinate
+ * @return Pixel object with i,j indicies for given x,y
+ */
 Pixel Rasterdata::coordinateToPixel(double x, double y) {
   if (x > this->xmax() || x < this->xmin() || y > this->ymax() || y < ymin()) {
     return Pixel();
@@ -144,42 +200,104 @@ Pixel Rasterdata::coordinateToPixel(double x, double y) {
   }
 }
 
+/**
+ * @brief Converts an x,y coordinate to the pixel i,j
+ * @param p Point object with x,y-coordinates
+ * @return Pixel object with i,j indicies for given x,y
+ */
 Pixel Rasterdata::coordinateToPixel(Point &p) {
   return this->coordinateToPixel(p.x(), p.y());
 }
 
+/**
+ * @brief y-max value for raster
+ * @return y-max value
+ */
 double Rasterdata::ymax() const { return this->m_ymax; }
 
+/**
+ * @brief y-min value for raster
+ * @return y-min value
+ */
 double Rasterdata::ymin() const { return this->m_ymin; }
 
+/**
+ * @brief x-max value for raster
+ * @return x-max value
+ */
 double Rasterdata::xmax() const { return this->m_xmax; }
 
+/**
+ * @brief x-min value for raster
+ * @return x-min value
+ */
 double Rasterdata::xmin() const { return this->m_xmin; }
 
+/**
+ * @brief dy value for raster
+ * @return dy value
+ */
 double Rasterdata::dy() const { return this->m_dy; }
 
+/**
+ * @brief dx value for raster
+ * @return dx value
+ */
 double Rasterdata::dx() const { return this->m_dx; }
 
+/**
+ * @brief nodata value used in the raster
+ * @return nodata value
+ */
 double Rasterdata::nodata() const { return this->m_nodata; }
 
+/**
+ * @brief Number of pixels in the y-direction
+ * @return number of y pixels
+ */
 size_t Rasterdata::ny() const { return this->m_ny; }
 
+/**
+ * @brief Number of pixels in the x-direction
+ * @return number of x pixels
+ */
 size_t Rasterdata::nx() const { return this->m_nx; }
 
+/**
+ * @brief Projection string embedded in raster
+ * @return projection string
+ */
 std::string Rasterdata::projectionString() const {
   return this->m_projectionReference;
 }
 
+/**
+ * @brief Returns the pixel value for the i,j index
+ * @param i i-index
+ * @param j j-index
+ * @return pixel value (double)
+ */
 double Rasterdata::pixelValueDouble(size_t i, size_t j) {
   Pixel p = Pixel(i, j);
   return this->pixelValueDouble(p);
 }
 
+/**
+ * @brief Returns the pixel value for the i,j index
+ * @param i i-index
+ * @param j j-index
+ * @return pixel value (integer)
+ */
 int Rasterdata::pixelValueInt(size_t i, size_t j) {
   Pixel p = Pixel(i, j);
   return this->pixelValueInt(p);
 }
 
+/**
+ * @brief Returns the pixel value for the i,j index
+ * @param p pixel with indicies
+ * @return pixel value (integer)
+ */
 int Rasterdata::pixelValueInt(Pixel p) {
   if (p.i() > 0 && p.j() > 0) {
     int *buf = (int *)CPLMalloc(sizeof(int) * 1);
@@ -193,6 +311,11 @@ int Rasterdata::pixelValueInt(Pixel p) {
   }
 }
 
+/**
+ * @brief Returns the pixel value for the i,j index
+ * @param p pixel with indicies
+ * @return pixel value (double)
+ */
 double Rasterdata::pixelValueDouble(Pixel &p) {
   if (p.i() > 0 && p.j() > 0 && p.i() < this->nx() && p.j() < this->ny()) {
     double *buf = (double *)CPLMalloc(sizeof(double) * 1);
@@ -206,6 +329,15 @@ double Rasterdata::pixelValueDouble(Pixel &p) {
   }
 }
 
+/**
+ * @brief Returns a search box of a given size around a given point
+ * @param x x-location
+ * @param y y-location
+ * @param halfSide half the side of the search box
+ * @param upperLeft upper left pixel
+ * @param lowerRight lower right pixel
+ * @return number of pixels selected
+ */
 int Rasterdata::searchBoxAroundPoint(double x, double y, double halfSide,
                                      Pixel &upperLeft, Pixel &lowerRight) {
   Pixel p = this->coordinateToPixel(x, y);
@@ -228,6 +360,11 @@ int Rasterdata::searchBoxAroundPoint(double x, double y, double halfSide,
   }
 }
 
+/**
+ * @brief Reads the entire raster into memory to avoid disk access
+ *
+ * Not always the fastest method, but in some cases it is worthwhile
+ */
 void Rasterdata::readDoubleRasterToMemory() {
   size_t n = this->nx() * this->ny();
   double *buf = (double *)CPLMalloc(sizeof(double) * n);
@@ -249,6 +386,11 @@ void Rasterdata::readDoubleRasterToMemory() {
   CPLFree(buf);
 }
 
+/**
+ * @brief Reads the entire raster into memory to avoid disk access
+ *
+ * Not always the fastest method, but in some cases it is worthwhile
+ */
 void Rasterdata::readIntegerRasterToMemory() {
   size_t n = this->nx() * this->ny();
   int *buf = (int *)CPLMalloc(sizeof(int) * n);
@@ -270,6 +412,11 @@ void Rasterdata::readIntegerRasterToMemory() {
   CPLFree(buf);
 }
 
+/**
+ * @brief Reads the entire raster into memory to avoid disk access
+ *
+ * Not always the fastest method, but in some cases it is worthwhile
+ */
 void Rasterdata::read() {
   if (this->m_isRead) return;
   if (this->m_rasterType == RasterTypes::Double) {
@@ -281,6 +428,17 @@ void Rasterdata::read() {
   return;
 }
 
+/**
+ * @brief Reads the pixel values for the given search box
+ * @param ibegin beginning i-index
+ * @param jbegin beginning j-index
+ * @param iend ending i-index
+ * @param jend ending j-index
+ * @param x x-location vector
+ * @param y y-location vector
+ * @param z z-values from raster
+ * @return status
+ */
 int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
                             size_t jend, std::vector<double> &x,
                             std::vector<double> &y, std::vector<double> &z) {
@@ -291,6 +449,17 @@ int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
   }
 }
 
+/**
+ * @brief Reads the pixel values for the given search box
+ * @param ibegin beginning i-index
+ * @param jbegin beginning j-index
+ * @param iend ending i-index
+ * @param jend ending j-index
+ * @param x x-location vector
+ * @param y y-location vector
+ * @param z z-values from raster
+ * @return status
+ */
 int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
                             size_t jend, std::vector<double> &x,
                             std::vector<double> &y, std::vector<int> &z) {
@@ -301,6 +470,17 @@ int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
   }
 }
 
+/**
+ * @brief Reads the pixel values for the given search box from memory
+ * @param ibegin beginning i-index
+ * @param jbegin beginning j-index
+ * @param iend ending i-index
+ * @param jend ending j-index
+ * @param x x-location vector
+ * @param y y-location vector
+ * @param z z-values from raster
+ * @return status
+ */
 int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
                                       size_t jend, std::vector<double> &x,
                                       std::vector<double> &y,
@@ -328,6 +508,17 @@ int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
   return 0;
 }
 
+/**
+ * @brief Reads the pixel values for the given search box from memory
+ * @param ibegin beginning i-index
+ * @param jbegin beginning j-index
+ * @param iend ending i-index
+ * @param jend ending j-index
+ * @param x x-location vector
+ * @param y y-location vector
+ * @param z z-values from raster
+ * @return status
+ */
 int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
                                       size_t jend, std::vector<double> &x,
                                       std::vector<double> &y,
@@ -355,6 +546,17 @@ int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
   return 0;
 }
 
+/**
+ * @brief Reads the pixel values for the given search box from disk
+ * @param ibegin beginning i-index
+ * @param jbegin beginning j-index
+ * @param iend ending i-index
+ * @param jend ending j-index
+ * @param x x-location vector
+ * @param y y-location vector
+ * @param z z-values from raster
+ * @return status
+ */
 int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
                                     size_t jend, std::vector<double> &x,
                                     std::vector<double> &y,
@@ -386,6 +588,17 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
   return static_cast<int>(e);
 }
 
+/**
+ * @brief Reads the pixel values for the given search box from disk
+ * @param ibegin beginning i-index
+ * @param jbegin beginning j-index
+ * @param iend ending i-index
+ * @param jend ending j-index
+ * @param x x-location vector
+ * @param y y-location vector
+ * @param z z-values from raster
+ * @return status
+ */
 int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
                                     size_t jend, std::vector<double> &x,
                                     std::vector<double> &y,
@@ -417,6 +630,11 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
   return static_cast<int>(e);
 }
 
+/**
+ * @brief Determines the raster type via the GDAL specified type
+ * @param GDAL raster code
+ * @return raster type enum
+ */
 Rasterdata::RasterTypes Rasterdata::selectRasterType(int d) {
   if (d == GDT_Byte) {
     return RasterTypes::Bool;
@@ -435,10 +653,26 @@ Rasterdata::RasterTypes Rasterdata::selectRasterType(int d) {
   }
 }
 
+/**
+ * @brief Returns the nodata integer used in the raster
+ * @return nodata integer
+ */
 int Rasterdata::nodataint() const { return this->m_nodataint; }
 
+/**
+ * @brief Returns the status of the raster
+ * @return true if the raster is open
+ */
 bool Rasterdata::isOpen() const { return this->m_isOpen; }
 
+/**
+ * @brief Returns the raster epsg code
+ * @return epsg code
+ */
 int Rasterdata::epsg() const { return this->m_epsg; }
 
+/**
+ * @brief Sets the raster epsg code
+ * @param epsg epsg code for the raster
+ */
 void Rasterdata::setEpsg(int epsg) { this->m_epsg = epsg; }

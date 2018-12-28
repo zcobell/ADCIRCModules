@@ -19,29 +19,55 @@
 #include "pixel.h"
 #include <limits>
 
+/**
+ * @brief Default constructor
+ *
+ * Pixel is set as invalid by default
+ */
 Pixel::Pixel() { this->setInvalid(); }
 
-Pixel::Pixel(size_t i, size_t j) {
-  this->m_i = i;
-  this->m_j = j;
-  return;
-}
+/**
+ * @brief Constructor that takes i,j index
+ * @param i i-index
+ * @param j j-index
+ */
+Pixel::Pixel(size_t i, size_t j) : m_i(i), m_j(j) {}
 
+/**
+ * @brief Sets the pixel indicies
+ * @param i i-index
+ * @param j j-index
+ */
 void Pixel::set(const size_t &i, const size_t &j) {
   this->m_i = i;
   this->m_j = j;
   return;
 }
 
+/**
+ * @brief Returns the i-index
+ * @return i-index
+ */
 size_t Pixel::i() const { return this->m_i; }
 
+/**
+ * @brief Returns the j-index
+ * @return j-index
+ */
 size_t Pixel::j() const { return this->m_j; }
 
+/**
+ * @brief Returns a boolean describing if the pixel is valid
+ * @return true if pixel is valid, false otherwise
+ */
 bool Pixel::isValid() {
   return this->m_i < std::numeric_limits<size_t>::max() &&
          this->m_j < std::numeric_limits<size_t>::max();
 }
 
+/**
+ * @brief Sets a pixel to an invalid value for detection later
+ */
 void Pixel::setInvalid() {
   this->m_i = std::numeric_limits<size_t>::max();
   this->m_j = this->m_i;

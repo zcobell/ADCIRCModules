@@ -19,6 +19,14 @@
 #ifndef POINT_H
 #define POINT_H
 
+/**
+ * @class Point
+ * @author Zachary Cobell
+ * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * is released under the terms of the GNU General Public License v3
+ * @brief A generic point class used to describe an x-y location
+ *
+ */
 class Point {
  public:
   Point();
@@ -30,6 +38,8 @@ class Point {
 
   double y() const;
   void setY(double y);
+
+  void set(double x, double y);
 
  private:
   double m_x;
