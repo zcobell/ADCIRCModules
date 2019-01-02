@@ -31,7 +31,6 @@
 #include "kdtree2lib.h"
 #include "meshformats.h"
 #include "node.h"
-#include "point.h"
 
 #ifdef USE_GOOGLE_FLAT_MAP
 #include "absl/container/flat_hash_map.h"
