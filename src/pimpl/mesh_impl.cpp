@@ -24,10 +24,10 @@
 #include "boost/format.hpp"
 #include "elementtable.h"
 #include "error.h"
+#include "ezproj.h"
 #include "io.h"
 #include "kdtree2lib.h"
 #include "netcdf.h"
-#include "projection.h"
 #include "shapefil.h"
 #include "stringconversion.h"
 
@@ -970,26 +970,26 @@ bool MeshImpl::isLatLon() { return this->m_isLatLon; }
  * @param epsg EPSG coordinate system to convert the mesh into
  */
 void MeshImpl::reproject(int epsg) {
-  Projection proj;
+  Ezproj proj;
   bool isLatLon;
-  std::vector<Point> inPoint, outPoint;
+  std::vector<std::pair<double, double>> inPoint, outPoint;
   inPoint.reserve(this->numNodes());
   outPoint.resize(this->numNodes());
 
   for (const auto &n : this->m_nodes) {
-    inPoint.push_back(Point(n.x(), n.y()));
+    inPoint.push_back(std::pair<double, double>(n.x(), n.y()));
   }
 
   int ierr =
       proj.transform(this->projection(), epsg, inPoint, outPoint, isLatLon);
 
-  if (ierr != Projection::NoError) {
+  if (ierr != Ezproj::NoError) {
     adcircmodules_throw_exception("Mesh: Proj4 library error");
   }
 
   for (size_t i = 0; i < this->numNodes(); ++i) {
-    this->node(i)->setX(outPoint[i].x());
-    this->node(i)->setY(outPoint[i].y());
+    this->node(i)->setX(outPoint[i].first);
+    this->node(i)->setY(outPoint[i].second);
   }
 
   this->defineProjection(epsg, isLatLon);
@@ -1796,11 +1796,11 @@ std::vector<std::vector<size_t>> MeshImpl::connectivity() {
  */
 void MeshImpl::cpp(double lambda, double phi) {
   for (auto &n : this->m_nodes) {
-    Point i = Point(n.x(), n.y());
-    Point o;
-    Projection::cpp(lambda, phi, i, o);
-    n.setX(o.x());
-    n.setY(o.y());
+    std::pair<double, double> i(n.x(), n.y());
+    std::pair<double, double> o;
+    Ezproj::cpp(lambda, phi, i, o);
+    n.setX(o.first);
+    n.setY(o.second);
   }
   return;
 }
@@ -1810,11 +1810,11 @@ void MeshImpl::cpp(double lambda, double phi) {
  */
 void MeshImpl::inverseCpp(double lambda, double phi) {
   for (auto &n : this->m_nodes) {
-    Point i = Point(n.x(), n.y());
-    Point o;
-    Projection::inverseCpp(lambda, phi, i, o);
-    n.setX(o.x());
-    n.setY(o.y());
+    std::pair<double, double> i(n.x(), n.y());
+    std::pair<double, double> o;
+    Ezproj::inverseCpp(lambda, phi, i, o);
+    n.setX(o.first);
+    n.setY(o.second);
   }
   return;
 }

@@ -25,7 +25,7 @@ int main() {
   using namespace Adcirc::Geometry;
   using namespace Interpolation;
 
-  Projection p;
+  Ezproj p;
   std::cout << "PROJ Version: " << p.projVersion() << std::endl;
 
   std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));

@@ -17,6 +17,15 @@ m.read()
 ## Documentation
 There is a Doxygen site available [Here](http://zcobell.github.io/ADCIRCModules/). The documentation is not yet complete, however, it is slowly progressing. The Python interface is not explicitly documentated, however, the Python interaction is generated using SWIG, so the function calls are identical. 
 
+## Compiling
+The build system for this project is CMake
+
+### Submodules
+Submodules are used in this project. You should initialize the repository using:
+```
+git submodule update --init
+```
+
 ## Note
 This project is still under development.
 
@@ -39,3 +48,4 @@ Cobell, Z. (2018). Adcirc Modules (Version xxx) [Library]. Retrieved from https:
 | shapelib | Used to convert meshes to shapefile format | [Visit Website](http://shapelib.maptools.org/) |
 | swig     | Used to generate an interface to Python | [Visit Website](http://www.swig.org/) |
 | gdal     | Used to read raster data to interpolate to meshes | [GDAL](https://www.gdal.org/) |
+| EzProj   | Used as interface library to Proj4 for coordinate system transformations | [EzProj](https://github.com/zcobell/EzProj) |
