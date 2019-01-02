@@ -19,11 +19,6 @@ var searchData=
   ['point_5ft',['point_t',['../element_8cpp.html#a63596aa2b4ee6baed8729e369d47c1c1',1,'element.cpp']]],
   ['polarradius',['polarRadius',['../classConstants.html#a1b684ff37a85f7e328c6b027ee95bc10',1,'Constants']]],
   ['polygon_5ft',['polygon_t',['../element_8cpp.html#a90ee99f8574a04239960e4065be1a3da',1,'element.cpp']]],
-  ['proj4internalerror',['Proj4InternalError',['../classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34ae4209bab28d2a804f81611feb04a3aa0',1,'Projection']]],
-  ['projection',['Projection',['../classProjection.html',1,'Projection'],['../classAdcirc_1_1Geometry_1_1Mesh.html#a559e1425143b68b7092668c9a6c66ed7',1,'Adcirc::Geometry::Mesh::projection()'],['../classProjection.html#a27b33b81070ff7684bf12bf5ac3ef7bf',1,'Projection::Projection()']]],
-  ['projection_2ecpp',['projection.cpp',['../projection_8cpp.html',1,'']]],
-  ['projection_2eh',['projection.h',['../projection_8h.html',1,'']]],
-  ['projectionstring',['projectionString',['../classRasterdata.html#a9da4766a4495da822804c83ce4d044ef',1,'Rasterdata']]],
-  ['projinitializationstring',['projInitializationString',['../classProjection.html#ab4f90e8dd87b1417fe60e97d87af55cd',1,'Projection']]],
-  ['projversion',['projVersion',['../classProjection.html#a1a88b0cc9d1a47cb97df4032766073b1',1,'Projection']]]
+  ['projection',['projection',['../classAdcirc_1_1Geometry_1_1Mesh.html#a559e1425143b68b7092668c9a6c66ed7',1,'Adcirc::Geometry::Mesh']]],
+  ['projectionstring',['projectionString',['../classRasterdata.html#a9da4766a4495da822804c83ce4d044ef',1,'Rasterdata']]]
 ];

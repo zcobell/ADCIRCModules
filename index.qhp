@@ -411,21 +411,6 @@
               <section title="x" ref="classPoint.html#a833e1cf314b7b7a5537b2b6a56fee6a5" />
               <section title="y" ref="classPoint.html#aca424ddaf2902c1cde483f37813d4278" />
             </section>
-            <section title="Projection" ref="classProjection.html">
-              <section title="_errors" ref="classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34">
-                <section title="NoError" ref="classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34aef9104c292609ba6db320509be8fe27f" />
-                <section title="NoSuchProjection" ref="classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34a300a7d14e80db667fe5c9b0ceec0d445" />
-                <section title="NoData" ref="classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34a7f6b1dc06a7ab741e7f56df8050b05b6" />
-                <section title="Proj4InternalError" ref="classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34ae4209bab28d2a804f81611feb04a3aa0" />
-              </section>
-              <section title="Projection" ref="classProjection.html#a27b33b81070ff7684bf12bf5ac3ef7bf" />
-              <section title="description" ref="classProjection.html#a9979a3968ac7c2c144e62b84b2722bba" />
-              <section title="projInitializationString" ref="classProjection.html#ab4f90e8dd87b1417fe60e97d87af55cd" />
-              <section title="projVersion" ref="classProjection.html#a1a88b0cc9d1a47cb97df4032766073b1" />
-              <section title="transform" ref="classProjection.html#a586089b05670e2276dbbbcdcb35d37b3" />
-              <section title="transform" ref="classProjection.html#a9c0c0b4e8a9542c8142eaabecf2d42dc" />
-              <section title="transform" ref="classProjection.html#ad227d0653d781e4a95314f13d30b3e1a" />
-            </section>
             <section title="QKdtree2" ref="classQKdtree2.html">
               <section title="_errors" ref="classQKdtree2.html#ae4d68f7885f6ff0e6b643e8bfc056a34">
                 <section title="NoError" ref="classQKdtree2.html#ae4d68f7885f6ff0e6b643e8bfc056a34aef9104c292609ba6db320509be8fe27f" />
@@ -672,7 +657,6 @@
             </section>
             <section title="elementtable.cpp" ref="elementtable_8cpp.html" />
             <section title="elementtable.h" ref="elementtable_8h.html" />
-            <section title="epsg.cpp" ref="epsg_8cpp.html" />
             <section title="error.cpp" ref="error_8cpp.html" />
             <section title="error.h" ref="error_8h.html">
               <section title="Error" ref="classAdcirc_1_1Error.html">
@@ -1099,24 +1083,6 @@
                 <section title="y" ref="classPoint.html#aca424ddaf2902c1cde483f37813d4278" />
               </section>
             </section>
-            <section title="projection.cpp" ref="projection_8cpp.html" />
-            <section title="projection.h" ref="projection_8h.html">
-              <section title="Projection" ref="classProjection.html">
-                <section title="_errors" ref="classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34">
-                  <section title="NoError" ref="classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34aef9104c292609ba6db320509be8fe27f" />
-                  <section title="NoSuchProjection" ref="classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34a300a7d14e80db667fe5c9b0ceec0d445" />
-                  <section title="NoData" ref="classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34a7f6b1dc06a7ab741e7f56df8050b05b6" />
-                  <section title="Proj4InternalError" ref="classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34ae4209bab28d2a804f81611feb04a3aa0" />
-                </section>
-                <section title="Projection" ref="classProjection.html#a27b33b81070ff7684bf12bf5ac3ef7bf" />
-                <section title="description" ref="classProjection.html#a9979a3968ac7c2c144e62b84b2722bba" />
-                <section title="projInitializationString" ref="classProjection.html#ab4f90e8dd87b1417fe60e97d87af55cd" />
-                <section title="projVersion" ref="classProjection.html#a1a88b0cc9d1a47cb97df4032766073b1" />
-                <section title="transform" ref="classProjection.html#a586089b05670e2276dbbbcdcb35d37b3" />
-                <section title="transform" ref="classProjection.html#a9c0c0b4e8a9542c8142eaabecf2d42dc" />
-                <section title="transform" ref="classProjection.html#ad227d0653d781e4a95314f13d30b3e1a" />
-              </section>
-            </section>
             <section title="rasterdata.cpp" ref="rasterdata_8cpp.html" />
             <section title="rasterdata.h" ref="rasterdata_8h.html">
               <section title="Rasterdata" ref="classRasterdata.html">
@@ -1257,24 +1223,6 @@
       <keyword name="y" id="Point::y" ref="classPoint.html#aca424ddaf2902c1cde483f37813d4278" />
       <keyword name="setY" id="Point::setY" ref="classPoint.html#a7d57e2a5c35d27feb58fd498a3cf82b9" />
       <keyword name="set" id="Point::set" ref="classPoint.html#ae69f5dfa0badc3bf3301f8798ce228eb" />
-      <keyword name="Projection" id="Projection" ref="classProjection.html" />
-      <keyword name="Projection" id="Projection::Projection" ref="classProjection.html#a27b33b81070ff7684bf12bf5ac3ef7bf" />
-      <keyword name="projVersion" id="Projection::projVersion" ref="classProjection.html#a1a88b0cc9d1a47cb97df4032766073b1" />
-      <keyword name="transform" id="Projection::transform" ref="classProjection.html#a586089b05670e2276dbbbcdcb35d37b3" />
-      <keyword name="transform" id="Projection::transform" ref="classProjection.html#a9c0c0b4e8a9542c8142eaabecf2d42dc" />
-      <keyword name="transform" id="Projection::transform" ref="classProjection.html#ad227d0653d781e4a95314f13d30b3e1a" />
-      <keyword name="description" id="Projection::description" ref="classProjection.html#a9979a3968ac7c2c144e62b84b2722bba" />
-      <keyword name="projInitializationString" id="Projection::projInitializationString" ref="classProjection.html#ab4f90e8dd87b1417fe60e97d87af55cd" />
-      <keyword name="cpp" id="Projection::cpp" ref="classProjection.html#aa45f9bf0c5c86d65025130438ae76ac6" />
-      <keyword name="cpp" id="Projection::cpp" ref="classProjection.html#a196f1911eb933025661921cf5af1d0db" />
-      <keyword name="cpp" id="Projection::cpp" ref="classProjection.html#a614ca00914ea4c60dce4a5c38fea0817" />
-      <keyword name="inverseCpp" id="Projection::inverseCpp" ref="classProjection.html#ab67e075529ef7774ee63357cd3c23d6e" />
-      <keyword name="inverseCpp" id="Projection::inverseCpp" ref="classProjection.html#aaa242b4205ef18e93e1df25a2b5aa416" />
-      <keyword name="inverseCpp" id="Projection::inverseCpp" ref="classProjection.html#a1a9a2109d8ce62359556d862fde20344" />
-      <keyword name="NoError" id="Projection::NoError" ref="classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34aef9104c292609ba6db320509be8fe27f" />
-      <keyword name="NoSuchProjection" id="Projection::NoSuchProjection" ref="classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34a300a7d14e80db667fe5c9b0ceec0d445" />
-      <keyword name="NoData" id="Projection::NoData" ref="classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34a7f6b1dc06a7ab741e7f56df8050b05b6" />
-      <keyword name="Proj4InternalError" id="Projection::Proj4InternalError" ref="classProjection.html#ae4d68f7885f6ff0e6b643e8bfc056a34ae4209bab28d2a804f81611feb04a3aa0" />
       <keyword name="QKdtree2" id="QKdtree2" ref="classQKdtree2.html" />
       <keyword name="QKdtree2" id="QKdtree2::QKdtree2" ref="classQKdtree2.html#a10adc67c5f731af09f4b362e70242454" />
       <keyword name="~QKdtree2" id="QKdtree2::~QKdtree2" ref="classQKdtree2.html#ab4420e70266a05d6041f34b02feb2d55" />
@@ -1778,7 +1726,6 @@
       <file>outputrecord_8h_source.html</file>
       <file>pixel_8h_source.html</file>
       <file>point_8h_source.html</file>
-      <file>projection_8h_source.html</file>
       <file>rasterdata_8h_source.html</file>
       <file>split_8h_source.html</file>
       <file>stringconversion_8h_source.html</file>
@@ -1841,9 +1788,6 @@
       <file>elementtable_8h__incl.png</file>
       <file>elementtable_8h__dep__incl.png</file>
       <file>elementtable_8h__dep__incl.png</file>
-      <file>epsg_8cpp.html</file>
-      <file>epsg_8cpp__incl.png</file>
-      <file>epsg_8cpp__incl.png</file>
       <file>error_8cpp.html</file>
       <file>error_8cpp__incl.png</file>
       <file>error_8cpp__incl.png</file>
@@ -2022,14 +1966,6 @@
       <file>point_8h.html</file>
       <file>point_8h__dep__incl.png</file>
       <file>point_8h__dep__incl.png</file>
-      <file>projection_8cpp.html</file>
-      <file>projection_8cpp__incl.png</file>
-      <file>projection_8cpp__incl.png</file>
-      <file>projection_8h.html</file>
-      <file>projection_8h__incl.png</file>
-      <file>projection_8h__incl.png</file>
-      <file>projection_8h__dep__incl.png</file>
-      <file>projection_8h__dep__incl.png</file>
       <file>rasterdata_8cpp.html</file>
       <file>rasterdata_8cpp__incl.png</file>
       <file>rasterdata_8cpp__incl.png</file>
@@ -2075,12 +2011,8 @@
       <file>classConstants_aa8f2ca4ad36dc6b5f53e25e9e746d008_icgraph.png</file>
       <file>classConstants_aa13d2db888106c7772ff7d9336982fad_cgraph.png</file>
       <file>classConstants_aa13d2db888106c7772ff7d9336982fad_cgraph.png</file>
-      <file>classConstants_aa13d2db888106c7772ff7d9336982fad_icgraph.png</file>
-      <file>classConstants_aa13d2db888106c7772ff7d9336982fad_icgraph.png</file>
       <file>classConstants_a743ea7ec7653fe3ee75df86682edbb04_cgraph.png</file>
       <file>classConstants_a743ea7ec7653fe3ee75df86682edbb04_cgraph.png</file>
-      <file>classConstants_a743ea7ec7653fe3ee75df86682edbb04_icgraph.png</file>
-      <file>classConstants_a743ea7ec7653fe3ee75df86682edbb04_icgraph.png</file>
       <file>classConstants_a8e8b5d1633dfb57d0d6056850bdd710c_cgraph.png</file>
       <file>classConstants_a8e8b5d1633dfb57d0d6056850bdd710c_cgraph.png</file>
       <file>classConstants_a8e8b5d1633dfb57d0d6056850bdd710c_icgraph.png</file>
@@ -2134,34 +2066,6 @@
       <file>classPoint_aca424ddaf2902c1cde483f37813d4278_icgraph.png</file>
       <file>classPoint_aca424ddaf2902c1cde483f37813d4278_icgraph.png</file>
       <file>classPoint-members.html</file>
-      <file>classProjection.html</file>
-      <file>classProjection_aa45f9bf0c5c86d65025130438ae76ac6_cgraph.png</file>
-      <file>classProjection_aa45f9bf0c5c86d65025130438ae76ac6_cgraph.png</file>
-      <file>classProjection_aa45f9bf0c5c86d65025130438ae76ac6_icgraph.png</file>
-      <file>classProjection_aa45f9bf0c5c86d65025130438ae76ac6_icgraph.png</file>
-      <file>classProjection_a196f1911eb933025661921cf5af1d0db_cgraph.png</file>
-      <file>classProjection_a196f1911eb933025661921cf5af1d0db_cgraph.png</file>
-      <file>classProjection_a614ca00914ea4c60dce4a5c38fea0817_cgraph.png</file>
-      <file>classProjection_a614ca00914ea4c60dce4a5c38fea0817_cgraph.png</file>
-      <file>classProjection_ab67e075529ef7774ee63357cd3c23d6e_cgraph.png</file>
-      <file>classProjection_ab67e075529ef7774ee63357cd3c23d6e_cgraph.png</file>
-      <file>classProjection_ab67e075529ef7774ee63357cd3c23d6e_icgraph.png</file>
-      <file>classProjection_ab67e075529ef7774ee63357cd3c23d6e_icgraph.png</file>
-      <file>classProjection_aaa242b4205ef18e93e1df25a2b5aa416_cgraph.png</file>
-      <file>classProjection_aaa242b4205ef18e93e1df25a2b5aa416_cgraph.png</file>
-      <file>classProjection_a1a9a2109d8ce62359556d862fde20344_cgraph.png</file>
-      <file>classProjection_a1a9a2109d8ce62359556d862fde20344_cgraph.png</file>
-      <file>classProjection_ab4f90e8dd87b1417fe60e97d87af55cd_icgraph.png</file>
-      <file>classProjection_ab4f90e8dd87b1417fe60e97d87af55cd_icgraph.png</file>
-      <file>classProjection_a586089b05670e2276dbbbcdcb35d37b3_cgraph.png</file>
-      <file>classProjection_a586089b05670e2276dbbbcdcb35d37b3_cgraph.png</file>
-      <file>classProjection_a9c0c0b4e8a9542c8142eaabecf2d42dc_cgraph.png</file>
-      <file>classProjection_a9c0c0b4e8a9542c8142eaabecf2d42dc_cgraph.png</file>
-      <file>classProjection_a9c0c0b4e8a9542c8142eaabecf2d42dc_icgraph.png</file>
-      <file>classProjection_a9c0c0b4e8a9542c8142eaabecf2d42dc_icgraph.png</file>
-      <file>classProjection_ad227d0653d781e4a95314f13d30b3e1a_cgraph.png</file>
-      <file>classProjection_ad227d0653d781e4a95314f13d30b3e1a_cgraph.png</file>
-      <file>classProjection-members.html</file>
       <file>classQKdtree2.html</file>
       <file>classQKdtree2_ad8c0cfa80a7e0d18d095bdd84c96b860_cgraph.png</file>
       <file>classQKdtree2_ad8c0cfa80a7e0d18d095bdd84c96b860_cgraph.png</file>
@@ -2788,21 +2692,16 @@
       <file>dir_671fe1434137a2248877bb5e0ac6d9a5_dep.png</file>
       <file>dir_671fe1434137a2248877bb5e0ac6d9a5_dep.png</file>
       <file>dir_812045a575aaa678ba376b55f6f3557c.html</file>
-      <file>dir_bde862f849c658b4783cbcd08df76813.html</file>
-      <file>dir_bde862f849c658b4783cbcd08df76813_dep.png</file>
-      <file>dir_bde862f849c658b4783cbcd08df76813_dep.png</file>
       <file>dir_1bd1fc388314ab66abf0ab76407f713b.html</file>
       <file>dir_1bd1fc388314ab66abf0ab76407f713b_dep.png</file>
       <file>dir_1bd1fc388314ab66abf0ab76407f713b_dep.png</file>
       <file>dir_68267d1309a1af8e8297ef4c3efbcdba.html</file>
       <file>dir_68267d1309a1af8e8297ef4c3efbcdba_dep.png</file>
       <file>dir_68267d1309a1af8e8297ef4c3efbcdba_dep.png</file>
-      <file>dir_000005_000007.html</file>
-      <file>dir_000003_000007.html</file>
-      <file>dir_000003_000002.html</file>
-      <file>dir_000006_000007.html</file>
-      <file>dir_000004_000001.html</file>
-      <file>dir_000000_000004.html</file>
+      <file>dir_000004_000006.html</file>
+      <file>dir_000005_000006.html</file>
+      <file>dir_000003_000001.html</file>
+      <file>dir_000000_000003.html</file>
       <file>index.html</file>
       <file>namespaces.html</file>
       <file>namespacemembers.html</file>
@@ -2895,7 +2794,6 @@
       <file>functions_vars.html</file>
       <file>functions_enum.html</file>
       <file>functions_enum.html</file>
-      <file>functions_eval.html</file>
       <file>functions_eval.html</file>
       <file>functions_eval.html</file>
       <file>functions_eval.html</file>

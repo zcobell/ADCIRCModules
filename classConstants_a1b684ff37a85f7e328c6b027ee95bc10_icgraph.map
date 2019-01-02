@@ -1,5 +1,3 @@
 <map id="polarRadius" name="polarRadius">
-<area shape="rect" id="node2" href="$classConstants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude. " alt="" coords="144,31,232,57"/>
-<area shape="rect" id="node3" href="$classProjection.html#a614ca00914ea4c60dce4a5c38fea0817" title="Projection::cpp" alt="" coords="302,5,411,32"/>
-<area shape="rect" id="node4" href="$classProjection.html#a1a9a2109d8ce62359556d862fde20344" title="Projection::inverseCpp" alt="" coords="280,56,433,83"/>
+<area shape="rect" id="node2" href="$classConstants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude. " alt="" coords="144,5,232,32"/>
 </map>

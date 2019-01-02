@@ -94,6 +94,9 @@ $(document).ready(function(){initNavTree('classRasterdata.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>Class that accesses raster data through the GDAL library.  
+ <a href="classRasterdata.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="rasterdata_8h_source.html">rasterdata.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -171,7 +174,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a9439e49dc3ac0cb7d87b144a2ac58b21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an x,y coordinate to the pixel i,j.  <a href="#a9439e49dc3ac0cb7d87b144a2ac58b21">More...</a><br /></td></tr>
 <tr class="separator:a9439e49dc3ac0cb7d87b144a2ac58b21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9da4766a4495da822804c83ce4d044ef"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRasterdata.html#a9da4766a4495da822804c83ce4d044ef">projectionString</a> () const</td></tr>
-<tr class="memdesc:a9da4766a4495da822804c83ce4d044ef"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classProjection.html" title="Class that serves as an interface to the standard C PROJ4 library. ">Projection</a> string embedded in raster.  <a href="#a9da4766a4495da822804c83ce4d044ef">More...</a><br /></td></tr>
+<tr class="memdesc:a9da4766a4495da822804c83ce4d044ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Projection string embedded in raster.  <a href="#a9da4766a4495da822804c83ce4d044ef">More...</a><br /></td></tr>
 <tr class="separator:a9da4766a4495da822804c83ce4d044ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8f51c470b8f9503defa8dcdbe3e1df7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRasterdata.html#ab8f51c470b8f9503defa8dcdbe3e1df7">searchBoxAroundPoint</a> (double x, double y, double halfSide, <a class="el" href="classPixel.html">Pixel</a> &amp;upperLeft, <a class="el" href="classPixel.html">Pixel</a> &amp;lowerRight)</td></tr>
 <tr class="memdesc:ab8f51c470b8f9503defa8dcdbe3e1df7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a search box of a given size around a given point.  <a href="#ab8f51c470b8f9503defa8dcdbe3e1df7">More...</a><br /></td></tr>
@@ -216,7 +219,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a668beec42fcd53d0e87979ef75199994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the nodata integer used in the raster.  <a href="#a668beec42fcd53d0e87979ef75199994">More...</a><br /></td></tr>
 <tr class="separator:a668beec42fcd53d0e87979ef75199994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Class that accesses raster data through the GDAL library. </p>
+<dl class="section author"><dt>Author</dt><dd>Zachary Cobell </dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright 2018 Zachary Cobell. All Rights Reserved. This project is released under the terms of the GNU General Public License v3 </dd></dl>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="acaebb7f035731c18b2daadd65a955e42"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acaebb7f035731c18b2daadd65a955e42">&#9670;&nbsp;</a></span>RasterTypes</h2>
 
@@ -375,7 +382,7 @@ Here is the caller graph for this function:</div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classPixel.html">Pixel</a> object with i,j indicies for given x,y </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classPixel.html" title="Describes a single pixel i,j used when working with raster data. ">Pixel</a> object with i,j indicies for given x,y </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -422,7 +429,7 @@ Here is the caller graph for this function:</div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classPixel.html">Pixel</a> object with i,j indicies for given x,y </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classPixel.html" title="Describes a single pixel i,j used when working with raster data. ">Pixel</a> object with i,j indicies for given x,y </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -759,7 +766,7 @@ Here is the caller graph for this function:</div>
 <p>Calculates the coordinate of the pixel center. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">p</td><td><a class="el" href="classPixel.html">Pixel</a> object with i,j indicies </td></tr>
+    <tr><td class="paramname">p</td><td><a class="el" href="classPixel.html" title="Describes a single pixel i,j used when working with raster data. ">Pixel</a> object with i,j indicies </td></tr>
   </table>
   </dd>
 </dl>
@@ -1130,7 +1137,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="classProjection.html" title="Class that serves as an interface to the standard C PROJ4 library. ">Projection</a> string embedded in raster. </p>
+<p>Projection string embedded in raster. </p>
 <dl class="section return"><dt>Returns</dt><dd>projection string </dd></dl>
 
 </div>

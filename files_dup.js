@@ -25,7 +25,6 @@ var files_dup =
     ] ],
     [ "elementtable.cpp", "elementtable_8cpp.html", null ],
     [ "elementtable.h", "elementtable_8h.html", null ],
-    [ "epsg.cpp", "epsg_8cpp.html", null ],
     [ "error.cpp", "error_8cpp.html", null ],
     [ "error.h", "error_8h.html", "error_8h" ],
     [ "filetypes.cpp", "filetypes_8cpp.html", "filetypes_8cpp" ],
@@ -93,10 +92,6 @@ var files_dup =
     [ "point.cpp", "point_8cpp.html", null ],
     [ "point.h", "point_8h.html", [
       [ "Point", "classPoint.html", "classPoint" ]
-    ] ],
-    [ "projection.cpp", "projection_8cpp.html", null ],
-    [ "projection.h", "projection_8h.html", [
-      [ "Projection", "classProjection.html", "classProjection" ]
     ] ],
     [ "rasterdata.cpp", "rasterdata_8cpp.html", null ],
     [ "rasterdata.h", "rasterdata_8h.html", [

@@ -1,6 +1,4 @@
 <map id="deg2rad" name="deg2rad">
-<area shape="rect" id="node2" href="$classConstants.html#a8e8b5d1633dfb57d0d6056850bdd710c" title="Converts a value from degrees to radians. " alt="" coords="121,31,201,57"/>
-<area shape="rect" id="node3" href="$classConstants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude. " alt="" coords="249,31,337,57"/>
-<area shape="rect" id="node4" href="$classProjection.html#a614ca00914ea4c60dce4a5c38fea0817" title="Projection::cpp" alt="" coords="407,5,517,32"/>
-<area shape="rect" id="node5" href="$classProjection.html#a1a9a2109d8ce62359556d862fde20344" title="Projection::inverseCpp" alt="" coords="385,68,539,95"/>
+<area shape="rect" id="node2" href="$classConstants.html#a8e8b5d1633dfb57d0d6056850bdd710c" title="Converts a value from degrees to radians. " alt="" coords="121,5,201,32"/>
+<area shape="rect" id="node3" href="$classConstants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude. " alt="" coords="249,5,337,32"/>
 </map>
