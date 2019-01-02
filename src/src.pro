@@ -173,6 +173,18 @@ unix{
 GIT_VERSION = $$system(git --git-dir $$PWD/../.git --work-tree $$PWD/.. describe --always --tags)
 DEFINES += GIT_VERSION=\\\"$$GIT_VERSION\\\"
 
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../thirdparty/EzProj/src/release/ -lezproj
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../thirdparty/EzProj/src/debug/ -lezproj
+else:unix: LIBS += -L$$OUT_PWD/../thirdparty/EzProj/src/ -lezproj
+
+INCLUDEPATH += $$PWD/../thirdparty/EzProj/src
+DEPENDPATH += $$PWD/../thirdparty/EzProj/src
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../thirdparty/EzProj/src/release/libezproj.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../thirdparty/EzProj/src/debug/libezproj.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../thirdparty/EzProj/src/release/ezproj.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../thirdparty/EzProj/src/debug/ezproj.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../thirdparty/EzProj/src/libezproj.a
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/point/release/ -lpoint
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/point/debug/ -lpoint
@@ -212,19 +224,6 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libr
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/kdtree2/release/kdtree2lib.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/kdtree2/debug/kdtree2lib.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/kdtree2/libkdtree2lib.a
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/projection/release/ -lprojection
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/projection/debug/ -lprojection
-else:unix: LIBS += -L$$OUT_PWD/../libraries/projection/ -lprojection
-
-INCLUDEPATH += $$PWD/../libraries/projection
-DEPENDPATH += $$PWD/../libraries/projection
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/projection/release/libprojection.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/projection/debug/libprojection.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/projection/release/projection.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/projection/debug/projection.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/projection/libprojection.a
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/constants/release/ -lconstants
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/constants/debug/ -lconstants

@@ -22,7 +22,7 @@
 #include <cstddef>
 
 /**
- * @class Constants
+ * @class Pixel
  * @author Zachary Cobell
  * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
  * is released under the terms of the GNU General Public License v3

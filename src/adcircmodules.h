@@ -33,6 +33,6 @@
 #include "nodalattributes.h"
 #include "outputfile.h"
 #include "point.h"
-#include "projection.h"
+#include "ezproj.h"
 
 #endif  // ADCIRCMODULES_H
