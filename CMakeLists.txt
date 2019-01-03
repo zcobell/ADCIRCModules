@@ -123,7 +123,7 @@ ENDIF(NOT CYGWIN)
 #  LIBRARY VERSION
 ###########################################################################
 set(ADCIRCMODULES_VERSION_MAJOR 0)
-set(ADCIRCMODULES_VERSION_MINOR 1)
+set(ADCIRCMODULES_VERSION_MINOR 3)
 set(ADCIRCMODULES_VERSION_PATCH 0)
 set(ADCIRCMODULES_VERSION_STRING ${ADCIRCMODULES_VERSION_MAJOR}.${ADCIRCMODULES_VERSION_MINOR}.${ADCIRCMODULES_VERSION_PATCH})
 ###########################################################################
