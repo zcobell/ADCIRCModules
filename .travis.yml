@@ -1,26 +1,16 @@
 sudo: required
-dist: trusty
+dist: xenial
 language: cpp
 compiler: gcc
-install: export CXX="g++-5"
 addons:
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
     packages:
-      - gcc-6
-      - g++-6
       - cmake
-      - libsqlite3-dev
-      - libnetcdf-dev
-      - python
-      - python-dev
-      - swig3.0
-      - tcl8.5-dev
-      - lcov
       - netcdf-bin
+      - libnetcdf-dev
+      - swig3.0
+      - lcov
       - libgdal-dev
-      - cmake
 
 after_success:
   # Creating report
@@ -33,10 +23,7 @@ after_success:
   - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
 
 script:
-  # Export CC and CXX to tell cmake which compiler to use
-  - export CC=/usr/bin/gcc-6
-  - export CXX=/usr/bin/g++-6
   - git submodule update --remote --init
   - mkdir build; cd build; cmake -DCOVERAGE=ON -DBUILD_TESTS=ON ..
-  - cd build; make -j 4
+  - cd build; make -j 2
   - cd build; CTEST_OUTPUT_ON_FAILURE=1 make test
