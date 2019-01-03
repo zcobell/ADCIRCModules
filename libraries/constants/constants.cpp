@@ -52,6 +52,41 @@ double Constants::distance(double x1, double y1, double x2, double y2,
 }
 
 /**
+ * @brief Calculates the distance between two points
+ * @param p1 location 1
+ * @param p2 location 2
+ * @param geodesic if true, use the Haversine formula to calculate a geodesic
+ * distance, otherwise use a simple cartesian distance (default)
+ * @return distance between two points
+ */
+double Constants::distance(Point &p1, Point &p2, bool geodesic) {
+  if (geodesic) {
+    return Constants::geodesic_distance(p1.first, p1.second, p2.first,
+                                        p2.second);
+  } else {
+    return Constants::cartesian_distance(p1.first, p1.second, p2.first,
+                                         p2.second);
+  }
+}
+
+/**
+ * @brief Calculates the distance between two points
+ * @param p1 location 1
+ * @param x2 x-location 2
+ * @param y2 y-location 2
+ * @param geodesic if true, use the Haversine formula to calculate a geodesic
+ * distance, otherwise use a simple cartesian distance (default)
+ * @return distance between two points
+ */
+double Constants::distance(Point &p1, double x2, double y2, bool geodesic) {
+  if (geodesic) {
+    return Constants::geodesic_distance(p1.first, p1.second, x2, y2);
+  } else {
+    return Constants::cartesian_distance(p1.first, p1.second, x2, y2);
+  }
+}
+
+/**
  * @brief Calculates the distance on a sphere using the Haversine formula
  * @param x1 x-location 1
  * @param y1 y-location 1

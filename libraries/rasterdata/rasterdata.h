@@ -22,10 +22,11 @@
 #include <string>
 #include <vector>
 #include "pixel.h"
-#include "point.h"
 
 class GDALDataset;
 class GDALRasterBand;
+
+using Point = std::pair<double, double>;
 
 /**
  * @class Rasterdata
@@ -116,21 +117,21 @@ class Rasterdata {
   void init();
   bool getRasterMetadata();
   RasterTypes selectRasterType(int d);
-  int pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend, size_t jend,
-                  std::vector<double> &x, std::vector<double> &y,
-                  std::vector<int> &z);
+  int pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
+                          size_t jend, std::vector<double> &x,
+                          std::vector<double> &y, std::vector<int> &z);
 
-  int pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend, size_t jend,
-                  std::vector<double> &x, std::vector<double> &y,
-                  std::vector<double> &z);
+  int pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
+                          size_t jend, std::vector<double> &x,
+                          std::vector<double> &y, std::vector<double> &z);
 
-  int pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend, size_t jend,
-                  std::vector<double> &x, std::vector<double> &y,
-                  std::vector<int> &z);
+  int pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
+                            size_t jend, std::vector<double> &x,
+                            std::vector<double> &y, std::vector<int> &z);
 
-  int pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend, size_t jend,
-                  std::vector<double> &x, std::vector<double> &y,
-                  std::vector<double> &z);
+  int pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
+                            size_t jend, std::vector<double> &x,
+                            std::vector<double> &y, std::vector<double> &z);
 
   void readIntegerRasterToMemory();
   void readDoubleRasterToMemory();

@@ -88,7 +88,8 @@ bool Rasterdata::open() {
  * @brief Reads the raster metadata
  * @return true if metadata was successfully read
  *
- * This will get the nodata value, raster band pointer, data type, and x,y sizes
+ * This will get the nodata value, raster band std::pair<double,double>er, data
+ * type, and x,y sizes
  */
 bool Rasterdata::getRasterMetadata() {
   int successNoData;
@@ -163,7 +164,8 @@ bool Rasterdata::close() {
  * @brief Calculates the coordinate of the pixel center
  * @param i i-index
  * @param j j-index
- * @return Point object with coordinate information for the pixel
+ * @return std::pair<double,double> object with coordinate information for the
+ * pixel
  */
 Point Rasterdata::pixelToCoordinate(size_t i, size_t j) {
   if (i <= this->m_nx && j <= this->m_ny) {
@@ -179,7 +181,8 @@ Point Rasterdata::pixelToCoordinate(size_t i, size_t j) {
 /**
  * @brief Calculates the coordinate of the pixel center
  * @param p Pixel object with i,j indicies
- * @return Point object with coordinate information for the pixel
+ * @return std::pair<double,double> object with coordinate information for the
+ * pixel
  */
 Point Rasterdata::pixelToCoordinate(Pixel &p) {
   return this->pixelToCoordinate(p.i(), p.j());
@@ -202,11 +205,11 @@ Pixel Rasterdata::coordinateToPixel(double x, double y) {
 
 /**
  * @brief Converts an x,y coordinate to the pixel i,j
- * @param p Point object with x,y-coordinates
+ * @param p std::pair<double,double> object with x,y-coordinates
  * @return Pixel object with i,j indicies for given x,y
  */
 Pixel Rasterdata::coordinateToPixel(Point &p) {
-  return this->coordinateToPixel(p.x(), p.y());
+  return this->coordinateToPixel(p.first, p.second);
 }
 
 /**
@@ -330,7 +333,8 @@ double Rasterdata::pixelValueDouble(Pixel &p) {
 }
 
 /**
- * @brief Returns a search box of a given size around a given point
+ * @brief Returns a search box of a given size around a given
+ * std::pair<double,double>
  * @param x x-location
  * @param y y-location
  * @param halfSide half the side of the search box
@@ -499,8 +503,8 @@ int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
   for (size_t j = jbegin; j <= jend; ++j) {
     for (size_t i = ibegin; i <= iend; ++i) {
       Point p = this->pixelToCoordinate(i, j);
-      x[k] = p.x();
-      y[k] = p.y();
+      x[k] = p.first;
+      y[k] = p.second;
       z[k] = this->m_doubleOnDisk[i - 1][j - 1];
       k++;
     }
@@ -537,8 +541,8 @@ int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
   for (size_t j = jbegin; j <= jend; ++j) {
     for (size_t i = ibegin; i <= iend; ++i) {
       Point p = this->pixelToCoordinate(i, j);
-      x[k] = p.x();
-      y[k] = p.y();
+      x[k] = p.first;
+      y[k] = p.second;
       z[k] = this->m_intOnDisk[i - 1][j - 1];
       k++;
     }
@@ -578,8 +582,8 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
   for (size_t j = jbegin; j <= jend; ++j) {
     for (size_t i = ibegin; i <= iend; ++i) {
       Point p = this->pixelToCoordinate(i, j);
-      x[k] = p.x();
-      y[k] = p.y();
+      x[k] = p.first;
+      y[k] = p.second;
       z[k] = buf[k];
       k++;
     }
@@ -620,8 +624,8 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
   for (size_t j = jbegin; j <= jend; ++j) {
     for (size_t i = ibegin; i <= iend; ++i) {
       Point p = this->pixelToCoordinate(i, j);
-      x[k] = p.x();
-      y[k] = p.y();
+      x[k] = p.first;
+      y[k] = p.second;
       z[k] = buf[k];
       k++;
     }

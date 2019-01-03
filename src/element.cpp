@@ -330,6 +330,6 @@ bool Element::isInside(double x, double y) {
  * if a point lies within an element
  */
 bool Element::isInside(Point location) {
-  return bg::within(point_t(location.x(), location.y()),
+  return bg::within(point_t(location.first, location.second),
                     element2polygon(this->m_nodes));
 }

@@ -55,5 +55,4 @@ class HarmonicsRecordImpl {
   double m_equilibriumArg;
 };
 
-
 #endif  // HARMONICSRECORD_H

@@ -17,38 +17,39 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 /**
- * \class QKdtree2
+ * \class Kdtree2lib
  *
  * \brief Class that serves as an interface to the kdtree2 library
  *
  * This function serves as the C++ interface to the kdtree2 library. Kdtree2
  * requires the boost library headers that are included with this code. This
- * implementatin
- * currently only supports 2-dimensional searches, though the kd-tree library
- * this interfaces with does not have such a limitation
+ * implementation currently only supports 2-dimensional searches, though the
+ * kd-tree library this interfaces with does not have such a limitation
  *
  * \author Zach Cobell
  *
  * Contact: zcobell@gmail.com
  *
  */
-#ifndef QKDTREE2_H
-#define QKDTREE2_H
+#ifndef KDTREE2LIB_H
+#define KDTREE2LIB_H
 
 #include <cstddef>
 #include <memory>
+#include <utility>
 #include <vector>
 
 class kdtree2;
-class Point;
 
-class QKdtree2 {
+using Point = std::pair<double, double>;
+
+class Kdtree2lib {
  public:
   enum _errors { NoError, SizeMismatch };
 
-  explicit QKdtree2();
+  explicit Kdtree2lib();
 
-  ~QKdtree2();
+  ~Kdtree2lib();
 
   int build(std::vector<Point> &pointCloud);
   int build(std::vector<double> &x, std::vector<double> &y);
@@ -56,7 +57,8 @@ class QKdtree2 {
   size_t findNearest(Point pointLocation);
   size_t findNearest(double x, double y);
 
-  std::vector<size_t> findXNearest(Point pointLocation, int nn);
+  std::vector<size_t> findXNearest(Point pointLocation,
+                                   int nn);
   std::vector<size_t> findXNearest(double x, double y, int nn);
 
   size_t size() const;
@@ -74,4 +76,4 @@ class QKdtree2 {
   std::unique_ptr<kdtree2> m_tree;
 };
 
-#endif  // QKDTREE2_H
+#endif  // KDTREE2LIB_H

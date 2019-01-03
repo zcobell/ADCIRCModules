@@ -67,8 +67,8 @@ void MeshImpl::_init() {
   this->m_elements.clear();
   this->m_openBoundaries.clear();
   this->m_landBoundaries.clear();
-  this->m_elementalSearchTree = std::unique_ptr<QKdtree2>(new QKdtree2());
-  this->m_nodalSearchTree = std::unique_ptr<QKdtree2>(new QKdtree2());
+  this->m_elementalSearchTree = std::unique_ptr<Kdtree2lib>(new Kdtree2lib());
+  this->m_nodalSearchTree = std::unique_ptr<Kdtree2lib>(new Kdtree2lib());
 }
 
 /**
@@ -799,7 +799,7 @@ void MeshImpl::readAdcircLandBoundaries(std::fstream &fid) {
  * @brief Returns a reference to the elemental search kd-tree
  * @return kd-tree object with element centers as search locations
  */
-QKdtree2 *MeshImpl::elementalSearchTree() const {
+Kdtree2lib *MeshImpl::elementalSearchTree() const {
   return m_elementalSearchTree.get();
 }
 
@@ -807,7 +807,9 @@ QKdtree2 *MeshImpl::elementalSearchTree() const {
  * @brief Returns a refrence to the nodal search kd-tree
  * @return kd-tree object with mesh nodes as serch locations
  */
-QKdtree2 *MeshImpl::nodalSearchTree() const { return m_nodalSearchTree.get(); }
+Kdtree2lib *MeshImpl::nodalSearchTree() const {
+  return m_nodalSearchTree.get();
+}
 
 /**
  * @brief Returns the number of land boundary nodes in the mesh
@@ -972,12 +974,12 @@ bool MeshImpl::isLatLon() { return this->m_isLatLon; }
 void MeshImpl::reproject(int epsg) {
   Ezproj proj;
   bool isLatLon;
-  std::vector<std::pair<double, double>> inPoint, outPoint;
+  std::vector<Point> inPoint, outPoint;
   inPoint.reserve(this->numNodes());
   outPoint.resize(this->numNodes());
 
   for (const auto &n : this->m_nodes) {
-    inPoint.push_back(std::pair<double, double>(n.x(), n.y()));
+    inPoint.push_back(Point(n.x(), n.y()));
   }
 
   int ierr =
@@ -1190,7 +1192,7 @@ void MeshImpl::buildNodalSearchTree() {
   }
 
   ierr = this->m_nodalSearchTree->build(x, y);
-  if (ierr != QKdtree2::NoError) {
+  if (ierr != Kdtree2lib::NoError) {
     adcircmodules_throw_exception("Mesh: KDTree2 library error");
   }
 
@@ -1225,7 +1227,7 @@ void MeshImpl::buildElementalSearchTree() {
   }
 
   int ierr = this->m_elementalSearchTree->build(x, y);
-  if (ierr != QKdtree2::NoError) {
+  if (ierr != Kdtree2lib::NoError) {
     adcircmodules_throw_exception("Mesh: KDTree2 library error");
   }
 
@@ -1796,8 +1798,8 @@ std::vector<std::vector<size_t>> MeshImpl::connectivity() {
  */
 void MeshImpl::cpp(double lambda, double phi) {
   for (auto &n : this->m_nodes) {
-    std::pair<double, double> i(n.x(), n.y());
-    std::pair<double, double> o;
+    Point i(n.x(), n.y());
+    Point o;
     Ezproj::cpp(lambda, phi, i, o);
     n.setX(o.first);
     n.setY(o.second);
@@ -1810,8 +1812,8 @@ void MeshImpl::cpp(double lambda, double phi) {
  */
 void MeshImpl::inverseCpp(double lambda, double phi) {
   for (auto &n : this->m_nodes) {
-    std::pair<double, double> i(n.x(), n.y());
-    std::pair<double, double> o;
+    Point i(n.x(), n.y());
+    Point o;
     Ezproj::inverseCpp(lambda, phi, i, o);
     n.setX(o.first);
     n.setY(o.second);
@@ -1826,14 +1828,15 @@ void MeshImpl::inverseCpp(double lambda, double phi) {
  * @return nearest node index
  */
 size_t MeshImpl::findNearestNode(double x, double y) {
-  return this->findNearestNode(Point(x, y));
+  Point p(x, y);
+  return this->findNearestNode(p);
 }
 
 /**
  * @param location location to search
  * @return nearest node index
  */
-size_t MeshImpl::findNearestNode(Point location) {
+size_t MeshImpl::findNearestNode(Point &location) {
   if (!this->nodalSearchTreeInitialized()) {
     this->buildNodalSearchTree();
   }
@@ -1847,14 +1850,15 @@ size_t MeshImpl::findNearestNode(Point location) {
  * @return nearest element index
  */
 size_t MeshImpl::findNearestElement(double x, double y) {
-  return this->findNearestElement(Point(x, y));
+  Point p(x, y);
+  return this->findNearestElement(p);
 }
 
 /**
  * @param location location to search
  * @return nearest element index
  */
-size_t MeshImpl::findNearestElement(Point location) {
+size_t MeshImpl::findNearestElement(Point &location) {
   if (!this->elementalSearchTreeInitialized()) {
     this->buildElementalSearchTree();
   }
@@ -1868,7 +1872,8 @@ size_t MeshImpl::findNearestElement(Point location) {
  * @return index of nearest element, -1 if not found
  */
 size_t MeshImpl::findElement(double x, double y) {
-  return this->findElement(Point(x, y));
+  Point p(x, y);
+  return this->findElement(p);
 }
 
 /**
@@ -1876,7 +1881,7 @@ size_t MeshImpl::findElement(double x, double y) {
  * @param location location to search
  * @return index of nearest element, -1 if not found
  */
-size_t MeshImpl::findElement(Point location) {
+size_t MeshImpl::findElement(Point &location) {
   const int searchDepth = 20;
 
   if (!this->elementalSearchTreeInitialized()) {

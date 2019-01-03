@@ -20,8 +20,10 @@
 #define NODE_H
 
 #include <string>
+#include <utility>
 #include "adcircmodules_global.h"
-#include "point.h"
+
+using Point = std::pair<double, double>;
 
 namespace Adcirc {
 namespace Geometry {
@@ -58,7 +60,7 @@ class Node {
   std::string ADCIRCMODULES_EXPORT toAdcircString(bool geographicCoordinates);
   std::string ADCIRCMODULES_EXPORT to2dmString(bool geographicCoordinates);
 
-  Point ADCIRCMODULES_EXPORT toPoint();
+  Point toPoint();
 
  private:
   size_t m_id;  /// Integer name of a mesh node

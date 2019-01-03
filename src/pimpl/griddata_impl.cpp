@@ -33,13 +33,15 @@
 using namespace Adcirc::Geometry;
 using namespace Interpolation;
 
+using Point = std::pair<double, double>;
+
 //...A couple constants used within
 static const double c_oneOverWindSigmaSquared =
     1.0 / pow(GriddataImpl::windSigma(), 2.0);
-static const double c_oneOver2MinusRoot3 = 1.0 / (2.0 - sqrt(3));
-static const double c_oneOver2PlusRoot3 = 1.0 / (2.0 + sqrt(3));
+constexpr double c_oneOver2MinusRoot3 = 1.0 / (2.0 - Constants::root3());
+constexpr double c_oneOver2PlusRoot3 = 1.0 / (2.0 + Constants::root3());
 static const double c_rootWindSigmaTwoPi =
-    sqrt(2.0 * 4.0 * atan2(1.0, 1.0) * GriddataImpl::windSigma());
+    sqrt(2.0 * 4.0 * Constants::pi() * GriddataImpl::windSigma());
 static const double c_epsilonSquared =
     pow(std::numeric_limits<double>::epsilon(), 2.0);
 
@@ -208,7 +210,7 @@ bool GriddataImpl::pixelDataInRadius(Point &p, double radius,
                                      std::vector<double> &z,
                                      std::vector<bool> &valid) {
   Pixel ul, lr;
-  this->m_raster.get()->searchBoxAroundPoint(p.x(), p.y(), radius, ul, lr);
+  this->m_raster.get()->searchBoxAroundPoint(p.first, p.second, radius, ul, lr);
   bool r = false;
 
   if (ul.isValid() && lr.isValid()) {
@@ -218,7 +220,7 @@ bool GriddataImpl::pixelDataInRadius(Point &p, double radius,
 
     for (size_t i = 0; i < x.size(); ++i) {
       if (z[i] != this->m_raster.get()->nodata()) {
-        if (Constants::distance(p.x(), p.y(), x[i], y[i]) <= radius) {
+        if (Constants::distance(p, x[i], y[i]) <= radius) {
           valid[i] = true;
           r = true;
         }
@@ -235,7 +237,7 @@ bool GriddataImpl::pixelDataInRadius(Point &p, double radius,
                                      std::vector<int> &z,
                                      std::vector<bool> &valid) {
   Pixel ul, lr;
-  this->m_raster.get()->searchBoxAroundPoint(p.x(), p.y(), radius, ul, lr);
+  this->m_raster.get()->searchBoxAroundPoint(p.first, p.second, radius, ul, lr);
   bool r = false;
 
   if (ul.isValid() && lr.isValid()) {
@@ -245,7 +247,7 @@ bool GriddataImpl::pixelDataInRadius(Point &p, double radius,
 
     for (size_t i = 0; i < x.size(); ++i) {
       if (z[i] != this->m_raster.get()->nodataint()) {
-        if (Constants::distance(p.x(), p.y(), x[i], y[i]) <= radius) {
+        if (Constants::distance(p, x[i], y[i]) <= radius) {
           valid[i] = true;
           r = true;
         }
@@ -405,7 +407,7 @@ double GriddataImpl::calculateInverseDistanceWeighted(Point &p, double w) {
     size_t num = 0;
     for (size_t i = 0; i < z.size(); ++i) {
       if (v[i]) {
-        double dis = Constants::distance(p.x(), p.y(), x[i], y[i]);
+        double dis = Constants::distance(p, x[i], y[i]);
         n += z[i] / dis;
         d += 1.0 / dis;
         num++;
@@ -430,7 +432,7 @@ double GriddataImpl::calculateInverseDistanceWeightedNPoints(Point &p,
     size_t np = 0;
     for (size_t i = 0; i < z.size(); ++i) {
       if (v[i]) {
-        double dis = Constants::distance(p.x(), p.y(), x[i], y[i]);
+        double dis = Constants::distance(p, x[i], y[i]);
         val += z[i] / dis;
         d += 1.0 / dis;
         np++;
@@ -442,13 +444,8 @@ double GriddataImpl::calculateInverseDistanceWeightedNPoints(Point &p,
   return this->defaultValue();
 }
 
-bool sortTuplePointsByIncreasingDistance(std::tuple<double, double> &a,
-                                         std::tuple<double, double> &b) {
-  double z1, dis1;
-  double z2, dis2;
-  std::tie(dis1, z1) = a;
-  std::tie(dis2, z2) = b;
-  return dis1 < dis2;
+bool sortPointsByIncreasingDistance(Point &a, Point &b) {
+  return a.first < b.first;
 }
 
 double GriddataImpl::calculateAverageNearestN(Point &p, double n) {
@@ -456,14 +453,13 @@ double GriddataImpl::calculateAverageNearestN(Point &p, double n) {
   std::vector<bool> v;
   size_t maxPoints = static_cast<size_t>(n);
   double w = this->calculateExpansionLevelForPoints(maxPoints);
-  std::vector<std::tuple<double, double>> pts;
+  std::vector<Point> pts;
 
   if (this->pixelDataInRadius(p, w, x, y, z, v)) {
     pts.reserve(z.size());
     for (size_t i = 0; i < z.size(); ++i) {
       if (v[i]) {
-        pts.push_back(std::tuple<double, double>(
-            Constants::distance(p.x(), p.y(), x[i], y[i]), z[i]));
+        pts.push_back(Point(Constants::distance(p, x[i], y[i]), z[i]));
       }
     }
 
@@ -471,13 +467,11 @@ double GriddataImpl::calculateAverageNearestN(Point &p, double n) {
 
     size_t np = std::min(pts.size(), maxPoints);
     std::partial_sort(pts.begin(), pts.begin() + np, pts.end(),
-                      sortTuplePointsByIncreasingDistance);
+                      sortPointsByIncreasingDistance);
 
     double val = 0.0;
     for (size_t i = 0; i < np; i++) {
-      double dis, zval;
-      std::tie(dis, zval) = pts[i];
-      val += zval;
+      val += pts[i].second;
     }
     return val / static_cast<double>(np);
   }
@@ -490,7 +484,7 @@ double GriddataImpl::calculateAverageNearestNFromLookup(Point &p, double n) {
   std::vector<bool> v;
   size_t maxPoints = static_cast<size_t>(n);
   double w = this->calculateExpansionLevelForPoints(maxPoints);
-  std::vector<std::tuple<double, double>> pts;
+  std::vector<Point> pts;
 
   if (this->pixelDataInRadius(p, w, x, y, z, v)) {
     pts.reserve(z.size());
@@ -498,8 +492,7 @@ double GriddataImpl::calculateAverageNearestNFromLookup(Point &p, double n) {
       if (v[i]) {
         double zl;
         if (this->getKeyValue(z[i], zl)) {
-          pts.push_back(std::tuple<double, double>(
-              Constants::distance(p.x(), p.y(), x[i], y[i]), zl));
+          pts.push_back(Point(Constants::distance(p, x[i], y[i]), zl));
         }
       }
     }
@@ -508,13 +501,11 @@ double GriddataImpl::calculateAverageNearestNFromLookup(Point &p, double n) {
 
     size_t np = std::min(pts.size(), maxPoints);
     std::partial_sort(pts.begin(), pts.begin() + np, pts.end(),
-                      sortTuplePointsByIncreasingDistance);
+                      sortPointsByIncreasingDistance);
 
     double val = 0.0;
     for (size_t i = 0; i < np; i++) {
-      double dis, zval;
-      std::tie(dis, zval) = pts[i];
-      val += zval;
+      val += pts[i].second;
     }
     return val / static_cast<double>(np);
   }
@@ -534,7 +525,7 @@ double GriddataImpl::calculateInverseDistanceWeightedFromLookup(Point &p,
       if (v[i]) {
         double zl;
         if (this->getKeyValue(z[i], zl)) {
-          double dis = Constants::distance(p.x(), p.y(), x[i], y[i]);
+          double dis = Constants::distance(p, x[i], y[i]);
           n += zl / dis;
           d += 1.0 / dis;
           num++;
@@ -573,7 +564,7 @@ double GriddataImpl::calculateInverseDistanceWeightedNPointsFromLookup(
       if (v[i]) {
         double zl;
         if (this->getKeyValue(z[i], zl)) {
-          double dis = Constants::distance(p.x(), p.y(), x[i], y[i]);
+          double dis = Constants::distance(p, x[i], y[i]);
           val += zl / dis;
           d += 1.0 / dis;
           np++;
@@ -652,7 +643,7 @@ double GriddataImpl::calculateOutsideStandardDeviationFromLookup(Point &p,
 double GriddataImpl::calculateNearest(Point &p, double w) {
   Pixel px = this->m_raster.get()->coordinateToPixel(p);
   Point pxloc = this->m_raster.get()->pixelToCoordinate(px);
-  double d = Constants::distance(p.x(), p.y(), pxloc.x(), pxloc.y());
+  double d = Constants::distance(p, pxloc);
   if (d > w) {
     return this->defaultValue();
   } else {
@@ -664,7 +655,7 @@ double GriddataImpl::calculateNearest(Point &p, double w) {
 double GriddataImpl::calculateNearestFromLookup(Point &p, double w) {
   Pixel px = this->m_raster.get()->coordinateToPixel(p);
   Point pxloc = this->m_raster.get()->pixelToCoordinate(px);
-  double d = Constants::distance(p.x(), p.y(), pxloc.x(), pxloc.y());
+  double d = Constants::distance(p, pxloc);
   if (d > w)
     return this->defaultValue();
   else {
@@ -719,8 +710,8 @@ double GriddataImpl::calculateHighestFromLookup(Point &p, double w) {
 
 bool GriddataImpl::computeWindDirectionAndWeight(Point &p, double x, double y,
                                                  double &w, int &dir) {
-  double dx = (x - p.x()) * 0.001;
-  double dy = (y - p.y()) * 0.001;
+  double dx = (x - p.first) * 0.001;
+  double dy = (y - p.second) * 0.001;
   double d = dx * dx + dy * dy;
 
   w = 1.0 /
@@ -886,7 +877,7 @@ std::vector<double> GriddataImpl::computeValuesFromRaster(bool useLookupTable) {
       ++(*progress);
     }
 
-    Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
+    Point p(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
     Method m = static_cast<Method>(this->m_interpolationFlags[i]);
     double v = (this->*m_calculatePointPtr)(p, gridsize[i] * 0.5,
                                             this->m_filterSize[i], m);
@@ -924,7 +915,7 @@ std::vector<std::vector<double>> GriddataImpl::computeDirectionalWindReduction(
     }
 
     if (this->m_interpolationFlags[i] != NoMethod) {
-      Point p = Point(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
+      Point p(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
       result[i] = (this->*m_calculateDwindPtr)(p);
       for (auto &r : result[i]) {
         r += this->m_datumShift;

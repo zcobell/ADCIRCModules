@@ -22,6 +22,7 @@
 #include "config.h"
 #include "constants.h"
 #include "error.h"
+#include "ezproj.h"
 #include "griddata.h"
 #include "harmonicsoutput.h"
 #include "interpolationmethods.h"
@@ -32,7 +33,5 @@
 #include "multithreading.h"
 #include "nodalattributes.h"
 #include "outputfile.h"
-#include "point.h"
-#include "ezproj.h"
 
 #endif  // ADCIRCMODULES_H

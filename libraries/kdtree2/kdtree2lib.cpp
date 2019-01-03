@@ -21,7 +21,6 @@
 #include "boost/array.hpp"
 #include "boost/multi_array.hpp"
 #include "kdtree2.hpp"
-#include "point.h"
 
 /** \brief Constructor function for QKdtree2 class
  *
@@ -30,13 +29,13 @@
  * Constructor function for QKdtree2 class
  *
  */
-QKdtree2::QKdtree2() {
+Kdtree2lib::Kdtree2lib() {
   this->m_initialized = false;
   this->m_numDataPoints = 0;
   this->m_tree.reset(nullptr);
 }
 
-QKdtree2::~QKdtree2() {}
+Kdtree2lib::~Kdtree2lib() {}
 
 /**
  * \brief Generates a kdtree2 search tree
@@ -46,7 +45,7 @@ QKdtree2::~QKdtree2() {}
  * This function uses the kdtree2 library to generate a search tree
  *
  **/
-int QKdtree2::build(std::vector<Point> &pointCloud) {
+int Kdtree2lib::build(std::vector<Point> &pointCloud) {
   int i;
   typedef boost::multi_array<float, 2> array2d;
 
@@ -55,8 +54,8 @@ int QKdtree2::build(std::vector<Point> &pointCloud) {
   array2d data(boost::extents[pointCloud.size()][2]);
 
   for (i = 0; i < pointCloud.size(); i++) {
-    data[i][0] = static_cast<float>(pointCloud[i].x());
-    data[i][1] = static_cast<float>(pointCloud[i].y());
+    data[i][0] = static_cast<float>(pointCloud[i].first);
+    data[i][1] = static_cast<float>(pointCloud[i].second);
   }
 
   this->m_tree.reset(nullptr);
@@ -75,7 +74,7 @@ int QKdtree2::build(std::vector<Point> &pointCloud) {
  * This function uses the kdtree2 library to generate a search tree
  *
  **/
-int QKdtree2::build(std::vector<double> &x, std::vector<double> &y) {
+int Kdtree2lib::build(std::vector<double> &x, std::vector<double> &y) {
   int i;
   typedef boost::multi_array<float, 2> array2d;
 
@@ -111,13 +110,13 @@ int QKdtree2::build(std::vector<double> &x, std::vector<double> &y) {
  *coordinates
  *
  **/
-size_t QKdtree2::findNearest(Point pointLocation) {
+size_t Kdtree2lib::findNearest(Point pointLocation) {
   kdtree2_result_vector result_vector;
   kdtree2_result result;
   std::vector<float> query(2);
 
-  query[0] = static_cast<float>(pointLocation.x());
-  query[1] = static_cast<float>(pointLocation.y());
+  query[0] = static_cast<float>(pointLocation.first);
+  query[1] = static_cast<float>(pointLocation.second);
 
   this->m_tree->n_nearest(query, 1, result_vector);
 
@@ -137,7 +136,7 @@ size_t QKdtree2::findNearest(Point pointLocation) {
  *coordinates
  *
  **/
-size_t QKdtree2::findNearest(double x, double y) {
+size_t Kdtree2lib::findNearest(double x, double y) {
   return this->findNearest(Point(x, y));
 }
 
@@ -154,7 +153,8 @@ size_t QKdtree2::findNearest(double x, double y) {
  *coordinates
  *
  **/
-std::vector<size_t> QKdtree2::findXNearest(Point pointLocation, int nn) {
+std::vector<size_t> Kdtree2lib::findXNearest(
+    Point pointLocation, int nn) {
   int i;
   kdtree2_result_vector result_vector;
   kdtree2_result result;
@@ -165,8 +165,8 @@ std::vector<size_t> QKdtree2::findXNearest(Point pointLocation, int nn) {
     nn = static_cast<int>(this->m_numDataPoints);
   }
 
-  query[0] = static_cast<float>(pointLocation.x());
-  query[1] = static_cast<float>(pointLocation.y());
+  query[0] = static_cast<float>(pointLocation.first);
+  query[1] = static_cast<float>(pointLocation.second);
 
   this->m_tree->n_nearest(query, nn, result_vector);
 
@@ -194,10 +194,10 @@ std::vector<size_t> QKdtree2::findXNearest(Point pointLocation, int nn) {
  *coordinates
  *
  **/
-std::vector<size_t> QKdtree2::findXNearest(double x, double y, int nn) {
+std::vector<size_t> Kdtree2lib::findXNearest(double x, double y, int nn) {
   return this->findXNearest(Point(x, y), nn);
 }
 
-size_t QKdtree2::size() const { return this->m_numDataPoints; }
+size_t Kdtree2lib::size() const { return this->m_numDataPoints; }
 
-bool QKdtree2::isInitialized() const { return this->m_initialized; }
+bool Kdtree2lib::isInitialized() const { return this->m_initialized; }

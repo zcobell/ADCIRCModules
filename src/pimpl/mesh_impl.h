@@ -38,6 +38,8 @@
 #include <unordered_map>
 #endif
 
+using Point = std::pair<double, double>;
+
 class MeshImpl {
  public:
   MeshImpl();
@@ -106,11 +108,11 @@ class MeshImpl {
   bool nodeOrderingIsLogical();
   bool elementOrderingIsLogical();
 
-  size_t findNearestNode(Point location);
+  size_t findNearestNode(Point &location);
   size_t findNearestNode(double x, double y);
-  size_t findNearestElement(Point location);
+  size_t findNearestElement(Point &location);
   size_t findNearestElement(double x, double y);
-  size_t findElement(Point location);
+  size_t findElement(Point &location);
   size_t findElement(double x, double y);
 
   Adcirc::Geometry::Node *node(size_t index);
@@ -133,8 +135,8 @@ class MeshImpl {
   void addElement(size_t index, Adcirc::Geometry::Element &element);
   void deleteElement(size_t index);
 
-  QKdtree2 *nodalSearchTree() const;
-  QKdtree2 *elementalSearchTree() const;
+  Kdtree2lib *nodalSearchTree() const;
+  Kdtree2lib *elementalSearchTree() const;
 
   std::vector<double> computeMeshSize();
 
@@ -206,8 +208,8 @@ class MeshImpl {
 
   Adcirc::Geometry::ElementTable m_elementTable;
 
-  std::unique_ptr<QKdtree2> m_nodalSearchTree;
-  std::unique_ptr<QKdtree2> m_elementalSearchTree;
+  std::unique_ptr<Kdtree2lib> m_nodalSearchTree;
+  std::unique_ptr<Kdtree2lib> m_elementalSearchTree;
 };
 
 #endif  // MESHIMPL_H

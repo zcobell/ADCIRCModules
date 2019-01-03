@@ -27,8 +27,10 @@
 #include "meshformats.h"
 #include "node.h"
 
-class QKdtree2;
+class Kdtree2lib;
 class MeshImpl;
+
+using Point = std::pair<double, double>;
 
 namespace Adcirc {
 namespace Geometry {
@@ -77,8 +79,7 @@ class Mesh {
 
   ADCIRCMODULES_EXPORT ~Mesh();
 
-  const size_t ELEMENT_NOT_FOUND =
-      std::numeric_limits<size_t>::max();
+  const size_t ELEMENT_NOT_FOUND = std::numeric_limits<size_t>::max();
 
   friend class ElementTable;
 
@@ -146,9 +147,9 @@ class Mesh {
   bool ADCIRCMODULES_EXPORT nodeOrderingIsLogical();
   bool ADCIRCMODULES_EXPORT elementOrderingIsLogical();
 
-  size_t ADCIRCMODULES_EXPORT findNearestNode(Point location);
+  size_t ADCIRCMODULES_EXPORT findNearestNode(Point &location);
   size_t ADCIRCMODULES_EXPORT findNearestNode(double x, double y);
-  size_t ADCIRCMODULES_EXPORT findNearestElement(Point location);
+  size_t ADCIRCMODULES_EXPORT findNearestElement(Point &location);
   size_t ADCIRCMODULES_EXPORT findNearestElement(double x, double y);
   size_t ADCIRCMODULES_EXPORT findElement(Point location);
   size_t ADCIRCMODULES_EXPORT findElement(double x, double y);
@@ -175,8 +176,8 @@ class Mesh {
                                        Adcirc::Geometry::Element &element);
   void ADCIRCMODULES_EXPORT deleteElement(size_t index);
 
-  QKdtree2 ADCIRCMODULES_EXPORT *nodalSearchTree() const;
-  QKdtree2 ADCIRCMODULES_EXPORT *elementalSearchTree() const;
+  Kdtree2lib ADCIRCMODULES_EXPORT *nodalSearchTree() const;
+  Kdtree2lib ADCIRCMODULES_EXPORT *elementalSearchTree() const;
 
   std::vector<double> ADCIRCMODULES_EXPORT computeMeshSize();
 

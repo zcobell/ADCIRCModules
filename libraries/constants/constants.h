@@ -19,6 +19,10 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <utility>
+
+using Point = std::pair<double, double>;
+
 /**
  * @class Constants
  * @author Zachary Cobell
@@ -115,6 +119,9 @@ class Constants {
   static double radiusEarth(double latitude);
 
   static double distance(double x1, double y1, double x2, double y2,
+                         bool geodesic = false);
+  static double distance(Point &p1, Point &p2, bool geodesic = false);
+  static double distance(Point &p1, double x2, double y2,
                          bool geodesic = false);
   // static double azimuth(double x1, double y1, double  x2, double y2);
 

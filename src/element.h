@@ -25,7 +25,8 @@
 #include <vector>
 #include "adcircmodules_global.h"
 #include "node.h"
-#include "point.h"
+
+using Point = std::pair<double, double>;
 
 namespace Adcirc {
 namespace Geometry {

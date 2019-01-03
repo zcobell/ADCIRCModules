@@ -246,22 +246,13 @@ ENDIF(ENABLE_GDAL)
 
 
 ###########################################################################
-#  POINT Library
-###########################################################################
-ADD_LIBRARY( point STATIC ${CMAKE_SOURCE_DIR}/libraries/point/point.cpp )
-TARGET_INCLUDE_DIRECTORIES( point PRIVATE ${CMAKE_SOURCE_DIR}/libraries/point )
-###########################################################################
-
-
-###########################################################################
 # Rasterdata
 ###########################################################################
 IF(GDAL_FOUND)
     ADD_LIBRARY( rasterdata STATIC ${CMAKE_SOURCE_DIR}/libraries/rasterdata/rasterdata.cpp 
                                    ${CMAKE_SOURCE_DIR}/libraries/rasterdata/pixel.cpp )
     TARGET_INCLUDE_DIRECTORIES( rasterdata PRIVATE ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
-    TARGET_INCLUDE_DIRECTORIES( rasterdata PRIVATE ${GDAL_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/libraries/point )
-    TARGET_LINK_LIBRARIES( rasterdata point )
+    TARGET_INCLUDE_DIRECTORIES( rasterdata PRIVATE ${GDAL_INCLUDE_DIR} )
 ENDIF(GDAL_FOUND)
 ###########################################################################
 
@@ -272,11 +263,8 @@ ENDIF(GDAL_FOUND)
 ADD_LIBRARY( kdtree2 STATIC ${CMAKE_SOURCE_DIR}/libraries/kdtree2/kdtree2lib.cpp 
                 ${CMAKE_SOURCE_DIR}/thirdparty/kdtree/kdtree2.cpp )
 TARGET_INCLUDE_DIRECTORIES( kdtree2 PRIVATE ${CMAKE_SOURCE_DIR}/libraries/kdtree2
-                                ${CMAKE_SOURCE_DIR}/libraries/point
                                 ${CMAKE_SOURCE_DIR}/thirdparty/kdtree
                                 ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 )
-ADD_DEPENDENCIES( kdtree2 point)
-TARGET_LINK_LIBRARIES( kdtree2 point )
 ###########################################################################
 
 
@@ -344,7 +332,6 @@ ADD_LIBRARY( adcircmodules SHARED ${ADCIRCMODULES_SOURCES} )
 
 TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/src/pimpl
-                                ${CMAKE_SOURCE_DIR}/libraries/point
                                 ${CMAKE_SOURCE_DIR}/libraries/kdtree2
                                 ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src
                                 ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
@@ -353,7 +340,7 @@ TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/libraries/constants
                                 ${NETCDF_INCLUDE_DIR} ) 
 
-ADD_DEPENDENCIES( adcircmodules point ezproj kdtree2 shapelib constants )
+ADD_DEPENDENCIES( adcircmodules ezproj kdtree2 shapelib constants )
 
 TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE GIT_VERSION="${GIT_VERSION}")
 TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE ADCIRCMODULES_LIBRARY )
@@ -384,7 +371,6 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.h
                 ${CMAKE_SOURCE_DIR}/src/meshchecker.h
                 ${CMAKE_SOURCE_DIR}/src/elementtable.h
-                ${CMAKE_SOURCE_DIR}/libraries/point/point.h 
                 ${CMAKE_SOURCE_DIR}/libraries/kdtree2/kdtree2lib.h 
                 ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src/ezproj.h
                 ${CMAKE_SOURCE_DIR}/libraries/rasterdata/rasterdata.h 
@@ -408,7 +394,7 @@ ELSE(WIN32)
     INSTALL( TARGETS adcircmodules LIBRARY DESTINATION lib PUBLIC_HEADER DESTINATION ${HEADER_DEST})
 ENDIF(WIN32)
 
-TARGET_LINK_LIBRARIES( adcircmodules ezproj point kdtree2 shapelib constants ${NETCDF_LIBRARIES} )
+TARGET_LINK_LIBRARIES( adcircmodules ezproj kdtree2 shapelib constants ${NETCDF_LIBRARIES} )
 
 IF(USE_GOOGLE_FLAT_MAP)
     TARGET_LINK_LIBRARIES(adcircmodules absl::base absl::container absl::hash)
@@ -454,10 +440,13 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
         ")
 
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
-            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/src 
-                    -I${CMAKE_SOURCE_DIR}/libraries/point -I${CMAKE_SOURCE_DIR}/libraries/kdtree2 
-                    -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src -I${CMAKE_SOURCE_DIR}/libraries/rasterdata
-                    -I${CMAKE_SOURCE_DIR}/libraries/constants -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG}
+            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python 
+                    -I${CMAKE_SOURCE_DIR}/src 
+                    -I${CMAKE_SOURCE_DIR}/libraries/kdtree2 
+                    -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src i
+                    -I${CMAKE_SOURCE_DIR}/libraries/rasterdata
+                    -I${CMAKE_SOURCE_DIR}/libraries/constants 
+                    -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG}
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
             COMMAND ${CMAKE_COMMAND} -DSRC=\"${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1\" 
@@ -469,10 +458,13 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
 
     ELSE(WIN32)
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
-            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python -I${CMAKE_SOURCE_DIR}/src 
-                    -I${CMAKE_SOURCE_DIR}/libraries/point -I${CMAKE_SOURCE_DIR}/libraries/kdtree2
-                    -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src -I${CMAKE_SOURCE_DIR}/libraries/rasterdata
-                    -I${CMAKE_SOURCE_DIR}/libraries/constants -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG} 
+            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python 
+                    -I${CMAKE_SOURCE_DIR}/src 
+                    -I${CMAKE_SOURCE_DIR}/libraries/kdtree2
+                    -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
+                    -I${CMAKE_SOURCE_DIR}/libraries/rasterdata
+                    -I${CMAKE_SOURCE_DIR}/libraries/constants 
+                    -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG} 
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
@@ -482,8 +474,9 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
 
     ADD_LIBRARY( PyAdcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx )
     TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src 
-                                    ${CMAKE_SOURCE_DIR}/libraries/point ${CMAKE_SOURCE_DIR}/libraries/kdtree2
-                                    ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src ${CMAKE_SOURCE_DIR}/libraries/constants 
+                                    ${CMAKE_SOURCE_DIR}/libraries/kdtree2
+                                    ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
+                                    ${CMAKE_SOURCE_DIR}/libraries/constants 
                                     ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
     TARGET_LINK_LIBRARIES( PyAdcirc PRIVATE adcircmodules ${PYTHON_LIBRARY} )
     SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES PREFIX "_")
@@ -539,7 +532,7 @@ IF(TEST_PERL)
     
             ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
                 COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src
-                        -I${CMAKE_SOURCE_DIR}/libraries/point -I${CMAKE_SOURCE_DIR}/libraries/kdtree2 
+                        -I${CMAKE_SOURCE_DIR}/libraries/kdtree2 
                         -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src -I${PERL_INCLUDE_PATH} 
                         -o ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx.1
                         ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -553,7 +546,7 @@ IF(TEST_PERL)
         ELSE(WIN32)
             ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
                 COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src 
-                        -I${CMAKE_SOURCE_DIR}/libraries/point -I${CMAKE_SOURCE_DIR}/libraries/kdtree2
+                        -I${CMAKE_SOURCE_DIR}/libraries/kdtree2
                         -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src -I${PERL_INCLUDE_PATH} 
                         -o ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
                         ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -564,7 +557,6 @@ IF(TEST_PERL)
     
         ADD_LIBRARY( perladcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx )
         TARGET_INCLUDE_DIRECTORIES( perladcirc PRIVATE ${PERL_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src 
-                                        ${CMAKE_SOURCE_DIR}/libraries/point 
                                         ${CMAKE_SOURCE_DIR}/libraries/kdtree2
                                         ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
                                         ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
@@ -615,7 +607,6 @@ IF(UNIX OR CYGWIN)
             ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
             ADD_DEPENDENCIES( ${TESTNAME} adcircmodules )
             TARGET_INCLUDE_DIRECTORIES( ${TESTNAME} PRIVATE ${CMAKE_SOURCE_DIR}/src 
-                                                            ${CMAKE_SOURCE_DIR}/libraries/point 
                                                             ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
                                                             ${CMAKE_SOURCE_DIR}/libraries/kdtree2 
                                                             ${CMAKE_SOURCE_DIR}/libraries/constants 

@@ -26,7 +26,6 @@
 #include "constants.h"
 #include "interpolationmethods.h"
 #include "mesh.h"
-#include "point.h"
 #include "rasterdata.h"
 
 #ifdef USE_GOOGLE_FLAT_MAP
@@ -34,6 +33,8 @@
 #else
 #include <unordered_map>
 #endif
+
+using Point = std::pair<double, double>;
 
 class GriddataImpl {
  public:

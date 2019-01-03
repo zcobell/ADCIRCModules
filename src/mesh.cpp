@@ -21,6 +21,8 @@
 
 using namespace Adcirc::Geometry;
 
+using Point = std::pair<double, double>;
+
 Mesh::Mesh() : m_impl(new MeshImpl) {}
 
 Mesh::Mesh(const std::string &filename) : m_impl(new MeshImpl(filename)) {}
@@ -358,7 +360,7 @@ bool Mesh::elementOrderingIsLogical() {
  * @param y location to search
  * @return nearest node index
  */
-size_t Mesh::findNearestNode(Point location) {
+size_t Mesh::findNearestNode(Point &location) {
   return this->m_impl->findNearestNode(location);
 }
 
@@ -376,7 +378,7 @@ size_t Mesh::findNearestNode(double x, double y) {
  * @param y location to search
  * @return nearest element index
  */
-size_t Mesh::findNearestElement(Point location) {
+size_t Mesh::findNearestElement(Point &location) {
   return this->m_impl->findNearestElement(location);
 }
 
@@ -394,7 +396,7 @@ size_t Mesh::findNearestElement(double x, double y) {
  * @param y location to search
  * @return index of nearest element, -1 if not found
  */
-size_t Mesh::findElement(Point location) {
+size_t Mesh::findElement(std::pair<double, double> location) {
   return this->m_impl->findElement(location);
 }
 
@@ -529,7 +531,7 @@ void Mesh::deleteElement(size_t index) { this->m_impl->deleteElement(index); }
  * @brief Returns a refrence to the nodal search kd-tree
  * @return kd-tree object with mesh nodes as serch locations
  */
-QKdtree2 *Mesh::nodalSearchTree() const {
+Kdtree2lib *Mesh::nodalSearchTree() const {
   return this->m_impl->nodalSearchTree();
 }
 
@@ -537,7 +539,7 @@ QKdtree2 *Mesh::nodalSearchTree() const {
  * @brief Returns a reference to the elemental search kd-tree
  * @return kd-tree object with element centers as search locations
  */
-QKdtree2 *Mesh::elementalSearchTree() const {
+Kdtree2lib *Mesh::elementalSearchTree() const {
   return this->m_impl->elementalSearchTree();
 }
 
