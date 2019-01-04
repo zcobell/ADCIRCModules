@@ -144,15 +144,13 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/CMakeFiles)
 ###########################################################################
 #  SWIG/PYTHON/PERL
 ###########################################################################
+FIND_PACKAGE(PythonInterp 2.7)
+FIND_PACKAGE(PythonLibs 2.7)
 FIND_PACKAGE(SWIG 3.0)
-IF(SWIG_FOUND)
+IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
     INCLUDE(${SWIG_USE_FILE})
-
-    FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
     IF(PythonLibs_FOUND)
-        FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
-#        INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH})
-        OPTION(PYTHON_TESTING "Test the Python Libraries with CTest" OFF)
+        #OPTION(PYTHON_TESTING "Test the Python Libraries with CTest" OFF)
         EXECUTE_PROCESS( COMMAND ${PYTHON_EXECUTABLE} -m site --user-site 
                          OUTPUT_VARIABLE temp_PYTHON_SITE_DIRECTORY OUTPUT_STRIP_TRAILING_WHITESPACE)
         SET( PYTHON_INSTALL_DIRECTORY ${temp_PYTHON_SITE_DIRECTORY} CACHE STRING "Location where Python libraries will be installed" )
@@ -161,12 +159,13 @@ IF(SWIG_FOUND)
         SET( PYTHON_INSTALL_DIRECTORY "PYTHON_INSTALL_DIRECTORY-NOTFOUND" CACHE STRING "Location where Python libraries will be installed" )
     ENDIF(PythonLibs_FOUND)
     
-    FIND_PACKAGE(PerlLibs)
-    IF(PerlLibs_FOUND)
-        OPTION(TEST_PERL "Test the perl build for SWIG. Note: Does not work yet" OFF) 
-    ENDIF(PerlLibs_FOUND)
-
-ENDIF(SWIG_FOUND)
+    #FIND_PACKAGE(PerlLibs)
+    #IF(PerlLibs_FOUND)
+    #    OPTION(TEST_PERL "Test the perl build for SWIG. Note: Does not work yet" OFF) 
+    #ENDIF(PerlLibs_FOUND)
+ELSE(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
+    MESSAGE( WARNING "SWIG/Python libraries could not be found. PyAdcirc disabled.")
+ENDIF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 ###########################################################################
     
     
@@ -419,7 +418,7 @@ ENDIF(OPENMP_FOUND)
 ###########################################################################
 #  PyAdcirc Library
 ###########################################################################
-IF(PythonLibs_FOUND AND SWIG_FOUND)
+IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 
     IF(GDAL_FOUND)
         SET(SWIG_GDAL_FLAG "-D_USE_GDAL")
@@ -508,76 +507,76 @@ IF(PythonLibs_FOUND AND SWIG_FOUND)
             TARGET_COMPILE_DEFINITIONS(PyAdcirc PRIVATE "MS_WIN32")
         ENDIF()
     ENDIF(WIN32)
-ENDIF()
+ENDIF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 ###########################################################################
 
 ###########################################################################
 #  PerlAdcirc Library
 ###########################################################################
-IF(TEST_PERL)
-    IF(Perl_FOUND AND SWIG_FOUND)
-        IF(WIN32)
-    
-            #...Builds a dummy cmake project
-            #   Which will add some windows specific include
-            #   files not required by Unix/Cygwin [mingw64]
-            #   Further testing required to see if this is 
-            #   required by MSVC compilers
-            FILE(WRITE ${CMAKE_BINARY_DIR}/CMakeFiles/perlwrapper.cmake "
-                FILE(READ \${SRC} DATA)
-                FILE(WRITE \${DST} \"#include <math.h>\")
-                FILE(APPEND \${DST} \"\\n\\n\")
-                FILE(APPEND \${DST} \"\${DATA}\")
-            ")
-    
-            ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
-                COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src
-                        -I${CMAKE_SOURCE_DIR}/libraries/kdtree2 
-                        -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src -I${PERL_INCLUDE_PATH} 
-                        -o ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx.1
-                        ${CMAKE_SOURCE_DIR}/swig/adcirc.i
-                COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx.1 
-                                         -DDST=${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
-                                         -P ${CMAKE_BINARY_DIR}/CMakeFiles/perl_wrapper.cmake
-                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-                COMMENT "Generating SWIG interface to Perl..."
-            )
-    
-        ELSE(WIN32)
-            ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
-                COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src 
-                        -I${CMAKE_SOURCE_DIR}/libraries/kdtree2
-                        -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src -I${PERL_INCLUDE_PATH} 
-                        -o ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
-                        ${CMAKE_SOURCE_DIR}/swig/adcirc.i
-                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-                COMMENT "Generating SWIG interface to Perl..."
-            )
-        ENDIF(WIN32)
-    
-        ADD_LIBRARY( perladcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx )
-        TARGET_INCLUDE_DIRECTORIES( perladcirc PRIVATE ${PERL_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src 
-                                        ${CMAKE_SOURCE_DIR}/libraries/kdtree2
-                                        ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
-                                        ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
-        TARGET_LINK_LIBRARIES( perladcirc PRIVATE adcircmodules ${PERL_LIBRARY} )
-        SET_TARGET_PROPERTIES( perladcirc PROPERTIES PREFIX "")
-        SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES perladcirc.pm CMakeFiles/perl_adcirc_wrap.cxx )
-        ADD_DEPENDENCIES( perladcirc adcircmodules )
-    
-        TARGET_COMPILE_DEFINITIONS(perladcirc PRIVATE HAS_BOOL)
-        
-        IF(WIN32)
-            IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
-                # 64 bits
-                TARGET_COMPILE_DEFINITIONS(perladcirc PRIVATE "MS_WIN64")
-            ELSEIF(CMAKE_SIZEOF_VOID_P EQUAL 4)
-                # 32 bits
-                TARGET_COMPILE_DEFINITIONS(perladcirc PRIVATE "MS_WIN32")
-            ENDIF()
-        ENDIF(WIN32)
-    ENDIF(Perl_FOUND AND SWIG_FOUND)
-ENDIF(TEST_PERL)
+#IF(TEST_PERL)
+#    IF(Perl_FOUND AND SWIG_FOUND)
+#        IF(WIN32)
+#    
+#            #...Builds a dummy cmake project
+#            #   Which will add some windows specific include
+#            #   files not required by Unix/Cygwin [mingw64]
+#            #   Further testing required to see if this is 
+#            #   required by MSVC compilers
+#            FILE(WRITE ${CMAKE_BINARY_DIR}/CMakeFiles/perlwrapper.cmake "
+#                FILE(READ \${SRC} DATA)
+#                FILE(WRITE \${DST} \"#include <math.h>\")
+#                FILE(APPEND \${DST} \"\\n\\n\")
+#                FILE(APPEND \${DST} \"\${DATA}\")
+#            ")
+#    
+#            ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
+#                COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src
+#                        -I${CMAKE_SOURCE_DIR}/libraries/kdtree2 
+#                        -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src -I${PERL_INCLUDE_PATH} 
+#                        -o ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx.1
+#                        ${CMAKE_SOURCE_DIR}/swig/adcirc.i
+#                COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx.1 
+#                                         -DDST=${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
+#                                         -P ${CMAKE_BINARY_DIR}/CMakeFiles/perl_wrapper.cmake
+#                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+#                COMMENT "Generating SWIG interface to Perl..."
+#            )
+#    
+#        ELSE(WIN32)
+#            ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
+#                COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src 
+#                        -I${CMAKE_SOURCE_DIR}/libraries/kdtree2
+#                        -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src -I${PERL_INCLUDE_PATH} 
+#                        -o ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
+#                        ${CMAKE_SOURCE_DIR}/swig/adcirc.i
+#                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+#                COMMENT "Generating SWIG interface to Perl..."
+#            )
+#        ENDIF(WIN32)
+#    
+#        ADD_LIBRARY( perladcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx )
+#        TARGET_INCLUDE_DIRECTORIES( perladcirc PRIVATE ${PERL_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src 
+#                                        ${CMAKE_SOURCE_DIR}/libraries/kdtree2
+#                                        ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
+#                                        ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
+#        TARGET_LINK_LIBRARIES( perladcirc PRIVATE adcircmodules ${PERL_LIBRARY} )
+#        SET_TARGET_PROPERTIES( perladcirc PROPERTIES PREFIX "")
+#        SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES perladcirc.pm CMakeFiles/perl_adcirc_wrap.cxx )
+#        ADD_DEPENDENCIES( perladcirc adcircmodules )
+#    
+#        TARGET_COMPILE_DEFINITIONS(perladcirc PRIVATE HAS_BOOL)
+#        
+#        IF(WIN32)
+#            IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
+#                # 64 bits
+#                TARGET_COMPILE_DEFINITIONS(perladcirc PRIVATE "MS_WIN64")
+#            ELSEIF(CMAKE_SIZEOF_VOID_P EQUAL 4)
+#                # 32 bits
+#                TARGET_COMPILE_DEFINITIONS(perladcirc PRIVATE "MS_WIN32")
+#            ENDIF()
+#        ENDIF(WIN32)
+#    ENDIF(Perl_FOUND AND SWIG_FOUND)
+#ENDIF(TEST_PERL)
 ###########################################################################
 
 
