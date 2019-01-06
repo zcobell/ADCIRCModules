@@ -38,5 +38,30 @@ int main() {
     return 1;
   }
 
+  std::cout << "Validated read\n";
+  std::cout.flush();
+
+  harm->write("test_files/testwrite.53");
+
+  std::unique_ptr<HarmonicsOutput> harm2(
+      new HarmonicsOutput("test_files/testwrite.53"));
+  harm2->read();
+  
+  std::cout << "Read file written by this code.\n";
+  std::cout.flush();
+
+  m2_amp_value = harm2->amplitude("M2")->value(0);
+  m2_pha_value = harm2->phase("M2")->value(0);
+  k1_amp_value = harm2->amplitude("K1")->value(0);
+  k1_pha_value = harm2->phase("K1")->value(0);
+
+  if (m2_amp_value != 8.22651718E-001 || m2_pha_value != 247.8750 ||
+      k1_amp_value != 9.36588108E-002 || k1_pha_value != 138.2870) {
+    return 1;
+  }
+  
+  std::cout << "Validated full read/write cycle.\n";
+  std::cout.flush();
+
   return 0;
 }

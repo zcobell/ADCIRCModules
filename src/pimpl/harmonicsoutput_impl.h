@@ -21,6 +21,7 @@
 
 #include <string>
 #include <vector>
+#include "filetypes.h"
 #include "harmonicsrecord.h"
 
 #ifdef USE_GOOGLE_FLAT_MAP
@@ -31,12 +32,13 @@
 
 class HarmonicsOutputImpl {
  public:
-  HarmonicsOutputImpl(const std::string& filename = std::string(),
-                      bool velocity = false);
+  HarmonicsOutputImpl(const std::string& filename = std::string());
 
   void read();
 
-  void write(const std::string& filename);
+  void write(const std::string& filename,
+             const Adcirc::Harmonics::HarmonicsFormat& filetype =
+                 Adcirc::Harmonics::HarmonicsUnknown);
 
   std::string filename() const;
   void setFilename(const std::string& filename);
@@ -53,14 +55,14 @@ class HarmonicsOutputImpl {
   Adcirc::Harmonics::HarmonicsRecord* phase(size_t index);
 
   //...fort.54 type parameters
-  Adcirc::Harmonics::HarmonicsRecord* u_magnitude(const std::string& name);
-  Adcirc::Harmonics::HarmonicsRecord* u_magnitude(size_t index);
+  Adcirc::Harmonics::HarmonicsRecord* u_amplitude(const std::string& name);
+  Adcirc::Harmonics::HarmonicsRecord* u_amplitude(size_t index);
 
   Adcirc::Harmonics::HarmonicsRecord* u_phase(const std::string& name);
   Adcirc::Harmonics::HarmonicsRecord* u_phase(size_t index);
 
-  Adcirc::Harmonics::HarmonicsRecord* v_magnitude(const std::string& name);
-  Adcirc::Harmonics::HarmonicsRecord* v_magnitude(size_t index);
+  Adcirc::Harmonics::HarmonicsRecord* v_amplitude(const std::string& name);
+  Adcirc::Harmonics::HarmonicsRecord* v_amplitude(size_t index);
 
   Adcirc::Harmonics::HarmonicsRecord* v_phase(const std::string& name);
   Adcirc::Harmonics::HarmonicsRecord* v_phase(size_t index);
@@ -86,8 +88,8 @@ class HarmonicsOutputImpl {
   size_t m_numNodes;
   std::vector<Adcirc::Harmonics::HarmonicsRecord> m_amplitude;
   std::vector<Adcirc::Harmonics::HarmonicsRecord> m_phase;
-  std::vector<Adcirc::Harmonics::HarmonicsRecord> m_umagnitude;
-  std::vector<Adcirc::Harmonics::HarmonicsRecord> m_vmagnitude;
+  std::vector<Adcirc::Harmonics::HarmonicsRecord> m_uamplitude;
+  std::vector<Adcirc::Harmonics::HarmonicsRecord> m_vamplitude;
   std::vector<Adcirc::Harmonics::HarmonicsRecord> m_uphase;
   std::vector<Adcirc::Harmonics::HarmonicsRecord> m_vphase;
 
@@ -102,8 +104,25 @@ class HarmonicsOutputImpl {
 #endif
 
   void getFiletype();
+  Adcirc::Harmonics::HarmonicsFormat getHarmonicsFormatFromExtension(
+      const std::string& filename);
   void readAsciiFormat();
   void readNetcdfFormat();
+  void readAsciiHeader(std::fstream& fid);
+
+  bool checkFormatAsciiVelocity(std::fstream& fid);
+  bool checkFormatNetcdfVelocity(const int& ncid);
+
+  void writeAsciiFormat(const std::string& filename);
+  void writeAsciiFormatElevation(std::ofstream& fid);
+  void writeAsciiFormatVelocity(std::ofstream& fid);
+  void writeAsciiHeader(std::ofstream& fid);
+
+  void writeNetcdfFormat(const std::string& filename);
+  void writeNetcdfFormatElevation(const int& ncid);
+  void writeNetcdfFormatVelocity(const int& ncid);
+  void writeNetcdfHeader(const int& ncid);
+
   void readNetcdfFormatHeader(int ncid, std::vector<int>& varids);
   void readNetcdfElevationData(int ncid, std::vector<int>& varids);
   void readNetcdfVelocityData(int ncid, std::vector<int>& varids);

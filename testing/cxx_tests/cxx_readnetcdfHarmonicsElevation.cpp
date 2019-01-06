@@ -44,6 +44,35 @@ int main() {
       std::abs(k1_pha_value - 142.954998936488295) > 0.000001) {
     return 1;
   }
+  
+  std::cout << "Validated initial read.\n";
+
+  harm->write("test_files/testwrite.53.nc");
+  
+  std::cout << "File written.\n";
+  
+  std::unique_ptr<HarmonicsOutput> harm2(
+      new HarmonicsOutput("test_files/testwrite.53.nc"));
+  harm2->read();
+
+  m2_amp_value = harm2->amplitude("M2")->value(0);
+  m2_pha_value = harm2->phase("M2")->value(0);
+  k1_amp_value = harm2->amplitude("K1")->value(50);
+  k1_pha_value = harm2->phase("K1")->value(50);
+
+  printf("%22.15f\n", m2_amp_value);
+  printf("%22.15f\n", m2_pha_value);
+  printf("%22.15f\n", k1_amp_value);
+  printf("%22.15f\n", k1_pha_value);
+
+  if (std::abs(m2_amp_value - 0.822651718882334) > 0.000001 ||
+      std::abs(m2_pha_value - 247.874999341090160) > 0.000001 ||
+      std::abs(k1_amp_value - 0.092569613362145) > 0.000001 ||
+      std::abs(k1_pha_value - 142.954998936488295) > 0.000001) {
+    return 1;
+  }
+
+  std::cout << "Validated read/write cycle.\n";
 
   return 0;
 }

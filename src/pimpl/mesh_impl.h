@@ -28,8 +28,8 @@
 #include "boundary.h"
 #include "element.h"
 #include "elementtable.h"
+#include "filetypes.h"
 #include "kdtree2lib.h"
-#include "meshformats.h"
 #include "node.h"
 
 #ifdef USE_GOOGLE_FLAT_MAP
@@ -55,10 +55,10 @@ class MeshImpl {
   std::vector<std::vector<double>> orthogonality();
 
   void read(
-      Adcirc::Geometry::MeshFormat format = Adcirc::Geometry::MESH_UNKNOWN);
+      Adcirc::Geometry::MeshFormat format = Adcirc::Geometry::MeshUnknown);
 
   void write(const std::string &outputFile,
-             Adcirc::Geometry::MeshFormat = Adcirc::Geometry::MESH_UNKNOWN);
+             Adcirc::Geometry::MeshFormat = Adcirc::Geometry::MeshUnknown);
 
   std::string filename() const;
   void setFilename(const std::string &filename);

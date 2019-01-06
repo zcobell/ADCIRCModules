@@ -86,7 +86,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     split.cpp \
     stringconversion.cpp \
-    io.cpp \
     boundary.cpp \
     element.cpp \
     node.cpp \
@@ -109,13 +108,13 @@ SOURCES += \
     pimpl/harmonicsoutput_impl.cpp \
     pimpl/harmonicsrecord_impl.cpp \
     pimpl/nodalattributes_impl.cpp \
-    nodalattributes.cpp
+    nodalattributes.cpp \
+    fileio.cpp
 
 HEADERS += \
     adcircmodules_global.h \
     split.h \
     stringconversion.h \
-    io.h \
     boundary.h \
     element.h \
     node.h \
@@ -132,7 +131,6 @@ HEADERS += \
     multithreading.h \
     griddata.h \
     interpolationmethods.h \
-    meshformats.h \
     mesh.h \
     harmonicsoutput.h \
     harmonicsrecord.h \
@@ -142,7 +140,8 @@ HEADERS += \
     pimpl/harmonicsrecord_impl.h \
     pimpl/nodalattributes_impl.h \
     nodalattributes.h \
-    adcircmodules.h
+    adcircmodules.h \
+    fileio.h
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib

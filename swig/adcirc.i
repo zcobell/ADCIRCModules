@@ -36,6 +36,7 @@
 #include "adcircmodules_global.h"
 #include "config.h"
 #include "error.h"
+#include "filetypes.h"
 #include "mesh.h"
 #include "node.h"
 #include "element.h"
@@ -51,7 +52,6 @@
 #include "ezproj.h"
 #include "meshchecker.h"
 #include "multithreading.h"
-#include "meshformats.h"
 #include "constants.h"
 %}
 
@@ -89,6 +89,7 @@ namespace std {
 %include "adcircmodules_global.h"
 %include "config.h"
 %include "error.h"
+%include "filetypes.h"
 %include "mesh.h"
 %include "node.h"
 %include "element.h"
@@ -104,7 +105,6 @@ namespace std {
 %include "ezproj.h"
 %include "meshchecker.h"
 %include "multithreading.h"
-%include "meshformats.h"
 %include "constants.h"
 #ifdef _USE_GDAL
 %include "rasterdata.h"

@@ -25,7 +25,7 @@
 #include "attribute.h"
 #include "boost/format.hpp"
 #include "error.h"
-#include "io.h"
+#include "fileio.h"
 #include "stringconversion.h"
 
 using namespace Adcirc::ModelParameters;
@@ -167,11 +167,7 @@ void NodalAttributesImpl::_readFort13Defaults(std::fstream &fid) {
 
     } else {
       std::getline(fid, tempLine);
-      int ierr = IO::splitString(tempLine, tempList);
-      if (ierr != 0) {
-        adcircmodules_throw_exception(
-            "NodalAttributes: Error reading file data");
-      }
+      FileIO::Generic::splitString(tempLine, tempList);
 
       defaultValueVector.resize(nValues);
       for (size_t j = 0; j < nValues; ++j) {
@@ -245,7 +241,8 @@ void NodalAttributesImpl::_readFort13Body(std::fstream &fid) {
       std::getline(fid, tempLine);
 
       if (nValues == 1) {
-        if (!IO::splitStringAttribute1Format(tempLine, node, value)) {
+        if (!FileIO::AdcircIO::splitStringAttribute1Format(tempLine, node,
+                                                         value)) {
           adcircmodules_throw_exception(
               "NodalAttributes: Error reading file data");
         }
@@ -262,7 +259,8 @@ void NodalAttributesImpl::_readFort13Body(std::fstream &fid) {
       } else {
         std::vector<double> values;
         values.reserve(nValues);
-        if (!IO::splitStringAttributeNFormat(tempLine, node, values)) {
+        if (!FileIO::AdcircIO::splitStringAttributeNFormat(tempLine, node,
+                                                         values)) {
           adcircmodules_throw_exception(
               "NodalAttributes: Error reading file data");
         };

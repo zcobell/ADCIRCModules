@@ -20,25 +20,24 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
+#include <string>
 #include <utility>
 #include "boost/algorithm/string.hpp"
+#include "boost/format.hpp"
 #include "error.h"
+#include "fileio.h"
 #include "filetypes.h"
-#include "io.h"
 #include "netcdf.h"
-#include "outputfile.h"
 #include "stringconversion.h"
 
 using namespace Adcirc::Harmonics;
 
-HarmonicsOutputImpl::HarmonicsOutputImpl(const std::string& filename,
-                                         bool velocity)
-    : m_filename(filename) {
-  this->m_numNodes = 0;
-  this->m_numConstituents = 0;
-  this->m_isVelocity = velocity;
-  this->m_filetype = Adcirc::Output::Unknown;
-}
+HarmonicsOutputImpl::HarmonicsOutputImpl(const std::string& filename)
+    : m_filename(filename),
+      m_numNodes(0),
+      m_numConstituents(0),
+      m_isVelocity(false),
+      m_filetype(Adcirc::Harmonics::HarmonicsUnknown) {}
 
 std::string HarmonicsOutputImpl::filename() const { return this->m_filename; }
 
@@ -95,13 +94,13 @@ HarmonicsRecord* HarmonicsOutputImpl::phase(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutputImpl::u_magnitude(const std::string& name) {
-  return this->u_magnitude(this->index(name));
+HarmonicsRecord* HarmonicsOutputImpl::u_amplitude(const std::string& name) {
+  return this->u_amplitude(this->index(name));
 }
-HarmonicsRecord* HarmonicsOutputImpl::u_magnitude(size_t index) {
-  assert(index < this->m_umagnitude.size());
-  if (index < this->m_umagnitude.size()) {
-    return &this->m_umagnitude[index];
+HarmonicsRecord* HarmonicsOutputImpl::u_amplitude(size_t index) {
+  assert(index < this->m_uamplitude.size());
+  if (index < this->m_uamplitude.size()) {
+    return &this->m_uamplitude[index];
   } else {
     adcircmodules_throw_exception("Index out of bounds");
     return nullptr;
@@ -122,14 +121,14 @@ HarmonicsRecord* HarmonicsOutputImpl::u_phase(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutputImpl::v_magnitude(const std::string& name) {
-  return this->v_magnitude(this->index(name));
+HarmonicsRecord* HarmonicsOutputImpl::v_amplitude(const std::string& name) {
+  return this->v_amplitude(this->index(name));
 }
 
-HarmonicsRecord* HarmonicsOutputImpl::v_magnitude(size_t index) {
-  assert(index < this->m_vmagnitude.size());
-  if (index < this->m_vmagnitude.size()) {
-    return &this->m_vmagnitude[index];
+HarmonicsRecord* HarmonicsOutputImpl::v_amplitude(size_t index) {
+  assert(index < this->m_vamplitude.size());
+  if (index < this->m_vamplitude.size()) {
+    return &this->m_vamplitude[index];
   } else {
     adcircmodules_throw_exception("Index out of bounds");
     return nullptr;
@@ -157,8 +156,8 @@ size_t HarmonicsOutputImpl::numConstituents() const {
 void HarmonicsOutputImpl::setNumConstituents(const size_t& numConstituents) {
   this->m_numConstituents = numConstituents;
   if (this->isVelocity()) {
-    this->m_umagnitude.resize(this->numConstituents());
-    this->m_vmagnitude.resize(this->numConstituents());
+    this->m_uamplitude.resize(this->numConstituents());
+    this->m_vamplitude.resize(this->numConstituents());
     this->m_uphase.resize(this->numConstituents());
     this->m_vphase.resize(this->numConstituents());
   } else {
@@ -191,9 +190,9 @@ int HarmonicsOutputImpl::filetype() const { return this->m_filetype; }
 void HarmonicsOutputImpl::read() {
   this->getFiletype();
 
-  if (this->m_filetype == Adcirc::Harmonics::ASCII) {
+  if (this->m_filetype == Adcirc::Harmonics::HarmonicsAscii) {
     this->readAsciiFormat();
-  } else if (this->m_filetype == Adcirc::Harmonics::NETCDF4) {
+  } else if (this->m_filetype == Adcirc::Harmonics::HarmonicsNetcdf) {
     this->readNetcdfFormat();
   } else {
     adcircmodules_throw_exception("Invalid file type");
@@ -201,34 +200,269 @@ void HarmonicsOutputImpl::read() {
   return;
 }
 
-void HarmonicsOutputImpl::getFiletype() {
-  if (Adcirc::Harmonics::checkFiletypeNetcdfHarmonics(this->filename())) {
-    this->m_filetype = Adcirc::Harmonics::NETCDF4;
-    return;
+void HarmonicsOutputImpl::write(const std::string& filename,
+                                const HarmonicsFormat& filetype) {
+  HarmonicsFormat filetype2;
+  if (filetype == Adcirc::Harmonics::HarmonicsUnknown) {
+    filetype2 = getHarmonicsFormatFromExtension(filename);
+  } else {
+    filetype2 = filetype;
   }
-  if (Adcirc::Harmonics::checkFiletypeAsciiHarmonics(this->filename())) {
-    this->m_filetype = Adcirc::Harmonics::ASCII;
-    return;
+
+  if (filetype2 == Adcirc::Harmonics::HarmonicsAscii) {
+    this->writeAsciiFormat(filename);
+  } else if (filetype2 == Adcirc::Harmonics::HarmonicsNetcdf) {
+    this->writeNetcdfFormat(filename);
+  } else {
+    adcircmodules_throw_exception("Unknown harmonics file format specified.");
   }
-  this->m_filetype = Adcirc::Output::Unknown;
   return;
 }
 
-void HarmonicsOutputImpl::readAsciiFormat() {
-  std::fstream fid;
-  fid.open(this->m_filename);
-  if (!fid.is_open()) {
-    adcircmodules_throw_exception("File is not open");
+Adcirc::Harmonics::HarmonicsFormat
+HarmonicsOutputImpl::getHarmonicsFormatFromExtension(
+    const std::string& filename) {
+  std::string extension = FileIO::Generic::getFileExtension(filename);
+  if (extension == ".nc") {
+    return Adcirc::Harmonics::HarmonicsNetcdf;
+  } else {
+    return Adcirc::Harmonics::HarmonicsAscii;
+  }
+}
+
+void HarmonicsOutputImpl::writeAsciiFormat(const std::string& filename) {
+  std::ofstream fid;
+  fid.open(filename);
+  this->writeAsciiHeader(fid);
+  if (this->isVelocity()) {
+    this->writeAsciiFormatVelocity(fid);
+  } else {
+    this->writeAsciiFormatElevation(fid);
+  }
+  return;
+}
+
+void HarmonicsOutputImpl::writeAsciiHeader(std::ofstream& fid) {
+  fid << boost::str(boost::format("%11i\n") % this->numConstituents());
+
+  std::vector<Adcirc::Harmonics::HarmonicsRecord>* ptr;
+  if (this->isVelocity()) {
+    ptr = &this->m_uamplitude;
+  } else {
+    ptr = &this->m_amplitude;
   }
 
+  for (size_t i = 0; i < this->numConstituents(); ++i) {
+    fid << boost::str(boost::format("%16.10e %9.7f %9.7f %s \n") %
+                      ptr->at(i).frequency() % ptr->at(i).nodalFactor() %
+                      ptr->at(i).equilibriumArg() % ptr->at(i).name());
+  }
+  fid << boost::str(boost::format("%11i\n") % this->numNodes());
+  return;
+}
+
+void HarmonicsOutputImpl::writeAsciiFormatElevation(std::ofstream& fid) {
+  for (size_t i = 0; i < this->numNodes(); ++i) {
+    fid << boost::str(boost::format("%11i\n") % (i + 1));
+    for (size_t j = 0; j < this->numConstituents(); ++j) {
+      fid << boost::str(boost ::format("%16.10e %9.4f\n") %
+                        this->amplitude(j)->value(i) %
+                        this->phase(j)->value(i));
+    }
+  }
+  return;
+}
+
+void HarmonicsOutputImpl::writeAsciiFormatVelocity(std::ofstream& fid) {
+  for (size_t i = 0; i < this->numNodes(); ++i) {
+    fid << boost::str(boost::format("%11i\n") % (i + 1));
+    for (size_t j = 0; j < this->numConstituents(); ++j) {
+      fid << boost::str(
+          boost ::format("%16.10e %9.4f %16.10e %9.4f\n") %
+          this->u_amplitude(j)->value(i) % this->u_phase(j)->value(i) %
+          this->v_amplitude(j)->value(i) % this->v_phase(j)->value(i));
+    }
+  }
+  return;
+}
+
+void HarmonicsOutputImpl::writeNetcdfFormat(const std::string& filename) {
+  int ncid;
+  int ierr = nc_create(filename.c_str(),
+                       NC_NETCDF4 | NC_CLASSIC_MODEL | NC_CLOBBER, &ncid);
+  if (ierr != NC_NOERR) {
+    adcircmodules_throw_exception(
+        "Error creating netcdf harmonics output file.");
+  }
+  this->writeNetcdfHeader(ncid);
+  if (this->isVelocity()) {
+    this->writeNetcdfFormatVelocity(ncid);
+  } else {
+    this->writeNetcdfFormatElevation(ncid);
+  }
+  nc_close(ncid);
+  return;
+}
+
+void HarmonicsOutputImpl::writeNetcdfHeader(const int& ncid) {
+  //...Dimensions
+  int dimid_time, dimid_nnode, dimid_constlen, dimid_numconst;
+  int ierr = nc_def_dim(ncid, "time", 1, &dimid_time);
+  nc_def_dim(ncid, "node", this->numNodes(), &dimid_nnode);
+  nc_def_dim(ncid, "constlen", 10, &dimid_constlen);
+  nc_def_dim(ncid, "num_const", this->numConstituents(), &dimid_numconst);
+
+  //...Variables
+  int dims_constnames[2], dims_data[2];
+  int varid_freq, varid_eq, varid_na;
+  int varid_constnames, varid_amp, varid_pha;
+  int varid_ua, varid_up, varid_va, varid_vp;
+
+  dims_constnames[0] = dimid_numconst;
+  dims_constnames[1] = dimid_constlen;
+  dims_data[0] = dimid_nnode;
+  dims_data[1] = dimid_numconst;
+  nc_def_var(ncid, "const", NC_CHAR, 2, dims_constnames, &varid_constnames);
+  nc_def_var(ncid, "frequency", NC_DOUBLE, 1, &dimid_numconst, &varid_freq);
+  nc_def_var(ncid, "equilibrium_argument", NC_DOUBLE, 1, &dimid_numconst,
+             &varid_eq);
+  nc_def_var(ncid, "nodal_factor", NC_DOUBLE, 1, &dimid_numconst, &varid_na);
+
+  Adcirc::Harmonics::HarmonicsRecord* ptr;
+
+  if (this->isVelocity()) {
+    nc_def_var(ncid, "u_amp", NC_DOUBLE, 2, dims_data, &varid_ua);
+    nc_def_var(ncid, "u_phs", NC_DOUBLE, 2, dims_data, &varid_up);
+    nc_def_var(ncid, "v_amp", NC_DOUBLE, 2, dims_data, &varid_va);
+    nc_def_var(ncid, "v_phs", NC_DOUBLE, 2, dims_data, &varid_vp);
+
+    nc_def_var_deflate(ncid, varid_ua, 1, 1, 2);
+    nc_def_var_deflate(ncid, varid_up, 1, 1, 2);
+    nc_def_var_deflate(ncid, varid_va, 1, 1, 2);
+    nc_def_var_deflate(ncid, varid_vp, 1, 1, 2);
+
+  } else {
+    nc_def_var(ncid, "amp", NC_DOUBLE, 2, dims_data, &varid_amp);
+    nc_def_var(ncid, "phs", NC_DOUBLE, 2, dims_data, &varid_pha);
+  }
+
+  ierr = nc_enddef(ncid);
+
+  for (size_t i = 0; i < this->numConstituents(); ++i) {
+    char* c = new char[11];
+    double f[1], e[1], n[1];
+    size_t start1[1], start2[2];
+    size_t count2[2];
+
+    if (this->isVelocity()) {
+      ptr = &this->m_uamplitude[i];
+    } else {
+      ptr = &this->m_amplitude[i];
+    }
+
+    start1[0] = i;
+
+    start2[0] = i;
+    start2[1] = 0;
+    count2[0] = 1;
+    count2[1] = 10;
+
+    f[0] = ptr->frequency();
+    e[0] = ptr->equilibriumArg();
+    n[0] = ptr->nodalFactor();
+
+    memset(c, ' ', 10);
+    memcpy(c, ptr->name().c_str(), ptr->name().size());
+
+    nc_put_vara_text(ncid, varid_constnames, start2, count2, c);
+    nc_put_var1_double(ncid, varid_freq, start1, f);
+    nc_put_var1_double(ncid, varid_eq, start1, e);
+    nc_put_var1_double(ncid, varid_na, start1, n);
+
+    delete[] c;
+  }
+
+  return;
+}
+
+void HarmonicsOutputImpl::writeNetcdfFormatElevation(const int& ncid) {
+  int varid[2];
+  nc_inq_varid(ncid, "amp", &varid[0]);
+  nc_inq_varid(ncid, "phs", &varid[1]);
+
+  for (size_t i = 0; i < this->numConstituents(); ++i) {
+    size_t start[2], count[2];
+    start[0] = 0;
+    start[1] = i;
+    count[0] = this->numNodes();
+    count[1] = 1;
+
+    std::vector<Adcirc::Harmonics::HarmonicsRecord*> ptr(4);
+    ptr[0] = &this->m_amplitude[i];
+    ptr[1] = &this->m_phase[i];
+
+    for (size_t j = 0; j < 2; ++j) {
+      std::vector<double> vec = ptr[j]->values();
+      double* u = new double[this->numNodes()];
+      std::copy(vec.begin(), vec.end(), u);
+      vec.clear();
+      nc_put_vara(ncid, varid[j], start, count, u);
+      delete[] u;
+    }
+  }
+}
+
+void HarmonicsOutputImpl::writeNetcdfFormatVelocity(const int& ncid) {
+  int varid[4];
+  nc_inq_varid(ncid, "u_amp", &varid[0]);
+  nc_inq_varid(ncid, "u_phs", &varid[1]);
+  nc_inq_varid(ncid, "v_amp", &varid[2]);
+  nc_inq_varid(ncid, "v_phs", &varid[3]);
+
+  for (size_t i = 0; i < this->numConstituents(); ++i) {
+    size_t start[2], count[2];
+    start[0] = 0;
+    start[1] = i;
+    count[0] = this->numNodes();
+    count[1] = 1;
+
+    std::vector<Adcirc::Harmonics::HarmonicsRecord*> ptr(4);
+    ptr[0] = &this->m_uamplitude[i];
+    ptr[1] = &this->m_uphase[i];
+    ptr[2] = &this->m_vamplitude[i];
+    ptr[3] = &this->m_vphase[i];
+
+    for (size_t j = 0; j < 4; ++j) {
+      std::vector<double> vec = ptr[j]->values();
+      double* u = new double[this->numNodes()];
+      std::copy(vec.begin(), vec.end(), u);
+      vec.clear();
+      nc_put_vara(ncid, varid[j], start, count, u);
+      delete[] u;
+    }
+  }
+}
+
+void HarmonicsOutputImpl::getFiletype() {
+  if (Adcirc::Harmonics::checkFiletypeNetcdfHarmonics(this->filename())) {
+    this->m_filetype = Adcirc::Harmonics::HarmonicsNetcdf;
+    return;
+  }
+  if (Adcirc::Harmonics::checkFiletypeAsciiHarmonics(this->filename())) {
+    this->m_filetype = Adcirc::Harmonics::HarmonicsAscii;
+    return;
+  }
+  this->m_filetype = Adcirc::Output::OutputUnknown;
+  return;
+}
+
+void HarmonicsOutputImpl::readAsciiHeader(std::fstream& fid) {
   std::string line;
   bool ok;
 
   std::getline(fid, line);
   size_t n = StringConversion::stringToSizet(line, ok);
-  if (ok) {
-    this->setNumConstituents(n);
-  } else {
+  if (!ok) {
     fid.close();
     adcircmodules_throw_exception("Error reading file data");
   }
@@ -238,15 +472,15 @@ void HarmonicsOutputImpl::readAsciiFormat() {
   std::vector<double> equilibriumArg;
   std::vector<std::string> names;
 
-  frequency.resize(this->numConstituents());
-  nodalFactor.resize(this->numConstituents());
-  equilibriumArg.resize(this->numConstituents());
-  names.resize(this->numConstituents());
+  frequency.resize(n);
+  nodalFactor.resize(n);
+  equilibriumArg.resize(n);
+  names.resize(n);
 
-  for (size_t i = 0; i < this->numConstituents(); ++i) {
+  for (size_t i = 0; i < n; ++i) {
     std::vector<std::string> list;
     std::getline(fid, line);
-    IO::splitString(line, list);
+    FileIO::Generic::splitString(line, list);
     frequency[i] = StringConversion::stringToDouble(list[0], ok);
     nodalFactor[i] = StringConversion::stringToDouble(list[1], ok);
     equilibriumArg[i] = StringConversion::stringToDouble(list[2], ok);
@@ -254,27 +488,30 @@ void HarmonicsOutputImpl::readAsciiFormat() {
   }
 
   std::getline(fid, line);
-  n = StringConversion::stringToSizet(line, ok);
+  int nn = StringConversion::stringToSizet(line, ok);
   if (ok) {
-    this->setNumNodes(n);
+    this->setNumNodes(nn);
   } else {
     fid.close();
     adcircmodules_throw_exception("Error reading file data");
   }
+
+  this->m_isVelocity = this->checkFormatAsciiVelocity(fid);
+  this->setNumConstituents(n);
 
   for (size_t i = 0; i < this->numConstituents(); ++i) {
     this->m_index[names[i]] = i;
     this->m_reverseIndex[i] = names[i];
     this->m_consituentNames.push_back(names[i]);
     if (this->isVelocity()) {
-      this->u_magnitude(i)->setName(names[i]);
-      this->u_magnitude(i)->setFrequency(frequency[i]);
-      this->u_magnitude(i)->setNodalFactor(nodalFactor[i]);
-      this->u_magnitude(i)->setEquilibriumArg(equilibriumArg[i]);
-      this->v_magnitude(i)->setName(names[i]);
-      this->v_magnitude(i)->setFrequency(frequency[i]);
-      this->v_magnitude(i)->setNodalFactor(nodalFactor[i]);
-      this->v_magnitude(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->u_amplitude(i)->setName(names[i]);
+      this->u_amplitude(i)->setFrequency(frequency[i]);
+      this->u_amplitude(i)->setNodalFactor(nodalFactor[i]);
+      this->u_amplitude(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->v_amplitude(i)->setName(names[i]);
+      this->v_amplitude(i)->setFrequency(frequency[i]);
+      this->v_amplitude(i)->setNodalFactor(nodalFactor[i]);
+      this->v_amplitude(i)->setEquilibriumArg(equilibriumArg[i]);
       this->u_phase(i)->setName(names[i]);
       this->u_phase(i)->setFrequency(frequency[i]);
       this->u_phase(i)->setNodalFactor(nodalFactor[i]);
@@ -283,8 +520,8 @@ void HarmonicsOutputImpl::readAsciiFormat() {
       this->v_phase(i)->setFrequency(frequency[i]);
       this->v_phase(i)->setNodalFactor(nodalFactor[i]);
       this->v_phase(i)->setEquilibriumArg(equilibriumArg[i]);
-      this->u_magnitude(i)->resize(this->numNodes());
-      this->v_magnitude(i)->resize(this->numNodes());
+      this->u_amplitude(i)->resize(this->numNodes());
+      this->v_amplitude(i)->resize(this->numNodes());
       this->u_phase(i)->resize(this->numNodes());
       this->v_phase(i)->resize(this->numNodes());
     } else {
@@ -301,11 +538,52 @@ void HarmonicsOutputImpl::readAsciiFormat() {
     }
   }
 
+  return;
+}
+
+bool HarmonicsOutputImpl::checkFormatAsciiVelocity(std::fstream& fid) {
+  std::string line;
+  std::streampos endHeader = fid.tellg();
+  std::getline(fid, line);
+  std::getline(fid, line);
+  std::getline(fid, line);
+  fid.seekg(endHeader, std::ios::beg);
+  std::vector<std::string> list;
+  FileIO::Generic::splitString(line, list);
+  if (list.size() == 2) {
+    return false;
+  } else if (list.size() == 4) {
+    return true;
+  } else {
+    adcircmodules_throw_exception("Unknown harmonics file format.");
+  }
+  return false;
+}
+
+bool HarmonicsOutputImpl::checkFormatNetcdfVelocity(const int& ncid) {
+  int varid_upha;
+  int ierr = nc_inq_varid(ncid, "u_phs", &varid_upha);
+  if (ierr != NC_NOERR) {
+    return false;
+  }
+  return true;
+}
+
+void HarmonicsOutputImpl::readAsciiFormat() {
+  std::fstream fid;
+  fid.open(this->m_filename);
+  if (!fid.is_open()) {
+    adcircmodules_throw_exception("File is not open");
+  }
+
+  this->readAsciiHeader(fid);
+
   for (size_t i = 0; i < this->numNodes(); ++i) {
+    std::string line;
     std::getline(fid, line);
 
     size_t node;
-    IO::splitStringBoundary0Format(line, node);
+    FileIO::AdcircIO::splitStringBoundary0Format(line, node);
 
     this->m_nodeIndex[node] = i;
 
@@ -313,18 +591,20 @@ void HarmonicsOutputImpl::readAsciiFormat() {
       std::getline(fid, line);
       if (this->isVelocity()) {
         double um, up, vm, vp;
-        if (!IO::splitStringHarmonicsVelocityFormat(line, um, up, vm, vp)) {
+        if (!FileIO::AdcircIO::splitStringHarmonicsVelocityFormat(line, um, up,
+                                                                  vm, vp)) {
           adcircmodules_throw_exception(
               "Error reading harmonics velocity string");
         }
 
-        this->u_magnitude(j)->set(i, um);
+        this->u_amplitude(j)->set(i, um);
         this->u_phase(j)->set(i, up);
-        this->v_magnitude(j)->set(i, vm);
+        this->v_amplitude(j)->set(i, vm);
         this->v_phase(j)->set(i, vp);
       } else {
         double a, p;
-        if (!IO::splitStringHarmonicsElevationFormat(line, a, p)) {
+        if (!FileIO::AdcircIO::splitStringHarmonicsElevationFormat(line, a,
+                                                                   p)) {
           adcircmodules_throw_exception(
               "Error reading harmonics elevation string");
         }
@@ -346,6 +626,8 @@ void HarmonicsOutputImpl::readNetcdfFormat() {
   if (ierr != NC_NOERR) {
     adcircmodules_throw_exception("Could not open netcdf file");
   }
+
+  this->m_isVelocity = this->checkFormatNetcdfVelocity(ncid);
 
   std::vector<int> varids;
   this->readNetcdfFormatHeader(ncid, varids);
@@ -484,33 +766,24 @@ void HarmonicsOutputImpl::readNetcdfFormatHeader(int ncid,
     }
   }
 
-  //...Check file type
-  int v;
-  ierr = nc_inq_varid(ncid, "amp", &v);
-  if (ierr == NC_NOERR) {
-    this->m_isVelocity = false;
-  } else {
-    this->m_isVelocity = true;
-  }
-
   if (this->isVelocity()) {
-    this->m_umagnitude.resize(this->numConstituents());
-    this->m_vmagnitude.resize(this->numConstituents());
+    this->m_uamplitude.resize(this->numConstituents());
+    this->m_vamplitude.resize(this->numConstituents());
     this->m_uphase.resize(this->numConstituents());
     this->m_vphase.resize(this->numConstituents());
     for (size_t i = 0; i < this->numConstituents(); ++i) {
       this->m_index[this->m_consituentNames[i]] = i;
       this->m_reverseIndex[i] = this->m_consituentNames[i];
-      this->u_magnitude(i)->resize(this->numNodes());
-      this->u_magnitude(i)->setName(this->m_consituentNames[i]);
-      this->u_magnitude(i)->setFrequency(frequency[i]);
-      this->u_magnitude(i)->setEquilibriumArg(equilibriumArg[i]);
-      this->u_magnitude(i)->setNodalFactor(nodeFactor[i]);
-      this->v_magnitude(i)->resize(this->numNodes());
-      this->v_magnitude(i)->setName(this->m_consituentNames[i]);
-      this->v_magnitude(i)->setFrequency(frequency[i]);
-      this->v_magnitude(i)->setEquilibriumArg(equilibriumArg[i]);
-      this->v_magnitude(i)->setNodalFactor(nodeFactor[i]);
+      this->u_amplitude(i)->resize(this->numNodes());
+      this->u_amplitude(i)->setName(this->m_consituentNames[i]);
+      this->u_amplitude(i)->setFrequency(frequency[i]);
+      this->u_amplitude(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->u_amplitude(i)->setNodalFactor(nodeFactor[i]);
+      this->v_amplitude(i)->resize(this->numNodes());
+      this->v_amplitude(i)->setName(this->m_consituentNames[i]);
+      this->v_amplitude(i)->setFrequency(frequency[i]);
+      this->v_amplitude(i)->setEquilibriumArg(equilibriumArg[i]);
+      this->v_amplitude(i)->setNodalFactor(nodeFactor[i]);
       this->u_phase(i)->resize(this->numNodes());
       this->u_phase(i)->setName(this->m_consituentNames[i]);
       this->u_phase(i)->setFrequency(frequency[i]);
@@ -550,6 +823,8 @@ void HarmonicsOutputImpl::readNetcdfFormatHeader(int ncid,
     ierr = nc_inq_varid(ncid, "u_amp", &vid);
     if (ierr != NC_NOERR) {
       nc_close(ncid);
+      std::cout << nc_strerror(ierr) << std::endl;
+      std::cout.flush();
       adcircmodules_throw_exception("Could not find u_amp");
     }
     varids.push_back(vid);
@@ -644,7 +919,7 @@ void HarmonicsOutputImpl::readNetcdfVelocityData(int ncid,
       adcircmodules_throw_exception("Error reading harmonic velocity data");
     }
     std::vector<double> ua(v, v + this->numNodes());
-    this->u_magnitude(i)->set(ua);
+    this->u_amplitude(i)->set(ua);
 
     ierr = nc_get_vara(ncid, varids[1], start, count, v);
     if (ierr != NC_NOERR) {
@@ -660,7 +935,7 @@ void HarmonicsOutputImpl::readNetcdfVelocityData(int ncid,
       adcircmodules_throw_exception("Error reading harmonic velocity data");
     }
     std::vector<double> va(v, v + this->numNodes());
-    this->v_magnitude(i)->set(va);
+    this->v_amplitude(i)->set(va);
 
     ierr = nc_get_vara(ncid, varids[3], start, count, v);
     if (ierr != NC_NOERR) {
@@ -674,5 +949,3 @@ void HarmonicsOutputImpl::readNetcdfVelocityData(int ncid,
   delete[] v;
   return;
 }
-
-void HarmonicsOutputImpl::write(const std::string& filename) { return; }

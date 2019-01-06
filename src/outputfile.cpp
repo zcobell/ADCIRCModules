@@ -24,8 +24,8 @@
 #include <memory>
 #include <utility>
 #include "error.h"
+#include "fileio.h"
 #include "filetypes.h"
-#include "io.h"
 #include "netcdf.h"
 #include "stringconversion.h"
 
@@ -82,7 +82,7 @@ OutputFile::OutputFile(const std::string& filename)
       m_isVector(false),
       m_isMax(false),
       m_defaultValue(Adcirc::Output::DefaultOutputValue),
-      m_filetype(Adcirc::Output::Unknown) {}
+      m_filetype(Adcirc::Output::OutputUnknown) {}
 
 OutputFile::~OutputFile() { this->clear(); }
 
@@ -134,15 +134,15 @@ void OutputFile::open() {
 
   this->m_filetype = this->getFiletype();
 
-  if (this->filetype() == Adcirc::Output::ASCIIFull ||
-      this->filetype() == Adcirc::Output::ASCIISparse) {
+  if (this->filetype() == Adcirc::Output::OutputAsciiFull ||
+      this->filetype() == Adcirc::Output::OutputAsciiSparse) {
     this->openAscii();
     this->readAsciiHeader();
-  } else if (this->filetype() == Adcirc::Output::Netcdf3 ||
-             this->filetype() == Adcirc::Output::Netcdf4) {
+  } else if (this->filetype() == Adcirc::Output::OutputNetcdf3 ||
+             this->filetype() == Adcirc::Output::OutputNetcdf4) {
     this->openNetcdf();
     this->readNetcdfHeader();
-  } else if (this->filetype() == Adcirc::Output::Xdmf) {
+  } else if (this->filetype() == Adcirc::Output::OutputXdmf) {
     this->openXdmf();
   } else {
     adcircmodules_throw_exception("OutputFile: No valid file type detected");
@@ -163,17 +163,17 @@ void OutputFile::close() {
     adcircmodules_throw_exception("OutputFile: File not open");
   }
 
-  if (this->filetype() == Adcirc::Output::ASCIIFull ||
-      this->filetype() == Adcirc::Output::ASCIISparse) {
+  if (this->filetype() == Adcirc::Output::OutputAsciiFull ||
+      this->filetype() == Adcirc::Output::OutputAsciiSparse) {
     return this->closeAscii();
   }
 
-  if (this->filetype() == Adcirc::Output::Netcdf3 ||
-      this->filetype() == Adcirc::Output::Netcdf4) {
+  if (this->filetype() == Adcirc::Output::OutputNetcdf3 ||
+      this->filetype() == Adcirc::Output::OutputNetcdf4) {
     return this->closeNetcdf();
   }
 
-  if (this->filetype() == Adcirc::Output::Xdmf) {
+  if (this->filetype() == Adcirc::Output::OutputXdmf) {
     return this->closeXdmf();
   }
 
@@ -183,8 +183,8 @@ void OutputFile::close() {
 void OutputFile::read(size_t snap) {
   std::unique_ptr<OutputRecord> record;
 
-  if (this->m_filetype == Adcirc::Output::ASCIIFull ||
-      this->m_filetype == Adcirc::Output::ASCIISparse) {
+  if (this->m_filetype == Adcirc::Output::OutputAsciiFull ||
+      this->m_filetype == Adcirc::Output::OutputAsciiSparse) {
     if (snap != Adcirc::Output::NextOutputSnap) {
       Error::warning(
           "ASCII Output must be read record by "
@@ -195,8 +195,8 @@ void OutputFile::read(size_t snap) {
           "OutputFile: Attempt to read past last record in file");
     }
     this->readAsciiRecord(record);
-  } else if (this->m_filetype == Adcirc::Output::Netcdf3 ||
-             this->m_filetype == Adcirc::Output::Netcdf4) {
+  } else if (this->m_filetype == Adcirc::Output::OutputNetcdf3 ||
+             this->m_filetype == Adcirc::Output::OutputNetcdf4) {
     this->readNetcdfRecord(snap, record);
   } else {
     adcircmodules_throw_exception("OutputFile: Unknown filetype");
@@ -333,34 +333,34 @@ void OutputFile::setHeader(const std::string& header) {
 
 int OutputFile::getFiletype() {
   if (Adcirc::Output::checkFiletypeNetcdf3(this->filename())) {
-    return Adcirc::Output::Netcdf3;
+    return Adcirc::Output::OutputNetcdf3;
   }
   if (Adcirc::Output::checkFiletypeNetcdf4(this->filename())) {
-    return Adcirc::Output::Netcdf4;
+    return Adcirc::Output::OutputNetcdf4;
   }
   if (Adcirc::Output::checkFiletypeXdmf(this->filename())) {
-    return Adcirc::Output::Xdmf;
+    return Adcirc::Output::OutputXdmf;
   }
   if (Adcirc::Output::checkFiletypeAsciiFull(this->filename())) {
-    return Adcirc::Output::ASCIIFull;
+    return Adcirc::Output::OutputAsciiFull;
   }
   if (Adcirc::Output::checkFiletypeAsciiSparse(this->filename())) {
-    return Adcirc::Output::ASCIISparse;
+    return Adcirc::Output::OutputAsciiSparse;
   }
-  return Adcirc::Output::Unknown;
+  return Adcirc::Output::OutputUnknown;
 }
 
 void OutputFile::findNetcdfVarId() {
   assert(this->isOpen());
-  assert(this->filetype() == Adcirc::Output::Netcdf3 ||
-         this->filetype() == Adcirc::Output::Netcdf4);
+  assert(this->filetype() == Adcirc::Output::OutputNetcdf3 ||
+         this->filetype() == Adcirc::Output::OutputNetcdf4);
 
   if (!this->isOpen()) {
     adcircmodules_throw_exception("OutputFile: Netcdf file not open");
   }
 
-  if (!(this->filetype() != Adcirc::Output::Netcdf3) ||
-      !(this->filetype() == Adcirc::Output::Netcdf4)) {
+  if (!(this->filetype() != Adcirc::Output::OutputNetcdf3) ||
+      !(this->filetype() == Adcirc::Output::OutputNetcdf4)) {
     adcircmodules_throw_exception("OutputFile: Filetype is not netcdf");
   }
 
@@ -410,11 +410,7 @@ void OutputFile::readAsciiHeader() {
   std::getline(this->m_fid, line);  // file info header
 
   std::vector<std::string> list;
-  int ierr = IO::splitString(line, list);
-  if (ierr != Adcirc::NoError) {
-    this->m_fid.close();
-    adcircmodules_throw_exception("OutputFile: Error reading ascii header");
-  }
+  FileIO::Generic::splitString(line, list);
 
   bool ok;
   this->setNumSnaps(StringConversion::stringToInt(list.at(0), ok));
@@ -528,7 +524,7 @@ void OutputFile::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
   //...Record header
   std::getline(this->m_fid, line);
   std::vector<std::string> list;
-  IO::splitString(line, list);
+  FileIO::Generic::splitString(line, list);
   bool ok;
 
   double t = StringConversion::stringToDouble(list[0], ok);
@@ -573,7 +569,7 @@ void OutputFile::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
     if (this->m_isVector) {
       size_t id;
       double v1, v2;
-      if (IO::splitStringAttribute2Format(line, id, v1, v2)) {
+      if (FileIO::AdcircIO::splitStringAttribute2Format(line, id, v1, v2)) {
         record.get()->set(id - 1, v1, v2);
       } else {
         record.reset(nullptr);
@@ -582,7 +578,7 @@ void OutputFile::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
     } else {
       size_t id;
       double v1;
-      if (IO::splitStringAttribute1Format(line, id, v1)) {
+      if (FileIO::AdcircIO::splitStringAttribute1Format(line, id, v1)) {
         record.get()->set(id - 1, v1);
       } else {
         record.reset(nullptr);

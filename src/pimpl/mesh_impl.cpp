@@ -25,7 +25,8 @@
 #include "elementtable.h"
 #include "error.h"
 #include "ezproj.h"
-#include "io.h"
+#include "fileio.h"
+#include "filetypes.h"
 #include "kdtree2lib.h"
 #include "netcdf.h"
 #include "shapefil.h"
@@ -182,12 +183,12 @@ void MeshImpl::read(MeshFormat format) {
   if (this->m_filename == std::string()) {
     adcircmodules_throw_exception("No filename has been specified.");
   }
-  if (!IO::fileExists(this->m_filename)) {
+  if (!FileIO::Generic::fileExists(this->m_filename)) {
     adcircmodules_throw_exception("File does not exist.");
   }
 
   MeshFormat fmt;
-  if (format == MESH_UNKNOWN) {
+  if (format == MeshUnknown) {
     fmt = this->getMeshFormat(this->m_filename);
   } else {
     fmt = format;
@@ -197,13 +198,13 @@ void MeshImpl::read(MeshFormat format) {
   this->_init();
 
   switch (fmt) {
-    case MESH_ADCIRC:
+    case MeshAdcirc:
       this->readAdcircMesh();
       break;
-    case MESH_2DM:
+    case Mesh2DM:
       this->read2dmMesh();
       break;
-    case MESH_DFLOW:
+    case MeshDFlow:
       this->readDflowMesh();
       break;
     default:
@@ -382,7 +383,7 @@ void MeshImpl::read2dmData(std::vector<std::string> &nodes,
   std::string templine;
   while (std::getline(fid, templine)) {
     std::vector<std::string> templist;
-    IO::splitString(templine, templist);
+    FileIO::Generic::splitString(templine, templist);
     if (templist[0] == "ND") {
       nodes.push_back(templine);
     } else if (templist[0] == "E4Q" || templist[0] == "E3T") {
@@ -415,7 +416,7 @@ void MeshImpl::read2dmNodes(std::vector<std::string> &nodes) {
   for (auto &n : nodes) {
     size_t id;
     double x, y, z;
-    IO::splitString2dmNodeFormat(n, id, x, y, z);
+    FileIO::SMSIO::splitString2dmNodeFormat(n, id, x, y, z);
     this->m_nodes.push_back(Node(id, x, y, z));
     if (this->m_nodes.size() != id) {
       this->m_nodeOrderingLogical = false;
@@ -437,7 +438,7 @@ void MeshImpl::read2dmElements(std::vector<std::string> &elements) {
   for (auto &e : elements) {
     size_t id;
     std::vector<size_t> n;
-    if (IO::splitString2dmElementFormat(e, id, n)) {
+    if (FileIO::SMSIO::splitString2dmElementFormat(e, id, n)) {
       if (n.size() == 3) {
         if (this->m_nodeOrderingLogical) {
           this->m_elements.push_back(Element(id, &this->m_nodes[n[0] - 1],
@@ -477,16 +478,17 @@ void MeshImpl::read2dmElements(std::vector<std::string> &elements) {
  * @brief Determine the mesh format based upon file extension
  * @return MeshFormat enum
  */
-MeshFormat MeshImpl::getMeshFormat(const std::string &filename) {
-  std::string extension = IO::getFileExtension(filename);
+Adcirc::Geometry::MeshFormat MeshImpl::getMeshFormat(
+    const std::string &filename) {
+  std::string extension = FileIO::Generic::getFileExtension(filename);
   if (extension == ".14" || extension == ".grd") {
-    return MESH_ADCIRC;
+    return MeshAdcirc;
   } else if (extension == ".2dm") {
-    return MESH_2DM;
+    return Mesh2DM;
   } else if (filename.find("_net.nc") != filename.npos) {
-    return MESH_DFLOW;
+    return MeshDFlow;
   } else {
-    return MESH_UNKNOWN;
+    return MeshUnknown;
   }
 }
 
@@ -508,7 +510,7 @@ void MeshImpl::readAdcircMeshHeader(std::fstream &fid) {
 
   //..Get the size of the mesh
   std::getline(fid, tempLine);
-  IO::splitString(tempLine, tempList);
+  FileIO::Generic::splitString(tempLine, tempList);
   tempLine = tempList[0];
   tempInt = StringConversion::stringToSizet(tempLine, ok);
   if (!ok) {
@@ -541,7 +543,7 @@ void MeshImpl::readAdcircNodes(std::fstream &fid) {
     double x, y, z;
     std::string tempLine;
     std::getline(fid, tempLine);
-    if (!IO::splitStringNodeFormat(tempLine, id, x, y, z)) {
+    if (!FileIO::AdcircIO::splitStringNodeFormat(tempLine, id, x, y, z)) {
       fid.close();
       adcircmodules_throw_exception("Error reading nodes");
     }
@@ -576,7 +578,7 @@ void MeshImpl::readAdcircElements(std::fstream &fid) {
       std::getline(fid, tempLine);
       std::vector<size_t> n;
       n.reserve(4);
-      if (!IO::splitStringElemFormat(tempLine, id, n)) {
+      if (!FileIO::AdcircIO::splitStringElemFormat(tempLine, id, n)) {
         fid.close();
         adcircmodules_throw_exception("Error reading elements");
       }
@@ -594,7 +596,7 @@ void MeshImpl::readAdcircElements(std::fstream &fid) {
       std::getline(fid, tempLine);
       std::vector<size_t> n;
       n.reserve(4);
-      if (!IO::splitStringElemFormat(tempLine, id, n)) {
+      if (!FileIO::AdcircIO::splitStringElemFormat(tempLine, id, n)) {
         fid.close();
         adcircmodules_throw_exception("Error reading nodes");
       }
@@ -635,7 +637,7 @@ void MeshImpl::readAdcircOpenBoundaries(std::fstream &fid) {
   std::vector<std::string> tempList;
 
   std::getline(fid, tempLine);
-  IO::splitString(tempLine, tempList);
+  FileIO::Generic::splitString(tempLine, tempList);
 
   bool ok;
   this->setNumOpenBoundaries(StringConversion::stringToSizet(tempList[0], ok));
@@ -650,7 +652,7 @@ void MeshImpl::readAdcircOpenBoundaries(std::fstream &fid) {
 
   for (auto &b : this->m_openBoundaries) {
     std::getline(fid, tempLine);
-    IO::splitString(tempLine, tempList);
+    FileIO::Generic::splitString(tempLine, tempList);
 
     size_t length = StringConversion::stringToSizet(tempList[0], ok);
     if (!ok) {
@@ -663,7 +665,7 @@ void MeshImpl::readAdcircOpenBoundaries(std::fstream &fid) {
     for (size_t j = 0; j < b.length(); ++j) {
       std::getline(fid, tempLine);
       size_t nid;
-      if (!IO::splitStringBoundary0Format(tempLine, nid)) {
+      if (!FileIO::AdcircIO::splitStringBoundary0Format(tempLine, nid)) {
         fid.close();
         adcircmodules_throw_exception("Error reading boundaries");
       }
@@ -692,7 +694,7 @@ void MeshImpl::readAdcircLandBoundaries(std::fstream &fid) {
 
   std::getline(fid, tempLine);
 
-  IO::splitString(tempLine, tempList);
+  FileIO::Generic::splitString(tempLine, tempList);
 
   this->setNumLandBoundaries(StringConversion::stringToSizet(tempList[0], ok));
   if (!ok) {
@@ -705,7 +707,7 @@ void MeshImpl::readAdcircLandBoundaries(std::fstream &fid) {
 
   for (auto &b : this->m_landBoundaries) {
     std::getline(fid, tempLine);
-    IO::splitString(tempLine, tempList);
+    FileIO::Generic::splitString(tempLine, tempList);
 
     size_t length = StringConversion::stringToSizet(tempList[0], ok);
     if (!ok) {
@@ -724,8 +726,8 @@ void MeshImpl::readAdcircLandBoundaries(std::fstream &fid) {
       std::getline(fid, tempLine);
 
       if (code == 3 || code == 13 || code == 23) {
-        if (!IO::splitStringBoundary23Format(tempLine, n1, crest,
-                                             supercritical)) {
+        if (!FileIO::AdcircIO::splitStringBoundary23Format(tempLine, n1, crest,
+                                                           supercritical)) {
           fid.close();
           adcircmodules_throw_exception("Error reading boundaries");
         }
@@ -739,8 +741,8 @@ void MeshImpl::readAdcircLandBoundaries(std::fstream &fid) {
         b.setSupercriticalWeirCoefficient(j, supercritical);
 
       } else if (code == 4 || code == 24) {
-        if (!IO::splitStringBoundary24Format(tempLine, n1, n2, crest,
-                                             subcritical, supercritical)) {
+        if (!FileIO::AdcircIO::splitStringBoundary24Format(
+                tempLine, n1, n2, crest, subcritical, supercritical)) {
           fid.close();
           adcircmodules_throw_exception("Error reading boundaries");
         }
@@ -758,9 +760,9 @@ void MeshImpl::readAdcircLandBoundaries(std::fstream &fid) {
         b.setSupercriticalWeirCoefficient(j, supercritical);
 
       } else if (code == 5 || code == 25) {
-        if (!IO::splitStringBoundary25Format(tempLine, n1, n2, crest,
-                                             subcritical, supercritical,
-                                             pipeheight, pipecoef, pipediam)) {
+        if (!FileIO::AdcircIO::splitStringBoundary25Format(
+                tempLine, n1, n2, crest, subcritical, supercritical, pipeheight,
+                pipecoef, pipediam)) {
           fid.close();
           adcircmodules_throw_exception("Error reading boundaries");
         }
@@ -780,7 +782,7 @@ void MeshImpl::readAdcircLandBoundaries(std::fstream &fid) {
         b.setPipeCoefficient(j, pipecoef);
         b.setPipeDiameter(j, pipediam);
       } else {
-        if (!IO::splitStringBoundary0Format(tempLine, n1)) {
+        if (!FileIO::AdcircIO::splitStringBoundary0Format(tempLine, n1)) {
           fid.close();
           adcircmodules_throw_exception("Error reading boundaries");
         }
@@ -1372,20 +1374,20 @@ void MeshImpl::deleteElement(size_t index) {
  */
 void MeshImpl::write(const std::string &outputFile, MeshFormat format) {
   MeshFormat fmt;
-  if (format == MESH_UNKNOWN) {
+  if (format == MeshUnknown) {
     fmt = this->getMeshFormat(outputFile);
   } else {
     fmt = format;
   }
 
   switch (fmt) {
-    case MESH_ADCIRC:
+    case MeshAdcirc:
       this->writeAdcircMesh(outputFile);
       break;
-    case MESH_2DM:
+    case Mesh2DM:
       this->write2dmMesh(outputFile);
       break;
-    case MESH_DFLOW:
+    case MeshDFlow:
       this->writeDflowMesh(outputFile);
       break;
     default:
