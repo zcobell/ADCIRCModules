@@ -305,7 +305,6 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/node.cpp
                 ${CMAKE_SOURCE_DIR}/src/element.cpp
                 ${CMAKE_SOURCE_DIR}/src/boundary.cpp
-                ${CMAKE_SOURCE_DIR}/src/split.cpp
                 ${CMAKE_SOURCE_DIR}/src/fileio.cpp
                 ${CMAKE_SOURCE_DIR}/src/stringconversion.cpp
                 ${CMAKE_SOURCE_DIR}/src/nodalattributes.cpp
