@@ -31,5 +31,6 @@ int main() {
   std::cout << "Expected: 1.84674, Got: " << output->data(2)->z(925)
             << std::endl;
   if (std::fabs(output->data(2)->z(925) - 1.84674) > 0.00001) return 1;
+  output->close();
   return 0;
 }

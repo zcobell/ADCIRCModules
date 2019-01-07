@@ -47,5 +47,7 @@ int main() {
     return 1;
   }
 
+  output->close();
+
   return 0;
 }

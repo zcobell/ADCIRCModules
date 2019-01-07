@@ -296,7 +296,7 @@ OutputRecord* OutputFile::dataAt(size_t position) {
 OutputRecord* OutputFile::dataAt(size_t position, bool& ok) {
   assert(position < this->m_records.size());
 
-  if (position < this->m_records.size()) {
+  if (position >= this->m_records.size()) {
     ok = false;
     adcircmodules_throw_exception(
         "OutputFile: Data requested is out of bounds");

@@ -41,5 +41,7 @@ int main() {
 
   output->data(0)->setAll(a);
 
+  output->close();
+
   return 0;
 }

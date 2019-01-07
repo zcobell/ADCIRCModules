@@ -37,6 +37,8 @@ int main() {
   //...Read snap 3
   output->read();
 
+  output->close();
+
   //...Check output
   if (output->data(2)->z(42) == 0.21464678645) return 0;
 

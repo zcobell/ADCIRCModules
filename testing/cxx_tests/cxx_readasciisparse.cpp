@@ -37,6 +37,9 @@ int main() {
   //...Read snap 3
   output->read();
 
+  output->clearAt(1);
+  output->close();
+
   //...Check output
   if (output->data(2)->z(1220) == 1.8468049948) return 0;
   return 1;
