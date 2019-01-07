@@ -5,22 +5,47 @@
 
 namespace Adcirc {
 
+namespace Geometry {
+enum MeshFormat {
+  /// Unknown mesh format
+  MeshUnknown = 0x201,
+  /// ADCIRC mesh format (*.14, *.grd)
+  MeshAdcirc = 0x202,
+  /// Aquaveo generic mesh format (*.2dm)
+  Mesh2DM = 0x203,
+  /// Deltares D-Flow FM format (*_net.nc)
+  MeshDFlow = 0x204
+};
+}
+
 namespace Harmonics {
-enum HarmonicsFormat { ASCII = 0x101, NETCDF4 = 0x102, Unknown = 0x999 };
+enum HarmonicsFormat {
+  /// Ascii formatted harmonics files (fort.53, fort.54)
+  HarmonicsAscii = 0x101,
+  /// NetCDF formatted harmonics files (fort.53.nc, fort.54.nc)
+  HarmonicsNetcdf = 0x102,
+  /// Unknown harmonics file format
+  HarmonicsUnknown = 0x999
+};
 bool checkFiletypeAsciiHarmonics(const std::string &filename);
 bool checkFiletypeNetcdfHarmonics(const std::string &filename);
 }  // namespace Harmonics
 
 namespace Output {
 
-enum _fileTypes {
-  ASCIIFull = 0x001,
-  ASCIISparse = 0x002,
-  ASCIIHarmonics = 0x003,
-  Netcdf3 = 0x004,
-  Netcdf4 = 0x005,
-  Xdmf = 0x006,
-  Unknown = 0x999
+enum OutputFormat {
+  /// Full ascii formatted Adcirc output
+  OutputAsciiFull = 0x001,
+  /// Sparse formatted Adcirc output
+  OutputAsciiSparse = 0x002,
+  /// netCDF3 formatted Adcirc output
+  OutputNetcdf3 = 0x003,
+  /// netCDF4 formatted Adcirc output
+  OutputNetcdf4 = 0x004,
+  /// Xdmf formatted Adcirc output [not implemented]
+  OutputXdmf = 0x005,
+  /// Unknown output format
+  OutputUnknown = 0x999
 };
 
 bool checkFiletypeAsciiFull(const std::string &filename);

@@ -81,7 +81,7 @@ print "   M2 phase at node 1: ",he.phase("M2").value(he.nodeIdToArrayIndex(1))
 print "   K1 amplitude at node 1: ",he.amplitude("K1").value(he.nodeIdToArrayIndex(1))
 print "   K1 phase at node 1: ",he.phase("K1").value(he.nodeIdToArrayIndex(1))
 print "Reading harmonics velocity file"
-hv = PyAdcirc.HarmonicsOutput("../testing/test_files/fort.54",True);
+hv = PyAdcirc.HarmonicsOutput("../testing/test_files/fort.54");
 hv.read();
 print "Harmonics velocity read successfully"
 print "   M2 u magnitude at node 1: ",hv.u_magnitude("M2").value(hv.nodeIdToArrayIndex(1))

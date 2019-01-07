@@ -27,8 +27,8 @@ namespace Harmonics {
  * @param velocity true of the file contains velocity information, false if it
  * does not
  */
-HarmonicsOutput::HarmonicsOutput(const std::string& filename, bool velocity)
-    : m_impl(new HarmonicsOutputImpl(filename, velocity)) {}
+HarmonicsOutput::HarmonicsOutput(const std::string& filename)
+    : m_impl(new HarmonicsOutputImpl(filename)) {}
 
 HarmonicsOutput::~HarmonicsOutput() { delete this->m_impl; }
 
@@ -40,9 +40,11 @@ void HarmonicsOutput::read() { this->m_impl->read(); }
 /**
  * @brief Write the harmonics file
  * @param filename name of output file
+ * @param format type of output to write (ascii or netcdf)
  */
-void HarmonicsOutput::write(const std::string& filename) {
-  this->m_impl->write(filename);
+void HarmonicsOutput::write(const std::string& filename,
+                            const Adcirc::Harmonics::HarmonicsFormat& format) {
+  this->m_impl->write(filename, format);
 }
 
 /**
@@ -122,9 +124,9 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::phase(size_t index) {
  * @param name constituent to get the record for
  * @return HarmonicsRecord object containing u-magnitude
  */
-Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::u_magnitude(
+Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::u_amplitude(
     const std::string& name) {
-  return this->m_impl->u_magnitude(name);
+  return this->m_impl->u_amplitude(name);
 }
 
 /**
@@ -132,8 +134,8 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::u_magnitude(
  * @param index constituent to get the record for
  * @return HarmonicsRecord object containing u-magnitude
  */
-Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::u_magnitude(size_t index) {
-  return this->m_impl->u_magnitude(index);
+Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::u_amplitude(size_t index) {
+  return this->m_impl->u_amplitude(index);
 }
 
 /**
@@ -160,9 +162,9 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::u_phase(size_t index) {
  * @param name constituent to get the record for
  * @return HarmonicsRecord object containing v-magnitude
  */
-Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::v_magnitude(
+Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::v_amplitude(
     const std::string& name) {
-  return this->m_impl->v_magnitude(name);
+  return this->m_impl->v_amplitude(name);
 }
 
 /**
@@ -170,8 +172,8 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::v_magnitude(
  * @param index constituent to get the record for
  * @return HarmonicsRecord object containing v-magnitude
  */
-Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::v_magnitude(size_t index) {
-  return this->m_impl->v_magnitude(index);
+Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::v_amplitude(size_t index) {
+  return this->m_impl->v_amplitude(index);
 }
 
 /**

@@ -19,12 +19,13 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include <limits>
 #include <string>
 #include <vector>
 #include "adcircmodules_global.h"
 #include "boundary.h"
 #include "element.h"
-#include "meshformats.h"
+#include "filetypes.h"
 #include "node.h"
 
 class Kdtree2lib;
@@ -91,11 +92,11 @@ class Mesh {
   std::vector<std::vector<double>> ADCIRCMODULES_EXPORT orthogonality();
 
   void ADCIRCMODULES_EXPORT
-  read(Adcirc::Geometry::MeshFormat format = MESH_UNKNOWN);
+  read(Adcirc::Geometry::MeshFormat format = MeshUnknown);
 
   void ADCIRCMODULES_EXPORT
   write(const std::string &outputFile,
-        Adcirc::Geometry::MeshFormat format = MESH_UNKNOWN);
+        Adcirc::Geometry::MeshFormat format = MeshUnknown);
 
   std::string ADCIRCMODULES_EXPORT filename() const;
   void ADCIRCMODULES_EXPORT setFilename(const std::string &filename);

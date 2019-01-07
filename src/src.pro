@@ -84,9 +84,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 SOURCES += \
-    split.cpp \
     stringconversion.cpp \
-    io.cpp \
     boundary.cpp \
     element.cpp \
     node.cpp \
@@ -109,13 +107,12 @@ SOURCES += \
     pimpl/harmonicsoutput_impl.cpp \
     pimpl/harmonicsrecord_impl.cpp \
     pimpl/nodalattributes_impl.cpp \
-    nodalattributes.cpp
+    nodalattributes.cpp \
+    fileio.cpp
 
 HEADERS += \
     adcircmodules_global.h \
-    split.h \
     stringconversion.h \
-    io.h \
     boundary.h \
     element.h \
     node.h \
@@ -132,7 +129,6 @@ HEADERS += \
     multithreading.h \
     griddata.h \
     interpolationmethods.h \
-    meshformats.h \
     mesh.h \
     harmonicsoutput.h \
     harmonicsrecord.h \
@@ -142,7 +138,8 @@ HEADERS += \
     pimpl/harmonicsrecord_impl.h \
     pimpl/nodalattributes_impl.h \
     nodalattributes.h \
-    adcircmodules.h
+    adcircmodules.h \
+    fileio.h
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib

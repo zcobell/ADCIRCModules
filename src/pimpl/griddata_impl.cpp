@@ -27,7 +27,7 @@
 #include "constants.h"
 #include "elementtable.h"
 #include "error.h"
-#include "split.h"
+#include "fileio.h"
 #include "stringconversion.h"
 
 using namespace Adcirc::Geometry;
@@ -36,14 +36,14 @@ using namespace Interpolation;
 using Point = std::pair<double, double>;
 
 //...A couple constants used within
-static const double c_oneOverWindSigmaSquared =
-    1.0 / pow(GriddataImpl::windSigma(), 2.0);
 constexpr double c_oneOver2MinusRoot3 = 1.0 / (2.0 - Constants::root3());
 constexpr double c_oneOver2PlusRoot3 = 1.0 / (2.0 + Constants::root3());
+constexpr double c_epsilonSquared =
+    pow(std::numeric_limits<double>::epsilon(), 2.0);
+constexpr double c_oneOverWindSigmaSquared =
+    1.0 / (GriddataImpl::windSigma() * GriddataImpl::windSigma());
 static const double c_rootWindSigmaTwoPi =
     sqrt(2.0 * 4.0 * Constants::pi() * GriddataImpl::windSigma());
-static const double c_epsilonSquared =
-    pow(std::numeric_limits<double>::epsilon(), 2.0);
 
 constexpr std::array<std::array<short, 7>, 3> c_windDirectionLookup = {
     {{{4, 3, 2, 1, 12, 11, 10}},
@@ -127,7 +127,9 @@ void GriddataImpl::readLookupTable(const std::string &lookupTableFile) {
     if (l.length() == 0) {
       break;
     }
-    std::vector<std::string> ls = Split::stringSplitToVector(l);
+
+    std::vector<std::string> ls;
+    FileIO::Generic::splitString(l, ls);
     if (ls.size() < 2) {
       fid.close();
       adcircmodules_throw_exception("Could not read the lookup table.");

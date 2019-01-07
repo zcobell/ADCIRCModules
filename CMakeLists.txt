@@ -304,8 +304,7 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/node.cpp
                 ${CMAKE_SOURCE_DIR}/src/element.cpp
                 ${CMAKE_SOURCE_DIR}/src/boundary.cpp
-                ${CMAKE_SOURCE_DIR}/src/split.cpp
-                ${CMAKE_SOURCE_DIR}/src/io.cpp
+                ${CMAKE_SOURCE_DIR}/src/fileio.cpp
                 ${CMAKE_SOURCE_DIR}/src/stringconversion.cpp
                 ${CMAKE_SOURCE_DIR}/src/nodalattributes.cpp
                 ${CMAKE_SOURCE_DIR}/src/attribute.cpp
@@ -362,7 +361,7 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/error.h
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.h
                 ${CMAKE_SOURCE_DIR}/src/harmonicsrecord.h
-                ${CMAKE_SOURCE_DIR}/src/io.h
+                ${CMAKE_SOURCE_DIR}/src/fileio.h
                 ${CMAKE_SOURCE_DIR}/src/mesh.h
                 ${CMAKE_SOURCE_DIR}/src/nodalattributes.h
                 ${CMAKE_SOURCE_DIR}/src/node.h
