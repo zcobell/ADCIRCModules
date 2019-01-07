@@ -38,8 +38,8 @@ using Point = std::pair<double, double>;
 //...A couple constants used within
 constexpr double c_oneOver2MinusRoot3 = 1.0 / (2.0 - Constants::root3());
 constexpr double c_oneOver2PlusRoot3 = 1.0 / (2.0 + Constants::root3());
-constexpr double c_epsilonSquared =
-    pow(std::numeric_limits<double>::epsilon(), 2.0);
+constexpr double c_epsilonSquared = std::numeric_limits<double>::epsilon() *
+                                    std::numeric_limits<double>::epsilon();
 constexpr double c_oneOverWindSigmaSquared =
     1.0 / (GriddataImpl::windSigma() * GriddataImpl::windSigma());
 static const double c_rootWindSigmaTwoPi =
