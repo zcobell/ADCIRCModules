@@ -647,8 +647,7 @@ void OutputFile::readNetcdfRecord(size_t snap,
       double* v = new double[this->m_numNodes];
       ierr = nc_get_vara(this->m_ncid, this->m_varid_data[1], start, count, v);
       if (ierr != NC_NOERR) {
-        delete[] u;
-        delete[] v;
+        delete[] u, v;
         adcircmodules_throw_exception(
             "OutputFile: Error reading netcdf record");
         return;

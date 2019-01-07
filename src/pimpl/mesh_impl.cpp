@@ -300,10 +300,10 @@ void MeshImpl::readDflowMesh() {
 
   if (isFill == 1) elemFillValue = NC_FILL_INT;
 
-  double *xcoor = (double *)malloc(this->m_numNodes * sizeof(double));
-  double *ycoor = (double *)malloc(this->m_numNodes * sizeof(double));
-  double *zcoor = (double *)malloc(this->m_numNodes * sizeof(double));
-  int *elem = (int *)malloc(this->m_numElements * nmaxnode * sizeof(int));
+  double *xcoor = new double[this->m_numNodes];
+  double *ycoor = new double[this->m_numNodes];
+  double *zcoor = new double[this->m_numNodes];
+  int *elem = new int[this->m_numElements * nmaxnode];
 
   ierr += nc_get_var_double(ncid, varid_x, xcoor);
   ierr += nc_get_var_double(ncid, varid_y, ycoor);
@@ -312,10 +312,7 @@ void MeshImpl::readDflowMesh() {
   nc_close(ncid);
 
   if (ierr != 0) {
-    free(xcoor);
-    free(ycoor);
-    free(zcoor);
-    free(elem);
+    delete[] xcoor, ycoor, zcoor, elem;
     adcircmodules_throw_exception("Error reading arrays from netcdf file.");
   }
 
@@ -324,9 +321,7 @@ void MeshImpl::readDflowMesh() {
     this->m_nodes[i] = Node(i + 1, xcoor[i], ycoor[i], zcoor[i]);
   }
 
-  free(xcoor);
-  free(ycoor);
-  free(zcoor);
+  delete[] xcoor, ycoor, zcoor;
 
   for (size_t i = 0; i < this->m_numElements; ++i) {
     std::vector<size_t> n(nmaxnode);
@@ -339,7 +334,7 @@ void MeshImpl::readDflowMesh() {
 
     size_t nnodeelem = nmaxnode - nfill;
     if (nnodeelem != 3 && nnodeelem != 4) {
-      free(elem);
+      delete[] elem;
       adcircmodules_throw_exception("Invalid element type detected");
     }
 
@@ -356,7 +351,7 @@ void MeshImpl::readDflowMesh() {
     this->m_elements[i].sortVerticiesAboutCenter();
   }
 
-  free(elem);
+  delete[] elem;
 
   return;
 }
@@ -1496,13 +1491,12 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
   size_t nlinks = links.size();
   size_t maxelemnode = this->getMaxNodesPerElement();
 
-  double *xarray = (double *)malloc(this->m_numNodes * sizeof(double));
-  double *yarray = (double *)malloc(this->m_numNodes * sizeof(double));
-  double *zarray = (double *)malloc(this->m_numNodes * sizeof(double));
-  int *linkArray = (int *)malloc(nlinks * 2 * sizeof(int));
-  int *linkTypeArray = (int *)malloc(nlinks * 2 * sizeof(int));
-  int *netElemNodearray =
-      (int *)malloc(this->m_numElements * maxelemnode * sizeof(int));
+  double *xarray = new double[this->m_numNodes];
+  double *yarray = new double[this->m_numNodes];
+  double *zarray = new double[this->m_numNodes];
+  int *linkArray = new int[nlinks * 2];
+  int *linkTypeArray = new int[nlinks * 2];
+  int *netElemNodearray = new int[this->m_numElements * maxelemnode];
 
   for (size_t i = 0; i < this->m_numNodes; ++i) {
     xarray[i] = this->node(i)->x();
@@ -1553,8 +1547,8 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
   ierr = nc_def_dim(ncid, "nNetElemMaxNode", maxelemnode, &dimid_maxnode);
   ierr = nc_def_dim(ncid, "nNetLinkPts", 2, &dimid_nlinkpts);
 
-  int *dim1d = (int *)malloc(sizeof(int));
-  int *dim2d = (int *)malloc(sizeof(int) * 2);
+  int *dim1d = new int[1];
+  int *dim2d = new int[2];
 
   int varid_mesh2d, varid_netnodex, varid_netnodey, varid_netnodez;
   ierr = nc_def_var(ncid, "Mesh2D", NC_INT, 0, 0, &varid_mesh2d);
@@ -1659,14 +1653,8 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
   ierr = nc_put_var_int(ncid, varid_netelemnode, netElemNodearray);
   ierr = nc_close(ncid);
 
-  free(xarray);
-  free(yarray);
-  free(zarray);
-  free(dim1d);
-  free(dim2d);
-  free(linkArray);
-  free(linkTypeArray);
-  free(netElemNodearray);
+  delete[] xarray, yarray, zarray, dim1d, dim2d, linkArray, linkTypeArray,
+      netElemNodearray;
 
   return;
 }
