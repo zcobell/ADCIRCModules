@@ -737,19 +737,24 @@ void HarmonicsOutputImpl::readNetcdfFormatHeader(int ncid,
     ierr = nc_get_var(ncid, varid_freq, frequency);
     if (ierr != NC_NOERR) {
       nc_close(ncid);
-      delete[] nodeFactor, equilibriumArg, frequency;
+      delete[] nodeFactor;
+      delete[] equilibriumArg;
+      delete[] frequency;
       adcircmodules_throw_exception("Could not read frequency");
     }
     ierr = nc_get_var(ncid, varid_equ, equilibriumArg);
     if (ierr != NC_NOERR) {
-      nc_close(ncid);
-      delete[] nodeFactor, equilibriumArg, frequency;
+        delete[] nodeFactor;
+        delete[] equilibriumArg;
+        delete[] frequency;
       adcircmodules_throw_exception("Could not read equilibrium argument");
     }
     ierr = nc_get_var(ncid, varid_freq, nodeFactor);
     if (ierr != NC_NOERR) {
       nc_close(ncid);
-      delete[] nodeFactor, equilibriumArg, frequency;
+      delete[] nodeFactor;
+      delete[] equilibriumArg;
+      delete[] frequency;
       adcircmodules_throw_exception("Could not node factor");
     }
   } else {
@@ -808,7 +813,9 @@ void HarmonicsOutputImpl::readNetcdfFormatHeader(int ncid,
     }
   }
 
-  delete[] nodeFactor, equilibriumArg, frequency;
+  delete[] nodeFactor;
+  delete[] equilibriumArg;
+  delete[] frequency;
 
   int vid;
   if (this->isVelocity()) {

@@ -312,7 +312,10 @@ void MeshImpl::readDflowMesh() {
   nc_close(ncid);
 
   if (ierr != 0) {
-    delete[] xcoor, ycoor, zcoor, elem;
+    delete[] xcoor;
+    delete[] ycoor;
+    delete[] zcoor;
+    delete[] elem;
     adcircmodules_throw_exception("Error reading arrays from netcdf file.");
   }
 
@@ -321,7 +324,9 @@ void MeshImpl::readDflowMesh() {
     this->m_nodes[i] = Node(i + 1, xcoor[i], ycoor[i], zcoor[i]);
   }
 
-  delete[] xcoor, ycoor, zcoor;
+  delete[] xcoor;
+  delete[] ycoor;
+  delete[] zcoor;
 
   for (size_t i = 0; i < this->m_numElements; ++i) {
     std::vector<size_t> n(nmaxnode);
@@ -1653,8 +1658,14 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
   ierr = nc_put_var_int(ncid, varid_netelemnode, netElemNodearray);
   ierr = nc_close(ncid);
 
-  delete[] xarray, yarray, zarray, dim1d, dim2d, linkArray, linkTypeArray,
-      netElemNodearray;
+  delete[] xarray;
+  delete[] yarray;
+  delete[] zarray;
+  delete[] dim1d;
+  delete[] dim2d;
+  delete[] linkArray;
+  delete[] linkTypeArray;
+  delete[] netElemNodearray;
 
   return;
 }
