@@ -1,9 +1,8 @@
 <map id="griddata.h" name="griddata.h">
-<area shape="rect" id="node2" href="$mesh_8h.html" title="mesh.h" alt="" coords="277,80,342,107"/>
-<area shape="rect" id="node15" href="$interpolationmethods_8h.html" title="interpolationmethods.h" alt="" coords="875,80,1029,107"/>
-<area shape="rect" id="node6" href="$boundary_8h.html" title="boundary.h" alt="" coords="143,155,228,181"/>
-<area shape="rect" id="node7" href="$node_8h.html" title="node.h" alt="" coords="155,229,216,256"/>
-<area shape="rect" id="node9" href="$element_8h.html" title="element.h" alt="" coords="310,155,389,181"/>
-<area shape="rect" id="node12" href="$meshformats_8h.html" title="meshformats.h" alt="" coords="480,155,589,181"/>
-<area shape="rect" id="node8" href="$point_8h.html" title="point.h" alt="" coords="291,304,352,331"/>
+<area shape="rect" id="node2" href="$mesh_8h.html" title="mesh.h" alt="" coords="257,80,322,107"/>
+<area shape="rect" id="node14" href="$interpolationmethods_8h.html" title="interpolationmethods.h" alt="" coords="842,80,995,107"/>
+<area shape="rect" id="node7" href="$boundary_8h.html" title="boundary.h" alt="" coords="167,155,252,181"/>
+<area shape="rect" id="node8" href="$node_8h.html" title="node.h" alt="" coords="220,229,281,256"/>
+<area shape="rect" id="node10" href="$element_8h.html" title="element.h" alt="" coords="327,155,406,181"/>
+<area shape="rect" id="node12" href="$filetypes_8h.html" title="filetypes.h" alt="" coords="591,229,673,256"/>
 </map>

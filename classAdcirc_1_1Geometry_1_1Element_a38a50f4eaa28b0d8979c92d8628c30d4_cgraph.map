@@ -1,6 +1,4 @@
 <map id="isInside" name="isInside">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#a7e0ddef13575394a4107c682dd26e72d" title="isInside" alt="" coords="120,56,187,83"/>
-<area shape="rect" id="node3" href="$classPoint.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns x&#45;location. " alt="" coords="261,5,328,32"/>
-<area shape="rect" id="node4" href="$classPoint.html#aca424ddaf2902c1cde483f37813d4278" title="Returns y&#45;location. " alt="" coords="261,56,328,83"/>
-<area shape="rect" id="node5" href="$element_8cpp.html#a4ae1e9eaa73978e19f9b5b2f49371dc4" title="Creates a boost::geometry element from the element. " alt="" coords="235,107,355,133"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#a7e0ddef13575394a4107c682dd26e72d" title="isInside" alt="" coords="120,5,187,32"/>
+<area shape="rect" id="node3" href="$element_8cpp.html#a4ae1e9eaa73978e19f9b5b2f49371dc4" title="Creates a boost::geometry element from the element. " alt="" coords="235,5,355,32"/>
 </map>

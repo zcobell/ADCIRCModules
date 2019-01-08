@@ -1,6 +1,6 @@
 var classAdcirc_1_1Harmonics_1_1HarmonicsOutput =
 [
-    [ "HarmonicsOutput", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a66ece7cc714830bc1a96dca964444d4f", null ],
+    [ "HarmonicsOutput", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#afe235c14b90eb483b1875c9eeb617ca1", null ],
     [ "~HarmonicsOutput", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#abc65fca70872d71d3a3fa35b2c5b1978", null ],
     [ "amplitude", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a5cae7e4e56b5348f563fc6d00e72724b", null ],
     [ "amplitude", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#adf8096ea8fd3649840dcd202bb9fb520", null ],
@@ -18,13 +18,13 @@ var classAdcirc_1_1Harmonics_1_1HarmonicsOutput =
     [ "setFilename", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a56171296cefcc0d92118f33a5b41e01e", null ],
     [ "setNumConstituents", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a79acafe7e9ffdaf89a87ae785149adf3", null ],
     [ "setNumNodes", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a3f410321712d82996443a4fc0277f939", null ],
-    [ "u_magnitude", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a7b31c7e8e80e0c632c1f75e87ed7b5dd", null ],
-    [ "u_magnitude", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a7e293d473da58a711f28ff1cc0edfc2d", null ],
+    [ "u_amplitude", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#ac5f0182acd9db323cf1f86472aa91db8", null ],
+    [ "u_amplitude", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a0f01495d90e92fffbe8a5d7155b9e2da", null ],
     [ "u_phase", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#acba78897c928f4d44887fd119434b8c7", null ],
     [ "u_phase", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a8a26c15c1b912cdcada97c7e10371bb3", null ],
-    [ "v_magnitude", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a323a163e869f9ddffaf617150b98ab49", null ],
-    [ "v_magnitude", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#aaebc88d17252f6e9b479a538daf26c15", null ],
+    [ "v_amplitude", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a8b79375bf1feed9fe9a6b86732a13d73", null ],
+    [ "v_amplitude", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a33824619008c03bf74185acb6034fcca", null ],
     [ "v_phase", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#ac59d54830c42d5eb40a55cd5223a593c", null ],
     [ "v_phase", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a276a4d29c260f3e75440827fb4972a8a", null ],
-    [ "write", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a6d532fbde64960e468132b50085f8ec0", null ]
+    [ "write", "classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#ac0087c73bb640a6948512ea11320f0dd", null ]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['qkdtree2',['QKdtree2',['../classQKdtree2.html',1,'']]]
+  ['pixel',['Pixel',['../classPixel.html',1,'']]]
 ];

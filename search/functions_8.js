@@ -7,7 +7,7 @@ var searchData=
   ['interpolationflag',['interpolationFlag',['../classInterpolation_1_1Griddata.html#a47deb90b609751c911992bd4f8893399',1,'Interpolation::Griddata']]],
   ['interpolationflags',['interpolationFlags',['../classInterpolation_1_1Griddata.html#ad902b277acf919e0551372c5a63fa265',1,'Interpolation::Griddata']]],
   ['inversecpp',['inverseCpp',['../classAdcirc_1_1Geometry_1_1Mesh.html#a69d8c35aa74b3ffa4139895f60a1d25f',1,'Adcirc::Geometry::Mesh']]],
-  ['isinitialized',['isInitialized',['../classQKdtree2.html#a161d75a220f87c68d6975112f0bff3f6',1,'QKdtree2']]],
+  ['isinitialized',['isInitialized',['../classKdtree2lib.html#a161d75a220f87c68d6975112f0bff3f6',1,'Kdtree2lib']]],
   ['isinside',['isInside',['../classAdcirc_1_1Geometry_1_1Element.html#a7e0ddef13575394a4107c682dd26e72d',1,'Adcirc::Geometry::Element::isInside(Point location)'],['../classAdcirc_1_1Geometry_1_1Element.html#a38a50f4eaa28b0d8979c92d8628c30d4',1,'Adcirc::Geometry::Element::isInside(double x, double y)']]],
   ['islatlon',['isLatLon',['../classAdcirc_1_1Geometry_1_1Mesh.html#ac6a3ad791b160ae157182192807bb6f3',1,'Adcirc::Geometry::Mesh']]],
   ['isopen',['isOpen',['../classAdcirc_1_1Output_1_1OutputFile.html#a3a9ba7594ee74425dd345ecc263a5564',1,'Adcirc::Output::OutputFile::isOpen()'],['../classRasterdata.html#a002ed331862370f434b7befe331b5a0b',1,'Rasterdata::isOpen()']]],

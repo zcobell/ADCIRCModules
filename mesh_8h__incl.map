@@ -1,7 +1,6 @@
 <map id="mesh.h" name="mesh.h">
-<area shape="rect" id="node5" href="$boundary_8h.html" title="boundary.h" alt="" coords="355,80,440,107"/>
-<area shape="rect" id="node6" href="$node_8h.html" title="node.h" alt="" coords="428,155,490,181"/>
-<area shape="rect" id="node8" href="$element_8h.html" title="element.h" alt="" coords="184,80,262,107"/>
-<area shape="rect" id="node11" href="$meshformats_8h.html" title="meshformats.h" alt="" coords="615,80,724,107"/>
-<area shape="rect" id="node7" href="$point_8h.html" title="point.h" alt="" coords="251,229,312,256"/>
+<area shape="rect" id="node6" href="$boundary_8h.html" title="boundary.h" alt="" coords="328,80,413,107"/>
+<area shape="rect" id="node7" href="$node_8h.html" title="node.h" alt="" coords="291,155,352,181"/>
+<area shape="rect" id="node9" href="$element_8h.html" title="element.h" alt="" coords="489,80,567,107"/>
+<area shape="rect" id="node11" href="$filetypes_8h.html" title="filetypes.h" alt="" coords="133,155,216,181"/>
 </map>

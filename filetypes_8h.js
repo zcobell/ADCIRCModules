@@ -1,18 +1,23 @@
 var filetypes_8h =
 [
-    [ "_fileTypes", "filetypes_8h.html#a18c27a6c18af6bf9b4b2062887d2cefe", [
-      [ "ASCIIFull", "filetypes_8h.html#a18c27a6c18af6bf9b4b2062887d2cefea278d2feb44c07f745eff0e8a77f2b762", null ],
-      [ "ASCIISparse", "filetypes_8h.html#a18c27a6c18af6bf9b4b2062887d2cefea8d747d2272e64bc878ceeb5485c5ecf8", null ],
-      [ "ASCIIHarmonics", "filetypes_8h.html#a18c27a6c18af6bf9b4b2062887d2cefea33612481fed267a0a8a19646d601b1db", null ],
-      [ "Netcdf3", "filetypes_8h.html#a18c27a6c18af6bf9b4b2062887d2cefea3399a42cacb9393a78135bfe7832363b", null ],
-      [ "Netcdf4", "filetypes_8h.html#a18c27a6c18af6bf9b4b2062887d2cefeafc8fad76af5bdd300e3b0191f5586157", null ],
-      [ "Xdmf", "filetypes_8h.html#a18c27a6c18af6bf9b4b2062887d2cefea0010ee275fe3cc0b5d9fb06399f4bec2", null ],
-      [ "Unknown", "filetypes_8h.html#a18c27a6c18af6bf9b4b2062887d2cefea4e81c184ac3ad48a389cd4454c4a05bb", null ]
-    ] ],
     [ "HarmonicsFormat", "filetypes_8h.html#ae339d6c090ef62f744522770e9fc4016", [
-      [ "ASCII", "filetypes_8h.html#ae339d6c090ef62f744522770e9fc4016af9c208c7d7a0f102f2683165540c882d", null ],
-      [ "NETCDF4", "filetypes_8h.html#ae339d6c090ef62f744522770e9fc4016a0b7c32a1941fe9aa6ecd92aeb9cf2c98", null ],
-      [ "Unknown", "filetypes_8h.html#ae339d6c090ef62f744522770e9fc4016a4e81c184ac3ad48a389cd4454c4a05bb", null ]
+      [ "HarmonicsAscii", "filetypes_8h.html#ae339d6c090ef62f744522770e9fc4016a911070ba68416b1a26aced9c42c9b177", null ],
+      [ "HarmonicsNetcdf", "filetypes_8h.html#ae339d6c090ef62f744522770e9fc4016ac81a2608692101cd70989969d67bed8f", null ],
+      [ "HarmonicsUnknown", "filetypes_8h.html#ae339d6c090ef62f744522770e9fc4016a6ecfe46105b85c71f718ec4a50233ad2", null ]
+    ] ],
+    [ "MeshFormat", "filetypes_8h.html#a2ac9bab2ea6d318bdcdd794773cbea94", [
+      [ "MeshUnknown", "filetypes_8h.html#a2ac9bab2ea6d318bdcdd794773cbea94aa41657aa9ad013bbbacd9bf37f51a5ff", null ],
+      [ "MeshAdcirc", "filetypes_8h.html#a2ac9bab2ea6d318bdcdd794773cbea94ab38cf6a7886366fe6bc7893222a80267", null ],
+      [ "Mesh2DM", "filetypes_8h.html#a2ac9bab2ea6d318bdcdd794773cbea94a697811447e1915596efdc69da9e8c103", null ],
+      [ "MeshDFlow", "filetypes_8h.html#a2ac9bab2ea6d318bdcdd794773cbea94a52b691bd5c7da8dd38b9e6ade23745d5", null ]
+    ] ],
+    [ "OutputFormat", "filetypes_8h.html#aeb712c6c6c0a8af0dfd79f451ecb9277", [
+      [ "OutputAsciiFull", "filetypes_8h.html#aeb712c6c6c0a8af0dfd79f451ecb9277a9175906ea3a7a8f6aa3c4d498b0a324c", null ],
+      [ "OutputAsciiSparse", "filetypes_8h.html#aeb712c6c6c0a8af0dfd79f451ecb9277ad61c2d7e64b8255e7032fbde41858260", null ],
+      [ "OutputNetcdf3", "filetypes_8h.html#aeb712c6c6c0a8af0dfd79f451ecb9277a1cc23ed170e70352d169092e18b561c6", null ],
+      [ "OutputNetcdf4", "filetypes_8h.html#aeb712c6c6c0a8af0dfd79f451ecb9277aa6538b2a55c482008c8cd198a9ad974b", null ],
+      [ "OutputXdmf", "filetypes_8h.html#aeb712c6c6c0a8af0dfd79f451ecb9277aa84aed9d9847d0316a762fb9fbe5b511", null ],
+      [ "OutputUnknown", "filetypes_8h.html#aeb712c6c6c0a8af0dfd79f451ecb9277a36aebddc2a0a5c3bea48632201071892", null ]
     ] ],
     [ "checkFiletypeAsciiFull", "filetypes_8h.html#aad1c404bfa300aff87219aaec15925f7", null ],
     [ "checkFiletypeAsciiHarmonics", "filetypes_8h.html#ad098c377c86f8d3d18369cb9a842b022", null ],

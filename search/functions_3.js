@@ -13,7 +13,7 @@ var searchData=
   ['direction',['direction',['../classAdcirc_1_1Output_1_1OutputRecord.html#a4d57746c34b8773a08701e372fe376bb',1,'Adcirc::Output::OutputRecord']]],
   ['directions',['directions',['../classAdcirc_1_1Output_1_1OutputRecord.html#a2ff38e09941218dd1cb2a04ee60109f9',1,'Adcirc::Output::OutputRecord']]],
   ['disable',['disable',['../classMultithreading.html#a8cfbbe53c1cf6e3054736daea3044c0f',1,'Multithreading']]],
-  ['distance',['distance',['../classConstants.html#a67bb34165d68f1fe958b93511d5ede05',1,'Constants']]],
+  ['distance',['distance',['../classConstants.html#a67bb34165d68f1fe958b93511d5ede05',1,'Constants::distance(double x1, double y1, double x2, double y2, bool geodesic=false)'],['../classConstants.html#af0a919e4f76feadc90b20fecb77d895e',1,'Constants::distance(Point &amp;p1, Point &amp;p2, bool geodesic=false)'],['../classConstants.html#a86e2541d04e23b075b85d07c5b4d2bfc',1,'Constants::distance(Point &amp;p1, double x2, double y2, bool geodesic=false)']]],
   ['dx',['dx',['../classRasterdata.html#a6d3cce16a37a386df6f7f100f36e02dc',1,'Rasterdata']]],
   ['dy',['dy',['../classRasterdata.html#a1f355fd23f22040fb553a21164da37e0',1,'Rasterdata']]]
 ];

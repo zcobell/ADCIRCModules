@@ -1,12 +1,11 @@
 var annotated_dup =
 [
     [ "Adcirc", "namespaceAdcirc.html", "namespaceAdcirc" ],
+    [ "FileIO", "namespaceFileIO.html", null ],
     [ "Interpolation", "namespaceInterpolation.html", "namespaceInterpolation" ],
     [ "Constants", "classConstants.html", "classConstants" ],
+    [ "Kdtree2lib", "classKdtree2lib.html", "classKdtree2lib" ],
     [ "Multithreading", "classMultithreading.html", "classMultithreading" ],
     [ "Pixel", "classPixel.html", "classPixel" ],
-    [ "Point", "classPoint.html", "classPoint" ],
-    [ "QKdtree2", "classQKdtree2.html", "classQKdtree2" ],
-    [ "Rasterdata", "classRasterdata.html", "classRasterdata" ],
-    [ "Split", "classSplit.html", null ]
+    [ "Rasterdata", "classRasterdata.html", "classRasterdata" ]
 ];

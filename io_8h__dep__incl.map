@@ -1,8 +1,0 @@
-<map id="io.h" name="io.h">
-<area shape="rect" id="node2" href="$filetypes_8cpp.html" title="filetypes.cpp" alt="" coords="5,80,101,107"/>
-<area shape="rect" id="node3" href="$io_8cpp.html" title="io.cpp" alt="" coords="126,80,183,107"/>
-<area shape="rect" id="node4" href="$outputfile_8cpp.html" title="outputfile.cpp" alt="" coords="207,80,307,107"/>
-<area shape="rect" id="node5" href="$harmonicsoutput__impl_8cpp.html" title="harmonicsoutput_impl.cpp" alt="" coords="331,80,506,107"/>
-<area shape="rect" id="node6" href="$mesh__impl_8cpp.html" title="mesh_impl.cpp" alt="" coords="530,80,641,107"/>
-<area shape="rect" id="node7" href="$nodalattributes__impl_8cpp.html" title="nodalattributes_impl.cpp" alt="" coords="665,80,828,107"/>
-</map>
