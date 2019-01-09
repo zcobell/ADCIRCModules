@@ -84,7 +84,7 @@ print "Reading harmonics velocity file"
 hv = PyAdcirc.HarmonicsOutput("../testing/test_files/fort.54");
 hv.read();
 print "Harmonics velocity read successfully"
-print "   M2 u magnitude at node 1: ",hv.u_magnitude("M2").value(hv.nodeIdToArrayIndex(1))
+print "   M2 u magnitude at node 1: ",hv.u_amplitude("M2").value(hv.nodeIdToArrayIndex(1))
 print "   M2 u phase at node 1: ",hv.u_phase("M2").value(hv.nodeIdToArrayIndex(1))
-print "   M2 v magnitude at node 1: ",hv.v_magnitude("M2").value(hv.nodeIdToArrayIndex(1))
+print "   M2 v magnitude at node 1: ",hv.v_amplitude("M2").value(hv.nodeIdToArrayIndex(1))
 print "   M2 v phase at node 1: ",hv.v_phase("M2").value(hv.nodeIdToArrayIndex(1))
