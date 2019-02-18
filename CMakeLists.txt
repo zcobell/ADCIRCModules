@@ -54,7 +54,7 @@ SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
 IF(COVERAGE)
     IF(CMAKE_COMPILER_IS_GNUCXX) 
         INCLUDE(CodeCoverage)
-        setup_target_for_coverage(adcmoduels_coverage tests coverage)
+        setup_target_for_coverage(adcircmodules_coverage tests coverage)
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -pthread -g -O0 -fprofile-arcs -ftest-coverage")
     ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 ENDIF(COVERAGE)
@@ -353,14 +353,17 @@ ENDIF(GDAL_FOUND)
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING} SOVERSION ${ADCIRCMODULES_VERSION_MAJOR} )
 
 SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
+                ${CMAKE_SOURCE_DIR}/src/adcircmodules_global.h
                 ${CMAKE_SOURCE_DIR}/src/attribute.h
                 ${CMAKE_SOURCE_DIR}/src/attributemetadata.h
                 ${CMAKE_SOURCE_DIR}/src/boundary.h
                 ${CMAKE_SOURCE_DIR}/src/config.h
                 ${CMAKE_SOURCE_DIR}/src/element.h
                 ${CMAKE_SOURCE_DIR}/src/error.h
+                ${CMAKE_SOURCE_DIR}/src/filetypes.h
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.h
                 ${CMAKE_SOURCE_DIR}/src/harmonicsrecord.h
+                ${CMAKE_SOURCE_DIR}/src/interpolationmethods.h
                 ${CMAKE_SOURCE_DIR}/src/fileio.h
                 ${CMAKE_SOURCE_DIR}/src/mesh.h
                 ${CMAKE_SOURCE_DIR}/src/nodalattributes.h
@@ -373,13 +376,14 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src/ezproj.h
                 ${CMAKE_SOURCE_DIR}/libraries/rasterdata/rasterdata.h 
                 ${CMAKE_SOURCE_DIR}/src/griddata.h 
-                ${CMAKE_SOURCE_DIR}/src/multithreading.h ) 
+                ${CMAKE_SOURCE_DIR}/src/multithreading.h  
+                ${CMAKE_SOURCE_DIR}/libraries/constants/constants.h )
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES PUBLIC_HEADER "${HEADER_LIST}" ) 
 
 IF(${CMAKE_INSTALL_PREFIX} STREQUAL "/usr/local" OR ${CMAKE_INSTALL_PREFIX} STREQUAL "/usr/local/" OR
    ${CMAKE_INSTALL_PREFIX} STREQUAL "/usr/" OR ${CMAKE_INSTALL_PREFIX} STREQUAL "/usr/")
-    SET(HEADER_DEST "include/adcirc")
+    SET(HEADER_DEST "include/adcircmodules")
 ELSE()
     SET(HEADER_DEST "include")
 ENDIF()
