@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "harmonicsrecord.h"
-#include "pimpl/harmonicsrecord_impl.h"
+#include "harmonicsrecord_impl.h"
 
 namespace Adcirc {
 namespace Harmonics {

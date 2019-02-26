@@ -22,12 +22,12 @@
 #include <string>
 #include <tuple>
 #include "boost/format.hpp"
+#include "boostrtree.h"
 #include "elementtable.h"
 #include "error.h"
 #include "ezproj.h"
 #include "fileio.h"
 #include "filetypes.h"
-#include "kdtree2lib.h"
 #include "netcdf.h"
 #include "shapefil.h"
 #include "stringconversion.h"
@@ -68,8 +68,8 @@ void MeshImpl::_init() {
   this->m_elements.clear();
   this->m_openBoundaries.clear();
   this->m_landBoundaries.clear();
-  this->m_elementalSearchTree = std::unique_ptr<Kdtree2lib>(new Kdtree2lib());
-  this->m_nodalSearchTree = std::unique_ptr<Kdtree2lib>(new Kdtree2lib());
+  this->m_elementalSearchTree = std::unique_ptr<BoostRTree>(new BoostRTree());
+  this->m_nodalSearchTree = std::unique_ptr<BoostRTree>(new BoostRTree());
 }
 
 /**
@@ -199,7 +199,10 @@ void MeshImpl::read(MeshFormat format) {
 
   switch (fmt) {
     case MeshAdcirc:
-      this->readAdcircMesh();
+      this->readAdcircMeshAscii();
+      break;
+    case MeshAdcircNetcdf:
+      this->readAdcircMeshNetcdf();
       break;
     case Mesh2DM:
       this->read2dmMesh();
@@ -214,12 +217,120 @@ void MeshImpl::read(MeshFormat format) {
   return;
 }
 
+void MeshImpl::readAdcircMeshNetcdf() {
+  int ncid;
+  int ierr = nc_open(this->m_filename.c_str(), NC_NOWRITE, &ncid);
+  if (ierr != NC_NOERR)
+    adcircmodules_throw_exception("Could not open mesh file as netCDF");
+
+  int dimid_node, dimid_elem, dimid_nvertex;
+  ierr += nc_inq_dimid(ncid, "node", &dimid_node);
+  ierr += nc_inq_dimid(ncid, "nele", &dimid_elem);
+  ierr += nc_inq_dimid(ncid, "nvertex", &dimid_nvertex);
+  if (ierr != 0)
+    adcircmodules_throw_exception("Could not read the mesh dimensions");
+
+  size_t n_max_vertex;
+  ierr += nc_inq_dimlen(ncid, dimid_node, &this->m_numNodes);
+  ierr += nc_inq_dimlen(ncid, dimid_elem, &this->m_numElements);
+  ierr += nc_inq_dimlen(ncid, dimid_nvertex, &n_max_vertex);
+  if (ierr != 0) adcircmodules_throw_exception("Could not read the mesh sizes");
+
+  int varid_x, varid_y, varid_z, varid_elem;
+  ierr += nc_inq_varid(ncid, "x", &varid_x);
+  ierr += nc_inq_varid(ncid, "y", &varid_y);
+  ierr += nc_inq_varid(ncid, "depth", &varid_z);
+  ierr += nc_inq_varid(ncid, "element", &varid_elem);
+  if (ierr != 0) adcircmodules_throw_exception("Could not read the varids");
+
+  double *x = new double[this->m_numNodes];
+  double *y = new double[this->m_numNodes];
+  double *z = new double[this->m_numNodes];
+
+  ierr += nc_get_var_double(ncid, varid_x, x);
+  ierr += nc_get_var_double(ncid, varid_y, y);
+  ierr += nc_get_var_double(ncid, varid_z, z);
+  if (ierr != 0) {
+    delete[] x;
+    delete[] y;
+    delete[] z;
+    adcircmodules_throw_exception("Could not read nodal data");
+  }
+
+  this->m_nodes.reserve(this->m_numNodes);
+  for (size_t i = 0; i < this->m_numNodes; ++i) {
+    this->m_nodes.push_back(Node(i + 1, x[i], y[i], z[i]));
+  }
+
+  this->m_nodeOrderingLogical = true;
+  this->m_elementOrderingLogical = true;
+
+  delete[] x;
+  delete[] y;
+  delete[] z;
+
+  int *n1 = new int[this->m_numElements];
+  int *n2 = new int[this->m_numElements];
+  int *n3 = new int[this->m_numElements];
+  int *n4 = new int[this->m_numElements];
+  size_t start[2], count[2];
+  start[0] = 0;
+  start[1] = 0;
+  count[0] = this->m_numElements;
+  count[1] = 1;
+
+  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n1);
+  start[1] = 1;
+  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n2);
+  start[1] = 2;
+  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n3);
+  if (n_max_vertex == 4) {
+    start[1] = 3;
+    ierr += nc_get_vara_int(ncid, varid_elem, start, count, n4);
+  } else {
+    for (size_t i = 0; i < this->m_numElements; ++i) {
+      n4[i] = NC_FILL_INT;
+    }
+  }
+
+  if (ierr != 0) {
+    delete[] n1;
+    delete[] n2;
+    delete[] n3;
+    delete[] n4;
+    adcircmodules_throw_exception("Could not read the element data");
+  }
+
+  this->m_elements.reserve(this->m_numElements);
+  for (size_t i = 0; i < this->m_numElements; ++i) {
+    if (n4[i] == NC_FILL_INT) {
+      this->m_elements.push_back(Element(i + 1, &this->m_nodes[n1[i] - 1],
+                                         &this->m_nodes[n2[i] - 1],
+                                         &this->m_nodes[n3[i] - 1]));
+    } else {
+      this->m_elements.push_back(
+          Element(i + 1, &this->m_nodes[n1[i] - 1], &this->m_nodes[n2[i] - 1],
+                  &this->m_nodes[n3[i] - 1], &this->m_nodes[n4[i] - 1]));
+    }
+  }
+
+  delete[] n1;
+  delete[] n2;
+  delete[] n3;
+  delete[] n4;
+
+  this->m_numOpenBoundaries = 0;
+  this->m_numLandBoundaries = 0;
+
+  return;
+}
+
 /**
  * @brief Reads an ASCII formatted ADCIRC mesh.
  *
  * Note this will be extended in the future to netCDF formatted meshes
  */
-void MeshImpl::readAdcircMesh() {
+void MeshImpl::readAdcircMeshAscii() {
   std::fstream fid(this->filename());
 
   this->readAdcircMeshHeader(fid);
@@ -487,6 +598,8 @@ Adcirc::Geometry::MeshFormat MeshImpl::getMeshFormat(
     return Mesh2DM;
   } else if (filename.find("_net.nc") != filename.npos) {
     return MeshDFlow;
+  } else if (extension == ".nc") {
+    return MeshAdcircNetcdf;
   } else {
     return MeshUnknown;
   }
@@ -801,7 +914,7 @@ void MeshImpl::readAdcircLandBoundaries(std::fstream &fid) {
  * @brief Returns a reference to the elemental search kd-tree
  * @return kd-tree object with element centers as search locations
  */
-Kdtree2lib *MeshImpl::elementalSearchTree() const {
+BoostRTree *MeshImpl::elementalSearchTree() const {
   return m_elementalSearchTree.get();
 }
 
@@ -809,7 +922,7 @@ Kdtree2lib *MeshImpl::elementalSearchTree() const {
  * @brief Returns a refrence to the nodal search kd-tree
  * @return kd-tree object with mesh nodes as serch locations
  */
-Kdtree2lib *MeshImpl::nodalSearchTree() const {
+BoostRTree *MeshImpl::nodalSearchTree() const {
   return m_nodalSearchTree.get();
 }
 
@@ -1188,13 +1301,13 @@ void MeshImpl::buildNodalSearchTree() {
   }
 
   if (this->m_nodalSearchTree != nullptr) {
-    if (this->m_nodalSearchTree->isInitialized()) {
+    if (this->m_nodalSearchTree->initialized()) {
       this->m_nodalSearchTree.reset(nullptr);
     }
   }
 
   ierr = this->m_nodalSearchTree->build(x, y);
-  if (ierr != Kdtree2lib::NoError) {
+  if (ierr != BoostRTree::NoError) {
     adcircmodules_throw_exception("Mesh: KDTree2 library error");
   }
 
@@ -1214,22 +1327,19 @@ void MeshImpl::buildElementalSearchTree() {
   for (auto &e : this->m_elements) {
     double tempX = 0.0;
     double tempY = 0.0;
-    for (int j = 0; j < e.n(); ++j) {
-      tempX = tempX + e.node(j)->x();
-      tempY = tempY + e.node(j)->y();
-    }
-    x.push_back(tempX / e.n());
-    y.push_back(tempY / e.n());
+    e.getElementCenter(tempX, tempY);
+    x.push_back(tempX);
+    y.push_back(tempY);
   }
 
   if (this->m_elementalSearchTree != nullptr) {
-    if (this->m_elementalSearchTree->isInitialized()) {
+    if (this->m_elementalSearchTree->initialized()) {
       this->m_elementalSearchTree.reset(nullptr);
     }
   }
 
   int ierr = this->m_elementalSearchTree->build(x, y);
-  if (ierr != Kdtree2lib::NoError) {
+  if (ierr != BoostRTree::NoError) {
     adcircmodules_throw_exception("Mesh: KDTree2 library error");
   }
 
@@ -1262,7 +1372,7 @@ void MeshImpl::deleteElementalSearchTree() {
  * @return true if the search tree is initialized
  */
 bool MeshImpl::nodalSearchTreeInitialized() {
-  return this->m_nodalSearchTree->isInitialized();
+  return this->m_nodalSearchTree->initialized();
 }
 
 /**
@@ -1271,7 +1381,7 @@ bool MeshImpl::nodalSearchTreeInitialized() {
  * @return true of the search tree is initialized
  */
 bool MeshImpl::elementalSearchTreeInitialized() {
-  return this->m_elementalSearchTree->isInitialized();
+  return this->m_elementalSearchTree->initialized();
 }
 
 /**
@@ -1556,7 +1666,7 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
   int *dim2d = new int[2];
 
   int varid_mesh2d, varid_netnodex, varid_netnodey, varid_netnodez;
-  ierr = nc_def_var(ncid, "Mesh2D", NC_INT, 0, 0, &varid_mesh2d);
+  ierr = nc_def_var(ncid, "Mesh2D", NC_INT, 0, nullptr, &varid_mesh2d);
   dim1d[0] = dimid_nnode;
   ierr = nc_def_var(ncid, "NetNode_x", NC_DOUBLE, 1, dim1d, &varid_netnodex);
   ierr = nc_def_var(ncid, "NetNode_y", NC_DOUBLE, 1, dim1d, &varid_netnodey);
@@ -1569,7 +1679,7 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
   int varid_netlinktype, varid_netlink, varid_crs;
   ierr = nc_def_var(ncid, "NetLinkType", NC_INT, 1, dim1d, &varid_netlinktype);
   ierr = nc_def_var(ncid, "NetLink", NC_INT, 2, dim2d, &varid_netlink);
-  ierr = nc_def_var(ncid, "crs", NC_INT, 0, 0, &varid_crs);
+  ierr = nc_def_var(ncid, "crs", NC_INT, 0, nullptr, &varid_crs);
 
   dim2d[0] = dimid_nelem;
   dim2d[1] = dimid_maxnode;
@@ -1829,8 +1939,10 @@ void MeshImpl::inverseCpp(double lambda, double phi) {
  * @return nearest node index
  */
 size_t MeshImpl::findNearestNode(double x, double y) {
-  Point p(x, y);
-  return this->findNearestNode(p);
+  if (!this->nodalSearchTreeInitialized()) {
+    this->buildNodalSearchTree();
+  }
+  return this->m_nodalSearchTree->findNearest(x, y);
 }
 
 /**
@@ -1838,10 +1950,7 @@ size_t MeshImpl::findNearestNode(double x, double y) {
  * @return nearest node index
  */
 size_t MeshImpl::findNearestNode(Point &location) {
-  if (!this->nodalSearchTreeInitialized()) {
-    this->buildNodalSearchTree();
-  }
-  return this->nodalSearchTree()->findNearest(location);
+  return this->findNearestNode(location.first, location.second);
 }
 
 /**
@@ -1851,8 +1960,10 @@ size_t MeshImpl::findNearestNode(Point &location) {
  * @return nearest element index
  */
 size_t MeshImpl::findNearestElement(double x, double y) {
-  Point p(x, y);
-  return this->findNearestElement(p);
+  if (!this->elementalSearchTreeInitialized()) {
+    this->buildElementalSearchTree();
+  }
+  return this->findNearestElement(x, y);
 }
 
 /**
@@ -1860,45 +1971,78 @@ size_t MeshImpl::findNearestElement(double x, double y) {
  * @return nearest element index
  */
 size_t MeshImpl::findNearestElement(Point &location) {
-  if (!this->elementalSearchTreeInitialized()) {
-    this->buildElementalSearchTree();
-  }
-  return this->elementalSearchTree()->findNearest(location);
+  return this->findNearestElement(location.first, location.second);
 }
 
 /**
  * @brief Finds the mesh element that a given location lies within
  * @param x location to search
  * @param y location to search
- * @return index of nearest element, -1 if not found
+ * @return index of nearest element, large integer if not found
  */
 size_t MeshImpl::findElement(double x, double y) {
-  Point p(x, y);
-  return this->findElement(p);
+  std::vector<double> wt;
+  return this->findElement(x, y, wt);
 }
 
-/**
- * @brief Finds the mesh element that a given location lies within
- * @param location location to search
- * @return index of nearest element, -1 if not found
- */
-size_t MeshImpl::findElement(Point &location) {
-  const int searchDepth = 20;
+size_t MeshImpl::findElement(double x, double y, std::vector<double> &weights) {
+  constexpr int searchDepth = 20;
 
   if (!this->elementalSearchTreeInitialized()) {
     this->buildElementalSearchTree();
   }
 
-  std::vector<size_t> indicies;
-  indicies = this->elementalSearchTree()->findXNearest(location, searchDepth);
+  std::vector<size_t> indicies =
+      this->elementalSearchTree()->findXNearest(x, y, searchDepth);
+  size_t en = std::numeric_limits<size_t>::max();
 
+  Point location(x, y);
   for (auto i : indicies) {
     bool found = this->element(i)->isInside(location);
     if (found) {
-      return i;
+      en = i;
+      break;
     }
   }
-  return std::numeric_limits<size_t>::max();
+
+  if (en == std::numeric_limits<size_t>::max()) {
+    return en;
+  }
+
+  Element *e = this->element(en);
+
+  //...Not for quads yet
+  if (e->n() == 4) return en;
+
+  //...Barycentric interpolation
+
+  Node *n1 = e->node(0);
+  Node *n2 = e->node(1);
+  Node *n3 = e->node(2);
+
+  double x1 = n1->x();
+  double x2 = n2->x();
+  double x3 = n3->x();
+
+  double y1 = n1->y();
+  double y2 = n2->y();
+  double y3 = n3->y();
+
+  double denom = (y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3);
+  weights.push_back(((y2 - y3) * (x - x3) + (x3 - x2) * (y - y3)) / denom);
+  weights.push_back(((y3 - y1) * (x - x3) + (x1 - x3) * (y - y3)) / denom);
+  weights.push_back(1.0 - weights[0] - weights[1]);
+
+  return en;
+}
+
+/**
+ * @brief Finds the mesh element that a given location lies within
+ * @param location location to search
+ * @return index of nearest element, large integer if not found
+ */
+size_t MeshImpl::findElement(Point &location) {
+  return this->findElement(location.first, location.second);
 }
 
 /**
@@ -2086,5 +2230,5 @@ Adcirc::Geometry::Element *MeshImpl::elementTable(size_t nodeIndex,
  */
 std::vector<Adcirc::Geometry::Element *> MeshImpl::elementsAroundNode(
     Adcirc::Geometry::Node *n) {
-  return std::move(this->m_elementTable.elementList(n));
+  return this->m_elementTable.elementList(n);
 }

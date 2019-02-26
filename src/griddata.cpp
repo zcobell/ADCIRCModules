@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "griddata.h"
-#include "pimpl/griddata_impl.h"
+#include "griddata_impl.h"
 
 using namespace Interpolation;
 

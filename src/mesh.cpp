@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "mesh.h"
-#include "pimpl/mesh_impl.h"
+#include "mesh_impl.h"
 
 using namespace Adcirc::Geometry;
 
@@ -394,7 +394,7 @@ size_t Mesh::findNearestElement(double x, double y) {
  * @brief Finds the mesh element that a given location lies within
  * @param x location to search
  * @param y location to search
- * @return index of nearest element, -1 if not found
+ * @return index of nearest element, large integer if not found
  */
 size_t Mesh::findElement(std::pair<double, double> location) {
   return this->m_impl->findElement(location);
@@ -403,10 +403,21 @@ size_t Mesh::findElement(std::pair<double, double> location) {
 /**
  * @brief Finds the mesh element that a given location lies within
  * @param location location to search
- * @return index of nearest element, -1 if not found
+ * @return index of nearest element, large integer if not found
  */
 size_t Mesh::findElement(double x, double y) {
   return this->m_impl->findElement(x, y);
+}
+
+/**
+ * @brief Mesh::findElement
+ * @param x location to search
+ * @param y location to search
+ * @param weights barycentric weights for interpolation [triangles only]
+ * @return index of nearest element, large integer if not found
+ */
+size_t Mesh::findElement(double x, double y, std::vector<double> &weights) {
+  return this->m_impl->findElement(x, y, weights);
 }
 
 /**
@@ -531,7 +542,7 @@ void Mesh::deleteElement(size_t index) { this->m_impl->deleteElement(index); }
  * @brief Returns a refrence to the nodal search kd-tree
  * @return kd-tree object with mesh nodes as serch locations
  */
-Kdtree2lib *Mesh::nodalSearchTree() const {
+BoostRTree *Mesh::nodalSearchTree() const {
   return this->m_impl->nodalSearchTree();
 }
 
@@ -539,7 +550,7 @@ Kdtree2lib *Mesh::nodalSearchTree() const {
  * @brief Returns a reference to the elemental search kd-tree
  * @return kd-tree object with element centers as search locations
  */
-Kdtree2lib *Mesh::elementalSearchTree() const {
+BoostRTree *Mesh::elementalSearchTree() const {
   return this->m_impl->elementalSearchTree();
 }
 

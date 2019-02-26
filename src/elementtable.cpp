@@ -19,7 +19,7 @@
 #include "elementtable.h"
 #include "error.h"
 #include "mesh.h"
-#include "pimpl/mesh_impl.h"
+#include "mesh_impl.h"
 
 using namespace Adcirc::Geometry;
 

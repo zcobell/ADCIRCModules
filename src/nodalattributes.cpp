@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "nodalattributes.h"
-#include "pimpl/nodalattributes_impl.h"
+#include "nodalattributes_impl.h"
 
 namespace Adcirc {
 namespace ModelParameters {

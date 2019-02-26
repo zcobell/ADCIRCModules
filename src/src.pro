@@ -102,13 +102,18 @@ SOURCES += \
     mesh.cpp \
     harmonicsoutput.cpp \
     harmonicsrecord.cpp \
-    pimpl/griddata_impl.cpp \
-    pimpl/mesh_impl.cpp \
-    pimpl/harmonicsoutput_impl.cpp \
-    pimpl/harmonicsrecord_impl.cpp \
-    pimpl/nodalattributes_impl.cpp \
+    griddata_impl.cpp \
+    mesh_impl.cpp \
+    harmonicsoutput_impl.cpp \
+    harmonicsrecord_impl.cpp \
+    nodalattributes_impl.cpp \
     nodalattributes.cpp \
-    fileio.cpp
+    fileio.cpp \
+    rasterdata.cpp \
+    pixel.cpp \
+    constants.cpp \
+    boostrtree.cpp \
+    boostrtree_impl.cpp
 
 HEADERS += \
     adcircmodules_global.h \
@@ -132,14 +137,19 @@ HEADERS += \
     mesh.h \
     harmonicsoutput.h \
     harmonicsrecord.h \
-    pimpl/harmonicsoutput_impl.h \
-    pimpl/mesh_impl.h \
-    pimpl/griddata_impl.h \
-    pimpl/harmonicsrecord_impl.h \
-    pimpl/nodalattributes_impl.h \
+    harmonicsoutput_impl.h \
+    mesh_impl.h \
+    griddata_impl.h \
+    harmonicsrecord_impl.h \
+    nodalattributes_impl.h \
     nodalattributes.h \
     adcircmodules.h \
-    fileio.h
+    fileio.h \
+    rasterdata.h \
+    pixel.h \
+    constants.h \
+    boostrtree.h \
+    boostrtree_impl.h
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib
@@ -183,19 +193,6 @@ else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PW
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../thirdparty/EzProj/src/debug/ezproj.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../thirdparty/EzProj/src/libezproj.a
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/point/release/ -lpoint
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/point/debug/ -lpoint
-else:unix: LIBS += -L$$OUT_PWD/../libraries/point/ -lpoint
-
-INCLUDEPATH += $$PWD/../libraries/point
-DEPENDPATH += $$PWD/../libraries/point
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/point/release/libpoint.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/point/debug/libpoint.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/point/release/point.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/point/debug/point.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/point/libpoint.a
-
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/shapelib/release/ -lshapelib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/shapelib/debug/ -lshapelib
 else:unix: LIBS += -L$$OUT_PWD/../libraries/shapelib/ -lshapelib
@@ -208,42 +205,3 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libr
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/shapelib/release/shapelib.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/shapelib/debug/shapelib.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/shapelib/libshapelib.a
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/kdtree2/release/ -lkdtree2lib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/kdtree2/debug/ -lkdtree2lib
-else:unix: LIBS += -L$$OUT_PWD/../libraries/kdtree2/ -lkdtree2lib
-
-INCLUDEPATH += $$PWD/../libraries/kdtree2
-DEPENDPATH += $$PWD/../libraries/kdtree2
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/kdtree2/release/libkdtree2lib.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/kdtree2/debug/libkdtree2lib.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/kdtree2/release/kdtree2lib.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/kdtree2/debug/kdtree2lib.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/kdtree2/libkdtree2lib.a
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/constants/release/ -lconstants
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/constants/debug/ -lconstants
-else:unix: LIBS += -L$$OUT_PWD/../libraries/constants/ -lconstants
-
-INCLUDEPATH += $$PWD/../libraries/constants
-DEPENDPATH += $$PWD/../libraries/constants
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/constants/release/libconstants.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/constants/debug/libconstants.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/constants/release/constants.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/constants/debug/constants.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/constants/libconstants.a
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/rasterdata/release/ -lrasterdata
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/rasterdata/debug/ -lrasterdata
-else:unix: LIBS += -L$$OUT_PWD/../libraries/rasterdata/ -lrasterdata
-
-INCLUDEPATH += $$PWD/../libraries/rasterdata
-DEPENDPATH += $$PWD/../libraries/rasterdata
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/rasterdata/release/librasterdata.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/rasterdata/debug/librasterdata.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/rasterdata/release/rasterdata.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../libraries/rasterdata/debug/rasterdata.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libraries/rasterdata/librasterdata.a

@@ -11,10 +11,12 @@ enum MeshFormat {
   MeshUnknown = 0x201,
   /// ADCIRC mesh format (*.14, *.grd)
   MeshAdcirc = 0x202,
+  /// ADCIRC mesh in netcdf format (*.nc)
+  MeshAdcircNetcdf = 0x203,
   /// Aquaveo generic mesh format (*.2dm)
-  Mesh2DM = 0x203,
+  Mesh2DM = 0x204,
   /// Deltares D-Flow FM format (*_net.nc)
-  MeshDFlow = 0x204
+  MeshDFlow = 0x205
 };
 }
 

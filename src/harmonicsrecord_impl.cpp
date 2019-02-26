@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#include "pimpl/harmonicsrecord_impl.h"
+#include "harmonicsrecord_impl.h"
 #include <cassert>
 #include "error.h"
 

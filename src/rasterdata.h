@@ -21,6 +21,7 @@
 
 #include <string>
 #include <vector>
+#include "adcircmodules_global.h"
 #include "pixel.h"
 
 class GDALDataset;
@@ -38,9 +39,9 @@ using Point = std::pair<double, double>;
  */
 class Rasterdata {
  public:
-  Rasterdata();
+  ADCIRCMODULES_EXPORT Rasterdata();
 
-  Rasterdata(const std::string &filename);
+  ADCIRCMODULES_EXPORT Rasterdata(const std::string &filename);
 
   ~Rasterdata();
 
@@ -55,63 +56,69 @@ class Rasterdata {
     Unknown
   };
 
-  bool open();
-  bool close();
-  void read();
+  ADCIRCMODULES_EXPORT bool open();
+  ADCIRCMODULES_EXPORT bool close();
+  ADCIRCMODULES_EXPORT void read();
 
-  size_t nx() const;
+  ADCIRCMODULES_EXPORT size_t nx() const;
 
-  size_t ny() const;
+  ADCIRCMODULES_EXPORT size_t ny() const;
 
-  double dx() const;
+  ADCIRCMODULES_EXPORT double dx() const;
 
-  double dy() const;
+  ADCIRCMODULES_EXPORT double dy() const;
 
-  double xmin() const;
+  ADCIRCMODULES_EXPORT double xmin() const;
 
-  double xmax() const;
+  ADCIRCMODULES_EXPORT double xmax() const;
 
-  double ymin() const;
+  ADCIRCMODULES_EXPORT double ymin() const;
 
-  double ymax() const;
+  ADCIRCMODULES_EXPORT double ymax() const;
 
-  double nodata() const;
+  ADCIRCMODULES_EXPORT double nodata() const;
 
-  Point pixelToCoordinate(size_t i, size_t j);
-  Point pixelToCoordinate(Pixel &p);
+  ADCIRCMODULES_EXPORT Point pixelToCoordinate(size_t i, size_t j);
+  ADCIRCMODULES_EXPORT Point pixelToCoordinate(Pixel &p);
 
-  Pixel coordinateToPixel(double x, double y);
-  Pixel coordinateToPixel(Point &p);
+  ADCIRCMODULES_EXPORT Pixel coordinateToPixel(double x, double y);
+  ADCIRCMODULES_EXPORT Pixel coordinateToPixel(Point &p);
 
-  std::string projectionString() const;
+  ADCIRCMODULES_EXPORT std::string projectionString() const;
 
-  int searchBoxAroundPoint(double x, double y, double halfSide,
-                           Pixel &upperLeft, Pixel &lowerRight);
+  ADCIRCMODULES_EXPORT int searchBoxAroundPoint(double x, double y,
+                                                double halfSide,
+                                                Pixel &upperLeft,
+                                                Pixel &lowerRight);
 
-  std::string filename() const;
-  void setFilename(const std::string &filename);
+  ADCIRCMODULES_EXPORT std::string filename() const;
+  ADCIRCMODULES_EXPORT void setFilename(const std::string &filename);
 
-  double pixelValueDouble(Pixel &p);
-  double pixelValueDouble(size_t i, size_t j);
-  int pixelValueInt(Pixel p);
-  int pixelValueInt(size_t i, size_t j);
+  ADCIRCMODULES_EXPORT double pixelValueDouble(Pixel &p);
+  ADCIRCMODULES_EXPORT double pixelValueDouble(size_t i, size_t j);
+  ADCIRCMODULES_EXPORT int pixelValueInt(Pixel p);
+  ADCIRCMODULES_EXPORT int pixelValueInt(size_t i, size_t j);
 
-  int pixelValues(size_t ibegin, size_t jbegin, size_t iend, size_t jend,
-                  std::vector<double> &x, std::vector<double> &y,
-                  std::vector<int> &z);
+  ADCIRCMODULES_EXPORT int pixelValues(size_t ibegin, size_t jbegin,
+                                       size_t iend, size_t jend,
+                                       std::vector<double> &x,
+                                       std::vector<double> &y,
+                                       std::vector<int> &z);
 
-  int pixelValues(size_t ibegin, size_t jbegin, size_t iend, size_t jend,
-                  std::vector<double> &x, std::vector<double> &y,
-                  std::vector<double> &z);
+  ADCIRCMODULES_EXPORT int pixelValues(size_t ibegin, size_t jbegin,
+                                       size_t iend, size_t jend,
+                                       std::vector<double> &x,
+                                       std::vector<double> &y,
+                                       std::vector<double> &z);
 
-  int rasterType() const;
+  ADCIRCMODULES_EXPORT int rasterType() const;
 
-  int epsg() const;
-  void setEpsg(int epsg);
+  ADCIRCMODULES_EXPORT int epsg() const;
+  ADCIRCMODULES_EXPORT void setEpsg(int epsg);
 
-  bool isOpen() const;
+  ADCIRCMODULES_EXPORT bool isOpen() const;
 
-  int nodataint() const;
+  ADCIRCMODULES_EXPORT int nodataint() const;
 
  private:
   void init();

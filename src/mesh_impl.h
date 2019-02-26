@@ -25,11 +25,11 @@
 #include <utility>
 #include <vector>
 #include "adcircmodules_global.h"
+#include "boostrtree.h"
 #include "boundary.h"
 #include "element.h"
 #include "elementtable.h"
 #include "filetypes.h"
-#include "kdtree2lib.h"
 #include "node.h"
 
 #ifdef USE_GOOGLE_FLAT_MAP
@@ -114,6 +114,7 @@ class MeshImpl {
   size_t findNearestElement(double x, double y);
   size_t findElement(Point &location);
   size_t findElement(double x, double y);
+  size_t findElement(double x, double y, std::vector<double> &weights);
 
   Adcirc::Geometry::Node *node(size_t index);
   Adcirc::Geometry::Element *element(size_t index);
@@ -135,8 +136,8 @@ class MeshImpl {
   void addElement(size_t index, Adcirc::Geometry::Element &element);
   void deleteElement(size_t index);
 
-  Kdtree2lib *nodalSearchTree() const;
-  Kdtree2lib *elementalSearchTree() const;
+  BoostRTree *nodalSearchTree() const;
+  BoostRTree *elementalSearchTree() const;
 
   std::vector<double> computeMeshSize();
 
@@ -153,7 +154,8 @@ class MeshImpl {
  private:
   static Adcirc::Geometry::MeshFormat getMeshFormat(
       const std::string &filename);
-  void readAdcircMesh();
+  void readAdcircMeshAscii();
+  void readAdcircMeshNetcdf();
   void readAdcircMeshHeader(std::fstream &fid);
   void readAdcircNodes(std::fstream &fid);
   void readAdcircElements(std::fstream &fid);
@@ -208,8 +210,8 @@ class MeshImpl {
 
   Adcirc::Geometry::ElementTable m_elementTable;
 
-  std::unique_ptr<Kdtree2lib> m_nodalSearchTree;
-  std::unique_ptr<Kdtree2lib> m_elementalSearchTree;
+  std::unique_ptr<BoostRTree> m_nodalSearchTree;
+  std::unique_ptr<BoostRTree> m_elementalSearchTree;
 };
 
 #endif  // MESHIMPL_H

@@ -19,6 +19,6 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS  = constants kdtree2 shapelib rasterdata 
+SUBDIRS  = shapelib 
 
 CONFIG += ordered           

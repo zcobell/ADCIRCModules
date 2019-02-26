@@ -319,7 +319,7 @@ double Element::area() { return bg::area(element2polygon(this->m_nodes)); }
  * @return true if point lies within element, false otherwise
  */
 bool Element::isInside(double x, double y) {
-  return this->isInside(Point(x, y));
+  return bg::covered_by(point_t(x, y), element2polygon(this->m_nodes));
 }
 
 /**
@@ -330,6 +330,6 @@ bool Element::isInside(double x, double y) {
  * if a point lies within an element
  */
 bool Element::isInside(Point location) {
-  return bg::within(point_t(location.first, location.second),
-                    element2polygon(this->m_nodes));
+  return bg::covered_by(point_t(location.first, location.second),
+                        element2polygon(this->m_nodes));
 }
