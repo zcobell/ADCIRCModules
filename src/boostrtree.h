@@ -1,6 +1,7 @@
 #ifndef BOOSTRTREE_H
 #define BOOSTRTREE_H
 
+#include <cstddef>
 #include <vector>
 
 class BoostRTree_impl;
