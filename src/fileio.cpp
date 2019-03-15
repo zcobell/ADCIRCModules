@@ -24,10 +24,9 @@
 #include "boost/algorithm/string/split.hpp"
 #include "boost/algorithm/string/trim.hpp"
 #include "boost/config/warning_disable.hpp"
-#include "boost/spirit/include/phoenix_core.hpp"
-#include "boost/spirit/include/phoenix_operator.hpp"
-#include "boost/spirit/include/phoenix_stl.hpp"
+#include "boost/spirit/include/phoenix.hpp"
 #include "boost/spirit/include/qi.hpp"
+
 #include "error.h"
 
 namespace qi = boost::spirit::qi;
@@ -179,7 +178,7 @@ bool splitStringHarmonicsVelocityFormat(std::string &data, double &u_magnitude,
                            qi::double_[phoenix::ref(v_phase) = qi::_1]),
                           ascii::space);
 }
-}  // namespace Adcirc
+}  // namespace AdcircIO
 namespace SMSIO {
 bool splitString2dmNodeFormat(std::string &data, size_t &id, double &x,
                               double &y, double &z) {
@@ -214,5 +213,5 @@ bool splitString2dmElementFormat(std::string &data, size_t &id,
   }
   return false;
 }
-}  // namespace SMS
+}  // namespace SMSIO
 }  // namespace FileIO
