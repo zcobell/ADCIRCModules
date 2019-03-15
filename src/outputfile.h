@@ -79,6 +79,10 @@ class OutputFile {
   void clear();
   void clearAt(size_t position);
 
+  std::string description() const;
+  std::string units() const;
+  std::string name() const;
+
  private:
   // variables
   bool m_isVector;
@@ -93,6 +97,9 @@ class OutputFile {
   int m_dit;
   std::fstream m_fid;
   std::string m_filename;
+  std::string m_units;
+  std::string m_description;
+  std::string m_name;
   std::vector<std::unique_ptr<Adcirc::Output::OutputRecord>> m_records;
   std::unordered_map<size_t, Adcirc::Output::OutputRecord *> m_recordMap;
   std::string m_header;
