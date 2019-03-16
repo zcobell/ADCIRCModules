@@ -11,6 +11,7 @@ addons:
       - swig3.0
       - lcov
       - libgdal-dev
+      - libboost-all-dev
 
 after_success:
   # Creating report
