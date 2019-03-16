@@ -119,6 +119,18 @@ ELSE(NOT CYGWIN)
 ENDIF(NOT CYGWIN)
 ###########################################################################
 
+
+###########################################################################
+# Boost
+###########################################################################
+FIND_PACKAGE( Boost )
+IF( NOT Boost_FOUND )
+    MESSAGE( STATUS "Using included Boost Version: 1.66.0")
+    SET( Boost_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 )
+ENDIF()
+###########################################################################
+
+
 ###########################################################################
 #  LIBRARY VERSION
 ###########################################################################
@@ -316,9 +328,9 @@ TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src
                                 ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
-                                ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 
                                 ${CMAKE_SOURCE_DIR}/thirdparty/abseil
                                 ${CMAKE_SOURCE_DIR}/libraries/constants
+                                ${Boost_INCLUDE_DIRS} 
                                 ${NETCDF_INCLUDE_DIR} ) 
 
 ADD_DEPENDENCIES( adcircmodules ezproj shapelib )
