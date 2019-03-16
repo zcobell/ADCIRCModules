@@ -27,11 +27,11 @@
 #include "griddata.h"
 #include "harmonicsoutput.h"
 #include "interpolationmethods.h"
-#include "kdtree2lib.h"
 #include "mesh.h"
 #include "meshchecker.h"
 #include "multithreading.h"
 #include "nodalattributes.h"
 #include "outputfile.h"
+#include "boostrtree.h"
 
 #endif  // ADCIRCMODULES_H

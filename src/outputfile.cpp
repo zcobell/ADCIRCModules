@@ -82,7 +82,10 @@ OutputFile::OutputFile(const std::string& filename)
       m_isVector(false),
       m_isMax(false),
       m_defaultValue(Adcirc::Output::DefaultOutputValue),
-      m_filetype(Adcirc::Output::OutputUnknown) {}
+      m_filetype(Adcirc::Output::OutputUnknown),
+      m_units("n/a"),
+      m_description("n/a"),
+      m_name("n/a") {}
 
 OutputFile::~OutputFile() { this->clear(); }
 
@@ -364,12 +367,20 @@ void OutputFile::findNetcdfVarId() {
     adcircmodules_throw_exception("OutputFile: Filetype is not netcdf");
   }
 
-  int varid;
+  this->m_name = "";
 
   for (const auto& varname : netcdfVarNames) {
+    int varid;
     int ierr = nc_inq_varid(this->m_ncid, varname.c_str(), &varid);
     if (ierr == NC_NOERR) {
       this->m_varid_data.push_back(varid);
+
+      if (this->m_varid_data.size() == 1) {
+        this->m_name = varname;
+      } else {
+        this->m_name += "," + varname;
+      }
+
       if (varname.substr(varname.size() - 3, varname.size()) == "max" ||
           varname.substr(varname.size() - 3, varname.size()) == "min") {
         this->m_isMax = true;
@@ -392,6 +403,40 @@ void OutputFile::findNetcdfVarId() {
   if (this->m_varid_data.size() == 2) {
     this->m_isVector = true;
   }
+
+  size_t attlen_longname1;
+  int ierr = nc_inq_attlen(this->m_ncid, this->m_varid_data[0], "long_name",
+                           &attlen_longname1);
+  char* longname1_char = new char[attlen_longname1 + 1];
+  ierr = nc_get_att_text(this->m_ncid, this->m_varid_data[0], "long_name",
+                         longname1_char);
+
+  if (this->m_isVector) {
+    size_t attlen_longname2;
+    int ierr = nc_inq_attlen(this->m_ncid, this->m_varid_data[1], "long_name",
+                             &attlen_longname2);
+    char* longname2_char = new char[attlen_longname1 + 1];
+    ierr = nc_get_att_text(this->m_ncid, this->m_varid_data[1], "long_name",
+                           longname2_char);
+    std::string s1, s2;
+    s1 = std::string(longname1_char);
+    s2 = std::string(longname2_char);
+    this->m_description = s1 + "," + s2;
+    delete[] longname1_char;
+    delete[] longname2_char;
+  } else {
+    this->m_description = std::string(longname1_char);
+    delete[] longname1_char;
+  }
+
+  size_t attlen_units;
+  ierr = nc_inq_attlen(this->m_ncid, this->m_varid_data[0], "units",
+                       &attlen_units);
+  char* units_char = new char[attlen_units + 1];
+  ierr =
+      nc_get_att_text(this->m_ncid, this->m_varid_data[0], "units", units_char);
+  this->m_units = std::string(units_char);
+  delete[] units_char;
 
   return;
 }
@@ -673,3 +718,9 @@ void OutputFile::rebuildMap() {
   }
   return;
 }
+
+std::string OutputFile::name() const { return this->m_name; }
+
+std::string OutputFile::description() const { return this->m_description; }
+
+std::string OutputFile::units() const { return this->m_units; }

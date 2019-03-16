@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ERROR_H
-#define ERROR_H
+#ifndef ADCIRCMODULES_ERROR_H
+#define ADCIRCMODULES_ERROR_H
 
 #include <iostream>
 #include <string>
@@ -57,4 +57,4 @@ class Error {
 #define adcircmodules_throw_exception(arg) \
   Adcirc::Error::throwError(arg, __FILE__, __LINE__);
 
-#endif  // ERROR_H
+#endif  // ADCIRCMODULES_ERROR_H

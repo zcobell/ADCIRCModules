@@ -172,39 +172,43 @@ ENDIF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 ###########################################################################
 #  NETCDF
 ###########################################################################
-IF(NOT "${NETCDFHOME}" STREQUAL "")
-    SET(NETCDF_DIR "${NETCDFHOME}")
-ELSEIF(NOT $ENV{NETCDFHOME} STREQUAL "")
-    SET(NETCDF_DIR $ENV{NETCDFHOME})
-ENDIF(NOT "${NETCDFHOME}" STREQUAL "")
+IF(WIN32)
+    SET(NETCDF_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/thirdparty/netcdf/include" ) 
+ELSE(WIN32)
+	IF(NOT "${NETCDFHOME}" STREQUAL "")
+		SET(NETCDF_DIR "${NETCDFHOME}")
+	ELSEIF(NOT $ENV{NETCDFHOME} STREQUAL "")
+		SET(NETCDF_DIR $ENV{NETCDFHOME})
+	ENDIF(NOT "${NETCDFHOME}" STREQUAL "")
 
-FIND_PACKAGE(NetCDF)
+	FIND_PACKAGE(NetCDF)
 
-SET(NETCDF_AdditionalLibs "" CACHE STRING "Additional libraries that may be required for netCDF")
+	SET(NETCDF_AdditionalLibs "" CACHE STRING "Additional libraries that may be required for netCDF")
 
-IF(NOT NETCDF_FOUND)
-    MESSAGE(SEND_ERROR "Specify the netCDF path on the following screen")
-ELSE(NOT NETCDF_FOUND)
-    
-    SET(netcdf_c_code
-"
-    #include <netcdf.h>
-    int main(){
-        int ncid,varid;
-        int ierr = nc_def_var_deflate(ncid,varid,1,2,2);
-        return 0;
-    }
-"
-    )
-    FILE(WRITE "${CMAKE_BINARY_DIR}/CMakeFiles/netcdf_c_check.c" "${netcdf_c_code}")
-    TRY_COMPILE(NC_DEFLATE_FOUND "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/netcdf_c_check.c" CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${NETCDF_INCLUDE_DIRS}" LINK_LIBRARIES "${NETCDF_LIBRARIES}" LINK_LIBRARIES "${NETCDF_AdditionalLibs}" OUTPUT_VARIABLE LOG1)
-        
-    IF(NC_DEFLATE_FOUND)
-        SET(NETCDF_LINKER_FLAG "${NETCDF_LIBRARIES}")
-    ELSE(NC_DEFLATE_FOUND)
-        MESSAGE(SEND_ERROR "The netCDF library is not functional.")
-    ENDIF(NC_DEFLATE_FOUND)
-ENDIF(NOT NETCDF_FOUND)
+	IF(NOT NETCDF_FOUND)
+		MESSAGE(SEND_ERROR "Specify the netCDF path on the following screen")
+	ELSE(NOT NETCDF_FOUND)
+		
+		SET(netcdf_c_code
+	"
+		#include <netcdf.h>
+		int main(){
+			int ncid,varid;
+			int ierr = nc_def_var_deflate(ncid,varid,1,2,2);
+			return 0;
+		}
+	"
+		)
+		FILE(WRITE "${CMAKE_BINARY_DIR}/CMakeFiles/netcdf_c_check.c" "${netcdf_c_code}")
+		TRY_COMPILE(NC_DEFLATE_FOUND "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/netcdf_c_check.c" CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${NETCDF_INCLUDE_DIRS}" LINK_LIBRARIES "${NETCDF_LIBRARIES}" LINK_LIBRARIES "${NETCDF_AdditionalLibs}" OUTPUT_VARIABLE LOG1)
+			
+		IF(NC_DEFLATE_FOUND)
+			SET(NETCDF_LINKER_FLAG "${NETCDF_LIBRARIES}")
+		ELSE(NC_DEFLATE_FOUND)
+			MESSAGE(SEND_ERROR "The netCDF library is not functional.")
+		ENDIF(NC_DEFLATE_FOUND)
+	ENDIF(NOT NETCDF_FOUND)
+ENDIF(WIN32)
 ###########################################################################
 
 
@@ -226,6 +230,7 @@ ENDIF(ENABLE_OPENMP)
 OPTION(ENABLE_GDAL "Enabele GDAL" ON )
 IF(ENABLE_GDAL)
     Find_PACKAGE(GDAL)
+    GET_FILENAME_COMPONENT(GDAL_LIBPATH ${GDAL_LIBRARY} DIRECTORY)
     IF(NOT GDAL_FOUND)
         MESSAGE( WARNING "GDAL Library not found. These functions will be disabled.")
     ENDIF(NOT GDAL_FOUND)
@@ -243,44 +248,12 @@ ENDIF(ENABLE_GDAL)
 ###########################################################################
 ###########################################################################
 
-
-###########################################################################
-# Rasterdata
-###########################################################################
-IF(GDAL_FOUND)
-    ADD_LIBRARY( rasterdata STATIC ${CMAKE_SOURCE_DIR}/libraries/rasterdata/rasterdata.cpp 
-                                   ${CMAKE_SOURCE_DIR}/libraries/rasterdata/pixel.cpp )
-    TARGET_INCLUDE_DIRECTORIES( rasterdata PRIVATE ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
-    TARGET_INCLUDE_DIRECTORIES( rasterdata PRIVATE ${GDAL_INCLUDE_DIR} )
-ENDIF(GDAL_FOUND)
-###########################################################################
-
-
-###########################################################################
-#  KDTREE2 Library
-###########################################################################
-ADD_LIBRARY( kdtree2 STATIC ${CMAKE_SOURCE_DIR}/libraries/kdtree2/kdtree2lib.cpp 
-                ${CMAKE_SOURCE_DIR}/thirdparty/kdtree/kdtree2.cpp )
-TARGET_INCLUDE_DIRECTORIES( kdtree2 PRIVATE ${CMAKE_SOURCE_DIR}/libraries/kdtree2
-                                ${CMAKE_SOURCE_DIR}/thirdparty/kdtree
-                                ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 )
-###########################################################################
-
-
 ###########################################################################
 #  EzProj Library
 ###########################################################################
 add_subdirectory( ${CMAKE_SOURCE_DIR}/thirdparty/EzProj )
 
 ###########################################################################
-
-###########################################################################
-#  Constants Library
-###########################################################################
-ADD_LIBRARY( constants STATIC ${CMAKE_SOURCE_DIR}/libraries/constants/constants.cpp )
-TARGET_INCLUDE_DIRECTORIES( constants PRIVATE ${CMAKE_SOURCE_DIR}/libraries/constants )
-###########################################################################
-
 
 ###########################################################################
 #  Shapelib Library
@@ -316,21 +289,31 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/elementtable.cpp
                 ${CMAKE_SOURCE_DIR}/src/meshchecker.cpp 
                 ${CMAKE_SOURCE_DIR}/src/multithreading.cpp 
-                ${CMAKE_SOURCE_DIR}/src/pimpl/mesh_impl.cpp 
-                ${CMAKE_SOURCE_DIR}/src/pimpl/harmonicsoutput_impl.cpp 
-                ${CMAKE_SOURCE_DIR}/src/pimpl/harmonicsrecord_impl.cpp 
-                ${CMAKE_SOURCE_DIR}/src/pimpl/nodalattributes_impl.cpp )
+                ${CMAKE_SOURCE_DIR}/src/constants.cpp
+                ${CMAKE_SOURCE_DIR}/src/mesh_impl.cpp 
+                ${CMAKE_SOURCE_DIR}/src/boostrtree.cpp
+                ${CMAKE_SOURCE_DIR}/src/boostrtree_impl.cpp
+                ${CMAKE_SOURCE_DIR}/src/harmonicsoutput_impl.cpp 
+                ${CMAKE_SOURCE_DIR}/src/harmonicsrecord_impl.cpp 
+                ${CMAKE_SOURCE_DIR}/src/nodalattributes_impl.cpp )
 
 IF( GDAL_FOUND )
     SET( ADCIRCMODULES_SOURCES ${ADCIRCMODULES_SOURCES} ${CMAKE_SOURCE_DIR}/src/griddata.cpp 
-                                                        ${CMAKE_SOURCE_DIR}/src/pimpl/griddata_impl.cpp )
+                                                        ${CMAKE_SOURCE_DIR}/src/griddata_impl.cpp
+                                                        ${CMAKE_SOURCE_DIR}/src/pixel.cpp
+                                                        ${CMAKE_SOURCE_DIR}/src/rasterdata.cpp )
 ENDIF( GDAL_FOUND )
 
 ADD_LIBRARY( adcircmodules SHARED ${ADCIRCMODULES_SOURCES} )
 
+IF(GDAL_FOUND)
+   TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${GDAL_INCLUDE_DIR})
+   LINK_DIRECTORIES( ${GDAL_LIBPATH} )
+   TARGET_LINK_LIBRARIES( adcircmodules ${GDAL_LIBRARY})
+ENDIF(GDAL_FOUND)
 TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/src/pimpl
-                                ${CMAKE_SOURCE_DIR}/libraries/kdtree2
+                                ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src
                                 ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
                                 ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 
@@ -338,17 +321,10 @@ TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/libraries/constants
                                 ${NETCDF_INCLUDE_DIR} ) 
 
-ADD_DEPENDENCIES( adcircmodules ezproj kdtree2 shapelib constants )
+ADD_DEPENDENCIES( adcircmodules ezproj shapelib )
 
 TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE GIT_VERSION="${GIT_VERSION}")
 TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE ADCIRCMODULES_LIBRARY )
-
-IF(GDAL_FOUND)
-    TARGET_LINK_LIBRARIES( adcircmodules rasterdata ${GDAL_LIBRARY} ) 
-    TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE  
-                                ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
-    ADD_DEPENDENCIES( adcircmodules rasterdata )
-ENDIF(GDAL_FOUND)
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING} SOVERSION ${ADCIRCMODULES_VERSION_MAJOR} )
 
@@ -372,12 +348,12 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.h
                 ${CMAKE_SOURCE_DIR}/src/meshchecker.h
                 ${CMAKE_SOURCE_DIR}/src/elementtable.h
-                ${CMAKE_SOURCE_DIR}/libraries/kdtree2/kdtree2lib.h 
-                ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src/ezproj.h
-                ${CMAKE_SOURCE_DIR}/libraries/rasterdata/rasterdata.h 
+                ${CMAKE_SOURCE_DIR}/src/rasterdata.h 
                 ${CMAKE_SOURCE_DIR}/src/griddata.h 
                 ${CMAKE_SOURCE_DIR}/src/multithreading.h  
-                ${CMAKE_SOURCE_DIR}/libraries/constants/constants.h )
+                ${CMAKE_SOURCE_DIR}/src/constants.h 
+                ${CMAKE_SOURCE_DIR}/src/boostrtree.h
+                ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src/ezproj.h )
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES PUBLIC_HEADER "${HEADER_LIST}" ) 
 
@@ -396,7 +372,14 @@ ELSE(WIN32)
     INSTALL( TARGETS adcircmodules LIBRARY DESTINATION lib PUBLIC_HEADER DESTINATION ${HEADER_DEST})
 ENDIF(WIN32)
 
-TARGET_LINK_LIBRARIES( adcircmodules ezproj kdtree2 shapelib constants ${NETCDF_LIBRARIES} )
+TARGET_LINK_LIBRARIES( adcircmodules ezproj shapelib )
+
+IF(WIN32)
+    LINK_DIRECTORIES( ${CMAKE_SOURCE_DIR}/thirdparty/netcdf/libs_vc64 )
+    TARGET_LINK_LIBRARIES( adcircmodules netcdf hdf5 hdf5_hl )
+ELSE(WIN32)
+    TARGET_LINK_LIBRARIES( adcircmodules ${NETCDF_LIBRARIES} )
+ENDIF(WIN32)
 
 IF(USE_GOOGLE_FLAT_MAP)
     TARGET_LINK_LIBRARIES(adcircmodules absl::base absl::container absl::hash)
@@ -444,10 +427,7 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python 
                     -I${CMAKE_SOURCE_DIR}/src 
-                    -I${CMAKE_SOURCE_DIR}/libraries/kdtree2 
                     -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src i
-                    -I${CMAKE_SOURCE_DIR}/libraries/rasterdata
-                    -I${CMAKE_SOURCE_DIR}/libraries/constants 
                     -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG}
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -462,10 +442,7 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python 
                     -I${CMAKE_SOURCE_DIR}/src 
-                    -I${CMAKE_SOURCE_DIR}/libraries/kdtree2
                     -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
-                    -I${CMAKE_SOURCE_DIR}/libraries/rasterdata
-                    -I${CMAKE_SOURCE_DIR}/libraries/constants 
                     -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG} 
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -476,10 +453,7 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 
     ADD_LIBRARY( PyAdcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx )
     TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src 
-                                    ${CMAKE_SOURCE_DIR}/libraries/kdtree2
-                                    ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
-                                    ${CMAKE_SOURCE_DIR}/libraries/constants 
-                                    ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
+                                    ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src ) 
     TARGET_LINK_LIBRARIES( PyAdcirc PRIVATE adcircmodules ${PYTHON_LIBRARY} )
     SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES PREFIX "_")
     SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES PyAdcirc.py CMakeFiles/python_adcirc_wrap.cxx )
@@ -534,7 +508,6 @@ ENDIF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 #    
 #            ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
 #                COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src
-#                        -I${CMAKE_SOURCE_DIR}/libraries/kdtree2 
 #                        -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src -I${PERL_INCLUDE_PATH} 
 #                        -o ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx.1
 #                        ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -548,7 +521,6 @@ ENDIF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 #        ELSE(WIN32)
 #            ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
 #                COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src 
-#                        -I${CMAKE_SOURCE_DIR}/libraries/kdtree2
 #                        -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src -I${PERL_INCLUDE_PATH} 
 #                        -o ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
 #                        ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -559,7 +531,6 @@ ENDIF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 #    
 #        ADD_LIBRARY( perladcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx )
 #        TARGET_INCLUDE_DIRECTORIES( perladcirc PRIVATE ${PERL_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src 
-#                                        ${CMAKE_SOURCE_DIR}/libraries/kdtree2
 #                                        ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
 #                                        ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
 #        TARGET_LINK_LIBRARIES( perladcirc PRIVATE adcircmodules ${PERL_LIBRARY} )
@@ -609,10 +580,7 @@ IF(UNIX OR CYGWIN)
             ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
             ADD_DEPENDENCIES( ${TESTNAME} adcircmodules )
             TARGET_INCLUDE_DIRECTORIES( ${TESTNAME} PRIVATE ${CMAKE_SOURCE_DIR}/src 
-                                                            ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
-                                                            ${CMAKE_SOURCE_DIR}/libraries/kdtree2 
-                                                            ${CMAKE_SOURCE_DIR}/libraries/constants 
-                                                            ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
+                                                            ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src ) 
             TARGET_LINK_LIBRARIES( ${TESTNAME} adcircmodules )
             SET_TARGET_PROPERTIES( ${TESTNAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases )
     

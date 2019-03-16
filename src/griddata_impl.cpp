@@ -873,7 +873,8 @@ std::vector<double> GriddataImpl::computeValuesFromRaster(bool useLookupTable) {
   }
 
 #pragma omp parallel for schedule(dynamic) shared(progress)
-  for (size_t i = 0; i < this->m_mesh->numNodes(); ++i) {
+  for (signed long long i = 0;
+       i < static_cast<signed long long>(this->m_mesh->numNodes()); ++i) {
     if (this->m_showProgressBar) {
 #pragma omp critical
       ++(*progress);
@@ -910,7 +911,8 @@ std::vector<std::vector<double>> GriddataImpl::computeDirectionalWindReduction(
   }
 
 #pragma omp parallel for schedule(dynamic) shared(progress)
-  for (size_t i = 0; i < this->m_mesh->numNodes(); ++i) {
+  for (signed long long i = 0;
+       i < static_cast<signed long long>(this->m_mesh->numNodes()); ++i) {
     if (this->m_showProgressBar) {
 #pragma omp critical
       ++(*progress);

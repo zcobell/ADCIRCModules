@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "harmonicsoutput.h"
-#include "pimpl/harmonicsoutput_impl.h"
+#include "harmonicsoutput_impl.h"
 
 namespace Adcirc {
 namespace Harmonics {

@@ -20,6 +20,7 @@
 #define PIXEL_H
 
 #include <cstddef>
+#include "adcircmodules_global.h"
 
 /**
  * @class Pixel
@@ -31,16 +32,16 @@
  */
 class Pixel {
  public:
-  Pixel();
-  Pixel(size_t i, size_t j);
+  ADCIRCMODULES_EXPORT Pixel();
+  ADCIRCMODULES_EXPORT Pixel(size_t i, size_t j);
 
-  size_t i() const;
-  size_t j() const;
+  ADCIRCMODULES_EXPORT size_t i() const;
+  ADCIRCMODULES_EXPORT size_t j() const;
 
-  bool isValid();
-  void setInvalid();
+  ADCIRCMODULES_EXPORT bool isValid();
+  ADCIRCMODULES_EXPORT void setInvalid();
 
-  void set(const size_t &i, const size_t &j);
+  ADCIRCMODULES_EXPORT void set(const size_t &i, const size_t &j);
 
  private:
   size_t m_i;
