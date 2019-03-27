@@ -25,7 +25,7 @@
 #include <utility>
 #include <vector>
 #include "adcircmodules_global.h"
-#include "boostrtree.h"
+#include "kdtree.h"
 #include "boundary.h"
 #include "element.h"
 #include "elementtable.h"
@@ -136,8 +136,8 @@ class MeshImpl {
   void addElement(size_t index, Adcirc::Geometry::Element &element);
   void deleteElement(size_t index);
 
-  BoostRTree *nodalSearchTree() const;
-  BoostRTree *elementalSearchTree() const;
+  Kdtree *nodalSearchTree() const;
+  Kdtree *elementalSearchTree() const;
 
   std::vector<double> computeMeshSize();
 
@@ -210,8 +210,8 @@ class MeshImpl {
 
   Adcirc::Geometry::ElementTable m_elementTable;
 
-  std::unique_ptr<BoostRTree> m_nodalSearchTree;
-  std::unique_ptr<BoostRTree> m_elementalSearchTree;
+  std::unique_ptr<Kdtree> m_nodalSearchTree;
+  std::unique_ptr<Kdtree> m_elementalSearchTree;
 };
 
 #endif  // MESHIMPL_H

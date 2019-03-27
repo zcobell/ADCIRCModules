@@ -34,6 +34,9 @@ ABSEILPATH = $$PWD/../thirdparty/abseil
 #...Boost Library
 BOOSTPATH     = $$PWD/../thirdparty/boost_1_66_0
 
+#...Nanoflann
+NANOFLANNPATH  = $$PWD/../thirdparty/nanoflann/include
+
 win32 {
     #...Set extension for a windows dll (avoids tracking version numbering in filename)
     #TARGET_EXT = .dll
@@ -112,8 +115,8 @@ SOURCES += \
     rasterdata.cpp \
     pixel.cpp \
     constants.cpp \
-    boostrtree.cpp \
-    boostrtree_impl.cpp
+    kdtree_impl.cpp \
+    kdtree.cpp
 
 HEADERS += \
     adcircmodules_global.h \
@@ -148,10 +151,10 @@ HEADERS += \
     rasterdata.h \
     pixel.h \
     constants.h \
-    boostrtree.h \
-    boostrtree_impl.h
+    kdtree.h \
+    kdtree_impl.h
 
-INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH
+INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib
 
 win32{

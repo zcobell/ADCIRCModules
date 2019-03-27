@@ -28,7 +28,7 @@
 #include "filetypes.h"
 #include "node.h"
 
-class BoostRTree;
+class Kdtree;
 class MeshImpl;
 
 using Point = std::pair<double, double>;
@@ -179,8 +179,8 @@ class Mesh {
                                        Adcirc::Geometry::Element &element);
   void ADCIRCMODULES_EXPORT deleteElement(size_t index);
 
-  BoostRTree ADCIRCMODULES_EXPORT *nodalSearchTree() const;
-  BoostRTree ADCIRCMODULES_EXPORT *elementalSearchTree() const;
+  Kdtree ADCIRCMODULES_EXPORT *nodalSearchTree() const;
+  Kdtree ADCIRCMODULES_EXPORT *elementalSearchTree() const;
 
   std::vector<double> ADCIRCMODULES_EXPORT computeMeshSize();
 

@@ -41,9 +41,8 @@ Cobell, Z. (2018). Adcirc Modules (Version xxx) [Library]. Retrieved from https:
 ### Credits
 | Library  | Function | Source |
 |----------|----------|--------|
-| KDTREE2  | Used for efficient nearest neighbor searches | Matthew B. Kennel, Institute for Nonlinear Science, UCSD (2004) |
-| Boost    | Used by KDTREE2 and for fast file I/O | [Visit Website](http://www.boost.org/) |
-| Proj4    | Used to project to various coordinate systems |[Visit Website](https://trac.osgeo.org/proj/) |
+| Boost    | Used for fast file I/O | [Visit Website](http://www.boost.org/) |
+| nanoflann | Used for kd-tree searches | [Nanoflann](https://github.com/jlblancoc/nanoflann) |
 | netCDF   | Used to read ADCIRC files formatted with this library | [Visit Website](http://www.unidata.ucar.edu/software/netcdf/) |
 | shapelib | Used to convert meshes to shapefile format | [Visit Website](http://shapelib.maptools.org/) |
 | swig     | Used to generate an interface to Python | [Visit Website](http://www.swig.org/) |

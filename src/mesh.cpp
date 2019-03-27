@@ -542,7 +542,7 @@ void Mesh::deleteElement(size_t index) { this->m_impl->deleteElement(index); }
  * @brief Returns a refrence to the nodal search kd-tree
  * @return kd-tree object with mesh nodes as serch locations
  */
-BoostRTree *Mesh::nodalSearchTree() const {
+Kdtree *Mesh::nodalSearchTree() const {
   return this->m_impl->nodalSearchTree();
 }
 
@@ -550,7 +550,7 @@ BoostRTree *Mesh::nodalSearchTree() const {
  * @brief Returns a reference to the elemental search kd-tree
  * @return kd-tree object with element centers as search locations
  */
-BoostRTree *Mesh::elementalSearchTree() const {
+Kdtree *Mesh::elementalSearchTree() const {
   return this->m_impl->elementalSearchTree();
 }
 
