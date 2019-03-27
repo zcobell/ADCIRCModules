@@ -264,7 +264,6 @@ ENDIF(ENABLE_GDAL)
 #  EzProj Library
 ###########################################################################
 add_subdirectory( ${CMAKE_SOURCE_DIR}/thirdparty/EzProj )
-
 ###########################################################################
 
 ###########################################################################
@@ -303,8 +302,8 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/multithreading.cpp 
                 ${CMAKE_SOURCE_DIR}/src/constants.cpp
                 ${CMAKE_SOURCE_DIR}/src/mesh_impl.cpp 
-                ${CMAKE_SOURCE_DIR}/src/boostrtree.cpp
-                ${CMAKE_SOURCE_DIR}/src/boostrtree_impl.cpp
+                ${CMAKE_SOURCE_DIR}/src/kdtree.cpp
+                ${CMAKE_SOURCE_DIR}/src/kdtree_impl.cpp
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput_impl.cpp 
                 ${CMAKE_SOURCE_DIR}/src/harmonicsrecord_impl.cpp 
                 ${CMAKE_SOURCE_DIR}/src/nodalattributes_impl.cpp )
@@ -329,6 +328,7 @@ TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src
                                 ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
                                 ${CMAKE_SOURCE_DIR}/thirdparty/abseil
+                                ${CMAKE_SOURCE_DIR}/thirdparty/nanoflann/include
                                 ${CMAKE_SOURCE_DIR}/libraries/constants
                                 ${Boost_INCLUDE_DIRS} 
                                 ${NETCDF_INCLUDE_DIR} ) 
@@ -364,7 +364,7 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/griddata.h 
                 ${CMAKE_SOURCE_DIR}/src/multithreading.h  
                 ${CMAKE_SOURCE_DIR}/src/constants.h 
-                ${CMAKE_SOURCE_DIR}/src/boostrtree.h
+                ${CMAKE_SOURCE_DIR}/src/kdtree.h
                 ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src/ezproj.h )
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES PUBLIC_HEADER "${HEADER_LIST}" ) 

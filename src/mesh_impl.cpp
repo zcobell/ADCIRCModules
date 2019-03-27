@@ -22,7 +22,7 @@
 #include <string>
 #include <tuple>
 #include "boost/format.hpp"
-#include "boostrtree.h"
+#include "kdtree.h"
 #include "elementtable.h"
 #include "error.h"
 #include "ezproj.h"
@@ -68,8 +68,8 @@ void MeshImpl::_init() {
   this->m_elements.clear();
   this->m_openBoundaries.clear();
   this->m_landBoundaries.clear();
-  this->m_elementalSearchTree = std::unique_ptr<BoostRTree>(new BoostRTree());
-  this->m_nodalSearchTree = std::unique_ptr<BoostRTree>(new BoostRTree());
+  this->m_elementalSearchTree = std::unique_ptr<Kdtree>(new Kdtree());
+  this->m_nodalSearchTree = std::unique_ptr<Kdtree>(new Kdtree());
 }
 
 /**
@@ -914,7 +914,7 @@ void MeshImpl::readAdcircLandBoundaries(std::fstream &fid) {
  * @brief Returns a reference to the elemental search kd-tree
  * @return kd-tree object with element centers as search locations
  */
-BoostRTree *MeshImpl::elementalSearchTree() const {
+Kdtree *MeshImpl::elementalSearchTree() const {
   return m_elementalSearchTree.get();
 }
 
@@ -922,7 +922,7 @@ BoostRTree *MeshImpl::elementalSearchTree() const {
  * @brief Returns a refrence to the nodal search kd-tree
  * @return kd-tree object with mesh nodes as serch locations
  */
-BoostRTree *MeshImpl::nodalSearchTree() const {
+Kdtree *MeshImpl::nodalSearchTree() const {
   return m_nodalSearchTree.get();
 }
 
@@ -1307,7 +1307,7 @@ void MeshImpl::buildNodalSearchTree() {
   }
 
   ierr = this->m_nodalSearchTree->build(x, y);
-  if (ierr != BoostRTree::NoError) {
+  if (ierr != Kdtree::NoError) {
     adcircmodules_throw_exception("Mesh: KDTree2 library error");
   }
 
@@ -1339,7 +1339,7 @@ void MeshImpl::buildElementalSearchTree() {
   }
 
   int ierr = this->m_elementalSearchTree->build(x, y);
-  if (ierr != BoostRTree::NoError) {
+  if (ierr != Kdtree::NoError) {
     adcircmodules_throw_exception("Mesh: KDTree2 library error");
   }
 

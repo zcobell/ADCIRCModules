@@ -32,6 +32,6 @@
 #include "multithreading.h"
 #include "nodalattributes.h"
 #include "outputfile.h"
-#include "boostrtree.h"
+#include "kdtree.h"
 
 #endif  // ADCIRCMODULES_H
