@@ -546,7 +546,6 @@ bool HarmonicsOutputImpl::checkFormatAsciiVelocity(std::fstream& fid) {
   std::streampos endHeader = fid.tellg();
   std::getline(fid, line);
   std::getline(fid, line);
-  std::getline(fid, line);
   fid.seekg(endHeader, std::ios::beg);
   std::vector<std::string> list;
   FileIO::Generic::splitString(line, list);
@@ -744,9 +743,9 @@ void HarmonicsOutputImpl::readNetcdfFormatHeader(int ncid,
     }
     ierr = nc_get_var(ncid, varid_equ, equilibriumArg);
     if (ierr != NC_NOERR) {
-        delete[] nodeFactor;
-        delete[] equilibriumArg;
-        delete[] frequency;
+      delete[] nodeFactor;
+      delete[] equilibriumArg;
+      delete[] frequency;
       adcircmodules_throw_exception("Could not read equilibrium argument");
     }
     ierr = nc_get_var(ncid, varid_freq, nodeFactor);
