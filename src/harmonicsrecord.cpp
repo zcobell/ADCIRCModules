@@ -31,7 +31,7 @@ HarmonicsRecord::~HarmonicsRecord() { delete this->m_impl; }
  * @return name of harmonic constituent
  */
 std::string HarmonicsRecord::name() const {
-  return std::move(this->m_impl->name());
+  return this->m_impl->name();
 }
 
 /**
@@ -56,7 +56,7 @@ double HarmonicsRecord::value(size_t index) {
  * @return vector containing all values in this object
  */
 std::vector<double> HarmonicsRecord::values() {
-  return std::move(this->m_impl->values());
+  return this->m_impl->values();
 }
 
 /**

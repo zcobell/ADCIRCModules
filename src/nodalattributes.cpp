@@ -59,7 +59,7 @@ void NodalAttributes::setFilename(const std::string &filename) {
  * @return name of file that has been or will be read
  */
 std::string NodalAttributes::filename() {
-  return std::move(this->m_impl->filename());
+  return this->m_impl->filename();
 }
 
 /**
@@ -90,7 +90,7 @@ void NodalAttributes::write(const std::string &outputFilename) {
  * @return name of requested attribute
  */
 std::string NodalAttributes::attributeNames(size_t index) {
-  return std::move(this->m_impl->attributeNames(index));
+  return this->m_impl->attributeNames(index);
 }
 
 /**
@@ -107,7 +107,7 @@ size_t NodalAttributes::locateAttribute(const std::string &attributeName) {
  * @return header string
  */
 std::string NodalAttributes::header() const {
-  return std::move(this->m_impl->header());
+  return this->m_impl->header();
 }
 
 /**

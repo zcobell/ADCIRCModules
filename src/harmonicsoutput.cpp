@@ -52,7 +52,7 @@ void HarmonicsOutput::write(const std::string& filename,
  * @return filename
  */
 std::string HarmonicsOutput::filename() const {
-  return std::move(this->m_impl->filename());
+  return this->m_impl->filename();
 }
 
 /**
@@ -78,7 +78,7 @@ size_t HarmonicsOutput::index(const std::string& name) {
  * @return name of harmonic constituent
  */
 std::string HarmonicsOutput::name(size_t index) {
-  return std::move(this->m_impl->name(index));
+  return this->m_impl->name(index);
 }
 
 /**

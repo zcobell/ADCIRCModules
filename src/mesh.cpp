@@ -35,7 +35,7 @@ Mesh::~Mesh() { delete this->m_impl; }
  *
  * Implemented mostly for the python interface
  */
-std::vector<double> Mesh::x() { return std::move(this->m_impl->x()); }
+std::vector<double> Mesh::x() { return this->m_impl->x(); }
 
 /**
  * @brief Returns a vector of the y-coordinates
@@ -43,7 +43,7 @@ std::vector<double> Mesh::x() { return std::move(this->m_impl->x()); }
  *
  * Implemented mostly for the python interface
  */
-std::vector<double> Mesh::y() { return std::move(this->m_impl->y()); }
+std::vector<double> Mesh::y() { return this->m_impl->y(); }
 
 /**
  * @brief Returns a vector of the z-coordinates
@@ -51,7 +51,7 @@ std::vector<double> Mesh::y() { return std::move(this->m_impl->y()); }
  *
  * Implemented mostly for the python interface
  */
-std::vector<double> Mesh::z() { return std::move(this->m_impl->z()); }
+std::vector<double> Mesh::z() { return this->m_impl->z(); }
 
 /**
  * @brief Returns a 2d-vector of the xyz-coordinates
@@ -59,9 +59,7 @@ std::vector<double> Mesh::z() { return std::move(this->m_impl->z()); }
  *
  * Implemented mostly for the python interface
  */
-std::vector<std::vector<double>> Mesh::xyz() {
-  return std::move(this->m_impl->xyz());
-}
+std::vector<std::vector<double>> Mesh::xyz() { return this->m_impl->xyz(); }
 
 /**
  * @brief Returns a 2d-vector of the mesh connectivity
@@ -70,7 +68,7 @@ std::vector<std::vector<double>> Mesh::xyz() {
  * Implemented mostly for the python interface
  */
 std::vector<std::vector<size_t>> Mesh::connectivity() {
-  return std::move(this->m_impl->connectivity());
+  return this->m_impl->connectivity();
 }
 
 /**
@@ -84,7 +82,7 @@ std::vector<std::vector<size_t>> Mesh::connectivity() {
  * calculations
  */
 std::vector<std::vector<double>> Mesh::orthogonality() {
-  return std::move(this->m_impl->orthogonality());
+  return this->m_impl->orthogonality();
 }
 
 /**
@@ -114,9 +112,7 @@ void Mesh::write(const std::string &outputFile,
  * @brief Filename of the mesh to be read
  * @return Return the name of the mesh to be read
  */
-std::string Mesh::filename() const {
-  return std::move(this->m_impl->filename());
-}
+std::string Mesh::filename() const { return this->m_impl->filename(); }
 
 /**
  * @brief Sets the name of the mesh to be read
@@ -131,7 +127,7 @@ void Mesh::setFilename(const std::string &filename) {
  * @return mesh header
  */
 std::string Mesh::meshHeaderString() const {
-  return std::move(this->m_impl->meshHeaderString());
+  return this->m_impl->meshHeaderString();
 }
 
 /**
@@ -559,7 +555,7 @@ Kdtree *Mesh::elementalSearchTree() const {
  * @return vector containing size at each node
  */
 std::vector<double> Mesh::computeMeshSize() {
-  return std::move(this->m_impl->computeMeshSize());
+  return this->m_impl->computeMeshSize();
 }
 
 /**
@@ -614,5 +610,5 @@ Adcirc::Geometry::Element *Mesh::elementTable(size_t nodeIndex,
  */
 std::vector<Adcirc::Geometry::Element *> Mesh::elementsAroundNode(
     Adcirc::Geometry::Node *n) {
-  return std::move(this->m_impl->elementsAroundNode(n));
+  return this->m_impl->elementsAroundNode(n);
 }
