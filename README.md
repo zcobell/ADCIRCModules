@@ -34,17 +34,21 @@ Please appropriately cite this work in publications, reports, and other source c
 
 Suggested citation:
 ```
-Cobell, Z. (2018). Adcirc Modules (Version xxx) [Library]. Retrieved from https://github.com/zcobell/ADCIRCModules
+@misc{cobell2019adcircmodules,
+  title        = {{ADCIRCM}odules: a {C}++ and {P}ython interface for manipulation of {ADCIRC} model data},
+  author       = {Cobell, Zachary},
+  howpublished = {\url{https://github.com/zcobell/ADCIRCModules}},
+  year         = {2019}
+}
 ```
-
 
 ### Credits
 | Library  | Function | Source |
 |----------|----------|--------|
 | Boost    | Used for fast file I/O | [Visit Website](http://www.boost.org/) |
-| nanoflann | Used for kd-tree searches | [Nanoflann](https://github.com/jlblancoc/nanoflann) |
+| nanoflann | Used for kd-tree searches | [Visit Website](https://github.com/jlblancoc/nanoflann) |
 | netCDF   | Used to read ADCIRC files formatted with this library | [Visit Website](http://www.unidata.ucar.edu/software/netcdf/) |
 | shapelib | Used to convert meshes to shapefile format | [Visit Website](http://shapelib.maptools.org/) |
 | swig     | Used to generate an interface to Python | [Visit Website](http://www.swig.org/) |
-| gdal     | Used to read raster data to interpolate to meshes | [GDAL](https://www.gdal.org/) |
-| EzProj   | Used as interface library to Proj4 for coordinate system transformations | [EzProj](https://github.com/zcobell/EzProj) |
+| gdal     | Used to read raster data to interpolate to meshes | [Visit Website](https://www.gdal.org/) |
+| EzProj   | Used as interface library to Proj4 for coordinate system transformations | [Visit Website](https://github.com/zcobell/EzProj) |
