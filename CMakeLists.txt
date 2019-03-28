@@ -574,7 +574,7 @@ IF(UNIX OR CYGWIN)
         #...C++ Testing
         FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases)
 
-        SET(TEST_LIST cxx_readmesh.cpp cxx_writemesh.cpp cxx_writeshapefile.cpp
+        SET(TEST_LIST cxx_readmesh.cpp cxx_readnetcdfmesh.cpp cxx_writemesh.cpp cxx_writeshapefile.cpp
                       cxx_projectmesh.cpp cxx_nodalSearchTree.cpp cxx_elementalSearchTree.cpp 
                       cxx_readfort13_wmesh.cpp cxx_readfort13_womesh.cpp cxx_fort13findatt.cpp 
                       cxx_readasciifull.cpp cxx_readasciisparse.cpp cxx_readmaxele.cpp cxx_readnetcdfmaxele.cpp
