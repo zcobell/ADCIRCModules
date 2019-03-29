@@ -32,44 +32,44 @@
 using namespace Adcirc::Output;
 
 //...netcdf Variable names currently in ADCIRC source code
-static const std::vector<std::string> netcdfVarNames = {"sigmat",
-                                                        "salinity",
-                                                        "temperature",
-                                                        "u-vel3D",
-                                                        "v-vel3D",
-                                                        "w-vel3D",
-                                                        "q20",
-                                                        "l",
-                                                        "ev",
-                                                        "qsurfkp1",
-                                                        "zeta",
-                                                        "zeta_max",
-                                                        "u-vel",
-                                                        "v-vel",
-                                                        "vel_max",
-                                                        "pressure",
-                                                        "pressure_min",
-                                                        "windx",
-                                                        "windy",
-                                                        "wind_max",
-                                                        "radstress_x",
-                                                        "radstress_y",
-                                                        "radstress_max",
-                                                        "swan_HS",
-                                                        "swan_HS_max",
-                                                        "swan_DIR",
-                                                        "swan_DIR_max",
-                                                        "swan_TM01",
-                                                        "swan_TM01_max",
-                                                        "swan_TPS",
-                                                        "swan_TPS_max",
-                                                        "swan_windx",
-                                                        "swan_windy",
-                                                        "swan_wind_max",
-                                                        "swan_TM02",
-                                                        "swan_TM02_max",
-                                                        "swan_TMM10",
-                                                        "swan_TMM10_max"};
+static const std::vector<std::string> c_netcdfVarNames = {"sigmat",
+                                                          "salinity",
+                                                          "temperature",
+                                                          "u-vel3D",
+                                                          "v-vel3D",
+                                                          "w-vel3D",
+                                                          "q20",
+                                                          "l",
+                                                          "ev",
+                                                          "qsurfkp1",
+                                                          "zeta",
+                                                          "zeta_max",
+                                                          "u-vel",
+                                                          "v-vel",
+                                                          "vel_max",
+                                                          "pressure",
+                                                          "pressure_min",
+                                                          "windx",
+                                                          "windy",
+                                                          "wind_max",
+                                                          "radstress_x",
+                                                          "radstress_y",
+                                                          "radstress_max",
+                                                          "swan_HS",
+                                                          "swan_HS_max",
+                                                          "swan_DIR",
+                                                          "swan_DIR_max",
+                                                          "swan_TM01",
+                                                          "swan_TM01_max",
+                                                          "swan_TPS",
+                                                          "swan_TPS_max",
+                                                          "swan_windx",
+                                                          "swan_windy",
+                                                          "swan_wind_max",
+                                                          "swan_TM02",
+                                                          "swan_TM02_max",
+                                                          "swan_TMM10",
+                                                          "swan_TMM10_max"};
 
 OutputFile::OutputFile(const std::string& filename)
     : m_filename(filename),
@@ -81,7 +81,7 @@ OutputFile::OutputFile(const std::string& filename)
       m_open(false),
       m_isVector(false),
       m_isMax(false),
-      m_defaultValue(Adcirc::Output::DefaultOutputValue),
+      m_defaultValue(Adcirc::Output::defaultOutputValue()),
       m_filetype(Adcirc::Output::OutputUnknown),
       m_units("n/a"),
       m_description("n/a"),
@@ -188,7 +188,7 @@ void OutputFile::read(size_t snap) {
 
   if (this->m_filetype == Adcirc::Output::OutputAsciiFull ||
       this->m_filetype == Adcirc::Output::OutputAsciiSparse) {
-    if (snap != Adcirc::Output::NextOutputSnap) {
+    if (snap != Adcirc::Output::nextOutputSnap()) {
       Error::warning(
           "ASCII Output must be read record by "
           "record. Specified snap number ignored.");
@@ -369,7 +369,7 @@ void OutputFile::findNetcdfVarId() {
 
   this->m_name = "";
 
-  for (const auto& varname : netcdfVarNames) {
+  for (const auto& varname : c_netcdfVarNames) {
     int varid;
     int ierr = nc_inq_varid(this->m_ncid, varname.c_str(), &varid);
     if (ierr == NC_NOERR) {
@@ -589,7 +589,7 @@ void OutputFile::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
   }
 
   size_t numNonDefault = this->m_numNodes;
-  double dflt = Adcirc::Output::DefaultOutputValue;
+  double dflt = Adcirc::Output::defaultOutputValue();
 
   if (list.size() > 2) {
     numNonDefault = StringConversion::stringToSizet(list[2], ok);
@@ -641,7 +641,7 @@ void OutputFile::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
 
 void OutputFile::readNetcdfRecord(size_t snap,
                                   std::unique_ptr<OutputRecord>& record) {
-  if (snap == Output::NextOutputSnap) {
+  if (snap == Output::nextOutputSnap()) {
     snap = this->m_currentSnap;
   }
 

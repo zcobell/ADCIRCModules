@@ -19,19 +19,17 @@
 #include "outputrecord.h"
 #include <cassert>
 #include <cmath>
+#include "constants.h"
 #include "error.h"
 
 using namespace Adcirc::Output;
-
-static const double _pi = 4.0 * std::atan(1.0);
-static const double _2pi = 2.0 * _pi;
 
 OutputRecord::OutputRecord()
     : m_record(0),
       m_isVector(false),
       m_time(0),
       m_iteration(0),
-      m_defaultValue(Adcirc::Output::DefaultOutputValue),
+      m_defaultValue(Adcirc::Output::defaultOutputValue()),
       m_numNodes(0) {}
 
 OutputRecord::OutputRecord(size_t record, size_t numNodes, bool isVector)
@@ -40,7 +38,7 @@ OutputRecord::OutputRecord(size_t record, size_t numNodes, bool isVector)
       m_time(0),
       m_numNodes(numNodes),
       m_iteration(0),
-      m_defaultValue(Adcirc::Output::DefaultOutputValue) {
+      m_defaultValue(Adcirc::Output::defaultOutputValue()) {
   assert(numNodes != 0);
   if (this->isVector()) {
     this->m_u.resize(this->numNodes());
@@ -163,17 +161,17 @@ double OutputRecord::magnitude(size_t index) {
 double OutputRecord::angle(double x, double y, AngleUnits units) {
   double a = atan2(y, x);
   if (units == AngleUnits::Degrees) {
-    a = a * 180.0 / _pi;
+    a = a * 180.0 / Constants::pi();
     if (a >= 360.0) {
       a = a - 360.0;
     } else if (a < 0.0) {
       a = a + 360.0;
     }
   } else if (units == AngleUnits::Radians) {
-    if (a >= _2pi) {
-      a = a - _2pi;
+    if (a >= Constants::twoPi()) {
+      a = a - Constants::twoPi();
     } else if (a < 0.0) {
-      a = a + _2pi;
+      a = a + Constants::twoPi();
     }
   } else {
     adcircmodules_throw_exception("Invalid angle units");

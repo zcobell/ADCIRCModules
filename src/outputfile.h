@@ -47,9 +47,9 @@ class OutputFile {
 
   bool isOpen();
 
-  void read(size_t snap = Adcirc::Output::NextOutputSnap);
+  void read(size_t snap = Adcirc::Output::nextOutputSnap());
 
-  void write(size_t snap = Adcirc::Output::NextOutputSnap);
+  void write(size_t snap = Adcirc::Output::nextOutputSnap());
 
   int filetype() const;
 

@@ -19,6 +19,8 @@
 #ifndef OUTPUTRECORD_H
 #define OUTPUTRECORD_H
 
+#include <cstdlib>
+#include <limits>
 #include <vector>
 #include "adcircmodules_global.h"
 #include "node.h"
@@ -27,8 +29,8 @@ namespace Adcirc {
 
 namespace Output {
 
-const size_t NextOutputSnap = -9999;
-const double DefaultOutputValue = -99999.0;
+constexpr size_t nextOutputSnap() { return std::numeric_limits<size_t>::max(); }
+constexpr double defaultOutputValue() { return -99999.0; }
 
 enum AngleUnits { Degrees, Radians };
 
