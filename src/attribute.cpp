@@ -20,7 +20,7 @@
 #include <cassert>
 #include <limits>
 #include "boost/format.hpp"
-#include "error.h"
+#include "logging.h"
 
 using namespace Adcirc::ModelParameters;
 

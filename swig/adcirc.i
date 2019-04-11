@@ -35,7 +35,7 @@
 #define SWIG_FILE_WITH_INIT
 #include "adcircmodules_global.h"
 #include "config.h"
-#include "error.h"
+#include "logging.h"
 #include "filetypes.h"
 #include "mesh.h"
 #include "node.h"
@@ -88,7 +88,7 @@ namespace std {
 
 %include "adcircmodules_global.h"
 %include "config.h"
-%include "error.h"
+%include "logging.h"
 %include "filetypes.h"
 %include "mesh.h"
 %include "node.h"

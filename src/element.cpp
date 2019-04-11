@@ -21,7 +21,7 @@
 #include "boost/format.hpp"
 #include "boost/geometry.hpp"
 #include "constants.h"
-#include "error.h"
+#include "logging.h"
 
 using namespace Adcirc::Geometry;
 namespace bg = boost::geometry;

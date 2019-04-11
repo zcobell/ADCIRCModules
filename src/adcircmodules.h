@@ -21,7 +21,7 @@
 
 #include "config.h"
 #include "constants.h"
-#include "error.h"
+#include "logging.h"
 #include "ezproj.h"
 #include "filetypes.h"
 #include "griddata.h"

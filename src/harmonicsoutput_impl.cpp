@@ -24,7 +24,7 @@
 #include <utility>
 #include "boost/algorithm/string.hpp"
 #include "boost/format.hpp"
-#include "error.h"
+#include "logging.h"
 #include "fileio.h"
 #include "filetypes.h"
 #include "netcdf.h"
@@ -698,7 +698,7 @@ void HarmonicsOutputImpl::readNetcdfFormatHeader(int ncid,
   nc_inq_varid(ncid, "nodal_factor", &varid_nodefactor);
   ierr = nc_inq_varid(ncid, "equilibrium_argument", &varid_equ);
   if (ierr != NC_NOERR) {
-    Adcirc::Error::warning(
+    Adcirc::Logging::warning(
         "ADCIRC <= 53.04 does not place frequency, "
         "nodal factor, and equilibrium argument in netcdf output files. "
         "Invalid data has been inserted as a placeholder.");

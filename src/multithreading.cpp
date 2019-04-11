@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "multithreading.h"
-#include "error.h"
+#include "logging.h"
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -36,7 +36,7 @@ void Multithreading::disable() { Multithreading::setNumThreads(1); }
 
 int Multithreading::maxThreads() {
 #ifndef _OPENMP
-  Adcirc::Error::warning("Multithreading is not enabled.");
+  Adcirc::Logging::warning("Multithreading is not enabled.");
   return 1;
 #else
   return omp_get_num_procs();
@@ -45,7 +45,7 @@ int Multithreading::maxThreads() {
 
 int Multithreading::numThreads() {
 #ifndef _OPENMP
-  Adcirc::Error::warning("Multithreading is not enabled.");
+  Adcirc::Logging::warning("Multithreading is not enabled.");
   return 1;
 #else
   return omp_get_max_threads();
@@ -54,10 +54,10 @@ int Multithreading::numThreads() {
 
 void Multithreading::setNumThreads(int numThreads) {
 #ifndef _OPENMP
-  Adcirc::Error::warning("Multithreading is not enabled.");
+  Adcirc::Logging::warning("Multithreading is not enabled.");
 #else
   if (numThreads > omp_get_num_procs()) {
-    Adcirc::Error::warning(
+    Adcirc::Logging::warning(
         "Specified number of threads > maximum available threads.");
   } else {
     omp_set_num_threads(numThreads);
@@ -68,7 +68,7 @@ void Multithreading::setNumThreads(int numThreads) {
 
 void Multithreading::setMaximumThreads() {
 #ifndef _OPENMP
-  Adcirc::Error::warning("Multithreading is not enabled.");
+  Adcirc::Logging::warning("Multithreading is not enabled.");
 #else
   omp_set_num_threads(omp_get_num_procs());
 #endif

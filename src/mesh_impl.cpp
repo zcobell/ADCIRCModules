@@ -24,7 +24,7 @@
 #include "boost/format.hpp"
 #include "kdtree.h"
 #include "elementtable.h"
-#include "error.h"
+#include "logging.h"
 #include "ezproj.h"
 #include "fileio.h"
 #include "filetypes.h"

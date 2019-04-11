@@ -17,10 +17,19 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "boundary.h"
-#include "error.h"
+#include <array>
 #include "boost/format.hpp"
+#include "logging.h"
 
 using namespace Adcirc::Geometry;
+
+constexpr std::array<int, 7> c_bctypes_weirOrPipe = {3, 13, 23, 4, 24, 5, 25};
+constexpr std::array<int, 2> c_bctypes_externalWeir = {3, 13};
+constexpr std::array<int, 4> c_bctypes_internalWeir = {4, 24, 5, 25};
+constexpr std::array<int, 2> c_bctypes_internalWeirWithoutPipes = {4, 24};
+constexpr std::array<int, 2> c_bctypes_internalWeirWithPipes = {5, 25};
+constexpr std::array<int, 15> c_bctypes_singleNodeBoundaries = {
+    0, 1, 2, 10, 11, 12, 20, 21, 22, 30, 52, 30, 102, 112, 122};
 
 /**
  * @brief Default constructor
@@ -37,6 +46,42 @@ Boundary::Boundary() { this->setBoundary(-1, 0); }
 Boundary::Boundary(int boundaryCode, size_t boundaryLength) {
   this->setBoundaryCode(boundaryCode);
   this->setBoundaryLength(boundaryLength);
+}
+
+bool Boundary::isWeirOrPipe() const {
+  return std::find(c_bctypes_weirOrPipe.begin(), c_bctypes_weirOrPipe.end(),
+                   this->m_boundaryCode) != c_bctypes_weirOrPipe.end();
+}
+
+bool Boundary::isInternalWeir() const {
+  return std::find(c_bctypes_internalWeir.begin(), c_bctypes_internalWeir.end(),
+                   this->m_boundaryCode) != c_bctypes_internalWeir.end();
+}
+
+bool Boundary::isExternalWeir() const {
+  return std::find(c_bctypes_externalWeir.begin(), c_bctypes_externalWeir.end(),
+                   this->m_boundaryCode) != c_bctypes_externalWeir.end();
+}
+
+bool Boundary::isInternalWeirWithPipes() const {
+  return std::find(c_bctypes_internalWeirWithPipes.begin(),
+                   c_bctypes_internalWeirWithPipes.end(),
+                   this->m_boundaryCode) !=
+         c_bctypes_internalWeirWithPipes.end();
+}
+
+bool Boundary::isInternalWeirWithoutPipes() const {
+  return std::find(c_bctypes_internalWeirWithoutPipes.begin(),
+                   c_bctypes_internalWeirWithoutPipes.end(),
+                   this->m_boundaryCode) !=
+         c_bctypes_internalWeirWithoutPipes.end();
+}
+
+bool Boundary::isSingleNodeBoundary() const {
+  return std::find(c_bctypes_singleNodeBoundaries.begin(),
+                   c_bctypes_singleNodeBoundaries.end(),
+                   this->m_boundaryCode) !=
+         c_bctypes_singleNodeBoundaries.end();
 }
 
 /**
@@ -78,20 +123,15 @@ void Boundary::setBoundaryLength(size_t boundaryLength) {
     this->m_boundaryLength = boundaryLength;
     this->m_node1.resize(this->boundaryLength());
 
-    if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
-        this->boundaryCode() == 23) {
+    if (this->isWeirOrPipe()) {
       this->m_crestElevation.resize(this->boundaryLength());
       this->m_supercriticalWeirCoefficient.resize(this->boundaryLength());
-    } else if (this->boundaryCode() == 4 || this->boundaryCode() == 24) {
+    }
+    if (this->isInternalWeir()) {
       this->m_node2.resize(this->boundaryLength());
-      this->m_crestElevation.resize(this->boundaryLength());
-      this->m_supercriticalWeirCoefficient.resize(this->boundaryLength());
       this->m_subcriticalWeirCoefficient.resize(this->boundaryLength());
-    } else if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
-      this->m_node2.resize(this->boundaryLength());
-      this->m_crestElevation.resize(this->boundaryLength());
-      this->m_supercriticalWeirCoefficient.resize(this->boundaryLength());
-      this->m_subcriticalWeirCoefficient.resize(this->boundaryLength());
+    }
+    if (this->isInternalWeirWithPipes()) {
       this->m_pipeHeight.resize(this->boundaryLength());
       this->m_pipeDiameter.resize(this->boundaryLength());
       this->m_pipeCoefficient.resize(this->boundaryLength());
@@ -120,10 +160,7 @@ void Boundary::setBoundaryCode(int boundaryCode) {
  * @return crest elevation if applicable, otherwise -9999.0.
  */
 double Boundary::crestElevation(size_t index) const {
-  if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
-      this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
-      this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
-      this->boundaryCode() == 25) {
+  if (this->isWeirOrPipe()) {
     if (index < this->boundaryLength()) {
       return this->m_crestElevation[index];
     }
@@ -139,10 +176,7 @@ double Boundary::crestElevation(size_t index) const {
  * @param crestElevation height above the datum for the weir crest
  */
 void Boundary::setCrestElevation(size_t index, double crestElevation) {
-  if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
-      this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
-      this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
-      this->boundaryCode() == 25) {
+  if (this->isWeirOrPipe()) {
     if (index < this->boundaryLength()) {
       this->m_crestElevation[index] = crestElevation;
     } else {
@@ -160,8 +194,7 @@ void Boundary::setCrestElevation(size_t index, double crestElevation) {
  * @return subcritical weir coefficient
  */
 double Boundary::subcriticalWeirCoefficient(size_t index) const {
-  if (this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
-      this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+  if (this->isInternalWeir()) {
     if (index < this->boundaryLength()) {
       return this->m_subcriticalWeirCoefficient[index];
     }
@@ -178,8 +211,7 @@ double Boundary::subcriticalWeirCoefficient(size_t index) const {
  */
 void Boundary::setSubcriticalWeirCoefficient(
     size_t index, double subcriticalWeirCoefficient) {
-  if (this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
-      this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+  if (this->isInternalWeir()) {
     if (index < this->boundaryLength()) {
       this->m_subcriticalWeirCoefficient[index] = subcriticalWeirCoefficient;
     } else {
@@ -197,10 +229,7 @@ void Boundary::setSubcriticalWeirCoefficient(
  * @return coefficient of supercritical flow
  */
 double Boundary::supercriticalWeirCoefficient(size_t index) const {
-  if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
-      this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
-      this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
-      this->boundaryCode() == 25) {
+  if (this->isWeirOrPipe()) {
     if (index < this->boundaryLength()) {
       return this->m_supercriticalWeirCoefficient[index];
     }
@@ -216,10 +245,7 @@ double Boundary::supercriticalWeirCoefficient(size_t index) const {
  */
 void Boundary::setSupercriticalWeirCoefficient(
     size_t index, double supercriticalWeirCoefficient) {
-  if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
-      this->boundaryCode() == 23 || this->boundaryCode() == 4 ||
-      this->boundaryCode() == 24 || this->boundaryCode() == 5 ||
-      this->boundaryCode() == 25) {
+  if (this->isWeirOrPipe()) {
     if (index < this->boundaryLength()) {
       this->m_supercriticalWeirCoefficient[index] =
           supercriticalWeirCoefficient;
@@ -238,7 +264,7 @@ void Boundary::setSupercriticalWeirCoefficient(
  * @return height of pipe center above datum
  */
 double Boundary::pipeHeight(size_t index) const {
-  if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+  if (this->isInternalWeirWithPipes()) {
     if (index < this->boundaryLength()) {
       return this->m_pipeHeight[index];
     }
@@ -254,7 +280,7 @@ double Boundary::pipeHeight(size_t index) const {
  * @param pipeHeight elevation of the pipe center above datum
  */
 void Boundary::setPipeHeight(size_t index, double pipeHeight) {
-  if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+  if (this->isInternalWeirWithPipes()) {
     if (index < this->boundaryLength()) {
       this->m_pipeHeight[index] = pipeHeight;
     } else {
@@ -271,7 +297,7 @@ void Boundary::setPipeHeight(size_t index, double pipeHeight) {
  * @return diameter of the pipe
  */
 double Boundary::pipeDiameter(size_t index) const {
-  if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+  if (this->isInternalWeirWithPipes()) {
     if (index < this->boundaryLength()) {
       return this->m_pipeDiameter[index];
     }
@@ -286,7 +312,7 @@ double Boundary::pipeDiameter(size_t index) const {
  * @param pipeDiameter diameter of the pipe
  */
 void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
-  if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+  if (this->isInternalWeirWithPipes()) {
     if (index < this->boundaryLength()) {
       this->m_pipeDiameter[index] = pipeDiameter;
     } else {
@@ -303,7 +329,7 @@ void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
  * @return pipe coefficient
  */
 double Boundary::pipeCoefficient(size_t index) const {
-  if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+  if (this->isInternalWeirWithPipes()) {
     if (index < this->boundaryLength()) {
       return this->m_pipeCoefficient[index];
     }
@@ -318,7 +344,7 @@ double Boundary::pipeCoefficient(size_t index) const {
  * @param pipeCoefficient pipe coefficient
  */
 void Boundary::setPipeCoefficient(size_t index, double pipeCoefficient) {
-  if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+  if (this->isInternalWeirWithPipes()) {
     if (index < this->boundaryLength()) {
       this->m_pipeCoefficient[index] = pipeCoefficient;
     } else {
@@ -360,8 +386,7 @@ void Boundary::setNode1(size_t index, Node *node1) {
  * @return Node pointer
  */
 Node *Boundary::node2(size_t index) const {
-  if (this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
-      this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+  if (this->isInternalWeir()) {
     if (index < this->boundaryLength()) {
       return this->m_node2[index];
     }
@@ -376,8 +401,7 @@ Node *Boundary::node2(size_t index) const {
  * @param node2 pointer to an Node object
  */
 void Boundary::setNode2(size_t index, Node *node2) {
-  if (this->boundaryCode() == 4 || this->boundaryCode() == 24 ||
-      this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+  if (this->isInternalWeir()) {
     if (index < this->boundaryLength()) {
       this->m_node2[index] = node2;
     } else {
@@ -393,6 +417,7 @@ void Boundary::setNode2(size_t index, Node *node2) {
  */
 std::vector<std::string> Boundary::toStringList() {
   std::vector<std::string> outputList;
+  outputList.reserve(this->size());
 
   if (this->boundaryCode() == -1) {
     outputList.push_back(boost::str(boost::format("%11i") % this->length()));
@@ -402,27 +427,20 @@ std::vector<std::string> Boundary::toStringList() {
   }
 
   for (size_t i = 0; i < this->length(); ++i) {
-    if (this->boundaryCode() == 0 || this->boundaryCode() == 1 ||
-        this->boundaryCode() == 2 || this->boundaryCode() == 10 ||
-        this->boundaryCode() == 11 || this->boundaryCode() == 12 ||
-        this->boundaryCode() == 20 || this->boundaryCode() == 21 ||
-        this->boundaryCode() == 22 || this->boundaryCode() == 30 ||
-        this->boundaryCode() == 52 || this->boundaryCode() == 102 ||
-        this->boundaryCode() == 112 || this->boundaryCode() == 122) {
+    if (this->boundaryCode() == -1 || this->isSingleNodeBoundary()) {
       outputList.push_back(
           boost::str(boost::format("%11i") % this->node1(i)->id()));
-    } else if (this->boundaryCode() == 3 || this->boundaryCode() == 13 ||
-               this->boundaryCode() == 23) {
+    } else if (this->isExternalWeir()) {
       outputList.push_back(boost::str(
           boost::format("%11i %6.3f %6.3f") % this->node1(i)->id() %
           this->crestElevation(i) % this->supercriticalWeirCoefficient(i)));
-    } else if (this->boundaryCode() == 4 || this->boundaryCode() == 24) {
+    } else if (this->isInternalWeirWithoutPipes()) {
       outputList.push_back(boost::str(
           boost::format("%11i %11i %6.3f %6.3f %6.3f") % this->node1(i)->id() %
           this->node2(i)->id() % this->crestElevation(i) %
           this->subcriticalWeirCoefficient(i) %
           this->supercriticalWeirCoefficient(i)));
-    } else if (this->boundaryCode() == 5 || this->boundaryCode() == 25) {
+    } else if (this->isInternalWeirWithPipes()) {
       outputList.push_back(boost::str(
           boost::format("%11i %11i %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f") %
           this->node1(i)->id() % this->node2(i)->id() %

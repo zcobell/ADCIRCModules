@@ -24,7 +24,7 @@
 #include <utility>
 #include "attribute.h"
 #include "boost/format.hpp"
-#include "error.h"
+#include "logging.h"
 #include "fileio.h"
 #include "stringconversion.h"
 

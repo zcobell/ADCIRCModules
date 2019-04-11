@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "elementtable.h"
-#include "error.h"
+#include "logging.h"
 #include "mesh.h"
 #include "mesh_impl.h"
 

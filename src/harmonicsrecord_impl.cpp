@@ -18,7 +18,7 @@
 //------------------------------------------------------------------------*/
 #include "harmonicsrecord_impl.h"
 #include <cassert>
-#include "error.h"
+#include "logging.h"
 
 HarmonicsRecordImpl::HarmonicsRecordImpl()
     : m_name("none"),

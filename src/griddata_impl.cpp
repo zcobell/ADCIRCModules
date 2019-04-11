@@ -26,7 +26,7 @@
 #include "boost/progress.hpp"
 #include "constants.h"
 #include "elementtable.h"
-#include "error.h"
+#include "logging.h"
 #include "fileio.h"
 #include "stringconversion.h"
 

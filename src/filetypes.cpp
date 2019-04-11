@@ -20,7 +20,7 @@
 #include <cassert>
 #include <fstream>
 #include <vector>
-#include "error.h"
+#include "logging.h"
 #include "fileio.h"
 #include "netcdf.h"
 #include "stringconversion.h"
