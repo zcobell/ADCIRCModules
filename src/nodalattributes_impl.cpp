@@ -24,8 +24,8 @@
 #include <utility>
 #include "attribute.h"
 #include "boost/format.hpp"
-#include "logging.h"
 #include "fileio.h"
+#include "logging.h"
 #include "stringconversion.h"
 
 using namespace Adcirc::ModelParameters;
@@ -242,7 +242,7 @@ void NodalAttributesImpl::_readFort13Body(std::fstream &fid) {
 
       if (nValues == 1) {
         if (!FileIO::AdcircIO::splitStringAttribute1Format(tempLine, node,
-                                                         value)) {
+                                                           value)) {
           adcircmodules_throw_exception(
               "NodalAttributes: Error reading file data");
         }
@@ -260,7 +260,7 @@ void NodalAttributesImpl::_readFort13Body(std::fstream &fid) {
         std::vector<double> values;
         values.reserve(nValues);
         if (!FileIO::AdcircIO::splitStringAttributeNFormat(tempLine, node,
-                                                         values)) {
+                                                           values)) {
           adcircmodules_throw_exception(
               "NodalAttributes: Error reading file data");
         };

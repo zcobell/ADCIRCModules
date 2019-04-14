@@ -130,6 +130,4 @@ std::string Node::to2dmString(bool geographicCoordinates) {
  * @brief Generates a point object from a node
  * @return Point (x,y) using node coordinates
  */
-Point Node::toPoint() {
-  return Point(this->m_x, this->m_y);
-}
+Point Node::toPoint() { return Point(this->m_x, this->m_y); }

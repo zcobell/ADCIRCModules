@@ -23,7 +23,7 @@
 
 using namespace Adcirc::Geometry;
 
-constexpr std::array<int, 7> c_bctypes_weirOrPipe = {3, 13, 23, 4, 24, 5, 25};
+constexpr std::array<int, 7> c_bctypes_weir = {3, 13, 23, 4, 24, 5, 25};
 constexpr std::array<int, 2> c_bctypes_externalWeir = {3, 13};
 constexpr std::array<int, 4> c_bctypes_internalWeir = {4, 24, 5, 25};
 constexpr std::array<int, 2> c_bctypes_internalWeirWithoutPipes = {4, 24};
@@ -48,21 +48,38 @@ Boundary::Boundary(int boundaryCode, size_t boundaryLength) {
   this->setBoundaryLength(boundaryLength);
 }
 
-bool Boundary::isWeirOrPipe() const {
-  return std::find(c_bctypes_weirOrPipe.begin(), c_bctypes_weirOrPipe.end(),
-                   this->m_boundaryCode) != c_bctypes_weirOrPipe.end();
+/**
+ * @brief Returns true if boundary condition is some type of weir-type boundary
+ * @return true if weir
+ */
+bool Boundary::isWeir() const {
+  return std::find(c_bctypes_weir.begin(), c_bctypes_weir.end(),
+                   this->m_boundaryCode) != c_bctypes_weir.end();
 }
 
+/**
+ * @brief Returns true if boundary condition is an internal weir
+ * @return true if internal weir
+ */
 bool Boundary::isInternalWeir() const {
   return std::find(c_bctypes_internalWeir.begin(), c_bctypes_internalWeir.end(),
                    this->m_boundaryCode) != c_bctypes_internalWeir.end();
 }
 
+/**
+ * @brief Returns true if boundary condition is an external weir
+ * @return true if external weir
+ */
 bool Boundary::isExternalWeir() const {
   return std::find(c_bctypes_externalWeir.begin(), c_bctypes_externalWeir.end(),
                    this->m_boundaryCode) != c_bctypes_externalWeir.end();
 }
 
+/**
+ * @brief Returns true if boundary condition is an internal weir with cross
+ * barrier pipes
+ * @return true if weir with cross barrier pipes
+ */
 bool Boundary::isInternalWeirWithPipes() const {
   return std::find(c_bctypes_internalWeirWithPipes.begin(),
                    c_bctypes_internalWeirWithPipes.end(),
@@ -70,6 +87,11 @@ bool Boundary::isInternalWeirWithPipes() const {
          c_bctypes_internalWeirWithPipes.end();
 }
 
+/**
+ * @brief Returns true if boundary condition is internal weir without cross
+ * barrier pipes
+ * @return true if internal weir without cross barrier pipes
+ */
 bool Boundary::isInternalWeirWithoutPipes() const {
   return std::find(c_bctypes_internalWeirWithoutPipes.begin(),
                    c_bctypes_internalWeirWithoutPipes.end(),
@@ -77,6 +99,10 @@ bool Boundary::isInternalWeirWithoutPipes() const {
          c_bctypes_internalWeirWithoutPipes.end();
 }
 
+/**
+ * @brief Returns true if the boundary is some type of single node boundary
+ * @return true if single node boundary
+ */
 bool Boundary::isSingleNodeBoundary() const {
   return std::find(c_bctypes_singleNodeBoundaries.begin(),
                    c_bctypes_singleNodeBoundaries.end(),
@@ -123,7 +149,7 @@ void Boundary::setBoundaryLength(size_t boundaryLength) {
     this->m_boundaryLength = boundaryLength;
     this->m_node1.resize(this->boundaryLength());
 
-    if (this->isWeirOrPipe()) {
+    if (this->isWeir()) {
       this->m_crestElevation.resize(this->boundaryLength());
       this->m_supercriticalWeirCoefficient.resize(this->boundaryLength());
     }
@@ -160,7 +186,7 @@ void Boundary::setBoundaryCode(int boundaryCode) {
  * @return crest elevation if applicable, otherwise -9999.0.
  */
 double Boundary::crestElevation(size_t index) const {
-  if (this->isWeirOrPipe()) {
+  if (this->isWeir()) {
     if (index < this->boundaryLength()) {
       return this->m_crestElevation[index];
     }
@@ -176,7 +202,7 @@ double Boundary::crestElevation(size_t index) const {
  * @param crestElevation height above the datum for the weir crest
  */
 void Boundary::setCrestElevation(size_t index, double crestElevation) {
-  if (this->isWeirOrPipe()) {
+  if (this->isWeir()) {
     if (index < this->boundaryLength()) {
       this->m_crestElevation[index] = crestElevation;
     } else {
@@ -229,7 +255,7 @@ void Boundary::setSubcriticalWeirCoefficient(
  * @return coefficient of supercritical flow
  */
 double Boundary::supercriticalWeirCoefficient(size_t index) const {
-  if (this->isWeirOrPipe()) {
+  if (this->isWeir()) {
     if (index < this->boundaryLength()) {
       return this->m_supercriticalWeirCoefficient[index];
     }
@@ -245,7 +271,7 @@ double Boundary::supercriticalWeirCoefficient(size_t index) const {
  */
 void Boundary::setSupercriticalWeirCoefficient(
     size_t index, double supercriticalWeirCoefficient) {
-  if (this->isWeirOrPipe()) {
+  if (this->isWeir()) {
     if (index < this->boundaryLength()) {
       this->m_supercriticalWeirCoefficient[index] =
           supercriticalWeirCoefficient;

@@ -89,7 +89,7 @@ class Boundary {
 
   std::vector<std::string> ADCIRCMODULES_EXPORT toStringList();
 
-  bool ADCIRCMODULES_EXPORT isWeirOrPipe() const;
+  bool ADCIRCMODULES_EXPORT isWeir() const;
   bool ADCIRCMODULES_EXPORT isInternalWeir() const;
   bool ADCIRCMODULES_EXPORT isInternalWeirWithoutPipes() const;
   bool ADCIRCMODULES_EXPORT isExternalWeir() const;

@@ -23,9 +23,9 @@
 #include <iostream>
 #include <memory>
 #include <utility>
-#include "logging.h"
 #include "fileio.h"
 #include "filetypes.h"
+#include "logging.h"
 #include "netcdf.h"
 #include "stringconversion.h"
 

@@ -23,7 +23,9 @@
 
 using namespace Adcirc::ModelParameters;
 
-bool equalTo(double a, double b) { return std::abs(a - b) < 0.000001; }
+bool equalTo(const double &a, const double &b) {
+  return std::abs(a - b) < 0.000001;
+}
 
 /**
  * @brief Constructor

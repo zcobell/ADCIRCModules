@@ -26,8 +26,8 @@
 #include "boost/progress.hpp"
 #include "constants.h"
 #include "elementtable.h"
-#include "logging.h"
 #include "fileio.h"
+#include "logging.h"
 #include "stringconversion.h"
 
 using namespace Adcirc::Geometry;

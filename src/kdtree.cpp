@@ -19,22 +19,51 @@
 #include "kdtree.h"
 #include "kdtree_impl.h"
 
+/**
+ * @brief Default constructor for a new Kdtree object
+ */
 Kdtree::Kdtree() { this->m_ptr = new Kdtree_impl(); }
 
+/**
+ * @brief Destructor for Kdtree object
+ */
 Kdtree::~Kdtree() { delete this->m_ptr; }
 
+/**
+ * @brief Builds the Kdtree using an x and y vector of doubles
+ * @param x vector of doubles for x-position
+ * @param y vector of doubles for y-position
+ * @return error code
+ */
 int Kdtree::build(std::vector<double> &x, std::vector<double> &y) {
   int ierr = this->m_ptr->build(x, y);
   if (ierr != 0) return Kdtree::SizeMismatch;
   return Kdtree::NoError;
 }
 
+/**
+ * @brief Finds the nearest position in the x, y 2d pointcloud
+ * @param x x-location for search
+ * @param y y-location for search
+ * @return index in x,y array
+ */
 size_t Kdtree::findNearest(double x, double y) {
   return this->m_ptr->findNearest(x, y);
 }
 
+/**
+ * @brief Finds the nearest 'x' number of locations, sorted
+ * @param x x-location for search
+ * @param y y-location for search
+ * @param n number of points to return
+ * @return vector of indicies in the x,y array
+ */
 std::vector<size_t> Kdtree::findXNearest(double x, double y, size_t n) {
   return this->m_ptr->findXNearest(x, y, n);
 }
 
+/**
+ * @brief Checks if the Kdtree has been initialized
+ * @return true if the Kdtree has been initialized
+ */
 bool Kdtree::initialized() { return this->m_ptr->initialized(); }

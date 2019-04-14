@@ -21,17 +21,17 @@
 
 #include "config.h"
 #include "constants.h"
-#include "logging.h"
 #include "ezproj.h"
 #include "filetypes.h"
 #include "griddata.h"
 #include "harmonicsoutput.h"
 #include "interpolationmethods.h"
+#include "kdtree.h"
+#include "logging.h"
 #include "mesh.h"
 #include "meshchecker.h"
 #include "multithreading.h"
 #include "nodalattributes.h"
 #include "outputfile.h"
-#include "kdtree.h"
 
 #endif  // ADCIRCMODULES_H

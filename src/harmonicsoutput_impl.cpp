@@ -24,9 +24,9 @@
 #include <utility>
 #include "boost/algorithm/string.hpp"
 #include "boost/format.hpp"
-#include "logging.h"
 #include "fileio.h"
 #include "filetypes.h"
+#include "logging.h"
 #include "netcdf.h"
 #include "stringconversion.h"
 

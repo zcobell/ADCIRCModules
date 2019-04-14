@@ -21,7 +21,6 @@
 
 #include <vector>
 #include "adcircmodules_global.h"
-#include "attribute.h"
 #include "node.h"
 
 namespace Adcirc {
@@ -77,4 +76,5 @@ class Attribute {
 };
 }  // namespace ModelParameters
 }  // namespace Adcirc
+
 #endif  // ATTRIBUTE_H

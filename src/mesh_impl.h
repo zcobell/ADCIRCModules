@@ -25,11 +25,11 @@
 #include <utility>
 #include <vector>
 #include "adcircmodules_global.h"
-#include "kdtree.h"
 #include "boundary.h"
 #include "element.h"
 #include "elementtable.h"
 #include "filetypes.h"
+#include "kdtree.h"
 #include "node.h"
 
 #ifdef USE_GOOGLE_FLAT_MAP
