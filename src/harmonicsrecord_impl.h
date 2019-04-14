@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef HARMONICSRECORDIMPL_H
-#define HARMONICSRECORDIMPL_H
+#ifndef ADCMOD_HARMONICSRECORDIMPL_H
+#define ADCMOD_HARMONICSRECORDIMPL_H
 
 #include <string>
 #include <vector>
@@ -55,4 +55,4 @@ class HarmonicsRecordImpl {
   double m_equilibriumArg;
 };
 
-#endif  // HARMONICSRECORD_H
+#endif  // ADCMOD_HARMONICSRECORD_H

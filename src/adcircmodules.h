@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCIRCMODULES_H
-#define ADCIRCMODULES_H
+#ifndef ADCMOD_ADCIRCMODULES_H
+#define ADCMOD_ADCIRCMODULES_H
 
 #include "config.h"
 #include "constants.h"
@@ -34,4 +34,4 @@
 #include "nodalattributes.h"
 #include "outputfile.h"
 
-#endif  // ADCIRCMODULES_H
+#endif  // ADCMOD_ADCIRCMODULES_H

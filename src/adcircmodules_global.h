@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCIRCMODULES_GLOBAL_H
-#define ADCIRCMODULES_GLOBAL_H
+#ifndef ADCMOD_GLOBAL_H
+#define ADCMOD_GLOBAL_H
 
 #if defined(_MSC_VER)
 #   define DLL_EXPORT __declspec(dllexport)
@@ -46,4 +46,4 @@
 #endif
 
 
-#endif // ADCIRCMODULES_GLOBAL_H
+#endif // ADCMOD_GLOBAL_H

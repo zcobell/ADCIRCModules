@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef MULTITHREADING_H
-#define MULTITHREADING_H
+#ifndef ADCMOD_MULTITHREADING_H
+#define ADCMOD_MULTITHREADING_H
 #include "adcircmodules_global.h"
 
 class Multithreading {
@@ -32,4 +32,4 @@ class Multithreading {
   static void ADCIRCMODULES_EXPORT setMaximumThreads();
 };
 
-#endif  // MULTITHREADING_H
+#endif  // ADCMOD_MULTITHREADING_H

@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCIRCMODULES_LOGGING_H
-#define ADCIRCMODULES_LOGGING_H
+#ifndef ADCMOD_LOGGING_H
+#define ADCMOD_LOGGING_H
 
 #include <iostream>
 #include <string>
@@ -59,4 +59,4 @@ class Logging {
 #define adcircmodules_throw_exception(arg) \
   Adcirc::Logging::throwError(arg, __FILE__, __LINE__);
 
-#endif  // ADCIRCMODULES_LOGGING_H
+#endif  // ADCMOD_LOGGING_H

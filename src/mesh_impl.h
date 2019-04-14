@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef MESHIMPL_H
-#define MESHIMPL_H
+#ifndef ADCMOD_MESHIMPL_H
+#define ADCMOD_MESHIMPL_H
 
 #include <fstream>
 #include <memory>
@@ -214,4 +214,4 @@ class MeshImpl {
   std::unique_ptr<Kdtree> m_elementalSearchTree;
 };
 
-#endif  // MESHIMPL_H
+#endif  // ADCMOD_MESHIMPL_H

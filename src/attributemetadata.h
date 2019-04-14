@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ATTRIBUTEMETADATA_H
-#define ATTRIBUTEMETADATA_H
+#ifndef ADCMOD_ATTRIBUTEMETADATA_H
+#define ADCMOD_ATTRIBUTEMETADATA_H
 
 #include <string>
 #include <vector>
@@ -87,4 +87,4 @@ class AttributeMetadata {
 };
 }  // namespace ModelParameters
 }  // namespace Adcirc
-#endif  // ATTRIBUTEMETADATA_H
+#endif  // ADCMOD_ATTRIBUTEMETADATA_H

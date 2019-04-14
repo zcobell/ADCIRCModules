@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef BOUNDARY_H
-#define BOUNDARY_H
+#ifndef ADCMOD_BOUNDARY_H
+#define ADCMOD_BOUNDARY_H
 
 #include <string>
 #include <vector>
@@ -111,4 +111,4 @@ class Boundary {
 };
 }  // namespace Geometry
 }  // namespace Adcirc
-#endif  // BOUNDARY_H
+#endif  // ADCMOD_BOUNDARY_H

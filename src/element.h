@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ELEMENT_H
-#define ELEMENT_H
+#ifndef ADCMOD_ELEMENT_H
+#define ADCMOD_ELEMENT_H
 
 #include <cmath>
 #include <string>
@@ -93,4 +93,4 @@ class Element {
 }  // namespace Geometry
 }  // namespace Adcirc
 
-#endif  // ELEMENT_H
+#endif  // ADCMOD_ELEMENT_H

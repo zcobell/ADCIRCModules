@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef MESH_H
-#define MESH_H
+#ifndef ADCMOD_MESH_H
+#define ADCMOD_MESH_H
 
 #include <limits>
 #include <string>
@@ -203,4 +203,4 @@ class Mesh {
 
 }  // namespace Adcirc
 
-#endif  // MESH_H
+#endif  // ADCMOD_MESH_H

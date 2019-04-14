@@ -16,12 +16,12 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef ADCMOD_CONFIG_H
+#define ADCMOD_CONFIG_H
 
 #include <string>
 #include "adcircmodules_global.h"
 
 std::string ADCIRCMODULES_EXPORT version();
 
-#endif  // CONFIG_H
+#endif  // ADCMOD_CONFIG_H

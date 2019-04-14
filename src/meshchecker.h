@@ -16,6 +16,9 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
+#ifndef ADCMOD_MESHCHECKER_H
+#define ADCMOD_MESHCHECKER_H
+
 #include "adcircmodules_global.h"
 #include "mesh.h"
 
@@ -55,3 +58,5 @@ class MeshChecker {
 };
 }  // namespace Utility
 }  // namespace Adcirc
+
+#endif  // ADCMOD_MESHCHECKER_H

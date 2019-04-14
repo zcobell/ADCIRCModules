@@ -1,5 +1,5 @@
-#ifndef FILETYPES_H
-#define FILETYPES_H
+#ifndef ADCMOD_FILETYPES_H
+#define ADCMOD_FILETYPES_H
 
 #include <string>
 
@@ -59,4 +59,4 @@ bool inquireNetcdfFormat(const std::string &filename, int &format);
 
 }  // namespace Output
 }  // namespace Adcirc
-#endif  // FILETYPES_H
+#endif  // ADCMOD_FILETYPES_H

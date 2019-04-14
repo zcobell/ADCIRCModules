@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef PIXEL_H
-#define PIXEL_H
+#ifndef ADCMOD_PIXEL_H
+#define ADCMOD_PIXEL_H
 
 #include <cstddef>
 #include "adcircmodules_global.h"
@@ -48,4 +48,4 @@ class Pixel {
   size_t m_j;
 };
 
-#endif  // PIXEL_H
+#endif  // ADCMOD_PIXEL_H

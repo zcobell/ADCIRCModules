@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef GRIDDATAIMPL_H
-#define GRIDDATAIMPL_H
+#ifndef ADCMOD_GRIDDATAIMPL_H
+#define ADCMOD_GRIDDATAIMPL_H
 
 #include <cmath>
 #include <memory>
@@ -163,4 +163,4 @@ class GriddataImpl {
   bool m_rasterInMemory;
 };
 
-#endif  // GRIDDATAIMPL_H
+#endif  // ADCMOD_GRIDDATAIMPL_H

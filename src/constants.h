@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#ifndef ADCMOD_CONSTANTS_H
+#define ADCMOD_CONSTANTS_H
 
 #include <utility>
 
@@ -130,4 +130,4 @@ class Constants {
   static double cartesian_distance(double x1, double y1, double x2, double y2);
 };
 
-#endif  // CONSTANTS_H
+#endif  // ADCMOD_CONSTANTS_H

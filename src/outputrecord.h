@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef OUTPUTRECORD_H
-#define OUTPUTRECORD_H
+#ifndef ADCMOD_OUTPUTRECORD_H
+#define ADCMOD_OUTPUTRECORD_H
 
 #include <cstdlib>
 #include <limits>
@@ -97,4 +97,4 @@ class OutputRecord {
 }  // namespace Output
 }  // namespace Adcirc
 
-#endif  // OUTPUTRECORD_H
+#endif  // ADCMOD_OUTPUTRECORD_H

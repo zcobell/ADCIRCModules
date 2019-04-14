@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef OUTPUTFILE_H
-#define OUTPUTFILE_H
+#ifndef ADCMOD_OUTPUTFILE_H
+#define ADCMOD_OUTPUTFILE_H
 
 #include <fstream>
 #include <memory>
@@ -133,4 +133,4 @@ class OutputFile {
 }  // namespace Output
 }  // namespace Adcirc
 
-#endif  // OUTPUTFILE_H
+#endif  // ADCMOD_OUTPUTFILE_H

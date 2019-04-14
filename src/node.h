@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef NODE_H
-#define NODE_H
+#ifndef ADCMOD_NODE_H
+#define ADCMOD_NODE_H
 
 #include <string>
 #include <utility>
@@ -70,4 +70,4 @@ class Node {
 };
 }  // namespace Geometry
 }  // namespace Adcirc
-#endif  // NODE_H
+#endif  // ADCMOD_NODE_H

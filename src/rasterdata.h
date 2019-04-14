@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef RASTERDATA_H
-#define RASTERDATA_H
+#ifndef ADCMOD_RASTERDATA_H
+#define ADCMOD_RASTERDATA_H
 
 #include <string>
 #include <vector>
@@ -162,4 +162,4 @@ class Rasterdata {
   std::string m_filename;
 };
 
-#endif  // RASTERDATA_H
+#endif  // ADCMOD_RASTERDATA_H

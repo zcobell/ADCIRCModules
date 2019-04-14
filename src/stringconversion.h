@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef STRINGCONVERSION_H
-#define STRINGCONVERSION_H
+#ifndef ADCMOD_STRINGCONVERSION_H
+#define ADCMOD_STRINGCONVERSION_H
 
 #include <string>
 
@@ -32,4 +32,4 @@ class StringConversion {
   static std::string sanitizeString(const std::string& a);
 };
 
-#endif  // STRINGCONVERSION_H
+#endif  // ADCMOD_STRINGCONVERSION_H

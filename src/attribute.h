@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ATTRIBUTE_H
-#define ATTRIBUTE_H
+#ifndef ADCMOD_ATTRIBUTE_H
+#define ADCMOD_ATTRIBUTE_H
 
 #include <vector>
 #include "adcircmodules_global.h"
