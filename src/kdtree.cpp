@@ -67,3 +67,15 @@ std::vector<size_t> Kdtree::findXNearest(double x, double y, size_t n) {
  * @return true if the Kdtree has been initialized
  */
 bool Kdtree::initialized() { return this->m_ptr->initialized(); }
+
+/**
+ * @brief Finds all points within a given radius
+ * @param x x-location for search
+ * @param y y-location for search
+ * @param radius search radius in native coordinates
+ * @return vector with indicies of found points
+ */
+std::vector<size_t> Kdtree::findWithinRadius(double x, double y,
+                                             const double radius) {
+  return this->m_ptr->findWithinRadius(x, y, radius);
+}

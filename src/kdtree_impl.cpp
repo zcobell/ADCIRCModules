@@ -41,8 +41,9 @@ size_t Kdtree_impl::findNearest(double x, double y) {
   double out_dist_sqr;
   nanoflann::KNNResultSet<double> resultSet(1);
   resultSet.init(&index, &out_dist_sqr);
-  double query_pt[2] = {x, y};
-  this->m_tree->findNeighbors(resultSet, query_pt, nanoflann::SearchParams(10));
+  const double query_pt[2] = {x, y};
+  this->m_tree->findNeighbors(resultSet, &query_pt[0],
+                              nanoflann::SearchParams(10));
   return index;
 }
 
@@ -51,10 +52,38 @@ std::vector<size_t> Kdtree_impl::findXNearest(double x, double y, size_t n) {
   double *out_dist_sqr = new double[n];
   nanoflann::KNNResultSet<double> resultSet(n);
   resultSet.init(index, out_dist_sqr);
-  double query_pt[2] = {x, y};
-  this->m_tree->findNeighbors(resultSet, query_pt, nanoflann::SearchParams(10));
+  const double query_pt[2] = {x, y};
+
+  this->m_tree->findNeighbors(resultSet, &query_pt[0],
+                              nanoflann::SearchParams(10));
   std::vector<size_t> result(index, index + n);
   delete[] index;
   delete[] out_dist_sqr;
   return result;
+}
+
+std::vector<size_t> Kdtree_impl::findWithinRadius(double x, double y,
+                                                  const double radius) {
+  //...Square radius since distance metric is a square distance
+  const double search_radius = std::pow(radius, 2.0);
+
+  const double query_pt[2] = {x, y};
+
+  std::vector<std::pair<size_t, double>> matches;
+  nanoflann::SearchParams params;
+
+  //...This is the default, but making it explicit for futureproofing
+  params.sorted = true;
+
+  //...Perform the search
+  const size_t nmatches =
+      this->m_tree->radiusSearch(query_pt, search_radius, matches, params);
+
+  //...Save the indicies into a vector to return
+  std::vector<size_t> outMatches;
+  outMatches.reserve(nmatches);
+  for (auto &match : matches) {
+    outMatches.push_back(match.first);
+  }
+  return outMatches;
 }
