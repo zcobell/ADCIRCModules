@@ -21,21 +21,33 @@
 
 #include <cstddef>
 #include <vector>
+#include "adcircmodules_global.h"
 
 class Kdtree_impl;
 
+/**
+ * @class Kdtree
+ * @author Zachary Cobell
+ * @brief Class that handles neighbor searching using nanoflann
+ * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * is released under the terms of the GNU General Public License v3
+ *
+ */
 class Kdtree {
  public:
-  Kdtree();
-  ~Kdtree();
+  ADCIRCMODULES_EXPORT Kdtree();
+  ADCIRCMODULES_EXPORT ~Kdtree();
 
   enum _errors { NoError, SizeMismatch };
 
-  int build(std::vector<double> &x, std::vector<double> &y);
-  size_t findNearest(double x, double y);
-  std::vector<size_t> findXNearest(double x, double y, size_t n);
-  std::vector<size_t> findWithinRadius(double x, double y, const double radius);
-  bool initialized();
+  ADCIRCMODULES_EXPORT int build(std::vector<double> &x,
+                                 std::vector<double> &y);
+  ADCIRCMODULES_EXPORT size_t findNearest(double x, double y);
+  ADCIRCMODULES_EXPORT std::vector<size_t> findXNearest(double x, double y,
+                                                        size_t n);
+  ADCIRCMODULES_EXPORT std::vector<size_t> findWithinRadius(
+      double x, double y, const double radius);
+  ADCIRCMODULES_EXPORT bool initialized();
 
  private:
   Kdtree_impl *m_ptr;
