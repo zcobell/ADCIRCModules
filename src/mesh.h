@@ -80,8 +80,6 @@ class Mesh {
 
   ADCIRCMODULES_EXPORT ~Mesh();
 
-  const size_t ELEMENT_NOT_FOUND = std::numeric_limits<size_t>::max();
-
   friend class ElementTable;
 
   std::vector<double> ADCIRCMODULES_EXPORT x();

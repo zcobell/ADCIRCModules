@@ -24,6 +24,7 @@
 #include <utility>
 #include "attribute.h"
 #include "boost/format.hpp"
+#include "default_values.h"
 #include "fileio.h"
 #include "logging.h"
 #include "stringconversion.h"
@@ -61,7 +62,7 @@ size_t NodalAttributesImpl::locateAttribute(const std::string &attributeName) {
          this->m_attributeLocations.end());
   if (this->m_attributeLocations.find(attributeName) ==
       this->m_attributeLocations.end()) {
-    return -1;
+    return adcircmodules_default_value<size_t>();
   } else {
     return this->m_attributeLocations[attributeName];
   }

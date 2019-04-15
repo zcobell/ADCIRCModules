@@ -53,7 +53,7 @@ class MeshChecker {
   Adcirc::Geometry::Mesh *m_mesh;
 
   static void printFailedLeveeStatus(
-      Adcirc::Geometry::Boundary *bc, int index,
+      Adcirc::Geometry::Boundary *bc, size_t index,
       double minimumCrestElevationOverTopography);
 };
 }  // namespace Utility

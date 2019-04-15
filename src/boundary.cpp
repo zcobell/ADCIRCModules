@@ -19,12 +19,13 @@
 #include "boundary.h"
 #include <array>
 #include "boost/format.hpp"
+#include "default_values.h"
 #include "logging.h"
 
 using namespace Adcirc::Geometry;
 
 constexpr std::array<int, 7> c_bctypes_weir = {3, 13, 23, 4, 24, 5, 25};
-constexpr std::array<int, 2> c_bctypes_externalWeir = {3, 13};
+constexpr std::array<int, 3> c_bctypes_externalWeir = {3, 13, 23};
 constexpr std::array<int, 4> c_bctypes_internalWeir = {4, 24, 5, 25};
 constexpr std::array<int, 2> c_bctypes_internalWeirWithoutPipes = {4, 24};
 constexpr std::array<int, 2> c_bctypes_internalWeirWithPipes = {5, 25};
@@ -183,7 +184,8 @@ void Boundary::setBoundaryCode(int boundaryCode) {
  * @brief Returns the crest elevation for boundary types 3, 13, 23, 4, 24, 5,
  * and 25
  * @param index position along the boundary
- * @return crest elevation if applicable, otherwise -9999.0.
+ * @return crest elevation if applicable, otherwise
+ * adcircmodules_default_value<double>().
  */
 double Boundary::crestElevation(size_t index) const {
   if (this->isWeir()) {
@@ -192,7 +194,7 @@ double Boundary::crestElevation(size_t index) const {
     }
   }
   adcircmodules_throw_exception("Index exceeds bounds");
-  return -9999.0;
+  return adcircmodules_default_value<double>();
 }
 
 /**
@@ -226,7 +228,7 @@ double Boundary::subcriticalWeirCoefficient(size_t index) const {
     }
   }
   adcircmodules_throw_exception("Index exceeds bounds");
-  return -9999.0;
+  return adcircmodules_default_value<double>();
 }
 
 /**
@@ -261,7 +263,7 @@ double Boundary::supercriticalWeirCoefficient(size_t index) const {
     }
   }
   adcircmodules_throw_exception("Index exceeds bounds");
-  return -9999.0;
+  return adcircmodules_default_value<double>();
 }
 
 /**
@@ -296,7 +298,7 @@ double Boundary::pipeHeight(size_t index) const {
     }
   }
   adcircmodules_throw_exception("Index exceeds bounds");
-  return -9999.0;
+  return adcircmodules_default_value<double>();
 }
 
 /**
@@ -329,7 +331,7 @@ double Boundary::pipeDiameter(size_t index) const {
     }
   }
   adcircmodules_throw_exception("Index exceeds bounds");
-  return -9999.0;
+  return adcircmodules_default_value<double>();
 }
 
 /**
@@ -361,7 +363,7 @@ double Boundary::pipeCoefficient(size_t index) const {
     }
   }
   adcircmodules_throw_exception("Index exceeds bounds");
-  return -9999.0;
+  return adcircmodules_default_value<double>();
 }
 
 /**

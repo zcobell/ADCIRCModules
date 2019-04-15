@@ -24,6 +24,7 @@
 #include <utility>
 #include "boost/algorithm/string.hpp"
 #include "boost/format.hpp"
+#include "default_values.h"
 #include "fileio.h"
 #include "filetypes.h"
 #include "logging.h"
@@ -50,7 +51,7 @@ size_t HarmonicsOutputImpl::index(const std::string& name) {
   auto i = this->m_index.find(n);
   if (i == this->m_index.end()) {
     adcircmodules_throw_exception("Harmonic consituent not found in data");
-    return std::numeric_limits<size_t>::max();
+    return adcircmodules_default_value<size_t>();
   } else {
     return i->second;
   }
@@ -179,7 +180,7 @@ size_t HarmonicsOutputImpl::nodeIdToArrayIndex(size_t id) {
   auto i = this->m_nodeIndex.find(id);
   if (i == this->m_nodeIndex.end()) {
     adcircmodules_throw_exception("Node not found in data");
-    return std::numeric_limits<size_t>::max();
+    return adcircmodules_default_value<size_t>();
   } else {
     return i->second;
   }

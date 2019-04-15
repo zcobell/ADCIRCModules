@@ -18,13 +18,18 @@
 //------------------------------------------------------------------------*/
 #include "node.h"
 #include "boost/format.hpp"
+#include "default_values.h"
 
 using namespace Adcirc::Geometry;
 
 /**
  * @brief Default constructor
  */
-Node::Node() : m_id(0), m_x(-9999.0), m_y(-9999.0), m_z(-9999.0) {}
+Node::Node()
+    : m_id(0),
+      m_x(adcircmodules_default_value<double>()),
+      m_y(adcircmodules_default_value<double>()),
+      m_z(adcircmodules_default_value<double>()) {}
 
 /**
  * @brief Constructor taking the id, x, y, and z for the node

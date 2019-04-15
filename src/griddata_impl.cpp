@@ -25,6 +25,7 @@
 #include <utility>
 #include "boost/progress.hpp"
 #include "constants.h"
+#include "default_values.h"
 #include "elementtable.h"
 #include "fileio.h"
 #include "logging.h"
@@ -68,7 +69,7 @@ GriddataImpl::GriddataImpl()
       m_rasterFile(std::string()),
       m_interpolationFlags(std::vector<int>()),
       m_filterSize(std::vector<double>()),
-      m_defaultValue(-9999.0),
+      m_defaultValue(adcircmodules_default_value<double>()),
       m_epsg(4326),
       m_datumShift(0.0),
       m_showProgressBar(false),
@@ -79,7 +80,7 @@ GriddataImpl::GriddataImpl()
 GriddataImpl::GriddataImpl(Mesh *mesh, std::string rasterFile)
     : m_mesh(mesh),
       m_rasterFile(rasterFile),
-      m_defaultValue(-9999.0),
+      m_defaultValue(adcircmodules_default_value<double>()),
       m_epsg(4326),
       m_datumShift(0.0),
       m_showProgressBar(false),

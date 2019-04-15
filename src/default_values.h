@@ -16,23 +16,15 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_ADCIRCMODULES_H
-#define ADCMOD_ADCIRCMODULES_H
+#ifndef ADCMOD_DEFAULT_VALUES_H
+#define ADCMOD_DEFAULT_VALUES_H
 
-#include "config.h"
-#include "constants.h"
-#include "ezproj.h"
-#include "filetypes.h"
-#include "griddata.h"
-#include "harmonicsoutput.h"
-#include "interpolationmethods.h"
-#include "kdtree.h"
-#include "logging.h"
-#include "mesh.h"
-#include "meshchecker.h"
-#include "multithreading.h"
-#include "nodalattributes.h"
-#include "outputfile.h"
-#include "default_values.h"
+#include <cstdlib>
+#include <limits>
 
-#endif  // ADCMOD_ADCIRCMODULES_H
+template <typename T>
+constexpr T adcircmodules_default_value() {
+  return std::numeric_limits<T>::max();
+}
+
+#endif  // DEFAULT_VALUES_H

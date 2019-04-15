@@ -18,6 +18,7 @@
 //------------------------------------------------------------------------*/
 #include "element.h"
 #include <cmath>
+#include <numeric>
 #include "boost/format.hpp"
 #include "boost/geometry.hpp"
 #include "constants.h"
@@ -112,14 +113,14 @@ void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) {
  * @brief Number of verticies in this element
  * @return number of nodes in element
  */
-int Element::n() const { return this->m_nodes.size(); }
+size_t Element::n() const { return this->m_nodes.size(); }
 
 /**
  * @brief Sets the node at the specified position to the supplied pointer
  * @param i location in the node vector for this element
  * @param node pointer to an Node object
  */
-void Element::setNode(int i, Node *node) {
+void Element::setNode(size_t i, Node *node) {
   if (i < this->n()) {
     this->m_nodes[i] = node;
   }
@@ -143,7 +144,7 @@ void Element::setId(size_t id) { this->m_id = id; }
  * @param i position in node vector
  * @return Node pointer
  */
-Node *Element::node(int i) {
+Node *Element::node(size_t i) {
   if (i < this->n()) {
     return this->m_nodes.at(i);
   }
@@ -196,7 +197,7 @@ std::string Element::to2dmString() {
  */
 double Element::elementSize(bool geodesic) {
   double size = 0.0;
-  for (int i = 0; i < this->n(); ++i) {
+  for (size_t i = 0; i < this->n(); ++i) {
     std::pair<Node *, Node *> p = this->elementLeg(i);
     Node *n1 = p.first;
     Node *n2 = p.second;
@@ -213,22 +214,22 @@ void Element::sortVerticiesAboutCenter() {
   this->getElementCenter(xc, yc);
 
   auto compareClockwise = [&](Node *a, Node *b) -> bool {
-    if (a->x() - xc >= 0 && b->x() - xc < 0) return true;
-    if (a->x() - xc < 0 && b->x() - xc >= 0) return false;
-    if (a->x() - xc == 0 && b->x() - xc == 0) {
+    if (a->x() - xc >= 0.0 && b->x() - xc < 0.0) return true;
+    if (a->x() - xc < 0.0 && b->x() - xc >= 0) return false;
+    if (a->x() - xc == 0.0 && b->x() - xc == 0.0) {
       if (a->y() - yc >= 0 || b->y() - yc >= 0) return a->y() > b->y();
       return b->y() > a->y();
     }
 
     // compute the cross product of vectors (center -> a) x (center -> b)
-    int det = (a->x() - xc) * (b->y() - yc) - (b->x() - xc) * (a->y() - yc);
-    if (det < 0) return true;
-    if (det > 0) return false;
+    double det = (a->x() - xc) * (b->y() - yc) - (b->x() - xc) * (a->y() - yc);
+    if (det < 0.0) return true;
+    if (det > 0.0) return false;
 
     // points a and b are on the same line from the center
     // check which point is closer to the center
-    int d1 = (a->x() - xc) * (a->x() - xc) + (a->y() - yc) * (a->y() - yc);
-    int d2 = (b->x() - xc) * (b->x() - xc) + (b->y() - yc) * (b->y() - yc);
+    double d1 = (a->x() - xc) * (a->x() - xc) + (a->y() - yc) * (a->y() - yc);
+    double d2 = (b->x() - xc) * (b->x() - xc) + (b->y() - yc) * (b->y() - yc);
     return d1 > d2;
   };
 
@@ -332,4 +333,120 @@ bool Element::isInside(double x, double y) {
 bool Element::isInside(Point location) {
   return bg::covered_by(point_t(location.first, location.second),
                         element2polygon(this->m_nodes));
+}
+
+/**
+ * @brief Returns the interpolation weights for computing the value of a given
+ * point inside an element
+ * @param x station location
+ * @param y station location
+ * @param weights vector of interpolation weights for each vertex
+ */
+void Element::interpolationWeights(double x, double y,
+                                   std::vector<double> &weights) {
+  weights.resize(this->n());
+  std::fill(weights.begin(), weights.end(), 0.0);
+
+  if (this->n() == 3) {
+    this->triangularInterpolation(x, y, weights);
+  } else {
+    this->polygonInterpolation(x, y, weights);
+  }
+  return;
+}
+
+/**
+ * @brief Performs a barycentric interpolation
+ * @param x station location
+ * @param y station location
+ * @param weights vector of interpolation weights for each vertex
+ */
+void Element::triangularInterpolation(double x, double y,
+                                      std::vector<double> &weights) {
+  const double x1 = this->node(0)->x();
+  const double x2 = this->node(1)->x();
+  const double x3 = this->node(2)->x();
+
+  const double y1 = this->node(0)->y();
+  const double y2 = this->node(1)->y();
+  const double y3 = this->node(2)->y();
+
+  const double denom = (y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3);
+
+  weights[0] = (((y2 - y3) * (x - x3) + (x3 - x2) * (y - y3)) / denom);
+  weights[1] = (((y3 - y1) * (x - x3) + (x1 - x3) * (y - y3)) / denom);
+  weights[2] = (1.0 - weights[0] - weights[1]);
+
+  return;
+}
+
+/**
+ * @brief Performs an interpolation on a polygon using triangles
+ *
+ * The polygon is broken into triangles using a 5th point at its
+ * center. Then, the triangles are checked for which has the
+ * query point inside. The new triangles then use a barycentric
+ * interpolation to provide interpolation weights. The weight from the center
+ * point is weighted equally from all points in the polygon. Note that this
+ * should work for n-sided objects that are convex (I think) as long as
+ * the element isn't poorly formed. The verticies are sorted around the center
+ * to make sure that the ordering is logical, but this is done on a copy of the
+ * element so that the parent structure isn't altered.
+ *
+ * @param x station location
+ * @param y station location
+ * @param weights vector of interpolation weights for each vertex
+ *
+ */
+void Element::polygonInterpolation(double x, double y,
+                                   std::vector<double> &weights) {
+  //...Make copy of this element
+  Element e = *this;
+
+  //...Sort the copy around the center
+  e.sortVerticiesAboutCenter();
+
+  //...Generate a point at the middle of the polygon
+  double xm = 0.0;
+  double ym = 0.0;
+  for (size_t i = 0; i < this->n(); ++i) {
+    xm += this->node(i)->x();
+    ym += this->node(i)->y();
+  }
+  xm = xm / this->n();
+  ym = ym / this->n();
+
+  Node midpoint(0, xm, ym, 0.0);
+
+  //...Find the sub-triangle that the point resides in
+  Element ee;
+  for (size_t i = 0; i < this->n(); ++i) {
+    size_t i1 = i;
+    size_t i2 = i + 1;
+    if (i2 > this->n()) i2 = 0;
+    Element ec(i, e.node(i1), e.node(i2), &midpoint);
+    if (ec.isInside(x, y)) {
+      ee = std::move(ec);
+      break;
+    }
+  }
+
+  //...Generate the sub-triangle weights
+  std::vector<double> w2;
+  ee.interpolationWeights(x, y, w2);
+
+  //...Rectify the weights with the correct ordering into the global array
+  for (size_t i = 0; i < 2; ++i) {
+    for (size_t j = 0; j < this->n(); ++j) {
+      if (ee.node(i) == this->node(j)) weights[j] = w2[i];
+    }
+  }
+
+  //...Add weight from midpoint
+  const double w3 = w2[2] / this->n();
+  for (size_t i = 0; i < this->n(); ++i) {
+    weights[i] += w3;
+  }
+
+  return;
 }

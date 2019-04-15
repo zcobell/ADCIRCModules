@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "elementtable.h"
+#include "default_values.h"
 #include "logging.h"
 #include "mesh.h"
 #include "mesh_impl.h"
@@ -66,7 +67,7 @@ void ElementTable::build() {
   }
   this->m_elementTable.reserve(this->m_mesh->numNodes());
   for (size_t i = 0; i < this->m_mesh->numElements(); ++i) {
-    for (int j = 0; j < this->m_mesh->element(i)->n(); ++j) {
+    for (size_t j = 0; j < this->m_mesh->element(i)->n(); ++j) {
       Node *n = this->m_mesh->element(i)->node(j);
       this->m_elementTable[n].push_back(this->m_mesh->element(i));
     }
@@ -98,7 +99,7 @@ size_t ElementTable::numElementsAroundNode(Adcirc::Geometry::Node *n) {
   if (this->m_elementTable.find(n) != this->m_elementTable.end())
     return this->m_elementTable[n].size();
   else
-    return -1;
+    return adcircmodules_default_value<size_t>();
 }
 
 /**
@@ -111,7 +112,7 @@ size_t ElementTable::numElementsAroundNode(size_t nodeIndex) {
   } else {
     adcircmodules_throw_exception("Out of bounds node request");
   }
-  return -1;
+  return adcircmodules_default_value<size_t>();
 }
 
 /**

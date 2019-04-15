@@ -212,6 +212,7 @@ class MeshImpl {
 
   std::unique_ptr<Kdtree> m_nodalSearchTree;
   std::unique_ptr<Kdtree> m_elementalSearchTree;
+
 };
 
 #endif  // ADCMOD_MESHIMPL_H

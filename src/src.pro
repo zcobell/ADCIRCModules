@@ -152,7 +152,8 @@ HEADERS += \
     constants.h \
     kdtree.h \
     kdtree_impl.h \
-    logging.h
+    logging.h \
+    default_values.h
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib
