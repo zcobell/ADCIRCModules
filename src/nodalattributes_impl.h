@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef NODALATTRIBUTESIMPL_H
-#define NODALATTRIBUTESIMPL_H
+#ifndef ADCMOD_NODALATTRIBUTESIMPL_H
+#define ADCMOD_NODALATTRIBUTESIMPL_H
 
 #include <string>
 #include <vector>
@@ -109,4 +109,4 @@ class NodalAttributesImpl {
   std::vector<std::vector<Adcirc::ModelParameters::Attribute> > m_nodalData;
 };
 
-#endif  // NODALATTRIBUTESIMPL_H
+#endif  // ADCMOD_NODALATTRIBUTESIMPL_H

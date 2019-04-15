@@ -16,43 +16,15 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_HARMONICSRECORDIMPL_H
-#define ADCMOD_HARMONICSRECORDIMPL_H
+#ifndef ADCMOD_DEFAULT_VALUES_H
+#define ADCMOD_DEFAULT_VALUES_H
 
-#include <string>
-#include <vector>
+#include <cstdlib>
+#include <limits>
 
-class HarmonicsRecordImpl {
- public:
-  HarmonicsRecordImpl();
+template <typename T>
+constexpr T adcircmodules_default_value() {
+  return std::numeric_limits<T>::max();
+}
 
-  std::string name() const;
-  void setName(const std::string& name);
-
-  double value(size_t index);
-  std::vector<double> values();
-
-  void set(size_t index, double value);
-  void set(const std::vector<double>& value);
-
-  void resize(size_t numNodes);
-
-  double frequency() const;
-  void setFrequency(double frequency);
-
-  double nodalFactor() const;
-  void setNodalFactor(double nodalFactor);
-
-  double equilibriumArg() const;
-  void setEquilibriumArg(double equilibriumArg);
-
- private:
-  size_t m_numNodes;
-  std::string m_name;
-  std::vector<double> m_data;
-  double m_frequency;
-  double m_nodalFactor;
-  double m_equilibriumArg;
-};
-
-#endif  // ADCMOD_HARMONICSRECORD_H
+#endif  // DEFAULT_VALUES_H

@@ -24,9 +24,10 @@
 #include <utility>
 #include "boost/algorithm/string.hpp"
 #include "boost/format.hpp"
-#include "error.h"
+#include "default_values.h"
 #include "fileio.h"
 #include "filetypes.h"
+#include "logging.h"
 #include "netcdf.h"
 #include "stringconversion.h"
 
@@ -50,7 +51,7 @@ size_t HarmonicsOutputImpl::index(const std::string& name) {
   auto i = this->m_index.find(n);
   if (i == this->m_index.end()) {
     adcircmodules_throw_exception("Harmonic consituent not found in data");
-    return std::numeric_limits<size_t>::max();
+    return adcircmodules_default_value<size_t>();
   } else {
     return i->second;
   }
@@ -179,7 +180,7 @@ size_t HarmonicsOutputImpl::nodeIdToArrayIndex(size_t id) {
   auto i = this->m_nodeIndex.find(id);
   if (i == this->m_nodeIndex.end()) {
     adcircmodules_throw_exception("Node not found in data");
-    return std::numeric_limits<size_t>::max();
+    return adcircmodules_default_value<size_t>();
   } else {
     return i->second;
   }
@@ -698,7 +699,7 @@ void HarmonicsOutputImpl::readNetcdfFormatHeader(int ncid,
   nc_inq_varid(ncid, "nodal_factor", &varid_nodefactor);
   ierr = nc_inq_varid(ncid, "equilibrium_argument", &varid_equ);
   if (ierr != NC_NOERR) {
-    Adcirc::Error::warning(
+    Adcirc::Logging::warning(
         "ADCIRC <= 53.04 does not place frequency, "
         "nodal factor, and equilibrium argument in netcdf output files. "
         "Invalid data has been inserted as a placeholder.");

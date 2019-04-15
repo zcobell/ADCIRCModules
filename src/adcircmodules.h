@@ -16,22 +16,23 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCIRCMODULES_H
-#define ADCIRCMODULES_H
+#ifndef ADCMOD_ADCIRCMODULES_H
+#define ADCMOD_ADCIRCMODULES_H
 
 #include "config.h"
 #include "constants.h"
-#include "error.h"
 #include "ezproj.h"
 #include "filetypes.h"
 #include "griddata.h"
 #include "harmonicsoutput.h"
 #include "interpolationmethods.h"
+#include "kdtree.h"
+#include "logging.h"
 #include "mesh.h"
 #include "meshchecker.h"
 #include "multithreading.h"
 #include "nodalattributes.h"
 #include "outputfile.h"
-#include "kdtree.h"
+#include "default_values.h"
 
-#endif  // ADCIRCMODULES_H
+#endif  // ADCMOD_ADCIRCMODULES_H

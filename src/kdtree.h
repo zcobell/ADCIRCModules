@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef KDTREE_H
-#define KDTREE_H
+#ifndef ADCMOD_KDTREE_H
+#define ADCMOD_KDTREE_H
 
 #include <cstddef>
 #include <vector>
@@ -40,4 +40,4 @@ class Kdtree {
   Kdtree_impl *m_ptr;
 };
 
-#endif  // KDTREE_H
+#endif  // ADCMOD_KDTREE_H

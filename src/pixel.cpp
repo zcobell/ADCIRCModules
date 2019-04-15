@@ -18,6 +18,7 @@
 //------------------------------------------------------------------------*/
 #include "pixel.h"
 #include <limits>
+#include "default_values.h"
 
 /**
  * @brief Default constructor
@@ -61,14 +62,14 @@ size_t Pixel::j() const { return this->m_j; }
  * @return true if pixel is valid, false otherwise
  */
 bool Pixel::isValid() {
-  return this->m_i < std::numeric_limits<size_t>::max() &&
-         this->m_j < std::numeric_limits<size_t>::max();
+  return this->m_i < adcircmodules_default_value<size_t>() &&
+         this->m_j < adcircmodules_default_value<size_t>();
 }
 
 /**
  * @brief Sets a pixel to an invalid value for detection later
  */
 void Pixel::setInvalid() {
-  this->m_i = std::numeric_limits<size_t>::max();
-  this->m_j = this->m_i;
+  this->m_i = adcircmodules_default_value<size_t>();
+  this->m_j = adcircmodules_default_value<size_t>();
 }

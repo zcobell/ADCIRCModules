@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef FILEIO_H
-#define FILEIO_H
+#ifndef ADCMOD_FILEIO_H
+#define ADCMOD_FILEIO_H
 
 #include <string>
 #include <vector>
@@ -85,4 +85,4 @@ bool splitString2dmElementFormat(std::string &data, size_t &id,
 
 }  // namespace FileIO
 
-#endif  // FILEIO_H
+#endif  // ADCMOD_FILEIO_H

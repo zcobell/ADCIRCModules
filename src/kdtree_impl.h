@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef KDTREE_IMPL_H
-#define KDTREE_IMPL_H
+#ifndef ADCMOD_KDTREE_IMPL_H
+#define ADCMOD_KDTREE_IMPL_H
 
 #include <cstdlib>
 #include <memory>
@@ -80,4 +80,4 @@ class Kdtree_impl {
   std::unique_ptr<kd_tree_t> m_tree;
 };
 
-#endif  // KDTREE_IMPL_H
+#endif  // ADCMOD_KDTREE_IMPL_H

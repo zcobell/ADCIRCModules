@@ -17,7 +17,6 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "stringconversion.h"
-
 #include <utility>
 #include "boost/algorithm/string.hpp"
 

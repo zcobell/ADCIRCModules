@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef MESHIMPL_H
-#define MESHIMPL_H
+#ifndef ADCMOD_MESHIMPL_H
+#define ADCMOD_MESHIMPL_H
 
 #include <fstream>
 #include <memory>
@@ -25,11 +25,11 @@
 #include <utility>
 #include <vector>
 #include "adcircmodules_global.h"
-#include "kdtree.h"
 #include "boundary.h"
 #include "element.h"
 #include "elementtable.h"
 #include "filetypes.h"
+#include "kdtree.h"
 #include "node.h"
 
 #ifdef USE_GOOGLE_FLAT_MAP
@@ -212,6 +212,7 @@ class MeshImpl {
 
   std::unique_ptr<Kdtree> m_nodalSearchTree;
   std::unique_ptr<Kdtree> m_elementalSearchTree;
+
 };
 
-#endif  // MESHIMPL_H
+#endif  // ADCMOD_MESHIMPL_H

@@ -282,7 +282,7 @@ TARGET_INCLUDE_DIRECTORIES( shapelib PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/shap
 ###########################################################################
 SET( ADCIRCMODULES_SOURCES 
                 ${CMAKE_SOURCE_DIR}/src/config.cpp
-                ${CMAKE_SOURCE_DIR}/src/error.cpp
+                ${CMAKE_SOURCE_DIR}/src/logging.cpp
                 ${CMAKE_SOURCE_DIR}/src/filetypes.cpp
                 ${CMAKE_SOURCE_DIR}/src/mesh.cpp 
                 ${CMAKE_SOURCE_DIR}/src/node.cpp
@@ -347,7 +347,7 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/boundary.h
                 ${CMAKE_SOURCE_DIR}/src/config.h
                 ${CMAKE_SOURCE_DIR}/src/element.h
-                ${CMAKE_SOURCE_DIR}/src/error.h
+                ${CMAKE_SOURCE_DIR}/src/logging.h
                 ${CMAKE_SOURCE_DIR}/src/filetypes.h
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.h
                 ${CMAKE_SOURCE_DIR}/src/harmonicsrecord.h
@@ -365,6 +365,7 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/multithreading.h  
                 ${CMAKE_SOURCE_DIR}/src/constants.h 
                 ${CMAKE_SOURCE_DIR}/src/kdtree.h
+                ${CMAKE_SOURCE_DIR}/src/default_values.h
                 ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src/ezproj.h )
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES PUBLIC_HEADER "${HEADER_LIST}" ) 

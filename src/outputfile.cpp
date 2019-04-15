@@ -23,9 +23,9 @@
 #include <iostream>
 #include <memory>
 #include <utility>
-#include "error.h"
 #include "fileio.h"
 #include "filetypes.h"
+#include "logging.h"
 #include "netcdf.h"
 #include "stringconversion.h"
 
@@ -189,7 +189,7 @@ void OutputFile::read(size_t snap) {
   if (this->m_filetype == Adcirc::Output::OutputAsciiFull ||
       this->m_filetype == Adcirc::Output::OutputAsciiSparse) {
     if (snap != Adcirc::Output::nextOutputSnap()) {
-      Error::warning(
+      Logging::warning(
           "ASCII Output must be read record by "
           "record. Specified snap number ignored.");
     }

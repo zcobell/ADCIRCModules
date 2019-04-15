@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef BOUNDARY_H
-#define BOUNDARY_H
+#ifndef ADCMOD_BOUNDARY_H
+#define ADCMOD_BOUNDARY_H
 
 #include <string>
 #include <vector>
@@ -89,6 +89,13 @@ class Boundary {
 
   std::vector<std::string> ADCIRCMODULES_EXPORT toStringList();
 
+  bool ADCIRCMODULES_EXPORT isWeir() const;
+  bool ADCIRCMODULES_EXPORT isInternalWeir() const;
+  bool ADCIRCMODULES_EXPORT isInternalWeirWithoutPipes() const;
+  bool ADCIRCMODULES_EXPORT isExternalWeir() const;
+  bool ADCIRCMODULES_EXPORT isInternalWeirWithPipes() const;
+  bool ADCIRCMODULES_EXPORT isSingleNodeBoundary() const;
+
  private:
   int m_boundaryCode;
   size_t m_boundaryLength;
@@ -104,4 +111,4 @@ class Boundary {
 };
 }  // namespace Geometry
 }  // namespace Adcirc
-#endif  // BOUNDARY_H
+#endif  // ADCMOD_BOUNDARY_H

@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef GRIDDATA_H
-#define GRIDDATA_H
+#ifndef ADCMOD_GRIDDATA_H
+#define ADCMOD_GRIDDATA_H
 
 #include <mesh.h>
 #include <memory>
@@ -108,4 +108,4 @@ class Griddata {
   GriddataImpl *m_impl;
 };
 }  // namespace Interpolation
-#endif  // GRIDDATA_H
+#endif  // ADCMOD_GRIDDATA_H

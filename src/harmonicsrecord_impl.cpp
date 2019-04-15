@@ -18,7 +18,8 @@
 //------------------------------------------------------------------------*/
 #include "harmonicsrecord_impl.h"
 #include <cassert>
-#include "error.h"
+#include "default_values.h"
+#include "logging.h"
 
 HarmonicsRecordImpl::HarmonicsRecordImpl()
     : m_name("none"),
@@ -66,7 +67,7 @@ double HarmonicsRecordImpl::value(size_t index) {
     return this->m_data[index];
   } else {
     adcircmodules_throw_exception("HarmonicsRecord: Index out of bounds");
-    return -9999;
+    return adcircmodules_default_value<double>();
   }
 }
 

@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef MESH_H
-#define MESH_H
+#ifndef ADCMOD_MESH_H
+#define ADCMOD_MESH_H
 
 #include <limits>
 #include <string>
@@ -79,8 +79,6 @@ class Mesh {
   ADCIRCMODULES_EXPORT Mesh(const std::string &filename);
 
   ADCIRCMODULES_EXPORT ~Mesh();
-
-  const size_t ELEMENT_NOT_FOUND = std::numeric_limits<size_t>::max();
 
   friend class ElementTable;
 
@@ -203,4 +201,4 @@ class Mesh {
 
 }  // namespace Adcirc
 
-#endif  // MESH_H
+#endif  // ADCMOD_MESH_H

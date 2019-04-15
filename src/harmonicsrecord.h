@@ -1,5 +1,5 @@
-#ifndef HARMONICSRECORD_H
-#define HARMONICSRECORD_H
+#ifndef ADCMOD_HARMONICSRECORD_H
+#define ADCMOD_HARMONICSRECORD_H
 
 #include <string>
 #include <vector>
@@ -51,4 +51,4 @@ class HarmonicsRecord {
 }  // namespace Harmonics
 }  // namespace Adcirc
 
-#endif  // HARMONICSRECORD_H
+#endif  // ADCMOD_HARMONICSRECORD_H

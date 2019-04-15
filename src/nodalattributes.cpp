@@ -58,9 +58,7 @@ void NodalAttributes::setFilename(const std::string &filename) {
  * @brief Returns the filename currently being used
  * @return name of file that has been or will be read
  */
-std::string NodalAttributes::filename() {
-  return this->m_impl->filename();
-}
+std::string NodalAttributes::filename() { return this->m_impl->filename(); }
 
 /**
  * @brief Sets a pointer to the mesh currently being used
@@ -106,9 +104,7 @@ size_t NodalAttributes::locateAttribute(const std::string &attributeName) {
  * @brief Header of the nodal attribute file
  * @return header string
  */
-std::string NodalAttributes::header() const {
-  return this->m_impl->header();
-}
+std::string NodalAttributes::header() const { return this->m_impl->header(); }
 
 /**
  * @brief Sets the header string in the nodal attribute object

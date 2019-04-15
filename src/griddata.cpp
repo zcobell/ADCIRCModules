@@ -169,7 +169,8 @@ double Griddata::defaultValue() const { return this->m_impl->defaultValue(); }
  * @brief Sets the default value that will be applied to the output arrays when
  * no interpolation method is selected or the specified interpolation method
  * fails
- * @param defaultValue default value to use. Default is -9999.0
+ * @param defaultValue default value to use. Default is
+ * return of adcircmodules_default_value<double>()
  */
 void Griddata::setDefaultValue(double defaultValue) {
   this->m_impl->setDefaultValue(defaultValue);

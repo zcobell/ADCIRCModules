@@ -20,7 +20,8 @@
 #include <cassert>
 #include <limits>
 #include "boost/format.hpp"
-#include "error.h"
+#include "default_values.h"
+#include "logging.h"
 
 using namespace Adcirc::ModelParameters;
 
@@ -28,7 +29,7 @@ using namespace Adcirc::ModelParameters;
  * @brief Default Constructor
  */
 Attribute::Attribute()
-    : m_node(nullptr), m_id(std::numeric_limits<size_t>::max()) {
+    : m_node(nullptr), m_id(adcircmodules_default_value<size_t>()) {
   this->resize(1);
 }
 
@@ -37,7 +38,7 @@ Attribute::Attribute()
  * @param size Number of nodal attributes to size this object for
  */
 Attribute::Attribute(size_t size)
-    : m_node(nullptr), m_id(std::numeric_limits<size_t>::max()) {
+    : m_node(nullptr), m_id(adcircmodules_default_value<size_t>()) {
   this->resize(size);
 }
 
@@ -58,7 +59,7 @@ double Attribute::value(size_t index) const {
     return m_values[index];
   } else {
     adcircmodules_throw_exception("Attribute: Index out of bounds");
-    return -9999.0;
+    return adcircmodules_default_value<double>();
   }
 }
 

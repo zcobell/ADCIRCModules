@@ -16,20 +16,23 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef OUTPUTRECORD_H
-#define OUTPUTRECORD_H
+#ifndef ADCMOD_OUTPUTRECORD_H
+#define ADCMOD_OUTPUTRECORD_H
 
 #include <cstdlib>
 #include <limits>
 #include <vector>
 #include "adcircmodules_global.h"
+#include "default_values.h"
 #include "node.h"
 
 namespace Adcirc {
 
 namespace Output {
 
-constexpr size_t nextOutputSnap() { return std::numeric_limits<size_t>::max(); }
+constexpr size_t nextOutputSnap() {
+  return adcircmodules_default_value<size_t>();
+}
 constexpr double defaultOutputValue() { return -99999.0; }
 
 enum AngleUnits { Degrees, Radians };
@@ -97,4 +100,4 @@ class OutputRecord {
 }  // namespace Output
 }  // namespace Adcirc
 
-#endif  // OUTPUTRECORD_H
+#endif  // ADCMOD_OUTPUTRECORD_H

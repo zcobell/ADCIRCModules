@@ -16,27 +16,36 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#include "error.h"
+#include "logging.h"
 #include <stdexcept>
 #include <string>
 
-static const std::string errorHeading("[ADCIRCModules Runtime Error]: ");
-
-static const std::string warningHeading("[ADCIRCModules Warning]: ");
+static const std::string c_errorHeading("[ADCIRCModules ERROR]: ");
+static const std::string c_warningHeading("[ADCIRCModules WARNING]: ");
+static const std::string c_logHeading("[ADCIRCModules INFO]: ");
 
 namespace Adcirc {
 
-void Error::throwError(const std::string &s) {
-  throw std::runtime_error(errorHeading + s);
+void Logging::throwError(const std::string &s) {
+  throw std::runtime_error(c_errorHeading + s);
 }
 
-void Error::throwError(const std::string &s, const char *file, int line) {
-  throw std::runtime_error(errorHeading + s + " at " + file + ", line " +
+void Logging::throwError(const std::string &s, const char *file, int line) {
+  throw std::runtime_error(c_errorHeading + s + " at " + file + ", line " +
                            std::to_string(line));
 }
 
-void Error::warning(const std::string &s) {
-  std::cerr << warningHeading << s << std::endl;
+void Logging::warning(const std::string &s) {
+  Logging::printMessage(c_warningHeading, s);
+}
+
+void Logging::log(const std::string &s) {
+  Logging::printMessage(c_logHeading, s);
+}
+
+void Logging::printMessage(const std::string &header,
+                           const std::string &message) {
+  std::cout << header << message << std::endl;
 }
 
 }  // namespace Adcirc

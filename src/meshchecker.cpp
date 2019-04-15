@@ -142,17 +142,15 @@ bool MeshChecker::checkLeveeHeights(
 }
 
 void MeshChecker::printFailedLeveeStatus(
-    Boundary *bc, int index, double minimumCrestElevationOverTopography) {
-  if (bc->boundaryCode() == 3 || bc->boundaryCode() == 13 ||
-      bc->boundaryCode() == 23) {
+    Boundary *bc, size_t index, double minimumCrestElevationOverTopography) {
+  if (bc->isExternalWeir()) {
     printf(
         "[Mesh Error] MeshChecker::checkLeveeHeights :: Node %zd elevation "
         "(%f) greater than crest elevation (%f + %f) on single "
         "sided weir boundary.\n",
         bc->node1(index)->id(), -bc->node1(index)->z(),
         bc->crestElevation(index), minimumCrestElevationOverTopography);
-  } else if (bc->boundaryCode() == 4 || bc->boundaryCode() == 24 ||
-             bc->boundaryCode() == 5 || bc->boundaryCode() == 25) {
+  } else if (bc->isInternalWeir()) {
     if (-bc->node1(index)->z() >
         bc->crestElevation(index) - minimumCrestElevationOverTopography) {
       printf(
@@ -180,7 +178,7 @@ bool MeshChecker::checkOverlappingElements(Mesh *mesh) {
   mesh->buildElementTable();
 
   for (size_t i = 0; i < mesh->numElements(); ++i) {
-    for (int j = 0; j < mesh->element(i)->n(); ++j) {
+    for (size_t j = 0; j < mesh->element(i)->n(); ++j) {
       int count = 0;
 
       std::pair<Node *, Node *> p = mesh->element(i)->elementLeg(j);
@@ -221,8 +219,8 @@ bool MeshChecker::checkDisjointNodes(Mesh *mesh) {
   std::fill(found.begin(), found.end(), false);
 
   for (size_t i = 0; i < mesh->numElements(); i++) {
-    for (int j = 0; j < mesh->element(i)->n(); j++) {
-      int index = mesh->nodeIndexById(mesh->element(i)->node(j)->id());
+    for (size_t j = 0; j < mesh->element(i)->n(); j++) {
+      size_t index = mesh->nodeIndexById(mesh->element(i)->node(j)->id());
       found[index] = true;
     }
   }

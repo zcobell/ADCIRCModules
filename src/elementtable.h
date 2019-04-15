@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ELEMENTTABLE_H
-#define ELEMENTTABLE_H
+#ifndef ADCMOD_ELEMENTTABLE_H
+#define ADCMOD_ELEMENTTABLE_H
 
 #include <vector>
 #include "element.h"
@@ -85,4 +85,4 @@ class ElementTable {
 }  // namespace Geometry
 }  // namespace Adcirc
 
-#endif  // ELEMENTTABLE_H
+#endif  // ADCMOD_ELEMENTTABLE_H

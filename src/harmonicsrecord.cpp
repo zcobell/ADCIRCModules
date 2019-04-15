@@ -30,9 +30,7 @@ HarmonicsRecord::~HarmonicsRecord() { delete this->m_impl; }
  * @brief Returns the name of the harmonic constituent in this object
  * @return name of harmonic constituent
  */
-std::string HarmonicsRecord::name() const {
-  return this->m_impl->name();
-}
+std::string HarmonicsRecord::name() const { return this->m_impl->name(); }
 
 /**
  * @brief Sets the name of the harmonic constiuent in this object
@@ -55,9 +53,7 @@ double HarmonicsRecord::value(size_t index) {
  * @brief Returns a vector of all values in this object
  * @return vector containing all values in this object
  */
-std::vector<double> HarmonicsRecord::values() {
-  return this->m_impl->values();
-}
+std::vector<double> HarmonicsRecord::values() { return this->m_impl->values(); }
 
 /**
  * @brief Sets the value at the specified index to a value

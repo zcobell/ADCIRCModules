@@ -23,6 +23,10 @@
 
 using namespace Adcirc::ModelParameters;
 
+bool equalTo(const double &a, const double &b) {
+  return std::abs(a - b) < 0.000001;
+}
+
 /**
  * @brief Constructor
  * Defines the name, units and number of values within the specific
@@ -158,7 +162,7 @@ std::string AttributeMetadata::headerString() {
  **/
 bool AttributeMetadata::checkIfDefaultValue(const double &value) {
   for (const auto &v : this->m_defaultValue) {
-    if (v != value) return false;
+    if (!equalTo(v, value)) return false;
   }
   return true;
 }
@@ -171,8 +175,8 @@ bool AttributeMetadata::checkIfDefaultValue(const double &value) {
  * is equal to the default value vector
  **/
 bool AttributeMetadata::checkIfDefaultValue(const std::vector<double> &value) {
-  if (value == this->m_defaultValue) return true;
-  return false;
+  return std::equal(value.begin(), value.end(), this->m_defaultValue.begin(),
+                    equalTo);
 }
 
 /**
@@ -184,6 +188,6 @@ bool AttributeMetadata::checkIfDefaultValue(const std::vector<double> &value) {
  **/
 bool AttributeMetadata::checkIfDefaultValue(
     const Adcirc::ModelParameters::Attribute &a) {
-  if (a.values() == this->m_defaultValue) return true;
-  return false;
+  return std::equal(a.values().begin(), a.values().end(),
+                    this->m_defaultValue.begin(), equalTo);
 }

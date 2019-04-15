@@ -1,5 +1,5 @@
-#ifndef NODALATTRIBUTES_H
-#define NODALATTRIBUTES_H
+#ifndef ADCMOD_NODALATTRIBUTES_H
+#define ADCMOD_NODALATTRIBUTES_H
 
 #include <string>
 #include <vector>
@@ -69,4 +69,4 @@ class NodalAttributes {
 };
 }  // namespace ModelParameters
 }  // namespace Adcirc
-#endif  // NODALATTRIBUTES_H
+#endif  // ADCMOD_NODALATTRIBUTES_H

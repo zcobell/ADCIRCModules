@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ELEMENT_H
-#define ELEMENT_H
+#ifndef ADCMOD_ELEMENT_H
+#define ADCMOD_ELEMENT_H
 
 #include <cmath>
 #include <string>
@@ -60,11 +60,11 @@ class Element {
                                        Adcirc::Geometry::Node *n3,
                                        Adcirc::Geometry::Node *n4);
 
-  int ADCIRCMODULES_EXPORT n() const;
+  size_t n() const;
   void ADCIRCMODULES_EXPORT resize(size_t nVertex);
 
-  Adcirc::Geometry::Node ADCIRCMODULES_EXPORT *node(int i);
-  void ADCIRCMODULES_EXPORT setNode(int i, Adcirc::Geometry::Node *node);
+  Adcirc::Geometry::Node ADCIRCMODULES_EXPORT *node(size_t i);
+  void ADCIRCMODULES_EXPORT setNode(size_t i, Adcirc::Geometry::Node *node);
 
   size_t ADCIRCMODULES_EXPORT id() const;
   void ADCIRCMODULES_EXPORT setId(size_t id);
@@ -86,11 +86,18 @@ class Element {
 
   double ADCIRCMODULES_EXPORT area();
 
+  void ADCIRCMODULES_EXPORT interpolationWeights(double x, double y,
+                                                 std::vector<double> &weights);
+
  private:
   size_t m_id;
   std::vector<Adcirc::Geometry::Node *> m_nodes;
+
+  void triangularInterpolation(double x, double y,
+                               std::vector<double> &weights);
+  void polygonInterpolation(double x, double y, std::vector<double> &weights);
 };
 }  // namespace Geometry
 }  // namespace Adcirc
 
-#endif  // ELEMENT_H
+#endif  // ADCMOD_ELEMENT_H

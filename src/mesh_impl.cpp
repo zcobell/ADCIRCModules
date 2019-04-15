@@ -22,12 +22,13 @@
 #include <string>
 #include <tuple>
 #include "boost/format.hpp"
-#include "kdtree.h"
+#include "default_values.h"
 #include "elementtable.h"
-#include "error.h"
 #include "ezproj.h"
 #include "fileio.h"
 #include "filetypes.h"
+#include "kdtree.h"
+#include "logging.h"
 #include "netcdf.h"
 #include "shapefil.h"
 #include "stringconversion.h"
@@ -922,9 +923,7 @@ Kdtree *MeshImpl::elementalSearchTree() const {
  * @brief Returns a refrence to the nodal search kd-tree
  * @return kd-tree object with mesh nodes as serch locations
  */
-Kdtree *MeshImpl::nodalSearchTree() const {
-  return m_nodalSearchTree.get();
-}
+Kdtree *MeshImpl::nodalSearchTree() const { return m_nodalSearchTree.get(); }
 
 /**
  * @brief Returns the number of land boundary nodes in the mesh
@@ -1258,7 +1257,7 @@ void MeshImpl::toElementShapefile(const std::string &outputFile) {
     zmean = zmean / e.n();
 
     if (e.n() == 3) {
-      nodez[3] = -9999.0;
+      nodez[3] = adcircmodules_default_value<double>();
       nodeid[3] = -1;
     }
 
@@ -1994,7 +1993,7 @@ size_t MeshImpl::findElement(double x, double y, std::vector<double> &weights) {
 
   std::vector<size_t> indicies =
       this->elementalSearchTree()->findXNearest(x, y, searchDepth);
-  size_t en = std::numeric_limits<size_t>::max();
+  size_t en = adcircmodules_default_value<size_t>();
 
   Point location(x, y);
   for (auto i : indicies) {
@@ -2005,34 +2004,12 @@ size_t MeshImpl::findElement(double x, double y, std::vector<double> &weights) {
     }
   }
 
-  if (en == std::numeric_limits<size_t>::max()) {
+  if (en == adcircmodules_default_value<size_t>()) {
+    std::fill(weights.begin(), weights.end(), 0.0);
     return en;
   }
 
-  Element *e = this->element(en);
-
-  //...Not for quads yet
-  if (e->n() == 4) return en;
-
-  //...Barycentric interpolation
-
-  Node *n1 = e->node(0);
-  Node *n2 = e->node(1);
-  Node *n3 = e->node(2);
-
-  double x1 = n1->x();
-  double x2 = n2->x();
-  double x3 = n3->x();
-
-  double y1 = n1->y();
-  double y2 = n2->y();
-  double y3 = n3->y();
-
-  double denom = (y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3);
-  weights.push_back(((y2 - y3) * (x - x3) + (x3 - x2) * (y - y3)) / denom);
-  weights.push_back(((y3 - y1) * (x - x3) + (x1 - x3) * (y - y3)) / denom);
-  weights.push_back(1.0 - weights[0] - weights[1]);
-
+  this->element(en)->interpolationWeights(x, y, weights);
   return en;
 }
 

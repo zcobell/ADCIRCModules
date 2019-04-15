@@ -20,7 +20,7 @@
 #include <cassert>
 #include <cmath>
 #include "constants.h"
-#include "error.h"
+#include "logging.h"
 
 using namespace Adcirc::Output;
 

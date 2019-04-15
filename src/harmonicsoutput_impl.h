@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef HARMONICSOUTPUTIMPL_H
-#define HARMONICSOUTPUTIMPL_H
+#ifndef ADCMOD_HARMONICSOUTPUTIMPL_H
+#define ADCMOD_HARMONICSOUTPUTIMPL_H
 
 #include <string>
 #include <vector>
@@ -128,4 +128,4 @@ class HarmonicsOutputImpl {
   void readNetcdfVelocityData(int ncid, std::vector<int>& varids);
 };
 
-#endif  // HARMONICSOUTPUTIMPL_H
+#endif  // ADCMOD_HARMONICSOUTPUTIMPL_H

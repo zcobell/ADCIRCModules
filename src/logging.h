@@ -16,34 +16,36 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCIRCMODULES_ERROR_H
-#define ADCIRCMODULES_ERROR_H
+#ifndef ADCMOD_LOGGING_H
+#define ADCMOD_LOGGING_H
 
 #include <iostream>
 #include <string>
 
 namespace Adcirc {
 
-enum _code { NoError, HasError };
-
 /**
- * @class Error
+ * @class Logging
  * @author Zachary Cobell
  * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
  * is released under the terms of the GNU General Public License v3
- * @brief The Error class is used to throw errors that can be caught in C++ or
- * python. The macro adcircmodules_throw_exception will describe the position in
- * the code that the error was thrown from
+ * @brief The Logging class is used to throw errors and log messages to standard
+ * output
  */
 
-class Error {
+class Logging {
  public:
-  Error() = default;
+  Logging() = default;
 
   static void throwError(const std::string &s);
   static void throwError(const std::string &s, const char *file, int line);
 
   static void warning(const std::string &s);
+  static void log(const std::string &s);
+
+ private:
+  static void printMessage(const std::string &header,
+                           const std::string &message);
 };
 
 }  // namespace Adcirc
@@ -55,6 +57,6 @@ class Error {
  * @param arg string describing the error that is being thrown
  */
 #define adcircmodules_throw_exception(arg) \
-  Adcirc::Error::throwError(arg, __FILE__, __LINE__);
+  Adcirc::Logging::throwError(arg, __FILE__, __LINE__);
 
-#endif  // ADCIRCMODULES_ERROR_H
+#endif  // ADCMOD_LOGGING_H

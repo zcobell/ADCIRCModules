@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef INTERPOLATIONMETHODS_H
-#define INTERPOLATIONMETHODS_H
+#ifndef ADCMOD_INTERPOLATIONMETHODS_H
+#define ADCMOD_INTERPOLATIONMETHODS_H
 
 namespace Interpolation {
 enum Method {
@@ -49,4 +49,4 @@ enum Method {
 };
 }
 
-#endif  // INTERPOLATIONMETHODS_H
+#endif  // ADCMOD_INTERPOLATIONMETHODS_H

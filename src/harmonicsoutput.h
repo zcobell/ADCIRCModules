@@ -1,5 +1,5 @@
-#ifndef HARMONICSOUTPUT_H
-#define HARMONICSOUTPUT_H
+#ifndef ADCMOD_HARMONICSOUTPUT_H
+#define ADCMOD_HARMONICSOUTPUT_H
 
 #include <string>
 #include "adcircmodules_global.h"
@@ -98,4 +98,4 @@ class HarmonicsOutput {
 }  // namespace Harmonics
 }  // namespace Adcirc
 
-#endif  // HARMONICSOUTPUT_H
+#endif  // ADCMOD_HARMONICSOUTPUT_H

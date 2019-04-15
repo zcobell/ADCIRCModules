@@ -96,7 +96,6 @@ SOURCES += \
     outputfile.cpp \
     outputrecord.cpp \
     config.cpp \
-    error.cpp \
     filetypes.cpp \
     meshchecker.cpp \
     elementtable.cpp \
@@ -116,7 +115,8 @@ SOURCES += \
     pixel.cpp \
     constants.cpp \
     kdtree_impl.cpp \
-    kdtree.cpp
+    kdtree.cpp \
+    logging.cpp
 
 HEADERS += \
     adcircmodules_global.h \
@@ -130,7 +130,6 @@ HEADERS += \
     outputrecord.h \
     adcirc_codes.h \
     config.h \
-    error.h \
     filetypes.h \
     meshchecker.h \
     elementtable.h \
@@ -152,7 +151,9 @@ HEADERS += \
     pixel.h \
     constants.h \
     kdtree.h \
-    kdtree_impl.h
+    kdtree_impl.h \
+    logging.h \
+    default_values.h
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib
