@@ -1,6 +1,6 @@
 <map id="pixelValueInt" name="pixelValueInt">
-<area shape="rect" id="node2" href="$classRasterdata.html#ac02b87d88128e11a5af2cdb2840b3ef3" title="Returns the pixel value for the i,j index. " alt="" coords="149,56,245,83"/>
-<area shape="rect" id="node3" href="$classPixel.html#a92b0b88b9a2c8ccada33e3fa7ce39244" title="Returns the i&#45;index. " alt="" coords="299,5,362,32"/>
-<area shape="rect" id="node4" href="$classPixel.html#aaf29b851413b2cac5242b33a4b6c24fd" title="Returns the j&#45;index. " alt="" coords="299,56,362,83"/>
-<area shape="rect" id="node5" href="$classRasterdata.html#a668beec42fcd53d0e87979ef75199994" title="Returns the nodata integer used in the raster. " alt="" coords="293,107,368,133"/>
+<area shape="rect" id="node2" href="$classRasterdata.html#ac02b87d88128e11a5af2cdb2840b3ef3" title="Returns the pixel value for the i,j index. " alt="" coords="160,56,267,83"/>
+<area shape="rect" id="node3" href="$classPixel.html#a92b0b88b9a2c8ccada33e3fa7ce39244" title="Returns the i&#45;index. " alt="" coords="323,5,390,32"/>
+<area shape="rect" id="node4" href="$classPixel.html#aaf29b851413b2cac5242b33a4b6c24fd" title="Returns the j&#45;index. " alt="" coords="323,56,390,83"/>
+<area shape="rect" id="node5" href="$classRasterdata.html#a668beec42fcd53d0e87979ef75199994" title="Returns the nodata integer used in the raster. " alt="" coords="315,107,399,133"/>
 </map>

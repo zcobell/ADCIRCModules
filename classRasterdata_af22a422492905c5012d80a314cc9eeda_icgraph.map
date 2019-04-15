@@ -1,5 +1,5 @@
 <map id="ymin" name="ymin">
-<area shape="rect" id="node2" href="$classRasterdata.html#aaf257244832c7dba44aefc6aea09a5cc" title="Converts an x,y coordinate to the pixel i,j. " alt="" coords="104,31,229,57"/>
-<area shape="rect" id="node3" href="$classRasterdata.html#a9439e49dc3ac0cb7d87b144a2ac58b21" title="Converts an x,y coordinate to the pixel i,j. " alt="" coords="292,5,417,32"/>
-<area shape="rect" id="node4" href="$classRasterdata.html#ab8f51c470b8f9503defa8dcdbe3e1df7" title="Returns a search box of a given size around a given std::pair&lt;double,double&gt; " alt="" coords="277,56,432,83"/>
+<area shape="rect" id="node2" href="$classRasterdata.html#aaf257244832c7dba44aefc6aea09a5cc" title="Converts an x,y coordinate to the pixel i,j. " alt="" coords="108,31,245,57"/>
+<area shape="rect" id="node3" href="$classRasterdata.html#a9439e49dc3ac0cb7d87b144a2ac58b21" title="Converts an x,y coordinate to the pixel i,j. " alt="" coords="309,5,447,32"/>
+<area shape="rect" id="node4" href="$classRasterdata.html#ab8f51c470b8f9503defa8dcdbe3e1df7" title="Returns a search box of a given size around a given std::pair&lt;double,double&gt; " alt="" coords="293,56,463,83"/>
 </map>

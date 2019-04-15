@@ -1,4 +1,4 @@
 <map id="node2" name="node2">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a7832baebc89d656c192f55b8a8248c5c" title="Returns the Adcirc model boundary code. " alt="" coords="115,5,221,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary. " alt="" coords="111,56,225,83"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa376d7c06630994e705df523b2c59302" title="Returns true if boundary condition is an internal weir. " alt="" coords="123,5,235,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary. " alt="" coords="116,56,243,83"/>
 </map>

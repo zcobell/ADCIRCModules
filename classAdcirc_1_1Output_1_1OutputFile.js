@@ -9,6 +9,7 @@ var classAdcirc_1_1Output_1_1OutputFile =
     [ "data", "classAdcirc_1_1Output_1_1OutputFile.html#a24cc32619ee8499e86ae8d923f8f21ab", null ],
     [ "dataAt", "classAdcirc_1_1Output_1_1OutputFile.html#a6c6923b4bc71c380ec6274a0787695ab", null ],
     [ "dataAt", "classAdcirc_1_1Output_1_1OutputFile.html#a0fb6a8a6a59488c7c267eeae2afc3ed6", null ],
+    [ "description", "classAdcirc_1_1Output_1_1OutputFile.html#a07ffe70037e0a16554c868bcdd8f83b5", null ],
     [ "exists", "classAdcirc_1_1Output_1_1OutputFile.html#aa9100e4c626877b706ca9fc67a35c562", null ],
     [ "filename", "classAdcirc_1_1Output_1_1OutputFile.html#a94c732bb0f167eab349228237a8fbe3c", null ],
     [ "filetype", "classAdcirc_1_1Output_1_1OutputFile.html#a736ece5dc9a2507b8afc36e2774adbe5", null ],
@@ -18,13 +19,15 @@ var classAdcirc_1_1Output_1_1OutputFile =
     [ "getNumNodes", "classAdcirc_1_1Output_1_1OutputFile.html#a42430f4e9f45600a1d9ed4468e435660", null ],
     [ "getNumSnaps", "classAdcirc_1_1Output_1_1OutputFile.html#a90d58bdc110dbc1d33c83f9646565f6c", null ],
     [ "isOpen", "classAdcirc_1_1Output_1_1OutputFile.html#a3a9ba7594ee74425dd345ecc263a5564", null ],
+    [ "name", "classAdcirc_1_1Output_1_1OutputFile.html#a1d89c28bd42ba9a52da008bb69367171", null ],
     [ "open", "classAdcirc_1_1Output_1_1OutputFile.html#a9e8555112049fc2b4945120b3c45f8ab", null ],
-    [ "read", "classAdcirc_1_1Output_1_1OutputFile.html#adbf4799c7962bac646433bc7d1ee3210", null ],
+    [ "read", "classAdcirc_1_1Output_1_1OutputFile.html#a03178f1cd03b9e467b77562f0b89699a", null ],
     [ "setDiteration", "classAdcirc_1_1Output_1_1OutputFile.html#aa5f418121840b47156c2a5843e62416e", null ],
     [ "setDt", "classAdcirc_1_1Output_1_1OutputFile.html#adf7c2a879c8cf7b4586e574021eecda0", null ],
     [ "setFilename", "classAdcirc_1_1Output_1_1OutputFile.html#a56171296cefcc0d92118f33a5b41e01e", null ],
     [ "setHeader", "classAdcirc_1_1Output_1_1OutputFile.html#aa7776c5667110f4c56e467e929918f72", null ],
     [ "setNumNodes", "classAdcirc_1_1Output_1_1OutputFile.html#adc173e9926bed8f4bbc13ee2cc5c5378", null ],
     [ "setNumSnaps", "classAdcirc_1_1Output_1_1OutputFile.html#ac1270153d8af25accb275ac75f746203", null ],
-    [ "write", "classAdcirc_1_1Output_1_1OutputFile.html#ac7cec55487421c0bd0ebe581dec34c5e", null ]
+    [ "units", "classAdcirc_1_1Output_1_1OutputFile.html#ae7cad0f355e15a1aa1768962f629e292", null ],
+    [ "write", "classAdcirc_1_1Output_1_1OutputFile.html#af02139baf17b92730e57bd890b9df367", null ]
 ];

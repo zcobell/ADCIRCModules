@@ -1,5 +1,6 @@
 <map id="ny" name="ny">
-<area shape="rect" id="node2" href="$classRasterdata.html#a2378e6241d209cce3fa92fb84a401504" title="Returns the pixel value for the i,j index. " alt="" coords="109,5,230,32"/>
-<area shape="rect" id="node4" href="$classRasterdata.html#ab8f51c470b8f9503defa8dcdbe3e1df7" title="Returns a search box of a given size around a given std::pair&lt;double,double&gt; " alt="" coords="92,56,247,83"/>
-<area shape="rect" id="node3" href="$classRasterdata.html#a9f5b06aca7d1d25268059526e1d35b21" title="Returns the pixel value for the i,j index. " alt="" coords="295,5,416,32"/>
+<area shape="rect" id="node2" href="$classRasterdata.html#a2378e6241d209cce3fa92fb84a401504" title="Returns the pixel value for the i,j index. " alt="" coords="109,5,245,32"/>
+<area shape="rect" id="node4" href="$classRasterdata.html#ab8f51c470b8f9503defa8dcdbe3e1df7" title="Returns a search box of a given size around a given std::pair&lt;double,double&gt; " alt="" coords="92,56,261,83"/>
+<area shape="rect" id="node5" href="$classRasterdata.html#a084ed567ec84153400d530141f96a6c0" title="Reads the pixel values for the given search box. " alt="" coords="128,107,225,133"/>
+<area shape="rect" id="node3" href="$classRasterdata.html#a9f5b06aca7d1d25268059526e1d35b21" title="Returns the pixel value for the i,j index. " alt="" coords="309,5,445,32"/>
 </map>

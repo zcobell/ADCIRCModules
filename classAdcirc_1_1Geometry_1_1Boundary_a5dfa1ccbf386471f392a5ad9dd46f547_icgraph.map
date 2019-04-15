@@ -1,4 +1,4 @@
 <map id="pipeCoefficient" name="pipeCoefficient">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aee662dfa4c6e292ef82603312a578e93" title="Sets the pipe coefficient. " alt="" coords="161,5,289,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="181,56,269,83"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aee662dfa4c6e292ef82603312a578e93" title="Sets the pipe coefficient. " alt="" coords="173,5,313,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="195,56,291,83"/>
 </map>

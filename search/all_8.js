@@ -15,7 +15,6 @@ var searchData=
   ['harmonicsrecord_5fimpl_2ecpp',['harmonicsrecord_impl.cpp',['../harmonicsrecord__impl_8cpp.html',1,'']]],
   ['harmonicsrecord_5fimpl_2eh',['harmonicsrecord_impl.h',['../harmonicsrecord__impl_8h.html',1,'']]],
   ['harmonicsunknown',['HarmonicsUnknown',['../namespaceAdcirc_1_1Harmonics.html#ae339d6c090ef62f744522770e9fc4016a6ecfe46105b85c71f718ec4a50233ad2',1,'Adcirc::Harmonics']]],
-  ['haserror',['HasError',['../namespaceAdcirc.html#a10c8308b686a1bf0224815dd45d3eb66a77dd8ed3de0e92af952949322798999a',1,'Adcirc']]],
   ['header',['header',['../classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a3b63d55d57e1d7ee98d3acdd3e74e2a5',1,'Adcirc::ModelParameters::NodalAttributes']]],
   ['headerstring',['headerString',['../classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#a29084ff9024d16075c6d1226df079b60',1,'Adcirc::ModelParameters::AttributeMetadata']]],
   ['highest',['Highest',['../namespaceInterpolation.html#a2a3c0067e44c5ef3210a256d06c16b0fa4bf5c35ed60c6d5584981ba1688d3eca',1,'Interpolation']]]

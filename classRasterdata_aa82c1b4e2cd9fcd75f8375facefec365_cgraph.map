@@ -1,5 +1,5 @@
 <map id="pixelToCoordinate" name="pixelToCoordinate">
-<area shape="rect" id="node2" href="$classRasterdata.html#acb64951c8bcd4cbe7e19eef01bb1e404" title="Calculates the coordinate of the pixel center. " alt="" coords="179,5,304,32"/>
-<area shape="rect" id="node3" href="$classPixel.html#a92b0b88b9a2c8ccada33e3fa7ce39244" title="Returns the i&#45;index. " alt="" coords="210,56,273,83"/>
-<area shape="rect" id="node4" href="$classPixel.html#aaf29b851413b2cac5242b33a4b6c24fd" title="Returns the j&#45;index. " alt="" coords="210,107,273,133"/>
+<area shape="rect" id="node2" href="$classRasterdata.html#acb64951c8bcd4cbe7e19eef01bb1e404" title="Calculates the coordinate of the pixel center. " alt="" coords="192,5,331,32"/>
+<area shape="rect" id="node3" href="$classPixel.html#a92b0b88b9a2c8ccada33e3fa7ce39244" title="Returns the i&#45;index. " alt="" coords="228,56,295,83"/>
+<area shape="rect" id="node4" href="$classPixel.html#aaf29b851413b2cac5242b33a4b6c24fd" title="Returns the j&#45;index. " alt="" coords="228,107,295,133"/>
 </map>

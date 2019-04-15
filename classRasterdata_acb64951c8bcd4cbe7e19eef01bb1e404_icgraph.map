@@ -1,3 +1,4 @@
 <map id="pixelToCoordinate" name="pixelToCoordinate">
-<area shape="rect" id="node2" href="$classRasterdata.html#aa82c1b4e2cd9fcd75f8375facefec365" title="Calculates the coordinate of the pixel center. " alt="" coords="179,5,304,32"/>
+<area shape="rect" id="node2" href="$classRasterdata.html#aa82c1b4e2cd9fcd75f8375facefec365" title="Calculates the coordinate of the pixel center. " alt="" coords="192,5,331,32"/>
+<area shape="rect" id="node3" href="$classRasterdata.html#a084ed567ec84153400d530141f96a6c0" title="Reads the pixel values for the given search box. " alt="" coords="213,56,310,83"/>
 </map>

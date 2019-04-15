@@ -1,8 +1,7 @@
 <map id="element" name="element">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#aecd5fbed4437df6191c7aa8dc0624d4a" title="Adds an Element at the specified position in the element vector. " alt="" coords="171,5,261,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6cc4b5e332f1a761d93ce7a616dc4bdd" title="Adcirc::Utility::MeshChecker\l::checkElementNumbering" alt="" coords="122,57,310,98"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="121,122,311,163"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ae03f3887258a57e08f2f6f259c03ce03" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="122,187,310,229"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="122,253,310,294"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="359,155,547,197"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6cc4b5e332f1a761d93ce7a616dc4bdd" title="Adcirc::Utility::MeshChecker\l::checkElementNumbering" alt="" coords="131,5,335,47"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="129,71,337,112"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ae03f3887258a57e08f2f6f259c03ce03" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="131,136,335,177"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="131,201,335,243"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="385,104,589,145"/>
 </map>

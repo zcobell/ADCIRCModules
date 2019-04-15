@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['throwerror',['throwError',['../classAdcirc_1_1Error.html#a69e65063c7dfaeb4330d31801a987a8e',1,'Adcirc::Error::throwError(const std::string &amp;s)'],['../classAdcirc_1_1Error.html#a8f67ffb5e7fa2c85e6cfbc52d176d1dd',1,'Adcirc::Error::throwError(const std::string &amp;s, const char *file, int line)']]],
+  ['throwerror',['throwError',['../classAdcirc_1_1Logging.html#a69e65063c7dfaeb4330d31801a987a8e',1,'Adcirc::Logging::throwError(const std::string &amp;s)'],['../classAdcirc_1_1Logging.html#a8f67ffb5e7fa2c85e6cfbc52d176d1dd',1,'Adcirc::Logging::throwError(const std::string &amp;s, const char *file, int line)']]],
   ['time',['time',['../classAdcirc_1_1Output_1_1OutputRecord.html#aa5259182c646d0c7936af1cc374f5f46',1,'Adcirc::Output::OutputRecord']]],
   ['to2dmstring',['to2dmString',['../classAdcirc_1_1Geometry_1_1Element.html#a2ab375c4994ef40c502c665132c732b9',1,'Adcirc::Geometry::Element::to2dmString()'],['../classAdcirc_1_1Geometry_1_1Node.html#a23d80ca14b4eb8fde2a399ebb291e826',1,'Adcirc::Geometry::Node::to2dmString()']]],
   ['toadcircstring',['toAdcircString',['../classAdcirc_1_1Geometry_1_1Element.html#a4a56f4095253738477eef9a6b821e843',1,'Adcirc::Geometry::Element::toAdcircString()'],['../classAdcirc_1_1Geometry_1_1Node.html#aa2643047b5fc60af3bac3d0e458c24d8',1,'Adcirc::Geometry::Node::toAdcircString()']]],

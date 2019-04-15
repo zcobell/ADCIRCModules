@@ -1,4 +1,0 @@
-<map id="numOpenBoundaries" name="numOpenBoundaries">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ab9bee67628097b08b47f8a964cccd48e" title="Sets the number of open boundaries in the model. Note this does not resize the boundary array..." alt="" coords="196,5,359,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="233,56,322,83"/>
-</map>

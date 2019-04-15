@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['kdtree2lib',['Kdtree2lib',['../classKdtree2lib.html',1,'Kdtree2lib'],['../classKdtree2lib.html#aeb2576401eb2f23c3d4cdb503ab016b6',1,'Kdtree2lib::Kdtree2lib()']]],
-  ['kdtree2lib_2ecpp',['kdtree2lib.cpp',['../kdtree2lib_8cpp.html',1,'']]],
-  ['kdtree2lib_2eh',['kdtree2lib.h',['../kdtree2lib_8h.html',1,'']]]
+  ['kdtree',['Kdtree',['../classKdtree.html',1,'Kdtree'],['../classKdtree.html#a166012f6f966f907e915222d460fabc6',1,'Kdtree::Kdtree()']]],
+  ['kdtree_2ecpp',['kdtree.cpp',['../kdtree_8cpp.html',1,'']]],
+  ['kdtree_2eh',['kdtree.h',['../kdtree_8h.html',1,'']]],
+  ['kdtree_5fimpl_2ecpp',['kdtree_impl.cpp',['../kdtree__impl_8cpp.html',1,'']]],
+  ['kdtree_5fimpl_2eh',['kdtree_impl.h',['../kdtree__impl_8h.html',1,'']]]
 ];

@@ -1,3 +1,9 @@
 <map id="edgeTupleEqual" name="edgeTupleEqual">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the nodal id/label. " alt="" coords="168,5,348,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the nodal id/label. " alt="" coords="421,32,617,59"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Element.html#a9e42cda1d41194ce3b1d434ae5a6dac1" title="Sorts the verticies in clockwise order around the element center. " alt="" coords="177,141,373,182"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Element.html#a07f34be4674125bc14f69abf7e2f4d51" title="Computes the center position of the element. " alt="" coords="421,90,617,132"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="423,168,615,195"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="423,244,615,271"/>
+<area shape="rect" id="node8" href="$mesh__impl_8cpp.html#ad51955257c4aa06d7fa054abeca675ba" title="comparison function for sorting the tuples of element edges " alt="" coords="219,39,332,66"/>
+<area shape="rect" id="node5" href="$element_8cpp.html#a4ae1e9eaa73978e19f9b5b2f49371dc4" title="Creates a boost::geometry element from the element. " alt="" coords="665,98,801,124"/>
 </map>

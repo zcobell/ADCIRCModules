@@ -1,7 +1,6 @@
 <map id="node" name="node">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ae0d59e06c57e74954f72f1ed659b84ee" title="Adds a node at the specified index in the node vector. " alt="" coords="161,5,235,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6e648568e6a73879a9da4bed2d8419d6" title="Adcirc::Utility::MeshChecker\l::checkNodeNumbering" alt="" coords="104,57,292,98"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab1b91509c7fc8ca25704765f687aeb00" title="Adcirc::Utility::MeshChecker\l::checkNodalElevations" alt="" coords="104,122,292,163"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ae03f3887258a57e08f2f6f259c03ce03" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="104,187,292,229"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="340,122,528,163"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6e648568e6a73879a9da4bed2d8419d6" title="Adcirc::Utility::MeshChecker\l::checkNodeNumbering" alt="" coords="108,5,312,47"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab1b91509c7fc8ca25704765f687aeb00" title="Adcirc::Utility::MeshChecker\l::checkNodalElevations" alt="" coords="108,71,312,112"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ae03f3887258a57e08f2f6f259c03ce03" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="108,136,312,177"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="360,71,564,112"/>
 </map>

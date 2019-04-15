@@ -1,5 +1,5 @@
 <map id="setBoundaryCode" name="setBoundaryCode">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa73482a93e9453f307b44dd1bffd0230" title="Initializes the boundary with user specified boundary type and length. " alt="" coords="187,5,265,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ae7d8bcd9bd98bb8b378d529da56cdf7c" title="User specified initialization of the boundary. " alt="" coords="179,56,273,83"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a9eadb05aefcbdcd82ccb53c1b2e9769c" title="Default constructor. " alt="" coords="321,56,399,83"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa73482a93e9453f307b44dd1bffd0230" title="Initializes the boundary with user specified boundary type and length. " alt="" coords="201,5,285,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ae7d8bcd9bd98bb8b378d529da56cdf7c" title="User specified initialization of the boundary. " alt="" coords="191,56,295,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a9eadb05aefcbdcd82ccb53c1b2e9769c" title="Default constructor. " alt="" coords="343,56,427,83"/>
 </map>

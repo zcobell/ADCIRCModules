@@ -17,7 +17,7 @@ var classAdcirc_1_1Geometry_1_1Mesh =
     [ "deleteNodalSearchTree", "classAdcirc_1_1Geometry_1_1Mesh.html#a138d7b286466422790ecbc054c8b0c35", null ],
     [ "deleteNode", "classAdcirc_1_1Geometry_1_1Mesh.html#a684cf2720fb4efb8e72184f52ad151cb", null ],
     [ "element", "classAdcirc_1_1Geometry_1_1Mesh.html#a3543bba752ce5bb6f2a4ce69c0f09c3d", null ],
-    [ "elementalSearchTree", "classAdcirc_1_1Geometry_1_1Mesh.html#a5a785126a3139f056904922fcd7eced6", null ],
+    [ "elementalSearchTree", "classAdcirc_1_1Geometry_1_1Mesh.html#ad417ac7c87b06f4b685b6512008d17c2", null ],
     [ "elementalSearchTreeInitialized", "classAdcirc_1_1Geometry_1_1Mesh.html#a1ffd396d8afd6fe0ad4ffdf484749394", null ],
     [ "elementById", "classAdcirc_1_1Geometry_1_1Mesh.html#af68be00c397b27f8adf3bc8f41240b55", null ],
     [ "elementIndexById", "classAdcirc_1_1Geometry_1_1Mesh.html#a806ffff9021fd9fa1f2401f56a161b4d", null ],
@@ -28,6 +28,7 @@ var classAdcirc_1_1Geometry_1_1Mesh =
     [ "filename", "classAdcirc_1_1Geometry_1_1Mesh.html#a94c732bb0f167eab349228237a8fbe3c", null ],
     [ "findElement", "classAdcirc_1_1Geometry_1_1Mesh.html#afc8a7071a350f0e47178c77e10323dcc", null ],
     [ "findElement", "classAdcirc_1_1Geometry_1_1Mesh.html#a6f06589c2439af5b4e5da2fa7e7ff261", null ],
+    [ "findElement", "classAdcirc_1_1Geometry_1_1Mesh.html#a039597d13fb3ef6dc00a932f4cb531ed", null ],
     [ "findNearestElement", "classAdcirc_1_1Geometry_1_1Mesh.html#adf4c00afd4b17e5ab3acccf6a3a71f9c", null ],
     [ "findNearestElement", "classAdcirc_1_1Geometry_1_1Mesh.html#a81c61aafd5fb5a9fcda48fbd503764ca", null ],
     [ "findNearestNode", "classAdcirc_1_1Geometry_1_1Mesh.html#a1169a16857e88fd4f5bb83261946459c", null ],
@@ -36,7 +37,7 @@ var classAdcirc_1_1Geometry_1_1Mesh =
     [ "isLatLon", "classAdcirc_1_1Geometry_1_1Mesh.html#ac6a3ad791b160ae157182192807bb6f3", null ],
     [ "landBoundary", "classAdcirc_1_1Geometry_1_1Mesh.html#abe78dff66c8837bdd05af8b5504e07e1", null ],
     [ "meshHeaderString", "classAdcirc_1_1Geometry_1_1Mesh.html#adc2bf9b67aabc0b183e50a5bb34bea32", null ],
-    [ "nodalSearchTree", "classAdcirc_1_1Geometry_1_1Mesh.html#a02282bd63a59539aa535871bd557e8dc", null ],
+    [ "nodalSearchTree", "classAdcirc_1_1Geometry_1_1Mesh.html#a24a23657ebe7bc1c8f903652edf9684a", null ],
     [ "nodalSearchTreeInitialized", "classAdcirc_1_1Geometry_1_1Mesh.html#a8551eb9d8460d88a2b01226a88230090", null ],
     [ "node", "classAdcirc_1_1Geometry_1_1Mesh.html#a96bbda0a22e51f4ca5cf2364126956b9", null ],
     [ "nodeById", "classAdcirc_1_1Geometry_1_1Mesh.html#ae3346b5c66cddee90df931a77f50f8a3", null ],
@@ -71,5 +72,5 @@ var classAdcirc_1_1Geometry_1_1Mesh =
     [ "xyz", "classAdcirc_1_1Geometry_1_1Mesh.html#a94d25c891983ee909aafdecf34bcbfec", null ],
     [ "y", "classAdcirc_1_1Geometry_1_1Mesh.html#ac226a4441605d69e0cc5564e7f0805ad", null ],
     [ "z", "classAdcirc_1_1Geometry_1_1Mesh.html#ab93aa60ac4b272c586a0681478416aee", null ],
-    [ "ELEMENT_NOT_FOUND", "classAdcirc_1_1Geometry_1_1Mesh.html#ae54f241567cab19d7202cf4dbcec5448", null ]
+    [ "ElementTable", "classAdcirc_1_1Geometry_1_1Mesh.html#ac9c39ab92b558676338061faae090768", null ]
 ];

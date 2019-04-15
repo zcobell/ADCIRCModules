@@ -1,6 +1,6 @@
 <map id="harmonicsoutput.cpp" name="harmonicsoutput.cpp">
-<area shape="rect" id="node2" href="$harmonicsoutput_8h.html" title="harmonicsoutput.h" alt="" coords="91,87,220,114"/>
-<area shape="rect" id="node8" href="$harmonicsoutput__impl_8h.html" title="pimpl/harmonicsoutput\l_impl.h" alt="" coords="277,80,431,121"/>
-<area shape="rect" id="node5" href="$filetypes_8h.html" title="filetypes.h" alt="" coords="114,169,197,196"/>
-<area shape="rect" id="node6" href="$harmonicsrecord_8h.html" title="harmonicsrecord.h" alt="" coords="221,169,351,196"/>
+<area shape="rect" id="node2" href="$harmonicsoutput_8h.html" title="harmonicsoutput.h" alt="" coords="95,80,239,107"/>
+<area shape="rect" id="node8" href="$harmonicsoutput__impl_8h.html" title="harmonicsoutput_impl.h" alt="" coords="295,80,475,107"/>
+<area shape="rect" id="node5" href="$filetypes_8h.html" title="filetypes.h" alt="" coords="121,155,212,181"/>
+<area shape="rect" id="node6" href="$harmonicsrecord_8h.html" title="harmonicsrecord.h" alt="" coords="237,155,379,181"/>
 </map>

@@ -5,5 +5,5 @@ var namespaceAdcirc =
     [ "ModelParameters", "namespaceAdcirc_1_1ModelParameters.html", "namespaceAdcirc_1_1ModelParameters" ],
     [ "Output", "namespaceAdcirc_1_1Output.html", "namespaceAdcirc_1_1Output" ],
     [ "Utility", "namespaceAdcirc_1_1Utility.html", "namespaceAdcirc_1_1Utility" ],
-    [ "Error", "classAdcirc_1_1Error.html", "classAdcirc_1_1Error" ]
+    [ "Logging", "classAdcirc_1_1Logging.html", "classAdcirc_1_1Logging" ]
 ];

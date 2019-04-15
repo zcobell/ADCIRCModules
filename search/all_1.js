@@ -2,7 +2,8 @@ var searchData=
 [
   ['adcirc',['Adcirc',['../namespaceAdcirc.html',1,'']]],
   ['adcircmodules_2eh',['adcircmodules.h',['../adcircmodules_8h.html',1,'']]],
-  ['adcircmodules_5fthrow_5fexception',['adcircmodules_throw_exception',['../error_8h.html#ab59da9aa35281c2a6c911f317dcb14e8',1,'error.h']]],
+  ['adcircmodules_5fdefault_5fvalue',['adcircmodules_default_value',['../default__values_8h.html#ab5f1a997892a7bea76849f40b53f2043',1,'default_values.h']]],
+  ['adcircmodules_5fthrow_5fexception',['adcircmodules_throw_exception',['../logging_8h.html#ab59da9aa35281c2a6c911f317dcb14e8',1,'logging.h']]],
   ['addelement',['addElement',['../classAdcirc_1_1Geometry_1_1Mesh.html#aecd5fbed4437df6191c7aa8dc0624d4a',1,'Adcirc::Geometry::Mesh']]],
   ['addnode',['addNode',['../classAdcirc_1_1Geometry_1_1Mesh.html#ae0d59e06c57e74954f72f1ed659b84ee',1,'Adcirc::Geometry::Mesh']]],
   ['amplitude',['amplitude',['../classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a5cae7e4e56b5348f563fc6d00e72724b',1,'Adcirc::Harmonics::HarmonicsOutput::amplitude(const std::string &amp;name)'],['../classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#adf8096ea8fd3649840dcd202bb9fb520',1,'Adcirc::Harmonics::HarmonicsOutput::amplitude(size_t index)']]],

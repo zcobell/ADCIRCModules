@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['stringconversion_2ecpp',['stringconversion.cpp',['../stringconversion_8cpp.html',1,'']]],
-  ['stringconversion_2eh',['stringconversion.h',['../stringconversion_8h.html',1,'']]]
+  ['pixel_2ecpp',['pixel.cpp',['../pixel_8cpp.html',1,'']]],
+  ['pixel_2eh',['pixel.h',['../pixel_8h.html',1,'']]]
 ];

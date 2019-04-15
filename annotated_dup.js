@@ -4,7 +4,7 @@ var annotated_dup =
     [ "FileIO", "namespaceFileIO.html", null ],
     [ "Interpolation", "namespaceInterpolation.html", "namespaceInterpolation" ],
     [ "Constants", "classConstants.html", "classConstants" ],
-    [ "Kdtree2lib", "classKdtree2lib.html", "classKdtree2lib" ],
+    [ "Kdtree", "classKdtree.html", "classKdtree" ],
     [ "Multithreading", "classMultithreading.html", "classMultithreading" ],
     [ "Pixel", "classPixel.html", "classPixel" ],
     [ "Rasterdata", "classRasterdata.html", "classRasterdata" ]
