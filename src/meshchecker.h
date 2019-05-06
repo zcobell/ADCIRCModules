@@ -48,6 +48,8 @@ class MeshChecker {
   checkPipeHeights(Adcirc::Geometry::Mesh *mesh);
   static bool ADCIRCMODULES_EXPORT
   checkElementSizes(Adcirc::Geometry::Mesh *mesh, double minimumElementSize);
+  static bool ADCIRCMODULES_EXPORT checkUnimposedBoundaries(
+      Adcirc::Geometry::Mesh *mesh, const std::string &logFile = "none");
 
  private:
   Adcirc::Geometry::Mesh *m_mesh;

@@ -612,3 +612,15 @@ std::vector<Adcirc::Geometry::Element *> Mesh::elementsAroundNode(
     Adcirc::Geometry::Node *n) {
   return this->m_impl->elementsAroundNode(n);
 }
+
+/**
+ * @brief Return a vector containing all nodes on the mesh boundary
+ *
+ * Note that the nodes returned are not nodes with boundary conditions, but
+ * nodes that are on the mesh boundary
+ *
+ * @return vector of all nodes on boundary
+ */
+std::vector<Adcirc::Geometry::Node *> Mesh::boundaryNodes() {
+  return this->m_impl->boundaryNodes();
+}

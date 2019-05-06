@@ -1159,13 +1159,13 @@ std::vector<std::pair<Node *, Node *>> MeshImpl::generateLinkTable() {
   for (auto &e : this->m_elements) {
     Element e_s = e;
     e_s.sortVerticiesAboutCenter();
-    for (int j = 0; j < e_s.n(); ++j) {
+    for (size_t j = 0; j < e_s.n(); ++j) {
       std::pair<Node *, Node *> p1 = e_s.elementLeg(j);
       std::pair<Node *, Node *> p2;
       if (p1.first->id() > p1.second->id()) {
         p2 = std::pair<Node *, Node *>(p1.second, p1.first);
       } else {
-        p2 = move(p1);
+        p2 = std::move(p1);
       }
       legs.push_back(p2);
     }
@@ -2208,4 +2208,51 @@ Adcirc::Geometry::Element *MeshImpl::elementTable(size_t nodeIndex,
 std::vector<Adcirc::Geometry::Element *> MeshImpl::elementsAroundNode(
     Adcirc::Geometry::Node *n) {
   return this->m_elementTable.elementList(n);
+}
+
+std::vector<Adcirc::Geometry::Node *> MeshImpl::boundaryNodes() {
+  std::vector<std::pair<Node *, Node *>> links = this->generateLinkTable();
+  std::vector<size_t> count(links.size());
+  std::fill(count.begin(), count.end(), 0);
+
+#ifdef USE_GOOGLE_FLAT_MAP
+  absl::flat_hash_map<std::pair<Node *, Node *>, size_t> lookup;
+#else
+  std::unordered_map<std::pair<Node *, Node *>, size_t> lookup;
+#endif
+  for (size_t i = 0; i < links.size(); ++i) {
+    lookup[links[i]] = i;
+  }
+
+  for (auto &e : this->m_elements) {
+    Element e_s = e;
+    e_s.sortVerticiesAboutCenter();
+    for (size_t j = 0; j < e_s.n(); ++j) {
+      std::pair<Node *, Node *> p1 = e_s.elementLeg(j);
+      std::pair<Node *, Node *> p2;
+      if (p1.first->id() > p1.second->id()) {
+        p2 = std::pair<Node *, Node *>(p1.second, p1.first);
+      } else {
+        p2 = std::move(p1);
+      }
+
+      count[lookup[p2]] += static_cast<size_t>(1);
+    }
+  }
+
+  std::vector<Adcirc::Geometry::Node *> bdyVec;
+  bdyVec.reserve(count.size() * 2);
+  for (size_t i = 0; i < links.size(); ++i) {
+    if (count[i] == 1) {
+      bdyVec.push_back(links[i].first);
+      bdyVec.push_back(links[i].second);
+    }
+  }
+
+  std::set<Node *> bnd(bdyVec.begin(), bdyVec.end());
+  bdyVec.clear();
+  bdyVec.assign(bnd.begin(), bnd.end());
+  bnd.clear();
+
+  return bdyVec;
 }

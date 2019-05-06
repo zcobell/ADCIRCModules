@@ -19,6 +19,7 @@
 #include "meshchecker.h"
 #include <algorithm>
 #include <cassert>
+#include <fstream>
 #include <iostream>
 #include <vector>
 
@@ -288,5 +289,63 @@ bool MeshChecker::checkElementSizes(Mesh *mesh, double minimumElementSize) {
   }
   return passed;
 }
+
+bool MeshChecker::checkUnimposedBoundaries(Mesh *mesh,
+                                           const std::string &logFile) {
+  bool passed = true;
+  std::vector<Adcirc::Geometry::Node *> boundaryNodes = mesh->boundaryNodes();
+  std::vector<bool> found(boundaryNodes.size());
+  std::fill(found.begin(), found.end(), false);
+
+#pragma omp parallel shared(mesh, found)
+  for (size_t i = 0; i < mesh->numOpenBoundaries(); ++i) {
+    for (size_t j = 0; j < mesh->openBoundary(i)->length(); ++j) {
+      auto it = std::find(boundaryNodes.begin(), boundaryNodes.end(),
+                          mesh->openBoundary(i)->node1(j));
+      if (it != boundaryNodes.end()) {
+        auto d = std::distance(boundaryNodes.begin(), it);
+        found[d] = true;
+      }
+    }
+  }
+
+#pragma omp parallel shared(mesh, found)
+  for (size_t i = 0; i < mesh->numLandBoundaries(); ++i) {
+    for (size_t j = 0; j < mesh->landBoundary(i)->length(); ++j) {
+      auto it = std::find(boundaryNodes.begin(), boundaryNodes.end(),
+                          mesh->landBoundary(i)->node1(j));
+      if (it != boundaryNodes.end()) {
+        auto d = std::distance(boundaryNodes.begin(), it);
+        found[d] = true;
+      }
+      if (mesh->landBoundary(i)->isInternalWeir()) {
+        auto it2 = std::find(boundaryNodes.begin(), boundaryNodes.end(),
+                             mesh->landBoundary(i)->node2(j));
+        if (it2 != boundaryNodes.end()) {
+          auto d = std::distance(boundaryNodes.begin(), it2);
+          found[d] = true;
+        }
+      }
+    }
+  }
+
+  std::ofstream log;
+
+  if (logFile != "none") {
+    log.open(logFile);
+  }
+
+  for (size_t i = 0; i < found.size(); ++i) {
+    if (!found[i]) {
+      log << boundaryNodes[i]->x() << ", " << boundaryNodes[i]->y()
+          << std::endl;
+    }
+  }
+
+  if (logFile != "none") log.close();
+
+  return passed;
+}
+
 }  // namespace Utility
 }  // namespace Adcirc

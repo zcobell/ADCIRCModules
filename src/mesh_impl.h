@@ -116,6 +116,8 @@ class MeshImpl {
   size_t findElement(double x, double y);
   size_t findElement(double x, double y, std::vector<double> &weights);
 
+  std::vector<Adcirc::Geometry::Node *> boundaryNodes();
+
   Adcirc::Geometry::Node *node(size_t index);
   Adcirc::Geometry::Element *element(size_t index);
   Adcirc::Geometry::Boundary *openBoundary(size_t index);
@@ -212,7 +214,6 @@ class MeshImpl {
 
   std::unique_ptr<Kdtree> m_nodalSearchTree;
   std::unique_ptr<Kdtree> m_elementalSearchTree;
-
 };
 
 #endif  // ADCMOD_MESHIMPL_H

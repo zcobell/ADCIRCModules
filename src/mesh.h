@@ -193,6 +193,8 @@ class Mesh {
   std::vector<Adcirc::Geometry::Element *> ADCIRCMODULES_EXPORT
   elementsAroundNode(Adcirc::Geometry::Node *n);
 
+  std::vector<Adcirc::Geometry::Node *> ADCIRCMODULES_EXPORT boundaryNodes();
+
  private:
   MeshImpl *m_impl;
 };
