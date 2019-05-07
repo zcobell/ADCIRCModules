@@ -2214,12 +2214,8 @@ std::vector<Adcirc::Geometry::Node *> MeshImpl::boundaryNodes() {
   std::vector<std::pair<Node *, Node *>> links = this->generateLinkTable();
   std::vector<size_t> count(links.size());
   std::fill(count.begin(), count.end(), 0);
+  adcmap<std::pair<Node *, Node *>, size_t> lookup;
 
-#ifdef USE_GOOGLE_FLAT_MAP
-  absl::flat_hash_map<std::pair<Node *, Node *>, size_t> lookup;
-#else
-  std::unordered_map<std::pair<Node *, Node *>, size_t> lookup;
-#endif
   lookup.reserve(links.size());
   for (size_t i = 0; i < links.size(); ++i) {
     lookup[links[i]] = i;

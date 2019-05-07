@@ -21,14 +21,9 @@
 
 #include <string>
 #include <vector>
+#include "adcmap.h"
 #include "filetypes.h"
 #include "harmonicsrecord.h"
-
-#ifdef USE_GOOGLE_FLAT_MAP
-#include "absl/container/flat_hash_map.h"
-#else
-#include <unordered_map>
-#endif
 
 class HarmonicsOutputImpl {
  public:
@@ -93,15 +88,9 @@ class HarmonicsOutputImpl {
   std::vector<Adcirc::Harmonics::HarmonicsRecord> m_uphase;
   std::vector<Adcirc::Harmonics::HarmonicsRecord> m_vphase;
 
-#ifdef USE_GOOGLE_FLAT_MAP
-  absl::flat_hash_map<size_t, size_t> m_nodeIndex;
-  absl::flat_hash_map<std::string, size_t> m_index;
-  absl::flat_hash_map<size_t, std::string> m_reverseIndex;
-#else
-  std::unordered_map<size_t, size_t> m_nodeIndex;
-  std::unordered_map<std::string, size_t> m_index;
-  std::unordered_map<size_t, std::string> m_reverseIndex;
-#endif
+  adcmap<size_t, size_t> m_nodeIndex;
+  adcmap<std::string, size_t> m_index;
+  adcmap<size_t, std::string> m_reverseIndex;
 
   void getFiletype();
   Adcirc::Harmonics::HarmonicsFormat getHarmonicsFormatFromExtension(

@@ -331,7 +331,7 @@ bool MeshChecker::checkMissingBoundaryConditions(Mesh *mesh,
       auto it = std::find(boundaryNodes.begin(), boundaryNodes.end(),
                           mesh->openBoundary(i)->node1(j));
       if (it != boundaryNodes.end()) {
-        auto d = std::distance(boundaryNodes.begin(), it);
+        size_t d = std::distance(boundaryNodes.begin(), it);
         found[d] = true;
       }
     }
@@ -342,14 +342,14 @@ bool MeshChecker::checkMissingBoundaryConditions(Mesh *mesh,
       auto it = std::find(boundaryNodes.begin(), boundaryNodes.end(),
                           mesh->landBoundary(i)->node1(j));
       if (it != boundaryNodes.end()) {
-        auto d = std::distance(boundaryNodes.begin(), it);
+        size_t d = std::distance(boundaryNodes.begin(), it);
         found[d] = true;
       }
       if (mesh->landBoundary(i)->isInternalWeir()) {
         auto it2 = std::find(boundaryNodes.begin(), boundaryNodes.end(),
                              mesh->landBoundary(i)->node2(j));
         if (it2 != boundaryNodes.end()) {
-          auto d = std::distance(boundaryNodes.begin(), it2);
+          size_t d = std::distance(boundaryNodes.begin(), it2);
           found[d] = true;
         }
       }

@@ -120,6 +120,7 @@ SOURCES += \
 
 HEADERS += \
     adcircmodules_global.h \
+    adcmap.h \
     stringconversion.h \
     boundary.h \
     element.h \

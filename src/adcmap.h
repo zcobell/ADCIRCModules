@@ -16,23 +16,23 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_ADCIRCMODULES_H
-#define ADCMOD_ADCIRCMODULES_H
+#ifndef ADCMOD_ADCMAP_H
+#define ADCMOD_ADCMAP_H
 
-#include "config.h"
-#include "constants.h"
-#include "default_values.h"
-#include "ezproj.h"
-#include "filetypes.h"
-#include "griddata.h"
-#include "harmonicsoutput.h"
-#include "interpolationmethods.h"
-#include "kdtree.h"
-#include "logging.h"
-#include "mesh.h"
-#include "meshchecker.h"
-#include "multithreading.h"
-#include "nodalattributes.h"
-#include "outputfile.h"
+#ifdef USE_GOOGLE_FLAT_MAP
+#include "absl/container/flat_hash_map.h"
+#else
+#include <unordered_map>
+#endif
 
-#endif  // ADCMOD_ADCIRCMODULES_H
+//...Alias for using the Google hashtable if
+//   available. Prevents using ifdefs throughout
+//   source files
+template <typename T1, typename T2>
+#ifdef USE_GOOGLE_FLAT_MAP
+using adcmap = absl::flat_hash_map<T1, T2>;
+#else
+using adcmap = std::unordered_map<T1, T2>;
+#endif
+
+#endif  // ADCMOD_ADCMAP_H

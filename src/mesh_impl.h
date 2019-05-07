@@ -25,18 +25,13 @@
 #include <utility>
 #include <vector>
 #include "adcircmodules_global.h"
+#include "adcmap.h"
 #include "boundary.h"
 #include "element.h"
 #include "elementtable.h"
 #include "filetypes.h"
 #include "kdtree.h"
 #include "node.h"
-
-#ifdef USE_GOOGLE_FLAT_MAP
-#include "absl/container/flat_hash_map.h"
-#else
-#include <unordered_map>
-#endif
 
 using Point = std::pair<double, double>;
 
@@ -184,13 +179,8 @@ class MeshImpl {
   size_t getMaxNodesPerElement();
   void buildNodeLookupTable();
 
-#ifdef USE_GOOGLE_FLAT_MAP
-  absl::flat_hash_map<size_t, size_t> m_nodeLookup;
-  absl::flat_hash_map<size_t, size_t> m_elementLookup;
-#else
-  std::unordered_map<size_t, size_t> m_nodeLookup;
-  std::unordered_map<size_t, size_t> m_elementLookup;
-#endif
+  adcmap<size_t, size_t> m_nodeLookup;
+  adcmap<size_t, size_t> m_elementLookup;
 
   std::string m_filename;
   std::string m_meshHeaderString;

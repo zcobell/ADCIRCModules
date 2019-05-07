@@ -23,16 +23,11 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include "adcmap.h"
 #include "constants.h"
 #include "interpolationmethods.h"
 #include "mesh.h"
 #include "rasterdata.h"
-
-#ifdef USE_GOOGLE_FLAT_MAP
-#include "absl/container/flat_hash_map.h"
-#else
-#include <unordered_map>
-#endif
 
 using Point = std::pair<double, double>;
 
@@ -150,12 +145,7 @@ class GriddataImpl {
   std::string m_rasterFile;
   std::vector<int> m_interpolationFlags;
   int m_epsg;
-
-#ifdef USE_GOOGLE_FLAT_MAP
-  absl::flat_hash_map<unsigned short, double> m_lookup;
-#else
-  std::unordered_map<unsigned short, double> m_lookup;
-#endif
+  adcmap<unsigned short, double> m_lookup;
 
   double m_rasterMultiplier;
   double m_datumShift;

@@ -21,15 +21,10 @@
 
 #include <string>
 #include <vector>
+#include "adcmap.h"
 #include "attribute.h"
 #include "attributemetadata.h"
 #include "mesh.h"
-
-#ifdef USE_GOOGLE_FLAT_MAP
-#include "absl/container/flat_hash_map.h"
-#else
-#include <unordered_map>
-#endif
 
 class NodalAttributesImpl {
  public:
@@ -81,11 +76,7 @@ class NodalAttributesImpl {
 
   /// Mapping function between the name of a nodal parameter and its position in
   /// the nodalParameters vector
-#ifdef USE_GOOGLE_FLAT_MAP
-  absl::flat_hash_map<std::string, size_t> m_attributeLocations;
-#else
-  std::unordered_map<std::string, size_t> m_attributeLocations;
-#endif
+  adcmap<std::string, size_t> m_attributeLocations;
 
   /// Filename of the file that will be read or was read
   std::string m_filename;

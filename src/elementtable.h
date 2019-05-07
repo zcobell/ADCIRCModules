@@ -20,13 +20,8 @@
 #define ADCMOD_ELEMENTTABLE_H
 
 #include <vector>
+#include "adcmap.h"
 #include "element.h"
-
-#ifdef USE_GOOGLE_FLAT_MAP
-#include "absl/container/flat_hash_map.h"
-#else
-#include <unordered_map>
-#endif
 
 class MeshImpl;
 
@@ -68,15 +63,8 @@ class ElementTable {
   void setMesh(MeshImpl *mesh);
 
  private:
-#ifdef USE_GOOGLE_FLAT_MAP
-  absl::flat_hash_map<Adcirc::Geometry::Node *,
-                      std::vector<Adcirc::Geometry::Element *>>
+  adcmap<Adcirc::Geometry::Node *, std::vector<Adcirc::Geometry::Element *>>
       m_elementTable;
-#else
-  std::unordered_map<Adcirc::Geometry::Node *,
-                     std::vector<Adcirc::Geometry::Element *>>
-      m_elementTable;
-#endif
 
   MeshImpl *m_mesh;
 
