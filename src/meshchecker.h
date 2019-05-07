@@ -30,7 +30,7 @@ class MeshChecker {
  public:
   ADCIRCMODULES_EXPORT MeshChecker(Adcirc::Geometry::Mesh *mesh);
 
-  bool ADCIRCMODULES_EXPORT checkMesh();
+  bool ADCIRCMODULES_EXPORT checkMesh(bool ignoreNonfatal = true);
 
   static bool ADCIRCMODULES_EXPORT checkLeveeHeights(
       Adcirc::Geometry::Mesh *mesh, double minimumCrestElevationOverTopography);

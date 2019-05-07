@@ -30,7 +30,7 @@ using namespace Adcirc::Geometry;
 
 MeshChecker::MeshChecker(Mesh *mesh) : m_mesh(mesh) {}
 
-bool MeshChecker::checkMesh() {
+bool MeshChecker::checkMesh(bool ignoreNonfatal) {
   bool passed = true;
   if (!this->checkNodeNumbering(this->m_mesh)) {
     printf("MeshChecker::checkMesh --> Node numbering check failed.\n");
@@ -60,12 +60,14 @@ bool MeshChecker::checkMesh() {
 
   if (!this->checkLeveeHeights(this->m_mesh, 0.2)) {
     printf("MeshChecker::checkMesh --> Levee height check failed.\n");
-    return false;
+    if (!ignoreNonfatal) return false;
+    passed = false;
   }
 
   if (!this->checkPipeHeights((this->m_mesh))) {
     printf("MeshChecker::checkMesh --> Pipe height check failed.\n");
-    return false;
+    if (!ignoreNonfatal) return false;
+    passed = false;
   }
 
   if (!this->checkElementSizes(this->m_mesh, 20.0)) {
