@@ -42,13 +42,13 @@ class MeshChecker {
       Adcirc::Geometry::Mesh *mesh, double minimumNodalelevation);
   static bool ADCIRCMODULES_EXPORT
   checkOverlappingElements(Adcirc::Geometry::Mesh *mesh);
-  static bool ADCIRCMODULES_EXPORT
-  checkDisjointNodes(Adcirc::Geometry::Mesh *mesh);
+  static bool ADCIRCMODULES_EXPORT checkDisjointNodes(
+      Adcirc::Geometry::Mesh *mesh, const std::string &logFile = "none");
   static bool ADCIRCMODULES_EXPORT
   checkPipeHeights(Adcirc::Geometry::Mesh *mesh);
   static bool ADCIRCMODULES_EXPORT
   checkElementSizes(Adcirc::Geometry::Mesh *mesh, double minimumElementSize);
-  static bool ADCIRCMODULES_EXPORT checkUnimposedBoundaries(
+  static bool ADCIRCMODULES_EXPORT checkMissingBoundaryConditions(
       Adcirc::Geometry::Mesh *mesh, const std::string &logFile = "none");
 
  private:

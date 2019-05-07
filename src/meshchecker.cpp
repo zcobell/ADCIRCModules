@@ -33,42 +33,49 @@ MeshChecker::MeshChecker(Mesh *mesh) : m_mesh(mesh) {}
 bool MeshChecker::checkMesh() {
   bool passed = true;
   if (!this->checkNodeNumbering(this->m_mesh)) {
-    printf("MeshChecker::checkMesh :: Node numbering check failed.\n");
+    printf("MeshChecker::checkMesh --> Node numbering check failed.\n");
     return false;
   }
 
   if (!this->checkElementNumbering(this->m_mesh)) {
-    printf("MeshChecker::checkMesh :: Element numbering check failed.\n");
+    printf("MeshChecker::checkMesh --> Element numbering check failed.\n");
     return false;
   }
 
   if (!this->checkNodalElevations(this->m_mesh, -200.0)) {
-    printf("MeshChecker::checkMesh :: Nodal elevation check failed.\n");
+    printf("MeshChecker::checkMesh --> Nodal elevation check failed.\n");
     passed = false;
   }
 
-  if (!this->checkDisjointNodes(this->m_mesh)) {
-    printf("MeshChecker::checkMesh :: Disjoint nodes found.");
+  if (!this->checkDisjointNodes(this->m_mesh,
+                                "meshchecker_disjointNodes.txt")) {
+    printf("MeshChecker::checkMesh --> Disjoint nodes found.");
     passed = false;
   }
 
   if (!this->checkOverlappingElements(this->m_mesh)) {
-    printf("MeshChecker::checkMesh :: Overlapping elements found.");
+    printf("MeshChecker::checkMesh --> Overlapping elements found.");
     return false;
   }
 
   if (!this->checkLeveeHeights(this->m_mesh, 0.2)) {
-    printf("MeshChecker::checkMesh :: Levee height check failed.\n");
+    printf("MeshChecker::checkMesh --> Levee height check failed.\n");
     return false;
   }
 
   if (!this->checkPipeHeights((this->m_mesh))) {
-    printf("MeshChecker::checkMesh :: Pipe height check failed.\n");
+    printf("MeshChecker::checkMesh --> Pipe height check failed.\n");
     return false;
   }
 
   if (!this->checkElementSizes(this->m_mesh, 20.0)) {
-    printf("MeshChecker::checkMesh :: Element size check failed.");
+    printf("MeshChecker::checkMesh --> Element size check failed.");
+    passed = false;
+  }
+  if (!this->checkMissingBoundaryConditions(
+          this->m_mesh, "meshchecker_missingBoundaries.txt")) {
+    printf(
+        "MeshChecker::checkMesh --> Missing boundary condition nodes found.");
     passed = false;
   }
 
@@ -95,7 +102,7 @@ bool MeshChecker::checkNodalElevations(Mesh *mesh,
   for (size_t i = 0; i < mesh->numNodes(); ++i) {
     if (mesh->node(i)->z() < minimumNodalElevation) {
       printf(
-          "[Mesh Error] MeshChecker::checkNodalElevations :: Node %zd has "
+          "[Mesh Error] MeshChecker::checkNodalElevations --> Node %zd has "
           "elevation %9.2f which is greater than specified minimum "
           "elevation of %9.2f.\n",
           mesh->node(i)->id(), mesh->node(i)->z(), minimumNodalElevation);
@@ -146,7 +153,7 @@ void MeshChecker::printFailedLeveeStatus(
     Boundary *bc, size_t index, double minimumCrestElevationOverTopography) {
   if (bc->isExternalWeir()) {
     printf(
-        "[Mesh Error] MeshChecker::checkLeveeHeights :: Node %zd elevation "
+        "[Mesh Error] MeshChecker::checkLeveeHeights --> Node %zd elevation "
         "(%f) greater than crest elevation (%f + %f) on single "
         "sided weir boundary.\n",
         bc->node1(index)->id(), -bc->node1(index)->z(),
@@ -155,7 +162,7 @@ void MeshChecker::printFailedLeveeStatus(
     if (-bc->node1(index)->z() >
         bc->crestElevation(index) - minimumCrestElevationOverTopography) {
       printf(
-          "[Mesh Error] MeshChecker::checkLeveeHeights :: Node %zd elevation "
+          "[Mesh Error] MeshChecker::checkLeveeHeights --> Node %zd elevation "
           "(%f) greater than crest elevation (%f + %f) on weir "
           "boundary.\n",
           bc->node1(index)->id(), -bc->node1(index)->z(),
@@ -164,7 +171,7 @@ void MeshChecker::printFailedLeveeStatus(
     if (-bc->node2(index)->z() >
         bc->crestElevation(index) - minimumCrestElevationOverTopography) {
       printf(
-          "[Mesh Error] MeshChecker::checkLeveeHeights :: Node %zd elevation "
+          "[Mesh Error] MeshChecker::checkLeveeHeights --> Node %zd elevation "
           "(%f) greater than crest elevation (%f + %f) on weir "
           "boundary.\n",
           bc->node2(index)->id(), -bc->node2(index)->z(),
@@ -203,7 +210,7 @@ bool MeshChecker::checkOverlappingElements(Mesh *mesh) {
   if (overlappingList.size() != 0) {
     for (size_t i = 0; i < overlappingList.size(); ++i) {
       printf(
-          "[Mesh Error] MeshChecker::checkOverlappingElements :: "
+          "[Mesh Error] MeshChecker::checkOverlappingElements --> "
           "Overlapping element detected on element %zd \n",
           overlappingList[i]->id());
     }
@@ -213,7 +220,7 @@ bool MeshChecker::checkOverlappingElements(Mesh *mesh) {
   }
 }
 
-bool MeshChecker::checkDisjointNodes(Mesh *mesh) {
+bool MeshChecker::checkDisjointNodes(Mesh *mesh, const std::string &logFile) {
   bool passed = true;
   std::vector<bool> found;
   found.resize(mesh->numNodes());
@@ -226,13 +233,32 @@ bool MeshChecker::checkDisjointNodes(Mesh *mesh) {
     }
   }
 
+  std::ofstream log;
+  size_t n = 0;
+  bool writeLog = false;
+  if (logFile != "none") {
+    writeLog = true;
+    log.open(logFile);
+  }
+
   for (size_t i = 0; i < mesh->numNodes(); i++) {
     if (found[i] == false) {
+      n++;
       printf(
-          "[Mesh Error] MeshChecker::checkDisjointNodes :: Node %zd is not "
+          "[Mesh Error] MeshChecker::checkDisjointNodes --> Node %zd is not "
           "connected to any element.",
           mesh->node(i)->id());
+      if (writeLog)
+        log << mesh->node(i)->x() << mesh->node(i)->y() << mesh->node(i)->id()
+            << std::endl;
       passed = false;
+    }
+  }
+
+  if (writeLog) {
+    log.close();
+    if (n == 0) {
+      std::remove(logFile.c_str());
     }
   }
 
@@ -253,7 +279,7 @@ bool MeshChecker::checkPipeHeights(Mesh *mesh) {
         if (topOfPipe > crest) {
           passed = false;
           printf(
-              "[Mesh Error] MeshChecker::checkPipeHeights :: Top of pipe > "
+              "[Mesh Error] MeshChecker::checkPipeHeights --> Top of pipe > "
               "weir crest elevation at nodes %zd and %zd.",
               mesh->landBoundary(i)->node1(j)->id(),
               mesh->landBoundary(i)->node2(j)->id());
@@ -262,7 +288,7 @@ bool MeshChecker::checkPipeHeights(Mesh *mesh) {
             bottomOfPipe < mesh->landBoundary(i)->node2(j)->z()) {
           passed = false;
           printf(
-              "[Mesh Error] MeshChecker::checkPipeHeights :: Bottom of pipe < "
+              "[Mesh Error] MeshChecker::checkPipeHeights --> Bottom of pipe < "
               "nodal elevation at nodes %zd and %zd.",
               mesh->landBoundary(i)->node1(j)->id(),
               mesh->landBoundary(i)->node2(j)->id());
@@ -282,7 +308,8 @@ bool MeshChecker::checkElementSizes(Mesh *mesh, double minimumElementSize) {
     if (size < minimumElementSize) {
       passed = false;
       printf(
-          "[Mesh Error] MeshChecker::checkElementSizes :: Element %zd has size "
+          "[Mesh Error] MeshChecker::checkElementSizes --> Element %zd has "
+          "size "
           "%f, which is less than %f\n",
           mesh->element(i)->id(), size, minimumElementSize);
     }
@@ -290,14 +317,15 @@ bool MeshChecker::checkElementSizes(Mesh *mesh, double minimumElementSize) {
   return passed;
 }
 
-bool MeshChecker::checkUnimposedBoundaries(Mesh *mesh,
-                                           const std::string &logFile) {
+bool MeshChecker::checkMissingBoundaryConditions(Mesh *mesh,
+                                                 const std::string &logFile) {
   bool passed = true;
+  bool writeLog = false;
+  std::ofstream log;
   std::vector<Adcirc::Geometry::Node *> boundaryNodes = mesh->boundaryNodes();
   std::vector<bool> found(boundaryNodes.size());
   std::fill(found.begin(), found.end(), false);
 
-#pragma omp parallel shared(mesh, found)
   for (size_t i = 0; i < mesh->numOpenBoundaries(); ++i) {
     for (size_t j = 0; j < mesh->openBoundary(i)->length(); ++j) {
       auto it = std::find(boundaryNodes.begin(), boundaryNodes.end(),
@@ -309,7 +337,6 @@ bool MeshChecker::checkUnimposedBoundaries(Mesh *mesh,
     }
   }
 
-#pragma omp parallel shared(mesh, found)
   for (size_t i = 0; i < mesh->numLandBoundaries(); ++i) {
     for (size_t j = 0; j < mesh->landBoundary(i)->length(); ++j) {
       auto it = std::find(boundaryNodes.begin(), boundaryNodes.end(),
@@ -329,20 +356,33 @@ bool MeshChecker::checkUnimposedBoundaries(Mesh *mesh,
     }
   }
 
-  std::ofstream log;
-
   if (logFile != "none") {
+    writeLog = true;
     log.open(logFile);
   }
 
+  size_t n = 0;
   for (size_t i = 0; i < found.size(); ++i) {
     if (!found[i]) {
-      log << boundaryNodes[i]->x() << ", " << boundaryNodes[i]->y()
-          << std::endl;
+      passed = false;
+      n++;
+      if (writeLog) {
+        log << boundaryNodes[i]->x() << ", " << boundaryNodes[i]->y()
+            << std::endl;
+      }
     }
   }
 
-  if (logFile != "none") log.close();
+  if (n > 0) {
+    printf(
+        "[Mesh Error] MeshChecker::checkMissingBoundaryConditions --> Found "
+        "%zd boundary nodes without boundary condition.\n",
+        n);
+  } else {
+    if (writeLog) std::remove(logFile.c_str());
+  }
+
+  if (writeLog) log.close();
 
   return passed;
 }

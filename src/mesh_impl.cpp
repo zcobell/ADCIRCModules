@@ -2220,15 +2220,14 @@ std::vector<Adcirc::Geometry::Node *> MeshImpl::boundaryNodes() {
 #else
   std::unordered_map<std::pair<Node *, Node *>, size_t> lookup;
 #endif
+  lookup.reserve(links.size());
   for (size_t i = 0; i < links.size(); ++i) {
     lookup[links[i]] = i;
   }
 
   for (auto &e : this->m_elements) {
-    Element e_s = e;
-    e_s.sortVerticiesAboutCenter();
-    for (size_t j = 0; j < e_s.n(); ++j) {
-      std::pair<Node *, Node *> p1 = e_s.elementLeg(j);
+    for (size_t j = 0; j < e.n(); ++j) {
+      std::pair<Node *, Node *> p1 = e.elementLeg(j);
       std::pair<Node *, Node *> p2;
       if (p1.first->id() > p1.second->id()) {
         p2 = std::pair<Node *, Node *>(p1.second, p1.first);
