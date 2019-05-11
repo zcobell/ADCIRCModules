@@ -29,12 +29,15 @@
 #include "filetypes.h"
 #include "kdtree.h"
 #include "logging.h"
+#include "mesh.h"
 #include "netcdf.h"
 #include "shapefil.h"
 #include "stringconversion.h"
 
 using namespace Adcirc;
 using namespace Adcirc::Geometry;
+
+Mesh::~Mesh() = default;
 
 /**
  * @brief Default Constructor

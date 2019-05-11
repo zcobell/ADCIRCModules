@@ -33,18 +33,25 @@ namespace Geometry {
 ElementTable::ElementTable() : m_mesh(nullptr), m_initialized(false) {}
 
 /**
- * @brief Constructor with meshimpl as a parameter
+ * @brief Constructor with smart pointer meshimpl as a parameter
  * @param mesh sets the mesh used to generate the ElementTable
  */
-ElementTable::ElementTable(MeshImpl *mesh)
-    : m_mesh(mesh), m_initialized(false) {}
+ElementTable::ElementTable(std::unique_ptr<MeshImpl> *mesh)
+    : m_mesh(mesh->get()), m_initialized(false) {}
 
 /**
  * @brief Constructor with mesh as a parameter
  * @param mesh sets the mesh used to generate the ElementTable
  */
 ElementTable::ElementTable(Adcirc::Geometry::Mesh *mesh)
-    : m_mesh(mesh->m_impl), m_initialized(false) {}
+    : m_mesh(mesh->m_impl.get()), m_initialized(false) {}
+
+/**
+ * @brief Constructor with meshimpl as a parameter
+ * @param mesh sets the mesh used to generate the ElementTable
+ */
+ElementTable::ElementTable(MeshImpl *mesh)
+    : m_mesh(mesh), m_initialized(false) {}
 
 /**
  * @brief Returns the pointer to the mesh used to build the table

@@ -27,9 +27,12 @@
 #include "default_values.h"
 #include "fileio.h"
 #include "logging.h"
+#include "nodalattributes.h"
 #include "stringconversion.h"
 
 using namespace Adcirc::ModelParameters;
+
+NodalAttributes::~NodalAttributes() = default;
 
 NodalAttributesImpl::NodalAttributesImpl()
     : m_filename(std::string()),

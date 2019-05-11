@@ -17,6 +17,9 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "kdtree_impl.h"
+#include "kdtree.h"
+
+Kdtree::~Kdtree() = default;
 
 Kdtree_impl::Kdtree_impl() : m_initialized(false) {}
 

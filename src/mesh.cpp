@@ -27,8 +27,6 @@ Mesh::Mesh() : m_impl(new MeshImpl) {}
 
 Mesh::Mesh(const std::string &filename) : m_impl(new MeshImpl(filename)) {}
 
-Mesh::~Mesh() { delete this->m_impl; }
-
 /**
  * @brief Returns a vector of the x-coordinates
  * @return vector of x coordinates

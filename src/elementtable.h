@@ -19,6 +19,7 @@
 #ifndef ADCMOD_ELEMENTTABLE_H
 #define ADCMOD_ELEMENTTABLE_H
 
+#include <memory>
 #include <vector>
 #include "adcmap.h"
 #include "element.h"
@@ -44,6 +45,7 @@ class ElementTable {
  public:
   ElementTable();
   ElementTable(MeshImpl *mesh);
+  ElementTable(std::unique_ptr<MeshImpl> *mesh);
   ElementTable(Adcirc::Geometry::Mesh *mesh);
 
   std::vector<Adcirc::Geometry::Element *> elementList(

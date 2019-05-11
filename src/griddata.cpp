@@ -26,8 +26,6 @@ Griddata::Griddata() : m_impl(new GriddataImpl) {}
 Griddata::Griddata(Adcirc::Geometry::Mesh *mesh, std::string rasterFile)
     : m_impl(new GriddataImpl(mesh, rasterFile)) {}
 
-Griddata::~Griddata() { delete this->m_impl; }
-
 /**
  * @brief Retrieves the filename of the raster currently being used for
  * interpolation

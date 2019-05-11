@@ -20,6 +20,7 @@
 #define ADCMOD_MESH_H
 
 #include <limits>
+#include <memory>
 #include <string>
 #include <vector>
 #include "adcircmodules_global.h"
@@ -77,7 +78,6 @@ class Mesh {
  public:
   ADCIRCMODULES_EXPORT Mesh();
   ADCIRCMODULES_EXPORT Mesh(const std::string &filename);
-
   ADCIRCMODULES_EXPORT ~Mesh();
 
   friend class ElementTable;
@@ -196,7 +196,7 @@ class Mesh {
   std::vector<Adcirc::Geometry::Node *> ADCIRCMODULES_EXPORT boundaryNodes();
 
  private:
-  MeshImpl *m_impl;
+  std::unique_ptr<MeshImpl> m_impl;
 };
 
 }  // namespace Geometry

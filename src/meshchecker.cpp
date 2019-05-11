@@ -22,6 +22,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include "boost/format.hpp"
 
 namespace Adcirc {
 namespace Utility {
@@ -118,10 +119,7 @@ bool MeshChecker::checkLeveeHeights(
     Mesh *mesh, double minimumCrestElevationOverTopography) {
   bool passed = true;
   for (size_t i = 0; i < mesh->numLandBoundaries(); ++i) {
-    if (mesh->landBoundary(i)->boundaryCode() == 4 ||
-        mesh->landBoundary(i)->boundaryCode() == 24 ||
-        mesh->landBoundary(i)->boundaryCode() == 5 ||
-        mesh->landBoundary(i)->boundaryCode() == 25) {
+    if (mesh->landBoundary(i)->isInternalWeir()) {
       for (size_t j = 0; j < mesh->landBoundary(i)->length(); ++j) {
         if (-mesh->landBoundary(i)->node1(j)->z() >
                 mesh->landBoundary(i)->crestElevation(j) -
@@ -134,9 +132,7 @@ bool MeshChecker::checkLeveeHeights(
           passed = false;
         }
       }
-    } else if (mesh->landBoundary(i)->boundaryCode() == 3 ||
-               mesh->landBoundary(i)->boundaryCode() == 13 ||
-               mesh->landBoundary(i)->boundaryCode() == 23) {
+    } else if (mesh->landBoundary(i)->isExternalWeir()) {
       for (size_t j = 0; j < mesh->landBoundary(i)->length(); ++j) {
         if (-mesh->landBoundary(i)->node1(j)->z() >
             mesh->landBoundary(i)->crestElevation(j) -
@@ -251,8 +247,9 @@ bool MeshChecker::checkDisjointNodes(Mesh *mesh, const std::string &logFile) {
           "connected to any element.",
           mesh->node(i)->id());
       if (writeLog)
-        log << mesh->node(i)->x() << mesh->node(i)->y() << mesh->node(i)->id()
-            << std::endl;
+        log << boost::str(boost::format("%14.8e, %14.8e, %11i\n") %
+                          mesh->node(i)->x() % mesh->node(i)->y() %
+                          mesh->node(i)->id());
       passed = false;
     }
   }
@@ -270,8 +267,7 @@ bool MeshChecker::checkDisjointNodes(Mesh *mesh, const std::string &logFile) {
 bool MeshChecker::checkPipeHeights(Mesh *mesh) {
   bool passed = true;
   for (size_t i = 0; i < mesh->numLandBoundaries(); i++) {
-    if (mesh->landBoundary(i)->boundaryCode() == 5 ||
-        mesh->landBoundary(i)->boundaryCode() == 25) {
+    if (mesh->landBoundary(i)->isInternalWeirWithPipes()) {
       for (size_t j = 0; j < mesh->landBoundary(i)->length(); j++) {
         double topOfPipe = mesh->landBoundary(i)->pipeHeight(j) +
                            0.5 * mesh->landBoundary(i)->pipeDiameter(j);
@@ -369,8 +365,9 @@ bool MeshChecker::checkMissingBoundaryConditions(Mesh *mesh,
       passed = false;
       n++;
       if (writeLog) {
-        log << boundaryNodes[i]->x() << ", " << boundaryNodes[i]->y()
-            << std::endl;
+        log << boost::str(boost::format("%14.8e, %14.8e, %11i\n") %
+                          boundaryNodes[i]->x() % boundaryNodes[i]->y() %
+                          boundaryNodes[i]->id());
       }
     }
   }

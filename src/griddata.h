@@ -105,7 +105,7 @@ class Griddata {
   void ADCIRCMODULES_EXPORT setDatumShift(double datumShift);
 
  private:
-  GriddataImpl *m_impl;
+  std::unique_ptr<GriddataImpl> m_impl;
 };
 }  // namespace Interpolation
 #endif  // ADCMOD_GRIDDATA_H

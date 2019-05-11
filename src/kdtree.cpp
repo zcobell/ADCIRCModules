@@ -22,12 +22,7 @@
 /**
  * @brief Default constructor for a new Kdtree object
  */
-Kdtree::Kdtree() { this->m_ptr = new Kdtree_impl(); }
-
-/**
- * @brief Destructor for Kdtree object
- */
-Kdtree::~Kdtree() { delete this->m_ptr; }
+Kdtree::Kdtree() : m_ptr(new Kdtree_impl()) {}
 
 /**
  * @brief Builds the Kdtree using an x and y vector of doubles

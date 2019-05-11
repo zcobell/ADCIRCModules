@@ -20,6 +20,7 @@
 #define ADCMOD_KDTREE_H
 
 #include <cstddef>
+#include <memory>
 #include <vector>
 #include "adcircmodules_global.h"
 
@@ -50,7 +51,7 @@ class Kdtree {
   ADCIRCMODULES_EXPORT bool initialized();
 
  private:
-  Kdtree_impl *m_ptr;
+  std::unique_ptr<Kdtree_impl> m_ptr;
 };
 
 #endif  // ADCMOD_KDTREE_H

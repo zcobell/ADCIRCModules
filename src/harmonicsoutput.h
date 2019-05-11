@@ -1,6 +1,7 @@
 #ifndef ADCMOD_HARMONICSOUTPUT_H
 #define ADCMOD_HARMONICSOUTPUT_H
 
+#include <memory>
 #include <string>
 #include "adcircmodules_global.h"
 #include "filetypes.h"
@@ -93,7 +94,7 @@ class HarmonicsOutput {
   int ADCIRCMODULES_EXPORT filetype() const;
 
  private:
-  HarmonicsOutputImpl* m_impl;
+  std::unique_ptr<HarmonicsOutputImpl> m_impl;
 };
 }  // namespace Harmonics
 }  // namespace Adcirc

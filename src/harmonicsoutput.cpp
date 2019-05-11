@@ -30,8 +30,6 @@ namespace Harmonics {
 HarmonicsOutput::HarmonicsOutput(const std::string& filename)
     : m_impl(new HarmonicsOutputImpl(filename)) {}
 
-HarmonicsOutput::~HarmonicsOutput() { delete this->m_impl; }
-
 /**
  * @brief Read the harmonics file
  */

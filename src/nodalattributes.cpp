@@ -37,11 +37,6 @@ NodalAttributes::NodalAttributes(const std::string &filename,
     : m_impl(new NodalAttributesImpl(filename, mesh)) {}
 
 /**
- * @brief Destructor
- */
-NodalAttributes::~NodalAttributes() { delete this->m_impl; }
-
-/**
  * @brief Reads the nodal attributes file
  */
 void NodalAttributes::read() { this->m_impl->read(); }

@@ -1,6 +1,7 @@
 #ifndef ADCMOD_NODALATTRIBUTES_H
 #define ADCMOD_NODALATTRIBUTES_H
 
+#include <memory>
 #include <string>
 #include <vector>
 #include "adcircmodules_global.h"
@@ -65,7 +66,7 @@ class NodalAttributes {
       const std::string &name);
 
  private:
-  NodalAttributesImpl *m_impl;
+  std::unique_ptr<NodalAttributesImpl> m_impl;
 };
 }  // namespace ModelParameters
 }  // namespace Adcirc

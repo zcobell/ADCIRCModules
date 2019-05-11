@@ -27,11 +27,14 @@
 #include "default_values.h"
 #include "fileio.h"
 #include "filetypes.h"
+#include "harmonicsoutput.h"
 #include "logging.h"
 #include "netcdf.h"
 #include "stringconversion.h"
 
 using namespace Adcirc::Harmonics;
+
+HarmonicsOutput::~HarmonicsOutput() = default;
 
 HarmonicsOutputImpl::HarmonicsOutputImpl(const std::string& filename)
     : m_filename(filename),

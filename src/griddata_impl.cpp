@@ -28,6 +28,7 @@
 #include "default_values.h"
 #include "elementtable.h"
 #include "fileio.h"
+#include "griddata.h"
 #include "logging.h"
 #include "stringconversion.h"
 
@@ -62,6 +63,8 @@ bool GriddataImpl::getKeyValue(unsigned short key, double &value) {
   value = t->second;
   return true;
 }
+
+Griddata::~Griddata() = default;
 
 GriddataImpl::GriddataImpl()
     : m_mesh(nullptr),
