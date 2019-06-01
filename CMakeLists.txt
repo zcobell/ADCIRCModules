@@ -125,7 +125,7 @@ IF(NOT CYGWIN)
           add_compile_options(/wd4005 /wd4068 /wd4244 /wd4267 /wd4800)
           add_definitions(/DNOMINMAX /DWIN32_LEAN_AND_MEAN=1 /D_CRT_SECURE_NO_WARNINGS)
         endif(MSVC)
-        add_subdirectory(${CMAKE_SOURCE_DIR}/thirdparty/abseil)
+        add_subdirectory(${CMAKE_SOURCE_DIR}/thirdparty/abseil EXCLUDE_FROM_ALL)
         MESSAGE(STATUS "Using Google's Flat Map (from ABSL) instead of unordered_map for performance")
     ENDIF(USE_GOOGLE_FLAT_MAP)    
 ELSE(NOT CYGWIN)
@@ -161,9 +161,26 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/CMakeFiles)
 
 ###########################################################################
 #  SWIG/PYTHON/PERL
+#  Note: This will attempt to default to Python3
+#  Give the flag -DPYTHON2=ON to force Python2 usage
 ###########################################################################
-FIND_PACKAGE(PythonInterp 2.7)
-FIND_PACKAGE(PythonLibs 2.7)
+IF(${PYTHON2})
+    MESSAGE(STATUS "CMake will attempt to use the Python2 interface only")
+    FIND_PACKAGE(PythonInterp 2.7)
+    FIND_PACKAGE(PythonLibs 2.7)
+    SET(PYTHONTYPE 2)
+ELSE()
+    FIND_PACKAGE(PythonInterp 3.0)
+    FIND_PACKAGE(PythonLibs 3.0)
+    IF(NOT PythonLibs_FOUND AND PythonInterp_FOUND)
+        FIND_PACKAGE(PythonInterp 2.7)
+        FIND_PACKAGE(PythonLibs 2.7)
+        SET(PYTHONTYPE 2)
+    ELSE()
+        SET(PYTHONTYPE 3)
+    ENDIF()
+ENDIF()
+
 FIND_PACKAGE(SWIG 3.0)
 IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
     INCLUDE(${SWIG_USE_FILE})
@@ -400,6 +417,12 @@ ELSE(WIN32)
     TARGET_LINK_LIBRARIES( adcircmodules ${NETCDF_LIBRARIES} )
 ENDIF(WIN32)
 
+IF(APPLE)
+    SET(CMAKE_MACOSX_RPATH 0)
+    SET_TARGET_PROPERTIES(adcircmodules PROPERTIES INSTALL_NAME_DIR "adcircmodules")
+    SET_TARGET_PROPERTIES(adcircmodules PROPERTIES MACOSX_RPATH "adcircmodules")
+ENDIF(APPLE)
+
 IF(USE_GOOGLE_FLAT_MAP)
     TARGET_LINK_LIBRARIES(adcircmodules absl::base absl::container absl::hash)
     ADD_DEPENDENCIES(adcircmodules absl::base absl::container absl::hash)
@@ -428,6 +451,12 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
     IF(GDAL_FOUND)
         SET(SWIG_GDAL_FLAG "-D_USE_GDAL")
     ENDIF(GDAL_FOUND)
+
+    IF(PYTHONTYPE EQUAL 2)
+        SET(PYTHONFLAG "-py2")
+    ELSE()
+        SET(PYTHONFLAG "-py3")
+    ENDIF()
     
     IF(WIN32)
 
@@ -444,7 +473,7 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
         ")
 
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
-            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python 
+            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python ${PYTHONFLAG}
                     -I${CMAKE_SOURCE_DIR}/src 
                     -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src i
                     -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG}
@@ -459,7 +488,7 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 
     ELSE(WIN32)
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
-            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python 
+            COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python ${PYTHONFLAG}
                     -I${CMAKE_SOURCE_DIR}/src 
                     -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
                     -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG} 
@@ -475,6 +504,7 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
                                     ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src ) 
     TARGET_LINK_LIBRARIES( PyAdcirc PRIVATE adcircmodules ${PYTHON_LIBRARY} )
     SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES PREFIX "_")
+    SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES INSTALL_NAME_DIR "PyAdcirc")
     SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES PyAdcirc.py CMakeFiles/python_adcirc_wrap.cxx )
 
     ADD_DEPENDENCIES( PyAdcirc adcircmodules )
@@ -502,6 +532,8 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
             # 32 bits
             TARGET_COMPILE_DEFINITIONS(PyAdcirc PRIVATE "MS_WIN32")
         ENDIF()
+    ELSEIF(APPLE)
+        SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES SUFFIX ".so")
     ENDIF(WIN32)
 ENDIF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 ###########################################################################

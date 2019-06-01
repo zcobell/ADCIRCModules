@@ -19,6 +19,7 @@
 #include "attributemetadata.h"
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 #include "boost/format.hpp"
 
 using namespace Adcirc::ModelParameters;
