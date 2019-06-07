@@ -453,7 +453,7 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
     ENDIF(GDAL_FOUND)
 
     IF(PYTHONTYPE EQUAL 2)
-        SET(PYTHONFLAG "-py2")
+        SET(PYTHONFLAG "")
     ELSE()
         SET(PYTHONFLAG "-py3")
     ENDIF()
