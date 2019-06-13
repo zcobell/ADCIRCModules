@@ -104,6 +104,13 @@ class Griddata {
   double ADCIRCMODULES_EXPORT datumShift() const;
   void ADCIRCMODULES_EXPORT setDatumShift(double datumShift);
 
+  Interpolation::Threshold ADCIRCMODULES_EXPORT thresholdMethod() const;
+  void ADCIRCMODULES_EXPORT
+  setThresholdMethod(const Interpolation::Threshold &method);
+
+  double ADCIRCMODULES_EXPORT thresholdValue() const;
+  void ADCIRCMODULES_EXPORT setThresholdValue(const double &value);
+
  private:
   std::unique_ptr<GriddataImpl> m_impl;
 };

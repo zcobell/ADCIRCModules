@@ -72,24 +72,29 @@ GriddataImpl::GriddataImpl()
       m_rasterFile(std::string()),
       m_interpolationFlags(std::vector<int>()),
       m_filterSize(std::vector<double>()),
-      m_defaultValue(adcircmodules_default_value<double>()),
+      m_defaultValue(-9999.0),
       m_epsg(4326),
       m_datumShift(0.0),
       m_showProgressBar(false),
       m_rasterMultiplier(1.0),
       m_calculateDwindPtr(nullptr),
-      m_calculatePointPtr(nullptr) {}
+      m_calculatePointPtr(nullptr),
+      m_thresholdValue(0.0),
+      m_thresholdMethod(Interpolation::Threshold::NoThreshold),
+      m_rasterInMemory(false) {}
 
 GriddataImpl::GriddataImpl(Mesh *mesh, std::string rasterFile)
     : m_mesh(mesh),
       m_rasterFile(rasterFile),
-      m_defaultValue(adcircmodules_default_value<double>()),
+      m_defaultValue(-9999.0),
       m_epsg(4326),
       m_datumShift(0.0),
       m_showProgressBar(false),
       m_rasterMultiplier(1.0),
       m_calculateDwindPtr(nullptr),
-      m_calculatePointPtr(nullptr) {
+      m_calculatePointPtr(nullptr),
+      m_thresholdValue(0.0),
+      m_thresholdMethod(Interpolation::Threshold::NoThreshold) {
   this->m_raster.reset(new Rasterdata(this->m_rasterFile));
   this->m_interpolationFlags.resize(this->m_mesh->numNodes());
   std::fill(this->m_interpolationFlags.begin(),
@@ -232,6 +237,11 @@ bool GriddataImpl::pixelDataInRadius(Point &p, double radius,
         }
       }
     }
+
+    if (this->thresholdMethod() != Interpolation::Threshold::NoThreshold) {
+      this->thresholdData(z, valid);
+    }
+
     return r;
   }
   return r;
@@ -551,6 +561,21 @@ double GriddataImpl::calculateExpansionLevelForPoints(size_t n) {
   // unless we're in a severe nodata region
   int levels = std::floor(n / 8.0) + 2;
   return this->m_raster.get()->dx() * static_cast<double>(levels);
+}
+
+Interpolation::Threshold GriddataImpl::thresholdMethod() const {
+  return m_thresholdMethod;
+}
+
+void GriddataImpl::setThresholdMethod(
+    const Interpolation::Threshold &thresholdMethod) {
+  m_thresholdMethod = thresholdMethod;
+}
+
+double GriddataImpl::thresholdValue() const { return m_thresholdValue; }
+
+void GriddataImpl::setThresholdValue(double filterValue) {
+  m_thresholdValue = filterValue;
 }
 
 double GriddataImpl::calculateInverseDistanceWeightedNPointsFromLookup(
@@ -896,6 +921,32 @@ std::vector<double> GriddataImpl::computeValuesFromRaster(bool useLookupTable) {
   return result;
 }
 
+void GriddataImpl::thresholdData(std::vector<double> &z, std::vector<bool> &v) {
+  if (this->thresholdMethod() == Interpolation::Threshold::NoThreshold) return;
+
+  if (this->thresholdMethod() == Interpolation::Threshold::ThresholdAbove) {
+    for (size_t i = 0; i < z.size(); ++i) {
+      if (!v[i]) continue;
+      double zz = z[i] * this->rasterMultiplier() + this->datumShift();
+      if (zz < this->thresholdValue()) {
+        z[i] = this->defaultValue();
+        v[i] = false;
+      }
+    }
+  } else if (this->thresholdMethod() ==
+             Interpolation::Threshold::ThresholdBelow) {
+    for (size_t i = 0; i < z.size(); ++i) {
+      if (!v[i]) continue;
+      double zz = z[i] * this->rasterMultiplier() + this->datumShift();
+      if (zz > this->thresholdValue()) {
+        z[i] = this->defaultValue();
+        v[i] = false;
+      }
+    }
+  }
+  return;
+}
+
 std::vector<std::vector<double>> GriddataImpl::computeDirectionalWindReduction(
     bool useLookupTable) {
   boost::progress_display *progress = nullptr;
@@ -922,7 +973,7 @@ std::vector<std::vector<double>> GriddataImpl::computeDirectionalWindReduction(
       ++(*progress);
     }
 
-    if (this->m_interpolationFlags[i] != NoMethod) {
+    if (this->m_interpolationFlags[i] != NoThreshold) {
       Point p(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
       result[i] = (this->*m_calculateDwindPtr)(p);
       for (auto &r : result[i]) {

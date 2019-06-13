@@ -78,6 +78,12 @@ class GriddataImpl {
   double datumShift() const;
   void setDatumShift(double datumShift);
 
+  double thresholdValue() const;
+  void setThresholdValue(double thresholdValue);
+
+  Interpolation::Threshold thresholdMethod() const;
+  void setThresholdMethod(const Interpolation::Threshold &thresholdMethod);
+
  private:
   bool getKeyValue(unsigned short key, double &value);
 
@@ -120,6 +126,8 @@ class GriddataImpl {
                          std::vector<double> &y, std::vector<int> &z,
                          std::vector<bool> &valid);
 
+  void thresholdData(std::vector<double> &z, std::vector<bool> &v);
+
   std::vector<double> calculateDirectionalWindFromRaster(Point &p);
   std::vector<double> calculateDirectionalWindFromLookup(Point &p);
 
@@ -147,8 +155,10 @@ class GriddataImpl {
   int m_epsg;
   adcmap<unsigned short, double> m_lookup;
 
+  Interpolation::Threshold m_thresholdMethod;
   double m_rasterMultiplier;
   double m_datumShift;
+  double m_thresholdValue;
   bool m_showProgressBar;
   bool m_rasterInMemory;
 };

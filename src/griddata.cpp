@@ -291,3 +291,35 @@ double Griddata::datumShift() const { return this->m_impl->datumShift(); }
 void Griddata::setDatumShift(double datumShift) {
   this->m_impl->setDatumShift(datumShift);
 }
+
+/**
+ * @brief Sets the thresholding method (none by default)
+ * @param method Thresholding method to use
+ */
+void Griddata::setThresholdMethod(const Interpolation::Threshold &method) {
+  this->m_impl->setThresholdMethod(method);
+}
+
+/**
+ * @brief Returns the thresholding method
+ * @return method
+ */
+Interpolation::Threshold Griddata::thresholdMethod() const {
+  return this->m_impl->thresholdMethod();
+}
+
+/**
+ * @brief Sets the value to use in conjunction with thresholdMethod.
+ * @param value value to use for filtering
+ */
+void Griddata::setThresholdValue(const double &value) {
+  this->m_impl->setThresholdValue(value);
+}
+
+/**
+ * @brief Returns the value that is being used for thresholding
+ * @return thresholding value
+ */
+double Griddata::thresholdValue() const {
+  return this->m_impl->thresholdValue();
+}

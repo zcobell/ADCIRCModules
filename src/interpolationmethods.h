@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_INTERPOLATIONMETHODS_H
-#define ADCMOD_INTERPOLATIONMETHODS_H
+#ifndef ADCMOD_INTERPOLATION_H
+#define ADCMOD_INTERPOLATION_H
 
 namespace Interpolation {
 enum Method {
@@ -47,6 +47,16 @@ enum Method {
   /// 'filterSize' (i.e. number of) points
   AverageNearestNPoints = 8
 };
-}
 
-#endif  // ADCMOD_INTERPOLATIONMETHODS_H
+enum Threshold {
+  /// No threshold
+  NoThreshold = 0,
+  /// Use only points above specified value (default=0.0)
+  ThresholdAbove = 1,
+  /// Use only points below specified value (default=0.0)
+  ThresholdBelow = 2
+};
+
+}  // namespace Interpolation
+
+#endif  // ADCMOD_INTERPOLATION_H
