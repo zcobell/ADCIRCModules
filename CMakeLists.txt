@@ -166,13 +166,13 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/CMakeFiles)
 ###########################################################################
 IF(${PYTHON2})
     MESSAGE(STATUS "CMake will attempt to use the Python2 interface only")
-    FIND_PACKAGE(PythonInterp 2.7)
-    FIND_PACKAGE(PythonLibs 2.7)
+    FIND_PACKAGE(PythonInterp 2.7 REQUIRED )
+    FIND_PACKAGE(PythonLibs 2.7 REQUIRED )
     SET(PYTHONTYPE 2)
 ELSE()
     FIND_PACKAGE(PythonInterp 3.0)
     FIND_PACKAGE(PythonLibs 3.0)
-    IF(NOT PythonLibs_FOUND AND PythonInterp_FOUND)
+    IF(NOT PythonLibs_FOUND AND NOT PythonInterp_FOUND)
         FIND_PACKAGE(PythonInterp 2.7)
         FIND_PACKAGE(PythonLibs 2.7)
         SET(PYTHONTYPE 2)
@@ -258,6 +258,16 @@ ELSE(ENABLE_OPENMP)
 ENDIF(ENABLE_OPENMP)
 ###########################################################################
 
+###########################################################################
+# OpenSSL
+###########################################################################
+IF(NOT "${OPENSSLHOME}" STREQUAL "")
+    SET(OPENSSL_ROOT_DIR "${OPENSSLHOME}")
+ELSEIF(NOT $ENV{NETCDFHOME} STREQUAL "")
+    SET(OPENSSL_ROOT_DIR $ENV{OPENSSLHOME})
+ENDIF(NOT "${OPENSSLHOME}" STREQUAL "")
+FIND_PACKAGE(OpenSSL REQUIRED)
+###########################################################################
 
 ###########################################################################
 # GDAL
@@ -310,6 +320,8 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/mesh.cpp 
                 ${CMAKE_SOURCE_DIR}/src/node.cpp
                 ${CMAKE_SOURCE_DIR}/src/element.cpp
+                ${CMAKE_SOURCE_DIR}/src/hash.cpp
+                ${CMAKE_SOURCE_DIR}/src/hash_impl.cpp
                 ${CMAKE_SOURCE_DIR}/src/boundary.cpp
                 ${CMAKE_SOURCE_DIR}/src/fileio.cpp
                 ${CMAKE_SOURCE_DIR}/src/stringconversion.cpp
@@ -370,6 +382,8 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/boundary.h
                 ${CMAKE_SOURCE_DIR}/src/config.h
                 ${CMAKE_SOURCE_DIR}/src/element.h
+                ${CMAKE_SOURCE_DIR}/src/hash.h
+                ${CMAKE_SOURCE_DIR}/src/hashtype.h
                 ${CMAKE_SOURCE_DIR}/src/logging.h
                 ${CMAKE_SOURCE_DIR}/src/filetypes.h
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.h
@@ -416,6 +430,9 @@ IF(WIN32)
 ELSE(WIN32)
     TARGET_LINK_LIBRARIES( adcircmodules ${NETCDF_LIBRARIES} )
 ENDIF(WIN32)
+
+TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${OPENSSL_INCLUDE_DIR}) 
+TARGET_LINK_LIBRARIES( adcircmodules ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} )
 
 IF(APPLE)
     SET(CMAKE_MACOSX_RPATH 0)
@@ -502,7 +519,9 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
     ADD_LIBRARY( PyAdcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx )
     TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src 
                                     ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src ) 
-    TARGET_LINK_LIBRARIES( PyAdcirc PRIVATE adcircmodules ${PYTHON_LIBRARY} )
+    TARGET_LINK_LIBRARIES( PyAdcirc adcircmodules ${PYTHON_LIBRARY} )
+    TARGET_INCLUDE_DIRECTORIES( PyAdcirc  PRIVATE ${OPENSSL_INCLUDE_DIR}) 
+    TARGET_LINK_LIBRARIES( PyAdcirc ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} )
     SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES PREFIX "_")
     SET_TARGET_PROPERTIES( PyAdcirc PROPERTIES INSTALL_NAME_DIR "PyAdcirc")
     SET_PROPERTY( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES PyAdcirc.py CMakeFiles/python_adcirc_wrap.cxx )

@@ -19,6 +19,7 @@
 #include "node.h"
 #include "boost/format.hpp"
 #include "default_values.h"
+#include "hash.h"
 
 using namespace Adcirc::Geometry;
 
@@ -29,7 +30,8 @@ Node::Node()
     : m_id(0),
       m_x(adcircmodules_default_value<double>()),
       m_y(adcircmodules_default_value<double>()),
-      m_z(adcircmodules_default_value<double>()) {}
+      m_z(adcircmodules_default_value<double>()),
+      m_hash(std::string()) {}
 
 /**
  * @brief Constructor taking the id, x, y, and z for the node
@@ -39,7 +41,7 @@ Node::Node()
  * @param z z elevation
  */
 Node::Node(size_t id, double x, double y, double z)
-    : m_id(id), m_x(x), m_y(y), m_z(z) {}
+    : m_id(id), m_x(x), m_y(y), m_z(z), m_hash(std::string()) {}
 
 /**
  * @brief Function taking the id, x, y, and z for the node
@@ -53,6 +55,7 @@ void Node::setNode(size_t id, double x, double y, double z) {
   this->m_x = x;
   this->m_y = y;
   this->m_z = z;
+  if (this->m_hash != std::string()) this->generateHash();
   return;
 }
 
@@ -136,3 +139,27 @@ std::string Node::to2dmString(bool geographicCoordinates) {
  * @return Point (x,y) using node coordinates
  */
 Point Node::toPoint() { return Point(this->m_x, this->m_y); }
+
+/**
+ * @brief Returns the hash of this node based upon it's position
+ * @return hash formatted as a string
+ *
+ * No two adcirc nodes will have an identical hash (assuming
+ * there are no hash collisions) since the hash is based upon
+ * the node's position and z-elevation
+ */
+std::string Node::hash() {
+  if (this->m_hash == std::string()) this->generateHash();
+  return this->m_hash;
+}
+
+/**
+ * @brief Generates a hash of the ADCIRC node's attributes
+ */
+void Node::generateHash() {
+  Hash h;
+  std::string hashString = boost::str(boost::format("%16.10f %16.10f %16.10f") %
+                                      this->x() % this->y() % this->z());
+  h.addData(hashString);
+  this->m_hash = h.getHash();
+}

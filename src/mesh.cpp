@@ -622,3 +622,9 @@ std::vector<Adcirc::Geometry::Element *> Mesh::elementsAroundNode(
 std::vector<Adcirc::Geometry::Node *> Mesh::boundaryNodes() {
   return this->m_impl->boundaryNodes();
 }
+
+/**
+ * @brief Returns the hash of the mesh which serves as a unique identifier
+ * @return hash as string
+ */
+std::string Mesh::hash() { return this->m_impl->hash(); }

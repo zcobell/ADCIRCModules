@@ -27,6 +27,7 @@
 #include "ezproj.h"
 #include "fileio.h"
 #include "filetypes.h"
+#include "hash.h"
 #include "kdtree.h"
 #include "logging.h"
 #include "mesh.h"
@@ -42,14 +43,16 @@ Mesh::~Mesh() = default;
 /**
  * @brief Default Constructor
  */
-MeshImpl::MeshImpl() : m_filename("none"), m_epsg(-1) { this->_init(); }
+MeshImpl::MeshImpl() : m_filename("none"), m_epsg(-1), m_hash(std::string()) {
+  this->_init();
+}
 
 /**
  * @brief Default constructor with filename parameter
  * @param filename name of the mesh to read
  */
 MeshImpl::MeshImpl(const std::string &filename)
-    : m_filename(filename), m_epsg(-1) {
+    : m_filename(filename), m_epsg(-1), m_hash(std::string()) {
   this->_init();
 }
 
@@ -86,6 +89,7 @@ MeshImpl::~MeshImpl() {
   this->m_landBoundaries.clear();
   this->m_nodeLookup.clear();
   this->m_elementLookup.clear();
+  this->m_hash = std::string();
 }
 
 /**
@@ -2253,4 +2257,29 @@ std::vector<Adcirc::Geometry::Node *> MeshImpl::boundaryNodes() {
   bnd.clear();
 
   return bdyVec;
+}
+
+std::string MeshImpl::hash() {
+  if (this->m_hash == std::string()) this->generateHash();
+  return this->m_hash;
+}
+
+void MeshImpl::generateHash() {
+  Hash h;
+  for (auto &n : this->m_nodes) {
+    h.addData(n.hash());
+  }
+
+  for (auto &e : this->m_elements) {
+    h.addData(e.hash());
+  }
+
+  for (auto &b : this->m_openBoundaries) {
+    h.addData(b.hash());
+  }
+
+  for (auto &b : this->m_landBoundaries) {
+    h.addData(b.hash());
+  }
+  this->m_hash = h.getHash();
 }

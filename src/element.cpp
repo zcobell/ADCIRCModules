@@ -22,6 +22,7 @@
 #include "boost/format.hpp"
 #include "boost/geometry.hpp"
 #include "constants.h"
+#include "hash.h"
 #include "logging.h"
 
 using namespace Adcirc::Geometry;
@@ -32,7 +33,7 @@ typedef bg::model::polygon<point_t> polygon_t;
 /**
  * @brief Default constructor
  */
-Element::Element() : m_id(0) { this->resize(3); }
+Element::Element() : m_id(0), m_hash(std::string()) { this->resize(3); }
 
 /**
  * @brief Constructor using references to three Node objects
@@ -41,7 +42,8 @@ Element::Element() : m_id(0) { this->resize(3); }
  * @param n2 pointer to node 2
  * @param n3 pointer to node 3
  */
-Element::Element(size_t id, Node *n1, Node *n2, Node *n3) : m_id(id) {
+Element::Element(size_t id, Node *n1, Node *n2, Node *n3)
+    : m_id(id), m_hash(std::string()) {
   this->resize(3);
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;
@@ -56,7 +58,8 @@ Element::Element(size_t id, Node *n1, Node *n2, Node *n3) : m_id(id) {
  * @param n3 pointer to node 3
  * @param n4 pointer to node 4
  */
-Element::Element(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) : m_id(id) {
+Element::Element(size_t id, Node *n1, Node *n2, Node *n3, Node *n4)
+    : m_id(id), m_hash(std::string()) {
   this->resize(4);
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;
@@ -89,6 +92,7 @@ void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3) {
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;
   this->m_nodes[2] = n3;
+  if (this->m_hash != std::string()) this->generateHash();
 }
 
 /**
@@ -107,6 +111,7 @@ void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) {
   this->m_nodes[1] = n2;
   this->m_nodes[2] = n3;
   this->m_nodes[3] = n4;
+  if (this->m_hash != std::string()) this->generateHash();
 }
 
 /**
@@ -353,6 +358,32 @@ void Element::interpolationWeights(double x, double y,
     this->polygonInterpolation(x, y, weights);
   }
   return;
+}
+
+/**
+ * @brief Gets the hash of the element
+ * @return hash formatted as a string
+ *
+ * Element hashes are based upon the nodes that
+ * make them up and therefore will change when a node
+ * moves its position.
+ */
+std::string Element::hash() {
+  if (this->m_hash == std::string()) this->generateHash();
+  return this->m_hash;
+}
+
+/**
+ * @brief Generates the hash for this element
+ */
+void Element::generateHash() {
+  Hash h;
+  std::string hashString = std::string();
+  for (auto &n : this->m_nodes) {
+    hashString.append(n->hash());
+  }
+  h.addData(hashString);
+  this->m_hash = h.getHash();
 }
 
 /**

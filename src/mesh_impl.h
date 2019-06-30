@@ -148,6 +148,8 @@ class MeshImpl {
   std::vector<Adcirc::Geometry::Element *> elementsAroundNode(
       Adcirc::Geometry::Node *n);
 
+  std::string hash();
+
  private:
   static Adcirc::Geometry::MeshFormat getMeshFormat(
       const std::string &filename);
@@ -179,11 +181,14 @@ class MeshImpl {
   size_t getMaxNodesPerElement();
   void buildNodeLookupTable();
 
+  void generateHash();
+
   adcmap<size_t, size_t> m_nodeLookup;
   adcmap<size_t, size_t> m_elementLookup;
 
   std::string m_filename;
   std::string m_meshHeaderString;
+  std::string m_hash;
   std::vector<Adcirc::Geometry::Node> m_nodes;
   std::vector<Adcirc::Geometry::Element> m_elements;
   std::vector<Adcirc::Geometry::Boundary> m_openBoundaries;

@@ -195,6 +195,8 @@ class Mesh {
 
   std::vector<Adcirc::Geometry::Node *> ADCIRCMODULES_EXPORT boundaryNodes();
 
+  std::string ADCIRCMODULES_EXPORT hash();
+
  private:
   std::unique_ptr<MeshImpl> m_impl;
 };
