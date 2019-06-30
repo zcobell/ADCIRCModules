@@ -26,6 +26,8 @@
 #include "filetypes.h"
 #include "griddata.h"
 #include "harmonicsoutput.h"
+#include "hash.h"
+#include "hashtype.h"
 #include "interpolationmethods.h"
 #include "kdtree.h"
 #include "logging.h"
