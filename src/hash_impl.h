@@ -3,6 +3,7 @@
 
 #include <openssl/md5.h>
 #include <openssl/sha.h>
+#include <cstring>
 #include <string>
 #include "hashtype.h"
 
