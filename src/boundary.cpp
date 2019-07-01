@@ -509,31 +509,27 @@ std::string Boundary::hash() {
  * @brief Generates the hash data for this boundary
  */
 void Boundary::generateHash() {
-  std::string hashString = std::string();
+  Hash h;
   for (size_t i = 0; i < this->m_boundaryLength; ++i) {
-    hashString.append(
-        boost::str(boost::format("%3.3i") % this->m_boundaryCode));
-    hashString.append(this->m_node1[i]->hash());
+    h.addData(boost::str(boost::format("%3.3i") % this->m_boundaryCode));
     if (this->isWeir()) {
-      if (this->isInternalWeir()) hashString.append(this->m_node2[i]->hash());
-
-      hashString.append(
-          boost::str(boost::format("%6.3f") % this->m_crestElevation[i]));
-      hashString.append(boost::str(boost::format("%6.3f") %
-                                   this->m_supercriticalWeirCoefficient[i]));
-
+      if (this->isInternalWeir()) h.addData(this->m_node2[i]->hash());
+      h.addData(boost::str(boost::format("%6.3f") % this->m_crestElevation[i]));
+      h.addData(boost::str(boost::format("%6.3f") %
+                           this->m_supercriticalWeirCoefficient[i]));
       if (this->isInternalWeir()) {
-        hashString.append(boost::str(boost::format("%6.3f") %
-                                     this->m_subcriticalWeirCoefficient[i]));
+        h.addData(boost::str(boost::format("%6.3f") %
+                             this->m_subcriticalWeirCoefficient[i]));
         if (this->isInternalWeirWithPipes()) {
-          hashString.append(boost::str(
-              boost::format("%6.3f%6.3f%6.3f") % this->m_pipeDiameter[i] %
-              this->m_pipeHeight[i] % this->m_pipeCoefficient[i]));
+          h.addData(
+              boost::str(boost::format("%6.3f") % this->m_pipeDiameter[i]));
+          h.addData(boost::str(boost::format("%6.3f") % this->m_pipeHeight[i]));
+          h.addData(
+              boost::str(boost::format("%6.3f") % this->m_pipeCoefficient[i]));
         }
       }
     }
   }
-  Hash h;
-  h.addData(hashString);
   this->m_hash = h.getHash();
+  return;
 }

@@ -17,6 +17,8 @@ class HashImpl {
   void setHashType(const HashType &hashType);
 
  private:
+  void initialize();
+
   void addDataMd5(const std::string &data);
   void addDataSha1(const std::string &data);
   void addDataSha256(const std::string &data);
@@ -26,6 +28,11 @@ class HashImpl {
   std::string getMd5();
 
   std::string getDigest(size_t length, unsigned char data[]);
+
+  bool m_started;
+
+  void (HashImpl::*addDataPtr)(const std::string &data);
+  std::string (HashImpl::*getHashPtr)();
 
   HashType m_hashType;
   MD5_CTX m_md5ctx;

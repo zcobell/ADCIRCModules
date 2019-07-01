@@ -158,8 +158,8 @@ std::string Node::hash() {
  */
 void Node::generateHash() {
   Hash h;
-  std::string hashString = boost::str(boost::format("%16.10f %16.10f %16.10f") %
-                                      this->x() % this->y() % this->z());
-  h.addData(hashString);
+  h.addData(boost::str(boost::format("%16.10f") % this->x()));
+  h.addData(boost::str(boost::format("%16.10f") % this->y()));
+  h.addData(boost::str(boost::format("%16.10f") % this->z()));
   this->m_hash = h.getHash();
 }

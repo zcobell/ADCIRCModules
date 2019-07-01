@@ -378,11 +378,9 @@ std::string Element::hash() {
  */
 void Element::generateHash() {
   Hash h;
-  std::string hashString = std::string();
   for (auto &n : this->m_nodes) {
-    hashString.append(n->hash());
+    h.addData(n->hash());
   }
-  h.addData(hashString);
   this->m_hash = h.getHash();
 }
 
