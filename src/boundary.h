@@ -96,7 +96,8 @@ class Boundary {
   bool ADCIRCMODULES_EXPORT isInternalWeirWithPipes() const;
   bool ADCIRCMODULES_EXPORT isSingleNodeBoundary() const;
 
-  std::string ADCIRCMODULES_EXPORT hash();
+  std::string ADCIRCMODULES_EXPORT hash(HashType h = AdcircDefaultHash,
+                                        bool force = false);
 
  private:
   int m_boundaryCode;
@@ -112,7 +113,7 @@ class Boundary {
   std::vector<Adcirc::Geometry::Node *> m_node2;
   std::string m_hash;
 
-  void generateHash();
+  void generateHash(HashType h = AdcircDefaultHash);
 };
 }  // namespace Geometry
 }  // namespace Adcirc

@@ -43,7 +43,11 @@ Mesh::~Mesh() = default;
 /**
  * @brief Default Constructor
  */
-MeshImpl::MeshImpl() : m_filename("none"), m_epsg(-1), m_hash(std::string()) {
+MeshImpl::MeshImpl()
+    : m_filename("none"),
+      m_epsg(-1),
+      m_hash(std::string()),
+      m_hashType(AdcircDefaultHash) {
   this->_init();
 }
 
@@ -52,7 +56,10 @@ MeshImpl::MeshImpl() : m_filename("none"), m_epsg(-1), m_hash(std::string()) {
  * @param filename name of the mesh to read
  */
 MeshImpl::MeshImpl(const std::string &filename)
-    : m_filename(filename), m_epsg(-1), m_hash(std::string()) {
+    : m_filename(filename),
+      m_epsg(-1),
+      m_hash(std::string()),
+      m_hashType(AdcircDefaultHash) {
   this->_init();
 }
 
@@ -2259,27 +2266,33 @@ std::vector<Adcirc::Geometry::Node *> MeshImpl::boundaryNodes() {
   return bdyVec;
 }
 
-std::string MeshImpl::hash() {
-  if (this->m_hash == std::string()) this->generateHash();
+std::string MeshImpl::hash(bool force) {
+  if (this->m_hash == std::string() || force) this->generateHash(force);
   return this->m_hash;
 }
 
-void MeshImpl::generateHash() {
-  Hash h;
+void MeshImpl::generateHash(bool force) {
+  Hash h(this->m_hashType);
   for (auto &n : this->m_nodes) {
-    h.addData(n.hash());
+    h.addData(n.hash(this->m_hashType, force));
   }
 
   for (auto &e : this->m_elements) {
-    h.addData(e.hash());
+    h.addData(e.hash(this->m_hashType, force));
   }
 
   for (auto &b : this->m_openBoundaries) {
-    h.addData(b.hash());
+    h.addData(b.hash(this->m_hashType, force));
   }
 
   for (auto &b : this->m_landBoundaries) {
-    h.addData(b.hash());
+    h.addData(b.hash(this->m_hashType, force));
   }
   this->m_hash = h.getHash();
+}
+
+HashType MeshImpl::hashType() const { return this->m_hashType; }
+
+void MeshImpl::setHashType(const HashType &hashType) {
+  this->m_hashType = hashType;
 }

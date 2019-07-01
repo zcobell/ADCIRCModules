@@ -148,18 +148,18 @@ Point Node::toPoint() { return Point(this->m_x, this->m_y); }
  * there are no hash collisions) since the hash is based upon
  * the node's position and z-elevation
  */
-std::string Node::hash() {
-  if (this->m_hash == std::string()) this->generateHash();
+std::string Node::hash(HashType h, bool force) {
+  if (this->m_hash == std::string() || force) this->generateHash(h);
   return this->m_hash;
 }
 
 /**
  * @brief Generates a hash of the ADCIRC node's attributes
  */
-void Node::generateHash() {
-  Hash h;
-  h.addData(boost::str(boost::format("%16.10f") % this->x()));
-  h.addData(boost::str(boost::format("%16.10f") % this->y()));
-  h.addData(boost::str(boost::format("%16.10f") % this->z()));
-  this->m_hash = h.getHash();
+void Node::generateHash(HashType h) {
+  Hash hash(h);
+  hash.addData(boost::str(boost::format("%16.10f") % this->x()));
+  hash.addData(boost::str(boost::format("%16.10f") % this->y()));
+  hash.addData(boost::str(boost::format("%16.10f") % this->z()));
+  this->m_hash = hash.getHash();
 }

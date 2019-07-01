@@ -368,20 +368,20 @@ void Element::interpolationWeights(double x, double y,
  * make them up and therefore will change when a node
  * moves its position.
  */
-std::string Element::hash() {
-  if (this->m_hash == std::string()) this->generateHash();
+std::string Element::hash(HashType h, bool force) {
+  if (this->m_hash == std::string() || force) this->generateHash(h);
   return this->m_hash;
 }
 
 /**
  * @brief Generates the hash for this element
  */
-void Element::generateHash() {
-  Hash h;
+void Element::generateHash(HashType h) {
+  Hash hash(h);
   for (auto &n : this->m_nodes) {
-    h.addData(n->hash());
+    hash.addData(n->hash());
   }
-  this->m_hash = h.getHash();
+  this->m_hash = hash.getHash();
 }
 
 /**

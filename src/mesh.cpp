@@ -627,4 +627,18 @@ std::vector<Adcirc::Geometry::Node *> Mesh::boundaryNodes() {
  * @brief Returns the hash of the mesh which serves as a unique identifier
  * @return hash as string
  */
-std::string Mesh::hash() { return this->m_impl->hash(); }
+std::string Mesh::hash(bool force) { return this->m_impl->hash(force); }
+
+/**
+ * @brief Gets the hash type that will be computed
+ * @return hash type
+ */
+HashType Mesh::hashType() const { return this->m_impl->hashType(); }
+
+/**
+ * @brief Sets the hash type to be used
+ * @param hashType hash type to use
+ */
+void Mesh::setHashType(const HashType &hashType) {
+  this->m_impl->setHashType(hashType);
+}

@@ -500,36 +500,38 @@ std::vector<std::string> Boundary::toStringList() {
  * heights, and coefficients
  * @return hash formatted as string
  */
-std::string Boundary::hash() {
-  if (this->m_hash == std::string()) this->generateHash();
+std::string Boundary::hash(HashType h, bool force) {
+  if (this->m_hash == std::string() || force) this->generateHash(h);
   return this->m_hash;
 }
 
 /**
  * @brief Generates the hash data for this boundary
  */
-void Boundary::generateHash() {
-  Hash h;
+void Boundary::generateHash(HashType h) {
+  Hash hash(h);
   for (size_t i = 0; i < this->m_boundaryLength; ++i) {
-    h.addData(boost::str(boost::format("%3.3i") % this->m_boundaryCode));
+    hash.addData(boost::str(boost::format("%3.3i") % this->m_boundaryCode));
     if (this->isWeir()) {
-      if (this->isInternalWeir()) h.addData(this->m_node2[i]->hash());
-      h.addData(boost::str(boost::format("%6.3f") % this->m_crestElevation[i]));
-      h.addData(boost::str(boost::format("%6.3f") %
-                           this->m_supercriticalWeirCoefficient[i]));
+      if (this->isInternalWeir()) hash.addData(this->m_node2[i]->hash());
+      hash.addData(
+          boost::str(boost::format("%6.3f") % this->m_crestElevation[i]));
+      hash.addData(boost::str(boost::format("%6.3f") %
+                              this->m_supercriticalWeirCoefficient[i]));
       if (this->isInternalWeir()) {
-        h.addData(boost::str(boost::format("%6.3f") %
-                             this->m_subcriticalWeirCoefficient[i]));
+        hash.addData(boost::str(boost::format("%6.3f") %
+                                this->m_subcriticalWeirCoefficient[i]));
         if (this->isInternalWeirWithPipes()) {
-          h.addData(
+          hash.addData(
               boost::str(boost::format("%6.3f") % this->m_pipeDiameter[i]));
-          h.addData(boost::str(boost::format("%6.3f") % this->m_pipeHeight[i]));
-          h.addData(
+          hash.addData(
+              boost::str(boost::format("%6.3f") % this->m_pipeHeight[i]));
+          hash.addData(
               boost::str(boost::format("%6.3f") % this->m_pipeCoefficient[i]));
         }
       }
     }
   }
-  this->m_hash = h.getHash();
+  this->m_hash = hash.getHash();
   return;
 }

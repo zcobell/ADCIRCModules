@@ -89,14 +89,15 @@ class Element {
   void ADCIRCMODULES_EXPORT interpolationWeights(double x, double y,
                                                  std::vector<double> &weights);
 
-  std::string ADCIRCMODULES_EXPORT hash();
+  std::string ADCIRCMODULES_EXPORT hash(HashType h = AdcircDefaultHash,
+                                        bool force = false);
 
  private:
   size_t m_id;
   std::vector<Adcirc::Geometry::Node *> m_nodes;
   std::string m_hash;
 
-  void generateHash();
+  void generateHash(HashType h = AdcircDefaultHash);
 
   void triangularInterpolation(double x, double y,
                                std::vector<double> &weights);

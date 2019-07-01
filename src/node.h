@@ -22,6 +22,7 @@
 #include <string>
 #include <utility>
 #include "adcircmodules_global.h"
+#include "hashtype.h"
 
 using Point = std::pair<double, double>;
 
@@ -62,7 +63,8 @@ class Node {
 
   Point ADCIRCMODULES_EXPORT toPoint();
 
-  std::string ADCIRCMODULES_EXPORT hash();
+  std::string ADCIRCMODULES_EXPORT hash(HashType h = AdcircDefaultHash,
+                                        bool force = false);
 
  private:
   size_t m_id;         /// Integer name of a mesh node
@@ -71,7 +73,7 @@ class Node {
   double m_z;          /// z position of a node
   std::string m_hash;  /// hash identifier for the node
 
-  void generateHash();
+  void generateHash(HashType h = AdcircDefaultHash);
 };
 }  // namespace Geometry
 }  // namespace Adcirc

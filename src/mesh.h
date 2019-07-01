@@ -195,7 +195,10 @@ class Mesh {
 
   std::vector<Adcirc::Geometry::Node *> ADCIRCMODULES_EXPORT boundaryNodes();
 
-  std::string ADCIRCMODULES_EXPORT hash();
+  std::string ADCIRCMODULES_EXPORT hash(bool force = false);
+
+  HashType hashType() const;
+  void setHashType(const HashType &hashType);
 
  private:
   std::unique_ptr<MeshImpl> m_impl;
