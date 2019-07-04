@@ -379,7 +379,7 @@ std::string Element::hash(HashType h, bool force) {
 void Element::generateHash(HashType h) {
   Hash hash(h);
   for (auto &n : this->m_nodes) {
-    hash.addData(n->hash());
+    hash.addData(n->positionHash());
   }
   this->m_hash = hash.getHash();
 }

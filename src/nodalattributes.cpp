@@ -185,5 +185,15 @@ Adcirc::ModelParameters::AttributeMetadata *NodalAttributes::metadata(
   return this->m_impl->metadata(name);
 }
 
+/**
+ * @brief Adds a new set of nodal attributes to the object
+ * @param metadata object metadata
+ * @param data object data
+ */
+void NodalAttributes::addAttribute(AttributeMetadata &metadata,
+                                   std::vector<Attribute> &data) {
+  this->m_impl->addAttribute(metadata, data);
+}
+
 }  // namespace ModelParameters
 }  // namespace Adcirc

@@ -121,7 +121,7 @@ bool Boundary::isSingleNodeBoundary() const {
 void Boundary::setBoundary(int boundaryCode, size_t boundaryLength) {
   this->setBoundaryCode(boundaryCode);
   this->setBoundaryLength(boundaryLength);
-  if (this->m_hash != std::string()) this->generateHash();
+  this->m_averageLongitude = std::numeric_limits<double>::max();
 }
 
 /**
@@ -512,8 +512,10 @@ void Boundary::generateHash(HashType h) {
   Hash hash(h);
   for (size_t i = 0; i < this->m_boundaryLength; ++i) {
     hash.addData(boost::str(boost::format("%3.3i") % this->m_boundaryCode));
+    hash.addData(this->m_node1[i]->positionHash());
     if (this->isWeir()) {
-      if (this->isInternalWeir()) hash.addData(this->m_node2[i]->hash());
+      if (this->isInternalWeir())
+        hash.addData(this->m_node2[i]->positionHash());
       hash.addData(
           boost::str(boost::format("%6.3f") % this->m_crestElevation[i]));
       hash.addData(boost::str(boost::format("%6.3f") %
@@ -533,5 +535,35 @@ void Boundary::generateHash(HashType h) {
     }
   }
   this->m_hash = hash.getHash();
+  return;
+}
+
+/**
+ * @brief Returns the average longitude of the boundary
+ * @param force force recalculation of the average longitude
+ * @return average longitude
+ */
+double Boundary::averageLongitude(bool force) {
+  if (force || this->m_averageLongitude == std::numeric_limits<double>::max()) {
+    this->calculateAverageLongitude();
+  }
+  return this->m_averageLongitude;
+}
+
+/**
+ * @brief Calculates the average longitude along the boundary
+ */
+void Boundary::calculateAverageLongitude() {
+  double position = 0.0;
+  for (size_t i = 0; i < this->size(); ++i) {
+    double x;
+    if (this->isInternalWeir()) {
+      x = (this->m_node1[i]->x() + this->m_node2[i]->x()) / 2.0;
+    } else {
+      x = this->m_node1[i]->x();
+    }
+    position += x;
+  }
+  this->m_averageLongitude = position / this->size();
   return;
 }

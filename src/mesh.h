@@ -170,7 +170,7 @@ class Mesh {
                                        size_t numOpenBoundaries,
                                        size_t numLandBoundaries);
 
-  void ADCIRCMODULES_EXPORT addNode(size_t index, Adcirc::Geometry::Node &node);
+  void ADCIRCMODULES_EXPORT addNode(size_t index, Adcirc::Geometry::Node node);
   void ADCIRCMODULES_EXPORT deleteNode(size_t index);
 
   void ADCIRCMODULES_EXPORT addElement(size_t index,

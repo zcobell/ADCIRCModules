@@ -31,7 +31,8 @@ Node::Node()
       m_x(adcircmodules_default_value<double>()),
       m_y(adcircmodules_default_value<double>()),
       m_z(adcircmodules_default_value<double>()),
-      m_hash(std::string()) {}
+      m_hash(std::string()),
+      m_positionHash(std::string()) {}
 
 /**
  * @brief Constructor taking the id, x, y, and z for the node
@@ -41,7 +42,12 @@ Node::Node()
  * @param z z elevation
  */
 Node::Node(size_t id, double x, double y, double z)
-    : m_id(id), m_x(x), m_y(y), m_z(z), m_hash(std::string()) {}
+    : m_id(id),
+      m_x(x),
+      m_y(y),
+      m_z(z),
+      m_hash(std::string()),
+      m_positionHash(std::string()) {}
 
 /**
  * @brief Function taking the id, x, y, and z for the node
@@ -141,7 +147,7 @@ std::string Node::to2dmString(bool geographicCoordinates) {
 Point Node::toPoint() { return Point(this->m_x, this->m_y); }
 
 /**
- * @brief Returns the hash of this node based upon it's position
+ * @brief Returns the hash of this node based upon it's position and elevation
  * @return hash formatted as a string
  *
  * No two adcirc nodes will have an identical hash (assuming
@@ -154,7 +160,22 @@ std::string Node::hash(HashType h, bool force) {
 }
 
 /**
+ * @brief Returns the hash of this node based upon it's position
+ * @return hash formatted as a string
+ *
+ * No two adcirc nodes will have an identical hash (assuming
+ * there are no hash collisions) since the hash is based upon
+ * the node's position. Identical hashes are computed when the
+ * z-elevation is the same.
+ */
+std::string Node::positionHash(HashType h, bool force) {
+  if (this->m_hash == std::string() || force) this->generatePositionHash();
+  return this->m_positionHash;
+}
+
+/**
  * @brief Generates a hash of the ADCIRC node's attributes
+ * @param h type of hash to use
  */
 void Node::generateHash(HashType h) {
   Hash hash(h);
@@ -162,4 +183,17 @@ void Node::generateHash(HashType h) {
   hash.addData(boost::str(boost::format("%16.10f") % this->y()));
   hash.addData(boost::str(boost::format("%16.10f") % this->z()));
   this->m_hash = hash.getHash();
+  return;
+}
+
+/**
+ * @brief Generates a hash of only the node's position
+ * @param h type of hash to use
+ */
+void Node::generatePositionHash(HashType h) {
+  Hash hash(h);
+  hash.addData(boost::str(boost::format("%16.10f") % this->x()));
+  hash.addData(boost::str(boost::format("%16.10f") % this->y()));
+  this->m_positionHash = hash.getHash();
+  return;
 }

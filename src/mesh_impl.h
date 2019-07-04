@@ -127,7 +127,7 @@ class MeshImpl {
   void resizeMesh(size_t numNodes, size_t numElements, size_t numOpenBoundaries,
                   size_t numLandBoundaries);
 
-  void addNode(size_t index, Adcirc::Geometry::Node &node);
+  void addNode(size_t index, Adcirc::Geometry::Node node);
   void deleteNode(size_t index);
 
   void addElement(size_t index, Adcirc::Geometry::Element &element);

@@ -505,7 +505,7 @@ void Mesh::resizeMesh(size_t numNodes, size_t numElements,
  * @param index location where the node should be added
  * @param node Reference to an Node object
  */
-void Mesh::addNode(size_t index, Adcirc::Geometry::Node &node) {
+void Mesh::addNode(size_t index, Adcirc::Geometry::Node node) {
   return this->m_impl->addNode(index, node);
 }
 

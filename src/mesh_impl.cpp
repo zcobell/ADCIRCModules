@@ -1434,7 +1434,7 @@ void MeshImpl::resizeMesh(size_t numNodes, size_t numElements,
  * @param index location where the node should be added
  * @param node Reference to an Node object
  */
-void MeshImpl::addNode(size_t index, Node &node) {
+void MeshImpl::addNode(size_t index, Node node) {
   if (index < this->numNodes()) {
     this->m_nodes[index] = node;
   } else {

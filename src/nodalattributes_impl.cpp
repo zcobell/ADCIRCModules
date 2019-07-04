@@ -392,3 +392,12 @@ AttributeMetadata *NodalAttributesImpl::metadata(const std::string &name) {
   size_t index = this->locateAttribute(name);
   return this->metadata(index);
 }
+
+void NodalAttributesImpl::addAttribute(AttributeMetadata &metadata,
+                                       std::vector<Attribute> &attribute) {
+  this->m_nodalParameters.push_back(metadata);
+  this->m_nodalData.push_back(attribute);
+  this->m_attributeLocations[metadata.name()] =
+      this->m_nodalParameters.size() - 1;
+  this->m_numParameters = this->m_nodalParameters.size();
+}

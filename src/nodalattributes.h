@@ -65,6 +65,10 @@ class NodalAttributes {
   Adcirc::ModelParameters::AttributeMetadata ADCIRCMODULES_EXPORT *metadata(
       const std::string &name);
 
+  void ADCIRCMODULES_EXPORT
+  addAttribute(Adcirc::ModelParameters::AttributeMetadata &metadata,
+               std::vector<Adcirc::ModelParameters::Attribute> &data);
+
  private:
   std::unique_ptr<NodalAttributesImpl> m_impl;
 };
