@@ -169,7 +169,7 @@ std::string Node::hash(HashType h, bool force) {
  * z-elevation is the same.
  */
 std::string Node::positionHash(HashType h, bool force) {
-  if (this->m_hash == std::string() || force) this->generatePositionHash();
+  if (this->m_positionHash == std::string() || force) this->generatePositionHash();
   return this->m_positionHash;
 }
 
