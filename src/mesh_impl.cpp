@@ -136,11 +136,13 @@ void MeshImpl::setMeshHeaderString(const std::string &meshHeaderString) {
 size_t MeshImpl::numNodes() const { return this->m_numNodes; }
 
 /**
- * @brief Sets the number of nodes in the mesh. Note this does not resize the
- * mesh
+ * @brief Sets the number of nodes in the mesh
  * @param numNodes number of nodes
  */
-void MeshImpl::setNumNodes(size_t numNodes) { this->m_numNodes = numNodes; }
+void MeshImpl::setNumNodes(size_t numNodes) {
+  this->m_nodes.resize(numNodes);
+  this->m_numNodes = numNodes;
+}
 
 /**
  * @brief Returns the number of elements in the mesh
@@ -149,11 +151,11 @@ void MeshImpl::setNumNodes(size_t numNodes) { this->m_numNodes = numNodes; }
 size_t MeshImpl::numElements() const { return this->m_numElements; }
 
 /**
- * @brief Sets the number of elements in the mesh. Note: This does not resize
- * the mesh
+ * @brief Sets the number of elements in the mesh
  * @param numElements Number of elements
  */
 void MeshImpl::setNumElements(size_t numElements) {
+  this->m_elements.resize(numElements);
   this->m_numElements = numElements;
 }
 
@@ -164,11 +166,11 @@ void MeshImpl::setNumElements(size_t numElements) {
 size_t MeshImpl::numOpenBoundaries() const { return this->m_numOpenBoundaries; }
 
 /**
- * @brief Sets the number of open boundaries in the model. Note this does not
- * resize the boundary array
+ * @brief Sets the number of open boundaries in the model
  * @param numOpenBoundaries Number of open boundaries
  */
 void MeshImpl::setNumOpenBoundaries(size_t numOpenBoundaries) {
+  this->m_openBoundaries.resize(numOpenBoundaries);
   this->m_numOpenBoundaries = numOpenBoundaries;
 }
 
@@ -179,11 +181,11 @@ void MeshImpl::setNumOpenBoundaries(size_t numOpenBoundaries) {
 size_t MeshImpl::numLandBoundaries() const { return this->m_numLandBoundaries; }
 
 /**
- * @brief Sets the number of land boundaries in the model. Note this does not
- * resize the boundary array
+ * @brief Sets the number of land boundaries in the model
  * @param numLandBoundaries Number of land boundaries
  */
 void MeshImpl::setNumLandBoundaries(size_t numLandBoundaries) {
+  this->m_landBoundaries.resize(numLandBoundaries);
   this->m_numLandBoundaries = numLandBoundaries;
 }
 

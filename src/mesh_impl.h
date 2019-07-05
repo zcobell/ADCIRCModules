@@ -62,16 +62,16 @@ class MeshImpl {
   void setMeshHeaderString(const std::string &meshHeaderString);
 
   size_t numNodes() const;
-  void setNumNodes(size_t numNodes);
+  void setNumNodes(const size_t numNodes);
 
   size_t numElements() const;
-  void setNumElements(size_t numElements);
+  void setNumElements(const size_t numElements);
 
   size_t numOpenBoundaries() const;
-  void setNumOpenBoundaries(size_t numOpenBoundaries);
+  void setNumOpenBoundaries(const size_t numOpenBoundaries);
 
   size_t numLandBoundaries() const;
-  void setNumLandBoundaries(size_t numLandBoundaries);
+  void setNumLandBoundaries(const size_t numLandBoundaries);
 
   size_t totalOpenBoundaryNodes();
 
