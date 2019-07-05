@@ -419,13 +419,13 @@ void OutputFile::findNetcdfVarId() {
     ierr = nc_get_att_text(this->m_ncid, this->m_varid_data[1], "long_name",
                            longname2_char);
     std::string s1, s2;
-    s1 = std::string(longname1_char);
-    s2 = std::string(longname2_char);
+    s1 = std::string(longname1_char,attlen_longname1);
+    s2 = std::string(longname2_char,attlen_longname2);
     this->m_description = s1 + "," + s2;
     delete[] longname1_char;
     delete[] longname2_char;
   } else {
-    this->m_description = std::string(longname1_char);
+    this->m_description = std::string(longname1_char,attlen_longname1);
     delete[] longname1_char;
   }
 
@@ -435,7 +435,7 @@ void OutputFile::findNetcdfVarId() {
   char* units_char = new char[attlen_units + 1];
   ierr =
       nc_get_att_text(this->m_ncid, this->m_varid_data[0], "units", units_char);
-  this->m_units = std::string(units_char);
+  this->m_units = std::string(units_char,attlen_units);
   delete[] units_char;
 
   return;

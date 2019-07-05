@@ -189,6 +189,10 @@ bool AttributeMetadata::checkIfDefaultValue(const std::vector<double> &value) {
  **/
 bool AttributeMetadata::checkIfDefaultValue(
     const Adcirc::ModelParameters::Attribute &a) {
-  return std::equal(a.values().begin(), a.values().end(),
-                    this->m_defaultValue.begin(), equalTo);
+  for (size_t i = 0; i < this->m_numValues; ++i) {
+    if (!equalTo(this->m_defaultValue[i], a.value(i))) {
+      return false;
+    }
+  }
+  return true;
 }
