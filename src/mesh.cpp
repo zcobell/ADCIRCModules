@@ -521,7 +521,7 @@ void Mesh::deleteNode(size_t index) { return this->m_impl->deleteNode(index); }
  * @param index location where the element should be added
  * @param element reference to the Element to add
  */
-void Mesh::addElement(size_t index, Adcirc::Geometry::Element &element) {
+void Mesh::addElement(size_t index, Element element) {
   this->m_impl->addElement(index, element);
 }
 

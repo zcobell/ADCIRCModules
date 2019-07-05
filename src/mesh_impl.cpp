@@ -1466,7 +1466,7 @@ void MeshImpl::deleteNode(size_t index) {
  * @param index location where the element should be added
  * @param element reference to the Element to add
  */
-void MeshImpl::addElement(size_t index, Element &element) {
+void MeshImpl::addElement(size_t index, Element element) {
   if (index < this->numElements()) {
     this->m_elements[index] = element;
   } else {

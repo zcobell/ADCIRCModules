@@ -174,7 +174,7 @@ class Mesh {
   void ADCIRCMODULES_EXPORT deleteNode(size_t index);
 
   void ADCIRCMODULES_EXPORT addElement(size_t index,
-                                       Adcirc::Geometry::Element &element);
+                                       Adcirc::Geometry::Element element);
   void ADCIRCMODULES_EXPORT deleteElement(size_t index);
 
   Kdtree ADCIRCMODULES_EXPORT *nodalSearchTree() const;

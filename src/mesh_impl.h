@@ -130,7 +130,7 @@ class MeshImpl {
   void addNode(size_t index, Adcirc::Geometry::Node node);
   void deleteNode(size_t index);
 
-  void addElement(size_t index, Adcirc::Geometry::Element &element);
+  void addElement(size_t index, Adcirc::Geometry::Element element);
   void deleteElement(size_t index);
 
   Kdtree *nodalSearchTree() const;
