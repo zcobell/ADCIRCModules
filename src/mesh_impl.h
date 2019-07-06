@@ -133,6 +133,12 @@ class MeshImpl {
   void addElement(size_t index, Adcirc::Geometry::Element element);
   void deleteElement(size_t index);
 
+  void addOpenBoundary(size_t index, Adcirc::Geometry::Boundary bnd);
+  void deleteOpenBoundary(size_t index);
+
+  void addLandBoundary(size_t index, Adcirc::Geometry::Boundary bnd);
+  void deleteLandBoundary(size_t index);
+
   Kdtree *nodalSearchTree() const;
   Kdtree *elementalSearchTree() const;
 
@@ -198,12 +204,6 @@ class MeshImpl {
   std::vector<Adcirc::Geometry::Element> m_elements;
   std::vector<Adcirc::Geometry::Boundary> m_openBoundaries;
   std::vector<Adcirc::Geometry::Boundary> m_landBoundaries;
-  size_t m_numNodes;
-  size_t m_numElements;
-  size_t m_numOpenBoundaries;
-  size_t m_numLandBoundaries;
-  size_t m_totalOpenBoundaryNodes;
-  size_t m_totalLandBoundaryNodes;
   int m_epsg;
   bool m_isLatLon;
 

@@ -533,6 +533,40 @@ void Mesh::addElement(size_t index, Element element) {
 void Mesh::deleteElement(size_t index) { this->m_impl->deleteElement(index); }
 
 /**
+ * @brief Adds a land boundary to the mesh
+ * @param index position in boundary array
+ * @param bnd Adcirc::Geometry::Boundary object
+ */
+void Mesh::addLandBoundary(size_t index, Adcirc::Geometry::Boundary bnd) {
+  this->m_impl->addLandBoundary(index, bnd);
+}
+
+/**
+ * @brief Removes the land boundary at the specified position
+ * @param index position of boundary to remove
+ */
+void Mesh::deleteLandBoundary(size_t index) {
+  this->m_impl->deleteLandBoundary(index);
+}
+
+/**
+ * @brief Adds an open boundary to the mesh
+ * @param index position in boundary array
+ * @param bnd Adcirc::Geometry::Boundary object
+ */
+void Mesh::addOpenBoundary(size_t index, Adcirc::Geometry::Boundary bnd) {
+  this->m_impl->addOpenBoundary(index, bnd);
+}
+
+/**
+ * @brief Removes the open boundary at the specified position
+ * @param index position of boundary to remove
+ */
+void Mesh::deleteOpenBoundary(size_t index) {
+  this->m_impl->deleteOpenBoundary(index);
+}
+
+/**
  * @brief Returns a refrence to the nodal search kd-tree
  * @return kd-tree object with mesh nodes as serch locations
  */

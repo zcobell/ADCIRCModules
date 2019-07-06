@@ -70,12 +70,6 @@ void MeshImpl::_init() {
   if (this->m_epsg == -1) this->defineProjection(4326, true);
   this->m_nodalSearchTree = nullptr;
   this->m_elementalSearchTree = nullptr;
-  this->m_numNodes = 0;
-  this->m_numElements = 0;
-  this->m_numLandBoundaries = 0;
-  this->m_numOpenBoundaries = 0;
-  this->m_totalOpenBoundaryNodes = 0;
-  this->m_totalLandBoundaryNodes = 0;
   this->m_nodeOrderingLogical = true;
   this->m_elementOrderingLogical = true;
   this->m_nodes.clear();
@@ -133,22 +127,19 @@ void MeshImpl::setMeshHeaderString(const std::string &meshHeaderString) {
  * @brief Returns the number of nodes currently in the mesh
  * @return number of nodes
  */
-size_t MeshImpl::numNodes() const { return this->m_numNodes; }
+size_t MeshImpl::numNodes() const { return this->m_nodes.size(); }
 
 /**
  * @brief Sets the number of nodes in the mesh
  * @param numNodes number of nodes
  */
-void MeshImpl::setNumNodes(size_t numNodes) {
-  this->m_nodes.resize(numNodes);
-  this->m_numNodes = numNodes;
-}
+void MeshImpl::setNumNodes(size_t numNodes) { this->m_nodes.resize(numNodes); }
 
 /**
  * @brief Returns the number of elements in the mesh
  * @return number of elements
  */
-size_t MeshImpl::numElements() const { return this->m_numElements; }
+size_t MeshImpl::numElements() const { return this->m_elements.size(); }
 
 /**
  * @brief Sets the number of elements in the mesh
@@ -156,14 +147,15 @@ size_t MeshImpl::numElements() const { return this->m_numElements; }
  */
 void MeshImpl::setNumElements(size_t numElements) {
   this->m_elements.resize(numElements);
-  this->m_numElements = numElements;
 }
 
 /**
  * @brief Returns the number of open boundaries in the model
  * @return number of open boundaries
  */
-size_t MeshImpl::numOpenBoundaries() const { return this->m_numOpenBoundaries; }
+size_t MeshImpl::numOpenBoundaries() const {
+  return this->m_openBoundaries.size();
+}
 
 /**
  * @brief Sets the number of open boundaries in the model
@@ -171,14 +163,15 @@ size_t MeshImpl::numOpenBoundaries() const { return this->m_numOpenBoundaries; }
  */
 void MeshImpl::setNumOpenBoundaries(size_t numOpenBoundaries) {
   this->m_openBoundaries.resize(numOpenBoundaries);
-  this->m_numOpenBoundaries = numOpenBoundaries;
 }
 
 /**
  * @brief Returns the number of land boundaries in the model
  * @return number of land boundaries
  */
-size_t MeshImpl::numLandBoundaries() const { return this->m_numLandBoundaries; }
+size_t MeshImpl::numLandBoundaries() const {
+  return this->m_landBoundaries.size();
+}
 
 /**
  * @brief Sets the number of land boundaries in the model
@@ -186,7 +179,6 @@ size_t MeshImpl::numLandBoundaries() const { return this->m_numLandBoundaries; }
  */
 void MeshImpl::setNumLandBoundaries(size_t numLandBoundaries) {
   this->m_landBoundaries.resize(numLandBoundaries);
-  this->m_numLandBoundaries = numLandBoundaries;
 }
 
 /**
@@ -248,8 +240,10 @@ void MeshImpl::readAdcircMeshNetcdf() {
     adcircmodules_throw_exception("Could not read the mesh dimensions");
 
   size_t n_max_vertex;
-  ierr += nc_inq_dimlen(ncid, dimid_node, &this->m_numNodes);
-  ierr += nc_inq_dimlen(ncid, dimid_elem, &this->m_numElements);
+  size_t nn = this->numNodes();
+  size_t ne = this->numElements();
+  ierr += nc_inq_dimlen(ncid, dimid_node, &nn);
+  ierr += nc_inq_dimlen(ncid, dimid_elem, &ne);
   ierr += nc_inq_dimlen(ncid, dimid_nvertex, &n_max_vertex);
   if (ierr != 0) adcircmodules_throw_exception("Could not read the mesh sizes");
 
@@ -260,9 +254,9 @@ void MeshImpl::readAdcircMeshNetcdf() {
   ierr += nc_inq_varid(ncid, "element", &varid_elem);
   if (ierr != 0) adcircmodules_throw_exception("Could not read the varids");
 
-  double *x = new double[this->m_numNodes];
-  double *y = new double[this->m_numNodes];
-  double *z = new double[this->m_numNodes];
+  double *x = new double[nn];
+  double *y = new double[nn];
+  double *z = new double[nn];
 
   ierr += nc_get_var_double(ncid, varid_x, x);
   ierr += nc_get_var_double(ncid, varid_y, y);
@@ -274,8 +268,8 @@ void MeshImpl::readAdcircMeshNetcdf() {
     adcircmodules_throw_exception("Could not read nodal data");
   }
 
-  this->m_nodes.reserve(this->m_numNodes);
-  for (size_t i = 0; i < this->m_numNodes; ++i) {
+  this->m_nodes.reserve(nn);
+  for (size_t i = 0; i < nn; ++i) {
     this->m_nodes.push_back(Node(i + 1, x[i], y[i], z[i]));
   }
 
@@ -286,14 +280,14 @@ void MeshImpl::readAdcircMeshNetcdf() {
   delete[] y;
   delete[] z;
 
-  int *n1 = new int[this->m_numElements];
-  int *n2 = new int[this->m_numElements];
-  int *n3 = new int[this->m_numElements];
-  int *n4 = new int[this->m_numElements];
+  int *n1 = new int[ne];
+  int *n2 = new int[ne];
+  int *n3 = new int[ne];
+  int *n4 = new int[ne];
   size_t start[2], count[2];
   start[0] = 0;
   start[1] = 0;
-  count[0] = this->m_numElements;
+  count[0] = ne;
   count[1] = 1;
 
   ierr += nc_get_vara_int(ncid, varid_elem, start, count, n1);
@@ -305,7 +299,7 @@ void MeshImpl::readAdcircMeshNetcdf() {
     start[1] = 3;
     ierr += nc_get_vara_int(ncid, varid_elem, start, count, n4);
   } else {
-    for (size_t i = 0; i < this->m_numElements; ++i) {
+    for (size_t i = 0; i < ne; ++i) {
       n4[i] = NC_FILL_INT;
     }
   }
@@ -318,8 +312,8 @@ void MeshImpl::readAdcircMeshNetcdf() {
     adcircmodules_throw_exception("Could not read the element data");
   }
 
-  this->m_elements.reserve(this->m_numElements);
-  for (size_t i = 0; i < this->m_numElements; ++i) {
+  this->m_elements.reserve(ne);
+  for (size_t i = 0; i < ne; ++i) {
     if (n4[i] == NC_FILL_INT) {
       this->m_elements.push_back(Element(i + 1, &this->m_nodes[n1[i] - 1],
                                          &this->m_nodes[n2[i] - 1],
@@ -335,9 +329,6 @@ void MeshImpl::readAdcircMeshNetcdf() {
   delete[] n2;
   delete[] n3;
   delete[] n4;
-
-  this->m_numOpenBoundaries = 0;
-  this->m_numLandBoundaries = 0;
 
   return;
 }
@@ -370,14 +361,6 @@ void MeshImpl::read2dmMesh() {
   this->read2dmData(nodes, elements);
   this->read2dmNodes(nodes);
   this->read2dmElements(elements);
-
-  //...The 2dm format doesn't correctly maintain all
-  //   boundary information (i.e. weirs, x-boundary pipes, etc).
-  //   Therefore, we're just ditching it completely and moving on
-  this->m_numOpenBoundaries = 0;
-  this->m_numLandBoundaries = 0;
-  this->m_totalOpenBoundaryNodes = 0;
-  this->m_totalLandBoundaryNodes = 0;
   return;
 }
 
@@ -399,9 +382,9 @@ void MeshImpl::readDflowMesh() {
     adcircmodules_throw_exception("Error opening DFlow mesh file");
   }
 
-  size_t nmaxnode;
-  ierr += nc_inq_dimlen(ncid, dimid_nnode, &this->m_numNodes);
-  ierr += nc_inq_dimlen(ncid, dimid_nelem, &this->m_numElements);
+  size_t nmaxnode, nn, ne;
+  ierr += nc_inq_dimlen(ncid, dimid_nnode, &nn);
+  ierr += nc_inq_dimlen(ncid, dimid_nelem, &ne);
   ierr += nc_inq_dimlen(ncid, dimid_nmaxnode, &nmaxnode);
   if (ierr != 0) {
     nc_close(ncid);
@@ -428,10 +411,10 @@ void MeshImpl::readDflowMesh() {
 
   if (isFill == 1) elemFillValue = NC_FILL_INT;
 
-  double *xcoor = new double[this->m_numNodes];
-  double *ycoor = new double[this->m_numNodes];
-  double *zcoor = new double[this->m_numNodes];
-  int *elem = new int[this->m_numElements * nmaxnode];
+  double *xcoor = new double[nn];
+  double *ycoor = new double[nn];
+  double *zcoor = new double[nn];
+  int *elem = new int[ne * nmaxnode];
 
   ierr += nc_get_var_double(ncid, varid_x, xcoor);
   ierr += nc_get_var_double(ncid, varid_y, ycoor);
@@ -447,8 +430,8 @@ void MeshImpl::readDflowMesh() {
     adcircmodules_throw_exception("Error reading arrays from netcdf file.");
   }
 
-  this->m_nodes.resize(this->m_numNodes);
-  for (size_t i = 0; i < this->m_numNodes; ++i) {
+  this->m_nodes.resize(nn);
+  for (size_t i = 0; i < nn; ++i) {
     this->m_nodes[i] = Node(i + 1, xcoor[i], ycoor[i], zcoor[i]);
   }
 
@@ -456,7 +439,7 @@ void MeshImpl::readDflowMesh() {
   delete[] ycoor;
   delete[] zcoor;
 
-  for (size_t i = 0; i < this->m_numElements; ++i) {
+  for (size_t i = 0; i < ne; ++i) {
     std::vector<size_t> n(nmaxnode);
     size_t nfill = 0;
     for (size_t j = 0; j < nmaxnode; ++j) {
@@ -471,7 +454,7 @@ void MeshImpl::readDflowMesh() {
       adcircmodules_throw_exception("Invalid element type detected");
     }
 
-    this->m_elements.resize(this->m_numElements);
+    this->m_elements.resize(ne);
     if (nnodeelem == 3) {
       this->m_elements[i] =
           Element(i + 1, &this->m_nodes[n[0] - 1], &this->m_nodes[n[1] - 1],
@@ -528,7 +511,7 @@ void MeshImpl::read2dmData(std::vector<std::string> &nodes,
  */
 void MeshImpl::buildNodeLookupTable() {
   this->m_nodeLookup.reserve(this->numNodes());
-  for (size_t i = 0; i < this->m_numNodes; ++i) {
+  for (size_t i = 0; i < this->numNodes(); ++i) {
     this->m_nodeLookup[this->m_nodes[i].id()] = i;
   }
 }
@@ -539,7 +522,6 @@ void MeshImpl::buildNodeLookupTable() {
  */
 void MeshImpl::read2dmNodes(std::vector<std::string> &nodes) {
   this->m_nodes.reserve(nodes.size());
-  this->m_numNodes = nodes.size();
   this->m_nodeOrderingLogical = true;
   for (auto &n : nodes) {
     size_t id;
@@ -562,7 +544,6 @@ void MeshImpl::read2dmNodes(std::vector<std::string> &nodes) {
  */
 void MeshImpl::read2dmElements(std::vector<std::string> &elements) {
   this->m_elements.reserve(elements.size());
-  this->m_numElements = elements.size();
   for (auto &e : elements) {
     size_t id;
     std::vector<size_t> n;
@@ -749,8 +730,8 @@ void MeshImpl::readAdcircElements(std::fstream &fid) {
   }
 
   if (!this->m_elementOrderingLogical) {
-    this->m_elementLookup.reserve(this->m_numElements);
-    for (size_t i = 0; i < this->m_numElements; ++i) {
+    this->m_elementLookup.reserve(this->numElements());
+    for (size_t i = 0; i < this->numElements(); ++i) {
       this->m_elementLookup[this->m_elements[i].id()] = i;
     }
   }
@@ -946,11 +927,11 @@ Kdtree *MeshImpl::nodalSearchTree() const { return m_nodalSearchTree.get(); }
  * @return Number of nodes that fall on a land boundary
  */
 size_t MeshImpl::totalLandBoundaryNodes() {
-  this->m_totalLandBoundaryNodes = 0;
-  for (auto &m_landBoundarie : this->m_landBoundaries) {
-    this->m_totalLandBoundaryNodes += m_landBoundarie.length();
+  size_t total = 0;
+  for (auto &b : this->m_landBoundaries) {
+    total += b.length();
   }
-  return this->m_totalLandBoundaryNodes;
+  return total;
 }
 
 /**
@@ -958,8 +939,8 @@ size_t MeshImpl::totalLandBoundaryNodes() {
  * @param z values that will be set to the mesh nodes z attribute
  */
 void MeshImpl::setZ(std::vector<double> &z) {
-  assert(z.size() == this->m_numNodes);
-  for (size_t i = 0; i < this->m_numNodes; ++i) {
+  assert(z.size() == this->numNodes());
+  for (size_t i = 0; i < this->numNodes(); ++i) {
     this->m_nodes[i].setZ(z[i]);
   }
   return;
@@ -970,11 +951,11 @@ void MeshImpl::setZ(std::vector<double> &z) {
  * @return Number of open boundary nodes
  */
 size_t MeshImpl::totalOpenBoundaryNodes() {
-  this->m_totalOpenBoundaryNodes = 0;
-  for (auto &m_openBoundarie : this->m_openBoundaries) {
-    this->m_totalOpenBoundaryNodes += m_openBoundarie.length();
+  size_t total = 0;
+  for (auto &b : this->m_openBoundaries) {
+    total += b.length();
   }
-  return this->m_totalOpenBoundaryNodes;
+  return total;
 }
 
 /**
@@ -1171,7 +1152,7 @@ void MeshImpl::toNodeShapefile(const std::string &outputFile) {
  */
 std::vector<std::pair<Node *, Node *>> MeshImpl::generateLinkTable() {
   std::vector<std::pair<Node *, Node *>> legs;
-  legs.reserve(this->m_numElements * 4);
+  legs.reserve(this->numElements() * 4);
   for (auto &e : this->m_elements) {
     Element e_s = e;
     e_s.sortVerticiesAboutCenter();
@@ -1490,6 +1471,42 @@ void MeshImpl::deleteElement(size_t index) {
   return;
 }
 
+void MeshImpl::addLandBoundary(size_t index, Adcirc::Geometry::Boundary bnd) {
+  if (index < this->numLandBoundaries()) {
+    this->m_landBoundaries[index] = bnd;
+  } else {
+    adcircmodules_throw_exception(
+        "Mesh: Land boundary index > number of boundaries");
+  }
+}
+
+void MeshImpl::deleteLandBoundary(size_t index) {
+  if (index < this->numLandBoundaries()) {
+    this->m_landBoundaries.erase(this->m_landBoundaries.begin() + index);
+  } else {
+    adcircmodules_throw_exception(
+        "Mesh: Land boundary index > number of boundaries");
+  }
+}
+
+void MeshImpl::addOpenBoundary(size_t index, Adcirc::Geometry::Boundary bnd) {
+  if (index < this->numOpenBoundaries()) {
+    this->m_openBoundaries[index] = bnd;
+  } else {
+    adcircmodules_throw_exception(
+        "Mesh: Open boundary index > number of boundaries");
+  }
+}
+
+void MeshImpl::deleteOpenBoundary(size_t index) {
+  if (index < this->numOpenBoundaries()) {
+    this->m_openBoundaries.erase(this->m_openBoundaries.begin() + index);
+  } else {
+    adcircmodules_throw_exception(
+        "Mesh: Open boundary index > number of boundaries");
+  }
+}
+
 /**
  * @brief Writes an Mesh object to disk in ASCII format
  * @param filename name of the output file to write
@@ -1621,14 +1638,14 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
   size_t nlinks = links.size();
   size_t maxelemnode = this->getMaxNodesPerElement();
 
-  double *xarray = new double[this->m_numNodes];
-  double *yarray = new double[this->m_numNodes];
-  double *zarray = new double[this->m_numNodes];
+  double *xarray = new double[this->numNodes()];
+  double *yarray = new double[this->numNodes()];
+  double *zarray = new double[this->numNodes()];
   int *linkArray = new int[nlinks * 2];
   int *linkTypeArray = new int[nlinks * 2];
-  int *netElemNodearray = new int[this->m_numElements * maxelemnode];
+  int *netElemNodearray = new int[this->numElements() * maxelemnode];
 
-  for (size_t i = 0; i < this->m_numNodes; ++i) {
+  for (size_t i = 0; i < this->numNodes(); ++i) {
     xarray[i] = this->node(i)->x();
     yarray[i] = this->node(i)->y();
     zarray[i] = this->node(i)->z();
@@ -1644,7 +1661,7 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
   }
 
   idx = 0;
-  for (size_t i = 0; i < this->m_numElements; ++i) {
+  for (size_t i = 0; i < this->numElements(); ++i) {
     if (this->element(i)->n() == 3) {
       netElemNodearray[idx] = this->element(i)->node(0)->id();
       idx++;
@@ -1671,9 +1688,9 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
   int ncid;
   int dimid_nnode, dimid_nlink, dimid_nelem, dimid_maxnode, dimid_nlinkpts;
   int ierr = nc_create(filename.c_str(), NC_CLASSIC_MODEL, &ncid);
-  ierr = nc_def_dim(ncid, "nNetNode", this->m_numNodes, &dimid_nnode);
+  ierr = nc_def_dim(ncid, "nNetNode", this->numNodes(), &dimid_nnode);
   ierr = nc_def_dim(ncid, "nNetLink", nlinks, &dimid_nlink);
-  ierr = nc_def_dim(ncid, "nNetElem", this->m_numElements, &dimid_nelem);
+  ierr = nc_def_dim(ncid, "nNetElem", this->numElements(), &dimid_nelem);
   ierr = nc_def_dim(ncid, "nNetElemMaxNode", maxelemnode, &dimid_maxnode);
   ierr = nc_def_dim(ncid, "nNetLinkPts", 2, &dimid_nlinkpts);
 
@@ -2115,11 +2132,11 @@ bool edgeTupleEqual(const std::tuple<Node *, Node *, Element *> &a,
  */
 std::vector<std::vector<double>> MeshImpl::orthogonality() {
   std::vector<std::vector<double>> o;
-  o.reserve(this->m_numElements * 2);
+  o.reserve(this->numElements() * 2);
 
   //...Build the node pairs with duplicates
   std::vector<std::tuple<Node *, Node *, Element *>> edg;
-  edg.reserve(this->m_numElements * 4);
+  edg.reserve(this->numElements() * 4);
   for (auto &e : this->m_elements) {
     e.sortVerticiesAboutCenter();
     for (size_t i = 0; i < e.n(); i++) {

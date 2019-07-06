@@ -177,6 +177,12 @@ class Mesh {
                                        Adcirc::Geometry::Element element);
   void ADCIRCMODULES_EXPORT deleteElement(size_t index);
 
+  void ADCIRCMODULES_EXPORT addLandBoundary(size_t index, Adcirc::Geometry::Boundary bnd);
+  void ADCIRCMODULES_EXPORT deleteLandBoundary(size_t index);
+
+  void ADCIRCMODULES_EXPORT addOpenBoundary(size_t index, Adcirc::Geometry::Boundary bnd);
+  void ADCIRCMODULES_EXPORT deleteOpenBoundary(size_t index);
+
   Kdtree ADCIRCMODULES_EXPORT *nodalSearchTree() const;
   Kdtree ADCIRCMODULES_EXPORT *elementalSearchTree() const;
 
