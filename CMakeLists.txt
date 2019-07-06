@@ -266,7 +266,12 @@ IF(NOT "${OPENSSLHOME}" STREQUAL "")
 ELSEIF(NOT $ENV{NETCDFHOME} STREQUAL "")
     SET(OPENSSL_ROOT_DIR $ENV{OPENSSLHOME})
 ENDIF(NOT "${OPENSSLHOME}" STREQUAL "")
-FIND_PACKAGE(OpenSSL REQUIRED)
+FIND_PACKAGE(OpenSSL)
+IF(OpenSSL_FOUND)
+    MESSAGE(STATUS "OpenSSL libraries found. Hashing is enabled.")
+ELSE()
+    MESSAGE(STATUS "OpenSSL libraries not found. Hashing disabled.")
+ENDIF()
 ###########################################################################
 
 ###########################################################################
@@ -431,8 +436,11 @@ ELSE(WIN32)
     TARGET_LINK_LIBRARIES( adcircmodules ${NETCDF_LIBRARIES} )
 ENDIF(WIN32)
 
-TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${OPENSSL_INCLUDE_DIR}) 
-TARGET_LINK_LIBRARIES( adcircmodules ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} )
+IF(OpenSSL_FOUND)
+    TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE ADCMOD_HAVE_OPENSSL )
+    TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${OPENSSL_INCLUDE_DIR}) 
+    TARGET_LINK_LIBRARIES( adcircmodules ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} )
+ENDIF( OpenSSL_FOUND )
 
 IF(APPLE)
     SET(CMAKE_MACOSX_RPATH 0)

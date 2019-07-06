@@ -1,8 +1,44 @@
+/*------------------------------GPL---------------------------------------//
+// This file is part of ADCIRCModules.
+//
+// (c) 2015-2018 Zachary Cobell
+//
+// ADCIRCModules is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// ADCIRCModules is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
+//------------------------------------------------------------------------*/
 #include "hash_impl.h"
 #include "logging.h"
 
 HashImpl::HashImpl(HashType h) : m_hashType(h), m_started(false) {}
 
+HashType HashImpl::hashType() const { return this->m_hashType; }
+
+void HashImpl::setHashType(const HashType &hashType) {
+  if (this->m_started) {
+    Adcirc::Logging::warning(
+        "Cannot change hash type once data has been added");
+  } else {
+    this->m_hashType = hashType;
+  }
+  return;
+}
+
+#ifndef ADCMOD_HAVE_OPENSSL
+void HashImpl::addData(const std::string &s) { return; }
+
+std::string HashImpl::getHash() { return std::string(); }
+
+#else
 void HashImpl::initialize() {
   this->m_started = true;
   switch (this->m_hashType) {
@@ -20,6 +56,8 @@ void HashImpl::initialize() {
       SHA256_Init(&this->m_sha256ctx);
       this->addDataPtr = &HashImpl::addDataSha256;
       this->getHashPtr = &HashImpl::getSha256;
+      break;
+    default:
       break;
   }
   return;
@@ -74,15 +112,4 @@ std::string HashImpl::getSha256() {
   SHA256_Final(digest, &this->m_sha256ctx);
   return this->getDigest(SHA256_DIGEST_LENGTH, digest);
 }
-
-HashType HashImpl::hashType() const { return this->m_hashType; }
-
-void HashImpl::setHashType(const HashType &hashType) {
-  if (this->m_started) {
-    Adcirc::Logging::warning(
-        "Cannot change hash type once data has been added");
-  } else {
-    this->m_hashType = hashType;
-  }
-  return;
-}
+#endif
