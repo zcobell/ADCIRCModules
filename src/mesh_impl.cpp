@@ -1417,7 +1417,7 @@ void MeshImpl::resizeMesh(size_t numNodes, size_t numElements,
  * @param index location where the node should be added
  * @param node Reference to an Node object
  */
-void MeshImpl::addNode(size_t index, Node node) {
+void MeshImpl::addNode(size_t index, const Node &node) {
   if (index < this->numNodes()) {
     this->m_nodes[index] = node;
   } else {
@@ -1447,7 +1447,7 @@ void MeshImpl::deleteNode(size_t index) {
  * @param index location where the element should be added
  * @param element reference to the Element to add
  */
-void MeshImpl::addElement(size_t index, Element element) {
+void MeshImpl::addElement(size_t index, const Element &element) {
   if (index < this->numElements()) {
     this->m_elements[index] = element;
   } else {
@@ -1471,7 +1471,7 @@ void MeshImpl::deleteElement(size_t index) {
   return;
 }
 
-void MeshImpl::addLandBoundary(size_t index, Adcirc::Geometry::Boundary bnd) {
+void MeshImpl::addLandBoundary(size_t index, const Boundary &bnd) {
   if (index < this->numLandBoundaries()) {
     this->m_landBoundaries[index] = bnd;
   } else {
@@ -1489,7 +1489,7 @@ void MeshImpl::deleteLandBoundary(size_t index) {
   }
 }
 
-void MeshImpl::addOpenBoundary(size_t index, Adcirc::Geometry::Boundary bnd) {
+void MeshImpl::addOpenBoundary(size_t index, const Boundary &bnd) {
   if (index < this->numOpenBoundaries()) {
     this->m_openBoundaries[index] = bnd;
   } else {

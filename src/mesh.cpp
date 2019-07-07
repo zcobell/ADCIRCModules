@@ -505,7 +505,7 @@ void Mesh::resizeMesh(size_t numNodes, size_t numElements,
  * @param index location where the node should be added
  * @param node Reference to an Node object
  */
-void Mesh::addNode(size_t index, Adcirc::Geometry::Node node) {
+void Mesh::addNode(size_t index, const Node &node) {
   return this->m_impl->addNode(index, node);
 }
 
@@ -521,7 +521,7 @@ void Mesh::deleteNode(size_t index) { return this->m_impl->deleteNode(index); }
  * @param index location where the element should be added
  * @param element reference to the Element to add
  */
-void Mesh::addElement(size_t index, Element element) {
+void Mesh::addElement(size_t index, const Element &element) {
   this->m_impl->addElement(index, element);
 }
 
@@ -537,7 +537,7 @@ void Mesh::deleteElement(size_t index) { this->m_impl->deleteElement(index); }
  * @param index position in boundary array
  * @param bnd Adcirc::Geometry::Boundary object
  */
-void Mesh::addLandBoundary(size_t index, Adcirc::Geometry::Boundary bnd) {
+void Mesh::addLandBoundary(size_t index, const Boundary &bnd) {
   this->m_impl->addLandBoundary(index, bnd);
 }
 
@@ -554,7 +554,7 @@ void Mesh::deleteLandBoundary(size_t index) {
  * @param index position in boundary array
  * @param bnd Adcirc::Geometry::Boundary object
  */
-void Mesh::addOpenBoundary(size_t index, Adcirc::Geometry::Boundary bnd) {
+void Mesh::addOpenBoundary(size_t index, const Boundary &bnd) {
   this->m_impl->addOpenBoundary(index, bnd);
 }
 

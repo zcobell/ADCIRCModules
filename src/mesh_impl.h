@@ -127,16 +127,16 @@ class MeshImpl {
   void resizeMesh(size_t numNodes, size_t numElements, size_t numOpenBoundaries,
                   size_t numLandBoundaries);
 
-  void addNode(size_t index, Adcirc::Geometry::Node node);
+  void addNode(size_t index, const Adcirc::Geometry::Node &node);
   void deleteNode(size_t index);
 
-  void addElement(size_t index, Adcirc::Geometry::Element element);
+  void addElement(size_t index, const Adcirc::Geometry::Element &element);
   void deleteElement(size_t index);
 
-  void addOpenBoundary(size_t index, Adcirc::Geometry::Boundary bnd);
+  void addOpenBoundary(size_t index, const Adcirc::Geometry::Boundary &bnd);
   void deleteOpenBoundary(size_t index);
 
-  void addLandBoundary(size_t index, Adcirc::Geometry::Boundary bnd);
+  void addLandBoundary(size_t index, const Adcirc::Geometry::Boundary &bnd);
   void deleteLandBoundary(size_t index);
 
   Kdtree *nodalSearchTree() const;

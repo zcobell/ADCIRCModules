@@ -170,17 +170,20 @@ class Mesh {
                                        size_t numOpenBoundaries,
                                        size_t numLandBoundaries);
 
-  void ADCIRCMODULES_EXPORT addNode(size_t index, Adcirc::Geometry::Node node);
+  void ADCIRCMODULES_EXPORT addNode(size_t index,
+                                    const Adcirc::Geometry::Node &node);
   void ADCIRCMODULES_EXPORT deleteNode(size_t index);
 
-  void ADCIRCMODULES_EXPORT addElement(size_t index,
-                                       Adcirc::Geometry::Element element);
+  void ADCIRCMODULES_EXPORT
+  addElement(size_t index, const Adcirc::Geometry::Element &element);
   void ADCIRCMODULES_EXPORT deleteElement(size_t index);
 
-  void ADCIRCMODULES_EXPORT addLandBoundary(size_t index, Adcirc::Geometry::Boundary bnd);
+  void ADCIRCMODULES_EXPORT
+  addLandBoundary(size_t index, const Adcirc::Geometry::Boundary &bnd);
   void ADCIRCMODULES_EXPORT deleteLandBoundary(size_t index);
 
-  void ADCIRCMODULES_EXPORT addOpenBoundary(size_t index, Adcirc::Geometry::Boundary bnd);
+  void ADCIRCMODULES_EXPORT
+  addOpenBoundary(size_t index, const Adcirc::Geometry::Boundary &bnd);
   void ADCIRCMODULES_EXPORT deleteOpenBoundary(size_t index);
 
   Kdtree ADCIRCMODULES_EXPORT *nodalSearchTree() const;
