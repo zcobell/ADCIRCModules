@@ -19,7 +19,12 @@
 #include "hash_impl.h"
 #include "logging.h"
 
-HashImpl::HashImpl(HashType h) : m_hashType(h), m_started(false) {}
+HashImpl::HashImpl(HashType h) : m_hashType(h), m_started(false) {
+#ifdef ADCMOD_HAVE_OPENSSL
+    this->addDataPtr = nullptr;
+    this->getHashPtr = nullptr;
+#endif
+}
 
 HashType HashImpl::hashType() const { return this->m_hashType; }
 
