@@ -12,6 +12,7 @@ addons:
       - lcov
       - libgdal-dev
       - libboost-all-dev
+      - libssl-dev
 
 after_success:
   # Creating report

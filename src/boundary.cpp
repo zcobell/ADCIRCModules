@@ -20,6 +20,7 @@
 #include <array>
 #include "boost/format.hpp"
 #include "default_values.h"
+#include "hash.h"
 #include "logging.h"
 
 using namespace Adcirc::Geometry;
@@ -37,14 +38,15 @@ constexpr std::array<int, 15> c_bctypes_singleNodeBoundaries = {
  *
  * Initializes the boundary with code -1 and length 0.
  */
-Boundary::Boundary() { this->setBoundary(-1, 0); }
+Boundary::Boundary() : m_hash(std::string()) { this->setBoundary(-1, 0); }
 
 /**
  * @brief Initializes the boundary with user specified boundary type and length
  * @param boundaryCode ADCIRC model boundary code
  * @param boundaryLength number of nodes along this boundary
  */
-Boundary::Boundary(int boundaryCode, size_t boundaryLength) {
+Boundary::Boundary(int boundaryCode, size_t boundaryLength)
+    : m_hash(std::string()) {
   this->setBoundaryCode(boundaryCode);
   this->setBoundaryLength(boundaryLength);
 }
@@ -119,6 +121,7 @@ bool Boundary::isSingleNodeBoundary() const {
 void Boundary::setBoundary(int boundaryCode, size_t boundaryLength) {
   this->setBoundaryCode(boundaryCode);
   this->setBoundaryLength(boundaryLength);
+  this->m_averageLongitude = std::numeric_limits<double>::max();
 }
 
 /**
@@ -178,6 +181,7 @@ int Boundary::boundaryCode() const { return this->m_boundaryCode; }
  */
 void Boundary::setBoundaryCode(int boundaryCode) {
   this->m_boundaryCode = boundaryCode;
+  if (this->m_hash != std::string()) this->generateHash();
 }
 
 /**
@@ -213,6 +217,7 @@ void Boundary::setCrestElevation(size_t index, double crestElevation) {
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
+  if (this->m_hash != std::string()) this->generateHash();
 }
 
 /**
@@ -248,6 +253,7 @@ void Boundary::setSubcriticalWeirCoefficient(
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
+  if (this->m_hash != std::string()) this->generateHash();
 }
 
 /**
@@ -283,6 +289,7 @@ void Boundary::setSupercriticalWeirCoefficient(
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
+  if (this->m_hash != std::string()) this->generateHash();
 }
 
 /**
@@ -317,6 +324,7 @@ void Boundary::setPipeHeight(size_t index, double pipeHeight) {
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
+  if (this->m_hash != std::string()) this->generateHash();
 }
 
 /**
@@ -349,6 +357,7 @@ void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
   } else {
     adcircmodules_throw_exception("Index exceeds bounds");
   }
+  if (this->m_hash != std::string()) this->generateHash();
 }
 
 /**
@@ -379,6 +388,7 @@ void Boundary::setPipeCoefficient(size_t index, double pipeCoefficient) {
       adcircmodules_throw_exception("Index exceeds bounds");
     }
   }
+  if (this->m_hash != std::string()) this->generateHash();
 }
 
 /**
@@ -405,6 +415,7 @@ void Boundary::setNode1(size_t index, Node *node1) {
   } else {
     adcircmodules_throw_exception("Index exceeds bounds");
   }
+  if (this->m_hash != std::string()) this->generateHash();
 }
 
 /**
@@ -436,6 +447,7 @@ void Boundary::setNode2(size_t index, Node *node2) {
       adcircmodules_throw_exception("Index exceeds bounds");
     }
   }
+  if (this->m_hash != std::string()) this->generateHash();
 }
 
 /**
@@ -481,4 +493,77 @@ std::vector<std::string> Boundary::toStringList() {
     }
   }
   return outputList;
+}
+
+/**
+ * @brief Returns the hash of the boundary based upon boundary type nodes,
+ * heights, and coefficients
+ * @return hash formatted as string
+ */
+std::string Boundary::hash(HashType h, bool force) {
+  if (this->m_hash == std::string() || force) this->generateHash(h);
+  return this->m_hash;
+}
+
+/**
+ * @brief Generates the hash data for this boundary
+ */
+void Boundary::generateHash(HashType h) {
+  Hash hash(h);
+  for (size_t i = 0; i < this->m_boundaryLength; ++i) {
+    hash.addData(boost::str(boost::format("%3.3i") % this->m_boundaryCode));
+    hash.addData(this->m_node1[i]->positionHash());
+    if (this->isWeir()) {
+      if (this->isInternalWeir())
+        hash.addData(this->m_node2[i]->positionHash());
+      hash.addData(
+          boost::str(boost::format("%6.3f") % this->m_crestElevation[i]));
+      hash.addData(boost::str(boost::format("%6.3f") %
+                              this->m_supercriticalWeirCoefficient[i]));
+      if (this->isInternalWeir()) {
+        hash.addData(boost::str(boost::format("%6.3f") %
+                                this->m_subcriticalWeirCoefficient[i]));
+        if (this->isInternalWeirWithPipes()) {
+          hash.addData(
+              boost::str(boost::format("%6.3f") % this->m_pipeDiameter[i]));
+          hash.addData(
+              boost::str(boost::format("%6.3f") % this->m_pipeHeight[i]));
+          hash.addData(
+              boost::str(boost::format("%6.3f") % this->m_pipeCoefficient[i]));
+        }
+      }
+    }
+  }
+  this->m_hash = hash.getHash();
+  return;
+}
+
+/**
+ * @brief Returns the average longitude of the boundary
+ * @param force force recalculation of the average longitude
+ * @return average longitude
+ */
+double Boundary::averageLongitude(bool force) {
+  if (force || this->m_averageLongitude == std::numeric_limits<double>::max()) {
+    this->calculateAverageLongitude();
+  }
+  return this->m_averageLongitude;
+}
+
+/**
+ * @brief Calculates the average longitude along the boundary
+ */
+void Boundary::calculateAverageLongitude() {
+  double position = 0.0;
+  for (size_t i = 0; i < this->size(); ++i) {
+    double x;
+    if (this->isInternalWeir()) {
+      x = (this->m_node1[i]->x() + this->m_node2[i]->x()) / 2.0;
+    } else {
+      x = this->m_node1[i]->x();
+    }
+    position += x;
+  }
+  this->m_averageLongitude = position / this->size();
+  return;
 }

@@ -37,6 +37,15 @@ BOOSTPATH     = $$PWD/../thirdparty/boost_1_66_0
 #...Nanoflann
 NANOFLANNPATH  = $$PWD/../thirdparty/nanoflann/include
 
+#...OpenSSL
+macx{
+OPENSSLPATH = /usr/local/Cellar/openssl/1.0.2s
+}
+
+INCLUDEPATH += $$OPENSSLPATH/include
+LIBS += -L$$OPENSSLPATH/lib -lssl -lcrypto
+
+
 win32 {
     #...Set extension for a windows dll (avoids tracking version numbering in filename)
     #TARGET_EXT = .dll
@@ -66,7 +75,7 @@ win32 {
 
 #...For unix, we assume netCDF exists in the path if it is not provided on the command line
 #   via qmake NETCDFHOME=$(NETCDFPATH)
-unix:!macx{
+unix{
     isEmpty(NETCDFHOME){
         LIBS += -lnetcdf
     }else{
@@ -87,6 +96,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 SOURCES += \
+    hash.cpp \
+    hash_impl.cpp \
     stringconversion.cpp \
     boundary.cpp \
     element.cpp \
@@ -121,6 +132,9 @@ SOURCES += \
 HEADERS += \
     adcircmodules_global.h \
     adcmap.h \
+    hash.h \
+    hash_impl.h \
+    hashtype.h \
     stringconversion.h \
     boundary.h \
     element.h \

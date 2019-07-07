@@ -16,25 +16,20 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_ADCIRCMODULES_H
-#define ADCMOD_ADCIRCMODULES_H
-
-#include "config.h"
-#include "constants.h"
-#include "default_values.h"
-#include "ezproj.h"
-#include "filetypes.h"
-#include "griddata.h"
-#include "harmonicsoutput.h"
 #include "hash.h"
-#include "hashtype.h"
-#include "interpolationmethods.h"
-#include "kdtree.h"
-#include "logging.h"
-#include "mesh.h"
-#include "meshchecker.h"
-#include "multithreading.h"
-#include "nodalattributes.h"
-#include "outputfile.h"
+#include <string>
+#include "hash_impl.h"
 
-#endif  // ADCMOD_ADCIRCMODULES_H
+Hash::Hash(HashType h) : m_impl(new HashImpl(h)) {}
+
+Hash::~Hash() { this->m_impl.reset(nullptr); }
+
+void Hash::addData(const std::string &s) { this->m_impl->addData(s); }
+
+std::string Hash::getHash() { return this->m_impl->getHash(); }
+
+HashType Hash::hashType() const { return this->m_impl->hashType(); }
+
+void Hash::setHashType(const HashType &hashType) {
+  this->m_impl->setHashType(hashType);
+}

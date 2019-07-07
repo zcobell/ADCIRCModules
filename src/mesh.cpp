@@ -505,7 +505,7 @@ void Mesh::resizeMesh(size_t numNodes, size_t numElements,
  * @param index location where the node should be added
  * @param node Reference to an Node object
  */
-void Mesh::addNode(size_t index, Adcirc::Geometry::Node &node) {
+void Mesh::addNode(size_t index, const Node &node) {
   return this->m_impl->addNode(index, node);
 }
 
@@ -521,7 +521,7 @@ void Mesh::deleteNode(size_t index) { return this->m_impl->deleteNode(index); }
  * @param index location where the element should be added
  * @param element reference to the Element to add
  */
-void Mesh::addElement(size_t index, Adcirc::Geometry::Element &element) {
+void Mesh::addElement(size_t index, const Element &element) {
   this->m_impl->addElement(index, element);
 }
 
@@ -531,6 +531,40 @@ void Mesh::addElement(size_t index, Adcirc::Geometry::Element &element) {
  * @param index location where the element should be deleted from
  */
 void Mesh::deleteElement(size_t index) { this->m_impl->deleteElement(index); }
+
+/**
+ * @brief Adds a land boundary to the mesh
+ * @param index position in boundary array
+ * @param bnd Adcirc::Geometry::Boundary object
+ */
+void Mesh::addLandBoundary(size_t index, const Boundary &bnd) {
+  this->m_impl->addLandBoundary(index, bnd);
+}
+
+/**
+ * @brief Removes the land boundary at the specified position
+ * @param index position of boundary to remove
+ */
+void Mesh::deleteLandBoundary(size_t index) {
+  this->m_impl->deleteLandBoundary(index);
+}
+
+/**
+ * @brief Adds an open boundary to the mesh
+ * @param index position in boundary array
+ * @param bnd Adcirc::Geometry::Boundary object
+ */
+void Mesh::addOpenBoundary(size_t index, const Boundary &bnd) {
+  this->m_impl->addOpenBoundary(index, bnd);
+}
+
+/**
+ * @brief Removes the open boundary at the specified position
+ * @param index position of boundary to remove
+ */
+void Mesh::deleteOpenBoundary(size_t index) {
+  this->m_impl->deleteOpenBoundary(index);
+}
 
 /**
  * @brief Returns a refrence to the nodal search kd-tree
@@ -621,4 +655,24 @@ std::vector<Adcirc::Geometry::Element *> Mesh::elementsAroundNode(
  */
 std::vector<Adcirc::Geometry::Node *> Mesh::boundaryNodes() {
   return this->m_impl->boundaryNodes();
+}
+
+/**
+ * @brief Returns the hash of the mesh which serves as a unique identifier
+ * @return hash as string
+ */
+std::string Mesh::hash(bool force) { return this->m_impl->hash(force); }
+
+/**
+ * @brief Gets the hash type that will be computed
+ * @return hash type
+ */
+HashType Mesh::hashType() const { return this->m_impl->hashType(); }
+
+/**
+ * @brief Sets the hash type to be used
+ * @param hashType hash type to use
+ */
+void Mesh::setHashType(const HashType &hashType) {
+  this->m_impl->setHashType(hashType);
 }

@@ -22,6 +22,7 @@
 #include <string>
 #include <utility>
 #include "adcircmodules_global.h"
+#include "hashtype.h"
 
 using Point = std::pair<double, double>;
 
@@ -60,13 +61,24 @@ class Node {
   std::string ADCIRCMODULES_EXPORT toAdcircString(bool geographicCoordinates);
   std::string ADCIRCMODULES_EXPORT to2dmString(bool geographicCoordinates);
 
-  Point toPoint();
+  Point ADCIRCMODULES_EXPORT toPoint();
+
+  std::string ADCIRCMODULES_EXPORT hash(HashType h = AdcircDefaultHash,
+                                        bool force = false);
+
+  std::string ADCIRCMODULES_EXPORT positionHash(HashType h = AdcircDefaultHash,
+                                                bool force = false);
 
  private:
-  size_t m_id;  /// Integer name of a mesh node
-  double m_x;   /// x position of a node
-  double m_y;   /// y position of a node
-  double m_z;   /// z position of a node
+  size_t m_id;                 /// Integer name of a mesh node
+  double m_x;                  /// x position of a node
+  double m_y;                  /// y position of a node
+  double m_z;                  /// z position of a node
+  std::string m_hash;          /// hash identifier for the node
+  std::string m_positionHash;  /// has of only node's position
+
+  void generateHash(HashType h = AdcircDefaultHash);
+  void generatePositionHash(HashType h = AdcircDefaultHash);
 };
 }  // namespace Geometry
 }  // namespace Adcirc

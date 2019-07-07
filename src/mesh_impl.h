@@ -62,16 +62,16 @@ class MeshImpl {
   void setMeshHeaderString(const std::string &meshHeaderString);
 
   size_t numNodes() const;
-  void setNumNodes(size_t numNodes);
+  void setNumNodes(const size_t numNodes);
 
   size_t numElements() const;
-  void setNumElements(size_t numElements);
+  void setNumElements(const size_t numElements);
 
   size_t numOpenBoundaries() const;
-  void setNumOpenBoundaries(size_t numOpenBoundaries);
+  void setNumOpenBoundaries(const size_t numOpenBoundaries);
 
   size_t numLandBoundaries() const;
-  void setNumLandBoundaries(size_t numLandBoundaries);
+  void setNumLandBoundaries(const size_t numLandBoundaries);
 
   size_t totalOpenBoundaryNodes();
 
@@ -127,11 +127,17 @@ class MeshImpl {
   void resizeMesh(size_t numNodes, size_t numElements, size_t numOpenBoundaries,
                   size_t numLandBoundaries);
 
-  void addNode(size_t index, Adcirc::Geometry::Node &node);
+  void addNode(size_t index, const Adcirc::Geometry::Node &node);
   void deleteNode(size_t index);
 
-  void addElement(size_t index, Adcirc::Geometry::Element &element);
+  void addElement(size_t index, const Adcirc::Geometry::Element &element);
   void deleteElement(size_t index);
+
+  void addOpenBoundary(size_t index, const Adcirc::Geometry::Boundary &bnd);
+  void deleteOpenBoundary(size_t index);
+
+  void addLandBoundary(size_t index, const Adcirc::Geometry::Boundary &bnd);
+  void deleteLandBoundary(size_t index);
 
   Kdtree *nodalSearchTree() const;
   Kdtree *elementalSearchTree() const;
@@ -147,6 +153,11 @@ class MeshImpl {
   Adcirc::Geometry::Element *elementTable(size_t nodeIndex, size_t listIndex);
   std::vector<Adcirc::Geometry::Element *> elementsAroundNode(
       Adcirc::Geometry::Node *n);
+
+  std::string hash(bool force = false);
+
+  HashType hashType() const;
+  void setHashType(const HashType &hashType);
 
  private:
   static Adcirc::Geometry::MeshFormat getMeshFormat(
@@ -179,21 +190,20 @@ class MeshImpl {
   size_t getMaxNodesPerElement();
   void buildNodeLookupTable();
 
+  void generateHash(bool force = false);
+
   adcmap<size_t, size_t> m_nodeLookup;
   adcmap<size_t, size_t> m_elementLookup;
 
+  HashType m_hashType;
+
   std::string m_filename;
   std::string m_meshHeaderString;
+  std::string m_hash;
   std::vector<Adcirc::Geometry::Node> m_nodes;
   std::vector<Adcirc::Geometry::Element> m_elements;
   std::vector<Adcirc::Geometry::Boundary> m_openBoundaries;
   std::vector<Adcirc::Geometry::Boundary> m_landBoundaries;
-  size_t m_numNodes;
-  size_t m_numElements;
-  size_t m_numOpenBoundaries;
-  size_t m_numLandBoundaries;
-  size_t m_totalOpenBoundaryNodes;
-  size_t m_totalLandBoundaryNodes;
   int m_epsg;
   bool m_isLatLon;
 

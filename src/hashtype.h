@@ -16,25 +16,11 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_ADCIRCMODULES_H
-#define ADCMOD_ADCIRCMODULES_H
+#ifndef HASHTYPE_H
+#define HASHTYPE_H
 
-#include "config.h"
-#include "constants.h"
-#include "default_values.h"
-#include "ezproj.h"
-#include "filetypes.h"
-#include "griddata.h"
-#include "harmonicsoutput.h"
-#include "hash.h"
-#include "hashtype.h"
-#include "interpolationmethods.h"
-#include "kdtree.h"
-#include "logging.h"
-#include "mesh.h"
-#include "meshchecker.h"
-#include "multithreading.h"
-#include "nodalattributes.h"
-#include "outputfile.h"
+enum HashType { NullHash, AdcmodMD5, AdcmodSHA1, AdcmodSHA256 };
 
-#endif  // ADCMOD_ADCIRCMODULES_H
+constexpr HashType AdcircDefaultHash = HashType::AdcmodSHA1;
+
+#endif // HASHTYPE_H

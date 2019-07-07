@@ -96,6 +96,11 @@ class Boundary {
   bool ADCIRCMODULES_EXPORT isInternalWeirWithPipes() const;
   bool ADCIRCMODULES_EXPORT isSingleNodeBoundary() const;
 
+  double ADCIRCMODULES_EXPORT averageLongitude(bool force = false);
+
+  std::string ADCIRCMODULES_EXPORT hash(HashType h = AdcircDefaultHash,
+                                        bool force = false);
+
  private:
   int m_boundaryCode;
   size_t m_boundaryLength;
@@ -105,9 +110,13 @@ class Boundary {
   std::vector<double> m_pipeHeight;
   std::vector<double> m_pipeDiameter;
   std::vector<double> m_pipeCoefficient;
-  std::vector<double> m_averageLongitude;
+  double m_averageLongitude;
   std::vector<Adcirc::Geometry::Node *> m_node1;
   std::vector<Adcirc::Geometry::Node *> m_node2;
+  std::string m_hash;
+
+  void generateHash(HashType h = AdcircDefaultHash);
+  void calculateAverageLongitude();
 };
 }  // namespace Geometry
 }  // namespace Adcirc

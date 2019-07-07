@@ -63,6 +63,9 @@ class NodalAttributesImpl {
   Adcirc::ModelParameters::AttributeMetadata *metadata(size_t parameter);
   Adcirc::ModelParameters::AttributeMetadata *metadata(const std::string &name);
 
+  void addAttribute(Adcirc::ModelParameters::AttributeMetadata &metadata,
+                    std::vector<Adcirc::ModelParameters::Attribute> &attribute);
+
  private:
   void _readFort13Header(std::fstream &fid);
   void _readFort13Defaults(std::fstream &fid);
