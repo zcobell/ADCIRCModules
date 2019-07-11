@@ -19,8 +19,6 @@
 #ifndef ADCMOD_HASHIMPL_H
 #define ADCMOD_HASHIMPL_H
 
-#define ADCMOD_HAVE_OPENSSL;
-
 #ifdef ADCMOD_HAVE_OPENSSL
 #include <openssl/md5.h>
 #include <openssl/sha.h>

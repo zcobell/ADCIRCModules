@@ -32,7 +32,7 @@ Node::Node()
       m_y(adcircmodules_default_value<double>()),
       m_z(adcircmodules_default_value<double>()),
       m_hash(nullptr),
-      m_positionHash(std::string()) {}
+      m_positionHash(nullptr) {}
 
 /**
  * @brief Constructor taking the id, x, y, and z for the node
@@ -47,10 +47,11 @@ Node::Node(size_t id, double x, double y, double z)
       m_y(y),
       m_z(z),
       m_hash(nullptr),
-      m_positionHash(std::string()) {}
+      m_positionHash(nullptr) {}
 
 Node::~Node() {
   if (this->m_hash != nullptr) delete[] this->m_hash;
+  if (this->m_positionHash != nullptr) delete[] this->m_positionHash;
 }
 
 /**
@@ -173,9 +174,8 @@ std::string Node::hash(HashType h, bool force) {
  * z-elevation is the same.
  */
 std::string Node::positionHash(HashType h, bool force) {
-  if (this->m_positionHash == std::string() || force)
-    this->generatePositionHash();
-  return this->m_positionHash;
+  if (this->m_positionHash == nullptr || force) this->generatePositionHash();
+  return std::string(this->m_positionHash);
 }
 
 /**

@@ -72,12 +72,12 @@ class Node {
                                                 bool force = false);
 
  private:
-  size_t m_id;                 /// Integer name of a mesh node
-  double m_x;                  /// x position of a node
-  double m_y;                  /// y position of a node
-  double m_z;                  /// z position of a node
-  char* m_hash;                /// hash identifier for the node
-  std::string m_positionHash;  /// has of only node's position
+  size_t m_id;           /// Integer name of a mesh node
+  double m_x;            /// x position of a node
+  double m_y;            /// y position of a node
+  double m_z;            /// z position of a node
+  char* m_hash;          /// hash identifier for the node
+  char* m_positionHash;  /// has of only node's position
 
   void generateHash(HashType h = AdcircDefaultHash);
   void generatePositionHash(HashType h = AdcircDefaultHash);

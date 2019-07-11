@@ -29,9 +29,17 @@ int main(int argc, char *argv[]) {
   sha1.addData(hashData);
   sha256.addData(hashData);
 
-  std::string hashed_md5 = md5.getHash();
-  std::string hashed_sha1 = sha1.getHash();
-  std::string hashed_sha256 = sha256.getHash();
+  char* char_hashed_md5 = md5.getHash();
+  char* char_hashed_sha1 = sha1.getHash();
+  char* char_hashed_sha256 = sha256.getHash();
+
+  std::string hashed_md5(char_hashed_md5);
+  std::string hashed_sha1(char_hashed_sha1);
+  std::string hashed_sha256(char_hashed_sha256);
+
+  delete[] char_hashed_md5;
+  delete[] char_hashed_sha1;
+  delete[] char_hashed_sha256;
 
   if(hashed_md5 == "d61616c3e2a6cf59a0cc435a66c091d4" &&
      hashed_sha1 == "9de8c4480303b5335cd2a33eefe814615ba3612a" &&
