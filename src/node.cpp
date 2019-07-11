@@ -31,7 +31,7 @@ Node::Node()
       m_x(adcircmodules_default_value<double>()),
       m_y(adcircmodules_default_value<double>()),
       m_z(adcircmodules_default_value<double>()),
-      m_hash(std::string()),
+      m_hash(nullptr),
       m_positionHash(std::string()) {}
 
 /**
@@ -46,8 +46,12 @@ Node::Node(size_t id, double x, double y, double z)
       m_x(x),
       m_y(y),
       m_z(z),
-      m_hash(std::string()),
+      m_hash(nullptr),
       m_positionHash(std::string()) {}
+
+Node::~Node() {
+  if (this->m_hash != nullptr) delete[] this->m_hash;
+}
 
 /**
  * @brief Function taking the id, x, y, and z for the node
@@ -61,7 +65,7 @@ void Node::setNode(size_t id, double x, double y, double z) {
   this->m_x = x;
   this->m_y = y;
   this->m_z = z;
-  if (this->m_hash != std::string()) this->generateHash();
+  if (this->m_hash != nullptr) this->generateHash();
   return;
 }
 
@@ -155,8 +159,8 @@ Point Node::toPoint() { return Point(this->m_x, this->m_y); }
  * the node's position and z-elevation
  */
 std::string Node::hash(HashType h, bool force) {
-  if (this->m_hash == std::string() || force) this->generateHash(h);
-  return this->m_hash;
+  if (this->m_hash == nullptr || force) this->generateHash(h);
+  return std::string(this->m_hash);
 }
 
 /**
@@ -169,7 +173,8 @@ std::string Node::hash(HashType h, bool force) {
  * z-elevation is the same.
  */
 std::string Node::positionHash(HashType h, bool force) {
-  if (this->m_positionHash == std::string() || force) this->generatePositionHash();
+  if (this->m_positionHash == std::string() || force)
+    this->generatePositionHash();
   return this->m_positionHash;
 }
 

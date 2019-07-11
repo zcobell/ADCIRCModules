@@ -38,17 +38,20 @@ constexpr std::array<int, 15> c_bctypes_singleNodeBoundaries = {
  *
  * Initializes the boundary with code -1 and length 0.
  */
-Boundary::Boundary() : m_hash(std::string()) { this->setBoundary(-1, 0); }
+Boundary::Boundary() : m_hash(nullptr) { this->setBoundary(-1, 0); }
 
 /**
  * @brief Initializes the boundary with user specified boundary type and length
  * @param boundaryCode ADCIRC model boundary code
  * @param boundaryLength number of nodes along this boundary
  */
-Boundary::Boundary(int boundaryCode, size_t boundaryLength)
-    : m_hash(std::string()) {
+Boundary::Boundary(int boundaryCode, size_t boundaryLength) : m_hash(nullptr) {
   this->setBoundaryCode(boundaryCode);
   this->setBoundaryLength(boundaryLength);
+}
+
+Boundary::~Boundary() {
+  if (this->m_hash != nullptr) delete[] this->m_hash;
 }
 
 /**
@@ -181,7 +184,7 @@ int Boundary::boundaryCode() const { return this->m_boundaryCode; }
  */
 void Boundary::setBoundaryCode(int boundaryCode) {
   this->m_boundaryCode = boundaryCode;
-  if (this->m_hash != std::string()) this->generateHash();
+  if (this->m_hash != nullptr) this->generateHash();
 }
 
 /**
@@ -217,7 +220,7 @@ void Boundary::setCrestElevation(size_t index, double crestElevation) {
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
-  if (this->m_hash != std::string()) this->generateHash();
+  if (this->m_hash != nullptr) this->generateHash();
 }
 
 /**
@@ -253,7 +256,7 @@ void Boundary::setSubcriticalWeirCoefficient(
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
-  if (this->m_hash != std::string()) this->generateHash();
+  if (this->m_hash != nullptr) this->generateHash();
 }
 
 /**
@@ -289,7 +292,7 @@ void Boundary::setSupercriticalWeirCoefficient(
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
-  if (this->m_hash != std::string()) this->generateHash();
+  if (this->m_hash != nullptr) this->generateHash();
 }
 
 /**
@@ -324,7 +327,7 @@ void Boundary::setPipeHeight(size_t index, double pipeHeight) {
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
-  if (this->m_hash != std::string()) this->generateHash();
+  if (this->m_hash != nullptr) this->generateHash();
 }
 
 /**
@@ -357,7 +360,7 @@ void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
   } else {
     adcircmodules_throw_exception("Index exceeds bounds");
   }
-  if (this->m_hash != std::string()) this->generateHash();
+  if (this->m_hash != nullptr) this->generateHash();
 }
 
 /**
@@ -388,7 +391,7 @@ void Boundary::setPipeCoefficient(size_t index, double pipeCoefficient) {
       adcircmodules_throw_exception("Index exceeds bounds");
     }
   }
-  if (this->m_hash != std::string()) this->generateHash();
+  if (this->m_hash != nullptr) this->generateHash();
 }
 
 /**
@@ -415,7 +418,7 @@ void Boundary::setNode1(size_t index, Node *node1) {
   } else {
     adcircmodules_throw_exception("Index exceeds bounds");
   }
-  if (this->m_hash != std::string()) this->generateHash();
+  if (this->m_hash != nullptr) this->generateHash();
 }
 
 /**
@@ -447,7 +450,7 @@ void Boundary::setNode2(size_t index, Node *node2) {
       adcircmodules_throw_exception("Index exceeds bounds");
     }
   }
-  if (this->m_hash != std::string()) this->generateHash();
+  if (this->m_hash != nullptr) this->generateHash();
 }
 
 /**
@@ -501,8 +504,8 @@ std::vector<std::string> Boundary::toStringList() {
  * @return hash formatted as string
  */
 std::string Boundary::hash(HashType h, bool force) {
-  if (this->m_hash == std::string() || force) this->generateHash(h);
-  return this->m_hash;
+  if (this->m_hash == nullptr || force) this->generateHash(h);
+  return std::string(this->m_hash);
 }
 
 /**

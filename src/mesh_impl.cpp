@@ -46,7 +46,7 @@ Mesh::~Mesh() = default;
 MeshImpl::MeshImpl()
     : m_filename("none"),
       m_epsg(-1),
-      m_hash(std::string()),
+      m_hash(nullptr),
       m_hashType(AdcircDefaultHash) {
   this->_init();
 }
@@ -58,7 +58,7 @@ MeshImpl::MeshImpl()
 MeshImpl::MeshImpl(const std::string &filename)
     : m_filename(filename),
       m_epsg(-1),
-      m_hash(std::string()),
+      m_hash(nullptr),
       m_hashType(AdcircDefaultHash) {
   this->_init();
 }
@@ -90,7 +90,7 @@ MeshImpl::~MeshImpl() {
   this->m_landBoundaries.clear();
   this->m_nodeLookup.clear();
   this->m_elementLookup.clear();
-  this->m_hash = std::string();
+  if (this->m_hash != nullptr) delete[] this->m_hash;
 }
 
 /**
@@ -456,13 +456,13 @@ void MeshImpl::readDflowMesh() {
 
     this->m_elements.resize(ne);
     if (nnodeelem == 3) {
-      this->m_elements[i] =
-          Element(i + 1, &this->m_nodes[n[0] - 1], &this->m_nodes[n[1] - 1],
-                  &this->m_nodes[n[2] - 1]);
+      Element etemp(i + 1, &this->m_nodes[n[0] - 1], &this->m_nodes[n[1] - 1],
+                    &this->m_nodes[n[2] - 1]);
+      this->m_elements[i] = etemp;
     } else {
-      this->m_elements[i] =
-          Element(i + 1, &this->m_nodes[n[0] - 1], &this->m_nodes[n[1] - 1],
-                  &this->m_nodes[n[2] - 1], &this->m_nodes[n[3] - 1]);
+      Element etemp(i + 1, &this->m_nodes[n[0] - 1], &this->m_nodes[n[1] - 1],
+                    &this->m_nodes[n[2] - 1], &this->m_nodes[n[3] - 1]);
+      this->m_elements[i] = etemp;
     }
     this->m_elements[i].sortVerticiesAboutCenter();
   }
@@ -2286,8 +2286,8 @@ std::vector<Adcirc::Geometry::Node *> MeshImpl::boundaryNodes() {
 }
 
 std::string MeshImpl::hash(bool force) {
-  if (this->m_hash == std::string() || force) this->generateHash(force);
-  return this->m_hash;
+  if (this->m_hash == nullptr || force) this->generateHash(force);
+  return std::string(this->m_hash);
 }
 
 void MeshImpl::generateHash(bool force) {

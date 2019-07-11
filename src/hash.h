@@ -20,6 +20,7 @@
 #define HASH_H
 
 #include <memory>
+#include <string>
 #include "hashtype.h"
 
 class HashImpl;
@@ -29,7 +30,7 @@ class Hash {
   Hash(HashType h = AdcircDefaultHash);
   ~Hash();
   void addData(const std::string &s);
-  std::string getHash();
+  char* getHash();
 
   HashType hashType() const;
   void setHashType(const HashType &hashType);

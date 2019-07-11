@@ -33,7 +33,7 @@ typedef bg::model::polygon<point_t> polygon_t;
 /**
  * @brief Default constructor
  */
-Element::Element() : m_id(0), m_hash(std::string()) { this->resize(3); }
+Element::Element() : m_id(0), m_hash(nullptr) { this->resize(3); }
 
 /**
  * @brief Constructor using references to three Node objects
@@ -43,7 +43,7 @@ Element::Element() : m_id(0), m_hash(std::string()) { this->resize(3); }
  * @param n3 pointer to node 3
  */
 Element::Element(size_t id, Node *n1, Node *n2, Node *n3)
-    : m_id(id), m_hash(std::string()) {
+    : m_id(id), m_hash(nullptr) {
   this->resize(3);
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;
@@ -59,12 +59,16 @@ Element::Element(size_t id, Node *n1, Node *n2, Node *n3)
  * @param n4 pointer to node 4
  */
 Element::Element(size_t id, Node *n1, Node *n2, Node *n3, Node *n4)
-    : m_id(id), m_hash(std::string()) {
+    : m_id(id), m_hash(nullptr) {
   this->resize(4);
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;
   this->m_nodes[2] = n3;
   this->m_nodes[3] = n4;
+}
+
+Element::~Element() {
+  if (this->m_hash != nullptr) delete[] this->m_hash;
 }
 
 /**
@@ -79,8 +83,8 @@ void Element::resize(size_t nVertex) {
 }
 
 /**
- * @brief Function that sets up the element using three pointers and the element
- * id/label
+ * @brief Function that sets up the element using three pointers and the
+ * element id/label
  * @param id element id/label
  * @param n1 pointer to node 1
  * @param n2 pointer to node 2
@@ -92,12 +96,12 @@ void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3) {
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;
   this->m_nodes[2] = n3;
-  if (this->m_hash != std::string()) this->generateHash();
+  if (this->m_hash != nullptr) this->generateHash();
 }
 
 /**
- * @brief Function that sets up the element using three pointers and the element
- * id/label
+ * @brief Function that sets up the element using three pointers and the
+ * element id/label
  * @param id element id/label
  * @param n1 pointer to node 1
  * @param n2 pointer to node 2
@@ -111,7 +115,7 @@ void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) {
   this->m_nodes[1] = n2;
   this->m_nodes[2] = n3;
   this->m_nodes[3] = n4;
-  if (this->m_hash != std::string()) this->generateHash();
+  if (this->m_hash != nullptr) this->generateHash();
 }
 
 /**
@@ -247,15 +251,14 @@ void Element::sortVerticiesAboutCenter() {
   //    }
 
   //    // compute the cross product of vectors (center -> a) x (center -> b)
-  //    int det = (a->x() - xc) * (b->y() - yc) - (b->x() - xc) * (a->y() - yc);
-  //    if (det < 0) return true;
-  //    if (det > 0) return false;
+  //    int det = (a->x() - xc) * (b->y() - yc) - (b->x() - xc) * (a->y() -
+  //    yc); if (det < 0) return true; if (det > 0) return false;
 
   //    // points a and b are on the same line from the center
   //    // check which point is closer to the center
-  //    int d1 = (a->x() - xc) * (a->x() - xc) + (a->y() - yc) * (a->y() - yc);
-  //    int d2 = (b->x() - xc) * (b->x() - xc) + (b->y() - yc) * (b->y() - yc);
-  //    return d1 > d2;
+  //    int d1 = (a->x() - xc) * (a->x() - xc) + (a->y() - yc) * (a->y() -
+  //    yc); int d2 = (b->x() - xc) * (b->x() - xc) + (b->y() - yc) * (b->y()
+  //    - yc); return d1 > d2;
   //  };
 
   std::sort(this->m_nodes.begin(), this->m_nodes.end(), compareClockwise);
@@ -369,8 +372,8 @@ void Element::interpolationWeights(double x, double y,
  * moves its position.
  */
 std::string Element::hash(HashType h, bool force) {
-  if (this->m_hash == std::string() || force) this->generateHash(h);
-  return this->m_hash;
+  if (this->m_hash == nullptr || force) this->generateHash(h);
+  return std::string(this->m_hash);
 }
 
 /**
@@ -419,8 +422,8 @@ void Element::triangularInterpolation(double x, double y,
  * point is weighted equally from all points in the polygon. Note that this
  * should work for n-sided objects that are convex (I think) as long as
  * the element isn't poorly formed. The verticies are sorted around the center
- * to make sure that the ordering is logical, but this is done on a copy of the
- * element so that the parent structure isn't altered.
+ * to make sure that the ordering is logical, but this is done on a copy of
+ * the element so that the parent structure isn't altered.
  *
  * @param x station location
  * @param y station location
@@ -430,7 +433,7 @@ void Element::triangularInterpolation(double x, double y,
 void Element::polygonInterpolation(double x, double y,
                                    std::vector<double> &weights) {
   //...Make copy of this element
-  Element e = *this;
+  Element e(*this);
 
   //...Sort the copy around the center
   e.sortVerticiesAboutCenter();
@@ -455,7 +458,7 @@ void Element::polygonInterpolation(double x, double y,
     if (i2 > this->n()) i2 = 0;
     Element ec(i, e.node(i1), e.node(i2), &midpoint);
     if (ec.isInside(x, y)) {
-      ee = std::move(ec);
+      ee = ec;
       break;
     }
   }

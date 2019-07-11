@@ -44,6 +44,8 @@ class Node {
   ADCIRCMODULES_EXPORT Node();
   ADCIRCMODULES_EXPORT Node(size_t id, double x, double y, double z);
 
+  ADCIRCMODULES_EXPORT ~Node();
+
   void ADCIRCMODULES_EXPORT setNode(size_t id, double x, double y, double z);
 
   double ADCIRCMODULES_EXPORT x() const;
@@ -74,7 +76,7 @@ class Node {
   double m_x;                  /// x position of a node
   double m_y;                  /// y position of a node
   double m_z;                  /// z position of a node
-  std::string m_hash;          /// hash identifier for the node
+  char* m_hash;                /// hash identifier for the node
   std::string m_positionHash;  /// has of only node's position
 
   void generateHash(HashType h = AdcircDefaultHash);

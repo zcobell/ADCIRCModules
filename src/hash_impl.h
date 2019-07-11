@@ -19,6 +19,8 @@
 #ifndef ADCMOD_HASHIMPL_H
 #define ADCMOD_HASHIMPL_H
 
+#define ADCMOD_HAVE_OPENSSL;
+
 #ifdef ADCMOD_HAVE_OPENSSL
 #include <openssl/md5.h>
 #include <openssl/sha.h>
@@ -32,7 +34,7 @@ class HashImpl {
  public:
   HashImpl(HashType h = AdcircDefaultHash);
   void addData(const std::string &s);
-  std::string getHash();
+  char *getHash();
 
   HashType hashType() const;
   void setHashType(const HashType &hashType);
@@ -48,14 +50,14 @@ class HashImpl {
   void addDataSha1(const std::string &data);
   void addDataSha256(const std::string &data);
 
-  std::string getSha256();
-  std::string getSha1();
-  std::string getMd5();
+  char *getSha256();
+  char *getSha1();
+  char *getMd5();
 
-  std::string getDigest(size_t length, unsigned char data[]);
+  char *getDigest(size_t length, unsigned char data[]);
 
   void (HashImpl::*addDataPtr)(const std::string &data);
-  std::string (HashImpl::*getHashPtr)();
+  char *(HashImpl::*getHashPtr)();
 
   MD5_CTX m_md5ctx;
   SHA_CTX m_sha1ctx;

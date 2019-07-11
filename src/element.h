@@ -52,6 +52,8 @@ class Element {
                                Adcirc::Geometry::Node *n3,
                                Adcirc::Geometry::Node *n4);
 
+  ADCIRCMODULES_EXPORT ~Element();
+
   void ADCIRCMODULES_EXPORT setElement(size_t id, Adcirc::Geometry::Node *n1,
                                        Adcirc::Geometry::Node *n2,
                                        Adcirc::Geometry::Node *n3);
@@ -95,7 +97,7 @@ class Element {
  private:
   size_t m_id;
   std::vector<Adcirc::Geometry::Node *> m_nodes;
-  std::string m_hash;
+  char *m_hash;
 
   void generateHash(HashType h = AdcircDefaultHash);
 
