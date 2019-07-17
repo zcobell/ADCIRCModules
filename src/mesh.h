@@ -25,6 +25,7 @@
 #include <vector>
 #include "adcircmodules_global.h"
 #include "boundary.h"
+#include "default_values.h"
 #include "element.h"
 #include "filetypes.h"
 #include "node.h"
@@ -88,6 +89,9 @@ class Mesh {
   std::vector<std::vector<double>> ADCIRCMODULES_EXPORT xyz();
   std::vector<std::vector<size_t>> ADCIRCMODULES_EXPORT connectivity();
   std::vector<std::vector<double>> ADCIRCMODULES_EXPORT orthogonality();
+
+  static constexpr size_t ADCIRCMODULES_EXPORT ELEMENT_NOT_FOUND =
+      adcircmodules_default_value<size_t>();
 
   void ADCIRCMODULES_EXPORT
   read(Adcirc::Geometry::MeshFormat format = MeshUnknown);
