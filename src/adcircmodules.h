@@ -35,6 +35,6 @@
 #include "meshchecker.h"
 #include "multithreading.h"
 #include "nodalattributes.h"
-#include "outputfile.h"
+#include "readoutputfile.h"
 
 #endif  // ADCMOD_ADCIRCMODULES_H

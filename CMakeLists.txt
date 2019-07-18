@@ -335,6 +335,8 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/attributemetadata.cpp
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.cpp 
                 ${CMAKE_SOURCE_DIR}/src/outputfile.cpp 
+                ${CMAKE_SOURCE_DIR}/src/readoutputfile.cpp 
+                ${CMAKE_SOURCE_DIR}/src/writeoutputfile.cpp 
                 ${CMAKE_SOURCE_DIR}/src/harmonicsrecord.cpp
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.cpp 
                 ${CMAKE_SOURCE_DIR}/src/elementtable.cpp

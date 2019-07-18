@@ -22,8 +22,8 @@
 
 int main() {
   using namespace Adcirc::Output;
-  std::unique_ptr<OutputFile> output(
-      new OutputFile("test_files/sparse_fort.63"));
+  std::unique_ptr<ReadOutputFile> output(
+      new ReadOutputFile("test_files/sparse_fort.63"));
 
   //...Open file
   output->open();

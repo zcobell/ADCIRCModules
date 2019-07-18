@@ -98,13 +98,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     hash.cpp \
     hash_impl.cpp \
+    outputfile.cpp \
+    readoutputfile.cpp \
     stringconversion.cpp \
     boundary.cpp \
     element.cpp \
     node.cpp \
     attribute.cpp \
     attributemetadata.cpp \
-    outputfile.cpp \
     outputrecord.cpp \
     config.cpp \
     filetypes.cpp \
@@ -127,7 +128,8 @@ SOURCES += \
     constants.cpp \
     kdtree_impl.cpp \
     kdtree.cpp \
-    logging.cpp
+    logging.cpp \
+    writeoutputfile.cpp
 
 HEADERS += \
     adcircmodules_global.h \
@@ -135,13 +137,14 @@ HEADERS += \
     hash.h \
     hash_impl.h \
     hashtype.h \
+    outputfile.h \
+    readoutputfile.h \
     stringconversion.h \
     boundary.h \
     element.h \
     node.h \
     attribute.h \
     attributemetadata.h \
-    outputfile.h \
     outputrecord.h \
     adcirc_codes.h \
     config.h \
@@ -168,7 +171,8 @@ HEADERS += \
     kdtree.h \
     kdtree_impl.h \
     logging.h \
-    default_values.h
+    default_values.h \
+    writeoutputfile.h
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib
