@@ -25,9 +25,9 @@ int main() {
   using namespace Adcirc::Output;
   std::unique_ptr<ReadOutputFile> output(new ReadOutputFile("test_files/fort.63.nc"));
   output->open();
-  std::cout << "Name: " << output->name() << std::endl;
-  std::cout << "Description: " << output->description() << std::endl;
-  std::cout << "Units: " << output->units() << std::endl;
+  std::cout << "Name: " << output->metadata()->variable() << std::endl;
+  std::cout << "Description: " << output->metadata()->longName() << std::endl;
+  std::cout << "Units: " << output->metadata()->units() << std::endl;
   output->read();
   output->read();
   output->read();

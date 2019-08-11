@@ -333,6 +333,7 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/nodalattributes.cpp
                 ${CMAKE_SOURCE_DIR}/src/attribute.cpp
                 ${CMAKE_SOURCE_DIR}/src/attributemetadata.cpp
+                ${CMAKE_SOURCE_DIR}/src/outputmetadata.cpp
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.cpp 
                 ${CMAKE_SOURCE_DIR}/src/outputfile.cpp 
                 ${CMAKE_SOURCE_DIR}/src/readoutputfile.cpp 

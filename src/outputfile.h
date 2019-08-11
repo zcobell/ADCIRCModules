@@ -2,7 +2,9 @@
 #define ADCMOD_OUTPUTFILE_H
 
 #include <string>
+#include <vector>
 #include "filetypes.h"
+#include "outputmetadata.h"
 
 namespace Adcirc {
 
@@ -39,15 +41,6 @@ class OutputFile {
   int dIteration() const;
   void setDiteration(int dit);
 
-  std::string description() const;
-  void setDescription(const std::string &description);
-
-  std::string units() const;
-  void setUnits(const std::string &units);
-
-  std::string name() const;
-  void setName(const std::string &name);
-
   Adcirc::Output::OutputFormat filetype() const;
   Adcirc::Output::OutputFormat setFiletype(
       Adcirc::Output::OutputFormat filetype);
@@ -55,21 +48,19 @@ class OutputFile {
   size_t currentSnap() const;
   void setCurrentSnap(const size_t &currentSnap);
 
-  bool isMax() const;
-  void setIsMax(bool isMax);
-
-  void setIsVector(bool isVector);
-  bool isVector() const;
-
   double defaultValue() const;
   void setDefaultValue(double defaultValue);
+
+  static const std::vector<Adcirc::Output::OutputMetadata>
+      *adcircFileMetadata();
+
+  Adcirc::Output::OutputMetadata *metadata();
+  void setMetadata(const Adcirc::Output::OutputMetadata &metadata);
 
  protected:
   void setOpen(bool open);
 
  private:
-  bool m_isVector;
-  bool m_isMax;
   bool m_open;
   Adcirc::Output::OutputFormat m_filetype;
   size_t m_currentSnap;
@@ -83,6 +74,7 @@ class OutputFile {
   std::string m_description;
   std::string m_name;
   std::string m_header;
+  Adcirc::Output::OutputMetadata m_metadata;
 };
 
 }  // namespace Output

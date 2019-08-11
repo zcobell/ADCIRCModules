@@ -5,6 +5,8 @@
 
 namespace Adcirc {
 
+std::string getExtension(const std::string &filename);
+
 namespace Geometry {
 enum MeshFormat {
   /// Unknown mesh format
@@ -49,6 +51,9 @@ enum OutputFormat {
   /// Unknown output format
   OutputUnknown = 0x999
 };
+
+Adcirc::Output::OutputFormat getOutputFormatFromExtension(
+    const std::string &filename);
 
 bool checkFiletypeAsciiFull(const std::string &filename);
 bool checkFiletypeAsciiSparse(const std::string &filename);

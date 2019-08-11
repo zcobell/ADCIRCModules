@@ -99,6 +99,7 @@ SOURCES += \
     hash.cpp \
     hash_impl.cpp \
     outputfile.cpp \
+    outputmetadata.cpp \
     readoutputfile.cpp \
     stringconversion.cpp \
     boundary.cpp \
@@ -132,12 +133,14 @@ SOURCES += \
     writeoutputfile.cpp
 
 HEADERS += \
+    adcirc_outputfiles.h \
     adcircmodules_global.h \
     adcmap.h \
     hash.h \
     hash_impl.h \
     hashtype.h \
     outputfile.h \
+    outputmetadata.h \
     readoutputfile.h \
     stringconversion.h \
     boundary.h \

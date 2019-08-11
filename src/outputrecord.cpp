@@ -26,27 +26,59 @@ using namespace Adcirc::Output;
 
 OutputRecord::OutputRecord()
     : m_record(0),
-      m_isVector(false),
       m_time(0),
       m_iteration(0),
       m_defaultValue(Adcirc::Output::defaultOutputValue()),
-      m_numNodes(0) {}
+      m_numNodes(0),
+      m_metadata(OutputMetadata()) {}
 
-OutputRecord::OutputRecord(size_t record, size_t numNodes, bool isVector)
+OutputRecord::OutputRecord(size_t record, size_t numNodes,
+                           OutputMetadata& metadata)
+    : m_record(record), m_numNodes(numNodes), m_metadata(metadata) {
+  assert(numNodes != 0);
+  this->allocate();
+}
+
+OutputRecord::OutputRecord(size_t record, size_t numNodes, bool isVector,
+                           bool isMax, size_t dimension)
     : m_record(record),
-      m_isVector(isVector),
       m_time(0),
       m_numNodes(numNodes),
       m_iteration(0),
       m_defaultValue(Adcirc::Output::defaultOutputValue()) {
   assert(numNodes != 0);
-  if (this->isVector()) {
+  if (dimension == 1) {
+    this->m_metadata =
+        OutputMetadata("none", "none", "none", "none",
+                       OutputMetadata::defaultConvention(), isMax);
+  } else if (dimension == 2) {
+    this->m_metadata = OutputMetadata(
+        "none", "none", "none", "none", OutputMetadata::defaultConvention(),
+        "none", "none", "none", "none", OutputMetadata::defaultConvention(),
+        isMax, isVector);
+  } else if (dimension == 3) {
+    this->m_metadata = OutputMetadata(
+        "none", "none", "none", "none", OutputMetadata::defaultConvention(),
+        "none", "none", "none", "none", OutputMetadata::defaultConvention(),
+        "none", "none", "none", "none", OutputMetadata::defaultConvention(),
+        isMax, isVector);
+  }
+  this->allocate();
+}
+
+void OutputRecord::allocate() {
+  if (this->m_metadata.dimension() == 3) {
+    this->m_u.resize(this->numNodes());
+    this->m_v.resize(this->numNodes());
+    this->m_w.resize(this->numNodes());
+  } else if (this->m_metadata.dimension() == 2) {
     this->m_u.resize(this->numNodes());
     this->m_v.resize(this->numNodes());
   } else {
     this->m_u.resize(this->numNodes());
   }
 }
+
 
 long long OutputRecord::iteration() const { return this->m_iteration; }
 
@@ -56,8 +88,11 @@ void OutputRecord::setIteration(long long iteration) {
 
 void OutputRecord::fill(double value) {
   std::fill(this->m_u.begin(), this->m_u.end(), value);
-  if (this->m_isVector) {
+  if (this->m_metadata.dimension() > 1) {
     std::fill(this->m_v.begin(), this->m_v.end(), value);
+  }
+  if (this->m_metadata.dimension() > 2) {
+    std::fill(this->m_w.begin(), this->m_w.end(), value);
   }
   return;
 }
@@ -70,10 +105,6 @@ size_t OutputRecord::numNodes() const { return this->m_numNodes; }
 
 void OutputRecord::setNumNodes(size_t numNodes) { this->m_numNodes = numNodes; }
 
-bool OutputRecord::isVector() const { return this->m_isVector; }
-
-void OutputRecord::setIsVector(bool isVector) { this->m_isVector = isVector; }
-
 double OutputRecord::defaultValue() const { return this->m_defaultValue; }
 
 void OutputRecord::setDefaultValue(double defaultValue) {
@@ -85,9 +116,9 @@ size_t OutputRecord::record() const { return this->m_record; }
 void OutputRecord::setRecord(size_t record) { this->m_record = record; }
 
 void OutputRecord::setU(size_t index, double value) {
-  assert(this->isVector());
+  assert(this->m_metadata.dimension() > 1);
   assert(index < this->numNodes());
-  if (index < this->numNodes() && this->isVector()) {
+  if (index < this->numNodes() && this->m_metadata.isVector()) {
     this->m_u[index] = value;
   } else {
     adcircmodules_throw_exception("OutputRecord: setU invalid input");
@@ -96,9 +127,9 @@ void OutputRecord::setU(size_t index, double value) {
 }
 
 void OutputRecord::setV(size_t index, double value) {
-  assert(this->isVector());
+  assert(this->m_metadata.dimension() > 1);
   assert(index < this->numNodes());
-  if (index < this->numNodes() && this->isVector()) {
+  if (index < this->numNodes() && this->m_metadata.isVector()) {
     this->m_v[index] = value;
   } else {
     adcircmodules_throw_exception("OutputRecord: setV invalid input");
@@ -106,10 +137,21 @@ void OutputRecord::setV(size_t index, double value) {
   return;
 }
 
-void OutputRecord::set(size_t index, double value) {
-  assert(!this->isVector());
+void OutputRecord::setW(size_t index, double value) {
+  assert(this->m_metadata.dimension() > 2);
   assert(index < this->numNodes());
-  if (index < this->numNodes() && !this->isVector()) {
+  if (index < this->numNodes() && this->m_metadata.isVector()) {
+    this->m_w[index] = value;
+  } else {
+    adcircmodules_throw_exception("OutputRecord: setW invalid input");
+  }
+  return;
+}
+
+void OutputRecord::set(size_t index, double value) {
+  assert(this->m_metadata.dimension() == 1);
+  assert(index < this->numNodes());
+  if (index < this->numNodes() && !this->m_metadata.isVector()) {
     this->m_u[index] = value;
   } else {
     adcircmodules_throw_exception("OutputRecord: set invalid input");
@@ -118,24 +160,58 @@ void OutputRecord::set(size_t index, double value) {
 }
 
 void OutputRecord::set(size_t index, double value_u, double value_v) {
-  assert(this->isVector());
+  assert(this->m_metadata.dimension() == 2);
   assert(index < this->numNodes());
-  if (index < this->numNodes() && this->isVector()) {
+  if (index < this->numNodes() && this->m_metadata.dimension() == 2) {
     this->m_u[index] = value_u;
     this->m_v[index] = value_v;
+  } else {
+    std::cout << this->m_metadata.dimension() << " " << this->numNodes() << " "
+              << index << std::endl;
+    std::cout.flush();
+    adcircmodules_throw_exception("OutputRecord: set invalid input");
+  }
+}
+
+void OutputRecord::set(size_t index, double value_u, double value_v,
+                       double value_w) {
+  assert(this->m_metadata.dimension() == 3);
+  assert(index < this->numNodes());
+  if (index < this->numNodes() && this->m_metadata.dimension() == 3) {
+    this->m_u[index] = value_u;
+    this->m_v[index] = value_v;
+    this->m_w[index] = value_w;
   } else {
     adcircmodules_throw_exception("OutputRecord: set invalid input");
   }
 }
 
-double OutputRecord::z(size_t index) {
+double OutputRecord::z(size_t index) const {
   assert(index < this->numNodes());
   if (index < this->numNodes()) {
-    if (this->isVector()) {
-      adcircmodules_throw_exception("OutputRecord: Datatype is a vector");
-      return 0.0;
+    return this->m_u[index];
+  } else {
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
+    return 0.0;
+  }
+}
+
+double OutputRecord::magnitude(size_t index) const {
+  assert(index < this->numNodes());
+  assert(this->m_metadata.isVector());
+  if (!this->m_metadata.isVector()) {
+    adcircmodules_throw_exception("OutputRecord: Datatype not a vector");
+    return 0.0;
+  }
+  if (index < this->numNodes()) {
+    if (this->m_metadata.dimension() == 2) {
+      return pow(pow(this->m_u[index], 2.0) + pow(this->m_v[index], 2.0), 0.5);
+    } else if (this->m_metadata.dimension() == 3) {
+      return pow(pow(this->m_u[index], 2.0) + pow(this->m_v[index], 2.0) +
+                     pow(this->m_w[index], 2.0),
+                 0.5);
     } else {
-      return this->m_u[index];
+      return 0.0;
     }
   } else {
     adcircmodules_throw_exception("OutputRecord: Index out of range");
@@ -143,22 +219,7 @@ double OutputRecord::z(size_t index) {
   }
 }
 
-double OutputRecord::magnitude(size_t index) {
-  assert(index < this->numNodes());
-  assert(this->isVector());
-  if (!this->isVector()) {
-    adcircmodules_throw_exception("OutputRecord: Datatype not a vector");
-    return 0.0;
-  }
-  if (index < this->numNodes()) {
-    return pow(pow(this->m_u[index], 2.0) + pow(this->m_v[index], 2.0), 0.5);
-  } else {
-    adcircmodules_throw_exception("OutputRecord: Index out of range");
-    return 0.0;
-  }
-}
-
-double OutputRecord::angle(double x, double y, AngleUnits units) {
+double OutputRecord::angle(double x, double y, AngleUnits units) const {
   double a = atan2(y, x);
   if (units == AngleUnits::Degrees) {
     a = a * 180.0 / Constants::pi();
@@ -180,10 +241,10 @@ double OutputRecord::angle(double x, double y, AngleUnits units) {
   return a;
 }
 
-double OutputRecord::direction(size_t index, AngleUnits angleType) {
-  assert(this->isVector());
+double OutputRecord::direction(size_t index, AngleUnits angleType) const {
+  assert(this->m_metadata.isVector());
   assert(index < this->numNodes());
-  if (!this->isVector()) {
+  if (!this->m_metadata.isVector()) {
     adcircmodules_throw_exception("OutputRecord: Datatype is not a vector");
     return 0.0;
   }
@@ -195,10 +256,10 @@ double OutputRecord::direction(size_t index, AngleUnits angleType) {
   }
 }
 
-double OutputRecord::u(size_t index) {
-  assert(this->isVector());
+double OutputRecord::u(size_t index) const {
+  assert(this->m_metadata.dimension() > 1);
   assert(index < this->numNodes());
-  if (!this->isVector()) {
+  if (!this->m_metadata.isVector()) {
     adcircmodules_throw_exception("OutputRecord: Datatype is not a vector");
     return 0.0;
   }
@@ -210,10 +271,10 @@ double OutputRecord::u(size_t index) {
   }
 }
 
-double OutputRecord::v(size_t index) {
-  assert(this->isVector());
+double OutputRecord::v(size_t index) const {
+  assert(this->m_metadata.dimension() > 1);
   assert(index < this->numNodes());
-  if (!this->isVector()) {
+  if (!this->m_metadata.isVector()) {
     adcircmodules_throw_exception("OutputRecord: Datatype is not a vector");
     return 0.0;
   }
@@ -225,10 +286,25 @@ double OutputRecord::v(size_t index) {
   }
 }
 
+double OutputRecord::w(size_t index) const {
+  assert(this->m_metadata.dimension() > 2);
+  assert(index < this->numNodes());
+  if (!this->m_metadata.isVector()) {
+    adcircmodules_throw_exception("OutputRecord: Datatype is not a vector");
+    return 0.0;
+  }
+  if (index < this->numNodes()) {
+    return this->m_w[index];
+  } else {
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
+    return 0.0;
+  }
+}
+
 void OutputRecord::setAllU(const std::vector<double>& values) {
-  assert(this->isVector());
+  assert(this->m_metadata.dimension() > 1);
   assert(this->m_numNodes == values.size());
-  if (!this->isVector()) {
+  if (!this->m_metadata.isVector()) {
     adcircmodules_throw_exception("OutputRecord: Datatype is not a vector");
     return;
   }
@@ -241,9 +317,24 @@ void OutputRecord::setAllU(const std::vector<double>& values) {
 }
 
 void OutputRecord::setAllV(const std::vector<double>& values) {
-  assert(this->isVector());
+  assert(this->m_metadata.dimension() > 1);
   assert(this->m_numNodes == values.size());
-  if (!this->isVector()) {
+  if (!this->m_metadata.isVector()) {
+    adcircmodules_throw_exception("OutputRecord: Datatype is not a vector");
+    return;
+  }
+  if (values.size() != this->m_numNodes) {
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
+    return;
+  }
+  this->m_v = values;
+  return;
+}
+
+void OutputRecord::setAllW(const std::vector<double>& values) {
+  assert(this->m_metadata.dimension() > 2);
+  assert(this->m_numNodes == values.size());
+  if (!this->m_metadata.isVector()) {
     adcircmodules_throw_exception("OutputRecord: Datatype is not a vector");
     return;
   }
@@ -257,11 +348,11 @@ void OutputRecord::setAllV(const std::vector<double>& values) {
 
 void OutputRecord::setAll(const std::vector<double>& values_u,
                           const std::vector<double>& values_v) {
-  assert(this->isVector());
+  assert(this->m_metadata.dimension() == 2);
   assert(this->m_numNodes == values_u.size());
   assert(this->m_numNodes == values_v.size());
-  if (!this->isVector()) {
-    adcircmodules_throw_exception("OutputRecord: Datatype is not a vector");
+  if (this->m_metadata.dimension() != 2) {
+    adcircmodules_throw_exception("OutputRecord: Datatype is not 2D");
     return;
   }
   if (values_u.size() != this->m_numNodes) {
@@ -277,10 +368,39 @@ void OutputRecord::setAll(const std::vector<double>& values_u,
   return;
 }
 
+void OutputRecord::setAll(const std::vector<double>& values_u,
+                          const std::vector<double>& values_v,
+                          const std::vector<double>& values_w) {
+  assert(this->m_metadata.dimension() == 3);
+  assert(this->m_numNodes == values_u.size());
+  assert(this->m_numNodes == values_v.size());
+  assert(this->m_numNodes == values_w.size());
+  if (this->m_metadata.dimension() != 3) {
+    adcircmodules_throw_exception("OutputRecord: Datatype is not 3D");
+    return;
+  }
+  if (values_u.size() != this->m_numNodes) {
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
+    return;
+  }
+  if (values_v.size() != this->m_numNodes) {
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
+    return;
+  }
+  if (values_w.size() != this->m_numNodes) {
+    adcircmodules_throw_exception("OutputRecord: Index out of range");
+    return;
+  }
+  this->m_u = values_u;
+  this->m_v = values_v;
+  this->m_w = values_w;
+  return;
+}
+
 void OutputRecord::setAll(const std::vector<double>& values) {
-  assert(!this->isVector());
+  assert(this->m_metadata.dimension() == 1);
   assert(this->m_numNodes == values.size());
-  if (this->isVector()) {
+  if (this->m_metadata.isVector()) {
     adcircmodules_throw_exception("OutputRecord: Datatype is a vector");
     return;
   }
@@ -293,7 +413,7 @@ void OutputRecord::setAll(const std::vector<double>& values) {
 }
 
 std::vector<double> OutputRecord::values(size_t column) {
-  if (this->isVector()) {
+  if (this->m_metadata.isVector()) {
     if (column == 0) {
       return this->m_u;
     } else if (column == 1) {
@@ -308,6 +428,7 @@ std::vector<double> OutputRecord::values(size_t column) {
 }
 
 void OutputRecord::setAll(size_t size, const double* values) {
+  assert(this->m_metadata.dimension() == 1);
   assert(size == this->m_numNodes);
   if (this->m_numNodes != size) {
     adcircmodules_throw_exception("OutputRecord: Array size mismatch");
@@ -320,6 +441,7 @@ void OutputRecord::setAll(size_t size, const double* values) {
 void OutputRecord::setAll(size_t size, const double* values_u,
                           const double* values_v) {
   assert(size == this->m_numNodes);
+  assert(this->m_metadata.dimension() == 2);
   if (this->m_numNodes != size) {
     adcircmodules_throw_exception("OutputRecord: Array size mismatch");
     return;
@@ -329,9 +451,23 @@ void OutputRecord::setAll(size_t size, const double* values_u,
   return;
 }
 
+void OutputRecord::setAll(size_t size, const double* values_u,
+                          const double* values_v, const double* values_w) {
+  assert(size == this->m_numNodes);
+  assert(this->m_metadata.dimension() == 3);
+  if (this->m_numNodes != size) {
+    adcircmodules_throw_exception("OutputRecord: Array size mismatch");
+    return;
+  }
+  this->m_u = std::vector<double>(values_u, values_u + size);
+  this->m_v = std::vector<double>(values_v, values_v + size);
+  this->m_w = std::vector<double>(values_w, values_w + size);
+  return;
+}
+
 std::vector<double> OutputRecord::magnitudes() {
-  assert(this->isVector());
-  if (!this->isVector()) {
+  assert(this->m_metadata.isVector());
+  if (!this->m_metadata.isVector()) {
     adcircmodules_throw_exception(
         "OutputRecord: Must be a vector to compute magnitude");
     return std::vector<double>();
@@ -339,14 +475,20 @@ std::vector<double> OutputRecord::magnitudes() {
   std::vector<double> m;
   m.resize(this->m_numNodes);
   for (size_t i = 0; i < this->m_numNodes; ++i) {
-    m[i] = pow(pow(this->m_u[i], 2.0) + pow(this->m_v[i], 2.0), 0.5);
+    if (this->m_metadata.dimension() == 2) {
+      m[i] = pow(pow(this->m_u[i], 2.0) + pow(this->m_v[i], 2.0), 0.5);
+    } else if (this->m_metadata.dimension() == 3) {
+      m[i] = pow(pow(this->m_u[i], 2.0) + pow(this->m_v[i], 2.0) +
+                     pow(this->m_w[i], 2.0),
+                 0.5);
+    }
   }
   return m;
 }
 
 std::vector<double> OutputRecord::directions(AngleUnits angleType) {
-  assert(this->isVector());
-  if (!this->isVector()) {
+  assert(this->m_metadata.isVector());
+  if (!this->m_metadata.isVector()) {
     adcircmodules_throw_exception(
         "OutputRecord: Must be a vector to compute direction");
     return std::vector<double>();
@@ -357,4 +499,40 @@ std::vector<double> OutputRecord::directions(AngleUnits angleType) {
     d[i] = this->angle(this->m_u[i], this->m_v[i], angleType);
   }
   return d;
+}
+
+bool OutputRecord::isDefault(size_t index) {
+  if (this->m_metadata.dimension() == 1 || this->m_metadata.isMax()) {
+    return std::abs(this->m_u[index] - this->defaultValue()) <=
+           std::numeric_limits<double>::epsilon();
+  } else if (this->m_metadata.dimension() == 2) {
+    return std::abs(this->m_u[index] - this->defaultValue()) <=
+               std::numeric_limits<double>::epsilon() &&
+           std::abs(this->m_v[index] - this->defaultValue()) <=
+               std::numeric_limits<double>::epsilon();
+  } else if (this->m_metadata.dimension() == 3) {
+    return std::abs(this->m_u[index] - this->defaultValue()) <=
+               std::numeric_limits<double>::epsilon() &&
+           std::abs(this->m_v[index] - this->defaultValue()) <=
+               std::numeric_limits<double>::epsilon() &&
+           std::abs(this->m_w[index] - this->defaultValue()) <=
+               std::numeric_limits<double>::epsilon();
+  } else {
+    return false;
+  }
+}
+
+size_t OutputRecord::numNonDefault() {
+  size_t count = 0;
+  for (size_t i = 0; i < this->m_numNodes; ++i) {
+    count += this->isDefault(i) ? 0 : 1;
+  }
+}
+
+Adcirc::Output::OutputMetadata* OutputRecord::metadata() {
+  return &this->m_metadata;
+}
+
+void OutputRecord::setMetadata(Adcirc::Output::OutputMetadata metadata) {
+  this->m_metadata = metadata;
 }

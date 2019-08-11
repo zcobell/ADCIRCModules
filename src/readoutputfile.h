@@ -82,6 +82,7 @@ class ReadOutputFile : public OutputFile {
 
   void readAsciiRecord(std::unique_ptr<OutputRecord> &record);
   void readNetcdfRecord(size_t snap, std::unique_ptr<OutputRecord> &record);
+  int netcdfVariableSearch(size_t variableIndex, OutputMetadata &filetypeFound);
 };
 }  // namespace Output
 }  // namespace Adcirc

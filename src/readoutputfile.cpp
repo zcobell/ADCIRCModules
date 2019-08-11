@@ -31,46 +31,6 @@
 
 using namespace Adcirc::Output;
 
-//...netcdf Variable names currently in ADCIRC source code
-static const std::vector<std::string> c_netcdfVarNames = {"sigmat",
-                                                          "salinity",
-                                                          "temperature",
-                                                          "u-vel3D",
-                                                          "v-vel3D",
-                                                          "w-vel3D",
-                                                          "q20",
-                                                          "l",
-                                                          "ev",
-                                                          "qsurfkp1",
-                                                          "zeta",
-                                                          "zeta_max",
-                                                          "u-vel",
-                                                          "v-vel",
-                                                          "vel_max",
-                                                          "pressure",
-                                                          "pressure_min",
-                                                          "windx",
-                                                          "windy",
-                                                          "wind_max",
-                                                          "radstress_x",
-                                                          "radstress_y",
-                                                          "radstress_max",
-                                                          "swan_HS",
-                                                          "swan_HS_max",
-                                                          "swan_DIR",
-                                                          "swan_DIR_max",
-                                                          "swan_TM01",
-                                                          "swan_TM01_max",
-                                                          "swan_TPS",
-                                                          "swan_TPS_max",
-                                                          "swan_windx",
-                                                          "swan_windy",
-                                                          "swan_wind_max",
-                                                          "swan_TM02",
-                                                          "swan_TM02_max",
-                                                          "swan_TMM10",
-                                                          "swan_TMM10_max"};
-
 ReadOutputFile::ReadOutputFile(const std::string& filename)
     : OutputFile(filename) {}
 
@@ -280,6 +240,32 @@ Adcirc::Output::OutputFormat ReadOutputFile::getFiletype() {
   return Adcirc::Output::OutputUnknown;
 }
 
+int ReadOutputFile::netcdfVariableSearch(size_t variableIndex,
+                                         OutputMetadata& filetypeFound) {
+  if (filetypeFound == OutputMetadata()) {
+    const std::vector<OutputMetadata>* meta = this->adcircFileMetadata();
+    for (size_t i = 0; i < meta->size(); ++i) {
+      int varid;
+      int ierr = nc_inq_varid(
+          this->m_ncid, meta->at(i).variable(variableIndex).c_str(), &varid);
+      if (ierr == NC_NOERR) {
+        filetypeFound = meta->at(i);
+        return varid;
+      }
+    }
+    return -1;
+  } else {
+    int varid;
+    int ierr = nc_inq_varid(
+        this->m_ncid, filetypeFound.variable(variableIndex).c_str(), &varid);
+    if (ierr == NC_NOERR) {
+      return varid;
+    } else {
+      return -1;
+    }
+  }
+}
+
 void ReadOutputFile::findNetcdfVarId() {
   assert(this->isOpen());
   assert(this->getFiletype() == Adcirc::Output::OutputNetcdf3 ||
@@ -294,76 +280,37 @@ void ReadOutputFile::findNetcdfVarId() {
     adcircmodules_throw_exception("OutputFile: Filetype is not netcdf");
   }
 
-  this->setName(std::string());
+  OutputMetadata meta;
+  int varid1 = this->netcdfVariableSearch(0, meta);
+  if (varid1 == -1) {
+    adcircmodules_throw_exception(
+        "ReadOutputFile: Could not find valid netCDF variable.");
+  }
+  this->m_varid_data.push_back(varid1);
+  this->setMetadata(meta);
 
-  for (const auto& varname : c_netcdfVarNames) {
-    int varid;
-    int ierr = nc_inq_varid(this->m_ncid, varname.c_str(), &varid);
-    if (ierr == NC_NOERR) {
-      this->m_varid_data.push_back(varid);
-
-      if (this->m_varid_data.size() == 1) {
-        this->setName(varname);
-      } else {
-        this->setName(this->name() + "," + varname);
-      }
-
-      if (varname.substr(varname.size() - 3, varname.size()) == "max" ||
-          varname.substr(varname.size() - 3, varname.size()) == "min") {
-        this->setIsMax(true);
-      }
+  if (this->metadata()->dimension() >= 2) {
+    int varid2 = this->netcdfVariableSearch(1, meta);
+    if (varid2 == -1) {
+      Adcirc::Logging::warning(
+          "ReadOutputFile: Expected second value in output file. Continuing "
+          "without.");
+      this->metadata()->setDimension(1);
+    } else {
+      this->m_varid_data.push_back(varid2);
     }
   }
 
-  if (this->m_varid_data.size() == 0) {
-    adcircmodules_throw_exception(
-        "OutputFile: No valid netcdf variables found");
+  if (this->metadata()->dimension() == 3) {
+    int varid3 = this->netcdfVariableSearch(2, meta);
+    if (varid3 == -1) {
+      Adcirc::Logging::warning(
+          "ReadOutputFile: Expected third value in output file. Continuing "
+          "without.");
+    } else {
+      this->m_varid_data.push_back(varid3);
+    }
   }
-  if (this->m_varid_data.size() > 2) {
-    adcircmodules_throw_exception(
-        "OutputFile: Too many netcdf variables found");
-  }
-
-  if (this->m_varid_data.size() == 1) {
-    this->setIsVector(false);
-  }
-  if (this->m_varid_data.size() == 2) {
-    this->setIsVector(true);
-  }
-
-  size_t attlen_longname1;
-  int ierr = nc_inq_attlen(this->m_ncid, this->m_varid_data[0], "long_name",
-                           &attlen_longname1);
-  char* longname1_char = new char[attlen_longname1 + 1];
-  ierr = nc_get_att_text(this->m_ncid, this->m_varid_data[0], "long_name",
-                         longname1_char);
-
-  if (this->isVector()) {
-    size_t attlen_longname2;
-    int ierr = nc_inq_attlen(this->m_ncid, this->m_varid_data[1], "long_name",
-                             &attlen_longname2);
-    char* longname2_char = new char[attlen_longname1 + 1];
-    ierr = nc_get_att_text(this->m_ncid, this->m_varid_data[1], "long_name",
-                           longname2_char);
-    std::string s1, s2;
-    s1 = std::string(longname1_char, attlen_longname1);
-    s2 = std::string(longname2_char, attlen_longname2);
-    this->setDescription(s1 + "," + s2);
-    delete[] longname1_char;
-    delete[] longname2_char;
-  } else {
-    this->setDescription(std::string(longname1_char, attlen_longname1));
-    delete[] longname1_char;
-  }
-
-  size_t attlen_units;
-  ierr = nc_inq_attlen(this->m_ncid, this->m_varid_data[0], "units",
-                       &attlen_units);
-  char* units_char = new char[attlen_units + 1];
-  ierr =
-      nc_get_att_text(this->m_ncid, this->m_varid_data[0], "units", units_char);
-  this->setUnits(std::string(units_char, attlen_units));
-  delete[] units_char;
 
   return;
 }
@@ -411,9 +358,11 @@ void ReadOutputFile::readAsciiHeader() {
 
   int numCols = StringConversion::stringToInt(list.at(4), ok);
   if (numCols == 1) {
-    this->setIsVector(false);
+    this->metadata()->setIsVector(false);
+    this->metadata()->setDimension(1);
   } else if (numCols == 2) {
-    this->setIsVector(true);
+    this->metadata()->setIsVector(true);
+    this->metadata()->setDimension(2);
   } else {
     this->m_fid.close();
     adcircmodules_throw_exception(
@@ -496,7 +445,7 @@ void ReadOutputFile::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
   std::string line;
 
   record = std::unique_ptr<OutputRecord>(new OutputRecord(
-      this->currentSnap(), this->numNodes(), this->isVector()));
+      this->currentSnap(), this->numNodes(), *(this->metadata())));
 
   //...Record header
   std::getline(this->m_fid, line);
@@ -506,7 +455,7 @@ void ReadOutputFile::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
 
   double t = StringConversion::stringToDouble(list[0], ok);
   if (ok) {
-    record.get()->setTime(t);
+    record->setTime(t);
   } else {
     record.reset(nullptr);
     adcircmodules_throw_exception("OutputFile: Error reading ascii record");
@@ -514,7 +463,7 @@ void ReadOutputFile::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
 
   int it = StringConversion::stringToInt(list[1], ok);
   if (ok) {
-    record.get()->setIteration(it);
+    record->setIteration(it);
   } else {
     record.reset(nullptr);
     adcircmodules_throw_exception("OutputFile: Error reading ascii record");
@@ -536,18 +485,18 @@ void ReadOutputFile::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
       adcircmodules_throw_exception("OutputFile: Error reading ascii record");
     }
   }
-  record.get()->setDefaultValue(dflt);
-  record.get()->fill(dflt);
+  record->setDefaultValue(dflt);
+  record->fill(dflt);
 
   //...Record loop
   for (size_t i = 0; i < numNonDefault; ++i) {
     std::getline(this->m_fid, line);
 
-    if (this->isVector()) {
+    if (this->metadata()->isVector()) {
       size_t id;
       double v1, v2;
       if (FileIO::AdcircIO::splitStringAttribute2Format(line, id, v1, v2)) {
-        record.get()->set(id - 1, v1, v2);
+        record->set(id - 1, v1, v2);
       } else {
         record.reset(nullptr);
         adcircmodules_throw_exception("OutputFile: Error reading ascii record");
@@ -556,7 +505,7 @@ void ReadOutputFile::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
       size_t id;
       double v1;
       if (FileIO::AdcircIO::splitStringAttribute1Format(line, id, v1)) {
-        record.get()->set(id - 1, v1);
+        record->set(id - 1, v1);
       } else {
         record.reset(nullptr);
         adcircmodules_throw_exception("OutputFile: Error reading ascii record");
@@ -565,7 +514,7 @@ void ReadOutputFile::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
   }
 
   //...Setup the map for record indicies
-  this->m_recordMap[record.get()->record()] = record.get();
+  this->m_recordMap[record->record()] = record.get();
   this->setCurrentSnap(this->currentSnap() + 1);
 
   return;
@@ -584,44 +533,80 @@ void ReadOutputFile::readNetcdfRecord(size_t snap,
     adcircmodules_throw_exception(
         "OutputFile: Record requested > number of records in file");
   }
-  record = std::unique_ptr<OutputRecord>(
-      new OutputRecord(snap, this->numNodes(), this->isVector()));
+  record = std::unique_ptr<OutputRecord>(new OutputRecord(
+      snap, this->numNodes(), this->metadata()->isVector(),
+      this->metadata()->isMax(), this->metadata()->dimension()));
 
-  record.get()->setTime(this->m_time[snap]);
-  record.get()->setIteration(std::floor(this->m_time[snap] / this->dt()));
+  record->setTime(this->m_time[snap]);
+  record->setIteration(std::floor(this->m_time[snap] / this->dt()));
 
   //..Read the data record. If it is a max record, there is
   //  no time dimension
-  if (this->isMax()) {
-    double* u = new double[this->numNodes()];
-    int ierr = nc_get_var(this->m_ncid, this->m_varid_data[0], u);
+  if (this->metadata()->isMax()) {
+    if (this->metadata()->dimension() == 1) {
+      double* u = new double[this->numNodes()];
+      int ierr = nc_get_var(this->m_ncid, this->m_varid_data[0], u);
 
-    if (ierr != NC_NOERR) {
-      delete[] u;
-      adcircmodules_throw_exception("OutputFile: Error reading netcdf record");
-      return;
+      if (ierr != NC_NOERR) {
+        delete[] u;
+        adcircmodules_throw_exception(
+            "OutputFile: Error reading netcdf record");
+        return;
+      }
+    } else if (this->metadata()->dimension() == 2) {
+      double* u = new double[this->numNodes()];
+      double* v = new double[this->numNodes()];
+      int ierr = nc_get_var(this->m_ncid, this->m_varid_data[0], u);
+
+      if (ierr != NC_NOERR) {
+        delete[] u;
+        delete[] v;
+        adcircmodules_throw_exception(
+            "OutputFile: Error reading netcdf record");
+        return;
+      }
+      ierr = nc_get_var(this->m_ncid, this->m_varid_data[1], v);
+
+      if (ierr != NC_NOERR) {
+        delete[] u;
+        delete[] v;
+        adcircmodules_throw_exception(
+            "OutputFile: Error reading netcdf record");
+        return;
+      }
+      record->setAll(this->numNodes(), u, v);
     }
-    record.get()->setAll(this->numNodes(), u);
-    delete[] u;
-
   } else {
     size_t start[2], count[2];
     start[0] = snap;
     start[1] = 0;
     count[0] = 1;
     count[1] = this->numNodes();
-    double* u = new double[this->numNodes()];
 
-    int ierr =
-        nc_get_vara(this->m_ncid, this->m_varid_data[0], start, count, u);
-    if (ierr != NC_NOERR) {
-      delete[] u;
-      adcircmodules_throw_exception("OutputFile: Error reading netcdf record");
-      return;
-    }
-
-    if (this->isVector()) {
+    if (this->metadata()->dimension() == 1) {
+      double* u = new double[this->numNodes()];
+      int ierr =
+          nc_get_vara(this->m_ncid, this->m_varid_data[0], start, count, u);
+      if (ierr != NC_NOERR) {
+        delete[] u;
+        adcircmodules_throw_exception(
+            "OutputFile: Error reading netcdf record");
+        return;
+      }
+      record->setAll(this->numNodes(), u);
+    } else if (this->metadata()->dimension() == 2) {
+      double* u = new double[this->numNodes()];
       double* v = new double[this->numNodes()];
+      int ierr =
+          nc_get_vara(this->m_ncid, this->m_varid_data[0], start, count, u);
+      if (ierr != NC_NOERR) {
+        delete[] u;
+        delete[] v;
+        adcircmodules_throw_exception(
+            "OutputFile: Error reading netcdf record");
+        return;
+      }
+
       ierr = nc_get_vara(this->m_ncid, this->m_varid_data[1], start, count, v);
       if (ierr != NC_NOERR) {
         delete[] u;
@@ -630,16 +615,41 @@ void ReadOutputFile::readNetcdfRecord(size_t snap,
             "OutputFile: Error reading netcdf record");
         return;
       }
-      record.get()->setAll(this->numNodes(), u, v);
+      record->setAll(this->numNodes(), u, v);
+      delete[] u;
       delete[] v;
-    } else {
-      record.get()->setAll(this->numNodes(), u);
-    }
+    } else if (this->metadata()->dimension() == 3) {
+      double* u = new double[this->numNodes()];
+      double* v = new double[this->numNodes()];
+      double* w = new double[this->numNodes()];
 
-    delete[] u;
+      int ierr =
+          nc_get_vara(this->m_ncid, this->m_varid_data[1], start, count, v);
+      if (ierr != NC_NOERR) {
+        delete[] u;
+        delete[] v;
+        delete[] w;
+        adcircmodules_throw_exception(
+            "OutputFile: Error reading netcdf record");
+        return;
+      }
+      ierr = nc_get_vara(this->m_ncid, this->m_varid_data[2], start, count, w);
+      if (ierr != NC_NOERR) {
+        delete[] u;
+        delete[] v;
+        delete[] w;
+        adcircmodules_throw_exception(
+            "OutputFile: Error reading netcdf record");
+        return;
+      }
+      record->setAll(this->numNodes(), u, v, w);
+      delete[] u;
+      delete[] v;
+      delete[] w;
+    }
   }
 
-  this->m_recordMap[record.get()->record()] = record.get();
+  this->m_recordMap[record->record()] = record.get();
   this->setCurrentSnap(this->currentSnap() + 1);
 }
 

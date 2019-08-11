@@ -33,13 +33,15 @@ int main() {
   }
 
   //...Extra gymnastics to test other functions
-  std::vector<double> a = output->data(0)->values();
+  std::vector<double> a = output->data(0)->values(0);
+  std::vector<double> s = output->data(0)->values(1);
 
   for (size_t i = 0; i < a.size(); i++) {
     a[i] = a[i] + 10;
+    s[i] = s[i] + 10;
   }
 
-  output->data(0)->setAll(a);
+  //output->data(0)->setAll(a,s);
 
   output->close();
 

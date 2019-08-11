@@ -1,10 +1,15 @@
 #include "outputfile.h"
 #include <fstream>
+#include "adcirc_outputfiles.h"
 #include "filetypes.h"
 #include "logging.h"
 #include "outputrecord.h"
 
 using namespace Adcirc::Output;
+
+const std::vector<OutputMetadata>* OutputFile::adcircFileMetadata() {
+  return &c_outputMetadata;
+}
 
 OutputFile::OutputFile(const std::string& filename)
     : m_filename(filename),
@@ -14,13 +19,12 @@ OutputFile::OutputFile(const std::string& filename)
       m_dt(0),
       m_dit(0),
       m_open(false),
-      m_isVector(false),
-      m_isMax(false),
       m_defaultValue(Adcirc::Output::defaultOutputValue()),
       m_filetype(Adcirc::Output::OutputUnknown),
       m_units("n/a"),
       m_description("n/a"),
-      m_name("n/a") {}
+      m_name("n/a"),
+      m_metadata(OutputMetadata()) {}
 
 OutputFile::~OutputFile() {}
 
@@ -66,8 +70,6 @@ void OutputFile::setHeader(const std::string& header) {
   this->m_header = header;
 }
 
-std::string OutputFile::name() const { return this->m_name; }
-
 Adcirc::Output::OutputFormat OutputFile::setFiletype(OutputFormat filetype) {
   this->m_filetype = filetype;
 }
@@ -78,50 +80,16 @@ void OutputFile::setCurrentSnap(const size_t& currentSnap) {
   m_currentSnap = currentSnap;
 }
 
-std::string OutputFile::description() const { return this->m_description; }
-
-std::string OutputFile::units() const { return this->m_units; }
-
 void OutputFile::setOpen(bool open) { this->m_open = open; }
 
-bool OutputFile::isMax() const
-{
-  return m_isMax;
+OutputMetadata* OutputFile::metadata() { return &m_metadata; }
+
+void OutputFile::setMetadata(const OutputMetadata& metadata) {
+  m_metadata = metadata;
 }
 
-double OutputFile::defaultValue() const
-{
-  return m_defaultValue;
-}
+double OutputFile::defaultValue() const { return m_defaultValue; }
 
-void OutputFile::setDefaultValue(double defaultValue)
-{
+void OutputFile::setDefaultValue(double defaultValue) {
   m_defaultValue = defaultValue;
 }
-
-bool OutputFile::isVector() const
-{
-  return m_isVector;
-}
-
-void OutputFile::setIsVector(bool isVector)
-{
-  m_isVector = isVector;
-}
-
-void OutputFile::setIsMax(bool isMax)
-{
-  m_isMax = isMax;
-}
-
-void OutputFile::setUnits(const std::string &units)
-{
-  m_units = units;
-}
-
-void OutputFile::setDescription(const std::string &description)
-{
-  m_description = description;
-}
-
-void OutputFile::setName(const std::string& name) { this->m_name = name; }
