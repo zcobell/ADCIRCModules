@@ -332,13 +332,14 @@ void WriteOutput::writeRecordNetCDF(const OutputRecord *record) {
   double t = record->time();
   nc_put_var1(this->m_ncid, this->m_varid_time, &this->m_recordsWritten, &t);
 
+  const size_t start[2] = {this->m_recordsWritten, 0};
+  const size_t count[2] = {1, record->numNodes()};
+
   if (this->m_dataContainer->metadata()->dimension() == 1) {
     double *z = new double[record->numNodes()];
     for (size_t i = 0; i < record->numNodes(); ++i) {
       z[i] = record->z(i);
     }
-    const size_t start[2] = {this->m_recordsWritten, 0};
-    const size_t count[2] = {1, record->numNodes()};
     nc_put_vara(this->m_ncid, this->m_varid[0], start, count, z);
     delete[] z;
   } else if (this->m_dataContainer->metadata()->dimension() == 2) {
@@ -348,8 +349,6 @@ void WriteOutput::writeRecordNetCDF(const OutputRecord *record) {
       u[i] = record->u(i);
       v[i] = record->v(i);
     }
-    const size_t start[2] = {this->m_recordsWritten, 0};
-    const size_t count[2] = {1, record->numNodes()};
     nc_put_vara(this->m_ncid, this->m_varid[0], start, count, u);
     nc_put_vara(this->m_ncid, this->m_varid[1], start, count, v);
     delete[] u;
@@ -363,8 +362,6 @@ void WriteOutput::writeRecordNetCDF(const OutputRecord *record) {
       v[i] = record->v(i);
       w[i] = record->w(i);
     }
-    const size_t start[2] = {this->m_recordsWritten, 0};
-    const size_t count[2] = {1, record->numNodes()};
     nc_put_vara(this->m_ncid, this->m_varid[0], start, count, u);
     nc_put_vara(this->m_ncid, this->m_varid[1], start, count, v);
     nc_put_vara(this->m_ncid, this->m_varid[2], start, count, w);
