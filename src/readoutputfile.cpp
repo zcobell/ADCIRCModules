@@ -332,7 +332,7 @@ void ReadOutputFile::readAsciiHeader() {
   FileIO::Generic::splitString(line, list);
 
   bool ok;
-  this->setNumSnaps(StringConversion::stringToInt(list.at(0), ok));
+  this->setNumSnaps(StringConversion::stringToSizet(list.at(0), ok));
   if (!ok) {
     this->m_fid.close();
     adcircmodules_throw_exception("OutputFile: Error reading ascii header");
@@ -355,6 +355,8 @@ void ReadOutputFile::readAsciiHeader() {
     this->m_fid.close();
     adcircmodules_throw_exception("OutputFile: Error reading ascii header");
   }
+
+  this->setModelDt(this->dt() / static_cast<double>(this->dIteration()));
 
   int numCols = StringConversion::stringToInt(list.at(4), ok);
   if (numCols == 1) {
@@ -409,6 +411,7 @@ void ReadOutputFile::readNetcdfHeader() {
   if (ierr != NC_NOERR) {
     adcircmodules_throw_exception("OutputFile: Error reading model dt");
   }
+  this->setModelDt(dt);
 
   double* t = new double[this->numSnaps()];
 

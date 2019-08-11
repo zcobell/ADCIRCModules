@@ -654,7 +654,7 @@ IF(UNIX OR CYGWIN)
                       cxx_readnetcdfHarmonicsElevation.cpp  cxx_readnetcdfHarmonicsVelocity.cpp
                       cxx_checkmesh.cpp cxx_read2dm.cpp cxx_kdtree.cpp cxx_hash.cpp cxx_hashmesh.cpp 
                       cxx_writeasciifull.cpp cxx_writeasciisparse.cpp cxx_writeasciifullvector.cpp 
-                      cxx_writeasciisparsevector.cpp )
+                      cxx_writeasciisparsevector.cpp cxx_writenetcdf.cpp cxx_writenetcdfvector.cpp )
 
         IF(ENABLE_GDAL)
             SET(TEST_LIST ${TEST_LIST} cxx_interpolateRaster.cpp cxx_interpolateManning.cpp cxx_interpolateDwind.cpp ) 

@@ -30,7 +30,7 @@ class OutputFile {
   void setFilename(const std::string &filename);
 
   size_t numSnaps() const;
-  void setNumSnaps(int numSnaps);
+  void setNumSnaps(size_t numSnaps);
 
   size_t numNodes() const;
   void setNumNodes(size_t numNodes);
@@ -57,15 +57,19 @@ class OutputFile {
   Adcirc::Output::OutputMetadata *metadata();
   void setMetadata(const Adcirc::Output::OutputMetadata &metadata);
 
- protected:
+  double modelDt() const;
+  void setModelDt(double modelDt);
+
+protected:
   void setOpen(bool open);
 
- private:
+private:
   bool m_open;
   Adcirc::Output::OutputFormat m_filetype;
   size_t m_currentSnap;
   size_t m_numSnaps;
   size_t m_numNodes;
+  double m_modelDt;
   double m_dt;
   double m_defaultValue;
   int m_dit;

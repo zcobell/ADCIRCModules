@@ -60,8 +60,9 @@ class WriteOutput {
   std::ofstream m_fid;
   std::string m_filename;
   int m_ncid;
-  int m_recordsWritten;
+  size_t m_recordsWritten;
   bool m_isOpen;
+  int m_varid_time;
   std::vector<int> m_varid;
 };
 

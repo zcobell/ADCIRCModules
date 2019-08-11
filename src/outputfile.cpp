@@ -17,6 +17,7 @@ OutputFile::OutputFile(const std::string& filename)
       m_numNodes(0),
       m_numSnaps(0),
       m_dt(0),
+      m_modelDt(0),
       m_dit(0),
       m_open(false),
       m_defaultValue(Adcirc::Output::defaultOutputValue()),
@@ -48,7 +49,7 @@ bool OutputFile::exists() {
 
 size_t OutputFile::numSnaps() const { return this->m_numSnaps; }
 
-void OutputFile::setNumSnaps(int numSnaps) { this->m_numSnaps = numSnaps; }
+void OutputFile::setNumSnaps(size_t numSnaps) { this->m_numSnaps = numSnaps; }
 
 size_t OutputFile::numNodes() const { return this->m_numNodes; }
 
@@ -74,22 +75,26 @@ Adcirc::Output::OutputFormat OutputFile::setFiletype(OutputFormat filetype) {
   this->m_filetype = filetype;
 }
 
-size_t OutputFile::currentSnap() const { return m_currentSnap; }
+size_t OutputFile::currentSnap() const { return this->m_currentSnap; }
 
 void OutputFile::setCurrentSnap(const size_t& currentSnap) {
-  m_currentSnap = currentSnap;
+  this->m_currentSnap = currentSnap;
 }
 
 void OutputFile::setOpen(bool open) { this->m_open = open; }
 
-OutputMetadata* OutputFile::metadata() { return &m_metadata; }
+double OutputFile::modelDt() const { return this->m_modelDt; }
+
+void OutputFile::setModelDt(double modelDt) { this->m_modelDt = modelDt; }
+
+OutputMetadata* OutputFile::metadata() { return &this->m_metadata; }
 
 void OutputFile::setMetadata(const OutputMetadata& metadata) {
-  m_metadata = metadata;
+  this->m_metadata = metadata;
 }
 
-double OutputFile::defaultValue() const { return m_defaultValue; }
+double OutputFile::defaultValue() const { return this->m_defaultValue; }
 
 void OutputFile::setDefaultValue(double defaultValue) {
-  m_defaultValue = defaultValue;
+  this->m_defaultValue = defaultValue;
 }

@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "writeoutputfile.h"
+#include "adcirc_outputfiles.h"
 #include "boost/format.hpp"
 #include "logging.h"
 #include "netcdf.h"
@@ -94,6 +95,7 @@ void WriteOutput::write(const OutputRecord *record) {
   } else if (this->m_format == Adcirc::Output::OutputHdf5) {
     adcircmodules_throw_exception("Not implemented");
   }
+  this->m_recordsWritten++;
   return;
 }
 
@@ -176,10 +178,10 @@ void WriteOutput::openFileNetCDF() {
   ierr += nc_def_dim(this->m_ncid, "mesh", 1, &dimid_mesh);
 
   const int dim_e[2] = {dimid_ele, dimid_nvertex};
-  int varid_time, varid_x, varid_y, varid_element, varid_mesh, varid_depth;
+  int varid_x, varid_y, varid_element, varid_mesh, varid_depth;
 
-  ierr +=
-      nc_def_var(this->m_ncid, "time", NC_DOUBLE, 1, &dimid_time, &varid_time);
+  ierr += nc_def_var(this->m_ncid, "time", NC_DOUBLE, 1, &dimid_time,
+                     &this->m_varid_time);
   ierr += nc_def_var(this->m_ncid, "x", NC_DOUBLE, 1, &dimid_node, &varid_x);
   ierr += nc_def_var(this->m_ncid, "y", NC_DOUBLE, 1, &dimid_node, &varid_y);
   ierr += nc_def_var(this->m_ncid, "element", NC_INT, 2, dim_e, &varid_element);
@@ -188,7 +190,7 @@ void WriteOutput::openFileNetCDF() {
                      &varid_depth);
 
   if (this->m_format == Adcirc::Output::OutputNetcdf4) {
-    ierr += nc_def_var_deflate(this->m_ncid, varid_time, 1, 1, 2);
+    ierr += nc_def_var_deflate(this->m_ncid, this->m_varid_time, 1, 1, 2);
     ierr += nc_def_var_deflate(this->m_ncid, varid_x, 1, 1, 2);
     ierr += nc_def_var_deflate(this->m_ncid, varid_y, 1, 1, 2);
     ierr += nc_def_var_deflate(this->m_ncid, varid_depth, 1, 1, 2);
@@ -204,6 +206,22 @@ void WriteOutput::openFileNetCDF() {
   double fill = this->m_dataContainer->defaultValue();
   const int dims[2] = {dimid_time, dimid_node};
 
+  //...Check if there are variables to define in the metadata. If not,
+  //   need to assume some defaults so the code can function
+  if (this->m_dataContainer->metadata()->dimension() == 1) {
+    if (this->m_dataContainer->metadata()->variable(0) == std::string()) {
+      this->m_dataContainer->setMetadata(c_outputMetadata[4]);
+    }
+  } else if (this->m_dataContainer->metadata()->dimension() == 2) {
+    if (this->m_dataContainer->metadata()->variable(1) == std::string()) {
+      this->m_dataContainer->setMetadata(c_outputMetadata[7]);
+    }
+  } else if (this->m_dataContainer->metadata()->dimension() == 3) {
+    if (this->m_dataContainer->metadata()->variable(2) == std::string()) {
+      this->m_dataContainer->setMetadata(c_outputMetadata[1]);
+    }
+  }
+
   for (size_t i = 0; i < this->m_dataContainer->metadata()->dimension(); ++i) {
     this->m_varid.push_back(
         this->defineNetcdfVariable(dimid_node, dims, fill, i));
@@ -215,10 +233,13 @@ void WriteOutput::openFileNetCDF() {
     return;
   }
 
+  double dt = this->m_dataContainer->modelDt();
+
   //...Global attribute section
+  ierr += nc_put_att_double(this->m_ncid, NC_GLOBAL, "dt", NC_DOUBLE, 1, &dt);
   ierr += nc_put_att_double(this->m_ncid, NC_GLOBAL, "_FillValue", NC_DOUBLE, 1,
                             &fill);
-  ierr += nc_put_att_text(this->m_ncid, NC_GLOBAL, "model", 5, "ADCIRC");
+  ierr += nc_put_att_text(this->m_ncid, NC_GLOBAL, "model", 6, "ADCIRC");
   ierr +=
       nc_put_att_text(this->m_ncid, NC_GLOBAL, "version", 13, "AdcircModules");
   ierr +=
@@ -307,4 +328,49 @@ void WriteOutput::writeRecordAsciiSparse(const OutputRecord *record) {
   return;
 }
 
-void WriteOutput::writeRecordNetCDF(const OutputRecord *record) {}
+void WriteOutput::writeRecordNetCDF(const OutputRecord *record) {
+  double t = record->time();
+  nc_put_var1(this->m_ncid, this->m_varid_time, &this->m_recordsWritten, &t);
+
+  if (this->m_dataContainer->metadata()->dimension() == 1) {
+    double *z = new double[record->numNodes()];
+    for (size_t i = 0; i < record->numNodes(); ++i) {
+      z[i] = record->z(i);
+    }
+    const size_t start[2] = {this->m_recordsWritten, 0};
+    const size_t count[2] = {1, record->numNodes()};
+    nc_put_vara(this->m_ncid, this->m_varid[0], start, count, z);
+    delete[] z;
+  } else if (this->m_dataContainer->metadata()->dimension() == 2) {
+    double *u = new double[record->numNodes()];
+    double *v = new double[record->numNodes()];
+    for (size_t i = 0; i < record->numNodes(); ++i) {
+      u[i] = record->u(i);
+      v[i] = record->v(i);
+    }
+    const size_t start[2] = {this->m_recordsWritten, 0};
+    const size_t count[2] = {1, record->numNodes()};
+    nc_put_vara(this->m_ncid, this->m_varid[0], start, count, u);
+    nc_put_vara(this->m_ncid, this->m_varid[1], start, count, v);
+    delete[] u;
+    delete[] v;
+  } else if (this->m_dataContainer->metadata()->dimension() == 3) {
+    double *u = new double[record->numNodes()];
+    double *v = new double[record->numNodes()];
+    double *w = new double[record->numNodes()];
+    for (size_t i = 0; i < record->numNodes(); ++i) {
+      u[i] = record->u(i);
+      v[i] = record->v(i);
+      w[i] = record->w(i);
+    }
+    const size_t start[2] = {this->m_recordsWritten, 0};
+    const size_t count[2] = {1, record->numNodes()};
+    nc_put_vara(this->m_ncid, this->m_varid[0], start, count, u);
+    nc_put_vara(this->m_ncid, this->m_varid[1], start, count, v);
+    nc_put_vara(this->m_ncid, this->m_varid[2], start, count, w);
+    delete[] u;
+    delete[] v;
+    delete[] w;
+  }
+  return;
+}
