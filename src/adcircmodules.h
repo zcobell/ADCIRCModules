@@ -36,5 +36,6 @@
 #include "multithreading.h"
 #include "nodalattributes.h"
 #include "readoutputfile.h"
+#include "writeoutputfile.h"
 
 #endif  // ADCMOD_ADCIRCMODULES_H

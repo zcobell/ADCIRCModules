@@ -1,9 +1,34 @@
+/*------------------------------GPL---------------------------------------//
+// This file is part of ADCIRCModules.
+//
+// (c) 2015-2018 Zachary Cobell
+//
+// ADCIRCModules is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// ADCIRCModules is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
+//------------------------------------------------------------------------*/
 #include "writeoutputfile.h"
 #include "boost/format.hpp"
 #include "logging.h"
 #include "netcdf.h"
 
 using namespace Adcirc::Output;
+
+static boost::format s_adcircAsciiScalar("%8i     %20.10e");
+static boost::format s_adcircAsciiVector("%8i     %20.10e     %20.10e");
+static boost::format s_adcircAscii3d("%8i     %20.10e     %20.10e     %20.10e");
+static boost::format s_adcircRecordHeaderSparse(
+    "%20.10e     %10i  %10i %20.10e");
+static boost::format s_adcircRecordHeaderFull("%20.10e     %10i ");
 
 WriteOutput::WriteOutput(const std::string &filename,
                          Adcirc::Output::ReadOutputFile *dataContainer,
@@ -41,6 +66,7 @@ void WriteOutput::close() {
     nc_close(this->m_ncid);
   } else if (this->m_format == Adcirc::Output::OutputHdf5) {
   }
+  this->m_isOpen = false;
 }
 
 void WriteOutput::writeSparseAscii(bool s) {
@@ -54,7 +80,7 @@ void WriteOutput::writeSparseAscii(bool s) {
   }
 }
 
-void WriteOutput::write(const OutputRecord &record) {
+void WriteOutput::write(const OutputRecord *record) {
   if (!this->m_isOpen) {
     adcircmodules_throw_exception("WriteOutput: File has not been opened.");
   }
@@ -222,40 +248,63 @@ void WriteOutput::setFilename(const std::string &filename) {
 
 std::string WriteOutput::filename() const { return this->m_filename; }
 
-void WriteOutput::writeRecordAsciiFull(const OutputRecord &record) {
-  std::string header = boost::str(boost::format("%20.10e3     %10i ") %
-                                  record.time() % record.iteration());
-  this->m_fid << header << std::endl;
-  for (size_t i = 0; i < record.numNodes(); ++i) {
-    std::string l;
-    if (this->m_dataContainer->metadata()->dimension() == 1) {
-      l = boost::str(boost::format("%8i     %20.10e3") % (i + 1) % record.z(i));
-    } else if (this->m_dataContainer->metadata()->dimension() == 2) {
-      if (this->m_dataContainer->metadata()->isMax()) {
-        l = boost::str(boost::format("%8i     %20.10e3") % (i + 1) %
-                       record.z(i));
-      } else {
-        l = boost::str(boost::format("%8i     %20.10e3     %20.10e3") %
-                       (i + 1) % record.u(i) % record.v(i));
-      }
-    } else if (this->m_dataContainer->metadata()->dimension() == 3) {
-      l = boost::str(
-          boost::format("%8i     %20.10e3     %20.10e3     %20.10e3") %
-          (i + 1) % record.u(i) % record.v(i) % record.w(i));
+void WriteOutput::writeAsciiNodeRecord(size_t i, const OutputRecord *record) {
+  std::string l;
+  if (this->m_dataContainer->metadata()->dimension() == 1) {
+    l = boost::str(s_adcircAsciiScalar % (i + 1) % record->z(i));
+  } else if (this->m_dataContainer->metadata()->dimension() == 2) {
+    if (this->m_dataContainer->metadata()->isMax()) {
+      l = boost::str(s_adcircAsciiScalar % (i + 1) % record->z(i));
+    } else {
+      l = boost::str(s_adcircAsciiVector % (i + 1) % record->u(i) %
+                     record->v(i));
     }
-    this->m_fid << l << std::endl;
+  } else if (this->m_dataContainer->metadata()->dimension() == 3) {
+    l = boost::str(s_adcircAscii3d % (i + 1) % record->u(i) % record->v(i) %
+                   record->w(i));
+  }
+  this->m_fid << l << std::endl;
+  return;
+}
+
+void WriteOutput::writeRecordAsciiFull(const OutputRecord *record) {
+  std::string header = boost::str(s_adcircRecordHeaderFull % record->time() %
+                                  record->iteration());
+  this->m_fid << header << std::endl;
+  for (size_t i = 0; i < record->numNodes(); ++i) {
+    this->writeAsciiNodeRecord(i, record);
   }
   if (this->m_dataContainer->metadata()->isMax() &&
       this->m_dataContainer->metadata()->dimension() == 2) {
-    for (size_t i = 0; i < record.numNodes(); ++i) {
-      this->m_fid << boost::str(boost::format("%8i     %20.10e3") % (i + 1) %
-                                record.v(i))
+    for (size_t i = 0; i < record->numNodes(); ++i) {
+      this->m_fid << boost::str(s_adcircAsciiScalar % (i + 1) % record->v(i))
                   << std::endl;
     }
   }
   return;
 }
 
-void WriteOutput::writeRecordAsciiSparse(const OutputRecord &record) {}
+void WriteOutput::writeRecordAsciiSparse(const OutputRecord *record) {
+  std::string header = boost::str(
+      s_adcircRecordHeaderSparse % record->time() % record->iteration() %
+      record->numNonDefault() % record->defaultValue());
 
-void WriteOutput::writeRecordNetCDF(const OutputRecord &record) {}
+  this->m_fid << header << std::endl;
+  for (size_t i = 0; i < record->numNodes(); ++i) {
+    if (!record->isDefault(i)) {
+      this->writeAsciiNodeRecord(i, record);
+    }
+  }
+  if (this->m_dataContainer->metadata()->isMax() &&
+      this->m_dataContainer->metadata()->dimension() == 2) {
+    for (size_t i = 0; i < record->numNodes(); ++i) {
+      if (!record->isDefault(i)) {
+        this->m_fid << boost::str(s_adcircAsciiScalar % (i + 1) % record->v(i))
+                    << std::endl;
+      }
+    }
+  }
+  return;
+}
+
+void WriteOutput::writeRecordNetCDF(const OutputRecord *record) {}

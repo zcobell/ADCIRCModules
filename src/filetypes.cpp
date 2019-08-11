@@ -39,7 +39,8 @@ Adcirc::Output::OutputFormat getOutputFormatFromExtension(
     const std::string& filename) {
   std::string extension = getExtension(filename);
   if (extension == "nc") return Adcirc::Output::OutputNetcdf4;
-  if (extension == "h5") return Adcirc::Output::OutputHdf5;
+  if (extension == "h5" || extension == "hdf5")
+    return Adcirc::Output::OutputHdf5;
   return Adcirc::Output::OutputAsciiFull;
 }
 

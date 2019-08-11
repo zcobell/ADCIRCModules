@@ -75,9 +75,21 @@ win32 {
 
 #...For unix, we assume netCDF exists in the path if it is not provided on the command line
 #   via qmake NETCDFHOME=$(NETCDFPATH)
-unix{
+unix:!macx{
     isEmpty(NETCDFHOME){
         LIBS += -lnetcdf
+    }else{
+        LIBS += -L$$NETCDFHOME/lib -lnetcdf
+        INCLUDEPATH += $$NETCDFHOME/include
+    }
+    LIBS+= -lgdal
+}
+
+macx{
+    isEmpty(NETCDFHOME){
+        LIBS += -lnetcdf
+        INCLUDEPATH += /usr/local/Cellar/netcdf/4.6.3_1/include
+        INCLUDEPATH += /usr/local/Cellar/hdf5/1.10.5_1/include
     }else{
         LIBS += -L$$NETCDFHOME/lib -lnetcdf
         INCLUDEPATH += $$NETCDFHOME/include
@@ -201,6 +213,7 @@ unix{
     target.path = $$PREFIX/lib
     INSTALLS += target
 }
+
 
 #...Ensure that git is in the system path. If not using GIT comment these two lines
 GIT_VERSION = $$system(git --git-dir $$PWD/../.git --work-tree $$PWD/.. describe --always --tags)

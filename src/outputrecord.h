@@ -96,9 +96,9 @@ class OutputRecord {
   size_t record() const;
   void setRecord(size_t record);
 
-  size_t numNonDefault();
+  size_t numNonDefault() const;
 
-  bool isDefault(size_t index);
+  bool isDefault(size_t index) const;
 
   Adcirc::Output::OutputMetadata* metadata();
   void setMetadata(Adcirc::Output::OutputMetadata metadata);

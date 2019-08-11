@@ -501,7 +501,7 @@ std::vector<double> OutputRecord::directions(AngleUnits angleType) {
   return d;
 }
 
-bool OutputRecord::isDefault(size_t index) {
+bool OutputRecord::isDefault(size_t index) const {
   if (this->m_metadata.dimension() == 1 || this->m_metadata.isMax()) {
     return std::abs(this->m_u[index] - this->defaultValue()) <=
            std::numeric_limits<double>::epsilon();
@@ -522,11 +522,12 @@ bool OutputRecord::isDefault(size_t index) {
   }
 }
 
-size_t OutputRecord::numNonDefault() {
+size_t OutputRecord::numNonDefault() const {
   size_t count = 0;
   for (size_t i = 0; i < this->m_numNodes; ++i) {
     count += this->isDefault(i) ? 0 : 1;
   }
+  return count;
 }
 
 Adcirc::Output::OutputMetadata* OutputRecord::metadata() {
