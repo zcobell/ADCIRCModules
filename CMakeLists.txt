@@ -211,9 +211,9 @@ IF(WIN32)
     SET(NETCDF_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/thirdparty/netcdf/include" ) 
 ELSE(WIN32)
 	IF(NOT "${NETCDFHOME}" STREQUAL "")
-		SET(NETCDF_DIR "${NETCDFHOME}")
+        SET(NETCDF_DIR "${NETCDFHOME}" CACHE STRING "Location of NETCDF Library")
 	ELSEIF(NOT $ENV{NETCDFHOME} STREQUAL "")
-		SET(NETCDF_DIR $ENV{NETCDFHOME})
+        SET(NETCDF_DIR $ENV{NETCDFHOME} CACHE STRING "Locatin of NETCDF Library")
 	ENDIF(NOT "${NETCDFHOME}" STREQUAL "")
 
 	FIND_PACKAGE(NetCDF)
@@ -246,6 +246,17 @@ ELSE(WIN32)
 ENDIF(WIN32)
 ###########################################################################
 
+###########################################################################
+#  HDF5
+###########################################################################
+cmake_policy(SET CMP0074 NEW)
+IF(NOT "${HDF5HOME}" STREQUAL "")
+    SET(HDF5_ROOT "${HDF5HOME}" CACHE STRING "Location of HDF5 Library")
+ELSEIF(NOT $ENV{HDF5HOME} STREQUAL "")
+    SET(HDF5_ROOT $ENV{HDF5HOME} CACHE STRING "Location of HDF5 Library")
+ENDIF(NOT "${HDF5HOME}" STREQUAL "")
+Find_Package(HDF5)
+###########################################################################
 
 ###########################################################################
 # OpenMP
@@ -263,7 +274,7 @@ ENDIF(ENABLE_OPENMP)
 ###########################################################################
 IF(NOT "${OPENSSLHOME}" STREQUAL "")
     SET(OPENSSL_ROOT_DIR "${OPENSSLHOME}")
-ELSEIF(NOT $ENV{NETCDFHOME} STREQUAL "")
+ELSEIF(NOT $ENV{OPENSSLHOME} STREQUAL "")
     SET(OPENSSL_ROOT_DIR $ENV{OPENSSLHOME})
 ENDIF(NOT "${OPENSSLHOME}" STREQUAL "")
 FIND_PACKAGE(OpenSSL)
@@ -462,6 +473,11 @@ IF(OPENMP_FOUND)
     TARGET_LINK_LIBRARIES(  adcircmodules ${OpenMP_CXX_LIB_NAMES} ${OpenMP_CXX_FLAGS} )
 ENDIF(OPENMP_FOUND)
 
+IF(HDF5_FOUND)
+    TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE HAVE_HDF5 ${HDF5_DEFINITIONS} )
+    TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${HDF5_INCLUDE_DIRS} )
+    TARGET_LINK_LIBRARIES( adcircmodules ${HDF5_LIBRARIES} )
+ENDIF(HDF5_FOUND)
 
 ###########################################################################
 
@@ -654,7 +670,8 @@ IF(UNIX OR CYGWIN)
                       cxx_readnetcdfHarmonicsElevation.cpp  cxx_readnetcdfHarmonicsVelocity.cpp
                       cxx_checkmesh.cpp cxx_read2dm.cpp cxx_kdtree.cpp cxx_hash.cpp cxx_hashmesh.cpp 
                       cxx_writeasciifull.cpp cxx_writeasciisparse.cpp cxx_writeasciifullvector.cpp 
-                      cxx_writeasciisparsevector.cpp cxx_writenetcdf.cpp cxx_writenetcdfvector.cpp )
+                      cxx_writeasciisparsevector.cpp cxx_writenetcdf.cpp cxx_writenetcdfvector.cpp 
+                      cxx_writehdf5.cpp )
 
         IF(ENABLE_GDAL)
             SET(TEST_LIST ${TEST_LIST} cxx_interpolateRaster.cpp cxx_interpolateManning.cpp cxx_interpolateDwind.cpp ) 

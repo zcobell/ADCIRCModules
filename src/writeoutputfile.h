@@ -35,7 +35,8 @@ class WriteOutput {
   ~WriteOutput();
   void open();
   void close();
-  void write(const Adcirc::Output::OutputRecord *record);
+  void write(const Adcirc::Output::OutputRecord *record,
+             const Adcirc::Output::OutputRecord *record2 = nullptr);
   void writeSparseAscii(bool s);
 
   std::string filename() const;
@@ -52,7 +53,13 @@ class WriteOutput {
   void writeRecordAsciiFull(const Adcirc::Output::OutputRecord *record);
   void writeRecordAsciiSparse(const Adcirc::Output::OutputRecord *record);
   void writeRecordNetCDF(const Adcirc::Output::OutputRecord *record);
+  void writeRecordHdf5(const Adcirc::Output::OutputRecord *recordElevation,
+                       const Adcirc::Output::OutputRecord *recordVelocity);
   void writeAsciiNodeRecord(size_t i, const OutputRecord *record);
+  void hdf5_createDataset(const std::string &name, bool isVector);
+  void hdf5_appendRecord(const std::string &name,
+                         const Adcirc::Output::OutputRecord *record,
+                         bool isVector);
 
   Adcirc::Output::ReadOutputFile *m_dataContainer;
   Adcirc::Geometry::Mesh *m_mesh;
@@ -63,6 +70,7 @@ class WriteOutput {
   size_t m_recordsWritten;
   bool m_isOpen;
   int m_varid_time;
+  int64_t m_h5fid;
   std::vector<int> m_varid;
 };
 

@@ -19,6 +19,7 @@
 #include "writeoutputfile.h"
 #include "adcirc_outputfiles.h"
 #include "boost/format.hpp"
+#include "hdf5.h"
 #include "logging.h"
 #include "netcdf.h"
 
@@ -66,6 +67,7 @@ void WriteOutput::close() {
              this->m_format == Adcirc::Output::OutputNetcdf3) {
     nc_close(this->m_ncid);
   } else if (this->m_format == Adcirc::Output::OutputHdf5) {
+    H5Fclose(this->m_h5fid);
   }
   this->m_isOpen = false;
 }
@@ -81,7 +83,8 @@ void WriteOutput::writeSparseAscii(bool s) {
   }
 }
 
-void WriteOutput::write(const OutputRecord *record) {
+void WriteOutput::write(const OutputRecord *record,
+                        const OutputRecord *record2) {
   if (!this->m_isOpen) {
     adcircmodules_throw_exception("WriteOutput: File has not been opened.");
   }
@@ -93,7 +96,7 @@ void WriteOutput::write(const OutputRecord *record) {
              this->m_format == Adcirc::Output::OutputNetcdf4) {
     this->writeRecordNetCDF(record);
   } else if (this->m_format == Adcirc::Output::OutputHdf5) {
-    adcircmodules_throw_exception("Not implemented");
+    this->writeRecordHdf5(record, record2);
   }
   this->m_recordsWritten++;
   return;
@@ -261,7 +264,78 @@ void WriteOutput::openFileNetCDF() {
   return;
 }
 
-void WriteOutput::openFileHdf5() {}
+void WriteOutput::hdf5_createDataset(const std::string &name, bool isVector) {
+  //...Create metadata
+  const hsize_t dims_tm[1] = {0};
+  const hsize_t dims_val[3] = {0, this->m_dataContainer->numNodes(), 2};
+  const hsize_t dims_tm_max[1] = {H5S_UNLIMITED};
+  const hsize_t dims_val_max[3] = {H5S_UNLIMITED,
+                                   this->m_dataContainer->numNodes(), 2};
+  const hsize_t dims_tm_chunk[1] = {1};
+  const hsize_t dims_val_chunk[3] = {1, this->m_dataContainer->numNodes(), 1};
+
+  //...Storage chunking
+  hid_t props_tm = H5Pcreate(H5P_DATASET_CREATE);
+  hid_t props_vl = H5Pcreate(H5P_DATASET_CREATE);
+
+  //...Create group
+  hid_t gid = H5Gcreate2(this->m_h5fid, name.c_str(), H5P_DEFAULT, H5P_DEFAULT,
+                         H5P_DEFAULT);
+
+  //...Create variable space
+  hid_t space_tm = H5Screate_simple(1, dims_tm, dims_tm_max);
+  H5Pset_chunk(props_tm, 1, dims_tm_chunk);
+
+  hid_t space_val = 0;
+  if (isVector) {
+    space_val = H5Screate_simple(3, dims_val, dims_val_max);
+    H5Pset_chunk(props_vl, 3, dims_val_chunk);
+  } else {
+    space_val = H5Screate_simple(2, dims_val, dims_val_max);
+    H5Pset_chunk(props_vl, 2, dims_val_chunk);
+  }
+
+  //...Compress storage
+  H5Pset_deflate(props_tm, 2);
+  H5Pset_deflate(props_vl, 2);
+
+  //...Set fillvalue
+  if (isVector) {
+    float fill = 0.0f;
+    H5Pset_fill_value(props_vl, H5T_IEEE_F32LE, &fill);
+  } else {
+    float fill = Adcirc::Output::defaultOutputValue();
+    H5Pset_fill_value(props_vl, H5T_IEEE_F32LE, &fill);
+  }
+
+  //...Create datasets
+  hid_t did_tm = H5Dcreate2(gid, "Times", H5T_IEEE_F64LE, space_tm, H5P_DEFAULT,
+                            props_tm, H5P_DEFAULT);
+  hid_t did_val = H5Dcreate2(gid, "Values", H5T_IEEE_F32LE, space_val,
+                             H5P_DEFAULT, props_vl, H5P_DEFAULT);
+
+  //...Close
+  H5Sclose(space_tm);
+  H5Sclose(space_val);
+  H5Dclose(did_tm);
+  H5Dclose(did_val);
+  H5Gclose(gid);
+
+  return;
+}
+
+void WriteOutput::openFileHdf5() {
+  this->m_h5fid = H5Fcreate(this->m_filename.c_str(), H5F_ACC_TRUNC,
+                            H5P_DEFAULT, H5P_DEFAULT);
+  hid_t gid_dataset = H5Gcreate2(this->m_h5fid, "/Datasets", H5P_DEFAULT,
+                                 H5P_DEFAULT, H5P_DEFAULT);
+  this->hdf5_createDataset("/Datasets/Depth-averaged Velocity (64)", true);
+  this->hdf5_createDataset("/Datasets/Water Surface Elevation (63)", false);
+
+  H5Gclose(gid_dataset);
+
+  return;
+}
 
 void WriteOutput::setFilename(const std::string &filename) {
   this->m_filename = filename;
@@ -368,6 +442,115 @@ void WriteOutput::writeRecordNetCDF(const OutputRecord *record) {
     delete[] u;
     delete[] v;
     delete[] w;
+  }
+  return;
+}
+
+void WriteOutput::hdf5_appendRecord(const std::string &name,
+                                    const Adcirc::Output::OutputRecord *record,
+                                    bool isVector) {
+  //...Names
+  const std::string name_time = name + "/Times";
+  const std::string name_values = name + "/Values";
+
+  //...Get the dataset ids
+  hid_t did_tm = H5Dopen2(this->m_h5fid, name_time.c_str(), H5P_DEFAULT);
+  hid_t did_val = H5Dopen2(this->m_h5fid, name_values.c_str(), H5P_DEFAULT);
+
+  //...Get data spaces
+  hid_t sid_tm = H5Dget_space(did_tm);
+  hid_t sid_vl = H5Dget_space(did_val);
+
+  //..Get extents
+  hsize_t dimtm[1], dimval[3];
+  H5Sget_simple_extent_dims(sid_tm, dimtm, NULL);
+  H5Sget_simple_extent_dims(sid_vl, dimval, NULL);
+
+  //...Create new extents
+  hsize_t offset_tm[1] = {dimtm[0]};
+  hsize_t offset_val[3] = {dimval[0], 0, 0};
+  hsize_t dimtm_new[1] = {1};
+  hsize_t dimval_new_sca[2] = {1, record->numNodes()};
+  hsize_t dimval_new_vec[3] = {1, record->numNodes(), 2};
+  dimtm[0]++;
+  dimval[0]++;
+
+  //...Extend the datasets
+  H5Dset_extent(did_tm, dimtm);
+  H5Dset_extent(did_val, dimval);
+
+  //...Get a new hyperslab
+  hid_t fs_tm = H5Dget_space(did_tm);
+  hid_t fs_val = H5Dget_space(did_val);
+  H5Sselect_hyperslab(fs_tm, H5S_SELECT_SET, offset_tm, NULL, dimtm_new, NULL);
+  if (isVector) {
+    H5Sselect_hyperslab(fs_val, H5S_SELECT_SET, offset_val, NULL,
+                        dimval_new_vec, NULL);
+  } else {
+    H5Sselect_hyperslab(fs_val, H5S_SELECT_SET, offset_val, NULL,
+                        dimval_new_sca, NULL);
+  }
+
+  //...Define the memory space
+  hid_t ms_tm = H5Screate_simple(1, dimtm_new, NULL);
+  hid_t ms_val = 0;
+  if (isVector) {
+    ms_val = H5Screate_simple(3, dimval_new_vec, NULL);
+  } else {
+    ms_val = H5Screate_simple(2, dimval_new_sca, NULL);
+  }
+
+  //...Write the new data
+  double time[1] = {record->time()};
+  H5Dwrite(did_tm, H5T_IEEE_F64LE, ms_tm, fs_tm, H5P_DEFAULT, time);
+
+  if (isVector) {
+    size_t idx = 0;
+    float *uv = new float[record->numNodes() * 2];
+    for (size_t i = 0; i < record->numNodes(); ++i) {
+      float u = static_cast<float>(record->u(i));
+      float v = static_cast<float>(record->v(i));
+      if (u < -9990) u = 0.0f;
+      if (v < -9990) v = 0.0f;
+      uv[idx] = u;
+      idx++;
+      uv[idx] = v;
+      idx++;
+    }
+    H5Dwrite(did_val, H5T_IEEE_F32LE, ms_val, fs_val, H5P_DEFAULT, uv);
+  } else {
+    float *wse = new float[record->numNodes()];
+    for (size_t i = 0; i < record->numNodes(); ++i) {
+      wse[i] = static_cast<float>(record->z(i));
+    }
+    H5Dwrite(did_val, H5T_IEEE_F32LE, ms_val, fs_val, H5P_DEFAULT, wse);
+    delete[] wse;
+  }
+
+  //...Close datasets
+  H5Sclose(ms_tm);
+  H5Sclose(ms_val);
+
+  H5Sclose(fs_tm);
+  H5Sclose(fs_val);
+
+  H5Sclose(sid_tm);
+  H5Sclose(sid_vl);
+
+  H5Dclose(did_tm);
+  H5Dclose(did_val);
+
+  return;
+}
+
+void WriteOutput::writeRecordHdf5(
+    const Adcirc::Output::OutputRecord *recordElevation,
+    const Adcirc::Output::OutputRecord *recordVelocity) {
+  this->hdf5_appendRecord("/Datasets/Water Surface Elevation (63)",
+                          recordElevation, false);
+  if (recordVelocity != nullptr) {
+    this->hdf5_appendRecord("/Datasets/Depth-averaged Velocity (64)",
+                            recordVelocity, true);
   }
   return;
 }
