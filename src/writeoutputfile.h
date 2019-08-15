@@ -56,10 +56,21 @@ class WriteOutput {
   void writeRecordHdf5(const Adcirc::Output::OutputRecord *recordElevation,
                        const Adcirc::Output::OutputRecord *recordVelocity);
   void writeAsciiNodeRecord(size_t i, const OutputRecord *record);
-  void hdf5_createDataset(const std::string &name, bool isVector);
-  void hdf5_appendRecord(const std::string &name,
+
+  void h5_createDataset(const std::string &name, bool isVector);
+  void h5_appendRecord(const std::string &name,
                          const Adcirc::Output::OutputRecord *record,
                          bool isVector);
+  void h5_defineStringAttribute(int64_t id, const std::string &name,
+                                const std::string &value);
+  void h5_defineIntegerAttribute(int64_t id, const std::string &name,
+                                 int value);
+  void h5_defineFloatAttribute(int64_t id, const std::string &name,
+                               float value);
+  void h5_defineDoubleAttribute(int64_t id, const std::string &name,
+                                double value);
+  void h5_createPropertiesGroup(int64_t gid, bool isVector);
+  void h5_defineFiletype();
 
   Adcirc::Output::ReadOutputFile *m_dataContainer;
   Adcirc::Geometry::Mesh *m_mesh;
