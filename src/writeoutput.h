@@ -21,7 +21,6 @@
 
 #include <fstream>
 #include "mesh.h"
-#include "outputfile.h"
 #include "outputrecord.h"
 #include "readoutput.h"
 
