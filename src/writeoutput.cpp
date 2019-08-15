@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "writeoutput.h"
+#include <cstring>
 #include "adcirc_outputfiles.h"
 #include "boost/format.hpp"
 #include "hdf5.h"
