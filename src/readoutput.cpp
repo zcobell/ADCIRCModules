@@ -96,7 +96,7 @@ void ReadOutput::setHeader(const std::string& header) {
   this->m_header = header;
 }
 
-Adcirc::Output::OutputFormat ReadOutput::setFiletype(OutputFormat filetype) {
+void ReadOutput::setFiletype(OutputFormat filetype) {
   this->m_filetype = filetype;
 }
 
@@ -666,6 +666,8 @@ void ReadOutput::readNetcdfRecord(size_t snap,
         return;
       }
       record->setAll(this->numNodes(), u, v);
+      delete[] u;
+      delete[] v;
     }
   } else {
     size_t start[2], count[2];
@@ -685,6 +687,7 @@ void ReadOutput::readNetcdfRecord(size_t snap,
         return;
       }
       record->setAll(this->numNodes(), u);
+      delete[] u;
     } else if (this->metadata()->dimension() == 2) {
       double* u = new double[this->numNodes()];
       double* v = new double[this->numNodes()];

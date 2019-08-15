@@ -739,6 +739,7 @@ void WriteOutput::h5_appendRecord(const std::string &name,
       idx++;
     }
     H5Dwrite(did_val, H5T_IEEE_F32LE, ms_val, fs_val, H5P_DEFAULT, uv);
+    delete[] uv;
   } else {
     float *wse = new float[record->numNodes()];
     unsigned char *active = new unsigned char[record->numNodes()];

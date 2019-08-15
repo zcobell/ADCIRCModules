@@ -192,6 +192,10 @@ HEADERS += \
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib
 
+unix {
+    INCLUDEPATH += /usr/include/hdf5/serial
+}
+
 win32{
     isEmpty(PREFIX) {
         PREFIX = $$OUT_PWD

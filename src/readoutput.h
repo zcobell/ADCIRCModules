@@ -66,8 +66,7 @@ class ReadOutput {
   void setDiteration(int dit);
 
   Adcirc::Output::OutputFormat filetype() const;
-  Adcirc::Output::OutputFormat setFiletype(
-      Adcirc::Output::OutputFormat filetype);
+  void setFiletype(Adcirc::Output::OutputFormat filetype);
 
   size_t currentSnap() const;
   void setCurrentSnap(const size_t &currentSnap);
