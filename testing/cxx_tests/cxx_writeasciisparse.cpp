@@ -27,7 +27,7 @@ int main() {
   std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));
   mesh->read();
 
-  std::unique_ptr<ReadOutputFile> output(new ReadOutputFile("test_files/sparse_fort.63"));
+  std::unique_ptr<ReadOutput> output(new ReadOutput("test_files/sparse_fort.63"));
 
   //...Open file
   output->open();
@@ -53,7 +53,7 @@ int main() {
   writer->write(output->data(2));
   writer->close();
 
-  output.reset(new ReadOutputFile("test_files/fort.writesparse.63"));
+  output.reset(new ReadOutput("test_files/fort.writesparse.63"));
   writer.reset(nullptr);
 
   output->open();

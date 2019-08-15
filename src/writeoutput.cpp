@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#include "writeoutputfile.h"
+#include "writeoutput.h"
 #include "adcirc_outputfiles.h"
 #include "boost/format.hpp"
 #include "hdf5.h"
@@ -33,7 +33,7 @@ static boost::format s_adcircRecordHeaderSparse(
 static boost::format s_adcircRecordHeaderFull("%20.10e     %10i ");
 
 WriteOutput::WriteOutput(const std::string &filename,
-                         Adcirc::Output::ReadOutputFile *dataContainer,
+                         Adcirc::Output::ReadOutput *dataContainer,
                          Adcirc::Geometry::Mesh *mesh)
     : m_dataContainer(dataContainer),
       m_mesh(mesh),

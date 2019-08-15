@@ -23,7 +23,7 @@
 int main() {
   using namespace Adcirc::Geometry;
   using namespace Adcirc::Output;
-  std::unique_ptr<ReadOutputFile> output(new ReadOutputFile("test_files/maxele.63.nc"));
+  std::unique_ptr<ReadOutput> output(new ReadOutput("test_files/maxele.63.nc"));
   output->open();
   output->read();
   std::cout << "Expected: 0.365628193162685, Got: " << output->data(0)->z(7)

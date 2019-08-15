@@ -23,7 +23,7 @@
 int main() {
   using namespace Adcirc::Output;
 
-  std::unique_ptr<ReadOutputFile> output(new ReadOutputFile("test_files/fort.63"));
+  std::unique_ptr<ReadOutput> output(new ReadOutput("test_files/fort.63"));
 
   //...Open file
   output->open();

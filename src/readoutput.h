@@ -16,31 +16,73 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_READOUTPUTFILE_H
-#define ADCMOD_READOUTPUTFILE_H
+#ifndef ADCMOD_READOUTPUT_H
+#define ADCMOD_READOUTPUT_H
 
 #include <fstream>
 #include <memory>
 #include <unordered_map>
 #include <vector>
 #include "adcircmodules_global.h"
+#include "filetypes.h"
 #include "node.h"
-#include "outputfile.h"
+#include "outputmetadata.h"
 #include "outputrecord.h"
 
 namespace Adcirc {
 
 namespace Output {
 
-class ReadOutputFile : public OutputFile {
+class ReadOutput {
  public:
-  ReadOutputFile(const std::string &filename);
+  ReadOutput(const std::string &filename);
 
-  ~ReadOutputFile();
+  ~ReadOutput();
 
   void open();
 
   void close();
+
+  bool exists();
+
+  bool isOpen();
+
+  std::string header() const;
+  void setHeader(const std::string &header);
+
+  std::string filename() const;
+  void setFilename(const std::string &filename);
+
+  size_t numSnaps() const;
+  void setNumSnaps(size_t numSnaps);
+
+  size_t numNodes() const;
+  void setNumNodes(size_t numNodes);
+
+  double dt() const;
+  void setDt(double dt);
+
+  int dIteration() const;
+  void setDiteration(int dit);
+
+  Adcirc::Output::OutputFormat filetype() const;
+  Adcirc::Output::OutputFormat setFiletype(
+      Adcirc::Output::OutputFormat filetype);
+
+  size_t currentSnap() const;
+  void setCurrentSnap(const size_t &currentSnap);
+
+  double defaultValue() const;
+  void setDefaultValue(double defaultValue);
+
+  static const std::vector<Adcirc::Output::OutputMetadata>
+      *adcircFileMetadata();
+
+  Adcirc::Output::OutputMetadata *metadata();
+  void setMetadata(const Adcirc::Output::OutputMetadata &metadata);
+
+  double modelDt() const;
+  void setModelDt(double modelDt);
 
   void read(size_t snap = Adcirc::Output::nextOutputSnap());
 
@@ -54,10 +96,27 @@ class ReadOutputFile : public OutputFile {
   void clearAt(size_t position);
 
  private:
+  void setOpen(bool open);
+
   // variables
   std::fstream m_fid;
   std::vector<std::unique_ptr<Adcirc::Output::OutputRecord>> m_records;
   std::unordered_map<size_t, Adcirc::Output::OutputRecord *> m_recordMap;
+  bool m_open;
+  Adcirc::Output::OutputFormat m_filetype;
+  size_t m_currentSnap;
+  size_t m_numSnaps;
+  size_t m_numNodes;
+  double m_modelDt;
+  double m_dt;
+  double m_defaultValue;
+  int m_dit;
+  std::string m_filename;
+  std::string m_units;
+  std::string m_description;
+  std::string m_name;
+  std::string m_header;
+  Adcirc::Output::OutputMetadata m_metadata;
 
   // netcdf specific variables
   int m_ncid;
@@ -87,4 +146,4 @@ class ReadOutputFile : public OutputFile {
 }  // namespace Output
 }  // namespace Adcirc
 
-#endif  // ADCMOD_READOUTPUTFILE_H
+#endif  // ADCMOD_READOUTPUT_H

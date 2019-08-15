@@ -346,9 +346,8 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/attributemetadata.cpp
                 ${CMAKE_SOURCE_DIR}/src/outputmetadata.cpp
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.cpp 
-                ${CMAKE_SOURCE_DIR}/src/outputfile.cpp 
-                ${CMAKE_SOURCE_DIR}/src/readoutputfile.cpp 
-                ${CMAKE_SOURCE_DIR}/src/writeoutputfile.cpp 
+                ${CMAKE_SOURCE_DIR}/src/readoutput.cpp 
+                ${CMAKE_SOURCE_DIR}/src/writeoutput.cpp 
                 ${CMAKE_SOURCE_DIR}/src/harmonicsrecord.cpp
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.cpp 
                 ${CMAKE_SOURCE_DIR}/src/elementtable.cpp
@@ -412,7 +411,8 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/mesh.h
                 ${CMAKE_SOURCE_DIR}/src/nodalattributes.h
                 ${CMAKE_SOURCE_DIR}/src/node.h
-                ${CMAKE_SOURCE_DIR}/src/outputfile.h
+                ${CMAKE_SOURCE_DIR}/src/readoutput.h
+                ${CMAKE_SOURCE_DIR}/src/writeoutput.h
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.h
                 ${CMAKE_SOURCE_DIR}/src/meshchecker.h
                 ${CMAKE_SOURCE_DIR}/src/elementtable.h

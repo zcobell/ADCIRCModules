@@ -60,7 +60,7 @@ class OutputFile {
   double modelDt() const;
   void setModelDt(double modelDt);
 
-protected:
+
   void setOpen(bool open);
 
 private:

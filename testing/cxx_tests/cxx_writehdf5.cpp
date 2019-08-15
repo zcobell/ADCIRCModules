@@ -27,8 +27,8 @@ int main() {
   std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));
   mesh->read();
 
-  std::unique_ptr<ReadOutputFile> wse(new ReadOutputFile("test_files/fort.63"));
-  std::unique_ptr<ReadOutputFile> vel(new ReadOutputFile("test_files/fort.64"));
+  std::unique_ptr<ReadOutput> wse(new ReadOutput("test_files/fort.63"));
+  std::unique_ptr<ReadOutput> vel(new ReadOutput("test_files/fort.64"));
 
   //...Open file
   wse->open();
@@ -56,7 +56,7 @@ int main() {
   writer->write(wse->data(2),vel->data(2));
   writer->close();
 
-  //output.reset(new ReadOutputFile("test_files/fort.write.63.nc"));
+  //output.reset(new ReadOutput("test_files/fort.write.63.nc"));
   //writer.reset(nullptr);
 
   //output->open();

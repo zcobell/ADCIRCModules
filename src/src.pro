@@ -112,7 +112,7 @@ SOURCES += \
     hash_impl.cpp \
     outputfile.cpp \
     outputmetadata.cpp \
-    readoutputfile.cpp \
+    readoutput.cpp \
     stringconversion.cpp \
     boundary.cpp \
     element.cpp \
@@ -142,7 +142,7 @@ SOURCES += \
     kdtree_impl.cpp \
     kdtree.cpp \
     logging.cpp \
-    writeoutputfile.cpp
+    writeoutput.cpp
 
 HEADERS += \
     adcirc_outputfiles.h \
@@ -153,7 +153,7 @@ HEADERS += \
     hashtype.h \
     outputfile.h \
     outputmetadata.h \
-    readoutputfile.h \
+    readoutput.h \
     stringconversion.h \
     boundary.h \
     element.h \
@@ -187,7 +187,7 @@ HEADERS += \
     kdtree_impl.h \
     logging.h \
     default_values.h \
-    writeoutputfile.h
+    writeoutput.h
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib

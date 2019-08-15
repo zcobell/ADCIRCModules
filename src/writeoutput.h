@@ -16,21 +16,21 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef WRITEOUTPUTFILE_H
-#define WRITEOUTPUTFILE_H
+#ifndef WRITEOUTPUT_H
+#define WRITEOUTPUT_H
 
 #include <fstream>
 #include "mesh.h"
 #include "outputfile.h"
 #include "outputrecord.h"
-#include "readoutputfile.h"
+#include "readoutput.h"
 
 namespace Adcirc {
 namespace Output {
 
 class WriteOutput {
  public:
-  WriteOutput(const std::string &filename, ReadOutputFile *dataContainer,
+  WriteOutput(const std::string &filename, ReadOutput *dataContainer,
               Geometry::Mesh *mesh = nullptr);
   ~WriteOutput();
   void open();
@@ -72,7 +72,7 @@ class WriteOutput {
   void h5_createPropertiesGroup(int64_t gid, bool isVector);
   void h5_defineFiletype();
 
-  Adcirc::Output::ReadOutputFile *m_dataContainer;
+  Adcirc::Output::ReadOutput *m_dataContainer;
   Adcirc::Geometry::Mesh *m_mesh;
   Adcirc::Output::OutputFormat m_format;
   std::ofstream m_fid;
@@ -88,4 +88,4 @@ class WriteOutput {
 }  // namespace Output
 }  // namespace Adcirc
 
-#endif  // WRITEOUTPUTFILE_H
+#endif  // WRITEOUTPUT_H

@@ -16,13 +16,14 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#include "readoutputfile.h"
+#include "readoutput.h"
 #include <cassert>
 #include <cmath>
 #include <fstream>
 #include <iostream>
 #include <memory>
 #include <utility>
+#include "adcirc_outputfiles.h"
 #include "fileio.h"
 #include "filetypes.h"
 #include "logging.h"
@@ -31,12 +32,99 @@
 
 using namespace Adcirc::Output;
 
-ReadOutputFile::ReadOutputFile(const std::string& filename)
-    : OutputFile(filename) {}
+const std::vector<OutputMetadata>* ReadOutput::adcircFileMetadata() {
+  return &c_outputMetadata;
+}
 
-ReadOutputFile::~ReadOutputFile() { this->clear(); }
+ReadOutput::ReadOutput(const std::string& filename)
+    : m_filename(filename),
+      m_currentSnap(0),
+      m_numNodes(0),
+      m_numSnaps(0),
+      m_dt(0),
+      m_modelDt(0),
+      m_dit(0),
+      m_open(false),
+      m_defaultValue(Adcirc::Output::defaultOutputValue()),
+      m_filetype(Adcirc::Output::OutputUnknown),
+      m_units("n/a"),
+      m_description("n/a"),
+      m_name("n/a"),
+      m_metadata(OutputMetadata()) {}
 
-void ReadOutputFile::clear() {
+ReadOutput::~ReadOutput() { this->clear(); }
+
+std::string ReadOutput::filename() const { return this->m_filename; }
+
+void ReadOutput::setFilename(const std::string& filename) {
+  if (!this->isOpen()) {
+    this->m_filename = filename;
+  } else {
+    adcircmodules_throw_exception(
+        "OutputFile: Cannot change filename since file currently open");
+  }
+}
+
+bool ReadOutput::isOpen() { return this->m_open; }
+
+bool ReadOutput::exists() {
+  std::ifstream f(this->m_filename.c_str());
+  return f.good();
+}
+
+size_t ReadOutput::numSnaps() const { return this->m_numSnaps; }
+
+void ReadOutput::setNumSnaps(size_t numSnaps) { this->m_numSnaps = numSnaps; }
+
+size_t ReadOutput::numNodes() const { return this->m_numNodes; }
+
+void ReadOutput::setNumNodes(size_t numNodes) { this->m_numNodes = numNodes; }
+
+double ReadOutput::dt() const { return this->m_dt; }
+
+void ReadOutput::setDt(double dt) { this->m_dt = dt; }
+
+int ReadOutput::dIteration() const { return this->m_dit; }
+
+void ReadOutput::setDiteration(int dit) { this->m_dit = dit; }
+
+OutputFormat ReadOutput::filetype() const { return this->m_filetype; }
+
+std::string ReadOutput::header() const { return this->m_header; }
+
+void ReadOutput::setHeader(const std::string& header) {
+  this->m_header = header;
+}
+
+Adcirc::Output::OutputFormat ReadOutput::setFiletype(OutputFormat filetype) {
+  this->m_filetype = filetype;
+}
+
+size_t ReadOutput::currentSnap() const { return this->m_currentSnap; }
+
+void ReadOutput::setCurrentSnap(const size_t& currentSnap) {
+  this->m_currentSnap = currentSnap;
+}
+
+void ReadOutput::setOpen(bool open) { this->m_open = open; }
+
+double ReadOutput::modelDt() const { return this->m_modelDt; }
+
+void ReadOutput::setModelDt(double modelDt) { this->m_modelDt = modelDt; }
+
+OutputMetadata* ReadOutput::metadata() { return &this->m_metadata; }
+
+void ReadOutput::setMetadata(const OutputMetadata& metadata) {
+  this->m_metadata = metadata;
+}
+
+double ReadOutput::defaultValue() const { return this->m_defaultValue; }
+
+void ReadOutput::setDefaultValue(double defaultValue) {
+  this->m_defaultValue = defaultValue;
+}
+
+void ReadOutput::clear() {
   for (auto& m_record : this->m_records) {
     m_record.reset(nullptr);
   }
@@ -44,7 +132,7 @@ void ReadOutputFile::clear() {
   this->m_recordMap.clear();
 }
 
-void ReadOutputFile::clearAt(size_t position) {
+void ReadOutput::clearAt(size_t position) {
   assert(position < this->m_records.size());
   if (position < this->m_records.size()) {
     this->m_records[position].reset(nullptr);
@@ -55,7 +143,7 @@ void ReadOutputFile::clearAt(size_t position) {
   }
 }
 
-void ReadOutputFile::open() {
+void ReadOutput::open() {
   if (this->isOpen()) {
     adcircmodules_throw_exception("OutputFile: File already open");
   }
@@ -88,7 +176,7 @@ void ReadOutputFile::open() {
   return;
 }
 
-void ReadOutputFile::close() {
+void ReadOutput::close() {
   assert(this->isOpen());
 
   if (!this->isOpen()) {
@@ -112,7 +200,7 @@ void ReadOutputFile::close() {
   return;
 }
 
-void ReadOutputFile::read(size_t snap) {
+void ReadOutput::read(size_t snap) {
   std::unique_ptr<OutputRecord> record;
 
   if (this->filetype() == Adcirc::Output::OutputAsciiFull ||
@@ -139,7 +227,7 @@ void ReadOutputFile::read(size_t snap) {
   return;
 }
 
-void ReadOutputFile::openAscii() {
+void ReadOutput::openAscii() {
   if (this->isOpen()) {
     adcircmodules_throw_exception("OutputFile: File already open");
   }
@@ -152,7 +240,7 @@ void ReadOutputFile::openAscii() {
   }
 }
 
-void ReadOutputFile::openNetcdf() {
+void ReadOutput::openNetcdf() {
   if (!this->isOpen()) {
     int ierr = nc_open(this->filename().c_str(), NC_NOWRITE, &this->m_ncid);
     if (ierr != NC_NOERR) {
@@ -166,7 +254,7 @@ void ReadOutputFile::openNetcdf() {
   return;
 }
 
-void ReadOutputFile::closeAscii() {
+void ReadOutput::closeAscii() {
   if (this->isOpen()) {
     this->m_fid.close();
     this->setOpen(false);
@@ -176,7 +264,7 @@ void ReadOutputFile::closeAscii() {
   return;
 }
 
-void ReadOutputFile::closeNetcdf() {
+void ReadOutput::closeNetcdf() {
   if (this->isOpen()) {
     nc_close(this->m_ncid);
     this->setOpen(false);
@@ -186,12 +274,12 @@ void ReadOutputFile::closeNetcdf() {
   return;
 }
 
-OutputRecord* ReadOutputFile::data(size_t snap) {
+OutputRecord* ReadOutput::data(size_t snap) {
   bool ok;
   return this->data(snap, ok);
 }
 
-OutputRecord* ReadOutputFile::data(size_t snap, bool& ok) {
+OutputRecord* ReadOutput::data(size_t snap, bool& ok) {
   assert(this->m_recordMap.find(snap) != this->m_recordMap.end());
 
   if (this->m_recordMap.find(snap) == this->m_recordMap.end()) {
@@ -205,12 +293,12 @@ OutputRecord* ReadOutputFile::data(size_t snap, bool& ok) {
   }
 }
 
-OutputRecord* ReadOutputFile::dataAt(size_t position) {
+OutputRecord* ReadOutput::dataAt(size_t position) {
   bool ok;
   return this->dataAt(position, ok);
 }
 
-OutputRecord* ReadOutputFile::dataAt(size_t position, bool& ok) {
+OutputRecord* ReadOutput::dataAt(size_t position, bool& ok) {
   assert(position < this->m_records.size());
 
   if (position >= this->m_records.size()) {
@@ -224,7 +312,7 @@ OutputRecord* ReadOutputFile::dataAt(size_t position, bool& ok) {
   }
 }
 
-Adcirc::Output::OutputFormat ReadOutputFile::getFiletype() {
+Adcirc::Output::OutputFormat ReadOutput::getFiletype() {
   if (Adcirc::Output::checkFiletypeNetcdf3(this->filename())) {
     return Adcirc::Output::OutputNetcdf3;
   }
@@ -240,8 +328,8 @@ Adcirc::Output::OutputFormat ReadOutputFile::getFiletype() {
   return Adcirc::Output::OutputUnknown;
 }
 
-int ReadOutputFile::netcdfVariableSearch(size_t variableIndex,
-                                         OutputMetadata& filetypeFound) {
+int ReadOutput::netcdfVariableSearch(size_t variableIndex,
+                                     OutputMetadata& filetypeFound) {
   if (filetypeFound == OutputMetadata()) {
     const std::vector<OutputMetadata>* meta = this->adcircFileMetadata();
     for (size_t i = 0; i < meta->size(); ++i) {
@@ -266,7 +354,7 @@ int ReadOutputFile::netcdfVariableSearch(size_t variableIndex,
   }
 }
 
-void ReadOutputFile::findNetcdfVarId() {
+void ReadOutput::findNetcdfVarId() {
   assert(this->isOpen());
   assert(this->getFiletype() == Adcirc::Output::OutputNetcdf3 ||
          this->getFiletype() == Adcirc::Output::OutputNetcdf4);
@@ -315,7 +403,7 @@ void ReadOutputFile::findNetcdfVarId() {
   return;
 }
 
-void ReadOutputFile::readAsciiHeader() {
+void ReadOutput::readAsciiHeader() {
   assert(!this->filename().empty());
 
   if (this->filename().empty()) {
@@ -374,7 +462,7 @@ void ReadOutputFile::readAsciiHeader() {
   return;
 }
 
-void ReadOutputFile::readNetcdfHeader() {
+void ReadOutput::readNetcdfHeader() {
   assert(this->isOpen());
 
   int ierr = nc_inq_dimid(this->m_ncid, "time", &this->m_dimid_time);
@@ -444,7 +532,7 @@ void ReadOutputFile::readNetcdfHeader() {
   return;
 }
 
-void ReadOutputFile::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
+void ReadOutput::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
   std::string line;
 
   record = std::unique_ptr<OutputRecord>(new OutputRecord(
@@ -523,8 +611,8 @@ void ReadOutputFile::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
   return;
 }
 
-void ReadOutputFile::readNetcdfRecord(size_t snap,
-                                      std::unique_ptr<OutputRecord>& record) {
+void ReadOutput::readNetcdfRecord(size_t snap,
+                                  std::unique_ptr<OutputRecord>& record) {
   if (snap == Output::nextOutputSnap()) {
     snap = this->currentSnap();
   }
@@ -656,7 +744,7 @@ void ReadOutputFile::readNetcdfRecord(size_t snap,
   this->setCurrentSnap(this->currentSnap() + 1);
 }
 
-void ReadOutputFile::rebuildMap() {
+void ReadOutput::rebuildMap() {
   this->m_recordMap.clear();
   for (auto& m_record : this->m_records) {
     this->m_recordMap[m_record->record()] = m_record.get();

@@ -23,7 +23,7 @@
 int main() {
   using namespace Adcirc::Geometry;
   using namespace Adcirc::Output;
-  std::unique_ptr<ReadOutputFile> output(new ReadOutputFile("test_files/fort.63.nc"));
+  std::unique_ptr<ReadOutput> output(new ReadOutput("test_files/fort.63.nc"));
   output->open();
   std::cout << "Name: " << output->metadata()->variable() << std::endl;
   std::cout << "Description: " << output->metadata()->longName() << std::endl;
