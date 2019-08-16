@@ -249,7 +249,9 @@ ENDIF(WIN32)
 ###########################################################################
 #  HDF5
 ###########################################################################
-cmake_policy(SET CMP0074 NEW)
+IF(POLICY CMP0074)
+    cmake_policy(SET CMP0074 NEW)
+ENDIF(POLICY CMP0074)
 IF(NOT "${HDF5HOME}" STREQUAL "")
     SET(HDF5_ROOT "${HDF5HOME}" CACHE STRING "Location of HDF5 Library")
 ELSEIF(NOT $ENV{HDF5HOME} STREQUAL "")

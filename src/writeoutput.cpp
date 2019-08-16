@@ -16,6 +16,14 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
+
+//...Hack for multiple definition
+//   This seems to be an issue with the 
+//   build on some version of windows
+#if H5_SIZEOF_SSIZE_T == 0
+#define H5_SIZEOF_SSIZE_T H5_SIZEOF_LONG_LONG
+#endif
+
 #include "writeoutput.h"
 #include <cstring>
 #include "adcirc_outputfiles.h"
