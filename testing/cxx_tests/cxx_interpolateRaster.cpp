@@ -23,6 +23,19 @@
 int main() {
   using namespace Adcirc::Geometry;
   using namespace Interpolation;
+
+  std::vector<double> control = {
+      -9999.0,
+      -0.189941,
+      -0.142737,
+      2.22507e-308,
+      -0.396692,
+      -0.492634,
+      -0.460744,
+      -0.420481,
+      -0.749456
+  };
+
   std::unique_ptr<Mesh> m(new Mesh("test_files/ms-riv.grd"));
   m->read();
   m->defineProjection(4326, true);
@@ -43,4 +56,12 @@ int main() {
   }
 
   std::vector<double> r = g->computeValuesFromRaster();
+
+  for(size_t i=0;i<9;++i){
+      std::cout << i << " " << r[i] << " " << control[i] << std::endl;
+      if( std::abs(r[i]-control[i])>0.000001 )
+          return 1;
+  }
+
+  return 0;
 }
