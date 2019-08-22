@@ -494,9 +494,9 @@ int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
       x[k] = p.first;
       y[k] = p.second;
       if (std::is_same<T, int>::value) {
-        z[k] = this->m_intOnDisk[i - 1][j - 1];
+        z[k] = this->m_intOnDisk[i][j];
       } else if (std::is_same<T, double>::value) {
-        z[k] = this->m_doubleOnDisk[i - 1][j - 1];
+        z[k] = this->m_doubleOnDisk[i][j];
       } else {
         adcircmodules_throw_exception("Rasterdata: Invalid pixel type");
       }

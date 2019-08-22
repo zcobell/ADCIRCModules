@@ -94,7 +94,8 @@ GriddataImpl::GriddataImpl(Mesh *mesh, std::string rasterFile)
       m_calculateDwindPtr(nullptr),
       m_calculatePointPtr(nullptr),
       m_thresholdValue(0.0),
-      m_thresholdMethod(Interpolation::Threshold::NoThreshold) {
+      m_thresholdMethod(Interpolation::Threshold::NoThreshold),
+      m_rasterInMemory(false) {
   this->m_raster.reset(new Rasterdata(this->m_rasterFile));
   this->m_interpolationFlags.resize(this->m_mesh->numNodes());
   std::fill(this->m_interpolationFlags.begin(),

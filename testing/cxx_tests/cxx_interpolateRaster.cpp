@@ -25,15 +25,15 @@ int main() {
   using namespace Interpolation;
 
   std::vector<double> control = {
-      -9999.0,
-      -0.189941,
-      -0.142737,
-      2.22507e-308,
-      -0.396692,
-      -0.492634,
-      -0.460744,
-      -0.420481,
-      -0.749456
+    -9999.0, 
+    -0.117294,    
+    -0.142737,   
+    2.22507e-308, 
+    -0.370975,    
+    -0.477835,    
+    -0.475127,    
+    -0.397994,    
+    -0.607414    
   };
 
   std::unique_ptr<Mesh> m(new Mesh("test_files/ms-riv.grd"));
@@ -45,22 +45,36 @@ int main() {
 
   std::unique_ptr<Griddata> g(
       new Griddata(m.get(), "test_files/bathy_sampleraster.tif"));
+  std::unique_ptr<Griddata> gm(
+      new Griddata(m.get(), "test_files/bathy_sampleraster.tif"));
   g->setShowProgressBar(true);
+  gm->setShowProgressBar(true);
   g->setEpsg(26915);
+  gm->setEpsg(26915);
 
   for (size_t i = 0; i < m->numNodes(); ++i) {
     g->setInterpolationFlag(i, i % 9);
+    gm->setInterpolationFlag(i, i % 9);
     if (g->interpolationFlag(i) == 7 || g->interpolationFlag(i) == 8) {
       g->setFilterSize(i, 16.0);
+      gm->setFilterSize(i, 16.0);
     }
   }
 
+  g->setRasterInMemory(false);
+  gm->setRasterInMemory(true);
+
+  std::cout << "Interpolating from disk..." << std::endl;
   std::vector<double> r = g->computeValuesFromRaster();
 
+  std::cout << "Interpolating from memory..." << std::endl;
+  std::vector<double> rm = gm->computeValuesFromRaster();
+
   for(size_t i=0;i<9;++i){
-      std::cout << i << " " << r[i] << " " << control[i] << std::endl;
-      if( std::abs(r[i]-control[i])>0.000001 )
+      std::cout << i << " " << r[i] << " " << rm[i] << " " << control[i] << std::endl;
+      if( std::abs(r[i]-control[i])>0.000001 || std::abs(rm[i]-control[i])>0.000001 ){
           return 1;
+      }
   }
 
   return 0;
