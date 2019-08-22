@@ -23,6 +23,23 @@
 #include "cpl_conv.h"
 #include "cpl_error.h"
 #include "gdal_priv.h"
+#include "logging.h"
+
+//...Template Instantiation
+template int Rasterdata::pixelValue<int>(Pixel &p);
+template double Rasterdata::pixelValue<double>(Pixel &p);
+template int Rasterdata::pixelValues<int>(size_t ibegin, size_t jbegin,
+                                          size_t iend, size_t jend,
+                                          std::vector<double> &x,
+                                          std::vector<double> &y,
+                                          std::vector<int> &z);
+template int Rasterdata::pixelValues<double>(size_t ibegin, size_t jbegin,
+                                             size_t iend, size_t jend,
+                                             std::vector<double> &x,
+                                             std::vector<double> &y,
+                                             std::vector<double> &z);
+template int Rasterdata::nodata<int>() const;
+template double Rasterdata::nodata<double>() const;
 
 /**
  * @brief Default constructor without a filename
@@ -55,16 +72,17 @@ void Rasterdata::init() {
   this->m_isOpen = false;
   this->m_isRead = false;
   this->m_epsg = 4326;
-  this->m_nx = std::numeric_limits<int>::min();
-  this->m_ny = std::numeric_limits<int>::min();
+  this->m_nx = -std::numeric_limits<size_t>::max();
+  this->m_ny = -std::numeric_limits<size_t>::max();
   this->m_xmin = std::numeric_limits<double>::max();
-  this->m_xmax = std::numeric_limits<double>::min();
+  this->m_xmax = -std::numeric_limits<double>::max();
   this->m_ymin = std::numeric_limits<double>::max();
-  this->m_ymax = std::numeric_limits<double>::min();
+  this->m_ymax = -std::numeric_limits<double>::max();
   this->m_dx = 0.0;
   this->m_dy = 0.0;
-  this->m_nodata = std::numeric_limits<double>::min();
-  this->m_nodataint = std::numeric_limits<int>::min();
+  this->m_nodata = -std::numeric_limits<double>::max();
+  this->m_nodataint = -std::numeric_limits<int>::max();
+  this->m_readType = GDT_Unknown;
   return;
 }
 
@@ -109,8 +127,8 @@ bool Rasterdata::getRasterMetadata() {
 
   double adfGeoTransform[6];
   if (this->m_file->GetGeoTransform(adfGeoTransform) == CE_None) {
-    this->m_nx = (size_t)this->m_file->GetRasterXSize();
-    this->m_ny = (size_t)this->m_file->GetRasterYSize();
+    this->m_nx = static_cast<size_t>(this->m_file->GetRasterXSize());
+    this->m_ny = static_cast<size_t>(this->m_file->GetRasterYSize());
     this->m_xmin = adfGeoTransform[0];
     this->m_ymax = adfGeoTransform[3];
     this->m_dx = adfGeoTransform[1];
@@ -153,7 +171,7 @@ void Rasterdata::setFilename(const std::string &filename) {
  */
 bool Rasterdata::close() {
   if (this->m_file != nullptr) {
-    GDALClose((GDALDatasetH)this->m_file);
+    GDALClose(static_cast<GDALDatasetH>(this->m_file));
     this->m_isOpen = false;
     return true;
   }
@@ -198,8 +216,8 @@ Pixel Rasterdata::coordinateToPixel(double x, double y) {
   if (x > this->xmax() || x < this->xmin() || y > this->ymax() || y < ymin()) {
     return Pixel();
   } else {
-    return Pixel(static_cast<int>((x - this->m_xmin) / this->m_dx),
-                 static_cast<int>((this->m_ymax - y) / this->m_dy));
+    return Pixel(static_cast<size_t>((x - this->m_xmin) / this->m_dx),
+                 static_cast<size_t>((this->m_ymax - y) / this->m_dy));
   }
 }
 
@@ -252,7 +270,14 @@ double Rasterdata::dx() const { return this->m_dx; }
  * @brief nodata value used in the raster
  * @return nodata value
  */
-double Rasterdata::nodata() const { return this->m_nodata; }
+template <typename T>
+T Rasterdata::nodata() const {
+  if (std::is_same<T, double>::value) {
+    return this->m_nodata;
+  } else if (std::is_same<T, int>::value) {
+    return this->m_nodataint;
+  }
+}
 
 /**
  * @brief Number of pixels in the y-direction
@@ -278,57 +303,30 @@ std::string Rasterdata::projectionString() const {
  * @brief Returns the pixel value for the i,j index
  * @param i i-index
  * @param j j-index
- * @return pixel value (double)
+ * @return pixel value
  */
-double Rasterdata::pixelValueDouble(size_t i, size_t j) {
+template <typename T>
+T Rasterdata::pixelValue(size_t i, size_t j) {
   Pixel p = Pixel(i, j);
-  return this->pixelValueDouble(p);
-}
-
-/**
- * @brief Returns the pixel value for the i,j index
- * @param i i-index
- * @param j j-index
- * @return pixel value (integer)
- */
-int Rasterdata::pixelValueInt(size_t i, size_t j) {
-  Pixel p = Pixel(i, j);
-  return this->pixelValueInt(p);
+  return this->pixelValue<T>(p);
 }
 
 /**
  * @brief Returns the pixel value for the i,j index
  * @param p pixel with indicies
- * @return pixel value (integer)
+ * @return pixel value
  */
-int Rasterdata::pixelValueInt(Pixel p) {
-  if (p.i() > 0 && p.j() > 0) {
-    int *buf = (int *)CPLMalloc(sizeof(int) * 1);
-    this->m_band->RasterIO(GF_Read, p.i(), p.j(), 1, 1, buf, 1, 1, GDT_Int32, 0,
-                           0);
-    int v = buf[0];
-    CPLFree(buf);
-    return v;
-  } else {
-    return this->nodataint();
-  }
-}
-
-/**
- * @brief Returns the pixel value for the i,j index
- * @param p pixel with indicies
- * @return pixel value (double)
- */
-double Rasterdata::pixelValueDouble(Pixel &p) {
+template <typename T>
+T Rasterdata::pixelValue(Pixel &p) {
   if (p.i() > 0 && p.j() > 0 && p.i() < this->nx() && p.j() < this->ny()) {
-    double *buf = (double *)CPLMalloc(sizeof(double) * 1);
-    this->m_band->RasterIO(GF_Read, p.i(), p.j(), 1, 1, buf, 1, 1, GDT_Float64,
-                           0, 0);
+    T *buf = static_cast<T *>(CPLMalloc(sizeof(T) * 1));
+    this->m_band->RasterIO(GF_Read, p.i(), p.j(), 1, 1, buf, 1, 1,
+                           static_cast<GDALDataType>(this->m_readType), 0, 0);
     double v = buf[0];
     CPLFree(buf);
     return v;
   } else {
-    return this->nodata();
+    return this->nodata<T>();
   }
 }
 
@@ -372,8 +370,9 @@ int Rasterdata::searchBoxAroundPoint(double x, double y, double halfSide,
 void Rasterdata::readDoubleRasterToMemory() {
   size_t n = this->nx() * this->ny();
   double *buf = (double *)CPLMalloc(sizeof(double) * n);
-  CPLErr e = this->m_band->RasterIO(GF_Read, 0, 0, this->nx(), this->ny(), buf,
-                                    this->nx(), this->ny(), GDT_Float64, 0, 0);
+  CPLErr e = this->m_band->RasterIO(
+      GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
+      static_cast<GDALDataType>(this->m_readType), 0, 0);
 
   this->m_doubleOnDisk.resize(this->nx());
   for (size_t i = 0; i < this->m_doubleOnDisk.size(); ++i) {
@@ -398,8 +397,9 @@ void Rasterdata::readDoubleRasterToMemory() {
 void Rasterdata::readIntegerRasterToMemory() {
   size_t n = this->nx() * this->ny();
   int *buf = (int *)CPLMalloc(sizeof(int) * n);
-  CPLErr e = this->m_band->RasterIO(GF_Read, 0, 0, this->nx(), this->ny(), buf,
-                                    this->nx(), this->ny(), GDT_Int32, 0, 0);
+  CPLErr e = this->m_band->RasterIO(
+      GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
+      static_cast<GDALDataType>(this->m_readType), 0, 0);
 
   this->m_intOnDisk.resize(this->nx());
   for (size_t i = 0; i < this->m_intOnDisk.size(); ++i) {
@@ -443,34 +443,14 @@ void Rasterdata::read() {
  * @param z z-values from raster
  * @return status
  */
+template <typename T>
 int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
                             size_t jend, std::vector<double> &x,
-                            std::vector<double> &y, std::vector<double> &z) {
+                            std::vector<double> &y, std::vector<T> &z) {
   if (this->m_isRead) {
-    return this->pixelValuesFromMemory(ibegin, jbegin, iend, jend, x, y, z);
+    return this->pixelValuesFromMemory<T>(ibegin, jbegin, iend, jend, x, y, z);
   } else {
-    return this->pixelValuesFromDisk(ibegin, jbegin, iend, jend, x, y, z);
-  }
-}
-
-/**
- * @brief Reads the pixel values for the given search box
- * @param ibegin beginning i-index
- * @param jbegin beginning j-index
- * @param iend ending i-index
- * @param jend ending j-index
- * @param x x-location vector
- * @param y y-location vector
- * @param z z-values from raster
- * @return status
- */
-int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
-                            size_t jend, std::vector<double> &x,
-                            std::vector<double> &y, std::vector<int> &z) {
-  if (this->m_isRead) {
-    return this->pixelValuesFromMemory(ibegin, jbegin, iend, jend, x, y, z);
-  } else {
-    return this->pixelValuesFromDisk(ibegin, jbegin, iend, jend, x, y, z);
+    return this->pixelValuesFromDisk<T>(ibegin, jbegin, iend, jend, x, y, z);
   }
 }
 
@@ -485,10 +465,11 @@ int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
  * @param z z-values from raster
  * @return status
  */
+template <typename T>
 int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
                                       size_t jend, std::vector<double> &x,
                                       std::vector<double> &y,
-                                      std::vector<double> &z) {
+                                      std::vector<T> &z) {
   size_t nx = iend - ibegin + 1;
   size_t ny = jend - jbegin + 1;
   size_t n = nx * ny;
@@ -505,45 +486,13 @@ int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
       Point p = this->pixelToCoordinate(i, j);
       x[k] = p.first;
       y[k] = p.second;
-      z[k] = this->m_doubleOnDisk[i - 1][j - 1];
-      k++;
-    }
-  }
-  return 0;
-}
-
-/**
- * @brief Reads the pixel values for the given search box from memory
- * @param ibegin beginning i-index
- * @param jbegin beginning j-index
- * @param iend ending i-index
- * @param jend ending j-index
- * @param x x-location vector
- * @param y y-location vector
- * @param z z-values from raster
- * @return status
- */
-int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
-                                      size_t jend, std::vector<double> &x,
-                                      std::vector<double> &y,
-                                      std::vector<int> &z) {
-  size_t nx = iend - ibegin + 1;
-  size_t ny = jend - jbegin + 1;
-  size_t n = nx * ny;
-
-  if (x.size() != n) {
-    x.resize(n);
-    y.resize(n);
-    z.resize(n);
-  }
-
-  size_t k = 0;
-  for (size_t j = jbegin; j <= jend; ++j) {
-    for (size_t i = ibegin; i <= iend; ++i) {
-      Point p = this->pixelToCoordinate(i, j);
-      x[k] = p.first;
-      y[k] = p.second;
-      z[k] = this->m_intOnDisk[i - 1][j - 1];
+      if (std::is_same<T, int>::value) {
+        z[k] = this->m_intOnDisk[i - 1][j - 1];
+      } else if (std::is_same<T, double>::value) {
+        z[k] = this->m_doubleOnDisk[i - 1][j - 1];
+      } else {
+        adcircmodules_throw_exception("Rasterdata: Invalid pixel type");
+      }
       k++;
     }
   }
@@ -561,58 +510,17 @@ int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
  * @param z z-values from raster
  * @return status
  */
+template <typename T>
 int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
                                     size_t jend, std::vector<double> &x,
-                                    std::vector<double> &y,
-                                    std::vector<double> &z) {
+                                    std::vector<double> &y, std::vector<T> &z) {
   size_t nx = iend - ibegin + 1;
   size_t ny = jend - jbegin + 1;
   size_t n = nx * ny;
-  double *buf = (double *)CPLMalloc(sizeof(double) * n);
-  CPLErr e = this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, buf, nx,
-                                    ny, GDT_Float64, 0, 0);
-
-  if (x.size() != n) {
-    x.resize(n);
-    y.resize(n);
-    z.resize(n);
-  }
-
-  size_t k = 0;
-  for (size_t j = jbegin; j <= jend; ++j) {
-    for (size_t i = ibegin; i <= iend; ++i) {
-      Point p = this->pixelToCoordinate(i, j);
-      x[k] = p.first;
-      y[k] = p.second;
-      z[k] = buf[k];
-      k++;
-    }
-  }
-  CPLFree(buf);
-  return static_cast<int>(e);
-}
-
-/**
- * @brief Reads the pixel values for the given search box from disk
- * @param ibegin beginning i-index
- * @param jbegin beginning j-index
- * @param iend ending i-index
- * @param jend ending j-index
- * @param x x-location vector
- * @param y y-location vector
- * @param z z-values from raster
- * @return status
- */
-int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
-                                    size_t jend, std::vector<double> &x,
-                                    std::vector<double> &y,
-                                    std::vector<int> &z) {
-  size_t nx = iend - ibegin + 1;
-  size_t ny = jend - jbegin + 1;
-  size_t n = nx * ny;
-  int *buf = (int *)CPLMalloc(sizeof(int) * n);
-  CPLErr e = this->m_band->RasterIO(GF_Read, ibegin, jbegin - 1, nx, ny, buf,
-                                    nx, ny, GDT_Int32, 0, 0);
+  T *buf = static_cast<T *>(CPLMalloc(sizeof(T) * n));
+  CPLErr e =
+      this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, buf, nx, ny,
+                             static_cast<GDALDataType>(this->m_readType), 0, 0);
 
   if (x.size() != n) {
     x.resize(n);
@@ -640,6 +548,7 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
  * @return raster type enum
  */
 Rasterdata::RasterTypes Rasterdata::selectRasterType(int d) {
+  this->m_readType = d;
   if (d == GDT_Byte) {
     return RasterTypes::Bool;
   } else if (d == GDT_UInt16 || d == GDT_UInt32) {
@@ -656,12 +565,6 @@ Rasterdata::RasterTypes Rasterdata::selectRasterType(int d) {
     return RasterTypes::Unknown;
   }
 }
-
-/**
- * @brief Returns the nodata integer used in the raster
- * @return nodata integer
- */
-int Rasterdata::nodataint() const { return this->m_nodataint; }
 
 /**
  * @brief Returns the status of the raster

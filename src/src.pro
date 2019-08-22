@@ -45,6 +45,7 @@ OPENSSLPATH = /usr/local/Cellar/openssl/1.0.2s
 INCLUDEPATH += $$OPENSSLPATH/include
 LIBS += -L$$OPENSSLPATH/lib -lssl -lcrypto
 
+INCLUDEPATH += /usr/include/gdal
 
 win32 {
     #...Set extension for a windows dll (avoids tracking version numbering in filename)
@@ -110,7 +111,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     hash.cpp \
     hash_impl.cpp \
-    outputfile.cpp \
     outputmetadata.cpp \
     readoutput.cpp \
     stringconversion.cpp \

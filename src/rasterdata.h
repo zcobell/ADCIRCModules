@@ -76,7 +76,8 @@ class Rasterdata {
 
   ADCIRCMODULES_EXPORT double ymax() const;
 
-  ADCIRCMODULES_EXPORT double nodata() const;
+  template<typename T>
+  ADCIRCMODULES_EXPORT T nodata() const;
 
   ADCIRCMODULES_EXPORT Point pixelToCoordinate(size_t i, size_t j);
   ADCIRCMODULES_EXPORT Point pixelToCoordinate(Pixel &p);
@@ -94,22 +95,18 @@ class Rasterdata {
   ADCIRCMODULES_EXPORT std::string filename() const;
   ADCIRCMODULES_EXPORT void setFilename(const std::string &filename);
 
-  ADCIRCMODULES_EXPORT double pixelValueDouble(Pixel &p);
-  ADCIRCMODULES_EXPORT double pixelValueDouble(size_t i, size_t j);
-  ADCIRCMODULES_EXPORT int pixelValueInt(Pixel p);
-  ADCIRCMODULES_EXPORT int pixelValueInt(size_t i, size_t j);
+  template <typename T>
+  ADCIRCMODULES_EXPORT T pixelValue(Pixel &p);
 
+  template <typename T>
+  ADCIRCMODULES_EXPORT T pixelValue(size_t i, size_t j);
+
+  template <typename T>
   ADCIRCMODULES_EXPORT int pixelValues(size_t ibegin, size_t jbegin,
                                        size_t iend, size_t jend,
                                        std::vector<double> &x,
                                        std::vector<double> &y,
-                                       std::vector<int> &z);
-
-  ADCIRCMODULES_EXPORT int pixelValues(size_t ibegin, size_t jbegin,
-                                       size_t iend, size_t jend,
-                                       std::vector<double> &x,
-                                       std::vector<double> &y,
-                                       std::vector<double> &z);
+                                       std::vector<T> &z);
 
   ADCIRCMODULES_EXPORT int rasterType() const;
 
@@ -118,27 +115,20 @@ class Rasterdata {
 
   ADCIRCMODULES_EXPORT bool isOpen() const;
 
-  ADCIRCMODULES_EXPORT int nodataint() const;
-
  private:
   void init();
   bool getRasterMetadata();
   RasterTypes selectRasterType(int d);
+
+  template <typename T>
   int pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
                           size_t jend, std::vector<double> &x,
-                          std::vector<double> &y, std::vector<int> &z);
+                          std::vector<double> &y, std::vector<T> &z);
 
-  int pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
-                          size_t jend, std::vector<double> &x,
-                          std::vector<double> &y, std::vector<double> &z);
-
+  template <typename T>
   int pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
                             size_t jend, std::vector<double> &x,
-                            std::vector<double> &y, std::vector<int> &z);
-
-  int pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
-                            size_t jend, std::vector<double> &x,
-                            std::vector<double> &y, std::vector<double> &z);
+                            std::vector<double> &y, std::vector<T> &z);
 
   void readIntegerRasterToMemory();
   void readDoubleRasterToMemory();
@@ -157,6 +147,7 @@ class Rasterdata {
   double m_xmin, m_xmax, m_ymin, m_ymax;
   double m_nodata;
   int m_nodataint;
+  int m_readType;
   RasterTypes m_rasterType;
   std::string m_projectionReference;
   std::string m_filename;

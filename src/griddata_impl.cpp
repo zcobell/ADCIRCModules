@@ -215,22 +215,23 @@ void GriddataImpl::setRasterInMemory(bool rasterInMemory) {
   this->m_rasterInMemory = rasterInMemory;
 }
 
+template <typename T>
 bool GriddataImpl::pixelDataInRadius(Point &p, double radius,
                                      std::vector<double> &x,
-                                     std::vector<double> &y,
-                                     std::vector<double> &z,
+                                     std::vector<double> &y, std::vector<T> &z,
                                      std::vector<bool> &valid) {
   Pixel ul, lr;
   this->m_raster.get()->searchBoxAroundPoint(p.first, p.second, radius, ul, lr);
   bool r = false;
 
   if (ul.isValid() && lr.isValid()) {
-    this->m_raster.get()->pixelValues(ul.i(), ul.j(), lr.i(), lr.j(), x, y, z);
+    this->m_raster.get()->pixelValues<T>(ul.i(), ul.j(), lr.i(), lr.j(), x, y,
+                                         z);
     valid.resize(x.size());
     std::fill(valid.begin(), valid.end(), false);
 
     for (size_t i = 0; i < x.size(); ++i) {
-      if (z[i] != this->m_raster.get()->nodata()) {
+      if (z[i] != this->m_raster.get()->nodata<T>()) {
         if (Constants::distance(p, x[i], y[i]) <= radius) {
           valid[i] = true;
           r = true;
@@ -243,32 +244,6 @@ bool GriddataImpl::pixelDataInRadius(Point &p, double radius,
     }
 
     return r;
-  }
-  return r;
-}
-
-bool GriddataImpl::pixelDataInRadius(Point &p, double radius,
-                                     std::vector<double> &x,
-                                     std::vector<double> &y,
-                                     std::vector<int> &z,
-                                     std::vector<bool> &valid) {
-  Pixel ul, lr;
-  this->m_raster.get()->searchBoxAroundPoint(p.first, p.second, radius, ul, lr);
-  bool r = false;
-
-  if (ul.isValid() && lr.isValid()) {
-    this->m_raster.get()->pixelValues(ul.i(), ul.j(), lr.i(), lr.j(), x, y, z);
-    valid.resize(x.size());
-    std::fill(valid.begin(), valid.end(), false);
-
-    for (size_t i = 0; i < x.size(); ++i) {
-      if (z[i] != this->m_raster.get()->nodataint()) {
-        if (Constants::distance(p, x[i], y[i]) <= radius) {
-          valid[i] = true;
-          r = true;
-        }
-      }
-    }
   }
   return r;
 }
@@ -287,33 +262,24 @@ double GriddataImpl::calculatePoint(Point &p, double searchRadius,
   switch (method) {
     case Average:
       return this->calculateAverage(p, searchRadius * gsMultiplier);
-      break;
     case Nearest:
       return this->calculateNearest(p, searchRadius * gsMultiplier);
-      break;
     case Highest:
       return this->calculateHighest(p, searchRadius * gsMultiplier);
-      break;
     case PlusTwoSigma:
       return this->calculateOutsideStandardDeviation(
           p, searchRadius * gsMultiplier, 2);
-      break;
     case BilskieEtAll:
       return this->calculateBilskieAveraging(p, searchRadius, gsMultiplier);
-      break;
     case InverseDistanceWeighted:
       return this->calculateInverseDistanceWeighted(
           p, searchRadius * gsMultiplier);
-      break;
     case InverseDistanceWeightedNPoints:
       return this->calculateInverseDistanceWeightedNPoints(p, gsMultiplier);
-      break;
     case AverageNearestNPoints:
       return this->calculateAverageNearestN(p, gsMultiplier);
-      break;
     default:
       return this->defaultValue();
-      break;
   }
 }
 
@@ -323,34 +289,26 @@ double GriddataImpl::calculatePointFromLookup(Point &p, double searchRadius,
   switch (method) {
     case Average:
       return this->calculateAverageFromLookup(p, searchRadius * gsMultiplier);
-      break;
     case Nearest:
       return this->calculateNearestFromLookup(p, searchRadius * gsMultiplier);
-      break;
     case Highest:
       return this->calculateHighestFromLookup(p, searchRadius * gsMultiplier);
-      break;
     case PlusTwoSigma:
       return this->calculateOutsideStandardDeviationFromLookup(
           p, searchRadius * gsMultiplier, 2);
-      break;
     case BilskieEtAll:
       return this->calculateBilskieAveragingFromLookup(p, searchRadius,
                                                        gsMultiplier);
-      break;
     case InverseDistanceWeighted:
       return this->calculateInverseDistanceWeightedFromLookup(
           p, searchRadius * gsMultiplier);
     case InverseDistanceWeightedNPoints:
       return this->calculateInverseDistanceWeightedNPointsFromLookup(
           p, gsMultiplier);
-      break;
     case AverageNearestNPoints:
       return this->calculateAverageNearestNFromLookup(p, gsMultiplier);
-      break;
     default:
       return this->defaultValue();
-      break;
   }
 }
 
@@ -678,8 +636,9 @@ double GriddataImpl::calculateNearest(Point &p, double w) {
   if (d > w) {
     return this->defaultValue();
   } else {
-    double z = this->m_raster.get()->pixelValueDouble(px);
-    return z != this->m_raster.get()->nodata() ? z : this->defaultValue();
+    double z = this->m_raster.get()->pixelValue<double>(px);
+    return z != this->m_raster.get()->nodata<double>() ? z
+                                                       : this->defaultValue();
   }
 }
 
@@ -690,8 +649,8 @@ double GriddataImpl::calculateNearestFromLookup(Point &p, double w) {
   if (d > w)
     return this->defaultValue();
   else {
-    int z = this->m_raster.get()->pixelValueInt(px);
-    if (z != this->m_raster.get()->nodataint()) {
+    int z = this->m_raster.get()->pixelValue<int>(px);
+    if (z != this->m_raster.get()->nodata<int>()) {
       double zl;
       return this->getKeyValue(z, zl) ? zl : this->defaultValue();
     } else {
@@ -921,7 +880,12 @@ std::vector<double> GriddataImpl::computeValuesFromRaster(bool useLookupTable) {
   return result;
 }
 
-void GriddataImpl::thresholdData(std::vector<double> &z, std::vector<bool> &v) {
+template <typename T>
+void GriddataImpl::thresholdData(std::vector<T> &z, std::vector<bool> &v) {
+  if (std::is_same<T, int>::value)
+    adcircmodules_throw_exception(
+        "Cannot use thresholding and integer rasters");
+
   if (this->thresholdMethod() == Interpolation::Threshold::NoThreshold) return;
 
   if (this->thresholdMethod() == Interpolation::Threshold::ThresholdAbove) {

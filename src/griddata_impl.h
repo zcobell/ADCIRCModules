@@ -119,14 +119,13 @@ class GriddataImpl {
   bool calculateBilskieRadius(double meshSize, double rasterCellSize,
                               double &radius);
 
+  template <typename T>
   bool pixelDataInRadius(Point &p, double radius, std::vector<double> &x,
-                         std::vector<double> &y, std::vector<double> &z,
-                         std::vector<bool> &valid);
-  bool pixelDataInRadius(Point &p, double radius, std::vector<double> &x,
-                         std::vector<double> &y, std::vector<int> &z,
+                         std::vector<double> &y, std::vector<T> &z,
                          std::vector<bool> &valid);
 
-  void thresholdData(std::vector<double> &z, std::vector<bool> &v);
+  template <typename T>
+  void thresholdData(std::vector<T> &z, std::vector<bool> &v);
 
   std::vector<double> calculateDirectionalWindFromRaster(Point &p);
   std::vector<double> calculateDirectionalWindFromLookup(Point &p);

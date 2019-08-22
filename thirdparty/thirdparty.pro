@@ -19,6 +19,6 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS  = EzProj
+SUBDIRS  = ezproj
 
 CONFIG += ordered           
