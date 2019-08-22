@@ -314,7 +314,7 @@ ENDIF(ENABLE_GDAL)
 ###########################################################################
 #  EzProj Library
 ###########################################################################
-add_subdirectory( ${CMAKE_SOURCE_DIR}/thirdparty/EzProj )
+add_subdirectory( ${CMAKE_SOURCE_DIR}/thirdparty/ezproj )
 ###########################################################################
 
 ###########################################################################
@@ -380,7 +380,7 @@ ENDIF(GDAL_FOUND)
 TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/src/pimpl
                                 ${CMAKE_SOURCE_DIR}/src
-                                ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src
+                                ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src
                                 ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
                                 ${CMAKE_SOURCE_DIR}/thirdparty/abseil
                                 ${CMAKE_SOURCE_DIR}/thirdparty/nanoflann/include
@@ -424,7 +424,7 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/constants.h 
                 ${CMAKE_SOURCE_DIR}/src/kdtree.h
                 ${CMAKE_SOURCE_DIR}/src/default_values.h
-                ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src/ezproj.h )
+                ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src/ezproj.h )
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES PUBLIC_HEADER "${HEADER_LIST}" ) 
 
@@ -521,7 +521,7 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python ${PYTHONFLAG}
                     -I${CMAKE_SOURCE_DIR}/src 
-                    -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src i
+                    -I${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src i
                     -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG}
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -536,7 +536,7 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python ${PYTHONFLAG}
                     -I${CMAKE_SOURCE_DIR}/src 
-                    -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
+                    -I${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src 
                     -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG} 
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -547,7 +547,7 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 
     ADD_LIBRARY( PyAdcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx )
     TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src 
-                                    ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src ) 
+                                    ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src ) 
     TARGET_LINK_LIBRARIES( PyAdcirc adcircmodules ${PYTHON_LIBRARY} )
     IF(OPENSSL_FOUND)
         TARGET_INCLUDE_DIRECTORIES( PyAdcirc  PRIVATE ${OPENSSL_INCLUDE_DIR}) 
@@ -609,7 +609,7 @@ ENDIF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 #    
 #            ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
 #                COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src
-#                        -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src -I${PERL_INCLUDE_PATH} 
+#                        -I${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src -I${PERL_INCLUDE_PATH} 
 #                        -o ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx.1
 #                        ${CMAKE_SOURCE_DIR}/swig/adcirc.i
 #                COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx.1 
@@ -622,7 +622,7 @@ ENDIF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 #        ELSE(WIN32)
 #            ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
 #                COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src 
-#                        -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src -I${PERL_INCLUDE_PATH} 
+#                        -I${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src -I${PERL_INCLUDE_PATH} 
 #                        -o ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
 #                        ${CMAKE_SOURCE_DIR}/swig/adcirc.i
 #                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
@@ -632,7 +632,7 @@ ENDIF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 #    
 #        ADD_LIBRARY( perladcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx )
 #        TARGET_INCLUDE_DIRECTORIES( perladcirc PRIVATE ${PERL_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src 
-#                                        ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
+#                                        ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src 
 #                                        ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
 #        TARGET_LINK_LIBRARIES( perladcirc PRIVATE adcircmodules ${PERL_LIBRARY} )
 #        SET_TARGET_PROPERTIES( perladcirc PROPERTIES PREFIX "")
@@ -684,7 +684,7 @@ IF(UNIX OR CYGWIN)
             ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
             ADD_DEPENDENCIES( ${TESTNAME} adcircmodules )
             TARGET_INCLUDE_DIRECTORIES( ${TESTNAME} PRIVATE ${CMAKE_SOURCE_DIR}/src 
-                                                            ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src ) 
+                                                            ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src ) 
             TARGET_LINK_LIBRARIES( ${TESTNAME} adcircmodules )
             SET_TARGET_PROPERTIES( ${TESTNAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases )
     
