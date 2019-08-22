@@ -320,8 +320,11 @@ template <typename T>
 T Rasterdata::pixelValue(Pixel &p) {
   if (p.i() > 0 && p.j() > 0 && p.i() < this->nx() && p.j() < this->ny()) {
     T *buf = static_cast<T *>(CPLMalloc(sizeof(T) * 1));
+
+#pragma omp critical
     this->m_band->RasterIO(GF_Read, p.i(), p.j(), 1, 1, buf, 1, 1,
                            static_cast<GDALDataType>(this->m_readType), 0, 0);
+
     double v = buf[0];
     CPLFree(buf);
     return v;
@@ -370,6 +373,8 @@ int Rasterdata::searchBoxAroundPoint(double x, double y, double halfSide,
 void Rasterdata::readDoubleRasterToMemory() {
   size_t n = this->nx() * this->ny();
   double *buf = (double *)CPLMalloc(sizeof(double) * n);
+
+#pragma omp critical
   CPLErr e = this->m_band->RasterIO(
       GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
       static_cast<GDALDataType>(this->m_readType), 0, 0);
@@ -396,7 +401,9 @@ void Rasterdata::readDoubleRasterToMemory() {
  */
 void Rasterdata::readIntegerRasterToMemory() {
   size_t n = this->nx() * this->ny();
-  int *buf = (int *)CPLMalloc(sizeof(int) * n);
+  int *buf = static_cast<int *>(CPLMalloc(sizeof(int) * n));
+
+#pragma omp critical
   CPLErr e = this->m_band->RasterIO(
       GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
       static_cast<GDALDataType>(this->m_readType), 0, 0);
@@ -518,8 +525,11 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
   size_t ny = jend - jbegin + 1;
   size_t n = nx * ny;
   T *buf = static_cast<T *>(CPLMalloc(sizeof(T) * n));
-  CPLErr e =
-      this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, buf, nx, ny,
+
+  CPLErr e = CPLErr();
+
+#pragma omp critical
+  e = this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, buf, nx, ny,
                              static_cast<GDALDataType>(this->m_readType), 0, 0);
 
   if (x.size() != n) {
@@ -548,14 +558,17 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
  * @return raster type enum
  */
 Rasterdata::RasterTypes Rasterdata::selectRasterType(int d) {
-  this->m_readType = d;
   if (d == GDT_Byte) {
-    return RasterTypes::Bool;
+    this->m_readType = GDT_Int32;
+    return RasterTypes::Integer;
   } else if (d == GDT_UInt16 || d == GDT_UInt32) {
+    this->m_readType = GDT_Int32;
     return RasterTypes::Unsigned;
   } else if (d == GDT_Int16 || d == GDT_Int32) {
+    this->m_readType = GDT_Int32;
     return RasterTypes::Integer;
   } else if (d == GDT_Float32 || d == GDT_Float64) {
+    this->m_readType = GDT_Float64;
     return RasterTypes::Double;
   } else if (d == GDT_CInt16 || d == GDT_CInt32) {
     return RasterTypes::ComplexInt;
