@@ -27,5 +27,6 @@ int main() {
   mesh->toNodeShapefile("test_files/ms-riv-nodes.shp");
   mesh->toConnectivityShapefile("test_files/ms-riv-connectivity.shp");
   mesh->toElementShapefile("test_files/ms-riv-elements.shp");
+  mesh->toBoundaryShapefile("test_files/ms-riv-boundaries.shp");
   return 0;
 }

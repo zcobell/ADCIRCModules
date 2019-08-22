@@ -137,6 +137,7 @@ class Mesh {
   void ADCIRCMODULES_EXPORT
   toConnectivityShapefile(const std::string &outputFile);
   void ADCIRCMODULES_EXPORT toElementShapefile(const std::string &outputFile);
+  void ADCIRCMODULES_EXPORT toBoundaryShapefile(const std::string &outputFile);
 
   void ADCIRCMODULES_EXPORT buildNodalSearchTree();
   void ADCIRCMODULES_EXPORT buildElementalSearchTree();

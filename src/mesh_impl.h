@@ -90,6 +90,7 @@ class MeshImpl {
   void toNodeShapefile(const std::string &outputFile);
   void toConnectivityShapefile(const std::string &outputFile);
   void toElementShapefile(const std::string &outputFile);
+  void toBoundaryShapefile(const std::string &outputFile);
 
   void buildNodalSearchTree();
   void buildElementalSearchTree();

@@ -1281,6 +1281,114 @@ void MeshImpl::toElementShapefile(const std::string &outputFile) {
   return;
 }
 
+void MeshImpl::toBoundaryShapefile(const std::string &outputFile) {
+  SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POINTZ);
+  DBFHandle dbfid = DBFCreate(outputFile.c_str());
+  DBFAddField(dbfid, "bndId", FTInteger, 16, 0);
+  DBFAddField(dbfid, "bndIdx", FTInteger, 16, 0);
+  DBFAddField(dbfid, "node1", FTInteger, 16, 0);
+  DBFAddField(dbfid, "node2", FTInteger, 16, 0);
+  DBFAddField(dbfid, "bathy", FTDouble, 16, 4);
+  DBFAddField(dbfid, "bc_elev", FTDouble, 16, 4);
+  DBFAddField(dbfid, "supercritical", FTDouble, 16, 4);
+  DBFAddField(dbfid, "subcritical", FTDouble, 16, 4);
+  DBFAddField(dbfid, "pipediam", FTDouble, 16, 4);
+  DBFAddField(dbfid, "pipeheight", FTDouble, 16, 4);
+  DBFAddField(dbfid, "pipecoef", FTDouble, 16, 4);
+
+  int idx = 0;
+  int bcid = 0;
+  for (auto &b : this->m_openBoundaries) {
+    for (size_t i = 0; i < b.length(); ++i) {
+      int node1 = static_cast<int>(b.node1(i)->id());
+      int node2 = -9999;
+      double lon = b.node1(i)->x();
+      double lat = b.node1(i)->y();
+      double bathy = -b.node1(i)->z();
+      double elev = -9999.0;
+      double sub = -9999.0;
+      double sup = -9999.0;
+      double pipeht = -9999.0;
+      double pipecoef = -9999.0;
+      double pipediam = -9999.0;
+      SHPObject *shpobj =
+          SHPCreateSimpleObject(SHPT_POINTZ, 1, &lon, &lat, &bathy);
+      int shp_index = SHPWriteObject(shpid, -1, shpobj);
+      SHPDestroyObject(shpobj);
+
+      DBFWriteIntegerAttribute(dbfid, shp_index, 0, bcid);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 1, idx);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 2, node1);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 3, node2);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 4, bathy);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 5, elev);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 6, sup);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 7, sub);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 8, pipediam);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 9, pipeht);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 10, pipecoef);
+      idx++;
+    }
+    bcid++;
+  }
+
+  for (auto &b : this->m_landBoundaries) {
+    for (size_t i = 0; i < b.length(); ++i) {
+      int node1 = static_cast<int>(b.node1(i)->id());
+      int node2 = -9999;
+      double lon = b.node1(i)->x();
+      double lat = b.node1(i)->y();
+      double bathy = -b.node1(i)->z();
+      double elev = -9999.0;
+      double sub = -9999.0;
+      double sup = -9999.0;
+      double pipeht = -9999.0;
+      double pipecoef = -9999.0;
+      double pipediam = -9999.0;
+      if (b.isInternalWeir()) {
+        lon = (lon + b.node2(i)->x()) / 2.0;
+        lat = (lat + b.node2(i)->y()) / 2.0;
+        bathy = (bathy + b.node2(i)->z()) / 2.0;
+        node2 = static_cast<int>(b.node2(i)->id());
+        elev = b.crestElevation(i);
+        sup = b.supercriticalWeirCoefficient(i);
+        sub = b.subcriticalWeirCoefficient(i);
+      } else if (b.isExternalWeir()) {
+        elev = b.crestElevation(i);
+        sup = b.supercriticalWeirCoefficient(i);
+      }
+      if (b.isInternalWeirWithPipes()) {
+        pipeht = b.pipeHeight(i);
+        pipediam = b.pipeDiameter(i);
+        pipecoef = b.pipeCoefficient(i);
+      }
+      SHPObject *shpobj =
+          SHPCreateSimpleObject(SHPT_POINTZ, 1, &lon, &lat, &bathy);
+      int shp_index = SHPWriteObject(shpid, -1, shpobj);
+      SHPDestroyObject(shpobj);
+
+      DBFWriteIntegerAttribute(dbfid, shp_index, 0, bcid);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 1, idx);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 2, node1);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 3, node2);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 4, bathy);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 5, elev);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 6, sup);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 7, sub);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 8, pipediam);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 9, pipeht);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 10, pipecoef);
+      idx++;
+    }
+    bcid++;
+  }
+
+  DBFClose(dbfid);
+  SHPClose(shpid);
+
+  return;
+}
+
 /**
  * @brief Builds a kd-tree object with the mesh nodes as the search locations
  */
