@@ -1286,6 +1286,7 @@ void MeshImpl::toBoundaryShapefile(const std::string &outputFile) {
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
   DBFAddField(dbfid, "bndId", FTInteger, 16, 0);
   DBFAddField(dbfid, "bndIdx", FTInteger, 16, 0);
+  DBFAddField(dbfid, "bndCode", FTInteger, 16, 0);
   DBFAddField(dbfid, "node1", FTInteger, 16, 0);
   DBFAddField(dbfid, "node2", FTInteger, 16, 0);
   DBFAddField(dbfid, "bathy", FTDouble, 16, 4);
@@ -1299,6 +1300,7 @@ void MeshImpl::toBoundaryShapefile(const std::string &outputFile) {
   int idx = 0;
   int bcid = 0;
   for (auto &b : this->m_openBoundaries) {
+    int code = b.boundaryCode();
     for (size_t i = 0; i < b.length(); ++i) {
       int node1 = static_cast<int>(b.node1(i)->id());
       int node2 = -9999;
@@ -1318,21 +1320,23 @@ void MeshImpl::toBoundaryShapefile(const std::string &outputFile) {
 
       DBFWriteIntegerAttribute(dbfid, shp_index, 0, bcid);
       DBFWriteIntegerAttribute(dbfid, shp_index, 1, idx);
-      DBFWriteIntegerAttribute(dbfid, shp_index, 2, node1);
-      DBFWriteIntegerAttribute(dbfid, shp_index, 3, node2);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 4, bathy);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 5, elev);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 6, sup);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 7, sub);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 8, pipediam);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 9, pipeht);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 10, pipecoef);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 2, code);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 3, node1);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 4, node2);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 5, bathy);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 6, elev);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 7, sup);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 8, sub);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 9, pipediam);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 10, pipeht);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 11, pipecoef);
       idx++;
     }
     bcid++;
   }
 
   for (auto &b : this->m_landBoundaries) {
+    int code = b.boundaryCode();
     for (size_t i = 0; i < b.length(); ++i) {
       int node1 = static_cast<int>(b.node1(i)->id());
       int node2 = -9999;
@@ -1369,15 +1373,16 @@ void MeshImpl::toBoundaryShapefile(const std::string &outputFile) {
 
       DBFWriteIntegerAttribute(dbfid, shp_index, 0, bcid);
       DBFWriteIntegerAttribute(dbfid, shp_index, 1, idx);
-      DBFWriteIntegerAttribute(dbfid, shp_index, 2, node1);
-      DBFWriteIntegerAttribute(dbfid, shp_index, 3, node2);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 4, bathy);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 5, elev);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 6, sup);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 7, sub);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 8, pipediam);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 9, pipeht);
-      DBFWriteDoubleAttribute(dbfid, shp_index, 10, pipecoef);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 2, code);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 3, node1);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 4, node2);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 5, bathy);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 6, elev);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 7, sup);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 8, sub);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 9, pipediam);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 10, pipeht);
+      DBFWriteDoubleAttribute(dbfid, shp_index, 11, pipecoef);
       idx++;
     }
     bcid++;
