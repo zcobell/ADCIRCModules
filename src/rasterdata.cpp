@@ -374,10 +374,12 @@ void Rasterdata::readDoubleRasterToMemory() {
   size_t n = this->nx() * this->ny();
   double *buf = (double *)CPLMalloc(sizeof(double) * n);
 
-#pragma omp critical
+#pragma omp critical 
+{
   CPLErr e = this->m_band->RasterIO(
       GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
       static_cast<GDALDataType>(this->m_readType), 0, 0);
+}
 
   this->m_doubleOnDisk.resize(this->nx());
   for (size_t i = 0; i < this->m_doubleOnDisk.size(); ++i) {
@@ -404,9 +406,11 @@ void Rasterdata::readIntegerRasterToMemory() {
   int *buf = static_cast<int *>(CPLMalloc(sizeof(int) * n));
 
 #pragma omp critical
+{
   CPLErr e = this->m_band->RasterIO(
       GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
       static_cast<GDALDataType>(this->m_readType), 0, 0);
+}
 
   this->m_intOnDisk.resize(this->nx());
   for (size_t i = 0; i < this->m_intOnDisk.size(); ++i) {
