@@ -26,7 +26,24 @@
 #include "stringconversion.h"
 
 namespace Adcirc {
+
+std::string getExtension(const std::string& filename) {
+  std::string::size_type index = filename.rfind(".");
+  return index != std::string::npos ? filename.substr(index + 1)
+                                    : std::string();
+}
+
 namespace Output {
+
+Adcirc::Output::OutputFormat getOutputFormatFromExtension(
+    const std::string& filename) {
+  std::string extension = getExtension(filename);
+  if (extension == "nc") return Adcirc::Output::OutputNetcdf4;
+  if (extension == "h5" || extension == "hdf5")
+    return Adcirc::Output::OutputHdf5;
+  return Adcirc::Output::OutputAsciiFull;
+}
+
 /**
  * @brief Check if the file type is ADCIRC ASCII Sparse
  * @param filename name of file to check format

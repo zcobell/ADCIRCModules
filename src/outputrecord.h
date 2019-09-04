@@ -25,6 +25,7 @@
 #include "adcircmodules_global.h"
 #include "default_values.h"
 #include "node.h"
+#include "outputmetadata.h"
 
 namespace Adcirc {
 
@@ -40,32 +41,45 @@ enum AngleUnits { Degrees, Radians };
 class OutputRecord {
  public:
   OutputRecord();
-  OutputRecord(size_t record, size_t numNodes, bool isVector);
+  OutputRecord(size_t record, size_t numNodes,
+               Adcirc::Output::OutputMetadata& metadata);
+  OutputRecord(size_t record, size_t numNodes, bool isMax, bool isVector,
+               size_t dimension);
 
   void fill(double z);
 
   void setU(size_t index, double z);
   void setV(size_t index, double z);
+  void setW(size_t index, double value);
   void set(size_t index, double z);
   void set(size_t index, double value_u, double value_v);
+  void set(size_t index, double value_u, double value_v, double value_w);
 
   void setAllU(const std::vector<double>& values);
   void setAllV(const std::vector<double>& values);
+  void setAllW(const std::vector<double>& values);
   void setAll(const std::vector<double>& values);
   void setAll(const std::vector<double>& values_u,
               const std::vector<double>& values_v);
+  void setAll(const std::vector<double>& values_u,
+              const std::vector<double>& values_v,
+              const std::vector<double>& values_w);
   void setAll(size_t size, const double* values);
-  void setAll(size_t size, const double* values_u, const double* value_v);
+  void setAll(size_t size, const double* values_u, const double* values_v);
+  void setAll(size_t size, const double* values_u, const double* values_v,
+              const double* values_w);
 
   std::vector<double> values(size_t column = 0);
   std::vector<double> magnitudes();
   std::vector<double> directions(AngleUnits angleType = AngleUnits::Degrees);
 
-  double z(size_t index);
-  double u(size_t index);
-  double v(size_t index);
-  double magnitude(size_t index);
-  double direction(size_t index, AngleUnits angleType = AngleUnits::Degrees);
+  double z(size_t index) const;
+  double u(size_t index) const;
+  double v(size_t index) const;
+  double w(size_t index) const;
+  double magnitude(size_t index) const;
+  double direction(size_t index,
+                   AngleUnits angleType = AngleUnits::Degrees) const;
 
   long long iteration() const;
   void setIteration(long long iteration);
@@ -76,26 +90,32 @@ class OutputRecord {
   size_t numNodes() const;
   void setNumNodes(size_t numNodes);
 
-  bool isVector() const;
-  void setIsVector(bool isVector);
-
   double defaultValue() const;
   void setDefaultValue(double defaultValue);
 
   size_t record() const;
   void setRecord(size_t record);
 
+  size_t numNonDefault() const;
+
+  bool isDefault(size_t index) const;
+
+  Adcirc::Output::OutputMetadata* metadata();
+  void setMetadata(Adcirc::Output::OutputMetadata metadata);
+
  private:
   std::vector<double> m_u;
   std::vector<double> m_v;
+  std::vector<double> m_w;
+  Adcirc::Output::OutputMetadata m_metadata;
   size_t m_record;
   long long m_iteration;
   double m_time;
   size_t m_numNodes;
-  bool m_isVector;
   double m_defaultValue;
 
-  double angle(double x, double y, AngleUnits units);
+  double angle(double x, double y, AngleUnits units) const;
+  void allocate();
 };
 }  // namespace Output
 }  // namespace Adcirc

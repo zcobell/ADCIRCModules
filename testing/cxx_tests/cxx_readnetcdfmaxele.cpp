@@ -23,7 +23,7 @@
 int main() {
   using namespace Adcirc::Geometry;
   using namespace Adcirc::Output;
-  std::unique_ptr<OutputFile> output(new OutputFile("test_files/maxele.63.nc"));
+  std::unique_ptr<ReadOutput> output(new ReadOutput("test_files/maxele.63.nc"));
   output->open();
   output->read();
   std::cout << "Expected: 0.365628193162685, Got: " << output->data(0)->z(7)
@@ -33,13 +33,15 @@ int main() {
   }
 
   //...Extra gymnastics to test other functions
-  std::vector<double> a = output->data(0)->values();
+  std::vector<double> a = output->data(0)->values(0);
+  std::vector<double> s = output->data(0)->values(1);
 
   for (size_t i = 0; i < a.size(); i++) {
     a[i] = a[i] + 10;
+    s[i] = s[i] + 10;
   }
 
-  output->data(0)->setAll(a);
+  //output->data(0)->setAll(a,s);
 
   output->close();
 

@@ -45,6 +45,7 @@ OPENSSLPATH = /usr/local/Cellar/openssl/1.0.2s
 INCLUDEPATH += $$OPENSSLPATH/include
 LIBS += -L$$OPENSSLPATH/lib -lssl -lcrypto
 
+INCLUDEPATH += /usr/include/gdal
 
 win32 {
     #...Set extension for a windows dll (avoids tracking version numbering in filename)
@@ -75,9 +76,21 @@ win32 {
 
 #...For unix, we assume netCDF exists in the path if it is not provided on the command line
 #   via qmake NETCDFHOME=$(NETCDFPATH)
-unix{
+unix:!macx{
     isEmpty(NETCDFHOME){
         LIBS += -lnetcdf
+    }else{
+        LIBS += -L$$NETCDFHOME/lib -lnetcdf
+        INCLUDEPATH += $$NETCDFHOME/include
+    }
+    LIBS+= -lgdal
+}
+
+macx{
+    isEmpty(NETCDFHOME){
+        LIBS += -lnetcdf
+        INCLUDEPATH += /usr/local/Cellar/netcdf/4.6.3_1/include
+        INCLUDEPATH += /usr/local/Cellar/hdf5/1.10.5_1/include
     }else{
         LIBS += -L$$NETCDFHOME/lib -lnetcdf
         INCLUDEPATH += $$NETCDFHOME/include
@@ -98,13 +111,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     hash.cpp \
     hash_impl.cpp \
+    outputmetadata.cpp \
+    readoutput.cpp \
     stringconversion.cpp \
     boundary.cpp \
     element.cpp \
     node.cpp \
     attribute.cpp \
     attributemetadata.cpp \
-    outputfile.cpp \
     outputrecord.cpp \
     config.cpp \
     filetypes.cpp \
@@ -127,21 +141,25 @@ SOURCES += \
     constants.cpp \
     kdtree_impl.cpp \
     kdtree.cpp \
-    logging.cpp
+    logging.cpp \
+    writeoutput.cpp
 
 HEADERS += \
+    adcirc_outputfiles.h \
     adcircmodules_global.h \
     adcmap.h \
     hash.h \
     hash_impl.h \
     hashtype.h \
+    outputfile.h \
+    outputmetadata.h \
+    readoutput.h \
     stringconversion.h \
     boundary.h \
     element.h \
     node.h \
     attribute.h \
     attributemetadata.h \
-    outputfile.h \
     outputrecord.h \
     adcirc_codes.h \
     config.h \
@@ -168,10 +186,15 @@ HEADERS += \
     kdtree.h \
     kdtree_impl.h \
     logging.h \
-    default_values.h
+    default_values.h \
+    writeoutput.h
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib
+
+unix {
+    INCLUDEPATH += /usr/include/hdf5/serial
+}
 
 win32{
     isEmpty(PREFIX) {
@@ -194,6 +217,7 @@ unix{
     target.path = $$PREFIX/lib
     INSTALLS += target
 }
+
 
 #...Ensure that git is in the system path. If not using GIT comment these two lines
 GIT_VERSION = $$system(git --git-dir $$PWD/../.git --work-tree $$PWD/.. describe --always --tags)

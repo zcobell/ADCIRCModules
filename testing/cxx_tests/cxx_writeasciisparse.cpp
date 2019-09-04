@@ -23,17 +23,48 @@
 int main() {
   using namespace Adcirc::Geometry;
   using namespace Adcirc::Output;
-  std::unique_ptr<ReadOutput> output(new ReadOutput("test_files/fort.63.nc"));
+
+  std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));
+  mesh->read();
+
+  std::unique_ptr<ReadOutput> output(new ReadOutput("test_files/sparse_fort.63"));
+
+  //...Open file
   output->open();
-  std::cout << "Name: " << output->metadata()->variable() << std::endl;
-  std::cout << "Description: " << output->metadata()->longName() << std::endl;
-  std::cout << "Units: " << output->metadata()->units() << std::endl;
+
+  //...Read snap 1
   output->read();
+
+  //...Read snap 2
   output->read();
+
+  //...Read snap 3
   output->read();
-  std::cout << "Expected: 1.84674, Got: " << output->data(2)->z(925)
-            << std::endl;
-  if (std::fabs(output->data(2)->z(925) - 1.84674) > 0.00001) return 1;
+
   output->close();
+
+  double checkValue = output->data(1)->z(10);
+
+  std::unique_ptr<WriteOutput> writer(new WriteOutput("test_files/fort.writesparse.63",output.get(),mesh.get())); 
+  writer->writeSparseAscii(true);
+  writer->open();
+  writer->write(output->data(0));
+  writer->write(output->data(1));
+  writer->write(output->data(2));
+  writer->close();
+
+  output.reset(new ReadOutput("test_files/fort.writesparse.63"));
+  writer.reset(nullptr);
+
+  output->open();
+  output->read();
+  output->read();
+
+  double checkValue2 = output->data(1)->z(10);
+
+  output->close();
+
+  if(std::abs(checkValue-checkValue2)>0.000001)return 1;
+
   return 0;
 }

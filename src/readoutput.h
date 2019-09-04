@@ -16,28 +16,28 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_OUTPUTFILE_H
-#define ADCMOD_OUTPUTFILE_H
+#ifndef ADCMOD_READOUTPUT_H
+#define ADCMOD_READOUTPUT_H
 
 #include <fstream>
 #include <memory>
 #include <unordered_map>
 #include <vector>
 #include "adcircmodules_global.h"
+#include "filetypes.h"
 #include "node.h"
+#include "outputmetadata.h"
 #include "outputrecord.h"
 
 namespace Adcirc {
 
 namespace Output {
 
-class OutputFile {
+class ReadOutput {
  public:
-  OutputFile(const std::string &filename);
+  ReadOutput(const std::string &filename);
 
-  ~OutputFile();
-
-  void setHeader(const std::string &header);
+  ~ReadOutput();
 
   void open();
 
@@ -47,16 +47,43 @@ class OutputFile {
 
   bool isOpen();
 
-  void read(size_t snap = Adcirc::Output::nextOutputSnap());
-
-  void write(size_t snap = Adcirc::Output::nextOutputSnap());
-
-  int filetype() const;
-
-  std::string getHeader() const;
+  std::string header() const;
+  void setHeader(const std::string &header);
 
   std::string filename() const;
   void setFilename(const std::string &filename);
+
+  size_t numSnaps() const;
+  void setNumSnaps(size_t numSnaps);
+
+  size_t numNodes() const;
+  void setNumNodes(size_t numNodes);
+
+  double dt() const;
+  void setDt(double dt);
+
+  int dIteration() const;
+  void setDiteration(int dit);
+
+  Adcirc::Output::OutputFormat filetype() const;
+  void setFiletype(Adcirc::Output::OutputFormat filetype);
+
+  size_t currentSnap() const;
+  void setCurrentSnap(const size_t &currentSnap);
+
+  double defaultValue() const;
+  void setDefaultValue(double defaultValue);
+
+  static const std::vector<Adcirc::Output::OutputMetadata>
+      *adcircFileMetadata();
+
+  Adcirc::Output::OutputMetadata *metadata();
+  void setMetadata(const Adcirc::Output::OutputMetadata &metadata);
+
+  double modelDt() const;
+  void setModelDt(double modelDt);
+
+  void read(size_t snap = Adcirc::Output::nextOutputSnap());
 
   Adcirc::Output::OutputRecord *data(size_t snap);
   Adcirc::Output::OutputRecord *data(size_t snap, bool &ok);
@@ -64,45 +91,31 @@ class OutputFile {
   Adcirc::Output::OutputRecord *dataAt(size_t position);
   Adcirc::Output::OutputRecord *dataAt(size_t position, bool &ok);
 
-  size_t getNumSnaps() const;
-  void setNumSnaps(int numSnaps);
-
-  size_t getNumNodes() const;
-  void setNumNodes(size_t numNodes);
-
-  double getDt() const;
-  void setDt(double dt);
-
-  int getDiteration() const;
-  void setDiteration(int dit);
-
   void clear();
   void clearAt(size_t position);
 
-  std::string description() const;
-  std::string units() const;
-  std::string name() const;
-
  private:
+  void setOpen(bool open);
+
   // variables
-  bool m_isVector;
-  bool m_isMax;
+  std::fstream m_fid;
+  std::vector<std::unique_ptr<Adcirc::Output::OutputRecord>> m_records;
+  std::unordered_map<size_t, Adcirc::Output::OutputRecord *> m_recordMap;
   bool m_open;
-  int m_filetype;
+  Adcirc::Output::OutputFormat m_filetype;
   size_t m_currentSnap;
   size_t m_numSnaps;
   size_t m_numNodes;
+  double m_modelDt;
   double m_dt;
   double m_defaultValue;
   int m_dit;
-  std::fstream m_fid;
   std::string m_filename;
   std::string m_units;
   std::string m_description;
   std::string m_name;
-  std::vector<std::unique_ptr<Adcirc::Output::OutputRecord>> m_records;
-  std::unordered_map<size_t, Adcirc::Output::OutputRecord *> m_recordMap;
   std::string m_header;
+  Adcirc::Output::OutputMetadata m_metadata;
 
   // netcdf specific variables
   int m_ncid;
@@ -112,25 +125,24 @@ class OutputFile {
   std::vector<int> m_varid_data;
 
   // functions
-  int getFiletype();
+  Adcirc::Output::OutputFormat getFiletype();
   void findNetcdfVarId();
   void rebuildMap();
 
   void openAscii();
   void openNetcdf();
-  void openXdmf();
 
   void closeAscii();
   void closeNetcdf();
-  void closeXdmf();
 
   void readAsciiHeader();
   void readNetcdfHeader();
 
   void readAsciiRecord(std::unique_ptr<OutputRecord> &record);
   void readNetcdfRecord(size_t snap, std::unique_ptr<OutputRecord> &record);
+  int netcdfVariableSearch(size_t variableIndex, OutputMetadata &filetypeFound);
 };
 }  // namespace Output
 }  // namespace Adcirc
 
-#endif  // ADCMOD_OUTPUTFILE_H
+#endif  // ADCMOD_READOUTPUT_H

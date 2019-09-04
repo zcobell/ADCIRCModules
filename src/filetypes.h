@@ -5,6 +5,8 @@
 
 namespace Adcirc {
 
+std::string getExtension(const std::string &filename);
+
 namespace Geometry {
 enum MeshFormat {
   /// Unknown mesh format
@@ -44,17 +46,19 @@ enum OutputFormat {
   OutputNetcdf3 = 0x003,
   /// netCDF4 formatted Adcirc output
   OutputNetcdf4 = 0x004,
-  /// Xdmf formatted Adcirc output [not implemented]
-  OutputXdmf = 0x005,
+  /// Hdf5 formatted Adcirc output [not implemented]
+  OutputHdf5 = 0x005,
   /// Unknown output format
   OutputUnknown = 0x999
 };
+
+Adcirc::Output::OutputFormat getOutputFormatFromExtension(
+    const std::string &filename);
 
 bool checkFiletypeAsciiFull(const std::string &filename);
 bool checkFiletypeAsciiSparse(const std::string &filename);
 bool checkFiletypeNetcdf3(const std::string &filename);
 bool checkFiletypeNetcdf4(const std::string &filename);
-bool checkFiletypeXdmf(const std::string &filename);
 bool inquireNetcdfFormat(const std::string &filename, int &format);
 
 }  // namespace Output

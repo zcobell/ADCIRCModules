@@ -24,6 +24,21 @@ int main() {
   using namespace Adcirc::Geometry;
   using namespace Interpolation;
 
+  std::vector<double> control = {
+    0.111204,  
+    0.104896, 
+    0.0981562, 
+    0.125039,  
+    0.0757044, 
+    0.0572342, 
+    0.0376321, 
+    0.025,     
+    0.025,     
+    0.025,     
+    0.0362991, 
+    0.109136  
+  };
+
   std::unique_ptr<Mesh> m(new Mesh("test_files/ms-riv.grd"));
   m->read();
   m->defineProjection(4326, true);
@@ -48,4 +63,10 @@ int main() {
   g->setEpsg(26915);
   g->setRasterInMemory(true);
   std::vector<std::vector<double>> r = g->computeDirectionalWindReduction(true);
+
+  for(size_t i=0;i<12;++i){
+    std::cout << r[0][i] << " " << control[i] << std::endl;
+    if(std::abs(r[0][i] - control[i]) > 0.00001)return 1;
+  }
+
 }

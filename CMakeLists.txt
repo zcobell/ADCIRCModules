@@ -211,9 +211,9 @@ IF(WIN32)
     SET(NETCDF_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/thirdparty/netcdf/include" ) 
 ELSE(WIN32)
 	IF(NOT "${NETCDFHOME}" STREQUAL "")
-		SET(NETCDF_DIR "${NETCDFHOME}")
+        SET(NETCDF_DIR "${NETCDFHOME}" CACHE STRING "Location of NETCDF Library")
 	ELSEIF(NOT $ENV{NETCDFHOME} STREQUAL "")
-		SET(NETCDF_DIR $ENV{NETCDFHOME})
+        SET(NETCDF_DIR $ENV{NETCDFHOME} CACHE STRING "Locatin of NETCDF Library")
 	ENDIF(NOT "${NETCDFHOME}" STREQUAL "")
 
 	FIND_PACKAGE(NetCDF)
@@ -246,6 +246,19 @@ ELSE(WIN32)
 ENDIF(WIN32)
 ###########################################################################
 
+###########################################################################
+#  HDF5
+###########################################################################
+IF(POLICY CMP0074)
+    cmake_policy(SET CMP0074 NEW)
+ENDIF(POLICY CMP0074)
+IF(NOT "${HDF5HOME}" STREQUAL "")
+    SET(HDF5_ROOT "${HDF5HOME}" CACHE STRING "Location of HDF5 Library")
+ELSEIF(NOT $ENV{HDF5HOME} STREQUAL "")
+    SET(HDF5_ROOT $ENV{HDF5HOME} CACHE STRING "Location of HDF5 Library")
+ENDIF(NOT "${HDF5HOME}" STREQUAL "")
+Find_Package(HDF5)
+###########################################################################
 
 ###########################################################################
 # OpenMP
@@ -263,7 +276,7 @@ ENDIF(ENABLE_OPENMP)
 ###########################################################################
 IF(NOT "${OPENSSLHOME}" STREQUAL "")
     SET(OPENSSL_ROOT_DIR "${OPENSSLHOME}")
-ELSEIF(NOT $ENV{NETCDFHOME} STREQUAL "")
+ELSEIF(NOT $ENV{OPENSSLHOME} STREQUAL "")
     SET(OPENSSL_ROOT_DIR $ENV{OPENSSLHOME})
 ENDIF(NOT "${OPENSSLHOME}" STREQUAL "")
 FIND_PACKAGE(OpenSSL)
@@ -301,7 +314,7 @@ ENDIF(ENABLE_GDAL)
 ###########################################################################
 #  EzProj Library
 ###########################################################################
-add_subdirectory( ${CMAKE_SOURCE_DIR}/thirdparty/EzProj )
+add_subdirectory( ${CMAKE_SOURCE_DIR}/thirdparty/ezproj )
 ###########################################################################
 
 ###########################################################################
@@ -333,8 +346,10 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/nodalattributes.cpp
                 ${CMAKE_SOURCE_DIR}/src/attribute.cpp
                 ${CMAKE_SOURCE_DIR}/src/attributemetadata.cpp
+                ${CMAKE_SOURCE_DIR}/src/outputmetadata.cpp
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.cpp 
-                ${CMAKE_SOURCE_DIR}/src/outputfile.cpp 
+                ${CMAKE_SOURCE_DIR}/src/readoutput.cpp 
+                ${CMAKE_SOURCE_DIR}/src/writeoutput.cpp 
                 ${CMAKE_SOURCE_DIR}/src/harmonicsrecord.cpp
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.cpp 
                 ${CMAKE_SOURCE_DIR}/src/elementtable.cpp
@@ -365,7 +380,7 @@ ENDIF(GDAL_FOUND)
 TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/src/pimpl
                                 ${CMAKE_SOURCE_DIR}/src
-                                ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src
+                                ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src
                                 ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
                                 ${CMAKE_SOURCE_DIR}/thirdparty/abseil
                                 ${CMAKE_SOURCE_DIR}/thirdparty/nanoflann/include
@@ -398,7 +413,8 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/mesh.h
                 ${CMAKE_SOURCE_DIR}/src/nodalattributes.h
                 ${CMAKE_SOURCE_DIR}/src/node.h
-                ${CMAKE_SOURCE_DIR}/src/outputfile.h
+                ${CMAKE_SOURCE_DIR}/src/readoutput.h
+                ${CMAKE_SOURCE_DIR}/src/writeoutput.h
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.h
                 ${CMAKE_SOURCE_DIR}/src/meshchecker.h
                 ${CMAKE_SOURCE_DIR}/src/elementtable.h
@@ -408,7 +424,7 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/constants.h 
                 ${CMAKE_SOURCE_DIR}/src/kdtree.h
                 ${CMAKE_SOURCE_DIR}/src/default_values.h
-                ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src/ezproj.h )
+                ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src/ezproj.h )
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES PUBLIC_HEADER "${HEADER_LIST}" ) 
 
@@ -459,6 +475,11 @@ IF(OPENMP_FOUND)
     TARGET_LINK_LIBRARIES(  adcircmodules ${OpenMP_CXX_LIB_NAMES} ${OpenMP_CXX_FLAGS} )
 ENDIF(OPENMP_FOUND)
 
+IF(HDF5_FOUND)
+    TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE HAVE_HDF5 ${HDF5_DEFINITIONS} )
+    TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${HDF5_INCLUDE_DIRS} )
+    TARGET_LINK_LIBRARIES( adcircmodules ${HDF5_LIBRARIES} )
+ENDIF(HDF5_FOUND)
 
 ###########################################################################
 
@@ -500,7 +521,7 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python ${PYTHONFLAG}
                     -I${CMAKE_SOURCE_DIR}/src 
-                    -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src i
+                    -I${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src i
                     -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG}
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -515,7 +536,7 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
         ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
             COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -python ${PYTHONFLAG}
                     -I${CMAKE_SOURCE_DIR}/src 
-                    -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
+                    -I${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src 
                     -I${PYTHON_INCLUDE_PATH} ${SWIG_GDAL_FLAG} 
                     -o ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx
                     ${CMAKE_SOURCE_DIR}/swig/adcirc.i
@@ -526,7 +547,7 @@ IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 
     ADD_LIBRARY( PyAdcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx )
     TARGET_INCLUDE_DIRECTORIES( PyAdcirc PRIVATE ${PYTHON_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src 
-                                    ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src ) 
+                                    ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src ) 
     TARGET_LINK_LIBRARIES( PyAdcirc adcircmodules ${PYTHON_LIBRARY} )
     IF(OPENSSL_FOUND)
         TARGET_INCLUDE_DIRECTORIES( PyAdcirc  PRIVATE ${OPENSSL_INCLUDE_DIR}) 
@@ -588,7 +609,7 @@ ENDIF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 #    
 #            ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
 #                COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src
-#                        -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src -I${PERL_INCLUDE_PATH} 
+#                        -I${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src -I${PERL_INCLUDE_PATH} 
 #                        -o ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx.1
 #                        ${CMAKE_SOURCE_DIR}/swig/adcirc.i
 #                COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx.1 
@@ -601,7 +622,7 @@ ENDIF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 #        ELSE(WIN32)
 #            ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
 #                COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src 
-#                        -I${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src -I${PERL_INCLUDE_PATH} 
+#                        -I${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src -I${PERL_INCLUDE_PATH} 
 #                        -o ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
 #                        ${CMAKE_SOURCE_DIR}/swig/adcirc.i
 #                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
@@ -611,7 +632,7 @@ ENDIF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
 #    
 #        ADD_LIBRARY( perladcirc SHARED ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx )
 #        TARGET_INCLUDE_DIRECTORIES( perladcirc PRIVATE ${PERL_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src 
-#                                        ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src 
+#                                        ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src 
 #                                        ${CMAKE_SOURCE_DIR}/libraries/rasterdata )
 #        TARGET_LINK_LIBRARIES( perladcirc PRIVATE adcircmodules ${PERL_LIBRARY} )
 #        SET_TARGET_PROPERTIES( perladcirc PROPERTIES PREFIX "")
@@ -649,7 +670,10 @@ IF(UNIX OR CYGWIN)
                       cxx_readasciivector.cpp cxx_readnetcdf.cpp cxx_readnetcdfvector.cpp
                       cxx_readHarmonicsElevation.cpp cxx_readHarmonicsVelocity.cpp 
                       cxx_readnetcdfHarmonicsElevation.cpp  cxx_readnetcdfHarmonicsVelocity.cpp
-                      cxx_checkmesh.cpp cxx_read2dm.cpp cxx_kdtree.cpp cxx_hash.cpp cxx_hashmesh.cpp )
+                      cxx_checkmesh.cpp cxx_read2dm.cpp cxx_kdtree.cpp cxx_hash.cpp cxx_hashmesh.cpp 
+                      cxx_writeasciifull.cpp cxx_writeasciisparse.cpp cxx_writeasciifullvector.cpp 
+                      cxx_writeasciisparsevector.cpp cxx_writenetcdf.cpp cxx_writenetcdfvector.cpp 
+                      cxx_writehdf5.cpp )
 
         IF(ENABLE_GDAL)
             SET(TEST_LIST ${TEST_LIST} cxx_interpolateRaster.cpp cxx_interpolateManning.cpp cxx_interpolateDwind.cpp ) 
@@ -660,7 +684,7 @@ IF(UNIX OR CYGWIN)
             ADD_EXECUTABLE( ${TESTNAME} ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE} )
             ADD_DEPENDENCIES( ${TESTNAME} adcircmodules )
             TARGET_INCLUDE_DIRECTORIES( ${TESTNAME} PRIVATE ${CMAKE_SOURCE_DIR}/src 
-                                                            ${CMAKE_SOURCE_DIR}/thirdparty/EzProj/src ) 
+                                                            ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src ) 
             TARGET_LINK_LIBRARIES( ${TESTNAME} adcircmodules )
             SET_TARGET_PROPERTIES( ${TESTNAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/cxx_testcases )
     
