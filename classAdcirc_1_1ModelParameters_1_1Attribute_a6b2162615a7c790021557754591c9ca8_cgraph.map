@@ -1,3 +1,4 @@
 <map id="setNode" name="setNode">
-<area shape="rect" id="node2" href="$classAdcirc_1_1ModelParameters_1_1Attribute.html#af37fcf97952d78b743da62ee7bb8065a" title="Returns a pointer to the node for which the current nodal attribute applies. " alt="" coords="129,5,184,32"/>
+<area shape="rect" id="node1" title="Sets the pointer to the node that this nodal attribute is applied to." alt="" coords="5,5,76,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1ModelParameters_1_1Attribute.html#af37fcf97952d78b743da62ee7bb8065a" title="Returns a pointer to the node for which the current nodal attribute applies." alt="" coords="124,5,175,32"/>
 </map>

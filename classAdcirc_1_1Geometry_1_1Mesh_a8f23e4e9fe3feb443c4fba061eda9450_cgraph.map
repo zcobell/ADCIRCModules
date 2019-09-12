@@ -1,0 +1,7 @@
+<map id="resizeMesh" name="resizeMesh">
+<area shape="rect" id="node1" title="Resizes the vectors within the mesh." alt="" coords="5,81,95,108"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh." alt="" coords="172,5,256,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#afdfd28c4c1db0086eee0969cdc0409db" title="Returns the number of elements in the mesh." alt="" coords="163,56,265,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Mesh.html#af443f5205734c64e021aa1b96d254991" title="Returns the number of open boundaries in the model." alt="" coords="143,107,285,133"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ad5e2ed78e83daf7899f55c684005336f" title="Returns the number of land boundaries in the model." alt="" coords="144,157,284,184"/>
+</map>

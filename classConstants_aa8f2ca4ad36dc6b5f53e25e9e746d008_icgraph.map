@@ -1,4 +1,4 @@
 <map id="rad2deg" name="rad2deg">
-<area shape="rect" id="node2" href="$classConstants.html#a743ea7ec7653fe3ee75df86682edbb04" title="Converts a value from radians to degrees. " alt="" coords="128,5,217,32"/>
-<area shape="rect" id="node3" href="$classConstants.html#a62d050d6a06ff0262d04bd705e45c517" title="Returns the square root of 3. " alt="" coords="265,5,321,32"/>
+<area shape="rect" id="node1" title="Returns the factor to convert radians to degrees." alt="" coords="135,5,203,32"/>
+<area shape="rect" id="node2" href="$classConstants.html#a743ea7ec7653fe3ee75df86682edbb04" title="Converts a value from radians to degrees." alt="" coords="5,5,87,32"/>
 </map>

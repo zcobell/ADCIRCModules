@@ -1,3 +1,4 @@
 <map id="setName" name="setName">
-<area shape="rect" id="node2" href="$classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#a1d89c28bd42ba9a52da008bb69367171" title="Returns the name of the nodal attribute. " alt="" coords="135,5,193,32"/>
+<area shape="rect" id="node1" title="Sets the name of the nodal attribute." alt="" coords="5,5,80,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#a1d89c28bd42ba9a52da008bb69367171" title="Returns the name of the nodal attribute." alt="" coords="128,5,183,32"/>
 </map>

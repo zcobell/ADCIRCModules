@@ -1,3 +1,4 @@
 <map id="size" name="size">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="101,5,197,32"/>
+<area shape="rect" id="node1" title="Returns the length of the boundary. Same as Boundary::bonudaryLength." alt="" coords="141,5,188,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector." alt="" coords="5,5,93,32"/>
 </map>

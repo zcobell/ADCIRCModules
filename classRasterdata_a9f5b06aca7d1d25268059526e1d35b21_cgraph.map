@@ -1,8 +1,0 @@
-<map id="pixelValueDouble" name="pixelValueDouble">
-<area shape="rect" id="node2" href="$classRasterdata.html#a2378e6241d209cce3fa92fb84a401504" title="Returns the pixel value for the i,j index. " alt="" coords="189,107,325,133"/>
-<area shape="rect" id="node3" href="$classPixel.html#a92b0b88b9a2c8ccada33e3fa7ce39244" title="Returns the i&#45;index. " alt="" coords="373,5,440,32"/>
-<area shape="rect" id="node4" href="$classPixel.html#aaf29b851413b2cac5242b33a4b6c24fd" title="Returns the j&#45;index. " alt="" coords="373,56,440,83"/>
-<area shape="rect" id="node5" href="$classRasterdata.html#a0ae524617adbd2d1763224670bb9ed45" title="Number of pixels in the x&#45;direction. " alt="" coords="387,107,426,133"/>
-<area shape="rect" id="node6" href="$classRasterdata.html#aaef978e68f2f09a688c328a56dc4b23a" title="Number of pixels in the y&#45;direction. " alt="" coords="387,157,426,184"/>
-<area shape="rect" id="node7" href="$classRasterdata.html#aef5a0633cf157be22ccf3553e07fc0a7" title="nodata value used in the raster " alt="" coords="373,208,440,235"/>
-</map>

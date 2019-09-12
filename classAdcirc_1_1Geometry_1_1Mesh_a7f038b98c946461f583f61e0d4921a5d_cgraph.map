@@ -1,0 +1,4 @@
+<map id="setMeshHeaderString" name="setMeshHeaderString">
+<area shape="rect" id="node1" title="Sets the header for the mesh." alt="" coords="5,5,152,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#adc2bf9b67aabc0b183e50a5bb34bea32" title="Returns the mesh header from the processed mesh." alt="" coords="200,5,329,32"/>
+</map>

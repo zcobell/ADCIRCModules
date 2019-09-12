@@ -1,4 +1,5 @@
 <map id="toDegrees" name="toDegrees">
-<area shape="rect" id="node2" href="$classConstants.html#aa8f2ca4ad36dc6b5f53e25e9e746d008" title="Returns the factor to convert radians to degrees. " alt="" coords="143,5,217,32"/>
-<area shape="rect" id="node3" href="$classConstants.html#a8916e00cc71692658a0a355b2f142274" title="Returns the constant pi. " alt="" coords="265,5,304,32"/>
+<area shape="rect" id="node1" title="Converts a value from radians to degrees." alt="" coords="5,5,87,32"/>
+<area shape="rect" id="node2" href="$classConstants.html#aa8f2ca4ad36dc6b5f53e25e9e746d008" title="Returns the factor to convert radians to degrees." alt="" coords="135,5,203,32"/>
+<area shape="rect" id="node3" href="$classConstants.html#a8916e00cc71692658a0a355b2f142274" title="Returns the constant pi." alt="" coords="251,5,289,32"/>
 </map>

@@ -6,5 +6,6 @@ var searchData=
   ['log',['log',['../classAdcirc_1_1Logging.html#a573fcde412045dabd8721bffbed59b5f',1,'Adcirc::Logging']]],
   ['logging',['Logging',['../classAdcirc_1_1Logging.html',1,'Logging'],['../classAdcirc_1_1Logging.html#a50aed7b3f38aa654a0b5761144b9d4da',1,'Adcirc::Logging::Logging()']]],
   ['logging_2ecpp',['logging.cpp',['../logging_8cpp.html',1,'']]],
-  ['logging_2eh',['logging.h',['../logging_8h.html',1,'']]]
+  ['logging_2eh',['logging.h',['../logging_8h.html',1,'']]],
+  ['longname',['longName',['../classAdcirc_1_1Output_1_1OutputMetadata.html#abf24ba5939b1cc968e1c7ab804fb7dea',1,'Adcirc::Output::OutputMetadata']]]
 ];

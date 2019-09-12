@@ -1,7 +1,9 @@
 <map id="element" name="element">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6cc4b5e332f1a761d93ce7a616dc4bdd" title="Adcirc::Utility::MeshChecker\l::checkElementNumbering" alt="" coords="131,5,335,47"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="129,71,337,112"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ae03f3887258a57e08f2f6f259c03ce03" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="131,136,335,177"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="131,201,335,243"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="385,104,589,145"/>
+<area shape="rect" id="node1" title="Returns a pointer to the requested element in the internal element vector." alt="" coords="479,129,547,156"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a5e87abc349c9a9d267d46a3c667ea602" title="Adds an Element at the specified position in the element vector." alt="" coords="291,5,381,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6cc4b5e332f1a761d93ce7a616dc4bdd" title=" " alt="" coords="242,57,430,98"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title=" " alt="" coords="241,122,431,163"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a7903c655caf176412d92e4719559bd02" title=" " alt="" coords="242,187,430,229"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title=" " alt="" coords="242,253,430,294"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title=" " alt="" coords="5,155,193,197"/>
 </map>

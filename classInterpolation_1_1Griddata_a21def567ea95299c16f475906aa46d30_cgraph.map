@@ -1,0 +1,4 @@
+<map id="setDatumShift" name="setDatumShift">
+<area shape="rect" id="node1" title="Sets a datum shift that is added to the interpolated value." alt="" coords="5,5,111,32"/>
+<area shape="rect" id="node2" href="$classInterpolation_1_1Griddata.html#a40504fb5f09ccc665f9cf82b327f0349" title="Returns the datum shift that is added to the interpolated value." alt="" coords="159,5,244,32"/>
+</map>

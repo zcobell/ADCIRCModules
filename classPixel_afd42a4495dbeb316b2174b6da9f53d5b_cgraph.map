@@ -1,4 +1,5 @@
 <map id="set" name="set">
-<area shape="rect" id="node2" href="$classPixel.html#a92b0b88b9a2c8ccada33e3fa7ce39244" title="Returns the i&#45;index. " alt="" coords="96,5,135,32"/>
-<area shape="rect" id="node3" href="$classPixel.html#aaf29b851413b2cac5242b33a4b6c24fd" title="Returns the j&#45;index. " alt="" coords="96,56,135,83"/>
+<area shape="rect" id="node1" title="Sets the pixel indicies." alt="" coords="5,31,45,57"/>
+<area shape="rect" id="node2" href="$classPixel.html#a92b0b88b9a2c8ccada33e3fa7ce39244" title="Returns the i&#45;index." alt="" coords="93,5,132,32"/>
+<area shape="rect" id="node3" href="$classPixel.html#aaf29b851413b2cac5242b33a4b6c24fd" title="Returns the j&#45;index." alt="" coords="93,56,132,83"/>
 </map>

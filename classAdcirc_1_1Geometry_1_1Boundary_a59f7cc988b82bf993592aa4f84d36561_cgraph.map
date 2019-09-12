@@ -1,4 +1,5 @@
 <map id="crestElevation" name="crestElevation">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#af2dbbc7f5b60b931ebb6a47d891b8eb1" title="Returns true if boundary condition is some type of weir&#45;type boundary. " alt="" coords="200,5,263,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary. " alt="" coords="168,56,295,83"/>
+<area shape="rect" id="node1" title="Returns the crest elevation for boundary types 3, 13, 23, 4, 24, 5, and 25." alt="" coords="5,31,111,57"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#af2dbbc7f5b60b931ebb6a47d891b8eb1" title="Returns true if boundary condition is some type of weir&#45;type boundary." alt="" coords="187,5,245,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary." alt="" coords="159,56,273,83"/>
 </map>

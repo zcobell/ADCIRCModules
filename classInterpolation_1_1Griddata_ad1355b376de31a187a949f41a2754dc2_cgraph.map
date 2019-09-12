@@ -1,0 +1,4 @@
+<map id="setRasterInMemory" name="setRasterInMemory">
+<area shape="rect" id="node1" title="Sets to true, the code will read the raster into memory instead of reading as required from disk." alt="" coords="5,5,141,32"/>
+<area shape="rect" id="node2" href="$classInterpolation_1_1Griddata.html#a10a64ad4b6b950d27b05e654495b72e8" title="Returns true if the code will read the raster into memory instead of reading as required from the dis..." alt="" coords="189,5,303,32"/>
+</map>

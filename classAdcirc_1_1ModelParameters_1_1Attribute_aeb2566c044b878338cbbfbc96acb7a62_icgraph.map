@@ -1,4 +1,4 @@
 <map id="values" name="values">
-<area shape="rect" id="node2" href="$classAdcirc_1_1ModelParameters_1_1Attribute.html#abb6359b3e328fdd56d817e913b4acfa1" title="Uses a vector of values to set nodal attributes. " alt="" coords="181,5,259,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#a70c1c7b973c421915fdcb2c6c40609e6" title="Adcirc::ModelParameters\l::AttributeMetadata::checkIf\lDefaultValue" alt="" coords="119,56,321,112"/>
+<area shape="rect" id="node1" title="Returns a vector of all values for this nodal parameter." alt="" coords="125,5,185,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1ModelParameters_1_1Attribute.html#abb6359b3e328fdd56d817e913b4acfa1" title="Uses a vector of values to set nodal attributes." alt="" coords="5,5,77,32"/>
 </map>

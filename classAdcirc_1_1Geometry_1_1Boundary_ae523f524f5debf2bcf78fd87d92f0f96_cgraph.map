@@ -1,4 +1,5 @@
 <map id="supercriticalWeirCoefficient" name="supercriticalWeirCoefficient">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#af2dbbc7f5b60b931ebb6a47d891b8eb1" title="Returns true if boundary condition is some type of weir&#45;type boundary. " alt="" coords="287,5,349,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary. " alt="" coords="255,56,381,83"/>
+<area shape="rect" id="node1" title="Returns the coefficient of supercritical flow for the specified position along the boundary for bound..." alt="" coords="5,31,185,57"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#af2dbbc7f5b60b931ebb6a47d891b8eb1" title="Returns true if boundary condition is some type of weir&#45;type boundary." alt="" coords="261,5,320,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary." alt="" coords="233,56,348,83"/>
 </map>

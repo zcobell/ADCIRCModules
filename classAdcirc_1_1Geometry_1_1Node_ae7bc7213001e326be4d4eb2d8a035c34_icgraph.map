@@ -1,10 +1,11 @@
 <map id="z" name="z">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab1b91509c7fc8ca25704765f687aeb00" title="Adcirc::Utility::MeshChecker\l::checkNodalElevations" alt="" coords="92,5,296,47"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="Adcirc::Utility::MeshChecker\l::checkLeveeHeights" alt="" coords="92,71,296,112"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="Adcirc::Utility::MeshChecker\l::checkPipeHeights" alt="" coords="92,136,296,177"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Node.html#ae75c04393d9b583587960be477a44168" title="Function taking the id, x, y, and z for the node. " alt="" coords="156,202,232,229"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Node.html#a4e6bea7e742d99e9fdd7d08206cfbba0" title="Sets the z&#45;elevation of the node. " alt="" coords="169,253,219,279"/>
-<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1Node.html#aa2643047b5fc60af3bac3d0e458c24d8" title="Formats the node for writing into an Adcirc ASCII mesh file. " alt="" coords="137,303,251,330"/>
-<area shape="rect" id="node9" href="$classAdcirc_1_1Geometry_1_1Node.html#a23d80ca14b4eb8fde2a399ebb291e826" title="Formats the node for writing into an Aquaveo 2dm ASCII mesh file. " alt="" coords="143,354,245,381"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="344,71,548,112"/>
+<area shape="rect" id="node1" title="Returns the z&#45;elevation of the node." alt="" coords="477,202,516,229"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab1b91509c7fc8ca25704765f687aeb00" title=" " alt="" coords="241,5,429,47"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title=" " alt="" coords="241,71,429,112"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title=" " alt="" coords="241,136,429,177"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Node.html#ae75c04393d9b583587960be477a44168" title="Function taking the id, x, y, and z for the node." alt="" coords="300,202,371,229"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Node.html#a4e6bea7e742d99e9fdd7d08206cfbba0" title="Sets the z&#45;elevation of the node." alt="" coords="311,253,359,279"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1Node.html#aa2643047b5fc60af3bac3d0e458c24d8" title="Formats the node for writing into an Adcirc ASCII mesh file." alt="" coords="283,303,387,330"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Geometry_1_1Node.html#a23d80ca14b4eb8fde2a399ebb291e826" title="Formats the node for writing into an Aquaveo 2dm ASCII mesh file." alt="" coords="289,354,381,381"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title=" " alt="" coords="5,71,193,112"/>
 </map>

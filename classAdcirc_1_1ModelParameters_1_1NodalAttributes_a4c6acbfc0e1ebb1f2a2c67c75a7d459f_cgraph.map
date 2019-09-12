@@ -1,0 +1,4 @@
+<map id="addAttribute" name="addAttribute">
+<area shape="rect" id="node1" title="Adds a new set of nodal attributes to the object." alt="" coords="5,5,97,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a703b27e43858ba1e6356f7780bcdb7e0" title="Returns the nodal attribute metadata for the given index." alt="" coords="145,5,221,32"/>
+</map>

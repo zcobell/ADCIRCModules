@@ -1,0 +1,4 @@
+<map id="addNode" name="addNode">
+<area shape="rect" id="node1" title="Adds a node at the specified index in the node vector." alt="" coords="5,5,79,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a96bbda0a22e51f4ca5cf2364126956b9" title="Returns a pointer to the requested node in the internal node vector." alt="" coords="127,5,177,32"/>
+</map>

@@ -1,3 +1,4 @@
 <map id="length" name="length">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary. " alt="" coords="116,5,243,32"/>
+<area shape="rect" id="node1" title="Returns the length of the boundary. Same as Boundary::bonudaryLength." alt="" coords="5,5,63,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary." alt="" coords="111,5,225,32"/>
 </map>

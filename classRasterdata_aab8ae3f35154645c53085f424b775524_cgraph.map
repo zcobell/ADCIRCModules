@@ -1,0 +1,7 @@
+<map id="pixelValue" name="pixelValue">
+<area shape="rect" id="node1" title="Returns the pixel value for the i,j index." alt="" coords="5,81,87,108"/>
+<area shape="rect" id="node2" href="$classPixel.html#a92b0b88b9a2c8ccada33e3fa7ce39244" title="Returns the i&#45;index." alt="" coords="135,5,197,32"/>
+<area shape="rect" id="node3" href="$classPixel.html#aaf29b851413b2cac5242b33a4b6c24fd" title="Returns the j&#45;index." alt="" coords="135,56,197,83"/>
+<area shape="rect" id="node4" href="$classRasterdata.html#a0ae524617adbd2d1763224670bb9ed45" title="Number of pixels in the x&#45;direction." alt="" coords="147,107,185,133"/>
+<area shape="rect" id="node5" href="$classRasterdata.html#aaef978e68f2f09a688c328a56dc4b23a" title="Number of pixels in the y&#45;direction." alt="" coords="147,157,185,184"/>
+</map>

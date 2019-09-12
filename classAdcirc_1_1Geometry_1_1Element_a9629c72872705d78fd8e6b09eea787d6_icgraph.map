@@ -1,6 +1,7 @@
 <map id="elementLeg" name="elementLeg">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#aea91ac1ba5cbc0a0b6970c9758f804a2" title="Calculates the average size of the legs of an element. " alt="" coords="152,17,255,43"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="303,71,511,112"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="305,5,509,47"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="559,39,763,80"/>
+<area shape="rect" id="node1" title="Returns a pair of nodes representing the leg of an element." alt="" coords="621,46,711,73"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#aea91ac1ba5cbc0a0b6970c9758f804a2" title="Calculates the average size of the legs of an element." alt="" coords="479,17,573,43"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title=" " alt="" coords="241,71,431,112"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title=" " alt="" coords="242,5,430,47"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title=" " alt="" coords="5,39,193,80"/>
 </map>

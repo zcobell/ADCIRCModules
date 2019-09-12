@@ -1,4 +1,5 @@
 <map id="pipeCoefficient" name="pipeCoefficient">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#adee39f37571e564f0459d42b8d2449e4" title="Returns true if boundary condition is an internal weir with cross barrier pipes. " alt="" coords="173,5,351,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary. " alt="" coords="199,56,325,83"/>
+<area shape="rect" id="node1" title="Returns the pipe coefficient." alt="" coords="5,31,113,57"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#adee39f37571e564f0459d42b8d2449e4" title="Returns true if boundary condition is an internal weir with cross barrier pipes." alt="" coords="161,5,321,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary." alt="" coords="184,56,299,83"/>
 </map>

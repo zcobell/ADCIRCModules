@@ -1,10 +1,8 @@
 <map id="boundaryCode" name="boundaryCode">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a145ba98183d6fb9524a56e10f6805034" title="Sets the model boundary to the user specified code. " alt="" coords="203,21,340,48"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="223,72,319,99"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="Adcirc::Utility::MeshChecker\l::checkLeveeHeights" alt="" coords="169,123,373,165"/>
-<area shape="rect" id="node9" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="Adcirc::Utility::MeshChecker\l::checkPipeHeights" alt="" coords="169,189,373,230"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa73482a93e9453f307b44dd1bffd0230" title="Initializes the boundary with user specified boundary type and length. " alt="" coords="481,5,565,32"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ae7d8bcd9bd98bb8b378d529da56cdf7c" title="User specified initialization of the boundary. " alt="" coords="471,56,575,83"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a9eadb05aefcbdcd82ccb53c1b2e9769c" title="Default constructor. " alt="" coords="673,56,757,83"/>
-<area shape="rect" id="node8" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="421,139,625,181"/>
+<area shape="rect" id="node1" title="Returns the Adcirc model boundary code." alt="" coords="447,56,552,83"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a145ba98183d6fb9524a56e10f6805034" title="Sets the model boundary to the user specified code." alt="" coords="273,31,399,57"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector." alt="" coords="292,81,380,108"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa73482a93e9453f307b44dd1bffd0230" title="Initializes the boundary with user specified boundary type and length." alt="" coords="139,5,217,32"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ae7d8bcd9bd98bb8b378d529da56cdf7c" title="User specified initialization of the boundary." alt="" coords="131,56,225,83"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a9eadb05aefcbdcd82ccb53c1b2e9769c" title="Default constructor." alt="" coords="5,56,83,83"/>
 </map>

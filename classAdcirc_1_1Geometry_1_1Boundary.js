@@ -2,9 +2,12 @@ var classAdcirc_1_1Geometry_1_1Boundary =
 [
     [ "Boundary", "classAdcirc_1_1Geometry_1_1Boundary.html#a9eadb05aefcbdcd82ccb53c1b2e9769c", null ],
     [ "Boundary", "classAdcirc_1_1Geometry_1_1Boundary.html#aa73482a93e9453f307b44dd1bffd0230", null ],
+    [ "~Boundary", "classAdcirc_1_1Geometry_1_1Boundary.html#ae069403fe7251a17d7132c55b82b22a2", null ],
+    [ "averageLongitude", "classAdcirc_1_1Geometry_1_1Boundary.html#a5285e04bd89445fcea660a4d41ab7068", null ],
     [ "boundaryCode", "classAdcirc_1_1Geometry_1_1Boundary.html#a7832baebc89d656c192f55b8a8248c5c", null ],
     [ "boundaryLength", "classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c", null ],
     [ "crestElevation", "classAdcirc_1_1Geometry_1_1Boundary.html#a59f7cc988b82bf993592aa4f84d36561", null ],
+    [ "hash", "classAdcirc_1_1Geometry_1_1Boundary.html#a251999a72a66f849482414955d2bee54", null ],
     [ "isExternalWeir", "classAdcirc_1_1Geometry_1_1Boundary.html#a8ee17f0a94899dce2ba7b5d79e39495f", null ],
     [ "isInternalWeir", "classAdcirc_1_1Geometry_1_1Boundary.html#aa376d7c06630994e705df523b2c59302", null ],
     [ "isInternalWeirWithoutPipes", "classAdcirc_1_1Geometry_1_1Boundary.html#a08eef1f389f6fedce9c6b5b5ea907335", null ],

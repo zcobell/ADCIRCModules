@@ -1,0 +1,4 @@
+<map id="epsg" name="epsg">
+<area shape="rect" id="node1" title="Returns the epsg code used for the current raster. Note that this MUST match the mesh&#39;s epsg code." alt="" coords="124,5,175,32"/>
+<area shape="rect" id="node2" href="$classInterpolation_1_1Griddata.html#a25fd6d02dfa33660a5d4580cac12514f" title="Sets the EPSG code used for the mesh." alt="" coords="5,5,76,32"/>
+</map>

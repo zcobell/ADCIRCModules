@@ -1,4 +1,5 @@
 <map id="buildElementTable" name="buildElementTable">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="196,5,404,47"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="452,5,656,47"/>
+<area shape="rect" id="node1" title="Builds a list of elements connected to each node." alt="" coords="479,13,607,39"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title=" " alt="" coords="241,5,431,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title=" " alt="" coords="5,5,193,47"/>
 </map>

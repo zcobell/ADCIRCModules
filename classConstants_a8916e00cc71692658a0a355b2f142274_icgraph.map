@@ -1,12 +1,10 @@
 <map id="pi" name="pi">
-<area shape="rect" id="node2" href="$classConstants.html#ace2ba48ef6d244fa44705aff5ba24974" title="Returns two times the constant pi. " alt="" coords="100,5,159,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a85c14693efd32e7f2e05a0f997492fee" title="Adcirc::Output::OutputRecord\l::magnitude" alt="" coords="215,38,425,79"/>
-<area shape="rect" id="node4" href="$classConstants.html#a95a4ba06d4c9d035e3323436c9753b0d" title="Returns 0.5 times the constant pi. " alt="" coords="100,107,159,133"/>
-<area shape="rect" id="node5" href="$classConstants.html#ae43063ac7bf556cb933a0206301b9748" title="Returns the factor to convert degrees to radians. " alt="" coords="92,157,167,184"/>
-<area shape="rect" id="node10" href="$classConstants.html#aa8f2ca4ad36dc6b5f53e25e9e746d008" title="Returns the factor to convert radians to degrees. " alt="" coords="283,213,357,240"/>
-<area shape="rect" id="node6" href="$classConstants.html#a8e8b5d1633dfb57d0d6056850bdd710c" title="Converts a value from degrees to radians. " alt="" coords="277,125,363,152"/>
-<area shape="rect" id="node7" href="$classConstants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude. " alt="" coords="473,113,569,140"/>
-<area shape="rect" id="node8" href="$classConstants.html#a86e2541d04e23b075b85d07c5b4d2bfc" title="Calculates the distance between two points. " alt="" coords="617,88,695,115"/>
-<area shape="rect" id="node9" href="$classConstants.html#a62d050d6a06ff0262d04bd705e45c517" title="Returns the square root of 3. " alt="" coords="628,164,684,191"/>
-<area shape="rect" id="node11" href="$classConstants.html#a743ea7ec7653fe3ee75df86682edbb04" title="Converts a value from radians to degrees. " alt="" coords="477,215,566,241"/>
+<area shape="rect" id="node1" title="Returns the constant pi." alt="" coords="387,81,425,108"/>
+<area shape="rect" id="node2" href="$classConstants.html#ace2ba48ef6d244fa44705aff5ba24974" title="Returns two times the constant pi." alt="" coords="277,5,332,32"/>
+<area shape="rect" id="node3" href="$classConstants.html#a95a4ba06d4c9d035e3323436c9753b0d" title="Returns 0.5 times the constant pi." alt="" coords="277,56,332,83"/>
+<area shape="rect" id="node4" href="$classConstants.html#ae43063ac7bf556cb933a0206301b9748" title="Returns the factor to convert degrees to radians." alt="" coords="271,107,339,133"/>
+<area shape="rect" id="node7" href="$classConstants.html#aa8f2ca4ad36dc6b5f53e25e9e746d008" title="Returns the factor to convert radians to degrees." alt="" coords="271,157,339,184"/>
+<area shape="rect" id="node5" href="$classConstants.html#a8e8b5d1633dfb57d0d6056850bdd710c" title="Converts a value from degrees to radians." alt="" coords="142,107,222,133"/>
+<area shape="rect" id="node6" href="$classConstants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude." alt="" coords="5,107,93,133"/>
+<area shape="rect" id="node8" href="$classConstants.html#a743ea7ec7653fe3ee75df86682edbb04" title="Converts a value from radians to degrees." alt="" coords="141,157,223,184"/>
 </map>

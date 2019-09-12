@@ -3,6 +3,7 @@ var classAdcirc_1_1ModelParameters_1_1NodalAttributes =
     [ "NodalAttributes", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a463a87ccc43e72363905263aaa4f59f6", null ],
     [ "NodalAttributes", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a151aeb508d3998f15ec469a201d662f8", null ],
     [ "~NodalAttributes", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a7ffdf76866bde6d5ad1f5789bae48611", null ],
+    [ "addAttribute", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a4c6acbfc0e1ebb1f2a2c67c75a7d459f", null ],
     [ "attribute", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a5dc0c87131280ea8d3a4d45bf0fb610b", null ],
     [ "attribute", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#ac00185820323cea04c4cbc10626b4ac8", null ],
     [ "attributeNames", "classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#acf8131178b0dccbc704a0111391bb69a", null ],

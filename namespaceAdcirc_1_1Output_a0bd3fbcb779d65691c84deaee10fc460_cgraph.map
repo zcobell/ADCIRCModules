@@ -1,3 +1,4 @@
 <map id="checkFiletypeNetcdf4" name="checkFiletypeNetcdf4">
-<area shape="rect" id="node2" href="$namespaceAdcirc_1_1Output.html#af41dc2d15526c64a454d83c1b734cf2f" title="Check if the file type is netCDF. " alt="" coords="216,5,372,32"/>
+<area shape="rect" id="node1" title="Check if the file type is netCDF4." alt="" coords="5,5,153,32"/>
+<area shape="rect" id="node2" href="$namespaceAdcirc_1_1Output.html#af41dc2d15526c64a454d83c1b734cf2f" title="Check if the file type is netCDF." alt="" coords="201,5,340,32"/>
 </map>

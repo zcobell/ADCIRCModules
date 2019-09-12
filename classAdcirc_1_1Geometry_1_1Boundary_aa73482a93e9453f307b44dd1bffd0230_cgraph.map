@@ -1,9 +1,10 @@
 <map id="Boundary" name="Boundary">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a145ba98183d6fb9524a56e10f6805034" title="Sets the model boundary to the user specified code. " alt="" coords="143,31,280,57"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a6aa80cc48ef6db64703c144975755ef7" title="Allocates the arrays used by the bounary. " alt="" coords="137,107,285,133"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a7832baebc89d656c192f55b8a8248c5c" title="Returns the Adcirc model boundary code. " alt="" coords="364,5,480,32"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary. " alt="" coords="359,56,485,83"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Boundary.html#af2dbbc7f5b60b931ebb6a47d891b8eb1" title="Returns true if boundary condition is some type of weir&#45;type boundary. " alt="" coords="391,107,453,133"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa376d7c06630994e705df523b2c59302" title="Returns true if boundary condition is an internal weir. " alt="" coords="366,157,478,184"/>
-<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1Boundary.html#adee39f37571e564f0459d42b8d2449e4" title="Returns true if boundary condition is an internal weir with cross barrier pipes. " alt="" coords="333,208,511,235"/>
+<area shape="rect" id="node1" title="Initializes the boundary with user specified boundary type and length." alt="" coords="5,81,83,108"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a145ba98183d6fb9524a56e10f6805034" title="Sets the model boundary to the user specified code." alt="" coords="135,31,261,57"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a6aa80cc48ef6db64703c144975755ef7" title="Allocates the arrays used by the bounary." alt="" coords="131,107,265,133"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a7832baebc89d656c192f55b8a8248c5c" title="Returns the Adcirc model boundary code." alt="" coords="341,5,446,32"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary." alt="" coords="336,56,451,83"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Boundary.html#af2dbbc7f5b60b931ebb6a47d891b8eb1" title="Returns true if boundary condition is some type of weir&#45;type boundary." alt="" coords="364,107,423,133"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa376d7c06630994e705df523b2c59302" title="Returns true if boundary condition is an internal weir." alt="" coords="343,157,444,184"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1Boundary.html#adee39f37571e564f0459d42b8d2449e4" title="Returns true if boundary condition is an internal weir with cross barrier pipes." alt="" coords="313,208,473,235"/>
 </map>

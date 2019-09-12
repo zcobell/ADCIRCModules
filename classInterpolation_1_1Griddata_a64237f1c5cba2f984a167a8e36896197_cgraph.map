@@ -1,0 +1,4 @@
+<map id="setInterpolationFlags" name="setInterpolationFlags">
+<area shape="rect" id="node1" title="Sets the interpolation flags to a vector. The vector must be equal length to the number of nodes in t..." alt="" coords="5,5,148,32"/>
+<area shape="rect" id="node2" href="$classInterpolation_1_1Griddata.html#ad902b277acf919e0551372c5a63fa265" title="Returns the current interpolation flags for all nodes being used by the code. By default all interpol..." alt="" coords="196,5,320,32"/>
+</map>

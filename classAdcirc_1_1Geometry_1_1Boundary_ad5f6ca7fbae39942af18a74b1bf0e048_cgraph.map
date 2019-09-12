@@ -1,5 +1,6 @@
 <map id="setSubcriticalWeirCoefficient" name="setSubcriticalWeirCoefficient">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa376d7c06630994e705df523b2c59302" title="Returns true if boundary condition is an internal weir. " alt="" coords="506,5,618,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary. " alt="" coords="499,68,625,95"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a804f4ff1393f9f6f99d8d2cf7794f066" title="Returns the coeffieicnt of subcritical weir flow for boundary types 4, 24, 5, and 25..." alt="" coords="263,31,451,57"/>
+<area shape="rect" id="node1" title="Sets the coefficient of subcritical flow for boundary types 4, 24, 5, and 25." alt="" coords="5,31,195,57"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa376d7c06630994e705df523b2c59302" title="Returns true if boundary condition is an internal weir." alt="" coords="467,5,568,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary." alt="" coords="460,68,575,95"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a804f4ff1393f9f6f99d8d2cf7794f066" title="Returns the coeffieicnt of subcritical weir flow for boundary types 4, 24, 5, and 25." alt="" coords="243,31,412,57"/>
 </map>

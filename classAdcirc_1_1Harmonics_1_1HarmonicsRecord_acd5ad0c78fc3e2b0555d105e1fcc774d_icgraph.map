@@ -1,0 +1,4 @@
+<map id="nodalFactor" name="nodalFactor">
+<area shape="rect" id="node1" title="Returns the nodal factor for this harmonic constituent." alt="" coords="164,5,255,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Harmonics_1_1HarmonicsRecord.html#a2b6a32adb3156ea753ce1c36e9a97e0c" title="Sets the nodal factor for this harmonic constituent." alt="" coords="5,5,116,32"/>
+</map>

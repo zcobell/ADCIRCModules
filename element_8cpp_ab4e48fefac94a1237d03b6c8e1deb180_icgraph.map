@@ -1,0 +1,7 @@
+<map id="element2polygon" name="element2polygon">
+<area shape="rect" id="node1" title="Creates a boost::geometry element from the element." alt="" coords="461,78,581,105"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#a07f34be4674125bc14f69abf7e2f4d51" title="Computes the center position of the element." alt="" coords="233,5,413,47"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Element.html#a86f85bbe6c99780208efd39ca10275b4" title="Calculates the area of the element." alt="" coords="233,71,413,112"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Element.html#a38a50f4eaa28b0d8979c92d8628c30d4" title="Determine if a point lies within an element." alt="" coords="233,136,413,177"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Element.html#a9e42cda1d41194ce3b1d434ae5a6dac1" title="Sorts the verticies in clockwise order around the element center." alt="" coords="5,5,185,47"/>
+</map>

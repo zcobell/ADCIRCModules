@@ -1,3 +1,4 @@
 <map id="elementList" name="elementList">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the nodal id/label. " alt="" coords="152,5,348,32"/>
+<area shape="rect" id="node1" title="Returns the list of elements around a specified node." alt="" coords="5,5,95,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the nodal id/label." alt="" coords="143,5,323,32"/>
 </map>

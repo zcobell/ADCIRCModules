@@ -1,5 +1,7 @@
 <map id="enable" name="enable">
-<area shape="rect" id="node2" href="$classMultithreading.html#a054c860ca5d5f11e534180e4086655ec" title="setMaximumThreads" alt="" coords="120,5,279,32"/>
-<area shape="rect" id="node4" href="$classMultithreading.html#a300cfdaed1b570a13feb6a4bf390aca3" title="setNumThreads" alt="" coords="137,56,262,83"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Logging.html#a7a7448425c64d0913430c8dd9d6c82c9" title="Adcirc::Logging::warning" alt="" coords="327,31,508,57"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,56,65,83"/>
+<area shape="rect" id="node2" href="$classMultithreading.html#ad64781b97d58fae03edb4d05f12ac6e1" title=" " alt="" coords="301,56,395,83"/>
+<area shape="rect" id="node4" href="$classMultithreading.html#a054c860ca5d5f11e534180e4086655ec" title=" " alt="" coords="276,5,420,32"/>
+<area shape="rect" id="node5" href="$classMultithreading.html#a300cfdaed1b570a13feb6a4bf390aca3" title=" " alt="" coords="113,107,228,133"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Logging.html#a7a7448425c64d0913430c8dd9d6c82c9" title=" " alt="" coords="468,56,632,83"/>
 </map>

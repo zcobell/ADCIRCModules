@@ -1,7 +1,0 @@
-<map id="sgn" name="sgn">
-<area shape="rect" id="node2" href="$namespaceFileIO_1_1Generic.html#aff9edb260c6840db266f5f35dbd5668e" title="FileIO::Generic::splitString" alt="" coords="99,5,289,32"/>
-<area shape="rect" id="node3" href="$classPixel.html#afe93e17ac89cd97917811068ba2af214" title="Returns a boolean describing if the pixel is valid. " alt="" coords="141,56,247,83"/>
-<area shape="rect" id="node4" href="$classPixel.html#a92b0b88b9a2c8ccada33e3fa7ce39244" title="Returns the i&#45;index. " alt="" coords="161,107,227,133"/>
-<area shape="rect" id="node5" href="$classPixel.html#aaf29b851413b2cac5242b33a4b6c24fd" title="Returns the j&#45;index. " alt="" coords="161,157,227,184"/>
-<area shape="rect" id="node6" href="$classConstants.html#a67bb34165d68f1fe958b93511d5ede05" title="Calculates the distance between two points. " alt="" coords="119,208,269,235"/>
-</map>

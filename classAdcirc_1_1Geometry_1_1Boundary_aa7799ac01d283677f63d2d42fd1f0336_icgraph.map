@@ -1,7 +1,9 @@
 <map id="node1" name="node1">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a8abfa660598650ce793cc33c4b8761ae" title="Sets a pointer to a node. " alt="" coords="176,5,260,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="170,56,266,83"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="Adcirc::Utility::MeshChecker\l::checkLeveeHeights" alt="" coords="116,107,320,149"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="Adcirc::Utility::MeshChecker\l::checkPipeHeights" alt="" coords="116,173,320,214"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="368,141,572,182"/>
+<area shape="rect" id="node1" title="Returns a pointer to the node on the boundary." alt="" coords="516,115,573,141"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a8abfa660598650ce793cc33c4b8761ae" title="Sets a pointer to a node." alt="" coords="316,5,393,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector." alt="" coords="311,56,399,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title=" " alt="" coords="261,107,449,149"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title=" " alt="" coords="261,173,449,214"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ad873c200f2f8160c206511d083f4ffd7" title=" " alt="" coords="241,238,468,279"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title=" " alt="" coords="5,173,193,214"/>
 </map>

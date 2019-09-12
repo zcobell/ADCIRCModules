@@ -1,13 +1,14 @@
 <map id="n" name="n">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#a69da996d722f7d42997d6db2bab7d016" title="Sets the node at the specified position to the supplied pointer. " alt="" coords="259,5,335,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Element.html#a90cd93c7a0128962a366f0b32ffc459a" title="returns a pointer to the node at the specified position " alt="" coords="92,156,147,183"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Element.html#a4a56f4095253738477eef9a6b821e843" title="Formats the element for writing to an Adcirc ASCII mesh file. " alt="" coords="240,56,353,83"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Element.html#a2ab375c4994ef40c502c665132c732b9" title="Formats the element for writing to an Aquaveo 2dm ASCII mesh file. " alt="" coords="245,108,348,135"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Element.html#a9629c72872705d78fd8e6b09eea787d6" title="Returns a pair of nodes representing the leg of an element. " alt="" coords="247,308,346,335"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Element.html#aea91ac1ba5cbc0a0b6970c9758f804a2" title="Calculates the average size of the legs of an element. " alt="" coords="499,308,602,335"/>
-<area shape="rect" id="node10" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="447,359,655,401"/>
-<area shape="rect" id="node11" href="$classAdcirc_1_1Geometry_1_1Element.html#a1dfc1e1b29a7699141bb253983eb875a" title="Returns the interpolation weights for computing the value of a given point inside an element..." alt="" coords="218,185,375,212"/>
-<area shape="rect" id="node12" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ae03f3887258a57e08f2f6f259c03ce03" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="195,242,399,283"/>
-<area shape="rect" id="node8" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="703,301,907,342"/>
-<area shape="rect" id="node9" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="955,301,1159,342"/>
+<area shape="rect" id="node1" title="Number of verticies in this element." alt="" coords="1137,203,1176,229"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#a69da996d722f7d42997d6db2bab7d016" title="Sets the node at the specified position to the supplied pointer." alt="" coords="773,5,844,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Element.html#a90cd93c7a0128962a366f0b32ffc459a" title="returns a pointer to the node at the specified position" alt="" coords="995,101,1045,128"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Element.html#a4a56f4095253738477eef9a6b821e843" title="Formats the element for writing to an Adcirc ASCII mesh file." alt="" coords="757,60,861,87"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Element.html#a2ab375c4994ef40c502c665132c732b9" title="Formats the element for writing to an Aquaveo 2dm ASCII mesh file." alt="" coords="763,119,855,145"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Element.html#a9629c72872705d78fd8e6b09eea787d6" title="Returns a pair of nodes representing the leg of an element." alt="" coords="764,304,853,331"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Element.html#aea91ac1ba5cbc0a0b6970c9758f804a2" title="Calculates the average size of the legs of an element." alt="" coords="525,253,619,280"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title=" " alt="" coords="477,305,667,346"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a7903c655caf176412d92e4719559bd02" title=" " alt="" coords="715,187,903,229"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Geometry_1_1Element.html#ab495dc1539e847cad7a4360c87a2ff12" title="Returns the interpolation weights for computing the value of a given point inside an element." alt="" coords="951,405,1089,432"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title=" " alt="" coords="241,246,429,287"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title=" " alt="" coords="5,246,193,287"/>
 </map>

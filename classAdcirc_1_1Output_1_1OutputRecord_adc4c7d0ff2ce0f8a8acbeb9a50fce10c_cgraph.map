@@ -1,4 +1,6 @@
 <map id="setAllU" name="setAllU">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a434d8fdd91756a54ea935ba21de4f4f6" title="isVector" alt="" coords="236,5,311,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputRecord.html#ad54d470fa60c15aef915ffc8201783d3" title="values" alt="" coords="123,31,188,57"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,71,69,98"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a75aa79248b769329ed6b7d62280aa08c" title=" " alt="" coords="117,5,324,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputRecord.html#ad54d470fa60c15aef915ffc8201783d3" title=" " alt="" coords="191,71,251,98"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a434d8fdd91756a54ea935ba21de4f4f6" title=" " alt="" coords="372,89,579,131"/>
 </map>

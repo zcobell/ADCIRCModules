@@ -1,4 +1,4 @@
 <map id="isValid" name="isValid">
-<area shape="rect" id="node2" href="$griddata__impl_8cpp.html#a1ab31b90bc584c635ec159468ceed9b2" title="sgn" alt="" coords="203,5,249,32"/>
-<area shape="rect" id="node3" href="$classRasterdata.html#ab8f51c470b8f9503defa8dcdbe3e1df7" title="Returns a search box of a given size around a given std::pair&lt;double,double&gt; " alt="" coords="119,57,333,98"/>
+<area shape="rect" id="node1" title="Returns a boolean describing if the pixel is valid." alt="" coords="249,13,309,39"/>
+<area shape="rect" id="node2" href="$classRasterdata.html#ab8f51c470b8f9503defa8dcdbe3e1df7" title="Returns a search box of a given size around a given std::pair&lt;double,double&gt;" alt="" coords="5,5,201,47"/>
 </map>

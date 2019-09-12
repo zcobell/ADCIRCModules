@@ -1,9 +1,0 @@
-<map id="interpolationWeights" name="interpolationWeights">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#ac88f0961aa7ed7c7415550ab2cad49c8" title="Number of verticies in this element. " alt="" coords="519,31,558,57"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Element.html#a90cd93c7a0128962a366f0b32ffc459a" title="returns a pointer to the node at the specified position " alt="" coords="275,5,330,32"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="443,107,635,133"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="443,208,635,235"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Element.html#a9e42cda1d41194ce3b1d434ae5a6dac1" title="Sorts the verticies in clockwise order around the element center. " alt="" coords="211,157,395,184"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Element.html#a07f34be4674125bc14f69abf7e2f4d51" title="Computes the center position of the element. " alt="" coords="469,157,609,184"/>
-<area shape="rect" id="node8" href="$element_8cpp.html#a4ae1e9eaa73978e19f9b5b2f49371dc4" title="Creates a boost::geometry element from the element. " alt="" coords="683,157,819,184"/>
-</map>

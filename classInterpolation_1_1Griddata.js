@@ -29,5 +29,9 @@ var classInterpolation_1_1Griddata =
     [ "setRasterInMemory", "classInterpolation_1_1Griddata.html#ad1355b376de31a187a949f41a2754dc2", null ],
     [ "setRasterMultiplier", "classInterpolation_1_1Griddata.html#af5daf30619549ba12723af89b2d900e5", null ],
     [ "setShowProgressBar", "classInterpolation_1_1Griddata.html#a051c39ccaf91fa24cb963ec73addb5d5", null ],
-    [ "showProgressBar", "classInterpolation_1_1Griddata.html#ab1dc87d55edf7471387cbfcb692f1f68", null ]
+    [ "setThresholdMethod", "classInterpolation_1_1Griddata.html#a082ddf8fd9a2e71b17a988b6c833ad34", null ],
+    [ "setThresholdValue", "classInterpolation_1_1Griddata.html#a821c55b40763bf8330771826339722bc", null ],
+    [ "showProgressBar", "classInterpolation_1_1Griddata.html#ab1dc87d55edf7471387cbfcb692f1f68", null ],
+    [ "thresholdMethod", "classInterpolation_1_1Griddata.html#ab9be075d465ce3fd7c585d692a0a4e62", null ],
+    [ "thresholdValue", "classInterpolation_1_1Griddata.html#aca20f3138e27aa2beff28c28f5010cdc", null ]
 ];

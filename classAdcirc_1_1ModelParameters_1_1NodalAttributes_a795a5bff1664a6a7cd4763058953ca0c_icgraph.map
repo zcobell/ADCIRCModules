@@ -1,0 +1,4 @@
+<map id="mesh" name="mesh">
+<area shape="rect" id="node1" title="Returns the pointer to the mesh currently being used." alt="" coords="125,5,180,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1ModelParameters_1_1NodalAttributes.html#a3fe0b4793bf5d9716babb91276f5ee5a" title="Sets a pointer to the mesh currently being used." alt="" coords="5,5,77,32"/>
+</map>

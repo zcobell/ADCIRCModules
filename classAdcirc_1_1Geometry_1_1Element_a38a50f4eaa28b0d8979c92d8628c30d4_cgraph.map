@@ -1,3 +1,4 @@
 <map id="isInside" name="isInside">
-<area shape="rect" id="node2" href="$element_8cpp.html#a4ae1e9eaa73978e19f9b5b2f49371dc4" title="Creates a boost::geometry element from the element. " alt="" coords="125,5,261,32"/>
+<area shape="rect" id="node1" title="Determine if a point lies within an element." alt="" coords="5,5,72,32"/>
+<area shape="rect" id="node2" href="$element_8cpp.html#ab4e48fefac94a1237d03b6c8e1deb180" title="Creates a boost::geometry element from the element." alt="" coords="120,5,240,32"/>
 </map>

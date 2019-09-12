@@ -1,14 +1,15 @@
 <map id="isWeir" name="isWeir">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a6aa80cc48ef6db64703c144975755ef7" title="Allocates the arrays used by the bounary. " alt="" coords="143,56,291,83"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a59f7cc988b82bf993592aa4f84d36561" title="Returns the crest elevation for boundary types 3, 13, 23, 4, 24, 5, and 25. " alt="" coords="159,212,274,239"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Boundary.html#afae2f299b48e5eae0bb5530fc7bfe2fd" title="Sets the crest elevation for boundary types 3, 13, 23, 4, 24, 5, and 25. " alt="" coords="408,107,545,133"/>
-<area shape="rect" id="node12" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ae523f524f5debf2bcf78fd87d92f0f96" title="Returns the coefficient of supercritical flow for the specified position along the boundary for bound..." alt="" coords="116,289,317,316"/>
-<area shape="rect" id="node13" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a716dea22b33aab1956f40e316ab2fb7c" title="setSupercriticalWeirCoefficient" alt="" coords="365,340,588,367"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa73482a93e9453f307b44dd1bffd0230" title="Initializes the boundary with user specified boundary type and length. " alt="" coords="435,5,519,32"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ae7d8bcd9bd98bb8b378d529da56cdf7c" title="User specified initialization of the boundary. " alt="" coords="425,56,529,83"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a9eadb05aefcbdcd82ccb53c1b2e9769c" title="Default constructor. " alt="" coords="696,56,780,83"/>
-<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="429,289,525,316"/>
-<area shape="rect" id="node9" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="Adcirc::Utility::MeshChecker\l::checkLeveeHeights" alt="" coords="375,158,579,199"/>
-<area shape="rect" id="node11" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="Adcirc::Utility::MeshChecker\l::checkPipeHeights" alt="" coords="375,223,579,265"/>
-<area shape="rect" id="node10" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6236cc13879f09bb6a2ae4e46e63e20a" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="636,190,840,231"/>
+<area shape="rect" id="node1" title="Returns true if boundary condition is some type of weir&#45;type boundary." alt="" coords="717,212,776,239"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a6aa80cc48ef6db64703c144975755ef7" title="Allocates the arrays used by the bounary." alt="" coords="512,56,647,83"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a59f7cc988b82bf993592aa4f84d36561" title="Returns the crest elevation for boundary types 3, 13, 23, 4, 24, 5, and 25." alt="" coords="527,212,632,239"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Boundary.html#afae2f299b48e5eae0bb5530fc7bfe2fd" title="Sets the crest elevation for boundary types 3, 13, 23, 4, 24, 5, and 25." alt="" coords="279,107,404,133"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ae523f524f5debf2bcf78fd87d92f0f96" title="Returns the coefficient of supercritical flow for the specified position along the boundary for bound..." alt="" coords="489,289,669,316"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a716dea22b33aab1956f40e316ab2fb7c" title=" " alt="" coords="241,340,441,367"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa73482a93e9453f307b44dd1bffd0230" title="Initializes the boundary with user specified boundary type and length." alt="" coords="303,5,380,32"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ae7d8bcd9bd98bb8b378d529da56cdf7c" title="User specified initialization of the boundary." alt="" coords="294,56,389,83"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a9eadb05aefcbdcd82ccb53c1b2e9769c" title="Default constructor." alt="" coords="61,56,138,83"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector." alt="" coords="297,289,385,316"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title=" " alt="" coords="247,158,435,199"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title=" " alt="" coords="247,223,435,265"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title=" " alt="" coords="5,190,193,231"/>
 </map>

@@ -1,5 +1,5 @@
 <map id="inquireNetcdfFormat" name="inquireNetcdfFormat">
-<area shape="rect" id="node2" href="$namespaceAdcirc_1_1Output.html#a62411d0197558488285f37e6df988204" title="Check if the file type is netcdf3. " alt="" coords="209,5,372,32"/>
-<area shape="rect" id="node4" href="$namespaceAdcirc_1_1Output.html#a0bd3fbcb779d65691c84deaee10fc460" title="Check if the file type is netCDF4. " alt="" coords="209,56,372,83"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputFile.html#aa7776c5667110f4c56e467e929918f72" title="Adcirc::Output::OutputFile\l::setHeader" alt="" coords="420,23,608,65"/>
+<area shape="rect" id="node1" title="Check if the file type is netCDF." alt="" coords="201,31,340,57"/>
+<area shape="rect" id="node2" href="$namespaceAdcirc_1_1Output.html#a62411d0197558488285f37e6df988204" title="Check if the file type is netcdf3." alt="" coords="5,5,153,32"/>
+<area shape="rect" id="node3" href="$namespaceAdcirc_1_1Output.html#a0bd3fbcb779d65691c84deaee10fc460" title="Check if the file type is netCDF4." alt="" coords="5,56,153,83"/>
 </map>
