@@ -2155,7 +2155,7 @@ size_t MeshImpl::findElement(double x, double y, std::vector<double> &weights) {
     return en;
   }
 
-  this->element(en)->interpolationWeights(x, y, weights);
+  weights = this->element(en)->interpolationWeights(x, y);
   return en;
 }
 

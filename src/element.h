@@ -88,8 +88,7 @@ class Element {
 
   double ADCIRCMODULES_EXPORT area();
 
-  void ADCIRCMODULES_EXPORT interpolationWeights(double x, double y,
-                                                 std::vector<double> &weights);
+  std::vector<double> interpolationWeights(double x, double y);
 
   std::string ADCIRCMODULES_EXPORT hash(HashType h = AdcircDefaultHash,
                                         bool force = false);
@@ -101,9 +100,8 @@ class Element {
 
   void generateHash(HashType h = AdcircDefaultHash);
 
-  void triangularInterpolation(double x, double y,
-                               std::vector<double> &weights);
-  void polygonInterpolation(double x, double y, std::vector<double> &weights);
+  std::vector<double> triangularInterpolation(double x, double y);
+  std::vector<double> polygonInterpolation(double x, double y);
 };
 }  // namespace Geometry
 }  // namespace Adcirc

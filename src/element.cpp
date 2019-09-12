@@ -348,19 +348,14 @@ bool Element::isInside(Point location) {
  * point inside an element
  * @param x station location
  * @param y station location
- * @param weights vector of interpolation weights for each vertex
+ * @return weights vector of interpolation weights for each vertex
  */
-void Element::interpolationWeights(double x, double y,
-                                   std::vector<double> &weights) {
-  weights.resize(this->n());
-  std::fill(weights.begin(), weights.end(), 0.0);
-
+std::vector<double> Element::interpolationWeights(double x, double y) {
   if (this->n() == 3) {
-    this->triangularInterpolation(x, y, weights);
+    return this->triangularInterpolation(x, y);
   } else {
-    this->polygonInterpolation(x, y, weights);
+    return this->polygonInterpolation(x, y);
   }
-  return;
 }
 
 /**
@@ -391,10 +386,12 @@ void Element::generateHash(HashType h) {
  * @brief Performs a barycentric interpolation
  * @param x station location
  * @param y station location
- * @param weights vector of interpolation weights for each vertex
+ * @return weights vector of interpolation weights for each vertex
  */
-void Element::triangularInterpolation(double x, double y,
-                                      std::vector<double> &weights) {
+std::vector<double> Element::triangularInterpolation(double x, double y) {
+  std::vector<double> weights(3);
+  std::fill(weights.begin(), weights.end(), 0.0);
+
   const double x1 = this->node(0)->x();
   const double x2 = this->node(1)->x();
   const double x3 = this->node(2)->x();
@@ -409,7 +406,7 @@ void Element::triangularInterpolation(double x, double y,
   weights[1] = (((y3 - y1) * (x - x3) + (x1 - x3) * (y - y3)) / denom);
   weights[2] = (1.0 - weights[0] - weights[1]);
 
-  return;
+  return weights;
 }
 
 /**
@@ -427,11 +424,13 @@ void Element::triangularInterpolation(double x, double y,
  *
  * @param x station location
  * @param y station location
- * @param weights vector of interpolation weights for each vertex
+ * @return weights vector of interpolation weights for each vertex
  *
  */
-void Element::polygonInterpolation(double x, double y,
-                                   std::vector<double> &weights) {
+std::vector<double> Element::polygonInterpolation(double x, double y) {
+  std::vector<double> weights(3);
+  std::fill(weights.begin(), weights.end(), 0.0);
+
   //...Make copy of this element
   Element e(*this);
 
@@ -464,8 +463,7 @@ void Element::polygonInterpolation(double x, double y,
   }
 
   //...Generate the sub-triangle weights
-  std::vector<double> w2;
-  ee.interpolationWeights(x, y, w2);
+  std::vector<double> w2 = ee.interpolationWeights(x, y);
 
   //...Rectify the weights with the correct ordering into the global array
   for (size_t i = 0; i < 2; ++i) {
@@ -480,5 +478,5 @@ void Element::polygonInterpolation(double x, double y,
     weights[i] += w3;
   }
 
-  return;
+  return weights;
 }
