@@ -25,6 +25,8 @@ Kdtree_impl::Kdtree_impl() : m_initialized(false) {}
 
 bool Kdtree_impl::initialized() { return this->m_initialized; }
 
+size_t Kdtree_impl::size() { return this->m_cloud.pts.size(); }
+
 int Kdtree_impl::build(std::vector<double> &x, std::vector<double> &y) {
   if (x.size() != y.size()) return 1;
   this->m_cloud.pts.resize(x.size());
@@ -51,6 +53,7 @@ size_t Kdtree_impl::findNearest(double x, double y) {
 }
 
 std::vector<size_t> Kdtree_impl::findXNearest(double x, double y, size_t n) {
+  n = std::min(this->size(), n);
   size_t *index = new size_t[n];
   double *out_dist_sqr = new double[n];
   nanoflann::KNNResultSet<double> resultSet(n);

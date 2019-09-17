@@ -30,7 +30,7 @@ class Kdtree_impl {
 
   int build(std::vector<double> &x, std::vector<double> &y);
   bool initialized();
-
+  size_t size();
   size_t findNearest(double x, double y);
   std::vector<size_t> findXNearest(double x, double y, size_t n);
   std::vector<size_t> findWithinRadius(double x, double y, const double radius);

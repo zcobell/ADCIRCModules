@@ -41,6 +41,7 @@ class Kdtree {
 
   enum _errors { NoError, SizeMismatch };
 
+  ADCIRCMODULES_EXPORT size_t size();
   ADCIRCMODULES_EXPORT int build(std::vector<double> &x,
                                  std::vector<double> &y);
   ADCIRCMODULES_EXPORT size_t findNearest(double x, double y);

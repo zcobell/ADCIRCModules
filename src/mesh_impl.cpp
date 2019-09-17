@@ -2130,6 +2130,13 @@ size_t MeshImpl::findElement(double x, double y) {
   return this->findElement(x, y, wt);
 }
 
+/**
+ * @brief Finds the mesh element that a given location lies within
+ * @param x location to search
+ * @param y location to search
+ * @param weights interpolation weights for this x, y in the found element
+ * @return index of nearest element, large integer if not found
+ */
 size_t MeshImpl::findElement(double x, double y, std::vector<double> &weights) {
   constexpr int searchDepth = 20;
 

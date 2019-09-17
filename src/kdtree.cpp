@@ -25,6 +25,12 @@
 Kdtree::Kdtree() : m_ptr(new Kdtree_impl()) {}
 
 /**
+ * @brief Get the number of nodes in the kdtree point cloud
+ * @return Size of kdtree
+ */
+size_t Kdtree::size() { return this->m_ptr->size(); }
+
+/**
  * @brief Builds the Kdtree using an x and y vector of doubles
  * @param x vector of doubles for x-position
  * @param y vector of doubles for y-position
