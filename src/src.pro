@@ -109,8 +109,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 SOURCES += \
+    griddata_private.cpp \
+    harmonicsoutput_private.cpp \
+    harmonicsrecord_private.cpp \
     hash.cpp \
-    hash_impl.cpp \
+    hash_private.cpp \
+    kdtree_private.cpp \
+    mesh_private.cpp \
+    nodalattributes_private.cpp \
     outputmetadata.cpp \
     readoutput.cpp \
     stringconversion.cpp \
@@ -129,17 +135,11 @@ SOURCES += \
     mesh.cpp \
     harmonicsoutput.cpp \
     harmonicsrecord.cpp \
-    griddata_impl.cpp \
-    mesh_impl.cpp \
-    harmonicsoutput_impl.cpp \
-    harmonicsrecord_impl.cpp \
-    nodalattributes_impl.cpp \
     nodalattributes.cpp \
     fileio.cpp \
     rasterdata.cpp \
     pixel.cpp \
     constants.cpp \
-    kdtree_impl.cpp \
     kdtree.cpp \
     logging.cpp \
     writeoutput.cpp
@@ -148,9 +148,15 @@ HEADERS += \
     adcirc_outputfiles.h \
     adcircmodules_global.h \
     adcmap.h \
+    griddata_private.h \
+    harmonicsoutput_private.h \
+    harmonicsrecord_private.h \
     hash.h \
-    hash_impl.h \
+    hash_private.h \
     hashtype.h \
+    kdtree_private.h \
+    mesh_private.h \
+    nodalattributes_private.h \
     outputfile.h \
     outputmetadata.h \
     readoutput.h \
@@ -172,11 +178,6 @@ HEADERS += \
     mesh.h \
     harmonicsoutput.h \
     harmonicsrecord.h \
-    harmonicsoutput_impl.h \
-    mesh_impl.h \
-    griddata_impl.h \
-    harmonicsrecord_impl.h \
-    nodalattributes_impl.h \
     nodalattributes.h \
     adcircmodules.h \
     fileio.h \
@@ -184,7 +185,6 @@ HEADERS += \
     pixel.h \
     constants.h \
     kdtree.h \
-    kdtree_impl.h \
     logging.h \
     default_values.h \
     writeoutput.h

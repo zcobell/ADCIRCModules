@@ -16,18 +16,20 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#include "kdtree_impl.h"
+#include "kdtree_private.h"
 #include "kdtree.h"
 
-Kdtree::~Kdtree() = default;
+using namespace Adcirc::Private;
 
-Kdtree_impl::Kdtree_impl() : m_initialized(false) {}
+Adcirc::Kdtree::~Kdtree() = default;
 
-bool Kdtree_impl::initialized() { return this->m_initialized; }
+KdtreePrivate::KdtreePrivate() : m_initialized(false) {}
 
-size_t Kdtree_impl::size() { return this->m_cloud.pts.size(); }
+bool KdtreePrivate::initialized() { return this->m_initialized; }
 
-int Kdtree_impl::build(std::vector<double> &x, std::vector<double> &y) {
+size_t KdtreePrivate::size() { return this->m_cloud.pts.size(); }
+
+int KdtreePrivate::build(std::vector<double> &x, std::vector<double> &y) {
   if (x.size() != y.size()) return 1;
   this->m_cloud.pts.resize(x.size());
   for (size_t i = 0; i < x.size(); ++i) {
@@ -41,7 +43,7 @@ int Kdtree_impl::build(std::vector<double> &x, std::vector<double> &y) {
   return 0;
 }
 
-size_t Kdtree_impl::findNearest(double x, double y) {
+size_t KdtreePrivate::findNearest(double x, double y) {
   size_t index;
   double out_dist_sqr;
   nanoflann::KNNResultSet<double> resultSet(1);
@@ -52,7 +54,7 @@ size_t Kdtree_impl::findNearest(double x, double y) {
   return index;
 }
 
-std::vector<size_t> Kdtree_impl::findXNearest(double x, double y, size_t n) {
+std::vector<size_t> KdtreePrivate::findXNearest(double x, double y, size_t n) {
   n = std::min(this->size(), n);
   size_t *index = new size_t[n];
   double *out_dist_sqr = new double[n];
@@ -68,7 +70,7 @@ std::vector<size_t> Kdtree_impl::findXNearest(double x, double y, size_t n) {
   return result;
 }
 
-std::vector<size_t> Kdtree_impl::findWithinRadius(double x, double y,
+std::vector<size_t> KdtreePrivate::findWithinRadius(double x, double y,
                                                   const double radius) {
   //...Square radius since distance metric is a square distance
   const double search_radius = std::pow(radius, 2.0);

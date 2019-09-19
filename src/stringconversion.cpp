@@ -20,6 +20,8 @@
 #include <utility>
 #include "boost/algorithm/string.hpp"
 
+using namespace Adcirc;
+
 double StringConversion::stringToDouble(const std::string& a, bool& ok) {
   ok = true;
   try {

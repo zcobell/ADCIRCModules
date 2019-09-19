@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#include "harmonicsoutput_impl.h"
+#include "harmonicsoutput_private.h"
 #include <cassert>
 #include <fstream>
 #include <iostream>
@@ -33,23 +33,26 @@
 #include "stringconversion.h"
 
 using namespace Adcirc::Harmonics;
+using namespace Adcirc::Private;
 
 HarmonicsOutput::~HarmonicsOutput() = default;
 
-HarmonicsOutputImpl::HarmonicsOutputImpl(const std::string& filename)
+HarmonicsOutputPrivate::HarmonicsOutputPrivate(const std::string& filename)
     : m_filename(filename),
       m_numNodes(0),
       m_numConstituents(0),
       m_isVelocity(false),
       m_filetype(Adcirc::Harmonics::HarmonicsUnknown) {}
 
-std::string HarmonicsOutputImpl::filename() const { return this->m_filename; }
+std::string HarmonicsOutputPrivate::filename() const {
+  return this->m_filename;
+}
 
-void HarmonicsOutputImpl::setFilename(const std::string& filename) {
+void HarmonicsOutputPrivate::setFilename(const std::string& filename) {
   this->m_filename = filename;
 }
 
-size_t HarmonicsOutputImpl::index(const std::string& name) {
+size_t HarmonicsOutputPrivate::index(const std::string& name) {
   std::string n = boost::to_upper_copy<std::string>(name);
   auto i = this->m_index.find(n);
   if (i == this->m_index.end()) {
@@ -60,7 +63,7 @@ size_t HarmonicsOutputImpl::index(const std::string& name) {
   }
 }
 
-std::string HarmonicsOutputImpl::name(size_t index) {
+std::string HarmonicsOutputPrivate::name(size_t index) {
   assert(index < this->m_consituentNames.size());
   if (index < this->m_consituentNames.size()) {
     return this->m_consituentNames[index];
@@ -70,11 +73,11 @@ std::string HarmonicsOutputImpl::name(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutputImpl::amplitude(const std::string& name) {
+HarmonicsRecord* HarmonicsOutputPrivate::amplitude(const std::string& name) {
   return this->amplitude(this->index(name));
 }
 
-HarmonicsRecord* HarmonicsOutputImpl::amplitude(size_t index) {
+HarmonicsRecord* HarmonicsOutputPrivate::amplitude(size_t index) {
   assert(index < this->m_amplitude.size());
   if (index < this->m_amplitude.size()) {
     return &this->m_amplitude[index];
@@ -84,11 +87,11 @@ HarmonicsRecord* HarmonicsOutputImpl::amplitude(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutputImpl::phase(const std::string& name) {
+HarmonicsRecord* HarmonicsOutputPrivate::phase(const std::string& name) {
   return this->phase(this->index(name));
 }
 
-HarmonicsRecord* HarmonicsOutputImpl::phase(size_t index) {
+HarmonicsRecord* HarmonicsOutputPrivate::phase(size_t index) {
   assert(index < this->m_phase.size());
   if (index < this->m_phase.size()) {
     return &this->m_phase[index];
@@ -98,10 +101,10 @@ HarmonicsRecord* HarmonicsOutputImpl::phase(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutputImpl::u_amplitude(const std::string& name) {
+HarmonicsRecord* HarmonicsOutputPrivate::u_amplitude(const std::string& name) {
   return this->u_amplitude(this->index(name));
 }
-HarmonicsRecord* HarmonicsOutputImpl::u_amplitude(size_t index) {
+HarmonicsRecord* HarmonicsOutputPrivate::u_amplitude(size_t index) {
   assert(index < this->m_uamplitude.size());
   if (index < this->m_uamplitude.size()) {
     return &this->m_uamplitude[index];
@@ -111,11 +114,11 @@ HarmonicsRecord* HarmonicsOutputImpl::u_amplitude(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutputImpl::u_phase(const std::string& name) {
+HarmonicsRecord* HarmonicsOutputPrivate::u_phase(const std::string& name) {
   return this->u_phase(this->index(name));
 }
 
-HarmonicsRecord* HarmonicsOutputImpl::u_phase(size_t index) {
+HarmonicsRecord* HarmonicsOutputPrivate::u_phase(size_t index) {
   assert(index < this->m_uphase.size());
   if (index < this->m_uphase.size()) {
     return &this->m_uphase[index];
@@ -125,11 +128,11 @@ HarmonicsRecord* HarmonicsOutputImpl::u_phase(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutputImpl::v_amplitude(const std::string& name) {
+HarmonicsRecord* HarmonicsOutputPrivate::v_amplitude(const std::string& name) {
   return this->v_amplitude(this->index(name));
 }
 
-HarmonicsRecord* HarmonicsOutputImpl::v_amplitude(size_t index) {
+HarmonicsRecord* HarmonicsOutputPrivate::v_amplitude(size_t index) {
   assert(index < this->m_vamplitude.size());
   if (index < this->m_vamplitude.size()) {
     return &this->m_vamplitude[index];
@@ -139,11 +142,11 @@ HarmonicsRecord* HarmonicsOutputImpl::v_amplitude(size_t index) {
   }
 }
 
-HarmonicsRecord* HarmonicsOutputImpl::v_phase(const std::string& name) {
+HarmonicsRecord* HarmonicsOutputPrivate::v_phase(const std::string& name) {
   return this->v_phase(this->index(name));
 }
 
-HarmonicsRecord* HarmonicsOutputImpl::v_phase(size_t index) {
+HarmonicsRecord* HarmonicsOutputPrivate::v_phase(size_t index) {
   assert(index < this->m_vphase.size());
   if (index < this->m_vphase.size()) {
     return &this->m_vphase[index];
@@ -153,11 +156,11 @@ HarmonicsRecord* HarmonicsOutputImpl::v_phase(size_t index) {
   }
 }
 
-size_t HarmonicsOutputImpl::numConstituents() const {
+size_t HarmonicsOutputPrivate::numConstituents() const {
   return this->m_numConstituents;
 }
 
-void HarmonicsOutputImpl::setNumConstituents(const size_t& numConstituents) {
+void HarmonicsOutputPrivate::setNumConstituents(const size_t& numConstituents) {
   this->m_numConstituents = numConstituents;
   if (this->isVelocity()) {
     this->m_uamplitude.resize(this->numConstituents());
@@ -171,15 +174,15 @@ void HarmonicsOutputImpl::setNumConstituents(const size_t& numConstituents) {
   return;
 }
 
-size_t HarmonicsOutputImpl::numNodes() const { return this->m_numNodes; }
+size_t HarmonicsOutputPrivate::numNodes() const { return this->m_numNodes; }
 
-void HarmonicsOutputImpl::setNumNodes(const size_t& numNodes) {
+void HarmonicsOutputPrivate::setNumNodes(const size_t& numNodes) {
   this->m_numNodes = numNodes;
 }
 
-bool HarmonicsOutputImpl::isVelocity() const { return this->m_isVelocity; }
+bool HarmonicsOutputPrivate::isVelocity() const { return this->m_isVelocity; }
 
-size_t HarmonicsOutputImpl::nodeIdToArrayIndex(size_t id) {
+size_t HarmonicsOutputPrivate::nodeIdToArrayIndex(size_t id) {
   auto i = this->m_nodeIndex.find(id);
   if (i == this->m_nodeIndex.end()) {
     adcircmodules_throw_exception("Node not found in data");
@@ -189,9 +192,9 @@ size_t HarmonicsOutputImpl::nodeIdToArrayIndex(size_t id) {
   }
 }
 
-int HarmonicsOutputImpl::filetype() const { return this->m_filetype; }
+int HarmonicsOutputPrivate::filetype() const { return this->m_filetype; }
 
-void HarmonicsOutputImpl::read() {
+void HarmonicsOutputPrivate::read() {
   this->getFiletype();
 
   if (this->m_filetype == Adcirc::Harmonics::HarmonicsAscii) {
@@ -204,8 +207,8 @@ void HarmonicsOutputImpl::read() {
   return;
 }
 
-void HarmonicsOutputImpl::write(const std::string& filename,
-                                const HarmonicsFormat& filetype) {
+void HarmonicsOutputPrivate::write(const std::string& filename,
+                                   const HarmonicsFormat& filetype) {
   HarmonicsFormat filetype2;
   if (filetype == Adcirc::Harmonics::HarmonicsUnknown) {
     filetype2 = getHarmonicsFormatFromExtension(filename);
@@ -224,7 +227,7 @@ void HarmonicsOutputImpl::write(const std::string& filename,
 }
 
 Adcirc::Harmonics::HarmonicsFormat
-HarmonicsOutputImpl::getHarmonicsFormatFromExtension(
+HarmonicsOutputPrivate::getHarmonicsFormatFromExtension(
     const std::string& filename) {
   std::string extension = FileIO::Generic::getFileExtension(filename);
   if (extension == ".nc") {
@@ -234,7 +237,7 @@ HarmonicsOutputImpl::getHarmonicsFormatFromExtension(
   }
 }
 
-void HarmonicsOutputImpl::writeAsciiFormat(const std::string& filename) {
+void HarmonicsOutputPrivate::writeAsciiFormat(const std::string& filename) {
   std::ofstream fid;
   fid.open(filename);
   this->writeAsciiHeader(fid);
@@ -246,7 +249,7 @@ void HarmonicsOutputImpl::writeAsciiFormat(const std::string& filename) {
   return;
 }
 
-void HarmonicsOutputImpl::writeAsciiHeader(std::ofstream& fid) {
+void HarmonicsOutputPrivate::writeAsciiHeader(std::ofstream& fid) {
   fid << boost::str(boost::format("%11i\n") % this->numConstituents());
 
   std::vector<Adcirc::Harmonics::HarmonicsRecord>* ptr;
@@ -265,7 +268,7 @@ void HarmonicsOutputImpl::writeAsciiHeader(std::ofstream& fid) {
   return;
 }
 
-void HarmonicsOutputImpl::writeAsciiFormatElevation(std::ofstream& fid) {
+void HarmonicsOutputPrivate::writeAsciiFormatElevation(std::ofstream& fid) {
   for (size_t i = 0; i < this->numNodes(); ++i) {
     fid << boost::str(boost::format("%11i\n") % (i + 1));
     for (size_t j = 0; j < this->numConstituents(); ++j) {
@@ -277,7 +280,7 @@ void HarmonicsOutputImpl::writeAsciiFormatElevation(std::ofstream& fid) {
   return;
 }
 
-void HarmonicsOutputImpl::writeAsciiFormatVelocity(std::ofstream& fid) {
+void HarmonicsOutputPrivate::writeAsciiFormatVelocity(std::ofstream& fid) {
   for (size_t i = 0; i < this->numNodes(); ++i) {
     fid << boost::str(boost::format("%11i\n") % (i + 1));
     for (size_t j = 0; j < this->numConstituents(); ++j) {
@@ -290,7 +293,7 @@ void HarmonicsOutputImpl::writeAsciiFormatVelocity(std::ofstream& fid) {
   return;
 }
 
-void HarmonicsOutputImpl::writeNetcdfFormat(const std::string& filename) {
+void HarmonicsOutputPrivate::writeNetcdfFormat(const std::string& filename) {
   int ncid;
   int ierr = nc_create(filename.c_str(),
                        NC_NETCDF4 | NC_CLASSIC_MODEL | NC_CLOBBER, &ncid);
@@ -308,7 +311,7 @@ void HarmonicsOutputImpl::writeNetcdfFormat(const std::string& filename) {
   return;
 }
 
-void HarmonicsOutputImpl::writeNetcdfHeader(const int& ncid) {
+void HarmonicsOutputPrivate::writeNetcdfHeader(const int& ncid) {
   //...Dimensions
   int dimid_time, dimid_nnode, dimid_constlen, dimid_numconst;
   int ierr = nc_def_dim(ncid, "time", 1, &dimid_time);
@@ -389,7 +392,7 @@ void HarmonicsOutputImpl::writeNetcdfHeader(const int& ncid) {
   return;
 }
 
-void HarmonicsOutputImpl::writeNetcdfFormatElevation(const int& ncid) {
+void HarmonicsOutputPrivate::writeNetcdfFormatElevation(const int& ncid) {
   int varid[2];
   nc_inq_varid(ncid, "amp", &varid[0]);
   nc_inq_varid(ncid, "phs", &varid[1]);
@@ -416,7 +419,7 @@ void HarmonicsOutputImpl::writeNetcdfFormatElevation(const int& ncid) {
   }
 }
 
-void HarmonicsOutputImpl::writeNetcdfFormatVelocity(const int& ncid) {
+void HarmonicsOutputPrivate::writeNetcdfFormatVelocity(const int& ncid) {
   int varid[4];
   nc_inq_varid(ncid, "u_amp", &varid[0]);
   nc_inq_varid(ncid, "u_phs", &varid[1]);
@@ -447,7 +450,7 @@ void HarmonicsOutputImpl::writeNetcdfFormatVelocity(const int& ncid) {
   }
 }
 
-void HarmonicsOutputImpl::getFiletype() {
+void HarmonicsOutputPrivate::getFiletype() {
   if (Adcirc::Harmonics::checkFiletypeNetcdfHarmonics(this->filename())) {
     this->m_filetype = Adcirc::Harmonics::HarmonicsNetcdf;
     return;
@@ -460,7 +463,7 @@ void HarmonicsOutputImpl::getFiletype() {
   return;
 }
 
-void HarmonicsOutputImpl::readAsciiHeader(std::fstream& fid) {
+void HarmonicsOutputPrivate::readAsciiHeader(std::fstream& fid) {
   std::string line;
   bool ok;
 
@@ -545,7 +548,7 @@ void HarmonicsOutputImpl::readAsciiHeader(std::fstream& fid) {
   return;
 }
 
-bool HarmonicsOutputImpl::checkFormatAsciiVelocity(std::fstream& fid) {
+bool HarmonicsOutputPrivate::checkFormatAsciiVelocity(std::fstream& fid) {
   std::string line;
   std::streampos endHeader = fid.tellg();
   std::getline(fid, line);
@@ -563,7 +566,7 @@ bool HarmonicsOutputImpl::checkFormatAsciiVelocity(std::fstream& fid) {
   return false;
 }
 
-bool HarmonicsOutputImpl::checkFormatNetcdfVelocity(const int& ncid) {
+bool HarmonicsOutputPrivate::checkFormatNetcdfVelocity(const int& ncid) {
   int varid_upha;
   int ierr = nc_inq_varid(ncid, "u_phs", &varid_upha);
   if (ierr != NC_NOERR) {
@@ -572,7 +575,7 @@ bool HarmonicsOutputImpl::checkFormatNetcdfVelocity(const int& ncid) {
   return true;
 }
 
-void HarmonicsOutputImpl::readAsciiFormat() {
+void HarmonicsOutputPrivate::readAsciiFormat() {
   std::fstream fid;
   fid.open(this->m_filename);
   if (!fid.is_open()) {
@@ -623,7 +626,7 @@ void HarmonicsOutputImpl::readAsciiFormat() {
   return;
 }
 
-void HarmonicsOutputImpl::readNetcdfFormat() {
+void HarmonicsOutputPrivate::readNetcdfFormat() {
   int ncid;
   int ierr = nc_open(this->filename().c_str(), NC_NOWRITE, &ncid);
   if (ierr != NC_NOERR) {
@@ -644,8 +647,8 @@ void HarmonicsOutputImpl::readNetcdfFormat() {
   return;
 }
 
-void HarmonicsOutputImpl::readNetcdfFormatHeader(int ncid,
-                                                 std::vector<int>& varids) {
+void HarmonicsOutputPrivate::readNetcdfFormatHeader(int ncid,
+                                                    std::vector<int>& varids) {
   int ierr, dimid_nconst, dimid_constlen, dimid_node;
   ierr = nc_inq_dimid(ncid, "num_const", &dimid_nconst);
   if (ierr != NC_NOERR) {
@@ -870,8 +873,8 @@ void HarmonicsOutputImpl::readNetcdfFormatHeader(int ncid,
   return;
 }
 
-void HarmonicsOutputImpl::readNetcdfElevationData(int ncid,
-                                                  std::vector<int>& varids) {
+void HarmonicsOutputPrivate::readNetcdfElevationData(int ncid,
+                                                     std::vector<int>& varids) {
   assert(varids.size() == 2);
 
   double* v = new double[this->numNodes()];
@@ -902,8 +905,8 @@ void HarmonicsOutputImpl::readNetcdfElevationData(int ncid,
   return;
 }
 
-void HarmonicsOutputImpl::readNetcdfVelocityData(int ncid,
-                                                 std::vector<int>& varids) {
+void HarmonicsOutputPrivate::readNetcdfVelocityData(int ncid,
+                                                    std::vector<int>& varids) {
   assert(varids.size() == 4);
 
   double* v = new double[this->numNodes()];

@@ -28,14 +28,17 @@
 #include "default_values.h"
 #include "element.h"
 #include "filetypes.h"
+#include "kdtree.h"
 #include "node.h"
-
-class Kdtree;
-class MeshImpl;
 
 using Point = std::pair<double, double>;
 
 namespace Adcirc {
+
+namespace Private {
+class MeshPrivate;
+}
+
 namespace Geometry {
 
 /**
@@ -191,8 +194,8 @@ class Mesh {
   addOpenBoundary(size_t index, const Adcirc::Geometry::Boundary &bnd);
   void ADCIRCMODULES_EXPORT deleteOpenBoundary(size_t index);
 
-  Kdtree ADCIRCMODULES_EXPORT *nodalSearchTree() const;
-  Kdtree ADCIRCMODULES_EXPORT *elementalSearchTree() const;
+  Adcirc::Kdtree ADCIRCMODULES_EXPORT *nodalSearchTree() const;
+  Adcirc::Kdtree ADCIRCMODULES_EXPORT *elementalSearchTree() const;
 
   std::vector<double> ADCIRCMODULES_EXPORT computeMeshSize();
 
@@ -211,11 +214,11 @@ class Mesh {
 
   std::string ADCIRCMODULES_EXPORT hash(bool force = false);
 
-  HashType hashType() const;
-  void setHashType(const HashType &hashType);
+  Adcirc::Cryptography::HashType hashType() const;
+  void setHashType(const Adcirc::Cryptography::HashType &hashType);
 
  private:
-  std::unique_ptr<MeshImpl> m_impl;
+  std::unique_ptr<Adcirc::Private::MeshPrivate> m_impl;
 };
 
 }  // namespace Geometry

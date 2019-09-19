@@ -19,6 +19,7 @@
 #ifndef ADCMOD_INTERPOLATION_H
 #define ADCMOD_INTERPOLATION_H
 
+namespace Adcirc {
 namespace Interpolation {
 enum Method {
   /// No interpolation
@@ -58,5 +59,6 @@ enum Threshold {
 };
 
 }  // namespace Interpolation
+}  // namespace Adcirc
 
 #endif  // ADCMOD_INTERPOLATION_H

@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#include "nodalattributes_impl.h"
+#include "nodalattributes_private.h"
 #include <algorithm>
 #include <cassert>
 #include <fstream>
@@ -31,36 +31,38 @@
 #include "stringconversion.h"
 
 using namespace Adcirc::ModelParameters;
+using namespace Adcirc::Private;
 
 NodalAttributes::~NodalAttributes() = default;
 
-NodalAttributesImpl::NodalAttributesImpl()
+NodalAttributesPrivate::NodalAttributesPrivate()
     : m_filename(std::string()),
       m_mesh(nullptr),
       m_numParameters(0),
       m_numNodes(0) {}
 
-NodalAttributesImpl::NodalAttributesImpl(const std::string &filename,
-                                         Adcirc::Geometry::Mesh *mesh)
+NodalAttributesPrivate::NodalAttributesPrivate(const std::string &filename,
+                                               Adcirc::Geometry::Mesh *mesh)
     : m_filename(filename), m_mesh(mesh), m_numParameters(0) {
   if (this->m_mesh != nullptr) {
     this->m_numNodes = mesh->numNodes();
   }
 }
 
-void NodalAttributesImpl::setFilename(const std::string &filename) {
+void NodalAttributesPrivate::setFilename(const std::string &filename) {
   this->m_filename = filename;
 }
 
-std::string NodalAttributesImpl::filename() { return this->m_filename; }
+std::string NodalAttributesPrivate::filename() { return this->m_filename; }
 
-void NodalAttributesImpl::setMesh(Adcirc::Geometry::Mesh *mesh) {
+void NodalAttributesPrivate::setMesh(Adcirc::Geometry::Mesh *mesh) {
   this->m_mesh = mesh;
 }
 
-Adcirc::Geometry::Mesh *NodalAttributesImpl::mesh() { return this->m_mesh; }
+Adcirc::Geometry::Mesh *NodalAttributesPrivate::mesh() { return this->m_mesh; }
 
-size_t NodalAttributesImpl::locateAttribute(const std::string &attributeName) {
+size_t NodalAttributesPrivate::locateAttribute(
+    const std::string &attributeName) {
   assert(this->m_attributeLocations.find(attributeName) !=
          this->m_attributeLocations.end());
   if (this->m_attributeLocations.find(attributeName) ==
@@ -71,7 +73,7 @@ size_t NodalAttributesImpl::locateAttribute(const std::string &attributeName) {
   }
 }
 
-void NodalAttributesImpl::read() {
+void NodalAttributesPrivate::read() {
   std::fstream fid(this->filename(), std::fstream::in);
 
   this->_readFort13Header(fid);
@@ -88,7 +90,7 @@ void NodalAttributesImpl::read() {
   return;
 }
 
-void NodalAttributesImpl::_readFort13Header(std::fstream &fid) {
+void NodalAttributesPrivate::_readFort13Header(std::fstream &fid) {
   std::string tempLine;
   bool ok;
 
@@ -137,7 +139,7 @@ void NodalAttributesImpl::_readFort13Header(std::fstream &fid) {
   return;
 }
 
-void NodalAttributesImpl::_readFort13Defaults(std::fstream &fid) {
+void NodalAttributesPrivate::_readFort13Defaults(std::fstream &fid) {
   std::string name, units, tempLine;
   std::vector<std::string> tempList;
   double defaultValue;
@@ -171,7 +173,7 @@ void NodalAttributesImpl::_readFort13Defaults(std::fstream &fid) {
 
     } else {
       std::getline(fid, tempLine);
-      FileIO::Generic::splitString(tempLine, tempList);
+      Adcirc::FileIO::Generic::splitString(tempLine, tempList);
 
       defaultValueVector.resize(nValues);
       for (size_t j = 0; j < nValues; ++j) {
@@ -192,7 +194,7 @@ void NodalAttributesImpl::_readFort13Defaults(std::fstream &fid) {
   return;
 }
 
-void NodalAttributesImpl::_fillDefaultValues() {
+void NodalAttributesPrivate::_fillDefaultValues() {
   for (size_t i = 0; i < this->numParameters(); ++i) {
     if (this->m_nodalParameters[i].numberOfValues() == 1) {
       for (size_t j = 0; j < this->numNodes(); ++j) {
@@ -211,7 +213,7 @@ void NodalAttributesImpl::_fillDefaultValues() {
   }
 }
 
-void NodalAttributesImpl::_mapNodes() {
+void NodalAttributesPrivate::_mapNodes() {
   for (size_t i = 0; i < this->numParameters(); ++i) {
     for (size_t j = 0; j < this->numNodes(); ++j) {
       this->m_nodalData[i][j].setNode(
@@ -221,7 +223,7 @@ void NodalAttributesImpl::_mapNodes() {
   return;
 }
 
-void NodalAttributesImpl::_readFort13Body(std::fstream &fid) {
+void NodalAttributesPrivate::_readFort13Body(std::fstream &fid) {
   std::string tempLine, name;
   size_t node;
   double value;
@@ -283,27 +285,27 @@ void NodalAttributesImpl::_readFort13Body(std::fstream &fid) {
   return;
 }
 
-size_t NodalAttributesImpl::numNodes() const { return this->m_numNodes; }
+size_t NodalAttributesPrivate::numNodes() const { return this->m_numNodes; }
 
-void NodalAttributesImpl::setNumNodes(size_t numNodes) {
+void NodalAttributesPrivate::setNumNodes(size_t numNodes) {
   this->m_numNodes = numNodes;
 }
 
-size_t NodalAttributesImpl::numParameters() const {
+size_t NodalAttributesPrivate::numParameters() const {
   return this->m_numParameters;
 }
 
-void NodalAttributesImpl::setNumParameters(size_t numParameters) {
+void NodalAttributesPrivate::setNumParameters(size_t numParameters) {
   this->m_numParameters = numParameters;
 }
 
-std::string NodalAttributesImpl::header() const { return this->m_header; }
+std::string NodalAttributesPrivate::header() const { return this->m_header; }
 
-void NodalAttributesImpl::setHeader(const std::string &header) {
+void NodalAttributesPrivate::setHeader(const std::string &header) {
   this->m_header = header;
 }
 
-Attribute *NodalAttributesImpl::attribute(size_t parameter, size_t node) {
+Attribute *NodalAttributesPrivate::attribute(size_t parameter, size_t node) {
   assert(node < this->numNodes());
   assert(parameter < this->numParameters());
 
@@ -315,13 +317,13 @@ Attribute *NodalAttributesImpl::attribute(size_t parameter, size_t node) {
   return nullptr;
 }
 
-Attribute *NodalAttributesImpl::attribute(const std::string &name,
-                                          size_t node) {
+Attribute *NodalAttributesPrivate::attribute(const std::string &name,
+                                             size_t node) {
   size_t index = this->locateAttribute(name);
   return this->attribute(index, node);
 }
 
-std::string NodalAttributesImpl::attributeNames(size_t index) {
+std::string NodalAttributesPrivate::attributeNames(size_t index) {
   assert(index < this->m_nodalParameters.size());
   if (index < this->m_nodalParameters.size()) {
     return this->m_nodalParameters[index].name();
@@ -330,7 +332,7 @@ std::string NodalAttributesImpl::attributeNames(size_t index) {
   return std::string();
 }
 
-void NodalAttributesImpl::write(const std::string &outputFilename) {
+void NodalAttributesPrivate::write(const std::string &outputFilename) {
   std::ofstream outputFile;
   outputFile.open(outputFilename);
   this->_writeFort13Header(outputFile);
@@ -339,7 +341,7 @@ void NodalAttributesImpl::write(const std::string &outputFilename) {
   return;
 }
 
-void NodalAttributesImpl::_writeFort13Header(std::ofstream &fid) {
+void NodalAttributesPrivate::_writeFort13Header(std::ofstream &fid) {
   fid << this->m_header << "\n";
   fid << boost::str(boost::format("%11i\n") % this->numNodes());
   fid << boost::str(boost::format("%11i\n") % this->numParameters());
@@ -349,7 +351,7 @@ void NodalAttributesImpl::_writeFort13Header(std::ofstream &fid) {
   return;
 }
 
-void NodalAttributesImpl::_writeFort13Body(std::ofstream &fid) {
+void NodalAttributesPrivate::_writeFort13Body(std::ofstream &fid) {
   for (size_t i = 0; i < this->numParameters(); ++i) {
     size_t ndefault =
         this->_countDefault(this->m_nodalParameters[i], this->m_nodalData[i]);
@@ -366,8 +368,8 @@ void NodalAttributesImpl::_writeFort13Body(std::ofstream &fid) {
   return;
 }
 
-size_t NodalAttributesImpl::_countDefault(AttributeMetadata &metadata,
-                                          std::vector<Attribute> &values) {
+size_t NodalAttributesPrivate::_countDefault(AttributeMetadata &metadata,
+                                             std::vector<Attribute> &values) {
   size_t n = 0;
   for (auto &v : values) {
     if (!metadata.checkIfDefaultValue(v)) {
@@ -377,7 +379,7 @@ size_t NodalAttributesImpl::_countDefault(AttributeMetadata &metadata,
   return n;
 }
 
-AttributeMetadata *NodalAttributesImpl::metadata(size_t parameter) {
+AttributeMetadata *NodalAttributesPrivate::metadata(size_t parameter) {
   assert(parameter < this->numParameters());
 
   if (parameter < this->numParameters()) {
@@ -388,13 +390,13 @@ AttributeMetadata *NodalAttributesImpl::metadata(size_t parameter) {
   return nullptr;
 }
 
-AttributeMetadata *NodalAttributesImpl::metadata(const std::string &name) {
+AttributeMetadata *NodalAttributesPrivate::metadata(const std::string &name) {
   size_t index = this->locateAttribute(name);
   return this->metadata(index);
 }
 
-void NodalAttributesImpl::addAttribute(AttributeMetadata &metadata,
-                                       std::vector<Attribute> &attribute) {
+void NodalAttributesPrivate::addAttribute(AttributeMetadata &metadata,
+                                          std::vector<Attribute> &attribute) {
   this->m_nodalParameters.push_back(metadata);
   this->m_nodalData.push_back(attribute);
   this->m_attributeLocations[metadata.name()] =

@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_MESHIMPL_H
-#define ADCMOD_MESHIMPL_H
+#ifndef ADCMOD_MESHPRIVATE_H
+#define ADCMOD_MESHPRIVATE_H
 
 #include <fstream>
 #include <memory>
@@ -35,12 +35,15 @@
 
 using Point = std::pair<double, double>;
 
-class MeshImpl {
- public:
-  MeshImpl();
-  MeshImpl(const std::string &filename);
+namespace Adcirc {
+namespace Private {
 
-  ~MeshImpl();
+class MeshPrivate {
+ public:
+  MeshPrivate();
+  MeshPrivate(const std::string &filename);
+
+  ~MeshPrivate();
 
   std::vector<double> x();
   std::vector<double> y();
@@ -140,8 +143,8 @@ class MeshImpl {
   void addLandBoundary(size_t index, const Adcirc::Geometry::Boundary &bnd);
   void deleteLandBoundary(size_t index);
 
-  Kdtree *nodalSearchTree() const;
-  Kdtree *elementalSearchTree() const;
+  Adcirc::Kdtree *nodalSearchTree() const;
+  Adcirc::Kdtree *elementalSearchTree() const;
 
   std::vector<double> computeMeshSize();
 
@@ -157,8 +160,8 @@ class MeshImpl {
 
   std::string hash(bool force = false);
 
-  HashType hashType() const;
-  void setHashType(const HashType &hashType);
+  Adcirc::Cryptography::HashType hashType() const;
+  void setHashType(const Adcirc::Cryptography::HashType &hashType);
 
  private:
   static Adcirc::Geometry::MeshFormat getMeshFormat(
@@ -196,7 +199,7 @@ class MeshImpl {
   adcmap<size_t, size_t> m_nodeLookup;
   adcmap<size_t, size_t> m_elementLookup;
 
-  HashType m_hashType;
+  Adcirc::Cryptography::HashType m_hashType;
 
   std::string m_filename;
   std::string m_meshHeaderString;
@@ -216,5 +219,7 @@ class MeshImpl {
   std::unique_ptr<Kdtree> m_nodalSearchTree;
   std::unique_ptr<Kdtree> m_elementalSearchTree;
 };
+}  // namespace Private
+}  // namespace Adcirc
 
-#endif  // ADCMOD_MESHIMPL_H
+#endif  // ADCMOD_MESHPRIVATE_H

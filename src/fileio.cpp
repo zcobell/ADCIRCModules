@@ -32,11 +32,8 @@ namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
 namespace phoenix = boost::phoenix;
 
-namespace FileIO {
-
-namespace Generic {
-
-void readFileData(const std::string &filename, std::vector<std::string> &data) {
+void Adcirc::FileIO::Generic::readFileData(const std::string &filename,
+                                           std::vector<std::string> &data) {
   std::ifstream t(filename.c_str());
   t.seekg(0, std::ios::end);
   size_t size = t.tellg();
@@ -48,14 +45,16 @@ void readFileData(const std::string &filename, std::vector<std::string> &data) {
   return;
 }
 
-void splitString(std::string &data, std::vector<std::string> &fresult) {
+void Adcirc::FileIO::Generic::splitString(std::string &data,
+                                          std::vector<std::string> &fresult) {
   boost::trim_if(data, boost::is_any_of(" "));
   boost::algorithm::split(fresult, data, boost::is_any_of(" "),
                           boost::token_compress_on);
   return;
 }
 
-std::string getFileExtension(const std::string &filename) {
+std::string Adcirc::FileIO::Generic::getFileExtension(
+    const std::string &filename) {
   size_t pos = filename.rfind('.');
   if (pos != std::string::npos) {
     return filename.substr(pos);
@@ -63,15 +62,14 @@ std::string getFileExtension(const std::string &filename) {
   return "";
 }
 
-bool fileExists(const std::string &filename) {
+bool Adcirc::FileIO::Generic::fileExists(const std::string &filename) {
   std::ifstream ifile(filename.c_str());
   return (bool)ifile;
 }
-}  // namespace Generic
 
-namespace AdcircIO {
-bool splitStringNodeFormat(std::string &data, size_t &id, double &x, double &y,
-                           double &z) {
+bool Adcirc::FileIO::AdcircIO::splitStringNodeFormat(std::string &data,
+                                                     size_t &id, double &x,
+                                                     double &y, double &z) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(id) = qi::_1] >>
                            qi::double_[phoenix::ref(x) = qi::_1] >>
@@ -80,8 +78,8 @@ bool splitStringNodeFormat(std::string &data, size_t &id, double &x, double &y,
                           ascii::space);
 }
 
-bool splitStringElemFormat(std::string &data, size_t &id,
-                           std::vector<size_t> &nodes) {
+bool Adcirc::FileIO::AdcircIO::splitStringElemFormat(
+    std::string &data, size_t &id, std::vector<size_t> &nodes) {
   return qi::phrase_parse(
       data.begin(), data.end(),
       (qi::int_[phoenix::ref(id) = qi::_1] >> qi::int_ >>
@@ -89,14 +87,15 @@ bool splitStringElemFormat(std::string &data, size_t &id,
       ascii::space);
 }
 
-bool splitStringBoundary0Format(std::string &data, size_t &node1) {
+bool Adcirc::FileIO::AdcircIO::splitStringBoundary0Format(std::string &data,
+                                                          size_t &node1) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node1) = qi::_1]),
                           ascii::space);
 }
 
-bool splitStringBoundary23Format(std::string &data, size_t &node1,
-                                 double &crest, double &supercritical) {
+bool Adcirc::FileIO::AdcircIO::splitStringBoundary23Format(
+    std::string &data, size_t &node1, double &crest, double &supercritical) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node1) = qi::_1] >>
                            qi::double_[phoenix::ref(crest) = qi::_1] >>
@@ -104,9 +103,9 @@ bool splitStringBoundary23Format(std::string &data, size_t &node1,
                           ascii::space);
 }
 
-bool splitStringBoundary24Format(std::string &data, size_t &node1,
-                                 size_t &node2, double &crest,
-                                 double &subcritical, double &supercritical) {
+bool Adcirc::FileIO::AdcircIO::splitStringBoundary24Format(
+    std::string &data, size_t &node1, size_t &node2, double &crest,
+    double &subcritical, double &supercritical) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node1) = qi::_1] >>
                            qi::int_[phoenix::ref(node2) = qi::_1] >>
@@ -116,11 +115,10 @@ bool splitStringBoundary24Format(std::string &data, size_t &node1,
                           ascii::space);
 }
 
-bool splitStringBoundary25Format(std::string &data, size_t &node1,
-                                 size_t &node2, double &crest,
-                                 double &subcritical, double &supercritical,
-                                 double &pipeheight, double &pipecoef,
-                                 double &pipediam) {
+bool Adcirc::FileIO::AdcircIO::splitStringBoundary25Format(
+    std::string &data, size_t &node1, size_t &node2, double &crest,
+    double &subcritical, double &supercritical, double &pipeheight,
+    double &pipecoef, double &pipediam) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node1) = qi::_1] >>
                            qi::int_[phoenix::ref(node2) = qi::_1] >>
@@ -133,16 +131,19 @@ bool splitStringBoundary25Format(std::string &data, size_t &node1,
                           ascii::space);
 }
 
-bool splitStringAttribute1Format(std::string &data, size_t &node,
-                                 double &value) {
+bool Adcirc::FileIO::AdcircIO::splitStringAttribute1Format(std::string &data,
+                                                           size_t &node,
+                                                           double &value) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node) = qi::_1] >>
                            qi::double_[phoenix::ref(value) = qi::_1]),
                           ascii::space);
 }
 
-bool splitStringAttribute2Format(std::string &data, size_t &node,
-                                 double &value1, double &value2) {
+bool Adcirc::FileIO::AdcircIO::splitStringAttribute2Format(std::string &data,
+                                                           size_t &node,
+                                                           double &value1,
+                                                           double &value2) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node) = qi::_1] >>
                            qi::double_[phoenix::ref(value1) = qi::_1] >>
@@ -150,8 +151,8 @@ bool splitStringAttribute2Format(std::string &data, size_t &node,
                           ascii::space);
 }
 
-bool splitStringAttributeNFormat(std::string &data, size_t &node,
-                                 std::vector<double> &values) {
+bool Adcirc::FileIO::AdcircIO::splitStringAttributeNFormat(
+    std::string &data, size_t &node, std::vector<double> &values) {
   return qi::phrase_parse(
       data.begin(), data.end(),
       (qi::int_[phoenix::ref(node) = qi::_1] >>
@@ -159,17 +160,17 @@ bool splitStringAttributeNFormat(std::string &data, size_t &node,
       ascii::space);
 }
 
-bool splitStringHarmonicsElevationFormat(std::string &data, double &amplitude,
-                                         double &phase) {
+bool Adcirc::FileIO::AdcircIO::splitStringHarmonicsElevationFormat(
+    std::string &data, double &amplitude, double &phase) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::double_[phoenix::ref(amplitude) = qi::_1] >>
                            qi::double_[phoenix::ref(phase) = qi::_1]),
                           ascii::space);
 }
 
-bool splitStringHarmonicsVelocityFormat(std::string &data, double &u_magnitude,
-                                        double &u_phase, double &v_magnitude,
-                                        double &v_phase) {
+bool Adcirc::FileIO::AdcircIO::splitStringHarmonicsVelocityFormat(
+    std::string &data, double &u_magnitude, double &u_phase,
+    double &v_magnitude, double &v_phase) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::double_[phoenix::ref(u_magnitude) = qi::_1] >>
                            qi::double_[phoenix::ref(u_phase) = qi::_1] >>
@@ -177,10 +178,10 @@ bool splitStringHarmonicsVelocityFormat(std::string &data, double &u_magnitude,
                            qi::double_[phoenix::ref(v_phase) = qi::_1]),
                           ascii::space);
 }
-}  // namespace AdcircIO
-namespace SMSIO {
-bool splitString2dmNodeFormat(std::string &data, size_t &id, double &x,
-                              double &y, double &z) {
+
+bool Adcirc::FileIO::SMSIO::splitString2dmNodeFormat(std::string &data,
+                                                     size_t &id, double &x,
+                                                     double &y, double &z) {
   return qi::phrase_parse(data.begin() + 3, data.end(),
                           (qi::int_[phoenix::ref(id) = qi::_1] >>
                            qi::double_[phoenix::ref(x) = qi::_1] >>
@@ -189,8 +190,8 @@ bool splitString2dmNodeFormat(std::string &data, size_t &id, double &x,
                           ascii::space);
 }
 
-bool splitString2dmElementFormat(std::string &data, size_t &id,
-                                 std::vector<size_t> &nodes) {
+bool Adcirc::FileIO::SMSIO::splitString2dmElementFormat(
+    std::string &data, size_t &id, std::vector<size_t> &nodes) {
   std::string key = data.substr(0, 3);
   if (key == "E3T") {
     nodes.resize(3);
@@ -212,5 +213,3 @@ bool splitString2dmElementFormat(std::string &data, size_t &id,
   }
   return false;
 }
-}  // namespace SMSIO
-}  // namespace FileIO

@@ -20,6 +20,7 @@
 #include "adcircmodules.h"
 
 int main(int argc, char *argv[]) {
+  using namespace Adcirc::Cryptography;
   std::string hashData = "zach";
   Hash md5(HashType::AdcmodMD5);;
   Hash sha1(HashType::AdcmodSHA1);;

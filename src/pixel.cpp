@@ -20,6 +20,8 @@
 #include <limits>
 #include "default_values.h"
 
+using namespace Adcirc::Raster;
+
 /**
  * @brief Default constructor
  *

@@ -16,27 +16,35 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef HASH_H
-#define HASH_H
+#ifndef ADCMOD_HASH_H
+#define ADCMOD_HASH_H
 
 #include <memory>
 #include <string>
 #include "hashtype.h"
 
-class HashImpl;
+namespace Adcirc {
 
+namespace Private {
+// Forward declaration of pimpl class
+class HashPrivate;
+}  // namespace Private
+
+namespace Cryptography {
 class Hash {
  public:
-  Hash(HashType h = AdcircDefaultHash);
+  Hash(Adcirc::Cryptography::HashType h = Adcirc::Cryptography::AdcircDefaultHash);
   ~Hash();
   void addData(const std::string &s);
-  char* getHash();
+  char *getHash();
 
-  HashType hashType() const;
-  void setHashType(const HashType &hashType);
+  Adcirc::Cryptography::HashType hashType() const;
+  void setHashType(const Adcirc::Cryptography::HashType &hashType);
 
  private:
-  std::unique_ptr<HashImpl> m_impl;
+  std::unique_ptr<Adcirc::Private::HashPrivate> m_impl;
 };
+}  // namespace Cryptography
+}  // namespace Adcirc
 
-#endif  // HASH_H
+#endif  // ADCMOD_HASH_H

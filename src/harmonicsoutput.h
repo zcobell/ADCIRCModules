@@ -7,9 +7,11 @@
 #include "filetypes.h"
 #include "harmonicsrecord.h"
 
-class HarmonicsOutputImpl;
-
 namespace Adcirc {
+namespace Private {
+// Forward declaration for pimpl class
+class HarmonicsOutputPrivate;
+}  // namespace Private
 namespace Harmonics {
 
 /**
@@ -94,7 +96,7 @@ class HarmonicsOutput {
   int ADCIRCMODULES_EXPORT filetype() const;
 
  private:
-  std::unique_ptr<HarmonicsOutputImpl> m_impl;
+  std::unique_ptr<Adcirc::Private::HarmonicsOutputPrivate> m_impl;
 };
 }  // namespace Harmonics
 }  // namespace Adcirc

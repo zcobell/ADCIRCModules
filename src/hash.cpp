@@ -18,9 +18,11 @@
 //------------------------------------------------------------------------*/
 #include "hash.h"
 #include <string>
-#include "hash_impl.h"
+#include "hash_private.h"
 
-Hash::Hash(HashType h) : m_impl(new HashImpl(h)) {}
+using namespace Adcirc::Cryptography;
+
+Hash::Hash(Adcirc::Cryptography::HashType h) : m_impl(new Adcirc::Private::HashPrivate(h)) {}
 
 Hash::~Hash() { this->m_impl.reset(nullptr); }
 
@@ -28,8 +30,8 @@ void Hash::addData(const std::string &s) { this->m_impl->addData(s); }
 
 char *Hash::getHash() { return this->m_impl->getHash(); }
 
-HashType Hash::hashType() const { return this->m_impl->hashType(); }
+Adcirc::Cryptography::HashType Hash::hashType() const { return this->m_impl->hashType(); }
 
-void Hash::setHashType(const HashType &hashType) {
+void Hash::setHashType(const Adcirc::Cryptography::HashType &hashType) {
   this->m_impl->setHashType(hashType);
 }

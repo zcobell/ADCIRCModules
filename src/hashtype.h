@@ -16,11 +16,16 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef HASHTYPE_H
-#define HASHTYPE_H
+#ifndef ADCMOD_HASHTYPE_H
+#define ADCMOD_HASHTYPE_H
 
+namespace Adcirc {
+
+namespace Cryptography {
 enum HashType { NullHash, AdcmodMD5, AdcmodSHA1, AdcmodSHA256 };
 
 constexpr HashType AdcircDefaultHash = HashType::AdcmodSHA1;
 
-#endif // HASHTYPE_H
+}  // namespace Cryptography
+}  // namespace Adcirc
+#endif  // HASHTYPE_H

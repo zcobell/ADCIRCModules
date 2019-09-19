@@ -24,7 +24,12 @@
 #include <vector>
 #include "adcircmodules_global.h"
 
-class Kdtree_impl;
+namespace Adcirc {
+
+namespace Private {
+// Forward declaration of pimpl class
+class KdtreePrivate;
+}  // namespace Private
 
 /**
  * @class Kdtree
@@ -52,7 +57,8 @@ class Kdtree {
   ADCIRCMODULES_EXPORT bool initialized();
 
  private:
-  std::unique_ptr<Kdtree_impl> m_ptr;
+  std::unique_ptr<Adcirc::Private::KdtreePrivate> m_ptr;
 };
+}  // namespace Adcirc
 
 #endif  // ADCMOD_KDTREE_H

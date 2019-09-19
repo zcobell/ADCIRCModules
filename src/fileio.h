@@ -23,6 +23,8 @@
 #include <vector>
 #include "adcircmodules_global.h"
 
+namespace Adcirc {
+
 namespace FileIO {
 
 namespace Generic {
@@ -84,5 +86,7 @@ bool splitString2dmElementFormat(std::string &data, size_t &id,
 }  // namespace SMSIO
 
 }  // namespace FileIO
+
+}  // namespace Adcirc
 
 #endif  // ADCMOD_FILEIO_H

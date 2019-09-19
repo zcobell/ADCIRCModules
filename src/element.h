@@ -90,15 +90,18 @@ class Element {
 
   std::vector<double> interpolationWeights(double x, double y);
 
-  std::string ADCIRCMODULES_EXPORT hash(HashType h = AdcircDefaultHash,
-                                        bool force = false);
+  std::string ADCIRCMODULES_EXPORT
+  hash(Adcirc::Cryptography::HashType h =
+           Adcirc::Cryptography::AdcircDefaultHash,
+       bool force = false);
 
  private:
   size_t m_id;
   std::vector<Adcirc::Geometry::Node *> m_nodes;
   char *m_hash;
 
-  void generateHash(HashType h = AdcircDefaultHash);
+  void generateHash(Adcirc::Cryptography::HashType h =
+                        Adcirc::Cryptography::AdcircDefaultHash);
 
   std::vector<double> triangularInterpolation(double x, double y);
   std::vector<double> polygonInterpolation(double x, double y);

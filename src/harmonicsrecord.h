@@ -5,9 +5,13 @@
 #include <vector>
 #include "adcircmodules_global.h"
 
-class HarmonicsRecordImpl;
-
 namespace Adcirc {
+
+namespace Private {
+// Forward declaration for pimpl class
+class HarmonicsRecordPrivate;
+}  // namespace Private
+
 namespace Harmonics {
 
 /**
@@ -46,7 +50,7 @@ class HarmonicsRecord {
   void ADCIRCMODULES_EXPORT setEquilibriumArg(double equilibriumArg);
 
  private:
-  HarmonicsRecordImpl* m_impl;
+  Adcirc::Private::HarmonicsRecordPrivate* m_impl;
 };
 }  // namespace Harmonics
 }  // namespace Adcirc

@@ -20,7 +20,7 @@
 #define ADCMOD_STRINGCONVERSION_H
 
 #include <string>
-
+namespace Adcirc {
 class StringConversion {
  public:
   StringConversion() = default;
@@ -31,5 +31,6 @@ class StringConversion {
   static double stringToDouble(const std::string& a, bool& ok);
   static std::string sanitizeString(const std::string& a);
 };
+}  // namespace Adcirc
 
 #endif  // ADCMOD_STRINGCONVERSION_H

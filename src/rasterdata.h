@@ -24,10 +24,15 @@
 #include "adcircmodules_global.h"
 #include "pixel.h"
 
+using Point = std::pair<double, double>;
+
+// Forward declaration of GDAL classes
 class GDALDataset;
 class GDALRasterBand;
 
-using Point = std::pair<double, double>;
+namespace Adcirc {
+
+namespace Raster {
 
 /**
  * @class Rasterdata
@@ -76,27 +81,27 @@ class Rasterdata {
 
   ADCIRCMODULES_EXPORT double ymax() const;
 
-  template<typename T>
+  template <typename T>
   ADCIRCMODULES_EXPORT T nodata() const;
 
   ADCIRCMODULES_EXPORT Point pixelToCoordinate(size_t i, size_t j);
-  ADCIRCMODULES_EXPORT Point pixelToCoordinate(Pixel &p);
+  ADCIRCMODULES_EXPORT Point pixelToCoordinate(Adcirc::Raster::Pixel &p);
 
-  ADCIRCMODULES_EXPORT Pixel coordinateToPixel(double x, double y);
-  ADCIRCMODULES_EXPORT Pixel coordinateToPixel(Point &p);
+  ADCIRCMODULES_EXPORT Adcirc::Raster::Pixel coordinateToPixel(double x,
+                                                               double y);
+  ADCIRCMODULES_EXPORT Adcirc::Raster::Pixel coordinateToPixel(Point &p);
 
   ADCIRCMODULES_EXPORT std::string projectionString() const;
 
-  ADCIRCMODULES_EXPORT int searchBoxAroundPoint(double x, double y,
-                                                double halfSide,
-                                                Pixel &upperLeft,
-                                                Pixel &lowerRight);
+  ADCIRCMODULES_EXPORT int searchBoxAroundPoint(
+      double x, double y, double halfSide, Adcirc::Raster::Pixel &upperLeft,
+      Adcirc::Raster::Pixel &lowerRight);
 
   ADCIRCMODULES_EXPORT std::string filename() const;
   ADCIRCMODULES_EXPORT void setFilename(const std::string &filename);
 
   template <typename T>
-  ADCIRCMODULES_EXPORT T pixelValue(Pixel &p);
+  ADCIRCMODULES_EXPORT T pixelValue(Adcirc::Raster::Pixel &p);
 
   template <typename T>
   ADCIRCMODULES_EXPORT T pixelValue(size_t i, size_t j);
@@ -118,7 +123,7 @@ class Rasterdata {
  private:
   void init();
   bool getRasterMetadata();
-  RasterTypes selectRasterType(int d);
+  Adcirc::Raster::Rasterdata::RasterTypes selectRasterType(int d);
 
   template <typename T>
   int pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
@@ -152,5 +157,7 @@ class Rasterdata {
   std::string m_projectionReference;
   std::string m_filename;
 };
+}  // namespace Raster
+}  // namespace Adcirc
 
 #endif  // ADCMOD_RASTERDATA_H

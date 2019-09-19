@@ -100,8 +100,10 @@ class Boundary {
 
   double ADCIRCMODULES_EXPORT averageLongitude(bool force = false);
 
-  std::string ADCIRCMODULES_EXPORT hash(HashType h = AdcircDefaultHash,
-                                        bool force = false);
+  std::string ADCIRCMODULES_EXPORT
+  hash(Adcirc::Cryptography::HashType h =
+           Adcirc::Cryptography::AdcircDefaultHash,
+       bool force = false);
 
  private:
   int m_boundaryCode;
@@ -117,7 +119,8 @@ class Boundary {
   std::vector<Adcirc::Geometry::Node *> m_node2;
   char *m_hash;
 
-  void generateHash(HashType h = AdcircDefaultHash);
+  void generateHash(Adcirc::Cryptography::HashType h =
+                        Adcirc::Cryptography::AdcircDefaultHash);
   void calculateAverageLongitude();
 };
 }  // namespace Geometry

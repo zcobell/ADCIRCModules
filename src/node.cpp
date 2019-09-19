@@ -159,7 +159,7 @@ Point Node::toPoint() { return Point(this->m_x, this->m_y); }
  * there are no hash collisions) since the hash is based upon
  * the node's position and z-elevation
  */
-std::string Node::hash(HashType h, bool force) {
+std::string Node::hash(Adcirc::Cryptography::HashType h, bool force) {
   if (this->m_hash == nullptr || force) this->generateHash(h);
   return std::string(this->m_hash);
 }
@@ -173,7 +173,7 @@ std::string Node::hash(HashType h, bool force) {
  * the node's position. Identical hashes are computed when the
  * z-elevation is the same.
  */
-std::string Node::positionHash(HashType h, bool force) {
+std::string Node::positionHash(Adcirc::Cryptography::HashType h, bool force) {
   if (this->m_positionHash == nullptr || force) this->generatePositionHash();
   return std::string(this->m_positionHash);
 }
@@ -182,8 +182,8 @@ std::string Node::positionHash(HashType h, bool force) {
  * @brief Generates a hash of the ADCIRC node's attributes
  * @param h type of hash to use
  */
-void Node::generateHash(HashType h) {
-  Hash hash(h);
+void Node::generateHash(Adcirc::Cryptography::HashType h) {
+  Adcirc::Cryptography::Hash hash(h);
   hash.addData(boost::str(boost::format("%16.10f") % this->x()));
   hash.addData(boost::str(boost::format("%16.10f") % this->y()));
   hash.addData(boost::str(boost::format("%16.10f") % this->z()));
@@ -195,8 +195,8 @@ void Node::generateHash(HashType h) {
  * @brief Generates a hash of only the node's position
  * @param h type of hash to use
  */
-void Node::generatePositionHash(HashType h) {
-  Hash hash(h);
+void Node::generatePositionHash(Adcirc::Cryptography::HashType h) {
+  Adcirc::Cryptography::Hash hash(h);
   hash.addData(boost::str(boost::format("%16.10f") % this->x()));
   hash.addData(boost::str(boost::format("%16.10f") % this->y()));
   this->m_positionHash = hash.getHash();

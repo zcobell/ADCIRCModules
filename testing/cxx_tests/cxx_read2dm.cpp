@@ -22,7 +22,6 @@
 
 int main() {
   using namespace Adcirc::Geometry;
-  using namespace Interpolation;
   std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv_quad.2dm"));
   mesh->read();
   mesh->write("test_files/ms-riv_quad_net.nc");

@@ -20,7 +20,7 @@
 #include "default_values.h"
 #include "logging.h"
 #include "mesh.h"
-#include "mesh_impl.h"
+#include "mesh_private.h"
 
 using namespace Adcirc::Geometry;
 
@@ -36,7 +36,7 @@ ElementTable::ElementTable() : m_mesh(nullptr), m_initialized(false) {}
  * @brief Constructor with smart pointer meshimpl as a parameter
  * @param mesh sets the mesh used to generate the ElementTable
  */
-ElementTable::ElementTable(std::unique_ptr<MeshImpl> *mesh)
+ElementTable::ElementTable(std::unique_ptr<Adcirc::Private::MeshPrivate> *mesh)
     : m_mesh(mesh->get()), m_initialized(false) {}
 
 /**
@@ -50,20 +50,20 @@ ElementTable::ElementTable(Adcirc::Geometry::Mesh *mesh)
  * @brief Constructor with meshimpl as a parameter
  * @param mesh sets the mesh used to generate the ElementTable
  */
-ElementTable::ElementTable(MeshImpl *mesh)
+ElementTable::ElementTable(Adcirc::Private::MeshPrivate *mesh)
     : m_mesh(mesh), m_initialized(false) {}
 
 /**
  * @brief Returns the pointer to the mesh used to build the table
  * @return pointer to mesh used in this table
  */
-MeshImpl *ElementTable::mesh() const { return this->m_mesh; }
+Adcirc::Private::MeshPrivate *ElementTable::mesh() const { return this->m_mesh; }
 
 /**
  * @brief Sets the mesh used in the element table
  * @param mesh to use to build the table
  */
-void ElementTable::setMesh(MeshImpl *mesh) { this->m_mesh = mesh; }
+void ElementTable::setMesh(Adcirc::Private::MeshPrivate *mesh) { this->m_mesh = mesh; }
 
 /**
  * @brief Begin building the table

@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 
-#include "griddata_impl.h"
+#include "griddata_private.h"
 #include <algorithm>
 #include <array>
 #include <fstream>
@@ -33,7 +33,8 @@
 #include "stringconversion.h"
 
 using namespace Adcirc::Geometry;
-using namespace Interpolation;
+using namespace Adcirc::Interpolation;
+using namespace Adcirc::Private;
 
 using Point = std::pair<double, double>;
 
@@ -43,9 +44,9 @@ constexpr double c_oneOver2PlusRoot3 = 1.0 / (2.0 + Constants::root3());
 constexpr double c_epsilonSquared = std::numeric_limits<double>::epsilon() *
                                     std::numeric_limits<double>::epsilon();
 constexpr double c_oneOverWindSigmaSquared =
-    1.0 / (GriddataImpl::windSigma() * GriddataImpl::windSigma());
+    1.0 / (GriddataPrivate::windSigma() * GriddataPrivate::windSigma());
 static const double c_rootWindSigmaTwoPi =
-    sqrt(2.0 * 4.0 * Constants::pi() * GriddataImpl::windSigma());
+    sqrt(2.0 * 4.0 * Constants::pi() * GriddataPrivate::windSigma());
 
 constexpr std::array<std::array<short, 7>, 3> c_windDirectionLookup = {
     {{{4, 3, 2, 1, 12, 11, 10}},
@@ -57,7 +58,7 @@ int sgn(T val) {
   return (T(0) < val) - (val < T(0));
 }
 
-bool GriddataImpl::getKeyValue(unsigned short key, double &value) {
+bool GriddataPrivate::getKeyValue(unsigned short key, double &value) {
   auto t = this->m_lookup.find(key);
   if (t == this->m_lookup.end()) return false;
   value = t->second;
@@ -66,7 +67,7 @@ bool GriddataImpl::getKeyValue(unsigned short key, double &value) {
 
 Griddata::~Griddata() = default;
 
-GriddataImpl::GriddataImpl()
+GriddataPrivate::GriddataPrivate()
     : m_mesh(nullptr),
       m_raster(nullptr),
       m_rasterFile(std::string()),
@@ -83,7 +84,7 @@ GriddataImpl::GriddataImpl()
       m_thresholdMethod(Interpolation::Threshold::NoThreshold),
       m_rasterInMemory(false) {}
 
-GriddataImpl::GriddataImpl(Mesh *mesh, std::string rasterFile)
+GriddataPrivate::GriddataPrivate(Mesh *mesh, std::string rasterFile)
     : m_mesh(mesh),
       m_rasterFile(rasterFile),
       m_defaultValue(-9999.0),
@@ -96,7 +97,7 @@ GriddataImpl::GriddataImpl(Mesh *mesh, std::string rasterFile)
       m_thresholdValue(0.0),
       m_thresholdMethod(Interpolation::Threshold::NoThreshold),
       m_rasterInMemory(false) {
-  this->m_raster.reset(new Rasterdata(this->m_rasterFile));
+  this->m_raster.reset(new Adcirc::Raster::Rasterdata(this->m_rasterFile));
   this->m_interpolationFlags.resize(this->m_mesh->numNodes());
   std::fill(this->m_interpolationFlags.begin(),
             this->m_interpolationFlags.end(), Average);
@@ -104,31 +105,33 @@ GriddataImpl::GriddataImpl(Mesh *mesh, std::string rasterFile)
   std::fill(this->m_filterSize.begin(), this->m_filterSize.end(), 1.0);
 }
 
-std::string GriddataImpl::rasterFile() const { return this->m_rasterFile; }
+std::string GriddataPrivate::rasterFile() const { return this->m_rasterFile; }
 
-void GriddataImpl::setRasterFile(const std::string &rasterFile) {
+void GriddataPrivate::setRasterFile(const std::string &rasterFile) {
   this->m_rasterFile = rasterFile;
 }
 
-double GriddataImpl::rasterMultiplier() const {
+double GriddataPrivate::rasterMultiplier() const {
   return this->m_rasterMultiplier;
 }
 
-void GriddataImpl::setRasterMultiplier(double rasterMultiplier) {
+void GriddataPrivate::setRasterMultiplier(double rasterMultiplier) {
   this->m_rasterMultiplier = rasterMultiplier;
 }
 
-bool GriddataImpl::showProgressBar() const { return this->m_showProgressBar; }
+bool GriddataPrivate::showProgressBar() const {
+  return this->m_showProgressBar;
+}
 
-void GriddataImpl::setShowProgressBar(bool showProgressBar) {
+void GriddataPrivate::setShowProgressBar(bool showProgressBar) {
   this->m_showProgressBar = showProgressBar;
 }
 
-int GriddataImpl::epsg() const { return this->m_epsg; }
+int GriddataPrivate::epsg() const { return this->m_epsg; }
 
-void GriddataImpl::setEpsg(int epsg) { this->m_epsg = epsg; }
+void GriddataPrivate::setEpsg(int epsg) { this->m_epsg = epsg; }
 
-void GriddataImpl::readLookupTable(const std::string &lookupTableFile) {
+void GriddataPrivate::readLookupTable(const std::string &lookupTableFile) {
   std::fstream fid(lookupTableFile);
 
   std::string l;
@@ -153,21 +156,21 @@ void GriddataImpl::readLookupTable(const std::string &lookupTableFile) {
   return;
 }
 
-std::vector<int> GriddataImpl::interpolationFlags() const {
+std::vector<int> GriddataPrivate::interpolationFlags() const {
   return this->m_interpolationFlags;
 }
 
-void GriddataImpl::setInterpolationFlags(
+void GriddataPrivate::setInterpolationFlags(
     const std::vector<int> &interpolationFlags) {
   this->m_interpolationFlags = interpolationFlags;
 }
 
-void GriddataImpl::setInterpolationFlags(int interpolationFlag) {
+void GriddataPrivate::setInterpolationFlags(int interpolationFlag) {
   std::fill(this->m_interpolationFlags.begin(),
             this->m_interpolationFlags.end(), interpolationFlag);
 }
 
-void GriddataImpl::setInterpolationFlag(size_t index, int flag) {
+void GriddataPrivate::setInterpolationFlag(size_t index, int flag) {
   if (index < this->m_interpolationFlags.size()) {
     this->m_interpolationFlags[index] =
         static_cast<Interpolation::Method>(flag);
@@ -175,53 +178,54 @@ void GriddataImpl::setInterpolationFlag(size_t index, int flag) {
   return;
 }
 
-int GriddataImpl::interpolationFlag(size_t index) {
+int GriddataPrivate::interpolationFlag(size_t index) {
   return index < this->m_interpolationFlags.size()
              ? this->m_interpolationFlags[index]
              : Interpolation::Method::NoMethod;
 }
 
-std::vector<double> GriddataImpl::filterSizes() const {
+std::vector<double> GriddataPrivate::filterSizes() const {
   return this->m_filterSize;
 }
 
-void GriddataImpl::setFilterSizes(const std::vector<double> &filterSize) {
+void GriddataPrivate::setFilterSizes(const std::vector<double> &filterSize) {
   this->m_filterSize = filterSize;
 }
 
-void GriddataImpl::setFilterSizes(double &filterSize) {
+void GriddataPrivate::setFilterSizes(double &filterSize) {
   std::fill(this->m_filterSize.begin(), this->m_filterSize.end(), filterSize);
 }
 
-double GriddataImpl::filterSize(size_t index) {
+double GriddataPrivate::filterSize(size_t index) {
   return index < this->m_filterSize.size() ? this->m_filterSize[index] : 0.0;
 }
 
-void GriddataImpl::setFilterSize(size_t index, double filterSize) {
+void GriddataPrivate::setFilterSize(size_t index, double filterSize) {
   if (index < this->m_filterSize.size()) {
     this->m_filterSize[index] = filterSize;
   }
   return;
 }
 
-double GriddataImpl::defaultValue() const { return this->m_defaultValue; }
+double GriddataPrivate::defaultValue() const { return this->m_defaultValue; }
 
-void GriddataImpl::setDefaultValue(double defaultValue) {
+void GriddataPrivate::setDefaultValue(double defaultValue) {
   this->m_defaultValue = defaultValue;
 }
 
-bool GriddataImpl::rasterInMemory() const { return this->m_rasterInMemory; }
+bool GriddataPrivate::rasterInMemory() const { return this->m_rasterInMemory; }
 
-void GriddataImpl::setRasterInMemory(bool rasterInMemory) {
+void GriddataPrivate::setRasterInMemory(bool rasterInMemory) {
   this->m_rasterInMemory = rasterInMemory;
 }
 
 template <typename T>
-bool GriddataImpl::pixelDataInRadius(Point &p, double radius,
-                                     std::vector<double> &x,
-                                     std::vector<double> &y, std::vector<T> &z,
-                                     std::vector<bool> &valid) {
-  Pixel ul, lr;
+bool GriddataPrivate::pixelDataInRadius(Point &p, double radius,
+                                        std::vector<double> &x,
+                                        std::vector<double> &y,
+                                        std::vector<T> &z,
+                                        std::vector<bool> &valid) {
+  Adcirc::Raster::Pixel ul, lr;
   this->m_raster.get()->searchBoxAroundPoint(p.first, p.second, radius, ul, lr);
   bool r = false;
 
@@ -249,17 +253,17 @@ bool GriddataImpl::pixelDataInRadius(Point &p, double radius,
   return r;
 }
 
-bool GriddataImpl::calculateBilskieRadius(double meshSize,
-                                          double rasterCellSize,
-                                          double &radius) {
+bool GriddataPrivate::calculateBilskieRadius(double meshSize,
+                                             double rasterCellSize,
+                                             double &radius) {
   //...Note: Mesh size is passed in as a radius, so multiplied by 2 here
   radius = (0.25 * 2.0 * meshSize);
   return radius / rasterCellSize >= 1.0;
 }
 
-double GriddataImpl::calculatePoint(Point &p, double searchRadius,
-                                    double gsMultiplier,
-                                    Interpolation::Method method) {
+double GriddataPrivate::calculatePoint(Point &p, double searchRadius,
+                                       double gsMultiplier,
+                                       Interpolation::Method method) {
   switch (method) {
     case Average:
       return this->calculateAverage(p, searchRadius * gsMultiplier);
@@ -284,9 +288,9 @@ double GriddataImpl::calculatePoint(Point &p, double searchRadius,
   }
 }
 
-double GriddataImpl::calculatePointFromLookup(Point &p, double searchRadius,
-                                              double gsMultiplier,
-                                              Interpolation::Method method) {
+double GriddataPrivate::calculatePointFromLookup(Point &p, double searchRadius,
+                                                 double gsMultiplier,
+                                                 Interpolation::Method method) {
   switch (method) {
     case Average:
       return this->calculateAverageFromLookup(p, searchRadius * gsMultiplier);
@@ -313,7 +317,7 @@ double GriddataImpl::calculatePointFromLookup(Point &p, double searchRadius,
   }
 }
 
-double GriddataImpl::calculateAverage(Point &p, double w) {
+double GriddataPrivate::calculateAverage(Point &p, double w) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
   if (this->pixelDataInRadius(p, w, x, y, z, v)) {
@@ -331,7 +335,7 @@ double GriddataImpl::calculateAverage(Point &p, double w) {
   }
 }
 
-double GriddataImpl::calculateAverageFromLookup(Point &p, double w) {
+double GriddataPrivate::calculateAverageFromLookup(Point &p, double w) {
   std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
@@ -353,8 +357,8 @@ double GriddataImpl::calculateAverageFromLookup(Point &p, double w) {
   }
 }
 
-double GriddataImpl::calculateBilskieAveraging(Point &p, double w,
-                                               double gsMultiplier) {
+double GriddataPrivate::calculateBilskieAveraging(Point &p, double w,
+                                                  double gsMultiplier) {
   double r;
   if (this->calculateBilskieRadius(w, this->m_raster.get()->dx(), r)) {
     return this->calculateAverage(p, r * gsMultiplier);
@@ -363,8 +367,8 @@ double GriddataImpl::calculateBilskieAveraging(Point &p, double w,
   }
 }
 
-double GriddataImpl::calculateBilskieAveragingFromLookup(Point &p, double w,
-                                                         double gsMultiplier) {
+double GriddataPrivate::calculateBilskieAveragingFromLookup(
+    Point &p, double w, double gsMultiplier) {
   double r;
   if (this->calculateBilskieRadius(w, this->m_raster.get()->dx(), r)) {
     return this->calculateAverageFromLookup(p, r * gsMultiplier);
@@ -373,7 +377,7 @@ double GriddataImpl::calculateBilskieAveragingFromLookup(Point &p, double w,
   }
 }
 
-double GriddataImpl::calculateInverseDistanceWeighted(Point &p, double w) {
+double GriddataPrivate::calculateInverseDistanceWeighted(Point &p, double w) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
   if (this->pixelDataInRadius(p, w, x, y, z, v)) {
@@ -393,8 +397,8 @@ double GriddataImpl::calculateInverseDistanceWeighted(Point &p, double w) {
   return this->defaultValue();
 }
 
-double GriddataImpl::calculateInverseDistanceWeightedNPoints(Point &p,
-                                                             double n) {
+double GriddataPrivate::calculateInverseDistanceWeightedNPoints(Point &p,
+                                                                double n) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
   int maxPoints = static_cast<size_t>(n);
@@ -423,7 +427,7 @@ bool sortPointsByIncreasingDistance(Point &a, Point &b) {
   return a.first < b.first;
 }
 
-double GriddataImpl::calculateAverageNearestN(Point &p, double n) {
+double GriddataPrivate::calculateAverageNearestN(Point &p, double n) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
   size_t maxPoints = static_cast<size_t>(n);
@@ -453,7 +457,7 @@ double GriddataImpl::calculateAverageNearestN(Point &p, double n) {
   return this->defaultValue();
 }
 
-double GriddataImpl::calculateAverageNearestNFromLookup(Point &p, double n) {
+double GriddataPrivate::calculateAverageNearestNFromLookup(Point &p, double n) {
   std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
@@ -487,8 +491,8 @@ double GriddataImpl::calculateAverageNearestNFromLookup(Point &p, double n) {
   return this->defaultValue();
 }
 
-double GriddataImpl::calculateInverseDistanceWeightedFromLookup(Point &p,
-                                                                double w) {
+double GriddataPrivate::calculateInverseDistanceWeightedFromLookup(Point &p,
+                                                                   double w) {
   std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
@@ -512,7 +516,7 @@ double GriddataImpl::calculateInverseDistanceWeightedFromLookup(Point &p,
   return this->defaultValue();
 }
 
-double GriddataImpl::calculateExpansionLevelForPoints(size_t n) {
+double GriddataPrivate::calculateExpansionLevelForPoints(size_t n) {
   //...This tries to build out a box around a point at the
   // resolution of the raster. The hope is that by going 2
   // additional levels outside of what would be needed for the
@@ -522,22 +526,22 @@ double GriddataImpl::calculateExpansionLevelForPoints(size_t n) {
   return this->m_raster.get()->dx() * static_cast<double>(levels);
 }
 
-Interpolation::Threshold GriddataImpl::thresholdMethod() const {
-  return m_thresholdMethod;
+Adcirc::Interpolation::Threshold GriddataPrivate::thresholdMethod() const {
+  return this->m_thresholdMethod;
 }
 
-void GriddataImpl::setThresholdMethod(
+void GriddataPrivate::setThresholdMethod(
     const Interpolation::Threshold &thresholdMethod) {
   m_thresholdMethod = thresholdMethod;
 }
 
-double GriddataImpl::thresholdValue() const { return m_thresholdValue; }
+double GriddataPrivate::thresholdValue() const { return m_thresholdValue; }
 
-void GriddataImpl::setThresholdValue(double filterValue) {
+void GriddataPrivate::setThresholdValue(double filterValue) {
   m_thresholdValue = filterValue;
 }
 
-double GriddataImpl::calculateInverseDistanceWeightedNPointsFromLookup(
+double GriddataPrivate::calculateInverseDistanceWeightedNPointsFromLookup(
     Point &p, double n) {
   std::vector<double> x, y;
   std::vector<int> z;
@@ -567,8 +571,8 @@ double GriddataImpl::calculateInverseDistanceWeightedNPointsFromLookup(
   return this->defaultValue();
 }
 
-double GriddataImpl::calculateOutsideStandardDeviation(Point &p, double w,
-                                                       int n) {
+double GriddataPrivate::calculateOutsideStandardDeviation(Point &p, double w,
+                                                          int n) {
   std::vector<double> x, y, z, z2;
   std::vector<bool> v;
   z2.reserve(z.size());
@@ -596,9 +600,9 @@ double GriddataImpl::calculateOutsideStandardDeviation(Point &p, double w,
   return this->defaultValue();
 }
 
-double GriddataImpl::calculateOutsideStandardDeviationFromLookup(Point &p,
-                                                                 double w,
-                                                                 int n) {
+double GriddataPrivate::calculateOutsideStandardDeviationFromLookup(Point &p,
+                                                                    double w,
+                                                                    int n) {
   std::vector<double> x, y, z2;
   std::vector<int> z;
   std::vector<bool> v;
@@ -630,8 +634,8 @@ double GriddataImpl::calculateOutsideStandardDeviationFromLookup(Point &p,
   return this->defaultValue();
 }
 
-double GriddataImpl::calculateNearest(Point &p, double w) {
-  Pixel px = this->m_raster.get()->coordinateToPixel(p);
+double GriddataPrivate::calculateNearest(Point &p, double w) {
+  Adcirc::Raster::Pixel px = this->m_raster.get()->coordinateToPixel(p);
   Point pxloc = this->m_raster.get()->pixelToCoordinate(px);
   double d = Constants::distance(p, pxloc);
   if (d > w) {
@@ -643,8 +647,8 @@ double GriddataImpl::calculateNearest(Point &p, double w) {
   }
 }
 
-double GriddataImpl::calculateNearestFromLookup(Point &p, double w) {
-  Pixel px = this->m_raster.get()->coordinateToPixel(p);
+double GriddataPrivate::calculateNearestFromLookup(Point &p, double w) {
+  Adcirc::Raster::Pixel px = this->m_raster.get()->coordinateToPixel(p);
   Point pxloc = this->m_raster.get()->pixelToCoordinate(px);
   double d = Constants::distance(p, pxloc);
   if (d > w)
@@ -660,7 +664,7 @@ double GriddataImpl::calculateNearestFromLookup(Point &p, double w) {
   }
 }
 
-double GriddataImpl::calculateHighest(Point &p, double w) {
+double GriddataPrivate::calculateHighest(Point &p, double w) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
   if (this->pixelDataInRadius(p, w, x, y, z, v)) {
@@ -678,7 +682,7 @@ double GriddataImpl::calculateHighest(Point &p, double w) {
   }
 }
 
-double GriddataImpl::calculateHighestFromLookup(Point &p, double w) {
+double GriddataPrivate::calculateHighestFromLookup(Point &p, double w) {
   std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
@@ -699,8 +703,9 @@ double GriddataImpl::calculateHighestFromLookup(Point &p, double w) {
   return this->defaultValue();
 }
 
-bool GriddataImpl::computeWindDirectionAndWeight(Point &p, double x, double y,
-                                                 double &w, int &dir) {
+bool GriddataPrivate::computeWindDirectionAndWeight(Point &p, double x,
+                                                    double y, double &w,
+                                                    int &dir) {
   double dx = (x - p.first) * 0.001;
   double dy = (y - p.second) * 0.001;
   double d = dx * dx + dy * dy;
@@ -725,7 +730,7 @@ bool GriddataImpl::computeWindDirectionAndWeight(Point &p, double x, double y,
   return false;
 }
 
-void GriddataImpl::computeWeightedDirectionalWindValues(
+void GriddataPrivate::computeWeightedDirectionalWindValues(
     std::vector<double> &weight, std::vector<double> &wind, double nearWeight) {
   for (size_t i = 0; i < 12; ++i) {
     double w = weight[i] + nearWeight;
@@ -738,7 +743,8 @@ void GriddataImpl::computeWeightedDirectionalWindValues(
   return;
 }
 
-std::vector<double> GriddataImpl::calculateDirectionalWindFromRaster(Point &p) {
+std::vector<double> GriddataPrivate::calculateDirectionalWindFromRaster(
+    Point &p) {
   double nearWeight = 0.0;
   std::vector<double> x, y, z, wind, weight;
   std::vector<bool> v;
@@ -768,7 +774,8 @@ std::vector<double> GriddataImpl::calculateDirectionalWindFromRaster(Point &p) {
   return wind;
 }
 
-std::vector<double> GriddataImpl::calculateDirectionalWindFromLookup(Point &p) {
+std::vector<double> GriddataPrivate::calculateDirectionalWindFromLookup(
+    Point &p) {
   double nearWeight = 0.0;
   std::vector<double> x, y, wind, weight;
   std::vector<int> z;
@@ -802,28 +809,28 @@ std::vector<double> GriddataImpl::calculateDirectionalWindFromLookup(Point &p) {
   return wind;
 }
 
-void GriddataImpl::assignInterpolationFunctionPointer(bool useLookupTable) {
+void GriddataPrivate::assignInterpolationFunctionPointer(bool useLookupTable) {
   if (useLookupTable) {
-    this->m_calculatePointPtr = &GriddataImpl::calculatePointFromLookup;
+    this->m_calculatePointPtr = &GriddataPrivate::calculatePointFromLookup;
   } else {
-    this->m_calculatePointPtr = &GriddataImpl::calculatePoint;
+    this->m_calculatePointPtr = &GriddataPrivate::calculatePoint;
   }
 }
 
-double GriddataImpl::datumShift() const { return this->m_datumShift; }
+double GriddataPrivate::datumShift() const { return this->m_datumShift; }
 
-void GriddataImpl::setDatumShift(double datumShift) {
+void GriddataPrivate::setDatumShift(double datumShift) {
   this->m_datumShift = datumShift;
 }
 
-void GriddataImpl::checkMatchingCoorindateSystems() {
+void GriddataPrivate::checkMatchingCoorindateSystems() {
   if (this->m_epsg != this->m_mesh->projection()) {
     adcircmodules_throw_exception(
         "You must use the same coordinate systems for mesh and raster.");
   }
 }
 
-void GriddataImpl::checkRasterOpen() {
+void GriddataPrivate::checkRasterOpen() {
   if (!this->m_raster.get()->isOpen()) {
     bool success = this->m_raster.get()->open();
     if (!success) {
@@ -832,18 +839,19 @@ void GriddataImpl::checkRasterOpen() {
   }
 }
 
-void GriddataImpl::assignDirectionalWindReductionFunctionPointer(
+void GriddataPrivate::assignDirectionalWindReductionFunctionPointer(
     bool useLookupTable) {
   if (useLookupTable) {
     this->m_calculateDwindPtr =
-        &GriddataImpl::calculateDirectionalWindFromLookup;
+        &GriddataPrivate::calculateDirectionalWindFromLookup;
   } else {
     this->m_calculateDwindPtr =
-        &GriddataImpl::calculateDirectionalWindFromRaster;
+        &GriddataPrivate::calculateDirectionalWindFromRaster;
   }
 }
 
-std::vector<double> GriddataImpl::computeValuesFromRaster(bool useLookupTable) {
+std::vector<double> GriddataPrivate::computeValuesFromRaster(
+    bool useLookupTable) {
   this->checkRasterOpen();
   this->checkMatchingCoorindateSystems();
   this->assignInterpolationFunctionPointer(useLookupTable);
@@ -882,7 +890,7 @@ std::vector<double> GriddataImpl::computeValuesFromRaster(bool useLookupTable) {
 }
 
 template <typename T>
-void GriddataImpl::thresholdData(std::vector<T> &z, std::vector<bool> &v) {
+void GriddataPrivate::thresholdData(std::vector<T> &z, std::vector<bool> &v) {
   if (std::is_same<T, int>::value)
     adcircmodules_throw_exception(
         "Cannot use thresholding and integer rasters");
@@ -912,8 +920,8 @@ void GriddataImpl::thresholdData(std::vector<T> &z, std::vector<bool> &v) {
   return;
 }
 
-std::vector<std::vector<double>> GriddataImpl::computeDirectionalWindReduction(
-    bool useLookupTable) {
+std::vector<std::vector<double>>
+GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
   boost::progress_display *progress = nullptr;
   this->checkRasterOpen();
   this->checkMatchingCoorindateSystems();

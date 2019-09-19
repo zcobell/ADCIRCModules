@@ -503,7 +503,7 @@ std::vector<std::string> Boundary::toStringList() {
  * heights, and coefficients
  * @return hash formatted as string
  */
-std::string Boundary::hash(HashType h, bool force) {
+std::string Boundary::hash(Adcirc::Cryptography::HashType h, bool force) {
   if (this->m_hash == nullptr || force) this->generateHash(h);
   return std::string(this->m_hash);
 }
@@ -511,8 +511,8 @@ std::string Boundary::hash(HashType h, bool force) {
 /**
  * @brief Generates the hash data for this boundary
  */
-void Boundary::generateHash(HashType h) {
-  Hash hash(h);
+void Boundary::generateHash(Adcirc::Cryptography::HashType h) {
+  Adcirc::Cryptography::Hash hash(h);
   for (size_t i = 0; i < this->m_boundaryLength; ++i) {
     hash.addData(boost::str(boost::format("%3.3i") % this->m_boundaryCode));
     hash.addData(this->m_node1[i]->positionHash());

@@ -22,7 +22,6 @@
 
 int main() {
   using namespace Adcirc::Geometry;
-  using namespace Interpolation;
   std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));
   mesh->read();
 

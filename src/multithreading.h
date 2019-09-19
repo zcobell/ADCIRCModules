@@ -19,6 +19,7 @@
 #ifndef ADCMOD_MULTITHREADING_H
 #define ADCMOD_MULTITHREADING_H
 #include "adcircmodules_global.h"
+namespace Adcirc {
 
 class Multithreading {
  public:
@@ -31,5 +32,6 @@ class Multithreading {
   static void ADCIRCMODULES_EXPORT setNumThreads(int numThreads);
   static void ADCIRCMODULES_EXPORT setMaximumThreads();
 };
+}  // namespace Adcirc
 
 #endif  // ADCMOD_MULTITHREADING_H

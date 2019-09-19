@@ -17,12 +17,12 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "harmonicsrecord.h"
-#include "harmonicsrecord_impl.h"
+#include "harmonicsrecord_private.h"
 
 namespace Adcirc {
 namespace Harmonics {
 
-HarmonicsRecord::HarmonicsRecord() : m_impl(new HarmonicsRecordImpl()) {}
+HarmonicsRecord::HarmonicsRecord() : m_impl(new Adcirc::Private::HarmonicsRecordPrivate()) {}
 
 HarmonicsRecord::~HarmonicsRecord() { delete this->m_impl; }
 

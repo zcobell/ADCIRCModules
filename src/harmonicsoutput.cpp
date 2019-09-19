@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "harmonicsoutput.h"
-#include "harmonicsoutput_impl.h"
+#include "harmonicsoutput_private.h"
 
 namespace Adcirc {
 namespace Harmonics {
@@ -28,7 +28,7 @@ namespace Harmonics {
  * does not
  */
 HarmonicsOutput::HarmonicsOutput(const std::string& filename)
-    : m_impl(new HarmonicsOutputImpl(filename)) {}
+    : m_impl(new Adcirc::Private::HarmonicsOutputPrivate(filename)) {}
 
 /**
  * @brief Read the harmonics file

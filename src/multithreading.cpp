@@ -23,6 +23,8 @@
 #include <omp.h>
 #endif
 
+using namespace Adcirc;
+
 void Multithreading::enable(int numThreads) {
   if (numThreads == 0) {
     Multithreading::setMaximumThreads();

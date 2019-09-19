@@ -17,14 +17,14 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "griddata.h"
-#include "griddata_impl.h"
+#include "griddata_private.h"
 
-using namespace Interpolation;
+using namespace Adcirc::Interpolation;
 
-Griddata::Griddata() : m_impl(new GriddataImpl) {}
+Griddata::Griddata() : m_impl(new Adcirc::Private::GriddataPrivate) {}
 
 Griddata::Griddata(Adcirc::Geometry::Mesh *mesh, const std::string rasterFile)
-    : m_impl(new GriddataImpl(mesh, rasterFile)) {}
+    : m_impl(new Adcirc::Private::GriddataPrivate(mesh, rasterFile)) {}
 
 /**
  * @brief Retrieves the filename of the raster currently being used for
@@ -304,7 +304,7 @@ void Griddata::setThresholdMethod(const Interpolation::Threshold &method) {
  * @brief Returns the thresholding method
  * @return method
  */
-Interpolation::Threshold Griddata::thresholdMethod() const {
+Adcirc::Interpolation::Threshold Griddata::thresholdMethod() const {
   return this->m_impl->thresholdMethod();
 }
 

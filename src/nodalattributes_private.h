@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_NODALATTRIBUTESIMPL_H
-#define ADCMOD_NODALATTRIBUTESIMPL_H
+#ifndef ADCMOD_NODALATTRIBUTESPRIVATE_H
+#define ADCMOD_NODALATTRIBUTESPRIVATE_H
 
 #include <string>
 #include <vector>
@@ -26,12 +26,15 @@
 #include "attributemetadata.h"
 #include "mesh.h"
 
-class NodalAttributesImpl {
- public:
-  NodalAttributesImpl();
+namespace Adcirc {
+namespace Private {
 
-  NodalAttributesImpl(const std::string &filename,
-                      Adcirc::Geometry::Mesh *mesh = nullptr);
+class NodalAttributesPrivate {
+ public:
+  NodalAttributesPrivate();
+
+  NodalAttributesPrivate(const std::string &filename,
+                         Adcirc::Geometry::Mesh *mesh = nullptr);
 
   void read();
 
@@ -102,5 +105,7 @@ class NodalAttributesImpl {
   /// Vector of objects for the nodal parameters
   std::vector<std::vector<Adcirc::ModelParameters::Attribute> > m_nodalData;
 };
+}  // namespace Private
+}  // namespace Adcirc
 
-#endif  // ADCMOD_NODALATTRIBUTESIMPL_H
+#endif  // ADCMOD_NODALATTRIBUTESPRIVATE_H

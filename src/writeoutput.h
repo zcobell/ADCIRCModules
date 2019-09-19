@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef WRITEOUTPUT_H
-#define WRITEOUTPUT_H
+#ifndef ADCMOD_WRITEOUTPUT_H
+#define ADCMOD_WRITEOUTPUT_H
 
 #include <fstream>
 #include "mesh.h"
@@ -87,4 +87,4 @@ class WriteOutput {
 }  // namespace Output
 }  // namespace Adcirc
 
-#endif  // WRITEOUTPUT_H
+#endif  // ADCMOD_WRITEOUTPUT_H

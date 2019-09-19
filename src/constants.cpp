@@ -26,10 +26,11 @@
  */
 double Constants::radiusEarth(double latitude) {
   double l = Constants::toRadians(latitude);
-  return sqrt((pow(Constants::equitoralRadius(), 4.0) * cos(l) * cos(l) +
-               pow(Constants::polarRadius(), 4.0) * sin(l) * sin(l)) /
-              (pow(Constants::equitoralRadius(), 2.0) * cos(l) * cos(l) +
-               pow(Constants::polarRadius(), 2.0) * sin(l) * sin(l)));
+  return std::sqrt(
+      (std::pow(Constants::equitoralRadius(), 4.0) * std::cos(l) * std::cos(l) +
+       std::pow(Constants::polarRadius(), 4.0) * std::sin(l) * std::sin(l)) /
+      (std::pow(Constants::equitoralRadius(), 2.0) * std::cos(l) * std::cos(l) +
+       std::pow(Constants::polarRadius(), 2.0) * std::sin(l) * std::sin(l)));
 }
 
 /**
@@ -102,8 +103,9 @@ double Constants::geodesic_distance(double x1, double y1, double x2,
   double lon2 = Constants::toRadians(x2);
   double r = Constants::radiusEarth((y1 + y2) / 2.0);
   return 2.0 * r *
-         asin(sqrt(pow(sin((lat2 - lat1) / 2.0), 2.0) +
-                   cos(lat1) * cos(lat2) * pow(sin((lon2 - lon1) / 2.0), 2.0)));
+         std::asin(std::sqrt(std::pow(std::sin((lat2 - lat1) / 2.0), 2.0) +
+                             std::cos(lat1) * std::cos(lat2) *
+                                 std::pow(std::sin((lon2 - lon1) / 2.0), 2.0)));
 }
 
 /**
@@ -117,7 +119,7 @@ double Constants::geodesic_distance(double x1, double y1, double x2,
  */
 double Constants::cartesian_distance(double x1, double y1, double x2,
                                      double y2) {
-  return sqrt(pow(x2 - x1, 2.0) + pow(y2 - y1, 2.0));
+  return std::sqrt(std::pow(x2 - x1, 2.0) + std::pow(y2 - y1, 2.0));
 }
 
 /**

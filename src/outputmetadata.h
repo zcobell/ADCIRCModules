@@ -1,5 +1,5 @@
-#ifndef OUTPUTMETADATA_H
-#define OUTPUTMETADATA_H
+#ifndef ADCMOD_OUTPUTMETADATA_H
+#define ADCMOD_OUTPUTMETADATA_H
 
 #include <string>
 #include <vector>
@@ -81,4 +81,4 @@ class OutputMetadata {
 };
 }  // namespace Output
 }  // namespace Adcirc
-#endif  // OUTPUTMETADATA_H
+#endif  // ADCMOD_OUTPUTMETADATA_H

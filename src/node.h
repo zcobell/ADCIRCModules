@@ -65,11 +65,15 @@ class Node {
 
   Point ADCIRCMODULES_EXPORT toPoint();
 
-  std::string ADCIRCMODULES_EXPORT hash(HashType h = AdcircDefaultHash,
-                                        bool force = false);
+  std::string ADCIRCMODULES_EXPORT
+  hash(Adcirc::Cryptography::HashType h =
+           Adcirc::Cryptography::AdcircDefaultHash,
+       bool force = false);
 
-  std::string ADCIRCMODULES_EXPORT positionHash(HashType h = AdcircDefaultHash,
-                                                bool force = false);
+  std::string ADCIRCMODULES_EXPORT
+  positionHash(Adcirc::Cryptography::HashType h =
+                   Adcirc::Cryptography::AdcircDefaultHash,
+               bool force = false);
 
  private:
   size_t m_id;           /// Integer name of a mesh node
@@ -79,8 +83,10 @@ class Node {
   char* m_hash;          /// hash identifier for the node
   char* m_positionHash;  /// has of only node's position
 
-  void generateHash(HashType h = AdcircDefaultHash);
-  void generatePositionHash(HashType h = AdcircDefaultHash);
+  void generateHash(Adcirc::Cryptography::HashType h =
+                        Adcirc::Cryptography::AdcircDefaultHash);
+  void generatePositionHash(Adcirc::Cryptography::HashType h =
+                                Adcirc::Cryptography::AdcircDefaultHash);
 };
 }  // namespace Geometry
 }  // namespace Adcirc

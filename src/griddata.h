@@ -25,7 +25,12 @@
 #include <vector>
 #include "interpolationmethods.h"
 
-class GriddataImpl;
+namespace Adcirc {
+
+namespace Private {
+// Forward declaration of pimpl class
+class GriddataPrivate;
+}  // namespace Private
 
 namespace Interpolation {
 
@@ -112,7 +117,8 @@ class Griddata {
   void ADCIRCMODULES_EXPORT setThresholdValue(const double &value);
 
  private:
-  std::unique_ptr<GriddataImpl> m_impl;
+  std::unique_ptr<Adcirc::Private::GriddataPrivate> m_impl;
 };
 }  // namespace Interpolation
+}  // namespace Adcirc
 #endif  // ADCMOD_GRIDDATA_H

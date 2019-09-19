@@ -23,12 +23,16 @@
 #include <vector>
 #include "adcmap.h"
 #include "element.h"
-
-class MeshImpl;
-
 namespace Adcirc {
+
+namespace Private {
+// Forward declaration of Pimpl class
+class MeshPrivate;
+}  // namespace Private
+
 namespace Geometry {
 
+// Forward declaration of mesh class
 class Mesh;
 
 /**
@@ -44,8 +48,8 @@ class Mesh;
 class ElementTable {
  public:
   ElementTable();
-  ElementTable(MeshImpl *mesh);
-  ElementTable(std::unique_ptr<MeshImpl> *mesh);
+  ElementTable(Adcirc::Private::MeshPrivate *mesh);
+  ElementTable(std::unique_ptr<Adcirc::Private::MeshPrivate> *mesh);
   ElementTable(Adcirc::Geometry::Mesh *mesh);
 
   std::vector<Adcirc::Geometry::Element *> elementList(
@@ -61,14 +65,14 @@ class ElementTable {
 
   bool initialized();
 
-  MeshImpl *mesh() const;
-  void setMesh(MeshImpl *mesh);
+  Adcirc::Private::MeshPrivate *mesh() const;
+  void setMesh(Adcirc::Private::MeshPrivate *mesh);
 
  private:
   adcmap<Adcirc::Geometry::Node *, std::vector<Adcirc::Geometry::Element *>>
       m_elementTable;
 
-  MeshImpl *m_mesh;
+  Adcirc::Private::MeshPrivate *m_mesh;
 
   bool m_initialized;
 };

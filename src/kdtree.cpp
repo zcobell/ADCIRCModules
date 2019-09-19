@@ -17,12 +17,14 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "kdtree.h"
-#include "kdtree_impl.h"
+#include "kdtree_private.h"
+
+using namespace Adcirc;
 
 /**
  * @brief Default constructor for a new Kdtree object
  */
-Kdtree::Kdtree() : m_ptr(new Kdtree_impl()) {}
+Kdtree::Kdtree() : m_ptr(new Adcirc::Private::KdtreePrivate()) {}
 
 /**
  * @brief Get the number of nodes in the kdtree point cloud

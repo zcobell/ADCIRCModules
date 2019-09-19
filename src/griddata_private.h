@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_GRIDDATAIMPL_H
-#define ADCMOD_GRIDDATAIMPL_H
+#ifndef ADCMOD_GRIDDATAPRIVATE_H
+#define ADCMOD_GRIDDATAPRIVATE_H
 
 #include <cmath>
 #include <memory>
@@ -29,12 +29,15 @@
 #include "mesh.h"
 #include "rasterdata.h"
 
+namespace Adcirc {
+namespace Private {
+
 using Point = std::pair<double, double>;
 
-class GriddataImpl {
+class GriddataPrivate {
  public:
-  GriddataImpl();
-  GriddataImpl(Adcirc::Geometry::Mesh *mesh, std::string rasterFile);
+  GriddataPrivate();
+  GriddataPrivate(Adcirc::Geometry::Mesh *mesh, std::string rasterFile);
 
   std::string rasterFile() const;
   void setRasterFile(const std::string &rasterFile);
@@ -110,11 +113,11 @@ class GriddataImpl {
   double calculateInverseDistanceWeightedNPointsFromLookup(Point &p, double n);
   double calculateAverageNearestNFromLookup(Point &p, double n);
 
-  double (GriddataImpl::*m_calculatePointPtr)(Point &p, double w,
-                                              double gsMultiplier,
-                                              Interpolation::Method method);
+  double (GriddataPrivate::*m_calculatePointPtr)(Point &p, double w,
+                                                 double gsMultiplier,
+                                                 Interpolation::Method method);
 
-  std::vector<double> (GriddataImpl::*m_calculateDwindPtr)(Point &p);
+  std::vector<double> (GriddataPrivate::*m_calculateDwindPtr)(Point &p);
 
   bool calculateBilskieRadius(double meshSize, double rasterCellSize,
                               double &radius);
@@ -148,7 +151,7 @@ class GriddataImpl {
   std::vector<double> m_filterSize;
   double m_defaultValue;
   Adcirc::Geometry::Mesh *m_mesh;
-  std::unique_ptr<Rasterdata> m_raster;
+  std::unique_ptr<Adcirc::Raster::Rasterdata> m_raster;
   std::string m_rasterFile;
   std::vector<int> m_interpolationFlags;
   int m_epsg;
@@ -162,4 +165,7 @@ class GriddataImpl {
   bool m_rasterInMemory;
 };
 
-#endif  // ADCMOD_GRIDDATAIMPL_H
+}  // namespace Private
+}  // namespace Adcirc
+
+#endif  // ADCMOD_GRIDDATAPRIVATE_H

@@ -366,7 +366,7 @@ std::vector<double> Element::interpolationWeights(double x, double y) {
  * make them up and therefore will change when a node
  * moves its position.
  */
-std::string Element::hash(HashType h, bool force) {
+std::string Element::hash(Adcirc::Cryptography::HashType h, bool force) {
   if (this->m_hash == nullptr || force) this->generateHash(h);
   return std::string(this->m_hash);
 }
@@ -374,8 +374,8 @@ std::string Element::hash(HashType h, bool force) {
 /**
  * @brief Generates the hash for this element
  */
-void Element::generateHash(HashType h) {
-  Hash hash(h);
+void Element::generateHash(Adcirc::Cryptography::HashType h) {
+  Adcirc::Cryptography::Hash hash(h);
   for (auto &n : this->m_nodes) {
     hash.addData(n->positionHash());
   }

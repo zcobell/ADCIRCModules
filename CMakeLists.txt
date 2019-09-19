@@ -339,7 +339,7 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/node.cpp
                 ${CMAKE_SOURCE_DIR}/src/element.cpp
                 ${CMAKE_SOURCE_DIR}/src/hash.cpp
-                ${CMAKE_SOURCE_DIR}/src/hash_impl.cpp
+                ${CMAKE_SOURCE_DIR}/src/hash_private.cpp
                 ${CMAKE_SOURCE_DIR}/src/boundary.cpp
                 ${CMAKE_SOURCE_DIR}/src/fileio.cpp
                 ${CMAKE_SOURCE_DIR}/src/stringconversion.cpp
@@ -356,16 +356,16 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/meshchecker.cpp 
                 ${CMAKE_SOURCE_DIR}/src/multithreading.cpp 
                 ${CMAKE_SOURCE_DIR}/src/constants.cpp
-                ${CMAKE_SOURCE_DIR}/src/mesh_impl.cpp 
+                ${CMAKE_SOURCE_DIR}/src/mesh_private.cpp 
                 ${CMAKE_SOURCE_DIR}/src/kdtree.cpp
-                ${CMAKE_SOURCE_DIR}/src/kdtree_impl.cpp
-                ${CMAKE_SOURCE_DIR}/src/harmonicsoutput_impl.cpp 
-                ${CMAKE_SOURCE_DIR}/src/harmonicsrecord_impl.cpp 
-                ${CMAKE_SOURCE_DIR}/src/nodalattributes_impl.cpp )
+                ${CMAKE_SOURCE_DIR}/src/kdtree_private.cpp
+                ${CMAKE_SOURCE_DIR}/src/harmonicsoutput_private.cpp 
+                ${CMAKE_SOURCE_DIR}/src/harmonicsrecord_private.cpp 
+                ${CMAKE_SOURCE_DIR}/src/nodalattributes_private.cpp )
 
 IF( GDAL_FOUND )
     SET( ADCIRCMODULES_SOURCES ${ADCIRCMODULES_SOURCES} ${CMAKE_SOURCE_DIR}/src/griddata.cpp 
-                                                        ${CMAKE_SOURCE_DIR}/src/griddata_impl.cpp
+                                                        ${CMAKE_SOURCE_DIR}/src/griddata_private.cpp
                                                         ${CMAKE_SOURCE_DIR}/src/pixel.cpp
                                                         ${CMAKE_SOURCE_DIR}/src/rasterdata.cpp )
 ENDIF( GDAL_FOUND )

@@ -8,9 +8,13 @@
 #include "attributemetadata.h"
 #include "mesh.h"
 
-class NodalAttributesImpl;
-
 namespace Adcirc {
+
+namespace Private {
+// Forward declaration for pimpl class
+class NodalAttributesPrivate;
+}  // namespace Private
+
 namespace ModelParameters {
 
 /**
@@ -70,7 +74,7 @@ class NodalAttributes {
                std::vector<Adcirc::ModelParameters::Attribute> &data);
 
  private:
-  std::unique_ptr<NodalAttributesImpl> m_impl;
+  std::unique_ptr<Adcirc::Private::NodalAttributesPrivate> m_impl;
 };
 }  // namespace ModelParameters
 }  // namespace Adcirc

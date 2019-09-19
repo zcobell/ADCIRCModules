@@ -22,6 +22,9 @@
 #include <cstddef>
 #include "adcircmodules_global.h"
 
+namespace Adcirc {
+namespace Raster {
+
 /**
  * @class Pixel
  * @author Zachary Cobell
@@ -47,5 +50,7 @@ class Pixel {
   size_t m_i;
   size_t m_j;
 };
+}  // namespace Raster
+}  // namespace Adcirc
 
 #endif  // ADCMOD_PIXEL_H

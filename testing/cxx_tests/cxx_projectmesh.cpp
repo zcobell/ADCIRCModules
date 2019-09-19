@@ -23,7 +23,6 @@
 
 int main() {
   using namespace Adcirc::Geometry;
-  using namespace Interpolation;
 
   Ezproj p;
   std::cout << "PROJ Version: " << p.projVersion() << std::endl;

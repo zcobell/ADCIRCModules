@@ -17,15 +17,16 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "mesh.h"
-#include "mesh_impl.h"
+#include "mesh_private.h"
 
 using namespace Adcirc::Geometry;
 
 using Point = std::pair<double, double>;
 
-Mesh::Mesh() : m_impl(new MeshImpl) {}
+Mesh::Mesh() : m_impl(new Adcirc::Private::MeshPrivate) {}
 
-Mesh::Mesh(const std::string &filename) : m_impl(new MeshImpl(filename)) {}
+Mesh::Mesh(const std::string &filename)
+    : m_impl(new Adcirc::Private::MeshPrivate(filename)) {}
 
 /**
  * @brief Returns a vector of the x-coordinates
@@ -288,10 +289,11 @@ void Mesh::toElementShapefile(const std::string &outputFile) {
 }
 
 /**
- * @brief Writes the boundary conditions of the mesh to ESRI shapefile format as points
+ * @brief Writes the boundary conditions of the mesh to ESRI shapefile format as
+ * points
  * @param outputFile output file with .shp extension
  */
-void Mesh::toBoundaryShapefile(const std::string &outputFile){
+void Mesh::toBoundaryShapefile(const std::string &outputFile) {
   this->m_impl->toBoundaryShapefile(outputFile);
 }
 
@@ -578,7 +580,7 @@ void Mesh::deleteOpenBoundary(size_t index) {
  * @brief Returns a refrence to the nodal search kd-tree
  * @return kd-tree object with mesh nodes as serch locations
  */
-Kdtree *Mesh::nodalSearchTree() const {
+Adcirc::Kdtree *Mesh::nodalSearchTree() const {
   return this->m_impl->nodalSearchTree();
 }
 
@@ -586,7 +588,7 @@ Kdtree *Mesh::nodalSearchTree() const {
  * @brief Returns a reference to the elemental search kd-tree
  * @return kd-tree object with element centers as search locations
  */
-Kdtree *Mesh::elementalSearchTree() const {
+Adcirc::Kdtree *Mesh::elementalSearchTree() const {
   return this->m_impl->elementalSearchTree();
 }
 
@@ -675,12 +677,14 @@ std::string Mesh::hash(bool force) { return this->m_impl->hash(force); }
  * @brief Gets the hash type that will be computed
  * @return hash type
  */
-HashType Mesh::hashType() const { return this->m_impl->hashType(); }
+Adcirc::Cryptography::HashType Mesh::hashType() const {
+  return this->m_impl->hashType();
+}
 
 /**
  * @brief Sets the hash type to be used
  * @param hashType hash type to use
  */
-void Mesh::setHashType(const HashType &hashType) {
+void Mesh::setHashType(const Adcirc::Cryptography::HashType &hashType) {
   this->m_impl->setHashType(hashType);
 }
