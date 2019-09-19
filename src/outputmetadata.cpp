@@ -12,13 +12,14 @@ OutputMetadata::OutputMetadata(const std::string& name,
                                const std::string& standardName,
                                const std::string& units,
                                const std::string& convention, bool isMaximum)
-    : m_isMax(isMaximum), m_isVector(false), m_dimensions(1) {
-  this->m_variable = {name};
-  this->m_longName = {longName};
-  this->m_standardName = {standardName};
-  this->m_units = {units};
-  this->m_convention = {convention};
-}
+    : m_isMax(isMaximum),
+      m_isVector(false),
+      m_dimensions(1),
+      m_variable({name}),
+      m_longName({longName}),
+      m_standardName({standardName}),
+      m_units({units}),
+      m_convention({convention}) {}
 
 OutputMetadata::OutputMetadata(
     const std::string& name1, const std::string& longName1,
@@ -27,13 +28,14 @@ OutputMetadata::OutputMetadata(
     const std::string& longName2, const std::string& standardName2,
     const std::string& units2, const std::string& convention2, bool isMaximum,
     bool isVector)
-    : m_isMax(isMaximum), m_isVector(isVector), m_dimensions(2) {
-  this->m_variable = {name1, name2};
-  this->m_longName = {longName1, longName2};
-  this->m_standardName = {standardName1, standardName2};
-  this->m_units = {units1, units2};
-  this->m_convention = {convention1, convention2};
-}
+    : m_isMax(isMaximum),
+      m_isVector(isVector),
+      m_dimensions(2),
+      m_variable({name1, name2}),
+      m_longName({longName1, longName2}),
+      m_standardName({standardName1, standardName2}),
+      m_units({units1, units2}),
+      m_convention({convention1, convention2}) {}
 
 OutputMetadata::OutputMetadata(
     const std::string& name1, const std::string& longName1,
@@ -44,13 +46,14 @@ OutputMetadata::OutputMetadata(
     const std::string& name3, const std::string& longName3,
     const std::string& standardName3, const std::string& units3,
     const std::string& convention3, bool isMaximum, bool isVector)
-    : m_isMax(isMaximum), m_isVector(isVector), m_dimensions(3) {
-  this->m_variable = {name1, name2, name3};
-  this->m_longName = {longName1, longName2, longName3};
-  this->m_standardName = {standardName1, standardName2, standardName3};
-  this->m_units = {units1, units2, units3};
-  this->m_convention = {convention1, convention2, convention3};
-}
+    : m_isMax(isMaximum),
+      m_isVector(isVector),
+      m_dimensions(3),
+      m_variable({name1, name2, name3}),
+      m_longName({longName1, longName2, longName3}),
+      m_standardName({standardName1, standardName2, standardName3}),
+      m_units({units1, units2, units3}),
+      m_convention({convention1, convention2, convention3}) {}
 
 bool OutputMetadata::contains(const std::string& name) {
   for (auto& v : this->m_variable) {

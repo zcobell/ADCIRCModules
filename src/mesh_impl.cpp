@@ -428,6 +428,7 @@ void MeshImpl::readDflowMesh() {
     delete[] zcoor;
     delete[] elem;
     adcircmodules_throw_exception("Error reading arrays from netcdf file.");
+    return;
   }
 
   this->m_nodes.resize(nn);
@@ -452,6 +453,7 @@ void MeshImpl::readDflowMesh() {
     if (nnodeelem != 3 && nnodeelem != 4) {
       delete[] elem;
       adcircmodules_throw_exception("Invalid element type detected");
+      return;
     }
 
     this->m_elements.resize(ne);
@@ -1801,117 +1803,130 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
   int ncid;
   int dimid_nnode, dimid_nlink, dimid_nelem, dimid_maxnode, dimid_nlinkpts;
   int ierr = nc_create(filename.c_str(), NC_CLASSIC_MODEL, &ncid);
-  ierr = nc_def_dim(ncid, "nNetNode", this->numNodes(), &dimid_nnode);
-  ierr = nc_def_dim(ncid, "nNetLink", nlinks, &dimid_nlink);
-  ierr = nc_def_dim(ncid, "nNetElem", this->numElements(), &dimid_nelem);
-  ierr = nc_def_dim(ncid, "nNetElemMaxNode", maxelemnode, &dimid_maxnode);
-  ierr = nc_def_dim(ncid, "nNetLinkPts", 2, &dimid_nlinkpts);
+  if (ierr != NC_NOERR)
+    adcircmodules_throw_exception("Error creating D-Flow netCDF format file");
+
+  ierr += nc_def_dim(ncid, "nNetNode", this->numNodes(), &dimid_nnode);
+  ierr += nc_def_dim(ncid, "nNetLink", nlinks, &dimid_nlink);
+  ierr += nc_def_dim(ncid, "nNetElem", this->numElements(), &dimid_nelem);
+  ierr += nc_def_dim(ncid, "nNetElemMaxNode", maxelemnode, &dimid_maxnode);
+  ierr += nc_def_dim(ncid, "nNetLinkPts", 2, &dimid_nlinkpts);
+  if (ierr != NC_NOERR)
+    adcircmodules_throw_exception(
+        "Error creating dimensions for D-Flow netCDF format file");
 
   int *dim1d = new int[1];
   int *dim2d = new int[2];
 
   int varid_mesh2d, varid_netnodex, varid_netnodey, varid_netnodez;
-  ierr = nc_def_var(ncid, "Mesh2D", NC_INT, 0, nullptr, &varid_mesh2d);
+  ierr += nc_def_var(ncid, "Mesh2D", NC_INT, 0, nullptr, &varid_mesh2d);
   dim1d[0] = dimid_nnode;
-  ierr = nc_def_var(ncid, "NetNode_x", NC_DOUBLE, 1, dim1d, &varid_netnodex);
-  ierr = nc_def_var(ncid, "NetNode_y", NC_DOUBLE, 1, dim1d, &varid_netnodey);
-  ierr = nc_def_var(ncid, "NetNode_z", NC_DOUBLE, 1, dim1d, &varid_netnodez);
+  ierr += nc_def_var(ncid, "NetNode_x", NC_DOUBLE, 1, dim1d, &varid_netnodex);
+  ierr += nc_def_var(ncid, "NetNode_y", NC_DOUBLE, 1, dim1d, &varid_netnodey);
+  ierr += nc_def_var(ncid, "NetNode_z", NC_DOUBLE, 1, dim1d, &varid_netnodez);
 
   dim1d[0] = dimid_nlink;
   dim2d[0] = dimid_nlink;
   dim2d[1] = dimid_nlinkpts;
 
   int varid_netlinktype, varid_netlink, varid_crs;
-  ierr = nc_def_var(ncid, "NetLinkType", NC_INT, 1, dim1d, &varid_netlinktype);
-  ierr = nc_def_var(ncid, "NetLink", NC_INT, 2, dim2d, &varid_netlink);
-  ierr = nc_def_var(ncid, "crs", NC_INT, 0, nullptr, &varid_crs);
+  ierr += nc_def_var(ncid, "NetLinkType", NC_INT, 1, dim1d, &varid_netlinktype);
+  ierr += nc_def_var(ncid, "NetLink", NC_INT, 2, dim2d, &varid_netlink);
+  ierr += nc_def_var(ncid, "crs", NC_INT, 0, nullptr, &varid_crs);
 
   dim2d[0] = dimid_nelem;
   dim2d[1] = dimid_maxnode;
 
   int varid_netelemnode;
-  ierr = nc_def_var(ncid, "NetElemNode", NC_INT, 2, dim2d, &varid_netelemnode);
+  ierr += nc_def_var(ncid, "NetElemNode", NC_INT, 2, dim2d, &varid_netelemnode);
+  std::cout << nc_strerror(ierr);
+  if (ierr != NC_NOERR)
+    adcircmodules_throw_exception(
+        "Error defining variables for D-Flow netCDF format file");
 
   //...Define attributes
   ierr = nc_put_att_text(ncid, varid_mesh2d, "cf_role", 13, "mesh_topology");
   dim1d[0] = 2;
-  ierr = nc_put_att_int(ncid, varid_mesh2d, "topology_dimension", NC_INT, 1,
-                        dim1d);
-  ierr = nc_put_att_text(ncid, varid_mesh2d, "node_coordinates", 19,
-                         "NetNode_x NetNode_y");
-  ierr = nc_put_att_text(ncid, varid_mesh2d, "node_dimension", 8, "nNetNode");
-  ierr = nc_put_att_text(ncid, varid_mesh2d, "face_node_connectivity", 11,
-                         "NetElemNode");
-  ierr = nc_put_att_text(ncid, varid_mesh2d, "face_dimension", 8, "nNetElem");
-  ierr = nc_put_att_text(ncid, varid_mesh2d, "edge_node_connectivity", 7,
-                         "NetLink");
+  ierr += nc_put_att_int(ncid, varid_mesh2d, "topology_dimension", NC_INT, 1,
+                         dim1d);
+  ierr += nc_put_att_text(ncid, varid_mesh2d, "node_coordinates", 19,
+                          "NetNode_x NetNode_y");
+  ierr += nc_put_att_text(ncid, varid_mesh2d, "node_dimension", 8, "nNetNode");
+  ierr += nc_put_att_text(ncid, varid_mesh2d, "face_node_connectivity", 11,
+                          "NetElemNode");
+  ierr += nc_put_att_text(ncid, varid_mesh2d, "face_dimension", 8, "nNetElem");
+  ierr += nc_put_att_text(ncid, varid_mesh2d, "edge_node_connectivity", 7,
+                          "NetLink");
   ierr = nc_put_att_text(ncid, varid_mesh2d, "edge_dimension", 8, "nNetLink");
 
   if (this->isLatLon()) {
-    ierr = nc_put_att_text(ncid, varid_netnodex, "axis", 5, "theta");
-    ierr = nc_put_att_text(ncid, varid_netnodex, "long_name", 19,
-                           "longitude of vertex");
-    ierr = nc_put_att_text(ncid, varid_netnodex, "units", 12, "degrees_east");
-    ierr =
+    ierr += nc_put_att_text(ncid, varid_netnodex, "axis", 5, "theta");
+    ierr += nc_put_att_text(ncid, varid_netnodex, "long_name", 19,
+                            "longitude of vertex");
+    ierr += nc_put_att_text(ncid, varid_netnodex, "units", 12, "degrees_east");
+    ierr +=
         nc_put_att_text(ncid, varid_netnodex, "standard_name", 9, "longitude");
 
-    ierr = nc_put_att_text(ncid, varid_netnodey, "axis", 3, "phi");
-    ierr = nc_put_att_text(ncid, varid_netnodey, "long_name", 18,
-                           "latitude of vertex");
-    ierr = nc_put_att_text(ncid, varid_netnodey, "units", 13, "degrees_north");
-    ierr =
+    ierr += nc_put_att_text(ncid, varid_netnodey, "axis", 3, "phi");
+    ierr += nc_put_att_text(ncid, varid_netnodey, "long_name", 18,
+                            "latitude of vertex");
+    ierr += nc_put_att_text(ncid, varid_netnodey, "units", 13, "degrees_north");
+    ierr +=
         nc_put_att_text(ncid, varid_netnodey, "standard_name", 8, "latitude");
     dim1d[0] = 1;
-    ierr = nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d);
+    ierr += nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d);
 
     dim1d[0] = this->m_epsg;
-    ierr = nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d);
+    ierr += nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d);
   } else {
-    ierr = nc_put_att_text(ncid, varid_netnodex, "axis", 1, "X");
-    ierr = nc_put_att_text(ncid, varid_netnodex, "long_name", 32,
-                           "x-coordinate in Cartesian system");
-    ierr = nc_put_att_text(ncid, varid_netnodex, "units", 5, "metre");
-    ierr = nc_put_att_text(ncid, varid_netnodex, "standard_name", 23,
-                           "projection_x_coordinate");
+    ierr += nc_put_att_text(ncid, varid_netnodex, "axis", 1, "X");
+    ierr += nc_put_att_text(ncid, varid_netnodex, "long_name", 32,
+                            "x-coordinate in Cartesian system");
+    ierr += nc_put_att_text(ncid, varid_netnodex, "units", 5, "metre");
+    ierr += nc_put_att_text(ncid, varid_netnodex, "standard_name", 23,
+                            "projection_x_coordinate");
 
-    ierr = nc_put_att_text(ncid, varid_netnodey, "axis", 1, "Y");
-    ierr = nc_put_att_text(ncid, varid_netnodey, "long_name", 32,
-                           "x-coordinate in Cartesian system");
-    ierr = nc_put_att_text(ncid, varid_netnodey, "units", 5, "metre");
-    ierr = nc_put_att_text(ncid, varid_netnodey, "standard_name", 23,
-                           "projection_y_coordinate");
+    ierr += nc_put_att_text(ncid, varid_netnodey, "axis", 1, "Y");
+    ierr += nc_put_att_text(ncid, varid_netnodey, "long_name", 32,
+                            "x-coordinate in Cartesian system");
+    ierr += nc_put_att_text(ncid, varid_netnodey, "units", 5, "metre");
+    ierr += nc_put_att_text(ncid, varid_netnodey, "standard_name", 23,
+                            "projection_y_coordinate");
 
     dim1d[0] = 0;
-    ierr = nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d);
+    ierr += nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d);
 
     dim1d[0] = this->m_epsg;
-    ierr = nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d);
+    ierr += nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d);
   }
 
-  ierr = nc_put_att_text(ncid, varid_netnodez, "axis", 1, "Z");
-  ierr = nc_put_att_text(ncid, varid_netnodez, "long_name", 32,
-                         "z-coordinate in Cartesian system");
-  ierr = nc_put_att_text(ncid, varid_netnodez, "units", 5, "metre");
-  ierr = nc_put_att_text(ncid, varid_netnodez, "standard_name", 23,
-                         "projection_z_coordinate");
-  ierr = nc_put_att_text(ncid, varid_netnodez, "mesh", 6, "Mesh2D");
-  ierr = nc_put_att_text(ncid, varid_netnodez, "location", 4, "node");
+  ierr += nc_put_att_text(ncid, varid_netnodez, "axis", 1, "Z");
+  ierr += nc_put_att_text(ncid, varid_netnodez, "long_name", 32,
+                          "z-coordinate in Cartesian system");
+  ierr += nc_put_att_text(ncid, varid_netnodez, "units", 5, "metre");
+  ierr += nc_put_att_text(ncid, varid_netnodez, "standard_name", 23,
+                          "projection_z_coordinate");
+  ierr += nc_put_att_text(ncid, varid_netnodez, "mesh", 6, "Mesh2D");
+  ierr += nc_put_att_text(ncid, varid_netnodez, "location", 4, "node");
 
   dim1d[0] = 1;
-  ierr = nc_put_att_int(ncid, varid_netlink, "start_index", NC_INT, 1, dim1d);
-  ierr =
+  ierr += nc_put_att_int(ncid, varid_netlink, "start_index", NC_INT, 1, dim1d);
+  ierr +=
       nc_put_att_int(ncid, varid_netelemnode, "start_index", NC_INT, 1, dim1d);
-  ierr = nc_put_att_text(ncid, NC_GLOBAL, "Conventions", 9, "UGRID-0.9");
+  ierr += nc_put_att_text(ncid, NC_GLOBAL, "Conventions", 9, "UGRID-0.9");
 
   ierr = nc_enddef(ncid);
+  if (ierr != NC_NOERR)
+    adcircmodules_throw_exception(
+        "Error writing variable attributes for D-Flow netCDF format file");
 
-  ierr = nc_put_var_double(ncid, varid_netnodex, xarray);
-  ierr = nc_put_var_double(ncid, varid_netnodey, yarray);
-  ierr = nc_put_var_double(ncid, varid_netnodez, zarray);
-  ierr = nc_put_var_int(ncid, varid_netlink, linkArray);
-  ierr = nc_put_var_int(ncid, varid_netlinktype, linkTypeArray);
-  ierr = nc_put_var_int(ncid, varid_netelemnode, netElemNodearray);
-  ierr = nc_close(ncid);
+  ierr += nc_put_var_double(ncid, varid_netnodex, xarray);
+  ierr += nc_put_var_double(ncid, varid_netnodey, yarray);
+  ierr += nc_put_var_double(ncid, varid_netnodez, zarray);
+  ierr += nc_put_var_int(ncid, varid_netlink, linkArray);
+  ierr += nc_put_var_int(ncid, varid_netlinktype, linkTypeArray);
+  ierr += nc_put_var_int(ncid, varid_netelemnode, netElemNodearray);
+  ierr += nc_close(ncid);
 
   delete[] xarray;
   delete[] yarray;
@@ -1921,6 +1936,9 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
   delete[] linkArray;
   delete[] linkTypeArray;
   delete[] netElemNodearray;
+
+  if (ierr != NC_NOERR)
+    adcircmodules_throw_exception("Error writing D-Flow netCDF format file");
 
   return;
 }

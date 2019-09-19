@@ -23,7 +23,7 @@ using namespace Interpolation;
 
 Griddata::Griddata() : m_impl(new GriddataImpl) {}
 
-Griddata::Griddata(Adcirc::Geometry::Mesh *mesh, std::string rasterFile)
+Griddata::Griddata(Adcirc::Geometry::Mesh *mesh, const std::string rasterFile)
     : m_impl(new GriddataImpl(mesh, rasterFile)) {}
 
 /**

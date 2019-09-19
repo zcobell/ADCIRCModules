@@ -101,7 +101,7 @@ class OutputRecord {
   bool isDefault(size_t index) const;
 
   Adcirc::Output::OutputMetadata* metadata();
-  void setMetadata(Adcirc::Output::OutputMetadata metadata);
+  void setMetadata(const Adcirc::Output::OutputMetadata& metadata);
 
  private:
   std::vector<double> m_u;

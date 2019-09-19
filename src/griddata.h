@@ -58,7 +58,7 @@ class Griddata {
  public:
   ADCIRCMODULES_EXPORT Griddata();
   ADCIRCMODULES_EXPORT Griddata(Adcirc::Geometry::Mesh *mesh,
-                                std::string rasterFile);
+                                const std::string rasterFile);
   ADCIRCMODULES_EXPORT ~Griddata();
 
   std::string ADCIRCMODULES_EXPORT rasterFile() const;

@@ -375,7 +375,7 @@ bool MeshChecker::checkMissingBoundaryConditions(Mesh *mesh,
   if (n > 0) {
     printf(
         "[Mesh Error] MeshChecker::checkMissingBoundaryConditions --> Found "
-        "%zd boundary nodes without boundary condition.\n",
+        "%zu boundary nodes without boundary condition.\n",
         n);
   } else {
     if (writeLog) std::remove(logFile.c_str());

@@ -50,6 +50,7 @@ ReadOutput::ReadOutput(const std::string& filename)
       m_units("n/a"),
       m_description("n/a"),
       m_name("n/a"),
+      m_varid_time(0),
       m_metadata(OutputMetadata()) {}
 
 ReadOutput::~ReadOutput() { this->clear(); }

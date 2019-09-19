@@ -41,50 +41,37 @@ template int Rasterdata::pixelValues<double>(size_t ibegin, size_t jbegin,
 template int Rasterdata::nodata<int>() const;
 template double Rasterdata::nodata<double>() const;
 
+// Macro to initialize constructors
+#define RASTERDATACLASSINIT                                                   \
+  m_file(nullptr), m_band(nullptr), m_isOpen(false), m_isRead(false),         \
+      m_epsg(4326), m_nx(-std::numeric_limits<size_t>::max()),                \
+      m_ny(-std::numeric_limits<size_t>::max()),                              \
+      m_xmin(std::numeric_limits<double>::max()),                             \
+      m_xmax(-std::numeric_limits<double>::max()),                            \
+      m_ymin(std::numeric_limits<double>::max()),                             \
+      m_ymax(-std::numeric_limits<double>::max()), m_dx(0.0), m_dy(0.0),      \
+      m_nodata(-std::numeric_limits<double>::max()),                          \
+      m_nodataint(-std::numeric_limits<int>::max()), m_readType(GDT_Unknown), \
+      m_rasterType(RasterTypes::Unknown)
+
 /**
  * @brief Default constructor without a filename
  */
-Rasterdata::Rasterdata() : m_filename(std::string()) {
-  this->init();
-  return;
-}
+Rasterdata::Rasterdata() : m_filename(std::string()), RASTERDATACLASSINIT {}
 
 /**
  * @brief Default constructor that takes a filename
  * @param filename name of raster file
  */
-Rasterdata::Rasterdata(const std::string &filename) : m_filename(filename) {
-  this->init();
+Rasterdata::Rasterdata(const std::string &filename)
+    : m_filename(filename), RASTERDATACLASSINIT {
   return;
 }
-
-Rasterdata::~Rasterdata() { this->close(); }
 
 /**
- * @brief Initialization routine.
- *
- * Sets all internals to default values, many of which are just extreme values
- * that can be easily detected
+ * @brief Destructor
  */
-void Rasterdata::init() {
-  this->m_file = nullptr;
-  this->m_band = nullptr;
-  this->m_isOpen = false;
-  this->m_isRead = false;
-  this->m_epsg = 4326;
-  this->m_nx = -std::numeric_limits<size_t>::max();
-  this->m_ny = -std::numeric_limits<size_t>::max();
-  this->m_xmin = std::numeric_limits<double>::max();
-  this->m_xmax = -std::numeric_limits<double>::max();
-  this->m_ymin = std::numeric_limits<double>::max();
-  this->m_ymax = -std::numeric_limits<double>::max();
-  this->m_dx = 0.0;
-  this->m_dy = 0.0;
-  this->m_nodata = -std::numeric_limits<double>::max();
-  this->m_nodataint = -std::numeric_limits<int>::max();
-  this->m_readType = GDT_Unknown;
-  return;
-}
+Rasterdata::~Rasterdata() { this->close(); }
 
 /**
  * @brief Opens a raster using the GDAL library
@@ -374,12 +361,12 @@ void Rasterdata::readDoubleRasterToMemory() {
   size_t n = this->nx() * this->ny();
   double *buf = (double *)CPLMalloc(sizeof(double) * n);
 
-#pragma omp critical 
-{
-  CPLErr e = this->m_band->RasterIO(
-      GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
-      static_cast<GDALDataType>(this->m_readType), 0, 0);
-}
+#pragma omp critical
+  {
+    CPLErr e = this->m_band->RasterIO(
+        GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
+        static_cast<GDALDataType>(this->m_readType), 0, 0);
+  }
 
   this->m_doubleOnDisk.resize(this->nx());
   for (size_t i = 0; i < this->m_doubleOnDisk.size(); ++i) {
@@ -406,11 +393,11 @@ void Rasterdata::readIntegerRasterToMemory() {
   int *buf = static_cast<int *>(CPLMalloc(sizeof(int) * n));
 
 #pragma omp critical
-{
-  CPLErr e = this->m_band->RasterIO(
-      GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
-      static_cast<GDALDataType>(this->m_readType), 0, 0);
-}
+  {
+    CPLErr e = this->m_band->RasterIO(
+        GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
+        static_cast<GDALDataType>(this->m_readType), 0, 0);
+  }
 
   this->m_intOnDisk.resize(this->nx());
   for (size_t i = 0; i < this->m_intOnDisk.size(); ++i) {

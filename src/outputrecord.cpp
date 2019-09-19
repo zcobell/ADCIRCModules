@@ -79,7 +79,6 @@ void OutputRecord::allocate() {
   }
 }
 
-
 long long OutputRecord::iteration() const { return this->m_iteration; }
 
 void OutputRecord::setIteration(long long iteration) {
@@ -534,6 +533,6 @@ Adcirc::Output::OutputMetadata* OutputRecord::metadata() {
   return &this->m_metadata;
 }
 
-void OutputRecord::setMetadata(Adcirc::Output::OutputMetadata metadata) {
+void OutputRecord::setMetadata(const Adcirc::Output::OutputMetadata& metadata) {
   this->m_metadata = metadata;
 }
