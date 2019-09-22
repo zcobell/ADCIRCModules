@@ -356,7 +356,7 @@ void HarmonicsOutputPrivate::writeNetcdfHeader(const int& ncid) {
   ierr = nc_enddef(ncid);
 
   for (size_t i = 0; i < this->numConstituents(); ++i) {
-    char* c = new char[11];
+    std::unique_ptr<char> c(new char[11]);
     double f[1], e[1], n[1];
     size_t start1[1], start2[2];
     size_t count2[2];
@@ -378,15 +378,13 @@ void HarmonicsOutputPrivate::writeNetcdfHeader(const int& ncid) {
     e[0] = ptr->equilibriumArg();
     n[0] = ptr->nodalFactor();
 
-    memset(c, ' ', 10);
-    memcpy(c, ptr->name().c_str(), ptr->name().size());
+    memset(c.get(), ' ', 10);
+    memcpy(c.get(), ptr->name().c_str(), ptr->name().size());
 
-    nc_put_vara_text(ncid, varid_constnames, start2, count2, c);
+    nc_put_vara_text(ncid, varid_constnames, start2, count2, c.get());
     nc_put_var1_double(ncid, varid_freq, start1, f);
     nc_put_var1_double(ncid, varid_eq, start1, e);
     nc_put_var1_double(ncid, varid_na, start1, n);
-
-    delete[] c;
   }
 
   return;
@@ -410,11 +408,10 @@ void HarmonicsOutputPrivate::writeNetcdfFormatElevation(const int& ncid) {
 
     for (size_t j = 0; j < 2; ++j) {
       std::vector<double> vec = ptr[j]->values();
-      double* u = new double[this->numNodes()];
-      std::copy(vec.begin(), vec.end(), u);
+      std::unique_ptr<double> u(new double[this->numNodes()]);
+      std::copy(vec.begin(), vec.end(), u.get());
       vec.clear();
-      nc_put_vara(ncid, varid[j], start, count, u);
-      delete[] u;
+      nc_put_vara(ncid, varid[j], start, count, u.get());
     }
   }
 }
@@ -441,11 +438,10 @@ void HarmonicsOutputPrivate::writeNetcdfFormatVelocity(const int& ncid) {
 
     for (size_t j = 0; j < 4; ++j) {
       std::vector<double> vec = ptr[j]->values();
-      double* u = new double[this->numNodes()];
-      std::copy(vec.begin(), vec.end(), u);
+      std::unique_ptr<double> u(new double[this->numNodes()]);
+      std::copy(vec.begin(), vec.end(), u.get());
       vec.clear();
-      nc_put_vara(ncid, varid[j], start, count, u);
-      delete[] u;
+      nc_put_vara(ncid, varid[j], start, count, u.get());
     }
   }
 }
@@ -714,8 +710,8 @@ void HarmonicsOutputPrivate::readNetcdfFormatHeader(int ncid,
     hasFrequency = true;
   }
 
-  char* constituents = new char[charlen + 1]();
-  std::fill(constituents, constituents + charlen + 1, 0);
+  std::unique_ptr<char> constituents(new char[charlen + 1]);
+  std::fill(constituents.get(), constituents.get() + charlen + 1, 0);
   for (size_t i = 0; i < this->numConstituents(); ++i) {
     size_t start[2];
     size_t count[2];
@@ -723,51 +719,40 @@ void HarmonicsOutputPrivate::readNetcdfFormatHeader(int ncid,
     start[1] = 0;
     count[0] = 1;
     count[1] = charlen;
-    ierr = nc_get_vara_text(ncid, varid_connames, start, count, constituents);
-    this->m_consituentNames.push_back(constituents);
+    ierr = nc_get_vara_text(ncid, varid_connames, start, count,
+                            constituents.get());
+    this->m_consituentNames.push_back(constituents.get());
     this->m_consituentNames.back() =
         StringConversion::sanitizeString(this->m_consituentNames.back());
     if (ierr != NC_NOERR) {
       nc_close(ncid);
-      delete[] constituents;
       adcircmodules_throw_exception("Could not read constituent names");
     }
   }
 
-  delete[] constituents;
-
-  double* frequency = new double[this->numConstituents()];
-  double* nodeFactor = new double[this->numConstituents()];
-  double* equilibriumArg = new double[this->numConstituents()];
+  std::unique_ptr<double> frequency(new double[this->numConstituents()]);
+  std::unique_ptr<double> nodeFactor(new double[this->numConstituents()]);
+  std::unique_ptr<double> equilibriumArg(new double[this->numConstituents()]);
   if (hasFrequency) {
-    ierr = nc_get_var(ncid, varid_freq, frequency);
+    ierr = nc_get_var(ncid, varid_freq, frequency.get());
     if (ierr != NC_NOERR) {
       nc_close(ncid);
-      delete[] nodeFactor;
-      delete[] equilibriumArg;
-      delete[] frequency;
       adcircmodules_throw_exception("Could not read frequency");
     }
-    ierr = nc_get_var(ncid, varid_equ, equilibriumArg);
+    ierr = nc_get_var(ncid, varid_equ, equilibriumArg.get());
     if (ierr != NC_NOERR) {
-      delete[] nodeFactor;
-      delete[] equilibriumArg;
-      delete[] frequency;
       adcircmodules_throw_exception("Could not read equilibrium argument");
     }
-    ierr = nc_get_var(ncid, varid_freq, nodeFactor);
+    ierr = nc_get_var(ncid, varid_freq, nodeFactor.get());
     if (ierr != NC_NOERR) {
       nc_close(ncid);
-      delete[] nodeFactor;
-      delete[] equilibriumArg;
-      delete[] frequency;
       adcircmodules_throw_exception("Could not node factor");
     }
   } else {
     for (size_t i = 0; i < this->numConstituents(); ++i) {
-      nodeFactor[i] = std::numeric_limits<double>::min();
-      equilibriumArg[i] = std::numeric_limits<double>::min();
-      frequency[i] = std::numeric_limits<double>::min();
+      nodeFactor.get()[i] = std::numeric_limits<double>::min();
+      equilibriumArg.get()[i] = std::numeric_limits<double>::min();
+      frequency.get()[i] = std::numeric_limits<double>::min();
     }
   }
 
@@ -781,24 +766,24 @@ void HarmonicsOutputPrivate::readNetcdfFormatHeader(int ncid,
       this->m_reverseIndex[i] = this->m_consituentNames[i];
       this->u_amplitude(i)->resize(this->numNodes());
       this->u_amplitude(i)->setName(this->m_consituentNames[i]);
-      this->u_amplitude(i)->setFrequency(frequency[i]);
-      this->u_amplitude(i)->setEquilibriumArg(equilibriumArg[i]);
-      this->u_amplitude(i)->setNodalFactor(nodeFactor[i]);
+      this->u_amplitude(i)->setFrequency(frequency.get()[i]);
+      this->u_amplitude(i)->setEquilibriumArg(equilibriumArg.get()[i]);
+      this->u_amplitude(i)->setNodalFactor(nodeFactor.get()[i]);
       this->v_amplitude(i)->resize(this->numNodes());
       this->v_amplitude(i)->setName(this->m_consituentNames[i]);
-      this->v_amplitude(i)->setFrequency(frequency[i]);
-      this->v_amplitude(i)->setEquilibriumArg(equilibriumArg[i]);
-      this->v_amplitude(i)->setNodalFactor(nodeFactor[i]);
+      this->v_amplitude(i)->setFrequency(frequency.get()[i]);
+      this->v_amplitude(i)->setEquilibriumArg(equilibriumArg.get()[i]);
+      this->v_amplitude(i)->setNodalFactor(nodeFactor.get()[i]);
       this->u_phase(i)->resize(this->numNodes());
       this->u_phase(i)->setName(this->m_consituentNames[i]);
-      this->u_phase(i)->setFrequency(frequency[i]);
-      this->u_phase(i)->setEquilibriumArg(equilibriumArg[i]);
-      this->u_phase(i)->setNodalFactor(nodeFactor[i]);
+      this->u_phase(i)->setFrequency(frequency.get()[i]);
+      this->u_phase(i)->setEquilibriumArg(equilibriumArg.get()[i]);
+      this->u_phase(i)->setNodalFactor(nodeFactor.get()[i]);
       this->v_phase(i)->resize(this->numNodes());
       this->v_phase(i)->setName(this->m_consituentNames[i]);
-      this->v_phase(i)->setFrequency(frequency[i]);
-      this->v_phase(i)->setEquilibriumArg(equilibriumArg[i]);
-      this->v_phase(i)->setNodalFactor(nodeFactor[i]);
+      this->v_phase(i)->setFrequency(frequency.get()[i]);
+      this->v_phase(i)->setEquilibriumArg(equilibriumArg.get()[i]);
+      this->v_phase(i)->setNodalFactor(nodeFactor.get()[i]);
     }
   } else {
     this->m_amplitude.resize(this->numConstituents());
@@ -808,20 +793,16 @@ void HarmonicsOutputPrivate::readNetcdfFormatHeader(int ncid,
       this->m_reverseIndex[i] = this->m_consituentNames[i];
       this->amplitude(i)->resize(this->numNodes());
       this->amplitude(i)->setName(this->m_consituentNames[i]);
-      this->amplitude(i)->setFrequency(frequency[i]);
-      this->amplitude(i)->setEquilibriumArg(equilibriumArg[i]);
-      this->amplitude(i)->setNodalFactor(nodeFactor[i]);
+      this->amplitude(i)->setFrequency(frequency.get()[i]);
+      this->amplitude(i)->setEquilibriumArg(equilibriumArg.get()[i]);
+      this->amplitude(i)->setNodalFactor(nodeFactor.get()[i]);
       this->phase(i)->resize(this->numNodes());
       this->phase(i)->setName(this->m_consituentNames[i]);
-      this->phase(i)->setFrequency(frequency[i]);
-      this->phase(i)->setEquilibriumArg(equilibriumArg[i]);
-      this->phase(i)->setNodalFactor(nodeFactor[i]);
+      this->phase(i)->setFrequency(frequency.get()[i]);
+      this->phase(i)->setEquilibriumArg(equilibriumArg.get()[i]);
+      this->phase(i)->setNodalFactor(nodeFactor.get()[i]);
     }
   }
-
-  delete[] nodeFactor;
-  delete[] equilibriumArg;
-  delete[] frequency;
 
   int vid;
   if (this->isVelocity()) {
@@ -877,30 +858,26 @@ void HarmonicsOutputPrivate::readNetcdfElevationData(int ncid,
                                                      std::vector<int>& varids) {
   assert(varids.size() == 2);
 
-  double* v = new double[this->numNodes()];
+  std::unique_ptr<double> v(new double[this->numNodes()]);
   size_t start[2], count[2];
   for (size_t i = 0; i < this->numConstituents(); ++i) {
     start[0] = 0;
     start[1] = i;
     count[0] = this->numNodes();
     count[1] = 1;
-    int ierr = nc_get_vara(ncid, varids[0], start, count, v);
+    int ierr = nc_get_vara(ncid, varids[0], start, count, v.get());
     if (ierr != NC_NOERR) {
-      delete[] v;
       adcircmodules_throw_exception("Error reading harmonic elevation data");
     }
-    std::vector<double> amp(v, v + this->numNodes());
+    std::vector<double> amp(v.get(), v.get() + this->numNodes());
     this->amplitude(i)->set(amp);
-    ierr = nc_get_vara(ncid, varids[1], start, count, v);
+    ierr = nc_get_vara(ncid, varids[1], start, count, v.get());
     if (ierr != NC_NOERR) {
-      delete[] v;
       adcircmodules_throw_exception("Error reading harmonic elevation data");
     }
-    std::vector<double> phs(v, v + this->numNodes());
+    std::vector<double> phs(v.get(), v.get() + this->numNodes());
     this->phase(i)->set(phs);
   }
-
-  delete[] v;
 
   return;
 }
@@ -909,7 +886,7 @@ void HarmonicsOutputPrivate::readNetcdfVelocityData(int ncid,
                                                     std::vector<int>& varids) {
   assert(varids.size() == 4);
 
-  double* v = new double[this->numNodes()];
+  std::unique_ptr<double> v(new double[this->numNodes()]);
   size_t start[2], count[2];
 
   for (size_t i = 0; i < this->numConstituents(); ++i) {
@@ -918,39 +895,34 @@ void HarmonicsOutputPrivate::readNetcdfVelocityData(int ncid,
     count[0] = this->numNodes();
     count[1] = 1;
 
-    int ierr = nc_get_vara(ncid, varids[0], start, count, v);
+    int ierr = nc_get_vara(ncid, varids[0], start, count, v.get());
     if (ierr != NC_NOERR) {
-      delete[] v;
       adcircmodules_throw_exception("Error reading harmonic velocity data");
     }
-    std::vector<double> ua(v, v + this->numNodes());
+    std::vector<double> ua(v.get(), v.get() + this->numNodes());
     this->u_amplitude(i)->set(ua);
 
-    ierr = nc_get_vara(ncid, varids[1], start, count, v);
+    ierr = nc_get_vara(ncid, varids[1], start, count, v.get());
     if (ierr != NC_NOERR) {
-      delete[] v;
       adcircmodules_throw_exception("Error reading harmonic velocity data");
     }
-    std::vector<double> up(v, v + this->numNodes());
+    std::vector<double> up(v.get(), v.get() + this->numNodes());
     this->u_phase(i)->set(up);
 
-    ierr = nc_get_vara(ncid, varids[2], start, count, v);
+    ierr = nc_get_vara(ncid, varids[2], start, count, v.get());
     if (ierr != NC_NOERR) {
-      delete[] v;
       adcircmodules_throw_exception("Error reading harmonic velocity data");
     }
-    std::vector<double> va(v, v + this->numNodes());
+    std::vector<double> va(v.get(), v.get() + this->numNodes());
     this->v_amplitude(i)->set(va);
 
-    ierr = nc_get_vara(ncid, varids[3], start, count, v);
+    ierr = nc_get_vara(ncid, varids[3], start, count, v.get());
     if (ierr != NC_NOERR) {
-      delete[] v;
       adcircmodules_throw_exception("Error reading harmonic velocity data");
     }
-    std::vector<double> vp(v, v + this->numNodes());
+    std::vector<double> vp(v.get(), v.get() + this->numNodes());
     this->v_phase(i)->set(vp);
   }
 
-  delete[] v;
   return;
 }

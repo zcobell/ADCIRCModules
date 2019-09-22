@@ -56,22 +56,20 @@ size_t KdtreePrivate::findNearest(double x, double y) {
 
 std::vector<size_t> KdtreePrivate::findXNearest(double x, double y, size_t n) {
   n = std::min(this->size(), n);
-  size_t *index = new size_t[n];
-  double *out_dist_sqr = new double[n];
+  std::unique_ptr<size_t> index(new size_t[n]);
+  std::unique_ptr<double> out_dist_sqr(new double[n]);
   nanoflann::KNNResultSet<double> resultSet(n);
-  resultSet.init(index, out_dist_sqr);
+  resultSet.init(index.get(), out_dist_sqr.get());
   const double query_pt[2] = {x, y};
 
   this->m_tree->findNeighbors(resultSet, &query_pt[0],
                               nanoflann::SearchParams(10));
-  std::vector<size_t> result(index, index + n);
-  delete[] index;
-  delete[] out_dist_sqr;
+  std::vector<size_t> result(index.get(), index.get() + n);
   return result;
 }
 
 std::vector<size_t> KdtreePrivate::findWithinRadius(double x, double y,
-                                                  const double radius) {
+                                                    const double radius) {
   //...Square radius since distance metric is a square distance
   const double search_radius = std::pow(radius, 2.0);
 

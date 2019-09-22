@@ -57,6 +57,6 @@ class Logging {
  * @param arg string describing the error that is being thrown
  */
 #define adcircmodules_throw_exception(arg) \
-  Adcirc::Logging::throwError(arg, __FILE__, __LINE__);
+  Adcirc::Logging::throwError(arg, __FILE__, __LINE__)
 
 #endif  // ADCMOD_LOGGING_H

@@ -855,7 +855,7 @@ std::vector<double> GriddataPrivate::computeValuesFromRaster(
   this->checkRasterOpen();
   this->checkMatchingCoorindateSystems();
   this->assignInterpolationFunctionPointer(useLookupTable);
-  boost::progress_display *progress = nullptr;
+  std::unique_ptr<boost::progress_display> progress(nullptr);
 
   if (this->m_rasterInMemory) {
     this->m_raster.get()->read();
@@ -866,7 +866,7 @@ std::vector<double> GriddataPrivate::computeValuesFromRaster(
   result.resize(this->m_mesh->numNodes());
 
   if (this->showProgressBar()) {
-    progress = new boost::progress_display(this->m_mesh->numNodes());
+    progress.reset(new boost::progress_display(this->m_mesh->numNodes()));
   }
 
 #pragma omp parallel for schedule(dynamic) shared(progress)
@@ -874,7 +874,7 @@ std::vector<double> GriddataPrivate::computeValuesFromRaster(
        i < static_cast<signed long long>(this->m_mesh->numNodes()); ++i) {
     if (this->m_showProgressBar) {
 #pragma omp critical
-      ++(*progress);
+      ++(*progress.get());
     }
 
     Point p(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
@@ -883,8 +883,6 @@ std::vector<double> GriddataPrivate::computeValuesFromRaster(
                                             this->m_filterSize[i], m);
     result[i] = v * this->m_rasterMultiplier + this->m_datumShift;
   }
-
-  if (this->showProgressBar()) delete progress;
 
   return result;
 }
@@ -922,7 +920,7 @@ void GriddataPrivate::thresholdData(std::vector<T> &z, std::vector<bool> &v) {
 
 std::vector<std::vector<double>>
 GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
-  boost::progress_display *progress = nullptr;
+  std::unique_ptr<boost::progress_display> progress(nullptr);
   this->checkRasterOpen();
   this->checkMatchingCoorindateSystems();
   this->assignDirectionalWindReductionFunctionPointer(useLookupTable);
@@ -935,7 +933,7 @@ GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
   result.resize(this->m_mesh->numNodes());
 
   if (this->showProgressBar()) {
-    progress = new boost::progress_display(this->m_mesh->numNodes());
+    progress.reset(new boost::progress_display(this->m_mesh->numNodes()));
   }
 
 #pragma omp parallel for schedule(dynamic) shared(progress)
@@ -957,8 +955,6 @@ GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
       std::fill(result[i].begin(), result[i].end(), this->defaultValue());
     }
   }
-
-  if (this->showProgressBar()) delete progress;
 
   return result;
 }

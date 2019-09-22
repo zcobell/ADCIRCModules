@@ -256,81 +256,66 @@ void MeshPrivate::readAdcircMeshNetcdf() {
   ierr += nc_inq_varid(ncid, "element", &varid_elem);
   if (ierr != 0) adcircmodules_throw_exception("Could not read the varids");
 
-  double *x = new double[nn];
-  double *y = new double[nn];
-  double *z = new double[nn];
+  std::unique_ptr<double> x(new double[nn]);
+  std::unique_ptr<double> y(new double[nn]);
+  std::unique_ptr<double> z(new double[nn]);
 
-  ierr += nc_get_var_double(ncid, varid_x, x);
-  ierr += nc_get_var_double(ncid, varid_y, y);
-  ierr += nc_get_var_double(ncid, varid_z, z);
+  ierr += nc_get_var_double(ncid, varid_x, x.get());
+  ierr += nc_get_var_double(ncid, varid_y, y.get());
+  ierr += nc_get_var_double(ncid, varid_z, z.get());
   if (ierr != 0) {
-    delete[] x;
-    delete[] y;
-    delete[] z;
     adcircmodules_throw_exception("Could not read nodal data");
   }
 
   this->m_nodes.reserve(nn);
   for (size_t i = 0; i < nn; ++i) {
-    this->m_nodes.push_back(Node(i + 1, x[i], y[i], z[i]));
+    this->m_nodes.push_back(Node(i + 1, x.get()[i], y.get()[i], z.get()[i]));
   }
 
   this->m_nodeOrderingLogical = true;
   this->m_elementOrderingLogical = true;
 
-  delete[] x;
-  delete[] y;
-  delete[] z;
-
-  int *n1 = new int[ne];
-  int *n2 = new int[ne];
-  int *n3 = new int[ne];
-  int *n4 = new int[ne];
+  std::unique_ptr<int> n1(new int[ne]);
+  std::unique_ptr<int> n2(new int[ne]);
+  std::unique_ptr<int> n3(new int[ne]);
+  std::unique_ptr<int> n4(new int[ne]);
   size_t start[2], count[2];
   start[0] = 0;
   start[1] = 0;
   count[0] = ne;
   count[1] = 1;
 
-  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n1);
+  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n1.get());
   start[1] = 1;
-  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n2);
+  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n2.get());
   start[1] = 2;
-  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n3);
+  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n3.get());
   if (n_max_vertex == 4) {
     start[1] = 3;
-    ierr += nc_get_vara_int(ncid, varid_elem, start, count, n4);
+    ierr += nc_get_vara_int(ncid, varid_elem, start, count, n4.get());
   } else {
     for (size_t i = 0; i < ne; ++i) {
-      n4[i] = NC_FILL_INT;
+      n4.get()[i] = NC_FILL_INT;
     }
   }
 
   if (ierr != 0) {
-    delete[] n1;
-    delete[] n2;
-    delete[] n3;
-    delete[] n4;
     adcircmodules_throw_exception("Could not read the element data");
   }
 
   this->m_elements.reserve(ne);
   for (size_t i = 0; i < ne; ++i) {
-    if (n4[i] == NC_FILL_INT) {
-      this->m_elements.push_back(Element(i + 1, &this->m_nodes[n1[i] - 1],
-                                         &this->m_nodes[n2[i] - 1],
-                                         &this->m_nodes[n3[i] - 1]));
+    if (n4.get()[i] == NC_FILL_INT) {
+      this->m_elements.push_back(Element(i + 1, &this->m_nodes[n1.get()[i] - 1],
+                                         &this->m_nodes[n2.get()[i] - 1],
+                                         &this->m_nodes[n3.get()[i] - 1]));
     } else {
-      this->m_elements.push_back(
-          Element(i + 1, &this->m_nodes[n1[i] - 1], &this->m_nodes[n2[i] - 1],
-                  &this->m_nodes[n3[i] - 1], &this->m_nodes[n4[i] - 1]));
+      this->m_elements.push_back(Element(i + 1, &this->m_nodes[n1.get()[i] - 1],
+                                         &this->m_nodes[n2.get()[i] - 1],
+                                         &this->m_nodes[n3.get()[i] - 1],
+                                         &this->m_nodes[n4.get()[i] - 1]));
     }
   }
-
-  delete[] n1;
-  delete[] n2;
-  delete[] n3;
-  delete[] n4;
 
   return;
 }
@@ -413,47 +398,43 @@ void MeshPrivate::readDflowMesh() {
 
   if (isFill == 1) elemFillValue = NC_FILL_INT;
 
-  double *xcoor = new double[nn];
-  double *ycoor = new double[nn];
-  double *zcoor = new double[nn];
-  int *elem = new int[ne * nmaxnode];
+  std::unique_ptr<double> xcoor(new double[nn]);
+  std::unique_ptr<double> ycoor(new double[nn]);
+  std::unique_ptr<double> zcoor(new double[nn]);
+  std::unique_ptr<int> elem(new int[ne * nmaxnode]);
 
-  ierr += nc_get_var_double(ncid, varid_x, xcoor);
-  ierr += nc_get_var_double(ncid, varid_y, ycoor);
-  ierr += nc_get_var_double(ncid, varid_z, zcoor);
-  ierr += nc_get_var_int(ncid, varid_elem, elem);
+  ierr += nc_get_var_double(ncid, varid_x, xcoor.get());
+  ierr += nc_get_var_double(ncid, varid_y, ycoor.get());
+  ierr += nc_get_var_double(ncid, varid_z, zcoor.get());
+  ierr += nc_get_var_int(ncid, varid_elem, elem.get());
   nc_close(ncid);
 
   if (ierr != 0) {
-    delete[] xcoor;
-    delete[] ycoor;
-    delete[] zcoor;
-    delete[] elem;
     adcircmodules_throw_exception("Error reading arrays from netcdf file.");
     return;
   }
 
   this->m_nodes.resize(nn);
   for (size_t i = 0; i < nn; ++i) {
-    this->m_nodes[i] = Node(i + 1, xcoor[i], ycoor[i], zcoor[i]);
+    this->m_nodes[i] =
+        Node(i + 1, xcoor.get()[i], ycoor.get()[i], zcoor.get()[i]);
   }
 
-  delete[] xcoor;
-  delete[] ycoor;
-  delete[] zcoor;
+  xcoor.reset(nullptr);
+  ycoor.reset(nullptr);
+  zcoor.reset(nullptr);
 
   for (size_t i = 0; i < ne; ++i) {
     std::vector<size_t> n(nmaxnode);
     size_t nfill = 0;
     for (size_t j = 0; j < nmaxnode; ++j) {
-      n[j] = elem[i * nmaxnode + j];
+      n[j] = elem.get()[i * nmaxnode + j];
       if (n[j] == elemFillValue || n[j] == NC_FILL_INT || n[j] == NC_FILL_INT64)
         nfill++;
     }
 
     size_t nnodeelem = nmaxnode - nfill;
     if (nnodeelem != 3 && nnodeelem != 4) {
-      delete[] elem;
       adcircmodules_throw_exception("Invalid element type detected");
       return;
     }
@@ -470,8 +451,6 @@ void MeshPrivate::readDflowMesh() {
     }
     this->m_elements[i].sortVerticiesAboutCenter();
   }
-
-  delete[] elem;
 
   return;
 }
@@ -1758,49 +1737,50 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
   size_t nlinks = links.size();
   size_t maxelemnode = this->getMaxNodesPerElement();
 
-  double *xarray = new double[this->numNodes()];
-  double *yarray = new double[this->numNodes()];
-  double *zarray = new double[this->numNodes()];
-  int *linkArray = new int[nlinks * 2];
-  int *linkTypeArray = new int[nlinks * 2];
-  int *netElemNodearray = new int[this->numElements() * maxelemnode];
+  std::unique_ptr<double> xarray(new double[this->numNodes()]);
+  std::unique_ptr<double> yarray(new double[this->numNodes()]);
+  std::unique_ptr<double> zarray(new double[this->numNodes()]);
+  std::unique_ptr<int> linkArray(new int[nlinks * 2]);
+  std::unique_ptr<int> linkTypeArray(new int[nlinks * 2]);
+  std::unique_ptr<int> netElemNodearray(
+      new int[this->numElements() * maxelemnode]);
 
   for (size_t i = 0; i < this->numNodes(); ++i) {
-    xarray[i] = this->node(i)->x();
-    yarray[i] = this->node(i)->y();
-    zarray[i] = this->node(i)->z();
+    xarray.get()[i] = this->node(i)->x();
+    yarray.get()[i] = this->node(i)->y();
+    zarray.get()[i] = this->node(i)->z();
   }
 
   size_t idx = 0;
   for (size_t i = 0; i < nlinks; ++i) {
-    linkArray[idx] = links[i].first->id();
+    linkArray.get()[idx] = links[i].first->id();
     idx++;
-    linkArray[idx] = links[i].second->id();
+    linkArray.get()[idx] = links[i].second->id();
     idx++;
-    linkTypeArray[i] = 2;
+    linkTypeArray.get()[i] = 2;
   }
 
   idx = 0;
   for (size_t i = 0; i < this->numElements(); ++i) {
     if (this->element(i)->n() == 3) {
-      netElemNodearray[idx] = this->element(i)->node(0)->id();
+      netElemNodearray.get()[idx] = this->element(i)->node(0)->id();
       idx++;
-      netElemNodearray[idx] = this->element(i)->node(1)->id();
+      netElemNodearray.get()[idx] = this->element(i)->node(1)->id();
       idx++;
-      netElemNodearray[idx] = this->element(i)->node(2)->id();
+      netElemNodearray.get()[idx] = this->element(i)->node(2)->id();
       idx++;
       if (maxelemnode == 4) {
-        netElemNodearray[idx] = NC_FILL_INT;
+        netElemNodearray.get()[idx] = NC_FILL_INT;
         idx++;
       }
     } else {
-      netElemNodearray[idx] = this->element(i)->node(0)->id();
+      netElemNodearray.get()[idx] = this->element(i)->node(0)->id();
       idx++;
-      netElemNodearray[idx] = this->element(i)->node(1)->id();
+      netElemNodearray.get()[idx] = this->element(i)->node(1)->id();
       idx++;
-      netElemNodearray[idx] = this->element(i)->node(2)->id();
+      netElemNodearray.get()[idx] = this->element(i)->node(2)->id();
       idx++;
-      netElemNodearray[idx] = this->element(i)->node(3)->id();
+      netElemNodearray.get()[idx] = this->element(i)->node(3)->id();
       idx++;
     }
   }
@@ -1820,40 +1800,44 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
     adcircmodules_throw_exception(
         "Error creating dimensions for D-Flow netCDF format file");
 
-  int *dim1d = new int[1];
-  int *dim2d = new int[2];
+  std::unique_ptr<int> dim1d(new int[1]);
+  std::unique_ptr<int> dim2d(new int[2]);
 
   int varid_mesh2d, varid_netnodex, varid_netnodey, varid_netnodez;
   ierr += nc_def_var(ncid, "Mesh2D", NC_INT, 0, nullptr, &varid_mesh2d);
-  dim1d[0] = dimid_nnode;
-  ierr += nc_def_var(ncid, "NetNode_x", NC_DOUBLE, 1, dim1d, &varid_netnodex);
-  ierr += nc_def_var(ncid, "NetNode_y", NC_DOUBLE, 1, dim1d, &varid_netnodey);
-  ierr += nc_def_var(ncid, "NetNode_z", NC_DOUBLE, 1, dim1d, &varid_netnodez);
+  dim1d.get()[0] = dimid_nnode;
+  ierr +=
+      nc_def_var(ncid, "NetNode_x", NC_DOUBLE, 1, dim1d.get(), &varid_netnodex);
+  ierr +=
+      nc_def_var(ncid, "NetNode_y", NC_DOUBLE, 1, dim1d.get(), &varid_netnodey);
+  ierr +=
+      nc_def_var(ncid, "NetNode_z", NC_DOUBLE, 1, dim1d.get(), &varid_netnodez);
 
-  dim1d[0] = dimid_nlink;
-  dim2d[0] = dimid_nlink;
-  dim2d[1] = dimid_nlinkpts;
+  dim1d.get()[0] = dimid_nlink;
+  dim2d.get()[0] = dimid_nlink;
+  dim2d.get()[1] = dimid_nlinkpts;
 
   int varid_netlinktype, varid_netlink, varid_crs;
-  ierr += nc_def_var(ncid, "NetLinkType", NC_INT, 1, dim1d, &varid_netlinktype);
-  ierr += nc_def_var(ncid, "NetLink", NC_INT, 2, dim2d, &varid_netlink);
+  ierr += nc_def_var(ncid, "NetLinkType", NC_INT, 1, dim1d.get(),
+                     &varid_netlinktype);
+  ierr += nc_def_var(ncid, "NetLink", NC_INT, 2, dim2d.get(), &varid_netlink);
   ierr += nc_def_var(ncid, "crs", NC_INT, 0, nullptr, &varid_crs);
 
-  dim2d[0] = dimid_nelem;
-  dim2d[1] = dimid_maxnode;
+  dim2d.get()[0] = dimid_nelem;
+  dim2d.get()[1] = dimid_maxnode;
 
   int varid_netelemnode;
-  ierr += nc_def_var(ncid, "NetElemNode", NC_INT, 2, dim2d, &varid_netelemnode);
-  std::cout << nc_strerror(ierr);
+  ierr += nc_def_var(ncid, "NetElemNode", NC_INT, 2, dim2d.get(),
+                     &varid_netelemnode);
   if (ierr != NC_NOERR)
     adcircmodules_throw_exception(
         "Error defining variables for D-Flow netCDF format file");
 
   //...Define attributes
   ierr = nc_put_att_text(ncid, varid_mesh2d, "cf_role", 13, "mesh_topology");
-  dim1d[0] = 2;
+  dim1d.get()[0] = 2;
   ierr += nc_put_att_int(ncid, varid_mesh2d, "topology_dimension", NC_INT, 1,
-                         dim1d);
+                         dim1d.get());
   ierr += nc_put_att_text(ncid, varid_mesh2d, "node_coordinates", 19,
                           "NetNode_x NetNode_y");
   ierr += nc_put_att_text(ncid, varid_mesh2d, "node_dimension", 8, "nNetNode");
@@ -1878,11 +1862,12 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
     ierr += nc_put_att_text(ncid, varid_netnodey, "units", 13, "degrees_north");
     ierr +=
         nc_put_att_text(ncid, varid_netnodey, "standard_name", 8, "latitude");
-    dim1d[0] = 1;
-    ierr += nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d);
+    dim1d.get()[0] = 1;
+    ierr +=
+        nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d.get());
 
-    dim1d[0] = this->m_epsg;
-    ierr += nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d);
+    dim1d.get()[0] = this->m_epsg;
+    ierr += nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d.get());
   } else {
     ierr += nc_put_att_text(ncid, varid_netnodex, "axis", 1, "X");
     ierr += nc_put_att_text(ncid, varid_netnodex, "long_name", 32,
@@ -1898,11 +1883,12 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
     ierr += nc_put_att_text(ncid, varid_netnodey, "standard_name", 23,
                             "projection_y_coordinate");
 
-    dim1d[0] = 0;
-    ierr += nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d);
+    dim1d.get()[0] = 0;
+    ierr +=
+        nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d.get());
 
-    dim1d[0] = this->m_epsg;
-    ierr += nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d);
+    dim1d.get()[0] = this->m_epsg;
+    ierr += nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d.get());
   }
 
   ierr += nc_put_att_text(ncid, varid_netnodez, "axis", 1, "Z");
@@ -1914,10 +1900,11 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
   ierr += nc_put_att_text(ncid, varid_netnodez, "mesh", 6, "Mesh2D");
   ierr += nc_put_att_text(ncid, varid_netnodez, "location", 4, "node");
 
-  dim1d[0] = 1;
-  ierr += nc_put_att_int(ncid, varid_netlink, "start_index", NC_INT, 1, dim1d);
-  ierr +=
-      nc_put_att_int(ncid, varid_netelemnode, "start_index", NC_INT, 1, dim1d);
+  dim1d.get()[0] = 1;
+  ierr += nc_put_att_int(ncid, varid_netlink, "start_index", NC_INT, 1,
+                         dim1d.get());
+  ierr += nc_put_att_int(ncid, varid_netelemnode, "start_index", NC_INT, 1,
+                         dim1d.get());
   ierr += nc_put_att_text(ncid, NC_GLOBAL, "Conventions", 9, "UGRID-0.9");
 
   ierr = nc_enddef(ncid);
@@ -1925,22 +1912,13 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
     adcircmodules_throw_exception(
         "Error writing variable attributes for D-Flow netCDF format file");
 
-  ierr += nc_put_var_double(ncid, varid_netnodex, xarray);
-  ierr += nc_put_var_double(ncid, varid_netnodey, yarray);
-  ierr += nc_put_var_double(ncid, varid_netnodez, zarray);
-  ierr += nc_put_var_int(ncid, varid_netlink, linkArray);
-  ierr += nc_put_var_int(ncid, varid_netlinktype, linkTypeArray);
-  ierr += nc_put_var_int(ncid, varid_netelemnode, netElemNodearray);
+  ierr += nc_put_var_double(ncid, varid_netnodex, xarray.get());
+  ierr += nc_put_var_double(ncid, varid_netnodey, yarray.get());
+  ierr += nc_put_var_double(ncid, varid_netnodez, zarray.get());
+  ierr += nc_put_var_int(ncid, varid_netlink, linkArray.get());
+  ierr += nc_put_var_int(ncid, varid_netlinktype, linkTypeArray.get());
+  ierr += nc_put_var_int(ncid, varid_netelemnode, netElemNodearray.get());
   ierr += nc_close(ncid);
-
-  delete[] xarray;
-  delete[] yarray;
-  delete[] zarray;
-  delete[] dim1d;
-  delete[] dim2d;
-  delete[] linkArray;
-  delete[] linkTypeArray;
-  delete[] netElemNodearray;
 
   if (ierr != NC_NOERR)
     adcircmodules_throw_exception("Error writing D-Flow netCDF format file");
