@@ -203,7 +203,7 @@ class MeshPrivate {
 
   std::string m_filename;
   std::string m_meshHeaderString;
-  char *m_hash;
+  std::unique_ptr<char> m_hash;
   std::vector<Adcirc::Geometry::Node> m_nodes;
   std::vector<Adcirc::Geometry::Element> m_elements;
   std::vector<Adcirc::Geometry::Boundary> m_openBoundaries;

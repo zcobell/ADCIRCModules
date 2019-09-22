@@ -46,6 +46,10 @@ class Boundary {
 
   ADCIRCMODULES_EXPORT Boundary(int boundaryCode, size_t boundaryLength);
 
+  ADCIRCMODULES_EXPORT Boundary(const Boundary &b);
+
+  ADCIRCMODULES_EXPORT Boundary &operator=(const Boundary &b);
+
   ADCIRCMODULES_EXPORT ~Boundary();
 
   void ADCIRCMODULES_EXPORT setBoundary(int boundaryCode,
@@ -117,7 +121,7 @@ class Boundary {
   double m_averageLongitude;
   std::vector<Adcirc::Geometry::Node *> m_node1;
   std::vector<Adcirc::Geometry::Node *> m_node2;
-  char *m_hash;
+  std::unique_ptr<char> m_hash;
 
   void generateHash(Adcirc::Cryptography::HashType h =
                         Adcirc::Cryptography::AdcircDefaultHash);

@@ -20,6 +20,7 @@
 #define ADCMOD_ELEMENT_H
 
 #include <cmath>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -51,6 +52,9 @@ class Element {
                                Adcirc::Geometry::Node *n2,
                                Adcirc::Geometry::Node *n3,
                                Adcirc::Geometry::Node *n4);
+  ADCIRCMODULES_EXPORT Element(const Element &e);
+
+  ADCIRCMODULES_EXPORT Element &operator=(const Element &e);
 
   ADCIRCMODULES_EXPORT ~Element();
 
@@ -65,30 +69,30 @@ class Element {
   size_t n() const;
   void ADCIRCMODULES_EXPORT resize(size_t nVertex);
 
-  Adcirc::Geometry::Node ADCIRCMODULES_EXPORT *node(size_t i);
+  Adcirc::Geometry::Node ADCIRCMODULES_EXPORT *node(size_t i) const;
   void ADCIRCMODULES_EXPORT setNode(size_t i, Adcirc::Geometry::Node *node);
 
   size_t ADCIRCMODULES_EXPORT id() const;
   void ADCIRCMODULES_EXPORT setId(size_t id);
 
-  std::string ADCIRCMODULES_EXPORT toAdcircString();
-  std::string ADCIRCMODULES_EXPORT to2dmString();
+  std::string ADCIRCMODULES_EXPORT toAdcircString() const;
+  std::string ADCIRCMODULES_EXPORT to2dmString() const;
 
-  bool ADCIRCMODULES_EXPORT isInside(Point location);
-  bool ADCIRCMODULES_EXPORT isInside(double x, double y);
+  bool ADCIRCMODULES_EXPORT isInside(Point location) const;
+  bool ADCIRCMODULES_EXPORT isInside(double x, double y) const;
 
-  double ADCIRCMODULES_EXPORT elementSize(bool geodesic = true);
+  double ADCIRCMODULES_EXPORT elementSize(bool geodesic = true) const;
 
   void ADCIRCMODULES_EXPORT sortVerticiesAboutCenter();
 
   std::pair<Adcirc::Geometry::Node *, Adcirc::Geometry::Node *>
-      ADCIRCMODULES_EXPORT elementLeg(size_t i);
+      ADCIRCMODULES_EXPORT elementLeg(size_t i) const;
 
-  void ADCIRCMODULES_EXPORT getElementCenter(double &xc, double &yc);
+  void ADCIRCMODULES_EXPORT getElementCenter(double &xc, double &yc) const;
 
-  double ADCIRCMODULES_EXPORT area();
+  double ADCIRCMODULES_EXPORT area() const;
 
-  std::vector<double> interpolationWeights(double x, double y);
+  std::vector<double> interpolationWeights(double x, double y) const;
 
   std::string ADCIRCMODULES_EXPORT
   hash(Adcirc::Cryptography::HashType h =
@@ -98,13 +102,13 @@ class Element {
  private:
   size_t m_id;
   std::vector<Adcirc::Geometry::Node *> m_nodes;
-  char *m_hash;
+  std::unique_ptr<char> m_hash;
 
   void generateHash(Adcirc::Cryptography::HashType h =
                         Adcirc::Cryptography::AdcircDefaultHash);
 
-  std::vector<double> triangularInterpolation(double x, double y);
-  std::vector<double> polygonInterpolation(double x, double y);
+  std::vector<double> triangularInterpolation(double x, double y) const;
+  std::vector<double> polygonInterpolation(double x, double y) const;
 };
 }  // namespace Geometry
 }  // namespace Adcirc

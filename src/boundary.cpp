@@ -38,20 +38,147 @@ constexpr std::array<int, 15> c_bctypes_singleNodeBoundaries = {
  *
  * Initializes the boundary with code -1 and length 0.
  */
-Boundary::Boundary() : m_hash(nullptr) { this->setBoundary(-1, 0); }
+Boundary::Boundary() {
+  this->m_hash.reset(nullptr);
+  this->setBoundary(-1, 0);
+}
 
 /**
  * @brief Initializes the boundary with user specified boundary type and length
  * @param boundaryCode ADCIRC model boundary code
  * @param boundaryLength number of nodes along this boundary
  */
-Boundary::Boundary(int boundaryCode, size_t boundaryLength) : m_hash(nullptr) {
+Boundary::Boundary(int boundaryCode, size_t boundaryLength) {
   this->setBoundaryCode(boundaryCode);
   this->setBoundaryLength(boundaryLength);
+  this->m_hash.reset(nullptr);
 }
 
-Boundary::~Boundary() {
-  if (this->m_hash != nullptr) delete[] this->m_hash;
+/**
+ * @brief Destructor
+ */
+Boundary::~Boundary() {}
+
+/**
+ * @brief Copy constructor
+ * @param b boundary to copy
+ */
+Boundary::Boundary(const Boundary &b) {
+  this->m_boundaryCode = b.boundaryCode();
+  this->m_boundaryLength = b.boundaryLength();
+  if (b.isSingleNodeBoundary()) {
+    this->m_node1.resize(this->m_boundaryLength);
+    for (size_t i = 0; i < this->boundaryLength(); ++i) {
+      this->m_node1[i] = b.node1(i);
+    }
+  } else if (b.isExternalWeir()) {
+    this->m_node1.resize(this->m_boundaryLength);
+    this->m_crestElevation.resize(this->m_boundaryLength);
+    this->m_supercriticalWeirCoefficient.resize(this->m_boundaryLength);
+    for (size_t i = 0; i < this->m_boundaryLength; ++i) {
+      this->m_node1[i] = b.node1(i);
+      this->m_crestElevation[i] = b.crestElevation(i);
+      this->m_supercriticalWeirCoefficient[i] =
+          b.supercriticalWeirCoefficient(i);
+    }
+  } else if (b.isInternalWeir()) {
+    this->m_node1.resize(this->m_boundaryLength);
+    this->m_node2.resize(this->m_boundaryLength);
+    this->m_crestElevation.resize(this->m_boundaryLength);
+    this->m_supercriticalWeirCoefficient.resize(this->m_boundaryLength);
+    this->m_subcriticalWeirCoefficient.resize(this->m_boundaryLength);
+    for (size_t i = 0; i < this->boundaryLength(); ++i) {
+      this->m_node1[i] = b.node1(i);
+      this->m_node2[i] = b.node2(i);
+      this->m_crestElevation[i] = b.crestElevation(i);
+      this->m_supercriticalWeirCoefficient[i] =
+          b.supercriticalWeirCoefficient(i);
+      this->m_subcriticalWeirCoefficient[i] = b.subcriticalWeirCoefficient(i);
+    }
+  } else if (b.isInternalWeirWithPipes()) {
+    this->m_node1.resize(this->m_boundaryLength);
+    this->m_node2.resize(this->m_boundaryLength);
+    this->m_crestElevation.resize(this->m_boundaryLength);
+    this->m_supercriticalWeirCoefficient.resize(this->m_boundaryLength);
+    this->m_subcriticalWeirCoefficient.resize(this->m_boundaryLength);
+    this->m_pipeHeight.resize(this->m_boundaryLength);
+    this->m_pipeDiameter.resize(this->m_boundaryLength);
+    this->m_pipeCoefficient.resize(this->m_boundaryLength);
+    for (size_t i = 0; i < this->boundaryLength(); ++i) {
+      this->m_node1[i] = b.node1(i);
+      this->m_node2[i] = b.node2(i);
+      this->m_crestElevation[i] = b.crestElevation(i);
+      this->m_supercriticalWeirCoefficient[i] =
+          b.supercriticalWeirCoefficient(i);
+      this->m_subcriticalWeirCoefficient[i] = b.subcriticalWeirCoefficient(i);
+      this->m_pipeHeight[i] = b.pipeHeight(i);
+      this->m_pipeDiameter[i] = b.pipeDiameter(i);
+      this->m_pipeCoefficient[i] = b.pipeCoefficient(i);
+    }
+  }
+  this->m_hash.reset(nullptr);
+}
+
+/**
+ * @brief Copy assignment operator
+ * @param b boundary to copy
+ * @return refrence to copied boundary
+ */
+Boundary &Boundary::operator=(const Boundary &b) {
+  this->m_boundaryCode = b.boundaryCode();
+  this->m_boundaryLength = b.boundaryLength();
+  if (b.isSingleNodeBoundary()) {
+    this->m_node1.resize(this->m_boundaryLength);
+    for (size_t i = 0; i < this->boundaryLength(); ++i) {
+      this->m_node1[i] = b.node1(i);
+    }
+  } else if (b.isExternalWeir()) {
+    this->m_node1.resize(this->m_boundaryLength);
+    this->m_crestElevation.resize(this->m_boundaryLength);
+    this->m_supercriticalWeirCoefficient.resize(this->m_boundaryLength);
+    for (size_t i = 0; i < this->m_boundaryLength; ++i) {
+      this->m_node1[i] = b.node1(i);
+      this->m_crestElevation[i] = b.crestElevation(i);
+      this->m_supercriticalWeirCoefficient[i] =
+          b.supercriticalWeirCoefficient(i);
+    }
+  } else if (b.isInternalWeir()) {
+    this->m_node1.resize(this->m_boundaryLength);
+    this->m_node2.resize(this->m_boundaryLength);
+    this->m_crestElevation.resize(this->m_boundaryLength);
+    this->m_supercriticalWeirCoefficient.resize(this->m_boundaryLength);
+    this->m_subcriticalWeirCoefficient.resize(this->m_boundaryLength);
+    for (size_t i = 0; i < this->boundaryLength(); ++i) {
+      this->m_node1[i] = b.node1(i);
+      this->m_node2[i] = b.node2(i);
+      this->m_crestElevation[i] = b.crestElevation(i);
+      this->m_supercriticalWeirCoefficient[i] =
+          b.supercriticalWeirCoefficient(i);
+      this->m_subcriticalWeirCoefficient[i] = b.subcriticalWeirCoefficient(i);
+    }
+  } else if (b.isInternalWeirWithPipes()) {
+    this->m_node1.resize(this->m_boundaryLength);
+    this->m_node2.resize(this->m_boundaryLength);
+    this->m_crestElevation.resize(this->m_boundaryLength);
+    this->m_supercriticalWeirCoefficient.resize(this->m_boundaryLength);
+    this->m_subcriticalWeirCoefficient.resize(this->m_boundaryLength);
+    this->m_pipeHeight.resize(this->m_boundaryLength);
+    this->m_pipeDiameter.resize(this->m_boundaryLength);
+    this->m_pipeCoefficient.resize(this->m_boundaryLength);
+    for (size_t i = 0; i < this->boundaryLength(); ++i) {
+      this->m_node1[i] = b.node1(i);
+      this->m_node2[i] = b.node2(i);
+      this->m_crestElevation[i] = b.crestElevation(i);
+      this->m_supercriticalWeirCoefficient[i] =
+          b.supercriticalWeirCoefficient(i);
+      this->m_subcriticalWeirCoefficient[i] = b.subcriticalWeirCoefficient(i);
+      this->m_pipeHeight[i] = b.pipeHeight(i);
+      this->m_pipeDiameter[i] = b.pipeDiameter(i);
+      this->m_pipeCoefficient[i] = b.pipeCoefficient(i);
+    }
+  }
+  this->m_hash.reset(nullptr);
+  return *this;
 }
 
 /**
@@ -184,7 +311,7 @@ int Boundary::boundaryCode() const { return this->m_boundaryCode; }
  */
 void Boundary::setBoundaryCode(int boundaryCode) {
   this->m_boundaryCode = boundaryCode;
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
@@ -220,7 +347,7 @@ void Boundary::setCrestElevation(size_t index, double crestElevation) {
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
@@ -256,7 +383,7 @@ void Boundary::setSubcriticalWeirCoefficient(
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
@@ -292,7 +419,7 @@ void Boundary::setSupercriticalWeirCoefficient(
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
@@ -327,7 +454,7 @@ void Boundary::setPipeHeight(size_t index, double pipeHeight) {
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
@@ -360,7 +487,7 @@ void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
   } else {
     adcircmodules_throw_exception("Index exceeds bounds");
   }
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
@@ -418,7 +545,7 @@ void Boundary::setNode1(size_t index, Node *node1) {
   } else {
     adcircmodules_throw_exception("Index exceeds bounds");
   }
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
@@ -450,7 +577,7 @@ void Boundary::setNode2(size_t index, Node *node2) {
       adcircmodules_throw_exception("Index exceeds bounds");
     }
   }
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
@@ -504,8 +631,8 @@ std::vector<std::string> Boundary::toStringList() {
  * @return hash formatted as string
  */
 std::string Boundary::hash(Adcirc::Cryptography::HashType h, bool force) {
-  if (this->m_hash == nullptr || force) this->generateHash(h);
-  return std::string(this->m_hash);
+  if (this->m_hash.get() == nullptr || force) this->generateHash(h);
+  return std::string(this->m_hash.get());
 }
 
 /**
@@ -537,7 +664,7 @@ void Boundary::generateHash(Adcirc::Cryptography::HashType h) {
       }
     }
   }
-  this->m_hash = hash.getHash();
+  this->m_hash.reset(hash.getHash());
   return;
 }
 

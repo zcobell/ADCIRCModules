@@ -46,7 +46,6 @@ Adcirc::Geometry::Mesh::~Mesh() = default;
 MeshPrivate::MeshPrivate()
     : m_filename("none"),
       m_epsg(-1),
-      m_hash(nullptr),
       m_hashType(Adcirc::Cryptography::AdcircDefaultHash) {
   this->_init();
 }
@@ -58,7 +57,6 @@ MeshPrivate::MeshPrivate()
 MeshPrivate::MeshPrivate(const std::string &filename)
     : m_filename(filename),
       m_epsg(-1),
-      m_hash(nullptr),
       m_hashType(Adcirc::Cryptography::AdcircDefaultHash) {
   this->_init();
 }
@@ -72,10 +70,7 @@ void MeshPrivate::_init() {
   this->m_elementalSearchTree = nullptr;
   this->m_nodeOrderingLogical = true;
   this->m_elementOrderingLogical = true;
-  this->m_nodes.clear();
-  this->m_elements.clear();
-  this->m_openBoundaries.clear();
-  this->m_landBoundaries.clear();
+  this->m_hash.reset(nullptr);
   this->m_elementalSearchTree = std::unique_ptr<Kdtree>(new Kdtree());
   this->m_nodalSearchTree = std::unique_ptr<Kdtree>(new Kdtree());
 }
@@ -83,15 +78,7 @@ void MeshPrivate::_init() {
 /**
  * @brief Mesh::~Mesh Destructor
  */
-MeshPrivate::~MeshPrivate() {
-  this->m_nodes.clear();
-  this->m_elements.clear();
-  this->m_openBoundaries.clear();
-  this->m_landBoundaries.clear();
-  this->m_nodeLookup.clear();
-  this->m_elementLookup.clear();
-  if (this->m_hash != nullptr) delete[] this->m_hash;
-}
+MeshPrivate::~MeshPrivate() {}
 
 /**
  * @brief Filename of the mesh to be read
@@ -2410,8 +2397,8 @@ std::vector<Adcirc::Geometry::Node *> MeshPrivate::boundaryNodes() {
 }
 
 std::string MeshPrivate::hash(bool force) {
-  if (this->m_hash == nullptr || force) this->generateHash(force);
-  return std::string(this->m_hash);
+  if (this->m_hash.get() == nullptr || force) this->generateHash(force);
+  return std::string(this->m_hash.get());
 }
 
 void MeshPrivate::generateHash(bool force) {
@@ -2431,7 +2418,7 @@ void MeshPrivate::generateHash(bool force) {
   for (auto &b : this->m_landBoundaries) {
     h.addData(b.hash(this->m_hashType, force));
   }
-  this->m_hash = h.getHash();
+  this->m_hash.reset(h.getHash());
 }
 
 Adcirc::Cryptography::HashType MeshPrivate::hashType() const {

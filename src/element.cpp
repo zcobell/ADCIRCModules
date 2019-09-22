@@ -33,7 +33,10 @@ typedef bg::model::polygon<point_t> polygon_t;
 /**
  * @brief Default constructor
  */
-Element::Element() : m_id(0), m_hash(nullptr) { this->resize(3); }
+Element::Element() : m_id(0) {
+  this->m_hash.reset(nullptr);
+  this->resize(3);
+}
 
 /**
  * @brief Constructor using references to three Node objects
@@ -42,12 +45,12 @@ Element::Element() : m_id(0), m_hash(nullptr) { this->resize(3); }
  * @param n2 pointer to node 2
  * @param n3 pointer to node 3
  */
-Element::Element(size_t id, Node *n1, Node *n2, Node *n3)
-    : m_id(id), m_hash(nullptr) {
+Element::Element(size_t id, Node *n1, Node *n2, Node *n3) : m_id(id) {
   this->resize(3);
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;
   this->m_nodes[2] = n3;
+  this->m_hash.reset(nullptr);
 }
 
 /**
@@ -58,17 +61,44 @@ Element::Element(size_t id, Node *n1, Node *n2, Node *n3)
  * @param n3 pointer to node 3
  * @param n4 pointer to node 4
  */
-Element::Element(size_t id, Node *n1, Node *n2, Node *n3, Node *n4)
-    : m_id(id), m_hash(nullptr) {
+Element::Element(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) : m_id(id) {
   this->resize(4);
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;
   this->m_nodes[2] = n3;
   this->m_nodes[3] = n4;
+  this->m_hash.reset(nullptr);
 }
 
-Element::~Element() {
-  if (this->m_hash != nullptr) delete[] this->m_hash;
+/**
+ * @brief Destructor
+ */
+Element::~Element() {}
+
+/**
+ * @brief Copy constructor
+ * @param e element to copy
+ */
+Element::Element(const Element &e) {
+  this->m_id = e.id();
+  this->m_nodes.resize(e.n());
+  for (size_t i = 0; i < e.n(); ++i) {
+    this->m_nodes[i] = e.node(i);
+  }
+}
+
+/**
+ * @brief Copy assignment operator
+ * @param e element to copy
+ * @return copied element reference
+ */
+Element &Element::operator=(const Element &e) {
+  this->m_id = e.id();
+  this->m_nodes.resize(e.n());
+  for (size_t i = 0; i < e.n(); ++i) {
+    this->m_nodes[i] = e.node(i);
+  }
+  return *this;
 }
 
 /**
@@ -153,7 +183,7 @@ void Element::setId(size_t id) { this->m_id = id; }
  * @param i position in node vector
  * @return Node pointer
  */
-Node *Element::node(size_t i) {
+Node *Element::node(size_t i) const {
   if (i < this->n()) {
     return this->m_nodes.at(i);
   }
@@ -165,7 +195,7 @@ Node *Element::node(size_t i) {
  * @brief Formats the element for writing to an Adcirc ASCII mesh file
  * @return formatted string
  */
-std::string Element::toAdcircString() {
+std::string Element::toAdcircString() const {
   if (this->n() == 3) {
     return boost::str(boost::format("%11i %3i %11i %11i %11i") % this->id() %
                       this->n() % this->node(0)->id() % this->node(1)->id() %
@@ -185,7 +215,7 @@ std::string Element::toAdcircString() {
  * @brief Formats the element for writing to an Aquaveo 2dm ASCII mesh file
  * @return formatted string
  */
-std::string Element::to2dmString() {
+std::string Element::to2dmString() const {
   if (this->n() == 3) {
     return boost::str(boost::format("%s %i %i %i %i %i") % "E3T" % this->id() %
                       this->node(0)->id() % this->node(1)->id() %
@@ -204,7 +234,7 @@ std::string Element::to2dmString() {
  * @brief Calculates the average size of the legs of an element
  * @return average element leg size
  */
-double Element::elementSize(bool geodesic) {
+double Element::elementSize(bool geodesic) const {
   double size = 0.0;
   for (size_t i = 0; i < this->n(); ++i) {
     std::pair<Node *, Node *> p = this->elementLeg(i);
@@ -271,7 +301,7 @@ void Element::sortVerticiesAboutCenter() {
  * @param i index of the leg around the element
  * @return pair of nodes
  */
-std::pair<Node *, Node *> Element::elementLeg(size_t i) {
+std::pair<Node *, Node *> Element::elementLeg(size_t i) const {
   assert(i < this->n());
 
   size_t j1 = i;
@@ -307,7 +337,7 @@ polygon_t element2polygon(std::vector<Node *> n) {
  * @param[out] xc x-coordinate of element center
  * @param[out] yc y-coordinate of element center
  */
-void Element::getElementCenter(double &xc, double &yc) {
+void Element::getElementCenter(double &xc, double &yc) const {
   point_t p;
   bg::centroid(element2polygon(this->m_nodes), p);
   xc = p.get<0>();
@@ -319,7 +349,9 @@ void Element::getElementCenter(double &xc, double &yc) {
  * @brief Calculates the area of the element
  * @return Area of triangle
  */
-double Element::area() { return bg::area(element2polygon(this->m_nodes)); }
+double Element::area() const {
+  return bg::area(element2polygon(this->m_nodes));
+}
 
 /**
  * @brief Determine if a point lies within an element
@@ -327,7 +359,7 @@ double Element::area() { return bg::area(element2polygon(this->m_nodes)); }
  * @param y y-coordinate
  * @return true if point lies within element, false otherwise
  */
-bool Element::isInside(double x, double y) {
+bool Element::isInside(double x, double y) const {
   return bg::covered_by(point_t(x, y), element2polygon(this->m_nodes));
 }
 
@@ -338,7 +370,7 @@ bool Element::isInside(double x, double y) {
  * This function uses the boost::geometry library to determine
  * if a point lies within an element
  */
-bool Element::isInside(Point location) {
+bool Element::isInside(Point location) const {
   return bg::covered_by(point_t(location.first, location.second),
                         element2polygon(this->m_nodes));
 }
@@ -350,7 +382,7 @@ bool Element::isInside(Point location) {
  * @param y station location
  * @return weights vector of interpolation weights for each vertex
  */
-std::vector<double> Element::interpolationWeights(double x, double y) {
+std::vector<double> Element::interpolationWeights(double x, double y) const {
   if (this->n() == 3) {
     return this->triangularInterpolation(x, y);
   } else {
@@ -367,8 +399,8 @@ std::vector<double> Element::interpolationWeights(double x, double y) {
  * moves its position.
  */
 std::string Element::hash(Adcirc::Cryptography::HashType h, bool force) {
-  if (this->m_hash == nullptr || force) this->generateHash(h);
-  return std::string(this->m_hash);
+  if (this->m_hash.get() == nullptr || force) this->generateHash(h);
+  return std::string(this->m_hash.get());
 }
 
 /**
@@ -379,7 +411,7 @@ void Element::generateHash(Adcirc::Cryptography::HashType h) {
   for (auto &n : this->m_nodes) {
     hash.addData(n->positionHash());
   }
-  this->m_hash = hash.getHash();
+  this->m_hash.reset(hash.getHash());
 }
 
 /**
@@ -388,7 +420,7 @@ void Element::generateHash(Adcirc::Cryptography::HashType h) {
  * @param y station location
  * @return weights vector of interpolation weights for each vertex
  */
-std::vector<double> Element::triangularInterpolation(double x, double y) {
+std::vector<double> Element::triangularInterpolation(double x, double y) const {
   std::vector<double> weights(3);
   std::fill(weights.begin(), weights.end(), 0.0);
 
@@ -427,7 +459,7 @@ std::vector<double> Element::triangularInterpolation(double x, double y) {
  * @return weights vector of interpolation weights for each vertex
  *
  */
-std::vector<double> Element::polygonInterpolation(double x, double y) {
+std::vector<double> Element::polygonInterpolation(double x, double y) const {
   std::vector<double> weights(3);
   std::fill(weights.begin(), weights.end(), 0.0);
 

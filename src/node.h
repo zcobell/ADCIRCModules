@@ -19,6 +19,7 @@
 #ifndef ADCMOD_NODE_H
 #define ADCMOD_NODE_H
 
+#include <memory>
 #include <string>
 #include <utility>
 #include "adcircmodules_global.h"
@@ -43,6 +44,9 @@ class Node {
  public:
   ADCIRCMODULES_EXPORT Node();
   ADCIRCMODULES_EXPORT Node(size_t id, double x, double y, double z);
+  ADCIRCMODULES_EXPORT Node(const Node &n);
+
+  ADCIRCMODULES_EXPORT Node &operator=(const Node &n);
 
   ADCIRCMODULES_EXPORT ~Node();
 
@@ -76,12 +80,12 @@ class Node {
                bool force = false);
 
  private:
-  size_t m_id;           /// Integer name of a mesh node
-  double m_x;            /// x position of a node
-  double m_y;            /// y position of a node
-  double m_z;            /// z position of a node
-  char* m_hash;          /// hash identifier for the node
-  char* m_positionHash;  /// has of only node's position
+  size_t m_id;                           /// Integer name of a mesh node
+  double m_x;                            /// x position of a node
+  double m_y;                            /// y position of a node
+  double m_z;                            /// z position of a node
+  std::unique_ptr<char> m_hash;          /// hash identifier for the node
+  std::unique_ptr<char> m_positionHash;  /// has of only node's position
 
   void generateHash(Adcirc::Cryptography::HashType h =
                         Adcirc::Cryptography::AdcircDefaultHash);

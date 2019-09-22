@@ -30,9 +30,10 @@ Node::Node()
     : m_id(0),
       m_x(adcircmodules_default_value<double>()),
       m_y(adcircmodules_default_value<double>()),
-      m_z(adcircmodules_default_value<double>()),
-      m_hash(nullptr),
-      m_positionHash(nullptr) {}
+      m_z(adcircmodules_default_value<double>()) {
+  this->m_hash.reset(nullptr);
+  this->m_positionHash.reset(nullptr);
+}
 
 /**
  * @brief Constructor taking the id, x, y, and z for the node
@@ -42,16 +43,42 @@ Node::Node()
  * @param z z elevation
  */
 Node::Node(size_t id, double x, double y, double z)
-    : m_id(id),
-      m_x(x),
-      m_y(y),
-      m_z(z),
-      m_hash(nullptr),
-      m_positionHash(nullptr) {}
+    : m_id(id), m_x(x), m_y(y), m_z(z) {
+  this->m_hash.reset(nullptr);
+  this->m_positionHash.reset(nullptr);
+}
 
-Node::~Node() {
-  if (this->m_hash != nullptr) delete[] this->m_hash;
-  if (this->m_positionHash != nullptr) delete[] this->m_positionHash;
+/**
+ * @brief Destructor
+ */
+Node::~Node() {}
+
+/**
+ * @brief Copy constructor
+ * @param n copied node
+ */
+Node::Node(const Node &n) {
+  this->m_id = n.id();
+  this->m_x = n.x();
+  this->m_y = n.y();
+  this->m_z = n.z();
+  this->m_hash.reset(nullptr);
+  this->m_positionHash.reset(nullptr);
+}
+
+/**
+ * @brief Copy assignment operator
+ * @param n node to copy
+ * @return reference to copied node
+ */
+Node &Node::operator=(const Node &n) {
+  this->m_x = n.x();
+  this->m_y = n.y();
+  this->m_z = n.z();
+  this->m_id = n.id();
+  this->m_hash.reset(nullptr);
+  this->m_positionHash.reset(nullptr);
+  return *this;
 }
 
 /**
@@ -66,7 +93,7 @@ void Node::setNode(size_t id, double x, double y, double z) {
   this->m_x = x;
   this->m_y = y;
   this->m_z = z;
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
   return;
 }
 
@@ -160,8 +187,8 @@ Point Node::toPoint() { return Point(this->m_x, this->m_y); }
  * the node's position and z-elevation
  */
 std::string Node::hash(Adcirc::Cryptography::HashType h, bool force) {
-  if (this->m_hash == nullptr || force) this->generateHash(h);
-  return std::string(this->m_hash);
+  if (this->m_hash.get() == nullptr || force) this->generateHash(h);
+  return std::string(this->m_hash.get());
 }
 
 /**
@@ -174,8 +201,9 @@ std::string Node::hash(Adcirc::Cryptography::HashType h, bool force) {
  * z-elevation is the same.
  */
 std::string Node::positionHash(Adcirc::Cryptography::HashType h, bool force) {
-  if (this->m_positionHash == nullptr || force) this->generatePositionHash();
-  return std::string(this->m_positionHash);
+  if (this->m_positionHash.get() == nullptr || force)
+    this->generatePositionHash();
+  return std::string(this->m_positionHash.get());
 }
 
 /**
@@ -187,7 +215,7 @@ void Node::generateHash(Adcirc::Cryptography::HashType h) {
   hash.addData(boost::str(boost::format("%16.10f") % this->x()));
   hash.addData(boost::str(boost::format("%16.10f") % this->y()));
   hash.addData(boost::str(boost::format("%16.10f") % this->z()));
-  this->m_hash = hash.getHash();
+  this->m_hash.reset(hash.getHash());
   return;
 }
 
@@ -199,6 +227,6 @@ void Node::generatePositionHash(Adcirc::Cryptography::HashType h) {
   Adcirc::Cryptography::Hash hash(h);
   hash.addData(boost::str(boost::format("%16.10f") % this->x()));
   hash.addData(boost::str(boost::format("%16.10f") % this->y()));
-  this->m_positionHash = hash.getHash();
+  this->m_positionHash.reset(hash.getHash());
   return;
 }
