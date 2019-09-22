@@ -700,11 +700,11 @@ IF(UNIX OR CYGWIN)
         #...Python Test
         IF(PYTHON_TESTING)
             IF(${PYTHONTYPE}==2)
-               SET(PYTHON_TESTNAME TEST_PyAdcirc_PYTHON2)
+               SET(PYTHON_TESTNAME TEST_PYTHON2_PyAdcirc)
                ADD_TEST( NAME ${PYTHON_TESTNAME} COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/testing/python_tests/pyadcirc_python2_testcase.py
                          WORKING_DIRECTORY ${CMAKE_BINARY_DIR} )
             ELSE()
-               SET(PYTHON_TESTNAME TEST_PyAdcirc_PYTHON3)
+                SET(PYTHON_TESTNAME TEST_PYTHON3_PyAdcirc)
                ADD_TEST( NAME ${PYTHON_TESTNAME} COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/testing/python_tests/pyadcirc_python3_testcase.py
                          WORKING_DIRECTORY ${CMAKE_BINARY_DIR} )
             ENDIF()
