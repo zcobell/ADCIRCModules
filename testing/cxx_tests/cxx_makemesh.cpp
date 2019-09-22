@@ -31,6 +31,12 @@ int main() {
   m.setMeshHeaderString("Manually generated mesh");
 
   m.write("../testing/test_files/manualmesh.grd");
+
+  double a = m.element(0)->area();
+  bool inside = m.element(0)->isInside(-89.0,26.0);
+
+  std::cout << "Element Area: " << a << std::endl;
+  std::cout << "Is inside: " << inside << std::endl;
  
   return 0;
 }
