@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/env python2
 import PyAdcirc
 import math
 
@@ -40,20 +40,20 @@ print "Fort13 read successfully"
 print "  Manning n at node",m.node(1).id(),": ",f.attribute("mannings_n_at_sea_floor",1).value(0)
 print "  Tau0 at node",m.node(1).id(),": ",f.attribute("primitive_weighting_in_continuity_equation",1).value(0)
 print "Reading an adcirc ascii output file"
-o = PyAdcirc.OutputFile("../testing/test_files/maxele.63")
+o = PyAdcirc.ReadOutput("../testing/test_files/maxele.63")
 o.open();
 o.read();
 o.close()
 print "   Output value for record 1 at node 42: ",o.data(0).z(41)
 print "Adcirc maxele ascii file read successfully"
 print "Reading netcdf maxele file"
-onc = PyAdcirc.OutputFile("../testing/test_files/maxele.63.nc")
+onc = PyAdcirc.ReadOutput("../testing/test_files/maxele.63.nc")
 onc.open()
 onc.read()
 onc.close();
 print "   Output value for reacord 1 at node 42: ",onc.data(0).z(41)
 print "Reading ascii timeseries scalar file"
-asc = PyAdcirc.OutputFile("../testing/test_files/sparse_fort.63")
+asc = PyAdcirc.ReadOutput("../testing/test_files/sparse_fort.63")
 asc.open();
 asc.read();
 asc.read();
@@ -61,7 +61,7 @@ asc.read();
 print "    Output value for record 3 at node 925: ",asc.data(2).z(1220);
 asc.close();
 print "Reading timeseries netcdf vector file"
-ncv=PyAdcirc.OutputFile("../testing/test_files/fort.64.nc")
+ncv=PyAdcirc.ReadOutput("../testing/test_files/fort.64.nc")
 ncv.open();
 ncv.read();
 ncv.read();
