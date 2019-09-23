@@ -34,7 +34,7 @@ std::string HarmonicsRecord::name() const { return this->m_impl->name(); }
 
 /**
  * @brief Sets the name of the harmonic constiuent in this object
- * @param name name
+ * @param[in] name name
  */
 void HarmonicsRecord::setName(const std::string& name) {
   this->m_impl->setName(name);
@@ -42,7 +42,7 @@ void HarmonicsRecord::setName(const std::string& name) {
 
 /**
  * @brief Returns the value of this record at the specified index
- * @param index array index
+ * @param[in] index array index
  * @return value at array index
  */
 double HarmonicsRecord::value(size_t index) {
@@ -57,8 +57,8 @@ std::vector<double> HarmonicsRecord::values() { return this->m_impl->values(); }
 
 /**
  * @brief Sets the value at the specified index to a value
- * @param index position to set
- * @param value value to set
+ * @param[in] index position to set
+ * @param[in] value value to set
  */
 void HarmonicsRecord::set(size_t index, double value) {
   this->m_impl->set(index, value);
@@ -66,7 +66,7 @@ void HarmonicsRecord::set(size_t index, double value) {
 
 /**
  * @brief Sets values using a vector of values
- * @param value vector containing the values to set for this record
+ * @param[in] value vector containing the values to set for this record
  *
  * Note that the vector must be the same size as the number of nodes in this
  * record
@@ -78,7 +78,7 @@ void HarmonicsRecord::set(const std::vector<double>& value) {
 
 /**
  * @brief Resizes this object to a specified size
- * @param numNodes new size for this object
+ * @param[in] numNodes new size for this object
  *
  * Note: All data will be destroyed
  */
@@ -94,7 +94,7 @@ double HarmonicsRecord::frequency() const { return this->m_impl->frequency(); }
 
 /**
  * @brief Sets the frequency for this harmonic constituent
- * @param frequency frequency for this harmonic constituent
+ * @param[in] frequency frequency for this harmonic constituent
  */
 void HarmonicsRecord::setFrequency(double frequency) {
   this->m_impl->setFrequency(frequency);
@@ -110,7 +110,7 @@ double HarmonicsRecord::nodalFactor() const {
 
 /**
  * @brief Sets the nodal factor for this harmonic constituent
- * @param frequency nodal factor for this harmonic constituent
+ * @param[in] frequency nodal factor for this harmonic constituent
  */
 void HarmonicsRecord::setNodalFactor(double nodalFactor) {
   this->m_impl->setNodalFactor(nodalFactor);
@@ -126,7 +126,7 @@ double HarmonicsRecord::equilibriumArg() const {
 
 /**
  * @brief Sets the equilibrium argument for this harmonic constituent
- * @param frequency equilibrium argument for this harmonic constituent
+ * @param[in] frequency equilibrium argument for this harmonic constituent
  */
 void HarmonicsRecord::setEquilibriumArg(double equilibriumArg) {
   this->m_impl->setEquilibriumArg(equilibriumArg);

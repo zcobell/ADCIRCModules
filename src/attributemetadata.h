@@ -33,7 +33,7 @@ namespace ModelParameters {
  * @author Zachary Cobell
  * @brief Class handles the organization of nodal attribute metadata, i.e. name,
  * default value, etc
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved.
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved.
  * @license This project is released under the terms of the GNU General Public
  * License v3
  *

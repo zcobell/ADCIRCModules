@@ -33,8 +33,8 @@ namespace Geometry {
 /**
  * @class Node
  * @author Zachary Cobell
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
- * is released under the terms of the GNU General Public License v3
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
  * @brief The Node class describes the x, y, z position of a single mesh
  * node
  *
@@ -86,6 +86,8 @@ class Node {
   double m_z;                            /// z position of a node
   std::unique_ptr<char> m_hash;          /// hash identifier for the node
   std::unique_ptr<char> m_positionHash;  /// has of only node's position
+
+  static void nodeCopier(Node *const a, const Node *b);
 
   void generateHash(Adcirc::Cryptography::HashType h =
                         Adcirc::Cryptography::AdcircDefaultHash);

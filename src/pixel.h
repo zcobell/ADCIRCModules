@@ -28,8 +28,8 @@ namespace Raster {
 /**
  * @class Pixel
  * @author Zachary Cobell
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
- * is released under the terms of the GNU General Public License v3
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
  * @brief Describes a single pixel i,j used when working with raster data
  *
  */

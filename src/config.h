@@ -21,7 +21,7 @@
 
 #include <string>
 #include "adcircmodules_global.h"
-
+namespace Adcirc {
 std::string ADCIRCMODULES_EXPORT version();
-
+}
 #endif  // ADCMOD_CONFIG_H

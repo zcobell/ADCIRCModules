@@ -40,10 +40,10 @@ Element::Element() : m_id(0) {
 
 /**
  * @brief Constructor using references to three Node objects
- * @param id element id/label
- * @param n1 pointer to node 1
- * @param n2 pointer to node 2
- * @param n3 pointer to node 3
+ * @param[in] id element id/label
+ * @param[in] n1 pointer to node 1
+ * @param[in] n2 pointer to node 2
+ * @param[in] n3 pointer to node 3
  */
 Element::Element(size_t id, Node *n1, Node *n2, Node *n3) : m_id(id) {
   this->resize(3);
@@ -55,11 +55,11 @@ Element::Element(size_t id, Node *n1, Node *n2, Node *n3) : m_id(id) {
 
 /**
  * @brief Constructor using references to three Node objects
- * @param id element id/label
- * @param n1 pointer to node 1
- * @param n2 pointer to node 2
- * @param n3 pointer to node 3
- * @param n4 pointer to node 4
+ * @param[in] id element id/label
+ * @param[in] n1 pointer to node 1
+ * @param[in] n2 pointer to node 2
+ * @param[in] n3 pointer to node 3
+ * @param[in] n4 pointer to node 4
  */
 Element::Element(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) : m_id(id) {
   this->resize(4);
@@ -76,34 +76,37 @@ Element::Element(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) : m_id(id) {
 Element::~Element() {}
 
 /**
- * @brief Copy constructor
- * @param e element to copy
+ * @brief Element::elementCopier
+ * @param[inout] a element pointer to copy into
+ * @param[in] b element to copy
  */
-Element::Element(const Element &e) {
-  this->m_id = e.id();
-  this->m_nodes.resize(e.n());
-  for (size_t i = 0; i < e.n(); ++i) {
-    this->m_nodes[i] = e.node(i);
+void Element::elementCopier(Element *const a, const Element *const b) {
+  a->m_id = b->id();
+  a->m_nodes.resize(b->n());
+  for (size_t i = 0; i < b->n(); ++i) {
+    a->m_nodes[i] = b->node(i);
   }
 }
 
 /**
+ * @brief Copy constructor
+ * @param[in] e element to copy
+ */
+Element::Element(const Element &e) { Element::elementCopier(this, &e); }
+
+/**
  * @brief Copy assignment operator
- * @param e element to copy
+ * @param[in] e element to copy
  * @return copied element reference
  */
 Element &Element::operator=(const Element &e) {
-  this->m_id = e.id();
-  this->m_nodes.resize(e.n());
-  for (size_t i = 0; i < e.n(); ++i) {
-    this->m_nodes[i] = e.node(i);
-  }
+  Element::elementCopier(this, &e);
   return *this;
 }
 
 /**
  * @brief Resizes the internal array of verticies
- * @param nVertex number of verticies. Must be 3 or 4.
+ * @param[in] nVertex number of verticies. Must be 3 or 4.
  */
 void Element::resize(size_t nVertex) {
   if (nVertex != 3 && nVertex != 4) {
@@ -115,10 +118,10 @@ void Element::resize(size_t nVertex) {
 /**
  * @brief Function that sets up the element using three pointers and the
  * element id/label
- * @param id element id/label
- * @param n1 pointer to node 1
- * @param n2 pointer to node 2
- * @param n3 pointer to node 3
+ * @param[in] id element id/label
+ * @param[in] n1 pointer to node 1
+ * @param[in] n2 pointer to node 2
+ * @param[in] n3 pointer to node 3
  */
 void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3) {
   this->m_id = id;
@@ -132,11 +135,11 @@ void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3) {
 /**
  * @brief Function that sets up the element using three pointers and the
  * element id/label
- * @param id element id/label
- * @param n1 pointer to node 1
- * @param n2 pointer to node 2
- * @param n3 pointer to node 3
- * @param n4 pointer to node 4
+ * @param[in] id element id/label
+ * @param[in] n1 pointer to node 1
+ * @param[in] n2 pointer to node 2
+ * @param[in] n3 pointer to node 3
+ * @param[in] n4 pointer to node 4
  */
 void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) {
   this->m_id = id;
@@ -156,8 +159,8 @@ size_t Element::n() const { return this->m_nodes.size(); }
 
 /**
  * @brief Sets the node at the specified position to the supplied pointer
- * @param i location in the node vector for this element
- * @param node pointer to an Node object
+ * @param[in] i location in the node vector for this element
+ * @param[in] node pointer to an Node object
  */
 void Element::setNode(size_t i, Node *node) {
   if (i < this->n()) {
@@ -174,13 +177,13 @@ size_t Element::id() const { return this->m_id; }
 
 /**
  * @brief Sets the element id/flag
- * @param id element id/flag
+ * @param[in] id element id/flag
  */
 void Element::setId(size_t id) { this->m_id = id; }
 
 /**
  * @brief returns a pointer to the node at the specified position
- * @param i position in node vector
+ * @param[in] i position in node vector
  * @return Node pointer
  */
 Node *Element::node(size_t i) const {
@@ -298,7 +301,7 @@ void Element::sortVerticiesAboutCenter() {
 
 /**
  * @brief Returns a pair of nodes representing the leg of an element
- * @param i index of the leg around the element
+ * @param[in] i index of the leg around the element
  * @return pair of nodes
  */
 std::pair<Node *, Node *> Element::elementLeg(size_t i) const {
@@ -319,7 +322,7 @@ std::pair<Node *, Node *> Element::elementLeg(size_t i) const {
 
 /**
  * @brief Creates a boost::geometry element from the element
- * @param n vector of node pointers to use to create the geometry
+ * @param[in] n vector of node pointers to use to create the geometry
  * @return boost::geometry polygon
  */
 polygon_t element2polygon(std::vector<Node *> n) {
@@ -355,8 +358,8 @@ double Element::area() const {
 
 /**
  * @brief Determine if a point lies within an element
- * @param x x-coordinate
- * @param y y-coordinate
+ * @param[in] x x-coordinate
+ * @param[in] y y-coordinate
  * @return true if point lies within element, false otherwise
  */
 bool Element::isInside(double x, double y) const {
@@ -364,7 +367,7 @@ bool Element::isInside(double x, double y) const {
 }
 
 /**
- * @param location Point to check
+ * @param[in] location Point to check
  * @return true if point lies within element, false otherwise
  *
  * This function uses the boost::geometry library to determine
@@ -378,8 +381,8 @@ bool Element::isInside(Point location) const {
 /**
  * @brief Returns the interpolation weights for computing the value of a given
  * point inside an element
- * @param x station location
- * @param y station location
+ * @param[in] x station location
+ * @param[in] y station location
  * @return weights vector of interpolation weights for each vertex
  */
 std::vector<double> Element::interpolationWeights(double x, double y) const {
@@ -392,6 +395,7 @@ std::vector<double> Element::interpolationWeights(double x, double y) const {
 
 /**
  * @brief Gets the hash of the element
+ * @param[in] h type of cryptographic hash to generate
  * @return hash formatted as a string
  *
  * Element hashes are based upon the nodes that
@@ -405,6 +409,7 @@ std::string Element::hash(Adcirc::Cryptography::HashType h, bool force) {
 
 /**
  * @brief Generates the hash for this element
+ * @param[in] h type of cryptographic hash to generate
  */
 void Element::generateHash(Adcirc::Cryptography::HashType h) {
   Adcirc::Cryptography::Hash hash(h);
@@ -416,8 +421,8 @@ void Element::generateHash(Adcirc::Cryptography::HashType h) {
 
 /**
  * @brief Performs a barycentric interpolation
- * @param x station location
- * @param y station location
+ * @param[in] x station location
+ * @param[in] y station location
  * @return weights vector of interpolation weights for each vertex
  */
 std::vector<double> Element::triangularInterpolation(double x, double y) const {
@@ -454,8 +459,8 @@ std::vector<double> Element::triangularInterpolation(double x, double y) const {
  * to make sure that the ordering is logical, but this is done on a copy of
  * the element so that the parent structure isn't altered.
  *
- * @param x station location
- * @param y station location
+ * @param[in] x station location
+ * @param[in] y station location
  * @return weights vector of interpolation weights for each vertex
  *
  */

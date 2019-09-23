@@ -20,7 +20,7 @@ namespace ModelParameters {
 /**
  * @class NodalAttributes
  * @author Zachary Cobell
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
  * is released under the terms of the GNU General Public License v3
  * @brief The NodalAttributes class handles the reading and writing of Nodal
  * Attributes (i.e. fort.13) files

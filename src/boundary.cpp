@@ -41,17 +41,19 @@ constexpr std::array<int, 15> c_bctypes_singleNodeBoundaries = {
 Boundary::Boundary() {
   this->m_hash.reset(nullptr);
   this->setBoundary(-1, 0);
+  this->m_averageLongitude = std::numeric_limits<double>::max();
 }
 
 /**
  * @brief Initializes the boundary with user specified boundary type and length
- * @param boundaryCode ADCIRC model boundary code
- * @param boundaryLength number of nodes along this boundary
+ * @param[in] boundaryCode ADCIRC model boundary code
+ * @param[in] boundaryLength number of nodes along this boundary
  */
 Boundary::Boundary(int boundaryCode, size_t boundaryLength) {
   this->setBoundaryCode(boundaryCode);
   this->setBoundaryLength(boundaryLength);
   this->m_hash.reset(nullptr);
+  this->m_averageLongitude = std::numeric_limits<double>::max();
 }
 
 /**
@@ -60,124 +62,77 @@ Boundary::Boundary(int boundaryCode, size_t boundaryLength) {
 Boundary::~Boundary() {}
 
 /**
- * @brief Copy constructor
- * @param b boundary to copy
+ * @brief Function to copy data in a boundary. Used in the copy constructor and
+ * copy assignment operators
+ * @param[inout] a resultant boundary
+ * @param[in] b boundary that is copied
  */
-Boundary::Boundary(const Boundary &b) {
-  this->m_boundaryCode = b.boundaryCode();
-  this->m_boundaryLength = b.boundaryLength();
-  if (b.isSingleNodeBoundary()) {
-    this->m_node1.resize(this->m_boundaryLength);
-    for (size_t i = 0; i < this->boundaryLength(); ++i) {
-      this->m_node1[i] = b.node1(i);
+void Boundary::boundaryCopier(Boundary *const a, const Boundary *const b) {
+  a->m_boundaryCode = b->boundaryCode();
+  a->m_boundaryLength = b->boundaryLength();
+  if (b->isSingleNodeBoundary()) {
+    a->m_node1.resize(a->m_boundaryLength);
+    for (size_t i = 0; i < a->boundaryLength(); ++i) {
+      a->m_node1[i] = b->node1(i);
     }
-  } else if (b.isExternalWeir()) {
-    this->m_node1.resize(this->m_boundaryLength);
-    this->m_crestElevation.resize(this->m_boundaryLength);
-    this->m_supercriticalWeirCoefficient.resize(this->m_boundaryLength);
-    for (size_t i = 0; i < this->m_boundaryLength; ++i) {
-      this->m_node1[i] = b.node1(i);
-      this->m_crestElevation[i] = b.crestElevation(i);
-      this->m_supercriticalWeirCoefficient[i] =
-          b.supercriticalWeirCoefficient(i);
+  } else if (b->isExternalWeir()) {
+    a->m_node1.resize(a->m_boundaryLength);
+    a->m_crestElevation.resize(a->m_boundaryLength);
+    a->m_supercriticalWeirCoefficient.resize(a->m_boundaryLength);
+    for (size_t i = 0; i < a->m_boundaryLength; ++i) {
+      a->m_node1[i] = b->node1(i);
+      a->m_crestElevation[i] = b->crestElevation(i);
+      a->m_supercriticalWeirCoefficient[i] = b->supercriticalWeirCoefficient(i);
     }
-  } else if (b.isInternalWeir()) {
-    this->m_node1.resize(this->m_boundaryLength);
-    this->m_node2.resize(this->m_boundaryLength);
-    this->m_crestElevation.resize(this->m_boundaryLength);
-    this->m_supercriticalWeirCoefficient.resize(this->m_boundaryLength);
-    this->m_subcriticalWeirCoefficient.resize(this->m_boundaryLength);
-    for (size_t i = 0; i < this->boundaryLength(); ++i) {
-      this->m_node1[i] = b.node1(i);
-      this->m_node2[i] = b.node2(i);
-      this->m_crestElevation[i] = b.crestElevation(i);
-      this->m_supercriticalWeirCoefficient[i] =
-          b.supercriticalWeirCoefficient(i);
-      this->m_subcriticalWeirCoefficient[i] = b.subcriticalWeirCoefficient(i);
+  } else if (b->isInternalWeir()) {
+    a->m_node1.resize(a->m_boundaryLength);
+    a->m_node2.resize(a->m_boundaryLength);
+    a->m_crestElevation.resize(a->m_boundaryLength);
+    a->m_supercriticalWeirCoefficient.resize(a->m_boundaryLength);
+    a->m_subcriticalWeirCoefficient.resize(a->m_boundaryLength);
+    for (size_t i = 0; i < a->boundaryLength(); ++i) {
+      a->m_node1[i] = b->node1(i);
+      a->m_node2[i] = b->node2(i);
+      a->m_crestElevation[i] = b->crestElevation(i);
+      a->m_supercriticalWeirCoefficient[i] = b->supercriticalWeirCoefficient(i);
+      a->m_subcriticalWeirCoefficient[i] = b->subcriticalWeirCoefficient(i);
     }
-  } else if (b.isInternalWeirWithPipes()) {
-    this->m_node1.resize(this->m_boundaryLength);
-    this->m_node2.resize(this->m_boundaryLength);
-    this->m_crestElevation.resize(this->m_boundaryLength);
-    this->m_supercriticalWeirCoefficient.resize(this->m_boundaryLength);
-    this->m_subcriticalWeirCoefficient.resize(this->m_boundaryLength);
-    this->m_pipeHeight.resize(this->m_boundaryLength);
-    this->m_pipeDiameter.resize(this->m_boundaryLength);
-    this->m_pipeCoefficient.resize(this->m_boundaryLength);
-    for (size_t i = 0; i < this->boundaryLength(); ++i) {
-      this->m_node1[i] = b.node1(i);
-      this->m_node2[i] = b.node2(i);
-      this->m_crestElevation[i] = b.crestElevation(i);
-      this->m_supercriticalWeirCoefficient[i] =
-          b.supercriticalWeirCoefficient(i);
-      this->m_subcriticalWeirCoefficient[i] = b.subcriticalWeirCoefficient(i);
-      this->m_pipeHeight[i] = b.pipeHeight(i);
-      this->m_pipeDiameter[i] = b.pipeDiameter(i);
-      this->m_pipeCoefficient[i] = b.pipeCoefficient(i);
+  } else if (b->isInternalWeirWithPipes()) {
+    a->m_node1.resize(a->m_boundaryLength);
+    a->m_node2.resize(a->m_boundaryLength);
+    a->m_crestElevation.resize(a->m_boundaryLength);
+    a->m_supercriticalWeirCoefficient.resize(a->m_boundaryLength);
+    a->m_subcriticalWeirCoefficient.resize(a->m_boundaryLength);
+    a->m_pipeHeight.resize(a->m_boundaryLength);
+    a->m_pipeDiameter.resize(a->m_boundaryLength);
+    a->m_pipeCoefficient.resize(a->m_boundaryLength);
+    for (size_t i = 0; i < a->boundaryLength(); ++i) {
+      a->m_node1[i] = b->node1(i);
+      a->m_node2[i] = b->node2(i);
+      a->m_crestElevation[i] = b->crestElevation(i);
+      a->m_supercriticalWeirCoefficient[i] = b->supercriticalWeirCoefficient(i);
+      a->m_subcriticalWeirCoefficient[i] = b->subcriticalWeirCoefficient(i);
+      a->m_pipeHeight[i] = b->pipeHeight(i);
+      a->m_pipeDiameter[i] = b->pipeDiameter(i);
+      a->m_pipeCoefficient[i] = b->pipeCoefficient(i);
     }
   }
-  this->m_hash.reset(nullptr);
+  a->m_hash.reset(nullptr);
 }
 
 /**
+ * @brief Copy constructor
+ * @param[in] b boundary to copy
+ */
+Boundary::Boundary(const Boundary &b) { Boundary::boundaryCopier(this, &b); }
+
+/**
  * @brief Copy assignment operator
- * @param b boundary to copy
- * @return refrence to copied boundary
+ * @param[in] b boundary to copy
+ * @return pointer to copied boundary
  */
 Boundary &Boundary::operator=(const Boundary &b) {
-  this->m_boundaryCode = b.boundaryCode();
-  this->m_boundaryLength = b.boundaryLength();
-  if (b.isSingleNodeBoundary()) {
-    this->m_node1.resize(this->m_boundaryLength);
-    for (size_t i = 0; i < this->boundaryLength(); ++i) {
-      this->m_node1[i] = b.node1(i);
-    }
-  } else if (b.isExternalWeir()) {
-    this->m_node1.resize(this->m_boundaryLength);
-    this->m_crestElevation.resize(this->m_boundaryLength);
-    this->m_supercriticalWeirCoefficient.resize(this->m_boundaryLength);
-    for (size_t i = 0; i < this->m_boundaryLength; ++i) {
-      this->m_node1[i] = b.node1(i);
-      this->m_crestElevation[i] = b.crestElevation(i);
-      this->m_supercriticalWeirCoefficient[i] =
-          b.supercriticalWeirCoefficient(i);
-    }
-  } else if (b.isInternalWeir()) {
-    this->m_node1.resize(this->m_boundaryLength);
-    this->m_node2.resize(this->m_boundaryLength);
-    this->m_crestElevation.resize(this->m_boundaryLength);
-    this->m_supercriticalWeirCoefficient.resize(this->m_boundaryLength);
-    this->m_subcriticalWeirCoefficient.resize(this->m_boundaryLength);
-    for (size_t i = 0; i < this->boundaryLength(); ++i) {
-      this->m_node1[i] = b.node1(i);
-      this->m_node2[i] = b.node2(i);
-      this->m_crestElevation[i] = b.crestElevation(i);
-      this->m_supercriticalWeirCoefficient[i] =
-          b.supercriticalWeirCoefficient(i);
-      this->m_subcriticalWeirCoefficient[i] = b.subcriticalWeirCoefficient(i);
-    }
-  } else if (b.isInternalWeirWithPipes()) {
-    this->m_node1.resize(this->m_boundaryLength);
-    this->m_node2.resize(this->m_boundaryLength);
-    this->m_crestElevation.resize(this->m_boundaryLength);
-    this->m_supercriticalWeirCoefficient.resize(this->m_boundaryLength);
-    this->m_subcriticalWeirCoefficient.resize(this->m_boundaryLength);
-    this->m_pipeHeight.resize(this->m_boundaryLength);
-    this->m_pipeDiameter.resize(this->m_boundaryLength);
-    this->m_pipeCoefficient.resize(this->m_boundaryLength);
-    for (size_t i = 0; i < this->boundaryLength(); ++i) {
-      this->m_node1[i] = b.node1(i);
-      this->m_node2[i] = b.node2(i);
-      this->m_crestElevation[i] = b.crestElevation(i);
-      this->m_supercriticalWeirCoefficient[i] =
-          b.supercriticalWeirCoefficient(i);
-      this->m_subcriticalWeirCoefficient[i] = b.subcriticalWeirCoefficient(i);
-      this->m_pipeHeight[i] = b.pipeHeight(i);
-      this->m_pipeDiameter[i] = b.pipeDiameter(i);
-      this->m_pipeCoefficient[i] = b.pipeCoefficient(i);
-    }
-  }
-  this->m_hash.reset(nullptr);
+  Boundary::boundaryCopier(this, &b);
   return *this;
 }
 
@@ -245,8 +200,8 @@ bool Boundary::isSingleNodeBoundary() const {
 
 /**
  * @brief User specified initialization of the boundary
- * @param boundaryCode ADCIRC model boundary code
- * @param boundaryLength number of nodes along this boundary
+ * @param[in] boundaryCode ADCIRC model boundary code
+ * @param[in] boundaryLength number of nodes along this boundary
  */
 void Boundary::setBoundary(int boundaryCode, size_t boundaryLength) {
   this->setBoundaryCode(boundaryCode);
@@ -276,7 +231,7 @@ size_t Boundary::length() const { return this->boundaryLength(); }
 
 /**
  * @brief Allocates the arrays used by the bounary
- * @param boundaryLength number of nodes along the boundary
+ * @param[in] boundaryLength number of nodes along the boundary
  */
 void Boundary::setBoundaryLength(size_t boundaryLength) {
   if (this->boundaryLength() != boundaryLength) {
@@ -307,7 +262,7 @@ int Boundary::boundaryCode() const { return this->m_boundaryCode; }
 
 /**
  * @brief Sets the model boundary to the user specified code
- * @param boundaryCode Adcirc model boundary code
+ * @param[in] boundaryCode Adcirc model boundary code
  */
 void Boundary::setBoundaryCode(int boundaryCode) {
   this->m_boundaryCode = boundaryCode;
@@ -317,7 +272,7 @@ void Boundary::setBoundaryCode(int boundaryCode) {
 /**
  * @brief Returns the crest elevation for boundary types 3, 13, 23, 4, 24, 5,
  * and 25
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return crest elevation if applicable, otherwise
  * adcircmodules_default_value<double>().
  */
@@ -334,8 +289,8 @@ double Boundary::crestElevation(size_t index) const {
 /**
  * @brief Sets the crest elevation for boundary types 3, 13, 23, 4, 24, 5, and
  * 25
- * @param index position along the boundary
- * @param crestElevation height above the datum for the weir crest
+ * @param[in] index position along the boundary
+ * @param[in] crestElevation height above the datum for the weir crest
  */
 void Boundary::setCrestElevation(size_t index, double crestElevation) {
   if (this->isWeir()) {
@@ -353,7 +308,7 @@ void Boundary::setCrestElevation(size_t index, double crestElevation) {
 /**
  * @brief Returns the coeffieicnt of subcritical weir flow for boundary types 4,
  * 24, 5, and 25
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return subcritical weir coefficient
  */
 double Boundary::subcriticalWeirCoefficient(size_t index) const {
@@ -369,8 +324,8 @@ double Boundary::subcriticalWeirCoefficient(size_t index) const {
 /**
  * @brief Sets the coefficient of subcritical flow for boundary types 4, 24, 5,
  * and 25
- * @param index position along the boundary
- * @param subcriticalWeirCoefficient coefficient of subcritical flow
+ * @param[in] index position along the boundary
+ * @param[in] subcriticalWeirCoefficient coefficient of subcritical flow
  */
 void Boundary::setSubcriticalWeirCoefficient(
     size_t index, double subcriticalWeirCoefficient) {
@@ -389,7 +344,7 @@ void Boundary::setSubcriticalWeirCoefficient(
 /**
  * @brief Returns the coefficient of supercritical flow for the specified
  * position along the boundary for boundary types 3, 13, 23, 4, 24, 5, and 25
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return coefficient of supercritical flow
  */
 double Boundary::supercriticalWeirCoefficient(size_t index) const {
@@ -403,8 +358,8 @@ double Boundary::supercriticalWeirCoefficient(size_t index) const {
 }
 
 /**
- * @param index position along the boundary
- * @param supercriticalWeirCoefficient coefficient of supercritical flow for
+ * @param[in] index position along the boundary
+ * @param[in] supercriticalWeirCoefficient coefficient of supercritical flow for
  * boundarytypes 3, 13, 23, 4, 24, 5, and 25
  */
 void Boundary::setSupercriticalWeirCoefficient(
@@ -425,7 +380,7 @@ void Boundary::setSupercriticalWeirCoefficient(
 /**
  * @brief Returns the elevation of the pipe above datum for type 5 and 25
  * boundaries
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return height of pipe center above datum
  */
 double Boundary::pipeHeight(size_t index) const {
@@ -441,8 +396,8 @@ double Boundary::pipeHeight(size_t index) const {
 /**
  * @brief Sets the elevation of the pipe above datum for type 5 and 25
  * boundaries
- * @param index position along the boundary
- * @param pipeHeight elevation of the pipe center above datum
+ * @param[in] index position along the boundary
+ * @param[in] pipeHeight elevation of the pipe center above datum
  */
 void Boundary::setPipeHeight(size_t index, double pipeHeight) {
   if (this->isInternalWeirWithPipes()) {
@@ -459,7 +414,7 @@ void Boundary::setPipeHeight(size_t index, double pipeHeight) {
 
 /**
  * @brief Returns the diameter of the pipe
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return diameter of the pipe
  */
 double Boundary::pipeDiameter(size_t index) const {
@@ -474,8 +429,8 @@ double Boundary::pipeDiameter(size_t index) const {
 
 /**
  * @brief Sets the diameter of the pipe
- * @param index postion along the boundary
- * @param pipeDiameter diameter of the pipe
+ * @param[in] index postion along the boundary
+ * @param[in] pipeDiameter diameter of the pipe
  */
 void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
   if (this->isInternalWeirWithPipes()) {
@@ -492,7 +447,7 @@ void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
 
 /**
  * @brief Returns the pipe coefficient
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return pipe coefficient
  */
 double Boundary::pipeCoefficient(size_t index) const {
@@ -507,8 +462,8 @@ double Boundary::pipeCoefficient(size_t index) const {
 
 /**
  * @brief Sets the pipe coefficient
- * @param index position along boundary
- * @param pipeCoefficient pipe coefficient
+ * @param[in] index position along boundary
+ * @param[in] pipeCoefficient pipe coefficient
  */
 void Boundary::setPipeCoefficient(size_t index, double pipeCoefficient) {
   if (this->isInternalWeirWithPipes()) {
@@ -523,7 +478,7 @@ void Boundary::setPipeCoefficient(size_t index, double pipeCoefficient) {
 
 /**
  * @brief Returns a pointer to the node on the boundary
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return pointer to an Node object
  */
 Node *Boundary::node1(size_t index) const {
@@ -536,8 +491,8 @@ Node *Boundary::node1(size_t index) const {
 
 /**
  * @brief Sets a pointer to a node
- * @param index position along the boundary
- * @param node1 Pointer to an Node object
+ * @param[in] index position along the boundary
+ * @param[in] node1 Pointer to an Node object
  */
 void Boundary::setNode1(size_t index, Node *node1) {
   if (index < this->boundaryLength()) {
@@ -551,7 +506,7 @@ void Boundary::setNode1(size_t index, Node *node1) {
 /**
  * @brief Returns a pointer to the paired node for type 4, 24, 5, and 25
  * boundaries
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return Node pointer
  */
 Node *Boundary::node2(size_t index) const {
@@ -566,8 +521,8 @@ Node *Boundary::node2(size_t index) const {
 
 /**
  * @brief Sets the node pair for type 4, 24, 5, and 25 boundaries
- * @param index position along the boundary
- * @param node2 pointer to an Node object
+ * @param[in] index position along the boundary
+ * @param[in] node2 pointer to an Node object
  */
 void Boundary::setNode2(size_t index, Node *node2) {
   if (this->isInternalWeir()) {
@@ -637,6 +592,7 @@ std::string Boundary::hash(Adcirc::Cryptography::HashType h, bool force) {
 
 /**
  * @brief Generates the hash data for this boundary
+ * @param[in] h cryptographic hashing algorithm to use
  */
 void Boundary::generateHash(Adcirc::Cryptography::HashType h) {
   Adcirc::Cryptography::Hash hash(h);
@@ -670,7 +626,7 @@ void Boundary::generateHash(Adcirc::Cryptography::HashType h) {
 
 /**
  * @brief Returns the average longitude of the boundary
- * @param force force recalculation of the average longitude
+ * @param[in] force force recalculation of the average longitude
  * @return average longitude
  */
 double Boundary::averageLongitude(bool force) {

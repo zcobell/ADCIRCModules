@@ -30,7 +30,7 @@ namespace ModelParameters {
  * @class Attribute
  * @author Zachary Cobell
  * @brief Class handles nodal attributes, i.e. an ADCIRC unit 13 file
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
  * is released under the terms of the GNU General Public License v3
  *
  * The Attribute class is designed to handle nodal attributes of variable

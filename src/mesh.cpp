@@ -97,8 +97,8 @@ void Mesh::read(Adcirc::Geometry::MeshFormat format) {
 
 /**
  * @brief Writes an Mesh object to disk in ASCII format
- * @param filename name of the output file to write
- * @param format format specified for the output file
+ * @param[in] filename name of the output file to write
+ * @param[in] format format specified for the output file
  *
  * If no output specifier is supplied, format is guessed from file extension.
  */
@@ -115,7 +115,7 @@ std::string Mesh::filename() const { return this->m_impl->filename(); }
 
 /**
  * @brief Sets the name of the mesh to be read
- * @param filename Name of the mesh
+ * @param[in] filename Name of the mesh
  */
 void Mesh::setFilename(const std::string &filename) {
   this->m_impl->setFilename(filename);
@@ -131,7 +131,7 @@ std::string Mesh::meshHeaderString() const {
 
 /**
  * @brief Sets the header for the mesh
- * @param meshHeaderString header
+ * @param[in] meshHeaderString header
  */
 void Mesh::setMeshHeaderString(const std::string &meshHeaderString) {
   this->m_impl->setMeshHeaderString(meshHeaderString);
@@ -146,7 +146,7 @@ size_t Mesh::numNodes() const { return this->m_impl->numNodes(); }
 /**
  * @brief Sets the number of nodes in the mesh. Note this does not resize the
  * mesh
- * @param numNodes number of nodes
+ * @param[in] numNodes number of nodes
  */
 void Mesh::setNumNodes(size_t numNodes) { this->m_impl->setNumNodes(numNodes); }
 
@@ -159,7 +159,7 @@ size_t Mesh::numElements() const { return this->m_impl->numElements(); }
 /**
  * @brief Sets the number of elements in the mesh. Note: This does not resize
  * the mesh
- * @param numElements Number of elements
+ * @param[in] numElements Number of elements
  */
 void Mesh::setNumElements(size_t numElements) {
   this->m_impl->setNumElements(numElements);
@@ -176,7 +176,7 @@ size_t Mesh::numOpenBoundaries() const {
 /**
  * @brief Sets the number of open boundaries in the model. Note this does not
  * resize the boundary array
- * @param numOpenBoundaries Number of open boundaries
+ * @param[in] numOpenBoundaries Number of open boundaries
  */
 void Mesh::setNumOpenBoundaries(size_t numOpenBoundaries) {
   this->m_impl->setNumOpenBoundaries(numOpenBoundaries);
@@ -193,7 +193,7 @@ size_t Mesh::numLandBoundaries() const {
 /**
  * @brief Sets the number of land boundaries in the model. Note this does not
  * resize the boundary array
- * @param numLandBoundaries Number of land boundaries
+ * @param[in] numLandBoundaries Number of land boundaries
  */
 void Mesh::setNumLandBoundaries(size_t numLandBoundaries) {
   this->m_impl->setNumLandBoundaries(numLandBoundaries);
@@ -217,7 +217,7 @@ size_t Mesh::totalLandBoundaryNodes() {
 
 /**
  * @brief Sets the z-values of the mesh to the values found within a vector
- * @param z values that will be set to the mesh nodes z attribute
+ * @param[in] z values that will be set to the mesh nodes z attribute
  */
 void Mesh::setZ(std::vector<double> z) { this->m_impl->setZ(z); }
 
@@ -230,9 +230,10 @@ int Mesh::projection() { return this->m_impl->projection(); }
 /**
  * @brief Sets the mesh projection using an EPSG code. Note this does not
  * reproject the mesh.
- * @param epsg EPSG code for the mesh
- * @param isLatLon defines if the current projection is a lat/lon projection.
- * This helps define the significant digits when writing the mesh file
+ * @param[in] epsg EPSG code for the mesh
+ * @param[in] isLatLon defines if the current projection is a lat/lon
+ * projection. This helps define the significant digits when writing the mesh
+ * file
  */
 void Mesh::defineProjection(int epsg, bool isLatLon) {
   this->m_impl->defineProjection(epsg, isLatLon);
@@ -240,7 +241,7 @@ void Mesh::defineProjection(int epsg, bool isLatLon) {
 
 /**
  * @brief Reprojects a mesh into the specified projection
- * @param epsg EPSG coordinate system to convert the mesh into
+ * @param[in] epsg EPSG coordinate system to convert the mesh into
  */
 void Mesh::reproject(int epsg) { this->m_impl->reproject(epsg); }
 
@@ -252,6 +253,8 @@ bool Mesh::isLatLon() { return this->m_impl->isLatLon(); }
 
 /**
  * @brief Convertes mesh to the carte parallelogrammatique projection
+ * @param[in] lambda  lambda used in cpp projection
+ * @param[in] phi phi used in cpp projection
  *
  * This is the projection used within adcirc internally
  */
@@ -259,6 +262,8 @@ void Mesh::cpp(double lambda, double phi) { this->m_impl->cpp(lambda, phi); }
 
 /**
  * @brief Convertes mesh back from the carte parallelogrammatique projection
+ * @param[in] lambda  lambda used in cpp projection
+ * @param[in] phi phi used in cpp projection
  */
 void Mesh::inverseCpp(double lambda, double phi) {
   this->m_impl->inverseCpp(lambda, phi);
@@ -291,7 +296,7 @@ void Mesh::toElementShapefile(const std::string &outputFile) {
 /**
  * @brief Writes the boundary conditions of the mesh to ESRI shapefile format as
  * points
- * @param outputFile output file with .shp extension
+ * @param[in] outputFile output file with .shp extension
  */
 void Mesh::toBoundaryShapefile(const std::string &outputFile) {
   this->m_impl->toBoundaryShapefile(outputFile);
@@ -360,8 +365,8 @@ bool Mesh::elementOrderingIsLogical() {
 
 /**
  * @brief Finds the nearest mesh node to the provided x,y
- * @param x location to search
- * @param y location to search
+ * @param[in] x location to search
+ * @param[in] y location to search
  * @return nearest node index
  */
 size_t Mesh::findNearestNode(Point &location) {
@@ -369,7 +374,7 @@ size_t Mesh::findNearestNode(Point &location) {
 }
 
 /**
- * @param location location to search
+ * @param[in] location location to search
  * @return nearest node index
  */
 size_t Mesh::findNearestNode(double x, double y) {
@@ -378,8 +383,8 @@ size_t Mesh::findNearestNode(double x, double y) {
 
 /**
  * @brief Finds the nearest mesh element to the provided x,y
- * @param x location to search
- * @param y location to search
+ * @param[in] x location to search
+ * @param[in] y location to search
  * @return nearest element index
  */
 size_t Mesh::findNearestElement(Point &location) {
@@ -387,7 +392,7 @@ size_t Mesh::findNearestElement(Point &location) {
 }
 
 /**
- * @param location location to search
+ * @param[in] location location to search
  * @return nearest element index
  */
 size_t Mesh::findNearestElement(double x, double y) {
@@ -396,8 +401,8 @@ size_t Mesh::findNearestElement(double x, double y) {
 
 /**
  * @brief Finds the mesh element that a given location lies within
- * @param x location to search
- * @param y location to search
+ * @param[in] x location to search
+ * @param[in] y location to search
  * @return index of nearest element, large integer if not found
  */
 size_t Mesh::findElement(std::pair<double, double> location) {
@@ -406,7 +411,7 @@ size_t Mesh::findElement(std::pair<double, double> location) {
 
 /**
  * @brief Finds the mesh element that a given location lies within
- * @param location location to search
+ * @param[in] location location to search
  * @return index of nearest element, large integer if not found
  */
 size_t Mesh::findElement(double x, double y) {
@@ -415,9 +420,9 @@ size_t Mesh::findElement(double x, double y) {
 
 /**
  * @brief Mesh::findElement
- * @param x location to search
- * @param y location to search
- * @param weights barycentric weights for interpolation [triangles only]
+ * @param[in] x location to search
+ * @param[in] y location to search
+ * @param[out] weights barycentric weights for interpolation [triangles only]
  * @return index of nearest element, large integer if not found
  */
 size_t Mesh::findElement(double x, double y, std::vector<double> &weights) {
@@ -426,7 +431,7 @@ size_t Mesh::findElement(double x, double y, std::vector<double> &weights) {
 
 /**
  * @brief Returns a pointer to the requested node in the internal node vector
- * @param index location of the node in the vector
+ * @param[in] index location of the node in the vector
  * @return Node pointer
  */
 Adcirc::Geometry::Node *Mesh::node(size_t index) {
@@ -436,7 +441,7 @@ Adcirc::Geometry::Node *Mesh::node(size_t index) {
 /**
  * @brief Returns a pointer to the requested element in the internal element
  * vector
- * @param index location of the node in the vector
+ * @param[in] index location of the node in the vector
  * @return Element pointer
  */
 Adcirc::Geometry::Element *Mesh::element(size_t index) {
@@ -445,7 +450,7 @@ Adcirc::Geometry::Element *Mesh::element(size_t index) {
 
 /**
  * @brief Returns a pointer to an open boundary by index
- * @param index index in the open boundary array
+ * @param[in] index index in the open boundary array
  * @return Boundary pointer
  */
 Adcirc::Geometry::Boundary *Mesh::openBoundary(size_t index) {
@@ -454,7 +459,7 @@ Adcirc::Geometry::Boundary *Mesh::openBoundary(size_t index) {
 
 /**
  * @brief Returns a pointer to a land boundary by index
- * @param index index in the land boundary array
+ * @param[in] index index in the land boundary array
  * @return Boundary pointer
  */
 Adcirc::Geometry::Boundary *Mesh::landBoundary(size_t index) {
@@ -463,7 +468,7 @@ Adcirc::Geometry::Boundary *Mesh::landBoundary(size_t index) {
 
 /**
  * @brief Returns a pointer to the requested node by its ID
- * @param id Nodal ID to return a reference to
+ * @param[in] id Nodal ID to return a reference to
  * @return Node pointer
  */
 Adcirc::Geometry::Node *Mesh::nodeById(size_t id) {
@@ -472,7 +477,7 @@ Adcirc::Geometry::Node *Mesh::nodeById(size_t id) {
 
 /**
  * @brief Returns an pointer to the requested element by its ID
- * @param id Elemental ID to return a reference to
+ * @param[in] id Elemental ID to return a reference to
  * @return Element pointer
  */
 Adcirc::Geometry::Element *Mesh::elementById(size_t id) {
@@ -481,7 +486,7 @@ Adcirc::Geometry::Element *Mesh::elementById(size_t id) {
 
 /**
  * @brief Returns the position in the array by node id
- * @param id nodal id
+ * @param[in] id nodal id
  * @return array position
  */
 size_t Mesh::nodeIndexById(size_t id) {
@@ -490,7 +495,7 @@ size_t Mesh::nodeIndexById(size_t id) {
 
 /**
  * @brief Returns the position in the array by element id
- * @param id element id
+ * @param[in] id element id
  * @return array position
  */
 size_t Mesh::elementIndexById(size_t id) {
@@ -499,10 +504,10 @@ size_t Mesh::elementIndexById(size_t id) {
 
 /**
  * @brief Resizes the vectors within the mesh
- * @param numNodes Number of nodes
- * @param numElements Number of elements
- * @param numOpenBoundaries Number of open boundaries
- * @param numLandBoundaries Number of land boundaries
+ * @param[in] numNodes Number of nodes
+ * @param[in] numElements Number of elements
+ * @param[in] numOpenBoundaries Number of open boundaries
+ * @param[in] numLandBoundaries Number of land boundaries
  */
 void Mesh::resizeMesh(size_t numNodes, size_t numElements,
                       size_t numOpenBoundaries, size_t numLandBoundaries) {
@@ -512,8 +517,8 @@ void Mesh::resizeMesh(size_t numNodes, size_t numElements,
 
 /**
  * @brief Adds a node at the specified index in the node vector
- * @param index location where the node should be added
- * @param node Reference to an Node object
+ * @param[in] index location where the node should be added
+ * @param[in] node Reference to an Node object
  */
 void Mesh::addNode(size_t index, const Node &node) {
   return this->m_impl->addNode(index, node);
@@ -522,14 +527,14 @@ void Mesh::addNode(size_t index, const Node &node) {
 /**
  * @brief Deletes an Node object at the specified index and shifts the
  * remaining nodes forward in the vector
- * @param index location where the node should be deleted from
+ * @param[in] index location where the node should be deleted from
  */
 void Mesh::deleteNode(size_t index) { return this->m_impl->deleteNode(index); }
 
 /**
  * @brief Adds an Element at the specified position in the element vector
- * @param index location where the element should be added
- * @param element reference to the Element to add
+ * @param[in] index location where the element should be added
+ * @param[in] element reference to the Element to add
  */
 void Mesh::addElement(size_t index, const Element &element) {
   this->m_impl->addElement(index, element);
@@ -538,14 +543,14 @@ void Mesh::addElement(size_t index, const Element &element) {
 /**
  * @brief Deletes an Element object at the specified index and shifts the
  * remaining elements forward in the vector
- * @param index location where the element should be deleted from
+ * @param[in] index location where the element should be deleted from
  */
 void Mesh::deleteElement(size_t index) { this->m_impl->deleteElement(index); }
 
 /**
  * @brief Adds a land boundary to the mesh
- * @param index position in boundary array
- * @param bnd Adcirc::Geometry::Boundary object
+ * @param[in] index position in boundary array
+ * @param[in] bnd Adcirc::Geometry::Boundary object
  */
 void Mesh::addLandBoundary(size_t index, const Boundary &bnd) {
   this->m_impl->addLandBoundary(index, bnd);
@@ -553,7 +558,7 @@ void Mesh::addLandBoundary(size_t index, const Boundary &bnd) {
 
 /**
  * @brief Removes the land boundary at the specified position
- * @param index position of boundary to remove
+ * @param[in] index position of boundary to remove
  */
 void Mesh::deleteLandBoundary(size_t index) {
   this->m_impl->deleteLandBoundary(index);
@@ -561,8 +566,8 @@ void Mesh::deleteLandBoundary(size_t index) {
 
 /**
  * @brief Adds an open boundary to the mesh
- * @param index position in boundary array
- * @param bnd Adcirc::Geometry::Boundary object
+ * @param[in] index position in boundary array
+ * @param[in] bnd Adcirc::Geometry::Boundary object
  */
 void Mesh::addOpenBoundary(size_t index, const Boundary &bnd) {
   this->m_impl->addOpenBoundary(index, bnd);
@@ -570,7 +575,7 @@ void Mesh::addOpenBoundary(size_t index, const Boundary &bnd) {
 
 /**
  * @brief Removes the open boundary at the specified position
- * @param index position of boundary to remove
+ * @param[in] index position of boundary to remove
  */
 void Mesh::deleteOpenBoundary(size_t index) {
   this->m_impl->deleteOpenBoundary(index);
@@ -607,7 +612,7 @@ void Mesh::buildElementTable() { this->m_impl->buildElementTable(); }
 
 /**
  * @brief Returns the number of elements surrounding a specified node
- * @param n address of node
+ * @param[in] n address of node
  * @return number of elements
  */
 size_t Mesh::numElementsAroundNode(Adcirc::Geometry::Node *n) {
@@ -616,7 +621,7 @@ size_t Mesh::numElementsAroundNode(Adcirc::Geometry::Node *n) {
 
 /**
  * @brief Returns the number of elements surrounding a specified node
- * @param n index of node
+ * @param[in] n index of node
  * @return number of elements
  */
 size_t Mesh::numElementsAroundNode(size_t nodeIndex) {
@@ -625,8 +630,8 @@ size_t Mesh::numElementsAroundNode(size_t nodeIndex) {
 
 /**
  * @brief Returns the nth element in the list of elements surrounding a node
- * @param n node pointer
- * @param listIndex index of the element to return
+ * @param[in] n node pointer
+ * @param[in] listIndex index of the element to return
  * @return element pointer
  */
 Adcirc::Geometry::Element *Mesh::elementTable(Adcirc::Geometry::Node *n,
@@ -636,8 +641,8 @@ Adcirc::Geometry::Element *Mesh::elementTable(Adcirc::Geometry::Node *n,
 
 /**
  * @brief Returns the nth element in the list of elements surrounding a node
- * @param n node index
- * @param listIndex index of the element to return
+ * @param[in] n node index
+ * @param[in] listIndex index of the element to return
  * @return element pointer
  */
 Adcirc::Geometry::Element *Mesh::elementTable(size_t nodeIndex,
@@ -647,7 +652,7 @@ Adcirc::Geometry::Element *Mesh::elementTable(size_t nodeIndex,
 
 /**
  * @brief Returns a vector of pointers to the elements surrouding a node
- * @param n node pointer
+ * @param[in] n node pointer
  * @return vector of element references
  */
 std::vector<Adcirc::Geometry::Element *> Mesh::elementsAroundNode(
@@ -683,7 +688,7 @@ Adcirc::Cryptography::HashType Mesh::hashType() const {
 
 /**
  * @brief Sets the hash type to be used
- * @param hashType hash type to use
+ * @param[in] hashType hash type to use
  */
 void Mesh::setHashType(const Adcirc::Cryptography::HashType &hashType) {
   this->m_impl->setHashType(hashType);

@@ -39,49 +39,49 @@ bool fileExists(const std::string &filename);
 }  // namespace Generic
 
 namespace AdcircIO {
-bool splitStringNodeFormat(std::string &data, size_t &id, double &x, double &y,
+bool splitStringNodeFormat(const std::string &data, size_t &id, double &x, double &y,
                            double &z);
 
-bool splitStringElemFormat(std::string &data, size_t &id,
+bool splitStringElemFormat(const std::string &data, size_t &id,
                            std::vector<size_t> &nodes);
 
-bool splitStringBoundary0Format(std::string &data, size_t &node1);
+bool splitStringBoundary0Format(const std::string &data, size_t &node1);
 
-bool splitStringBoundary23Format(std::string &data, size_t &node1,
+bool splitStringBoundary23Format(const std::string &data, size_t &node1,
                                  double &crest, double &supercritical);
 
-bool splitStringBoundary24Format(std::string &data, size_t &node1,
+bool splitStringBoundary24Format(const std::string &data, size_t &node1,
                                  size_t &node2, double &crest,
                                  double &subcritical, double &supercritical);
 
-bool splitStringBoundary25Format(std::string &data, size_t &node1,
+bool splitStringBoundary25Format(const std::string &data, size_t &node1,
                                  size_t &node2, double &crest,
                                  double &subcritical, double &supercritical,
                                  double &pipeheight, double &pipecoef,
                                  double &pipediam);
 
-bool splitStringAttribute1Format(std::string &data, size_t &node,
+bool splitStringAttribute1Format(const std::string &data, size_t &node,
                                  double &value);
 
-bool splitStringAttribute2Format(std::string &data, size_t &node,
+bool splitStringAttribute2Format(const std::string &data, size_t &node,
                                  double &value1, double &value2);
 
-bool splitStringAttributeNFormat(std::string &data, size_t &node,
+bool splitStringAttributeNFormat(const std::string &data, size_t &node,
                                  std::vector<double> &values);
 
-bool splitStringHarmonicsElevationFormat(std::string &data, double &amplitude,
+bool splitStringHarmonicsElevationFormat(const std::string &data, double &amplitude,
                                          double &phase);
 
-bool splitStringHarmonicsVelocityFormat(std::string &data, double &u_magnitude,
+bool splitStringHarmonicsVelocityFormat(const std::string &data, double &u_magnitude,
                                         double &u_phase, double &v_magnitude,
                                         double &v_phase);
 }  // namespace AdcircIO
 namespace SMSIO {
 
-bool splitString2dmNodeFormat(std::string &data, size_t &id, double &x,
+bool splitString2dmNodeFormat(const std::string &data, size_t &id, double &x,
                               double &y, double &z);
 
-bool splitString2dmElementFormat(std::string &data, size_t &id,
+bool splitString2dmElementFormat(const std::string &data, size_t &id,
                                  std::vector<size_t> &nodes);
 }  // namespace SMSIO
 

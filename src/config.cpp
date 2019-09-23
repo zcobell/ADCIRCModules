@@ -23,8 +23,10 @@
 #define GIT_VERSION "unknown"
 #endif
 
+using namespace Adcirc;
+
 /**
  * @brief Returns the git version for the library
  * @return current build number
  */
-std::string version() { return GIT_VERSION; }
+std::string Adcirc::version() { return GIT_VERSION; }

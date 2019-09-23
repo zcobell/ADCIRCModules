@@ -30,7 +30,7 @@ namespace Geometry {
 /**
  * @class Boundary
  * @author Zachary Cobell
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
  * is released under the terms of the GNU General Public License v3
  * @brief The boundary class handles ADCIRC mesh boundaries
  *
@@ -122,6 +122,8 @@ class Boundary {
   std::vector<Adcirc::Geometry::Node *> m_node1;
   std::vector<Adcirc::Geometry::Node *> m_node2;
   std::unique_ptr<char> m_hash;
+
+  static void boundaryCopier(Boundary *const a, const Boundary *const b);
 
   void generateHash(Adcirc::Cryptography::HashType h =
                         Adcirc::Cryptography::AdcircDefaultHash);

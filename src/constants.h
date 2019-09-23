@@ -26,7 +26,7 @@ using Point = std::pair<double, double>;
 /**
  * @class Constants
  * @author Zachary Cobell
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
  * is released under the terms of the GNU General Public License v3
  * @brief Set of static functions to use for geometric or Earth constant
  * calculations

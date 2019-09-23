@@ -33,6 +33,15 @@ namespace Adcirc {
 
 namespace Output {
 
+/**
+ * @class ReadOutput
+ * @author Zachary Cobell
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
+ * @brief The ReadOutput class used used to read an ADCIRC format output file
+ * and store data in preparation for writing using the WriteOutput class
+ *
+ */
 class ReadOutput {
  public:
   ReadOutput(const std::string &filename);

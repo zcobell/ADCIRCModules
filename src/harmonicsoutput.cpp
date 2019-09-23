@@ -23,8 +23,8 @@ namespace Adcirc {
 namespace Harmonics {
 
 /**
- * @param filename name of the harmonics file to read
- * @param velocity true of the file contains velocity information, false if it
+ * @param[in] filename name of the harmonics file to read
+ * @param[in] velocity true of the file contains velocity information, false if it
  * does not
  */
 HarmonicsOutput::HarmonicsOutput(const std::string& filename)
@@ -37,8 +37,8 @@ void HarmonicsOutput::read() { this->m_impl->read(); }
 
 /**
  * @brief Write the harmonics file
- * @param filename name of output file
- * @param format type of output to write (ascii or netcdf)
+ * @param[in] filename name of output file
+ * @param[in] format type of output to write (ascii or netcdf)
  */
 void HarmonicsOutput::write(const std::string& filename,
                             const Adcirc::Harmonics::HarmonicsFormat& format) {
@@ -55,7 +55,7 @@ std::string HarmonicsOutput::filename() const {
 
 /**
  * @brief Sets the filename to be used
- * @param filename name of file to use
+ * @param[in] filename name of file to use
  */
 void HarmonicsOutput::setFilename(const std::string& filename) {
   this->m_impl->setFilename(filename);
@@ -63,7 +63,7 @@ void HarmonicsOutput::setFilename(const std::string& filename) {
 
 /**
  * @brief Returns the index for the specified harmonic constituent
- * @param name constituent name to search for
+ * @param[in] name constituent name to search for
  * @return index of the constituent in the data
  */
 size_t HarmonicsOutput::index(const std::string& name) {
@@ -72,7 +72,7 @@ size_t HarmonicsOutput::index(const std::string& name) {
 
 /**
  * @brief Returns the name of the harmonic constituent at the specified index
- * @param index position for which to return the constituent name
+ * @param[in] index position for which to return the constituent name
  * @return name of harmonic constituent
  */
 std::string HarmonicsOutput::name(size_t index) {
@@ -81,7 +81,7 @@ std::string HarmonicsOutput::name(size_t index) {
 
 /**
  * @brief Returns the amplitude for a specified harmonic constituent
- * @param name constituent to get the record for
+ * @param[in] name constituent to get the record for
  * @return HarmonicsRecord object containing amplitude
  */
 Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::amplitude(
@@ -91,7 +91,7 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::amplitude(
 
 /**
  * @brief Returns the amplitude for a specified harmonic constituent
- * @param index constituent to get the record for
+ * @param[in] index constituent to get the record for
  * @return HarmonicsRecord object containing amplitude
  */
 Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::amplitude(size_t index) {
@@ -100,7 +100,7 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::amplitude(size_t index) {
 
 /**
  * @brief Returns the phase for a specified harmonic constituent
- * @param name constituent to get the record for
+ * @param[in] name constituent to get the record for
  * @return HarmonicsRecord object containing phase
  */
 Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::phase(
@@ -110,7 +110,7 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::phase(
 
 /**
  * @brief Returns the phase for a specified harmonic constituent
- * @param index constituent to get the record for
+ * @param[in] index constituent to get the record for
  * @return HarmonicsRecord object containing phase
  */
 Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::phase(size_t index) {
@@ -119,7 +119,7 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::phase(size_t index) {
 
 /**
  * @brief Returns the u-magnitude for a specified harmonic constituent
- * @param name constituent to get the record for
+ * @param[in] name constituent to get the record for
  * @return HarmonicsRecord object containing u-magnitude
  */
 Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::u_amplitude(
@@ -129,7 +129,7 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::u_amplitude(
 
 /**
  * @brief Returns the u-magnitude for a specified harmonic constituent
- * @param index constituent to get the record for
+ * @param[in] index constituent to get the record for
  * @return HarmonicsRecord object containing u-magnitude
  */
 Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::u_amplitude(size_t index) {
@@ -138,7 +138,7 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::u_amplitude(size_t index) {
 
 /**
  * @brief Returns the u-phase for a specified harmonic constituent
- * @param name constituent to get the record for
+ * @param[in] name constituent to get the record for
  * @return HarmonicsRecord object containing u-phase
  */
 Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::u_phase(
@@ -148,7 +148,7 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::u_phase(
 
 /**
  * @brief Returns the u-phase for a specified harmonic constituent
- * @param index constituent to get the record for
+ * @param[in] index constituent to get the record for
  * @return HarmonicsRecord object containing u-phase
  */
 Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::u_phase(size_t index) {
@@ -157,7 +157,7 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::u_phase(size_t index) {
 
 /**
  * @brief Returns the v-magnitude for a specified harmonic constituent
- * @param name constituent to get the record for
+ * @param[in] name constituent to get the record for
  * @return HarmonicsRecord object containing v-magnitude
  */
 Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::v_amplitude(
@@ -167,7 +167,7 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::v_amplitude(
 
 /**
  * @brief Returns the v-magnitude for a specified harmonic constituent
- * @param index constituent to get the record for
+ * @param[in] index constituent to get the record for
  * @return HarmonicsRecord object containing v-magnitude
  */
 Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::v_amplitude(size_t index) {
@@ -176,7 +176,7 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::v_amplitude(size_t index) {
 
 /**
  * @brief Returns the v-phase for a specified harmonic constituent
- * @param name constituent to get the record for
+ * @param[in] name constituent to get the record for
  * @return HarmonicsRecord object containing v-phase
  */
 Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::v_phase(
@@ -186,7 +186,7 @@ Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::v_phase(
 
 /**
  * @brief Returns the v-phase for a specified harmonic constituent
- * @param index constituent to get the record for
+ * @param[in] index constituent to get the record for
  * @return HarmonicsRecord object containing v-phase
  */
 Adcirc::Harmonics::HarmonicsRecord* HarmonicsOutput::v_phase(size_t index) {
@@ -203,7 +203,7 @@ size_t HarmonicsOutput::numConstituents() const {
 
 /**
  * @brief Sets the number of constituents in the file
- * @param numConstituents number of constituents to reallocate for
+ * @param[in] numConstituents number of constituents to reallocate for
  */
 void HarmonicsOutput::setNumConstituents(const size_t& numConstituents) {
   this->m_impl->setNumConstituents(numConstituents);
@@ -217,7 +217,7 @@ size_t HarmonicsOutput::numNodes() const { return this->m_impl->numNodes(); }
 
 /**
  * @brief Sets the number of nodes in the file
- * @param numNodes number of nodes
+ * @param[in] numNodes number of nodes
  */
 void HarmonicsOutput::setNumNodes(const size_t& numNodes) {
   this->m_impl->setNumNodes(numNodes);
@@ -232,7 +232,7 @@ bool HarmonicsOutput::isVelocity() const { return this->m_impl->isVelocity(); }
 
 /**
  * @brief Returns the array position for a specified node id
- * @param id node id
+ * @param[in] id node id
  * @return array position
  */
 size_t HarmonicsOutput::nodeIdToArrayIndex(size_t id) {

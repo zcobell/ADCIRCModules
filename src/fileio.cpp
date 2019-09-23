@@ -32,12 +32,18 @@ namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
 namespace phoenix = boost::phoenix;
 
+/**
+ * @brief Reads the data from a file and organizes it into a vector split by
+ * line
+ * @param[in] filename file to read
+ * @param[out] data vector containing data split by newline characters
+ */
 void Adcirc::FileIO::Generic::readFileData(const std::string &filename,
                                            std::vector<std::string> &data) {
   std::ifstream t(filename.c_str());
   t.seekg(0, std::ios::end);
-  size_t size = t.tellg();
-  std::string buffer(size, ' ');
+  std::streamoff size = t.tellg();
+  std::string buffer(static_cast<size_t>(size), ' ');
   t.seekg(0);
   t.read(&buffer[0], size);
   boost::algorithm::split(data, buffer, boost::is_any_of("\n"));
@@ -45,6 +51,12 @@ void Adcirc::FileIO::Generic::readFileData(const std::string &filename,
   return;
 }
 
+/**
+ * @brief Splits a string using spaces. Consecutive spaces are treated as one
+ * delimiter
+ * @param[in] data string to split
+ * @param[out] fresult string split to vector
+ */
 void Adcirc::FileIO::Generic::splitString(std::string &data,
                                           std::vector<std::string> &fresult) {
   boost::trim_if(data, boost::is_any_of(" "));
@@ -53,6 +65,11 @@ void Adcirc::FileIO::Generic::splitString(std::string &data,
   return;
 }
 
+/**
+ * @brief Returns the file extension by reverse searching for '.'
+ * @param[in] filename filename to get extension for
+ * @return file extension as a string
+ */
 std::string Adcirc::FileIO::Generic::getFileExtension(
     const std::string &filename) {
   size_t pos = filename.rfind('.');
@@ -62,12 +79,27 @@ std::string Adcirc::FileIO::Generic::getFileExtension(
   return "";
 }
 
+/**
+ * @brief Checks if a file exists
+ * @param[in] filename name of file to check for
+ * @return true if file exists, otherwise false
+ */
 bool Adcirc::FileIO::Generic::fileExists(const std::string &filename) {
   std::ifstream ifile(filename.c_str());
-  return (bool)ifile;
+  return static_cast<bool>(ifile);
 }
 
-bool Adcirc::FileIO::AdcircIO::splitStringNodeFormat(std::string &data,
+/**
+ * @brief Splits a string from an ADCIRC mesh file into the data required to
+ * generate an adcirc node object
+ * @param[in] data string read from file
+ * @param[out] id node id
+ * @param[out] x node x-position
+ * @param[out] y node y-position
+ * @param[out] z node z-position
+ * @return true if successful read
+ */
+bool Adcirc::FileIO::AdcircIO::splitStringNodeFormat(const std::string &data,
                                                      size_t &id, double &x,
                                                      double &y, double &z) {
   return qi::phrase_parse(data.begin(), data.end(),
@@ -78,8 +110,15 @@ bool Adcirc::FileIO::AdcircIO::splitStringNodeFormat(std::string &data,
                           ascii::space);
 }
 
+/**
+ * @brief Splits a string from an ADCIRC mesh file to the data for an element
+ * @param[in] data string read from file
+ * @param[out] id element id
+ * @param[out] nodes vector of nodes found in the file
+ * @return true if successful read
+ */
 bool Adcirc::FileIO::AdcircIO::splitStringElemFormat(
-    std::string &data, size_t &id, std::vector<size_t> &nodes) {
+    const std::string &data, size_t &id, std::vector<size_t> &nodes) {
   return qi::phrase_parse(
       data.begin(), data.end(),
       (qi::int_[phoenix::ref(id) = qi::_1] >> qi::int_ >>
@@ -87,15 +126,30 @@ bool Adcirc::FileIO::AdcircIO::splitStringElemFormat(
       ascii::space);
 }
 
-bool Adcirc::FileIO::AdcircIO::splitStringBoundary0Format(std::string &data,
-                                                          size_t &node1) {
+/**
+ * @brief Splits a string for a single node boundary
+ * @param[in] data string read from file
+ * @param[out] node1 node for boundary data
+ * @return true if successful read
+ */
+bool Adcirc::FileIO::AdcircIO::splitStringBoundary0Format(
+    const std::string &data, size_t &node1) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node1) = qi::_1]),
                           ascii::space);
 }
 
+/**
+ * @brief Splits a string for an external weir boundary
+ * @param[in] data string read from file
+ * @param[out] node1 node for boundary data
+ * @param[out] crest crest elevation for boundary
+ * @param[out] supercritical supercritical weir coefficient
+ * @return true if successful read
+ */
 bool Adcirc::FileIO::AdcircIO::splitStringBoundary23Format(
-    std::string &data, size_t &node1, double &crest, double &supercritical) {
+    const std::string &data, size_t &node1, double &crest,
+    double &supercritical) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node1) = qi::_1] >>
                            qi::double_[phoenix::ref(crest) = qi::_1] >>
@@ -103,8 +157,18 @@ bool Adcirc::FileIO::AdcircIO::splitStringBoundary23Format(
                           ascii::space);
 }
 
+/**
+ * @brief Splits a string for an internal weir boundary
+ * @param[in] data string read from file
+ * @param[out] node1 front side node for weir
+ * @param[out] node2 back side node for weir
+ * @param[out] crest crest elevation for weir
+ * @param[out] subcritical subcritical weir coefficient
+ * @param[out] supercritical supercritical weir coefficient
+ * @return true if successful read
+ */
 bool Adcirc::FileIO::AdcircIO::splitStringBoundary24Format(
-    std::string &data, size_t &node1, size_t &node2, double &crest,
+    const std::string &data, size_t &node1, size_t &node2, double &crest,
     double &subcritical, double &supercritical) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node1) = qi::_1] >>
@@ -115,8 +179,21 @@ bool Adcirc::FileIO::AdcircIO::splitStringBoundary24Format(
                           ascii::space);
 }
 
+/**
+ * @brief Splits a string for an internal weir with pipes
+ * @param[in] data string read from file
+ * @param[out] node1 front side node for weir
+ * @param[out] node2 back side node for weir
+ * @param[out] crest crest elevation for weir
+ * @param[out] subcritical subcritical weir coefficient
+ * @param[out] supercritical supercritical weir coefficient
+ * @param[out] pipeheight height of pipe relative to datum
+ * @param[out] pipecoef coefficient of pipe flow
+ * @param[out] pipediam diameter of pipe
+ * @return true if successful read
+ */
 bool Adcirc::FileIO::AdcircIO::splitStringBoundary25Format(
-    std::string &data, size_t &node1, size_t &node2, double &crest,
+    const std::string &data, size_t &node1, size_t &node2, double &crest,
     double &subcritical, double &supercritical, double &pipeheight,
     double &pipecoef, double &pipediam) {
   return qi::phrase_parse(data.begin(), data.end(),
@@ -131,19 +208,31 @@ bool Adcirc::FileIO::AdcircIO::splitStringBoundary25Format(
                           ascii::space);
 }
 
-bool Adcirc::FileIO::AdcircIO::splitStringAttribute1Format(std::string &data,
-                                                           size_t &node,
-                                                           double &value) {
+/**
+ * @brief Splits a string in format of nodeid, value1
+ * @param[in] data string read from file
+ * @param[out] node node id for data
+ * @param[out] value data specified for the node
+ * @return true if successful read
+ */
+bool Adcirc::FileIO::AdcircIO::splitStringAttribute1Format(
+    const std::string &data, size_t &node, double &value) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node) = qi::_1] >>
                            qi::double_[phoenix::ref(value) = qi::_1]),
                           ascii::space);
 }
 
-bool Adcirc::FileIO::AdcircIO::splitStringAttribute2Format(std::string &data,
-                                                           size_t &node,
-                                                           double &value1,
-                                                           double &value2) {
+/**
+ * @brief Splits a string in the format of nodeid, value1, value2
+ * @param[in] data string read from file
+ * @param[out] node node id for data
+ * @param[out] value1 first value specified for the node
+ * @param[out] value2 second value specified for the node
+ * @return true if successful read
+ */
+bool Adcirc::FileIO::AdcircIO::splitStringAttribute2Format(
+    const std::string &data, size_t &node, double &value1, double &value2) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::int_[phoenix::ref(node) = qi::_1] >>
                            qi::double_[phoenix::ref(value1) = qi::_1] >>
@@ -151,8 +240,15 @@ bool Adcirc::FileIO::AdcircIO::splitStringAttribute2Format(std::string &data,
                           ascii::space);
 }
 
+/**
+ * @brief Splits a string in the format node, value_1 , ... , value_n
+ * @param[in] data string read from file
+ * @param[out] node node id for data
+ * @param[out] values vector of n values
+ * @return true if successful read
+ */
 bool Adcirc::FileIO::AdcircIO::splitStringAttributeNFormat(
-    std::string &data, size_t &node, std::vector<double> &values) {
+    const std::string &data, size_t &node, std::vector<double> &values) {
   return qi::phrase_parse(
       data.begin(), data.end(),
       (qi::int_[phoenix::ref(node) = qi::_1] >>
@@ -160,16 +256,34 @@ bool Adcirc::FileIO::AdcircIO::splitStringAttributeNFormat(
       ascii::space);
 }
 
+/**
+ * @brief Splits the harmonics elevation data read from an adcirc ascii
+ * harmonics file
+ * @param[in] data string read from file
+ * @param[out] amplitude amplitude specified at the node constituent
+ * @param[out] phase phase spcified at the node for this constituent
+ * @return true if successful read
+ */
 bool Adcirc::FileIO::AdcircIO::splitStringHarmonicsElevationFormat(
-    std::string &data, double &amplitude, double &phase) {
+    const std::string &data, double &amplitude, double &phase) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::double_[phoenix::ref(amplitude) = qi::_1] >>
                            qi::double_[phoenix::ref(phase) = qi::_1]),
                           ascii::space);
 }
 
+/**
+ * @brief Splits the harmonics velocity data read from an adcirc ascii harmonics
+ * file
+ * @param[in] data string read from file
+ * @param[out] u_magnitude u-component of velocity magnitude
+ * @param[out] u_phase u-component of velocity phase
+ * @param[out] v_magnitude v-component of velocity magnitude
+ * @param[out] v_phase v-component of velocity phase
+ * @return true if successful read
+ */
 bool Adcirc::FileIO::AdcircIO::splitStringHarmonicsVelocityFormat(
-    std::string &data, double &u_magnitude, double &u_phase,
+    const std::string &data, double &u_magnitude, double &u_phase,
     double &v_magnitude, double &v_phase) {
   return qi::phrase_parse(data.begin(), data.end(),
                           (qi::double_[phoenix::ref(u_magnitude) = qi::_1] >>
@@ -179,7 +293,16 @@ bool Adcirc::FileIO::AdcircIO::splitStringHarmonicsVelocityFormat(
                           ascii::space);
 }
 
-bool Adcirc::FileIO::SMSIO::splitString2dmNodeFormat(std::string &data,
+/**
+ * @brief Splits the data in an SMS format 2dm node string
+ * @param[in] data string read from file
+ * @param[out] id node id for this line
+ * @param[out] x node x-position
+ * @param[out] y node y-position
+ * @param[out] z node z-position
+ * @return true if successful read
+ */
+bool Adcirc::FileIO::SMSIO::splitString2dmNodeFormat(const std::string &data,
                                                      size_t &id, double &x,
                                                      double &y, double &z) {
   return qi::phrase_parse(data.begin() + 3, data.end(),
@@ -190,8 +313,15 @@ bool Adcirc::FileIO::SMSIO::splitString2dmNodeFormat(std::string &data,
                           ascii::space);
 }
 
+/**
+ * @brief Splits the data in an SMS format 2dm element string
+ * @param[in] data string read from file
+ * @param[out] id node id read
+ * @param[out] nodes list of nodes in the element
+ * @return true if successful read
+ */
 bool Adcirc::FileIO::SMSIO::splitString2dmElementFormat(
-    std::string &data, size_t &id, std::vector<size_t> &nodes) {
+    const std::string &data, size_t &id, std::vector<size_t> &nodes) {
   std::string key = data.substr(0, 3);
   if (key == "E3T") {
     nodes.resize(3);

@@ -27,6 +27,15 @@
 namespace Adcirc {
 namespace Output {
 
+/**
+ * @class WriteOutput
+ * @author Zachary Cobell
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
+ * @brief The WriteOutput class is used to write ADCIRC formatted output files
+ * in ascii or netCDF format
+ *
+ */
 class WriteOutput {
  public:
   WriteOutput(const std::string &filename, ReadOutput *dataContainer,
@@ -58,8 +67,8 @@ class WriteOutput {
 
   void h5_createDataset(const std::string &name, bool isVector);
   void h5_appendRecord(const std::string &name,
-                         const Adcirc::Output::OutputRecord *record,
-                         bool isVector);
+                       const Adcirc::Output::OutputRecord *record,
+                       bool isVector);
   void h5_defineStringAttribute(int64_t id, const std::string &name,
                                 const std::string &value);
   void h5_defineIntegerAttribute(int64_t id, const std::string &name,

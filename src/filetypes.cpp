@@ -46,7 +46,7 @@ Adcirc::Output::OutputFormat getOutputFormatFromExtension(
 
 /**
  * @brief Check if the file type is ADCIRC ASCII Sparse
- * @param filename name of file to check format
+ * @param[in] filename name of file to check format
  * @return true if the file format is ADCIRC ASCII Sparse
  */
 bool checkFiletypeAsciiSparse(const std::string& filename) {
@@ -80,7 +80,7 @@ bool checkFiletypeAsciiSparse(const std::string& filename) {
 
 /**
  * @brief Check if the file type is ADCIRC ASCII fill
- * @param filename name of file to check format
+ * @param[in] filename name of file to check format
  * @return true if the file format is ADCIRC ASCII full
  */
 bool checkFiletypeAsciiFull(const std::string& filename) {
@@ -115,7 +115,7 @@ bool checkFiletypeAsciiFull(const std::string& filename) {
 
 /**
  * @brief Check if the file type is netCDF
- * @param filename name of file to check format
+ * @param[in] filename name of file to check format
  * @return true if the file format is netCDF
  */
 bool inquireNetcdfFormat(const std::string& filename, int& format) {
@@ -136,7 +136,7 @@ bool inquireNetcdfFormat(const std::string& filename, int& format) {
 
 /**
  * @brief Check if the file type is netcdf3
- * @param filename name of file to check format
+ * @param[in] filename name of file to check format
  * @return true if the file format is netCDF3
  */
 bool checkFiletypeNetcdf3(const std::string& filename) {
@@ -150,7 +150,7 @@ bool checkFiletypeNetcdf3(const std::string& filename) {
 
 /**
  * @brief Check if the file type is netCDF4
- * @param filename name of file to check format
+ * @param[in] filename name of file to check format
  * @return true if the file format is netCDF4
  */
 bool checkFiletypeNetcdf4(const std::string& filename) {
@@ -169,7 +169,7 @@ bool checkFiletypeNetcdf4(const std::string& filename) {
 
 /**
  * @brief Check if the file type is ADCIRC XDMF
- * @param filename name of file to check format
+ * @param[in] filename name of file to check format
  * @return true if the file format is XDMF
  *
  * [NOT IMPLEMENTED]
@@ -178,7 +178,7 @@ bool checkFiletypeXdmf(const std::string& filename) { return false; }
 
 /**
  * @brief Check if the file type is ADCIRC ASCII harmonics
- * @param filename name of file to check format
+ * @param[in] filename name of file to check format
  * @return true if the file format is ADCIRC ASCII Harmonics
  */
 }  // namespace Output
@@ -212,7 +212,7 @@ bool checkFiletypeAsciiHarmonics(const std::string& filename) {
 
 /**
  * @brief Check if the file type is ADCIRC netCDF harmonics
- * @param filename name of file to check format
+ * @param[in] filename name of file to check format
  * @return true if the file format is ADCIRC netCDF Harmonics
  */
 bool checkFiletypeNetcdfHarmonics(const std::string& filename) {
