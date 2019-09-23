@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ namespace Adcirc {
 /**
  * @class Logging
  * @author Zachary Cobell
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
  * is released under the terms of the GNU General Public License v3
  * @brief The Logging class is used to throw errors and log messages to standard
  * output
@@ -57,6 +57,6 @@ class Logging {
  * @param arg string describing the error that is being thrown
  */
 #define adcircmodules_throw_exception(arg) \
-  Adcirc::Logging::throwError(arg, __FILE__, __LINE__);
+  Adcirc::Logging::throwError(arg, __FILE__, __LINE__)
 
 #endif  // ADCMOD_LOGGING_H

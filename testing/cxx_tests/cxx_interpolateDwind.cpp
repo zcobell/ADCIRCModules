@@ -22,7 +22,7 @@
 
 int main() {
   using namespace Adcirc::Geometry;
-  using namespace Interpolation;
+  using namespace Adcirc::Interpolation;
 
   std::vector<double> control = {
     0.111204,  
@@ -51,9 +51,9 @@ int main() {
 #if 1
   for (size_t i = 0; i < m->numNodes(); ++i) {
     if (i < 100) {
-      g->setInterpolationFlag(i, Interpolation::Average);
+      g->setInterpolationFlag(i, Adcirc::Interpolation::Average);
     } else {
-      g->setInterpolationFlag(i, Interpolation::NoMethod);
+      g->setInterpolationFlag(i, Adcirc::Interpolation::NoMethod);
     }
   }
 #endif

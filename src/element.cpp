@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -33,47 +33,80 @@ typedef bg::model::polygon<point_t> polygon_t;
 /**
  * @brief Default constructor
  */
-Element::Element() : m_id(0), m_hash(nullptr) { this->resize(3); }
-
-/**
- * @brief Constructor using references to three Node objects
- * @param id element id/label
- * @param n1 pointer to node 1
- * @param n2 pointer to node 2
- * @param n3 pointer to node 3
- */
-Element::Element(size_t id, Node *n1, Node *n2, Node *n3)
-    : m_id(id), m_hash(nullptr) {
+Element::Element() : m_id(0) {
+  this->m_hash.reset(nullptr);
   this->resize(3);
-  this->m_nodes[0] = n1;
-  this->m_nodes[1] = n2;
-  this->m_nodes[2] = n3;
 }
 
 /**
  * @brief Constructor using references to three Node objects
- * @param id element id/label
- * @param n1 pointer to node 1
- * @param n2 pointer to node 2
- * @param n3 pointer to node 3
- * @param n4 pointer to node 4
+ * @param[in] id element id/label
+ * @param[in] n1 pointer to node 1
+ * @param[in] n2 pointer to node 2
+ * @param[in] n3 pointer to node 3
  */
-Element::Element(size_t id, Node *n1, Node *n2, Node *n3, Node *n4)
-    : m_id(id), m_hash(nullptr) {
+Element::Element(size_t id, Node *n1, Node *n2, Node *n3) : m_id(id) {
+  this->resize(3);
+  this->m_nodes[0] = n1;
+  this->m_nodes[1] = n2;
+  this->m_nodes[2] = n3;
+  this->m_hash.reset(nullptr);
+}
+
+/**
+ * @brief Constructor using references to three Node objects
+ * @param[in] id element id/label
+ * @param[in] n1 pointer to node 1
+ * @param[in] n2 pointer to node 2
+ * @param[in] n3 pointer to node 3
+ * @param[in] n4 pointer to node 4
+ */
+Element::Element(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) : m_id(id) {
   this->resize(4);
   this->m_nodes[0] = n1;
   this->m_nodes[1] = n2;
   this->m_nodes[2] = n3;
   this->m_nodes[3] = n4;
+  this->m_hash.reset(nullptr);
 }
 
-Element::~Element() {
-  if (this->m_hash != nullptr) delete[] this->m_hash;
+/**
+ * @brief Destructor
+ */
+Element::~Element() {}
+
+/**
+ * @brief Element::elementCopier
+ * @param[inout] a element pointer to copy into
+ * @param[in] b element to copy
+ */
+void Element::elementCopier(Element *const a, const Element *const b) {
+  a->m_id = b->id();
+  a->m_nodes.resize(b->n());
+  for (size_t i = 0; i < b->n(); ++i) {
+    a->m_nodes[i] = b->node(i);
+  }
+}
+
+/**
+ * @brief Copy constructor
+ * @param[in] e element to copy
+ */
+Element::Element(const Element &e) { Element::elementCopier(this, &e); }
+
+/**
+ * @brief Copy assignment operator
+ * @param[in] e element to copy
+ * @return copied element reference
+ */
+Element &Element::operator=(const Element &e) {
+  Element::elementCopier(this, &e);
+  return *this;
 }
 
 /**
  * @brief Resizes the internal array of verticies
- * @param nVertex number of verticies. Must be 3 or 4.
+ * @param[in] nVertex number of verticies. Must be 3 or 4.
  */
 void Element::resize(size_t nVertex) {
   if (nVertex != 3 && nVertex != 4) {
@@ -85,10 +118,10 @@ void Element::resize(size_t nVertex) {
 /**
  * @brief Function that sets up the element using three pointers and the
  * element id/label
- * @param id element id/label
- * @param n1 pointer to node 1
- * @param n2 pointer to node 2
- * @param n3 pointer to node 3
+ * @param[in] id element id/label
+ * @param[in] n1 pointer to node 1
+ * @param[in] n2 pointer to node 2
+ * @param[in] n3 pointer to node 3
  */
 void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3) {
   this->m_id = id;
@@ -102,11 +135,11 @@ void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3) {
 /**
  * @brief Function that sets up the element using three pointers and the
  * element id/label
- * @param id element id/label
- * @param n1 pointer to node 1
- * @param n2 pointer to node 2
- * @param n3 pointer to node 3
- * @param n4 pointer to node 4
+ * @param[in] id element id/label
+ * @param[in] n1 pointer to node 1
+ * @param[in] n2 pointer to node 2
+ * @param[in] n3 pointer to node 3
+ * @param[in] n4 pointer to node 4
  */
 void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) {
   this->m_id = id;
@@ -126,8 +159,8 @@ size_t Element::n() const { return this->m_nodes.size(); }
 
 /**
  * @brief Sets the node at the specified position to the supplied pointer
- * @param i location in the node vector for this element
- * @param node pointer to an Node object
+ * @param[in] i location in the node vector for this element
+ * @param[in] node pointer to an Node object
  */
 void Element::setNode(size_t i, Node *node) {
   if (i < this->n()) {
@@ -144,16 +177,16 @@ size_t Element::id() const { return this->m_id; }
 
 /**
  * @brief Sets the element id/flag
- * @param id element id/flag
+ * @param[in] id element id/flag
  */
 void Element::setId(size_t id) { this->m_id = id; }
 
 /**
  * @brief returns a pointer to the node at the specified position
- * @param i position in node vector
+ * @param[in] i position in node vector
  * @return Node pointer
  */
-Node *Element::node(size_t i) {
+Node *Element::node(size_t i) const {
   if (i < this->n()) {
     return this->m_nodes.at(i);
   }
@@ -165,7 +198,7 @@ Node *Element::node(size_t i) {
  * @brief Formats the element for writing to an Adcirc ASCII mesh file
  * @return formatted string
  */
-std::string Element::toAdcircString() {
+std::string Element::toAdcircString() const {
   if (this->n() == 3) {
     return boost::str(boost::format("%11i %3i %11i %11i %11i") % this->id() %
                       this->n() % this->node(0)->id() % this->node(1)->id() %
@@ -185,7 +218,7 @@ std::string Element::toAdcircString() {
  * @brief Formats the element for writing to an Aquaveo 2dm ASCII mesh file
  * @return formatted string
  */
-std::string Element::to2dmString() {
+std::string Element::to2dmString() const {
   if (this->n() == 3) {
     return boost::str(boost::format("%s %i %i %i %i %i") % "E3T" % this->id() %
                       this->node(0)->id() % this->node(1)->id() %
@@ -204,7 +237,7 @@ std::string Element::to2dmString() {
  * @brief Calculates the average size of the legs of an element
  * @return average element leg size
  */
-double Element::elementSize(bool geodesic) {
+double Element::elementSize(bool geodesic) const {
   double size = 0.0;
   for (size_t i = 0; i < this->n(); ++i) {
     std::pair<Node *, Node *> p = this->elementLeg(i);
@@ -268,10 +301,10 @@ void Element::sortVerticiesAboutCenter() {
 
 /**
  * @brief Returns a pair of nodes representing the leg of an element
- * @param i index of the leg around the element
+ * @param[in] i index of the leg around the element
  * @return pair of nodes
  */
-std::pair<Node *, Node *> Element::elementLeg(size_t i) {
+std::pair<Node *, Node *> Element::elementLeg(size_t i) const {
   assert(i < this->n());
 
   size_t j1 = i;
@@ -289,7 +322,7 @@ std::pair<Node *, Node *> Element::elementLeg(size_t i) {
 
 /**
  * @brief Creates a boost::geometry element from the element
- * @param n vector of node pointers to use to create the geometry
+ * @param[in] n vector of node pointers to use to create the geometry
  * @return boost::geometry polygon
  */
 polygon_t element2polygon(std::vector<Node *> n) {
@@ -307,7 +340,7 @@ polygon_t element2polygon(std::vector<Node *> n) {
  * @param[out] xc x-coordinate of element center
  * @param[out] yc y-coordinate of element center
  */
-void Element::getElementCenter(double &xc, double &yc) {
+void Element::getElementCenter(double &xc, double &yc) const {
   point_t p;
   bg::centroid(element2polygon(this->m_nodes), p);
   xc = p.get<0>();
@@ -319,26 +352,28 @@ void Element::getElementCenter(double &xc, double &yc) {
  * @brief Calculates the area of the element
  * @return Area of triangle
  */
-double Element::area() { return bg::area(element2polygon(this->m_nodes)); }
+double Element::area() const {
+  return bg::area(element2polygon(this->m_nodes));
+}
 
 /**
  * @brief Determine if a point lies within an element
- * @param x x-coordinate
- * @param y y-coordinate
+ * @param[in] x x-coordinate
+ * @param[in] y y-coordinate
  * @return true if point lies within element, false otherwise
  */
-bool Element::isInside(double x, double y) {
+bool Element::isInside(double x, double y) const {
   return bg::covered_by(point_t(x, y), element2polygon(this->m_nodes));
 }
 
 /**
- * @param location Point to check
+ * @param[in] location Point to check
  * @return true if point lies within element, false otherwise
  *
  * This function uses the boost::geometry library to determine
  * if a point lies within an element
  */
-bool Element::isInside(Point location) {
+bool Element::isInside(Point location) const {
   return bg::covered_by(point_t(location.first, location.second),
                         element2polygon(this->m_nodes));
 }
@@ -346,11 +381,11 @@ bool Element::isInside(Point location) {
 /**
  * @brief Returns the interpolation weights for computing the value of a given
  * point inside an element
- * @param x station location
- * @param y station location
+ * @param[in] x station location
+ * @param[in] y station location
  * @return weights vector of interpolation weights for each vertex
  */
-std::vector<double> Element::interpolationWeights(double x, double y) {
+std::vector<double> Element::interpolationWeights(double x, double y) const {
   if (this->n() == 3) {
     return this->triangularInterpolation(x, y);
   } else {
@@ -360,35 +395,37 @@ std::vector<double> Element::interpolationWeights(double x, double y) {
 
 /**
  * @brief Gets the hash of the element
+ * @param[in] h type of cryptographic hash to generate
  * @return hash formatted as a string
  *
  * Element hashes are based upon the nodes that
  * make them up and therefore will change when a node
  * moves its position.
  */
-std::string Element::hash(HashType h, bool force) {
-  if (this->m_hash == nullptr || force) this->generateHash(h);
-  return std::string(this->m_hash);
+std::string Element::hash(Adcirc::Cryptography::HashType h, bool force) {
+  if (this->m_hash.get() == nullptr || force) this->generateHash(h);
+  return std::string(this->m_hash.get());
 }
 
 /**
  * @brief Generates the hash for this element
+ * @param[in] h type of cryptographic hash to generate
  */
-void Element::generateHash(HashType h) {
-  Hash hash(h);
+void Element::generateHash(Adcirc::Cryptography::HashType h) {
+  Adcirc::Cryptography::Hash hash(h);
   for (auto &n : this->m_nodes) {
     hash.addData(n->positionHash());
   }
-  this->m_hash = hash.getHash();
+  this->m_hash.reset(hash.getHash());
 }
 
 /**
  * @brief Performs a barycentric interpolation
- * @param x station location
- * @param y station location
+ * @param[in] x station location
+ * @param[in] y station location
  * @return weights vector of interpolation weights for each vertex
  */
-std::vector<double> Element::triangularInterpolation(double x, double y) {
+std::vector<double> Element::triangularInterpolation(double x, double y) const {
   std::vector<double> weights(3);
   std::fill(weights.begin(), weights.end(), 0.0);
 
@@ -422,12 +459,12 @@ std::vector<double> Element::triangularInterpolation(double x, double y) {
  * to make sure that the ordering is logical, but this is done on a copy of
  * the element so that the parent structure isn't altered.
  *
- * @param x station location
- * @param y station location
+ * @param[in] x station location
+ * @param[in] y station location
  * @return weights vector of interpolation weights for each vertex
  *
  */
-std::vector<double> Element::polygonInterpolation(double x, double y) {
+std::vector<double> Element::polygonInterpolation(double x, double y) const {
   std::vector<double> weights(3);
   std::fill(weights.begin(), weights.end(), 0.0);
 

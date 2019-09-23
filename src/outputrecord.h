@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -38,6 +38,15 @@ constexpr double defaultOutputValue() { return -99999.0; }
 
 enum AngleUnits { Degrees, Radians };
 
+/**
+ * @class OutputRecord
+ * @author Zachary Cobell
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
+ * @brief The OutputRecord class describes a single output snap from an ADCIRC
+ * output file. The data can have 1, 2, or 3 dimensions
+ *
+ */
 class OutputRecord {
  public:
   OutputRecord();

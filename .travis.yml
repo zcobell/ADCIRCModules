@@ -26,6 +26,6 @@ after_success:
 
 script:
   - git submodule update --remote --init
-  - mkdir build; cd build; cmake -DCOVERAGE=ON -DBUILD_TESTS=ON ..
+  - mkdir build; cd build; cmake -DCOVERAGE=ON -DBUILD_TESTS=ON -DPYTHON_TESTING=ON ..
   - cd build; make -j 2
   - cd build; CTEST_OUTPUT_ON_FAILURE=1 make test

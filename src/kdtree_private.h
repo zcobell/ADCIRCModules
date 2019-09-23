@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,17 +16,20 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_KDTREE_IMPL_H
-#define ADCMOD_KDTREE_IMPL_H
+#ifndef ADCMOD_KDTREE_PRIVATE_H
+#define ADCMOD_KDTREE_PRIVATE_H
 
 #include <cstdlib>
 #include <memory>
 #include <vector>
 #include "nanoflann.hpp"
 
-class Kdtree_impl {
+namespace Adcirc {
+namespace Private {
+
+class KdtreePrivate {
  public:
-  Kdtree_impl();
+  KdtreePrivate();
 
   int build(std::vector<double> &x, std::vector<double> &y);
   bool initialized();
@@ -80,5 +83,7 @@ class Kdtree_impl {
   PointCloud<double> m_cloud;
   std::unique_ptr<kd_tree_t> m_tree;
 };
+}  // namespace Private
+}  // namespace Adcirc
 
-#endif  // ADCMOD_KDTREE_IMPL_H
+#endif  // ADCMOD_KDTREE_PRIVATE_H

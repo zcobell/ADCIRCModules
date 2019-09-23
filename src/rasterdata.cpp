@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,21 +25,19 @@
 #include "gdal_priv.h"
 #include "logging.h"
 
+using namespace Adcirc::Raster;
+
 //...Template Instantiation
-template int Rasterdata::pixelValue<int>(Pixel &p);
-template double Rasterdata::pixelValue<double>(Pixel &p);
-template int Rasterdata::pixelValues<int>(size_t ibegin, size_t jbegin,
-                                          size_t iend, size_t jend,
-                                          std::vector<double> &x,
-                                          std::vector<double> &y,
-                                          std::vector<int> &z);
-template int Rasterdata::pixelValues<double>(size_t ibegin, size_t jbegin,
-                                             size_t iend, size_t jend,
-                                             std::vector<double> &x,
-                                             std::vector<double> &y,
-                                             std::vector<double> &z);
-template int Rasterdata::nodata<int>() const;
-template double Rasterdata::nodata<double>() const;
+template int Adcirc::Raster::Rasterdata::pixelValue<int>(Pixel &p);
+template double Adcirc::Raster::Rasterdata::pixelValue<double>(Pixel &p);
+template int Adcirc::Raster::Rasterdata::pixelValues<int>(
+    size_t ibegin, size_t jbegin, size_t iend, size_t jend,
+    std::vector<double> &x, std::vector<double> &y, std::vector<int> &z);
+template int Adcirc::Raster::Rasterdata::pixelValues<double>(
+    size_t ibegin, size_t jbegin, size_t iend, size_t jend,
+    std::vector<double> &x, std::vector<double> &y, std::vector<double> &z);
+template int Adcirc::Raster::Rasterdata::nodata<int>() const;
+template double Adcirc::Raster::Rasterdata::nodata<double>() const;
 
 // Macro to initialize constructors
 #define RASTERDATACLASSINIT                                                   \
@@ -361,12 +359,9 @@ void Rasterdata::readDoubleRasterToMemory() {
   size_t n = this->nx() * this->ny();
   double *buf = (double *)CPLMalloc(sizeof(double) * n);
 
-#pragma omp critical
-  {
-    CPLErr e = this->m_band->RasterIO(
-        GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
-        static_cast<GDALDataType>(this->m_readType), 0, 0);
-  }
+  CPLErr e = this->m_band->RasterIO(
+      GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
+      static_cast<GDALDataType>(this->m_readType), 0, 0);
 
   this->m_doubleOnDisk.resize(this->nx());
   for (size_t i = 0; i < this->m_doubleOnDisk.size(); ++i) {
@@ -392,12 +387,9 @@ void Rasterdata::readIntegerRasterToMemory() {
   size_t n = this->nx() * this->ny();
   int *buf = static_cast<int *>(CPLMalloc(sizeof(int) * n));
 
-#pragma omp critical
-  {
-    CPLErr e = this->m_band->RasterIO(
-        GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
-        static_cast<GDALDataType>(this->m_readType), 0, 0);
-  }
+  CPLErr e = this->m_band->RasterIO(
+      GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
+      static_cast<GDALDataType>(this->m_readType), 0, 0);
 
   this->m_intOnDisk.resize(this->nx());
   for (size_t i = 0; i < this->m_intOnDisk.size(); ++i) {
@@ -420,13 +412,17 @@ void Rasterdata::readIntegerRasterToMemory() {
  * Not always the fastest method, but in some cases it is worthwhile
  */
 void Rasterdata::read() {
-  if (this->m_isRead) return;
-  if (this->m_rasterType == RasterTypes::Double) {
-    this->readDoubleRasterToMemory();
-  } else {
-    this->readIntegerRasterToMemory();
+#pragma omp critical
+  {
+    if (!this->m_isRead) {
+      if (this->m_rasterType == RasterTypes::Double) {
+        this->readDoubleRasterToMemory();
+      } else {
+        this->readIntegerRasterToMemory();
+      }
+      this->m_isRead = true;
+    }
   }
-  this->m_isRead = true;
   return;
 }
 

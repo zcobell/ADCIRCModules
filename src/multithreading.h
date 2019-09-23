@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #ifndef ADCMOD_MULTITHREADING_H
 #define ADCMOD_MULTITHREADING_H
 #include "adcircmodules_global.h"
+namespace Adcirc {
 
 class Multithreading {
  public:
@@ -31,5 +32,6 @@ class Multithreading {
   static void ADCIRCMODULES_EXPORT setNumThreads(int numThreads);
   static void ADCIRCMODULES_EXPORT setMaximumThreads();
 };
+}  // namespace Adcirc
 
 #endif  // ADCMOD_MULTITHREADING_H

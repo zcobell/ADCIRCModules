@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -502,23 +502,21 @@ void ReadOutput::readNetcdfHeader() {
   }
   this->setModelDt(dt);
 
-  double* t = new double[this->numSnaps()];
+  std::unique_ptr<double> t(new double[this->numSnaps()]);
 
-  ierr = nc_get_var_double(this->m_ncid, this->m_varid_time, t);
+  ierr = nc_get_var_double(this->m_ncid, this->m_varid_time, t.get());
   if (ierr != NC_NOERR) {
-    delete[] t;
     adcircmodules_throw_exception("Error getting time variable");
     return;
   }
 
   if (this->numSnaps() > 1) {
-    this->setDt(t[1] - t[0]);
+    this->setDt(t.get()[1] - t.get()[0]);
   } else {
-    this->setDt(t[0]);
+    this->setDt(t.get()[0]);
   }
   this->setDiteration(this->dt() / dt);
-  this->m_time = std::vector<double>(t, t + this->numSnaps());
-  delete[] t;
+  this->m_time = std::vector<double>(t.get(), t.get() + this->numSnaps());
 
   this->findNetcdfVarId();
 
@@ -601,7 +599,7 @@ void ReadOutput::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
       } else {
         record.reset(nullptr);
         adcircmodules_throw_exception("ReadOutput: Error reading ascii record");
-      };
+      }
     }
   }
 
@@ -636,39 +634,32 @@ void ReadOutput::readNetcdfRecord(size_t snap,
   //  no time dimension
   if (this->metadata()->isMax()) {
     if (this->metadata()->dimension() == 1) {
-      double* u = new double[this->numNodes()];
-      int ierr = nc_get_var(this->m_ncid, this->m_varid_data[0], u);
+      std::unique_ptr<double> u(new double[this->numNodes()]);
+      int ierr = nc_get_var(this->m_ncid, this->m_varid_data[0], u.get());
 
       if (ierr != NC_NOERR) {
-        delete[] u;
         adcircmodules_throw_exception(
             "ReadOutput: Error reading netcdf record");
         return;
       }
     } else if (this->metadata()->dimension() == 2) {
-      double* u = new double[this->numNodes()];
-      double* v = new double[this->numNodes()];
-      int ierr = nc_get_var(this->m_ncid, this->m_varid_data[0], u);
+      std::unique_ptr<double> u(new double[this->numNodes()]);
+      std::unique_ptr<double> v(new double[this->numNodes()]);
+      int ierr = nc_get_var(this->m_ncid, this->m_varid_data[0], u.get());
 
       if (ierr != NC_NOERR) {
-        delete[] u;
-        delete[] v;
         adcircmodules_throw_exception(
             "ReadOutput: Error reading netcdf record");
         return;
       }
-      ierr = nc_get_var(this->m_ncid, this->m_varid_data[1], v);
+      ierr = nc_get_var(this->m_ncid, this->m_varid_data[1], v.get());
 
       if (ierr != NC_NOERR) {
-        delete[] u;
-        delete[] v;
         adcircmodules_throw_exception(
             "ReadOutput: Error reading netcdf record");
         return;
       }
-      record->setAll(this->numNodes(), u, v);
-      delete[] u;
-      delete[] v;
+      record->setAll(this->numNodes(), u.get(), v.get());
     }
   } else {
     size_t start[2], count[2];
@@ -678,69 +669,54 @@ void ReadOutput::readNetcdfRecord(size_t snap,
     count[1] = this->numNodes();
 
     if (this->metadata()->dimension() == 1) {
-      double* u = new double[this->numNodes()];
-      int ierr =
-          nc_get_vara(this->m_ncid, this->m_varid_data[0], start, count, u);
+      std::unique_ptr<double> u(new double[this->numNodes()]);
+      int ierr = nc_get_vara(this->m_ncid, this->m_varid_data[0], start, count,
+                             u.get());
       if (ierr != NC_NOERR) {
-        delete[] u;
         adcircmodules_throw_exception(
             "ReadOutput: Error reading netcdf record");
         return;
       }
-      record->setAll(this->numNodes(), u);
-      delete[] u;
+      record->setAll(this->numNodes(), u.get());
     } else if (this->metadata()->dimension() == 2) {
-      double* u = new double[this->numNodes()];
-      double* v = new double[this->numNodes()];
-      int ierr =
-          nc_get_vara(this->m_ncid, this->m_varid_data[0], start, count, u);
+      std::unique_ptr<double> u(new double[this->numNodes()]);
+      std::unique_ptr<double> v(new double[this->numNodes()]);
+      int ierr = nc_get_vara(this->m_ncid, this->m_varid_data[0], start, count,
+                             u.get());
       if (ierr != NC_NOERR) {
-        delete[] u;
-        delete[] v;
         adcircmodules_throw_exception(
             "ReadOutput: Error reading netcdf record");
         return;
       }
 
-      ierr = nc_get_vara(this->m_ncid, this->m_varid_data[1], start, count, v);
+      ierr = nc_get_vara(this->m_ncid, this->m_varid_data[1], start, count,
+                         v.get());
       if (ierr != NC_NOERR) {
-        delete[] u;
-        delete[] v;
         adcircmodules_throw_exception(
             "ReadOutput: Error reading netcdf record");
         return;
       }
-      record->setAll(this->numNodes(), u, v);
-      delete[] u;
-      delete[] v;
+      record->setAll(this->numNodes(), u.get(), v.get());
     } else if (this->metadata()->dimension() == 3) {
-      double* u = new double[this->numNodes()];
-      double* v = new double[this->numNodes()];
-      double* w = new double[this->numNodes()];
+      std::unique_ptr<double> u(new double[this->numNodes()]);
+      std::unique_ptr<double> v(new double[this->numNodes()]);
+      std::unique_ptr<double> w(new double[this->numNodes()]);
 
-      int ierr =
-          nc_get_vara(this->m_ncid, this->m_varid_data[1], start, count, v);
+      int ierr = nc_get_vara(this->m_ncid, this->m_varid_data[1], start, count,
+                             v.get());
       if (ierr != NC_NOERR) {
-        delete[] u;
-        delete[] v;
-        delete[] w;
         adcircmodules_throw_exception(
             "ReadOutput: Error reading netcdf record");
         return;
       }
-      ierr = nc_get_vara(this->m_ncid, this->m_varid_data[2], start, count, w);
+      ierr = nc_get_vara(this->m_ncid, this->m_varid_data[2], start, count,
+                         w.get());
       if (ierr != NC_NOERR) {
-        delete[] u;
-        delete[] v;
-        delete[] w;
         adcircmodules_throw_exception(
             "ReadOutput: Error reading netcdf record");
         return;
       }
-      record->setAll(this->numNodes(), u, v, w);
-      delete[] u;
-      delete[] v;
-      delete[] w;
+      record->setAll(this->numNodes(), u.get(), v.get(), w.get());
     }
   }
 

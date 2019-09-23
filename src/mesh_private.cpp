@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#include "mesh_impl.h"
+#include "mesh_private.h"
 #include <algorithm>
 #include <set>
 #include <string>
@@ -35,19 +35,18 @@
 #include "shapefil.h"
 #include "stringconversion.h"
 
-using namespace Adcirc;
+using namespace Adcirc::Private;
 using namespace Adcirc::Geometry;
 
-Mesh::~Mesh() = default;
+Adcirc::Geometry::Mesh::~Mesh() = default;
 
 /**
  * @brief Default Constructor
  */
-MeshImpl::MeshImpl()
+MeshPrivate::MeshPrivate()
     : m_filename("none"),
       m_epsg(-1),
-      m_hash(nullptr),
-      m_hashType(AdcircDefaultHash) {
+      m_hashType(Adcirc::Cryptography::AdcircDefaultHash) {
   this->_init();
 }
 
@@ -55,27 +54,23 @@ MeshImpl::MeshImpl()
  * @brief Default constructor with filename parameter
  * @param filename name of the mesh to read
  */
-MeshImpl::MeshImpl(const std::string &filename)
+MeshPrivate::MeshPrivate(const std::string &filename)
     : m_filename(filename),
       m_epsg(-1),
-      m_hash(nullptr),
-      m_hashType(AdcircDefaultHash) {
+      m_hashType(Adcirc::Cryptography::AdcircDefaultHash) {
   this->_init();
 }
 
 /**
  * @brief Initialization routine called by all constructors
  */
-void MeshImpl::_init() {
+void MeshPrivate::_init() {
   if (this->m_epsg == -1) this->defineProjection(4326, true);
   this->m_nodalSearchTree = nullptr;
   this->m_elementalSearchTree = nullptr;
   this->m_nodeOrderingLogical = true;
   this->m_elementOrderingLogical = true;
-  this->m_nodes.clear();
-  this->m_elements.clear();
-  this->m_openBoundaries.clear();
-  this->m_landBoundaries.clear();
+  this->m_hash.reset(nullptr);
   this->m_elementalSearchTree = std::unique_ptr<Kdtree>(new Kdtree());
   this->m_nodalSearchTree = std::unique_ptr<Kdtree>(new Kdtree());
 }
@@ -83,27 +78,19 @@ void MeshImpl::_init() {
 /**
  * @brief Mesh::~Mesh Destructor
  */
-MeshImpl::~MeshImpl() {
-  this->m_nodes.clear();
-  this->m_elements.clear();
-  this->m_openBoundaries.clear();
-  this->m_landBoundaries.clear();
-  this->m_nodeLookup.clear();
-  this->m_elementLookup.clear();
-  if (this->m_hash != nullptr) delete[] this->m_hash;
-}
+MeshPrivate::~MeshPrivate() {}
 
 /**
  * @brief Filename of the mesh to be read
  * @return Return the name of the mesh to be read
  */
-std::string MeshImpl::filename() const { return this->m_filename; }
+std::string MeshPrivate::filename() const { return this->m_filename; }
 
 /**
  * @brief Sets the name of the mesh to be read
  * @param filename Name of the mesh
  */
-void MeshImpl::setFilename(const std::string &filename) {
+void MeshPrivate::setFilename(const std::string &filename) {
   this->m_filename = filename;
 }
 
@@ -111,7 +98,7 @@ void MeshImpl::setFilename(const std::string &filename) {
  * @brief Returns the mesh header from the processed mesh
  * @return mesh header
  */
-std::string MeshImpl::meshHeaderString() const {
+std::string MeshPrivate::meshHeaderString() const {
   return this->m_meshHeaderString;
 }
 
@@ -119,7 +106,7 @@ std::string MeshImpl::meshHeaderString() const {
  * @brief Sets the header for the mesh
  * @param meshHeaderString header
  */
-void MeshImpl::setMeshHeaderString(const std::string &meshHeaderString) {
+void MeshPrivate::setMeshHeaderString(const std::string &meshHeaderString) {
   this->m_meshHeaderString = meshHeaderString;
 }
 
@@ -127,25 +114,27 @@ void MeshImpl::setMeshHeaderString(const std::string &meshHeaderString) {
  * @brief Returns the number of nodes currently in the mesh
  * @return number of nodes
  */
-size_t MeshImpl::numNodes() const { return this->m_nodes.size(); }
+size_t MeshPrivate::numNodes() const { return this->m_nodes.size(); }
 
 /**
  * @brief Sets the number of nodes in the mesh
  * @param numNodes number of nodes
  */
-void MeshImpl::setNumNodes(size_t numNodes) { this->m_nodes.resize(numNodes); }
+void MeshPrivate::setNumNodes(size_t numNodes) {
+  this->m_nodes.resize(numNodes);
+}
 
 /**
  * @brief Returns the number of elements in the mesh
  * @return number of elements
  */
-size_t MeshImpl::numElements() const { return this->m_elements.size(); }
+size_t MeshPrivate::numElements() const { return this->m_elements.size(); }
 
 /**
  * @brief Sets the number of elements in the mesh
  * @param numElements Number of elements
  */
-void MeshImpl::setNumElements(size_t numElements) {
+void MeshPrivate::setNumElements(size_t numElements) {
   this->m_elements.resize(numElements);
 }
 
@@ -153,7 +142,7 @@ void MeshImpl::setNumElements(size_t numElements) {
  * @brief Returns the number of open boundaries in the model
  * @return number of open boundaries
  */
-size_t MeshImpl::numOpenBoundaries() const {
+size_t MeshPrivate::numOpenBoundaries() const {
   return this->m_openBoundaries.size();
 }
 
@@ -161,7 +150,7 @@ size_t MeshImpl::numOpenBoundaries() const {
  * @brief Sets the number of open boundaries in the model
  * @param numOpenBoundaries Number of open boundaries
  */
-void MeshImpl::setNumOpenBoundaries(size_t numOpenBoundaries) {
+void MeshPrivate::setNumOpenBoundaries(size_t numOpenBoundaries) {
   this->m_openBoundaries.resize(numOpenBoundaries);
 }
 
@@ -169,7 +158,7 @@ void MeshImpl::setNumOpenBoundaries(size_t numOpenBoundaries) {
  * @brief Returns the number of land boundaries in the model
  * @return number of land boundaries
  */
-size_t MeshImpl::numLandBoundaries() const {
+size_t MeshPrivate::numLandBoundaries() const {
   return this->m_landBoundaries.size();
 }
 
@@ -177,7 +166,7 @@ size_t MeshImpl::numLandBoundaries() const {
  * @brief Sets the number of land boundaries in the model
  * @param numLandBoundaries Number of land boundaries
  */
-void MeshImpl::setNumLandBoundaries(size_t numLandBoundaries) {
+void MeshPrivate::setNumLandBoundaries(size_t numLandBoundaries) {
   this->m_landBoundaries.resize(numLandBoundaries);
 }
 
@@ -188,11 +177,11 @@ void MeshImpl::setNumLandBoundaries(size_t numLandBoundaries) {
  * Reads the unstructured mesh into a mesh object. If no format is
  * specified, then it will be guessed from the file extension
  */
-void MeshImpl::read(MeshFormat format) {
+void MeshPrivate::read(MeshFormat format) {
   if (this->m_filename == std::string()) {
     adcircmodules_throw_exception("No filename has been specified.");
   }
-  if (!FileIO::Generic::fileExists(this->m_filename)) {
+  if (!Adcirc::FileIO::Generic::fileExists(this->m_filename)) {
     adcircmodules_throw_exception("File does not exist.");
   }
 
@@ -226,7 +215,7 @@ void MeshImpl::read(MeshFormat format) {
   return;
 }
 
-void MeshImpl::readAdcircMeshNetcdf() {
+void MeshPrivate::readAdcircMeshNetcdf() {
   int ncid;
   int ierr = nc_open(this->m_filename.c_str(), NC_NOWRITE, &ncid);
   if (ierr != NC_NOERR)
@@ -254,81 +243,66 @@ void MeshImpl::readAdcircMeshNetcdf() {
   ierr += nc_inq_varid(ncid, "element", &varid_elem);
   if (ierr != 0) adcircmodules_throw_exception("Could not read the varids");
 
-  double *x = new double[nn];
-  double *y = new double[nn];
-  double *z = new double[nn];
+  std::unique_ptr<double> x(new double[nn]);
+  std::unique_ptr<double> y(new double[nn]);
+  std::unique_ptr<double> z(new double[nn]);
 
-  ierr += nc_get_var_double(ncid, varid_x, x);
-  ierr += nc_get_var_double(ncid, varid_y, y);
-  ierr += nc_get_var_double(ncid, varid_z, z);
+  ierr += nc_get_var_double(ncid, varid_x, x.get());
+  ierr += nc_get_var_double(ncid, varid_y, y.get());
+  ierr += nc_get_var_double(ncid, varid_z, z.get());
   if (ierr != 0) {
-    delete[] x;
-    delete[] y;
-    delete[] z;
     adcircmodules_throw_exception("Could not read nodal data");
   }
 
   this->m_nodes.reserve(nn);
   for (size_t i = 0; i < nn; ++i) {
-    this->m_nodes.push_back(Node(i + 1, x[i], y[i], z[i]));
+    this->m_nodes.push_back(Node(i + 1, x.get()[i], y.get()[i], z.get()[i]));
   }
 
   this->m_nodeOrderingLogical = true;
   this->m_elementOrderingLogical = true;
 
-  delete[] x;
-  delete[] y;
-  delete[] z;
-
-  int *n1 = new int[ne];
-  int *n2 = new int[ne];
-  int *n3 = new int[ne];
-  int *n4 = new int[ne];
+  std::unique_ptr<int> n1(new int[ne]);
+  std::unique_ptr<int> n2(new int[ne]);
+  std::unique_ptr<int> n3(new int[ne]);
+  std::unique_ptr<int> n4(new int[ne]);
   size_t start[2], count[2];
   start[0] = 0;
   start[1] = 0;
   count[0] = ne;
   count[1] = 1;
 
-  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n1);
+  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n1.get());
   start[1] = 1;
-  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n2);
+  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n2.get());
   start[1] = 2;
-  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n3);
+  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n3.get());
   if (n_max_vertex == 4) {
     start[1] = 3;
-    ierr += nc_get_vara_int(ncid, varid_elem, start, count, n4);
+    ierr += nc_get_vara_int(ncid, varid_elem, start, count, n4.get());
   } else {
     for (size_t i = 0; i < ne; ++i) {
-      n4[i] = NC_FILL_INT;
+      n4.get()[i] = NC_FILL_INT;
     }
   }
 
   if (ierr != 0) {
-    delete[] n1;
-    delete[] n2;
-    delete[] n3;
-    delete[] n4;
     adcircmodules_throw_exception("Could not read the element data");
   }
 
   this->m_elements.reserve(ne);
   for (size_t i = 0; i < ne; ++i) {
-    if (n4[i] == NC_FILL_INT) {
-      this->m_elements.push_back(Element(i + 1, &this->m_nodes[n1[i] - 1],
-                                         &this->m_nodes[n2[i] - 1],
-                                         &this->m_nodes[n3[i] - 1]));
+    if (n4.get()[i] == NC_FILL_INT) {
+      this->m_elements.push_back(Element(i + 1, &this->m_nodes[n1.get()[i] - 1],
+                                         &this->m_nodes[n2.get()[i] - 1],
+                                         &this->m_nodes[n3.get()[i] - 1]));
     } else {
-      this->m_elements.push_back(
-          Element(i + 1, &this->m_nodes[n1[i] - 1], &this->m_nodes[n2[i] - 1],
-                  &this->m_nodes[n3[i] - 1], &this->m_nodes[n4[i] - 1]));
+      this->m_elements.push_back(Element(i + 1, &this->m_nodes[n1.get()[i] - 1],
+                                         &this->m_nodes[n2.get()[i] - 1],
+                                         &this->m_nodes[n3.get()[i] - 1],
+                                         &this->m_nodes[n4.get()[i] - 1]));
     }
   }
-
-  delete[] n1;
-  delete[] n2;
-  delete[] n3;
-  delete[] n4;
 
   return;
 }
@@ -338,7 +312,7 @@ void MeshImpl::readAdcircMeshNetcdf() {
  *
  * Note this will be extended in the future to netCDF formatted meshes
  */
-void MeshImpl::readAdcircMeshAscii() {
+void MeshPrivate::readAdcircMeshAscii() {
   std::fstream fid(this->filename());
 
   this->readAdcircMeshHeader(fid);
@@ -356,7 +330,7 @@ void MeshImpl::readAdcircMeshAscii() {
  * @brief Reads an Aquaveo generic mesh format (2dm)
  *
  */
-void MeshImpl::read2dmMesh() {
+void MeshPrivate::read2dmMesh() {
   std::vector<std::string> nodes, elements;
   this->read2dmData(nodes, elements);
   this->read2dmNodes(nodes);
@@ -367,7 +341,7 @@ void MeshImpl::read2dmMesh() {
 /**
  * @brief Read a DFlow-FM unstructured mesh file
  */
-void MeshImpl::readDflowMesh() {
+void MeshPrivate::readDflowMesh() {
   int ncid;
   int ierr = nc_open(this->m_filename.c_str(), NC_NOWRITE, &ncid);
 
@@ -411,47 +385,43 @@ void MeshImpl::readDflowMesh() {
 
   if (isFill == 1) elemFillValue = NC_FILL_INT;
 
-  double *xcoor = new double[nn];
-  double *ycoor = new double[nn];
-  double *zcoor = new double[nn];
-  int *elem = new int[ne * nmaxnode];
+  std::unique_ptr<double> xcoor(new double[nn]);
+  std::unique_ptr<double> ycoor(new double[nn]);
+  std::unique_ptr<double> zcoor(new double[nn]);
+  std::unique_ptr<int> elem(new int[ne * nmaxnode]);
 
-  ierr += nc_get_var_double(ncid, varid_x, xcoor);
-  ierr += nc_get_var_double(ncid, varid_y, ycoor);
-  ierr += nc_get_var_double(ncid, varid_z, zcoor);
-  ierr += nc_get_var_int(ncid, varid_elem, elem);
+  ierr += nc_get_var_double(ncid, varid_x, xcoor.get());
+  ierr += nc_get_var_double(ncid, varid_y, ycoor.get());
+  ierr += nc_get_var_double(ncid, varid_z, zcoor.get());
+  ierr += nc_get_var_int(ncid, varid_elem, elem.get());
   nc_close(ncid);
 
   if (ierr != 0) {
-    delete[] xcoor;
-    delete[] ycoor;
-    delete[] zcoor;
-    delete[] elem;
     adcircmodules_throw_exception("Error reading arrays from netcdf file.");
     return;
   }
 
   this->m_nodes.resize(nn);
   for (size_t i = 0; i < nn; ++i) {
-    this->m_nodes[i] = Node(i + 1, xcoor[i], ycoor[i], zcoor[i]);
+    this->m_nodes[i] =
+        Node(i + 1, xcoor.get()[i], ycoor.get()[i], zcoor.get()[i]);
   }
 
-  delete[] xcoor;
-  delete[] ycoor;
-  delete[] zcoor;
+  xcoor.reset(nullptr);
+  ycoor.reset(nullptr);
+  zcoor.reset(nullptr);
 
   for (size_t i = 0; i < ne; ++i) {
     std::vector<size_t> n(nmaxnode);
     size_t nfill = 0;
     for (size_t j = 0; j < nmaxnode; ++j) {
-      n[j] = elem[i * nmaxnode + j];
+      n[j] = elem.get()[i * nmaxnode + j];
       if (n[j] == elemFillValue || n[j] == NC_FILL_INT || n[j] == NC_FILL_INT64)
         nfill++;
     }
 
     size_t nnodeelem = nmaxnode - nfill;
     if (nnodeelem != 3 && nnodeelem != 4) {
-      delete[] elem;
       adcircmodules_throw_exception("Invalid element type detected");
       return;
     }
@@ -469,8 +439,6 @@ void MeshImpl::readDflowMesh() {
     this->m_elements[i].sortVerticiesAboutCenter();
   }
 
-  delete[] elem;
-
   return;
 }
 
@@ -479,8 +447,8 @@ void MeshImpl::readDflowMesh() {
  * @param[out] nodes node cards vector
  * @param[out] elements element cards vector
  */
-void MeshImpl::read2dmData(std::vector<std::string> &nodes,
-                           std::vector<std::string> &elements) {
+void MeshPrivate::read2dmData(std::vector<std::string> &nodes,
+                              std::vector<std::string> &elements) {
   std::fstream fid(this->filename());
 
   std::string junk;
@@ -496,7 +464,7 @@ void MeshImpl::read2dmData(std::vector<std::string> &nodes,
   std::string templine;
   while (std::getline(fid, templine)) {
     std::vector<std::string> templist;
-    FileIO::Generic::splitString(templine, templist);
+    Adcirc::FileIO::Generic::splitString(templine, templist);
     if (templist[0] == "ND") {
       nodes.push_back(templine);
     } else if (templist[0] == "E4Q" || templist[0] == "E3T") {
@@ -511,7 +479,7 @@ void MeshImpl::read2dmData(std::vector<std::string> &nodes,
  * @brief Builds a lookup table in the case that the nodes are not numbered in
  * order
  */
-void MeshImpl::buildNodeLookupTable() {
+void MeshPrivate::buildNodeLookupTable() {
   this->m_nodeLookup.reserve(this->numNodes());
   for (size_t i = 0; i < this->numNodes(); ++i) {
     this->m_nodeLookup[this->m_nodes[i].id()] = i;
@@ -522,13 +490,13 @@ void MeshImpl::buildNodeLookupTable() {
  * @brief Parses the node data into data structures
  * @param nodes vector of node data from 2dm file
  */
-void MeshImpl::read2dmNodes(std::vector<std::string> &nodes) {
+void MeshPrivate::read2dmNodes(std::vector<std::string> &nodes) {
   this->m_nodes.reserve(nodes.size());
   this->m_nodeOrderingLogical = true;
   for (auto &n : nodes) {
     size_t id;
     double x, y, z;
-    FileIO::SMSIO::splitString2dmNodeFormat(n, id, x, y, z);
+    Adcirc::FileIO::SMSIO::splitString2dmNodeFormat(n, id, x, y, z);
     this->m_nodes.push_back(Node(id, x, y, z));
     if (this->m_nodes.size() != id) {
       this->m_nodeOrderingLogical = false;
@@ -544,12 +512,12 @@ void MeshImpl::read2dmNodes(std::vector<std::string> &nodes) {
  * @brief Parses the element data into data structures
  * @param elements vector of element data from the 2dm file
  */
-void MeshImpl::read2dmElements(std::vector<std::string> &elements) {
+void MeshPrivate::read2dmElements(std::vector<std::string> &elements) {
   this->m_elements.reserve(elements.size());
   for (auto &e : elements) {
     size_t id;
     std::vector<size_t> n;
-    if (FileIO::SMSIO::splitString2dmElementFormat(e, id, n)) {
+    if (Adcirc::FileIO::SMSIO::splitString2dmElementFormat(e, id, n)) {
       if (n.size() == 3) {
         if (this->m_nodeOrderingLogical) {
           this->m_elements.push_back(Element(id, &this->m_nodes[n[0] - 1],
@@ -589,9 +557,9 @@ void MeshImpl::read2dmElements(std::vector<std::string> &elements) {
  * @brief Determine the mesh format based upon file extension
  * @return MeshFormat enum
  */
-Adcirc::Geometry::MeshFormat MeshImpl::getMeshFormat(
+Adcirc::Geometry::MeshFormat MeshPrivate::getMeshFormat(
     const std::string &filename) {
-  std::string extension = FileIO::Generic::getFileExtension(filename);
+  std::string extension = Adcirc::FileIO::Generic::getFileExtension(filename);
   if (extension == ".14" || extension == ".grd") {
     return MeshAdcirc;
   } else if (extension == ".2dm") {
@@ -609,7 +577,7 @@ Adcirc::Geometry::MeshFormat MeshImpl::getMeshFormat(
  * @brief Reads the mesh title line and node/element dimensional data
  * @param fid std::fstream reference for the currently opened mesh
  */
-void MeshImpl::readAdcircMeshHeader(std::fstream &fid) {
+void MeshPrivate::readAdcircMeshHeader(std::fstream &fid) {
   bool ok;
   size_t tempInt;
   std::string tempLine;
@@ -623,7 +591,7 @@ void MeshImpl::readAdcircMeshHeader(std::fstream &fid) {
 
   //..Get the size of the mesh
   std::getline(fid, tempLine);
-  FileIO::Generic::splitString(tempLine, tempList);
+  Adcirc::FileIO::Generic::splitString(tempLine, tempList);
   tempLine = tempList[0];
   tempInt = StringConversion::stringToSizet(tempLine, ok);
   if (!ok) {
@@ -647,7 +615,7 @@ void MeshImpl::readAdcircMeshHeader(std::fstream &fid) {
  * @brief Reads the node section of the ASCII formatted mesh
  * @param fid std::fstream reference for the currently opened mesh
  */
-void MeshImpl::readAdcircNodes(std::fstream &fid) {
+void MeshPrivate::readAdcircNodes(std::fstream &fid) {
   this->m_nodes.resize(this->numNodes());
 
   size_t i = 0;
@@ -680,7 +648,7 @@ void MeshImpl::readAdcircNodes(std::fstream &fid) {
  * @brief Reads the elements section of the ASCII mesh
  * @param fid std::fstream reference for the currently opened mesh
  */
-void MeshImpl::readAdcircElements(std::fstream &fid) {
+void MeshPrivate::readAdcircElements(std::fstream &fid) {
   size_t id;
   std::string tempLine;
 
@@ -745,12 +713,12 @@ void MeshImpl::readAdcircElements(std::fstream &fid) {
  * @brief Reads the open boundaries section of the ASCII formatted mesh file
  * @param fid std::fstream reference for the currently opened mesh
  */
-void MeshImpl::readAdcircOpenBoundaries(std::fstream &fid) {
+void MeshPrivate::readAdcircOpenBoundaries(std::fstream &fid) {
   std::string tempLine;
   std::vector<std::string> tempList;
 
   std::getline(fid, tempLine);
-  FileIO::Generic::splitString(tempLine, tempList);
+  Adcirc::FileIO::Generic::splitString(tempLine, tempList);
 
   bool ok;
   this->setNumOpenBoundaries(StringConversion::stringToSizet(tempList[0], ok));
@@ -765,7 +733,7 @@ void MeshImpl::readAdcircOpenBoundaries(std::fstream &fid) {
 
   for (auto &b : this->m_openBoundaries) {
     std::getline(fid, tempLine);
-    FileIO::Generic::splitString(tempLine, tempList);
+    Adcirc::FileIO::Generic::splitString(tempLine, tempList);
 
     size_t length = StringConversion::stringToSizet(tempList[0], ok);
     if (!ok) {
@@ -797,7 +765,7 @@ void MeshImpl::readAdcircOpenBoundaries(std::fstream &fid) {
  * @brief Reads the land boundaries section of the ASCII formatted mesh file
  * @param fid std::fstream reference for the currently opened mesh
  */
-void MeshImpl::readAdcircLandBoundaries(std::fstream &fid) {
+void MeshPrivate::readAdcircLandBoundaries(std::fstream &fid) {
   std::string tempLine;
   std::vector<std::string> tempList;
 
@@ -807,7 +775,7 @@ void MeshImpl::readAdcircLandBoundaries(std::fstream &fid) {
 
   std::getline(fid, tempLine);
 
-  FileIO::Generic::splitString(tempLine, tempList);
+  Adcirc::FileIO::Generic::splitString(tempLine, tempList);
 
   this->setNumLandBoundaries(StringConversion::stringToSizet(tempList[0], ok));
   if (!ok) {
@@ -820,7 +788,7 @@ void MeshImpl::readAdcircLandBoundaries(std::fstream &fid) {
 
   for (auto &b : this->m_landBoundaries) {
     std::getline(fid, tempLine);
-    FileIO::Generic::splitString(tempLine, tempList);
+    Adcirc::FileIO::Generic::splitString(tempLine, tempList);
 
     size_t length = StringConversion::stringToSizet(tempList[0], ok);
     if (!ok) {
@@ -914,7 +882,7 @@ void MeshImpl::readAdcircLandBoundaries(std::fstream &fid) {
  * @brief Returns a reference to the elemental search kd-tree
  * @return kd-tree object with element centers as search locations
  */
-Kdtree *MeshImpl::elementalSearchTree() const {
+Adcirc::Kdtree *MeshPrivate::elementalSearchTree() const {
   return m_elementalSearchTree.get();
 }
 
@@ -922,13 +890,15 @@ Kdtree *MeshImpl::elementalSearchTree() const {
  * @brief Returns a refrence to the nodal search kd-tree
  * @return kd-tree object with mesh nodes as serch locations
  */
-Kdtree *MeshImpl::nodalSearchTree() const { return m_nodalSearchTree.get(); }
+Adcirc::Kdtree *MeshPrivate::nodalSearchTree() const {
+  return m_nodalSearchTree.get();
+}
 
 /**
  * @brief Returns the number of land boundary nodes in the mesh
  * @return Number of nodes that fall on a land boundary
  */
-size_t MeshImpl::totalLandBoundaryNodes() {
+size_t MeshPrivate::totalLandBoundaryNodes() {
   size_t total = 0;
   for (auto &b : this->m_landBoundaries) {
     total += b.length();
@@ -940,7 +910,7 @@ size_t MeshImpl::totalLandBoundaryNodes() {
  * @brief Sets the z-values of the mesh to the values found within a vector
  * @param z values that will be set to the mesh nodes z attribute
  */
-void MeshImpl::setZ(std::vector<double> &z) {
+void MeshPrivate::setZ(std::vector<double> &z) {
   assert(z.size() == this->numNodes());
   for (size_t i = 0; i < this->numNodes(); ++i) {
     this->m_nodes[i].setZ(z[i]);
@@ -952,7 +922,7 @@ void MeshImpl::setZ(std::vector<double> &z) {
  * @brief Returns the number of open boundary nodes in the mesh
  * @return Number of open boundary nodes
  */
-size_t MeshImpl::totalOpenBoundaryNodes() {
+size_t MeshPrivate::totalOpenBoundaryNodes() {
   size_t total = 0;
   for (auto &b : this->m_openBoundaries) {
     total += b.length();
@@ -965,7 +935,7 @@ size_t MeshImpl::totalOpenBoundaryNodes() {
  * @param index location of the node in the vector
  * @return Node pointer
  */
-Node *MeshImpl::node(size_t index) {
+Node *MeshPrivate::node(size_t index) {
   if (index < this->numNodes()) {
     return &this->m_nodes[index];
   } else {
@@ -981,7 +951,7 @@ Node *MeshImpl::node(size_t index) {
  * @param index location of the node in the vector
  * @return Element pointer
  */
-Element *MeshImpl::element(size_t index) {
+Element *MeshPrivate::element(size_t index) {
   if (index < this->numElements()) {
     return &this->m_elements[index];
   } else {
@@ -995,7 +965,7 @@ Element *MeshImpl::element(size_t index) {
  * @param id Nodal ID to return a reference to
  * @return Node pointer
  */
-Node *MeshImpl::nodeById(size_t id) {
+Node *MeshPrivate::nodeById(size_t id) {
   if (this->m_nodeOrderingLogical) {
     if (id > 0 && id <= this->numNodes()) {
       return &this->m_nodes[id - 1];
@@ -1014,7 +984,7 @@ Node *MeshImpl::nodeById(size_t id) {
  * @param id Elemental ID to return a reference to
  * @return Element pointer
  */
-Element *MeshImpl::elementById(size_t id) {
+Element *MeshPrivate::elementById(size_t id) {
   if (this->m_elementOrderingLogical) {
     if (id > 0 && id <= this->numElements()) {
       return &this->m_elements[id - 1];
@@ -1032,7 +1002,7 @@ Element *MeshImpl::elementById(size_t id) {
  * @param index index in the open boundary array
  * @return Boundary pointer
  */
-Boundary *MeshImpl::openBoundary(size_t index) {
+Boundary *MeshPrivate::openBoundary(size_t index) {
   if (index < this->numOpenBoundaries()) {
     return &this->m_openBoundaries[index];
   } else {
@@ -1046,7 +1016,7 @@ Boundary *MeshImpl::openBoundary(size_t index) {
  * @param index index in the land boundary array
  * @return Boundary pointer
  */
-Boundary *MeshImpl::landBoundary(size_t index) {
+Boundary *MeshPrivate::landBoundary(size_t index) {
   if (index < this->numLandBoundaries()) {
     return &this->m_landBoundaries[index];
   } else {
@@ -1062,7 +1032,7 @@ Boundary *MeshImpl::landBoundary(size_t index) {
  * @param isLatLon defines if the current projection is a lat/lon projection.
  * This helps define the significant digits when writing the mesh file
  */
-void MeshImpl::defineProjection(int epsg, bool isLatLon) {
+void MeshPrivate::defineProjection(int epsg, bool isLatLon) {
   this->m_epsg = epsg;
   this->m_isLatLon = isLatLon;
   return;
@@ -1072,19 +1042,19 @@ void MeshImpl::defineProjection(int epsg, bool isLatLon) {
  * @brief Returns the EPSG code for the current mesh projection
  * @return EPSG code
  */
-int MeshImpl::projection() { return this->m_epsg; }
+int MeshPrivate::projection() { return this->m_epsg; }
 
 /**
  * @brief Returns true if the mesh is in a geographic projection
  * @return boolean value for mesh projection type
  */
-bool MeshImpl::isLatLon() { return this->m_isLatLon; }
+bool MeshPrivate::isLatLon() { return this->m_isLatLon; }
 
 /**
  * @brief Reprojects a mesh into the specified projection
  * @param epsg EPSG coordinate system to convert the mesh into
  */
-void MeshImpl::reproject(int epsg) {
+void MeshPrivate::reproject(int epsg) {
   Ezproj proj;
   bool isLatLon;
   std::vector<Point> inPoint, outPoint;
@@ -1116,7 +1086,7 @@ void MeshImpl::reproject(int epsg) {
  * @brief Writes the mesh nodes into ESRI shapefile format
  * @param outputFile output file with .shp extension
  */
-void MeshImpl::toNodeShapefile(const std::string &outputFile) {
+void MeshPrivate::toNodeShapefile(const std::string &outputFile) {
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POINT);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
 
@@ -1152,7 +1122,7 @@ void MeshImpl::toNodeShapefile(const std::string &outputFile) {
  * @brief Generates a table containing the node-to-node links that form elements
  * @return vector of unique node pairs
  */
-std::vector<std::pair<Node *, Node *>> MeshImpl::generateLinkTable() {
+std::vector<std::pair<Node *, Node *>> MeshPrivate::generateLinkTable() {
   std::vector<std::pair<Node *, Node *>> legs;
   legs.reserve(this->numElements() * 4);
   for (auto &e : this->m_elements) {
@@ -1180,7 +1150,7 @@ std::vector<std::pair<Node *, Node *>> MeshImpl::generateLinkTable() {
  * @brief Writes the mesh connectivity into ESRI shapefile format
  * @param outputFile output file with .shp extension
  */
-void MeshImpl::toConnectivityShapefile(const std::string &outputFile) {
+void MeshPrivate::toConnectivityShapefile(const std::string &outputFile) {
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_ARC);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
 
@@ -1225,7 +1195,7 @@ void MeshImpl::toConnectivityShapefile(const std::string &outputFile) {
  * @brief Writes the mesh elements as polygons into ESRI shapefile format
  * @param outputFile output file with .shp extension
  */
-void MeshImpl::toElementShapefile(const std::string &outputFile) {
+void MeshPrivate::toElementShapefile(const std::string &outputFile) {
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POLYGONZ);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
   DBFAddField(dbfid, "elementid", FTInteger, 16, 0);
@@ -1283,7 +1253,7 @@ void MeshImpl::toElementShapefile(const std::string &outputFile) {
   return;
 }
 
-void MeshImpl::toBoundaryShapefile(const std::string &outputFile) {
+void MeshPrivate::toBoundaryShapefile(const std::string &outputFile) {
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POINTZ);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
   DBFAddField(dbfid, "bndId", FTInteger, 16, 0);
@@ -1399,7 +1369,7 @@ void MeshImpl::toBoundaryShapefile(const std::string &outputFile) {
 /**
  * @brief Builds a kd-tree object with the mesh nodes as the search locations
  */
-void MeshImpl::buildNodalSearchTree() {
+void MeshPrivate::buildNodalSearchTree() {
   int ierr;
   std::vector<double> x, y;
 
@@ -1429,7 +1399,7 @@ void MeshImpl::buildNodalSearchTree() {
  * @brief Builds a kd-tree object with the element centers as the search
  * locations
  */
-void MeshImpl::buildElementalSearchTree() {
+void MeshPrivate::buildElementalSearchTree() {
   std::vector<double> x, y;
 
   x.reserve(this->numElements());
@@ -1460,7 +1430,7 @@ void MeshImpl::buildElementalSearchTree() {
 /**
  * @brief Deletes the nodal search tree
  */
-void MeshImpl::deleteNodalSearchTree() {
+void MeshPrivate::deleteNodalSearchTree() {
   if (this->nodalSearchTreeInitialized()) {
     this->m_nodalSearchTree.reset();
   }
@@ -1470,7 +1440,7 @@ void MeshImpl::deleteNodalSearchTree() {
 /**
  * @brief Deletes the elemental search tree
  */
-void MeshImpl::deleteElementalSearchTree() {
+void MeshPrivate::deleteElementalSearchTree() {
   if (this->elementalSearchTreeInitialized()) {
     this->m_elementalSearchTree.reset();
   }
@@ -1482,7 +1452,7 @@ void MeshImpl::deleteElementalSearchTree() {
  * been initialized
  * @return true if the search tree is initialized
  */
-bool MeshImpl::nodalSearchTreeInitialized() {
+bool MeshPrivate::nodalSearchTreeInitialized() {
   return this->m_nodalSearchTree->initialized();
 }
 
@@ -1491,7 +1461,7 @@ bool MeshImpl::nodalSearchTreeInitialized() {
  * been initialized
  * @return true of the search tree is initialized
  */
-bool MeshImpl::elementalSearchTreeInitialized() {
+bool MeshPrivate::elementalSearchTreeInitialized() {
   return this->m_elementalSearchTree->initialized();
 }
 
@@ -1502,8 +1472,9 @@ bool MeshImpl::elementalSearchTreeInitialized() {
  * @param numOpenBoundaries Number of open boundaries
  * @param numLandBoundaries Number of land boundaries
  */
-void MeshImpl::resizeMesh(size_t numNodes, size_t numElements,
-                          size_t numOpenBoundaries, size_t numLandBoundaries) {
+void MeshPrivate::resizeMesh(size_t numNodes, size_t numElements,
+                             size_t numOpenBoundaries,
+                             size_t numLandBoundaries) {
   if (numNodes != this->numNodes()) {
     this->m_nodes.resize(numNodes);
     this->setNumNodes(numNodes);
@@ -1532,7 +1503,7 @@ void MeshImpl::resizeMesh(size_t numNodes, size_t numElements,
  * @param index location where the node should be added
  * @param node Reference to an Node object
  */
-void MeshImpl::addNode(size_t index, const Node &node) {
+void MeshPrivate::addNode(size_t index, const Node &node) {
   if (index < this->numNodes()) {
     this->m_nodes[index] = node;
   } else {
@@ -1547,7 +1518,7 @@ void MeshImpl::addNode(size_t index, const Node &node) {
  * remaining nodes forward in the vector
  * @param index location where the node should be deleted from
  */
-void MeshImpl::deleteNode(size_t index) {
+void MeshPrivate::deleteNode(size_t index) {
   if (index < this->numNodes()) {
     this->m_nodes.erase(this->m_nodes.begin() + index);
     this->setNumNodes(this->m_nodes.size());
@@ -1562,7 +1533,7 @@ void MeshImpl::deleteNode(size_t index) {
  * @param index location where the element should be added
  * @param element reference to the Element to add
  */
-void MeshImpl::addElement(size_t index, const Element &element) {
+void MeshPrivate::addElement(size_t index, const Element &element) {
   if (index < this->numElements()) {
     this->m_elements[index] = element;
   } else {
@@ -1576,7 +1547,7 @@ void MeshImpl::addElement(size_t index, const Element &element) {
  * remaining elements forward in the vector
  * @param index location where the element should be deleted from
  */
-void MeshImpl::deleteElement(size_t index) {
+void MeshPrivate::deleteElement(size_t index) {
   if (index < this->numElements()) {
     this->m_elements.erase(this->m_elements.begin() + index);
     this->setNumElements(this->m_elements.size());
@@ -1586,7 +1557,7 @@ void MeshImpl::deleteElement(size_t index) {
   return;
 }
 
-void MeshImpl::addLandBoundary(size_t index, const Boundary &bnd) {
+void MeshPrivate::addLandBoundary(size_t index, const Boundary &bnd) {
   if (index < this->numLandBoundaries()) {
     this->m_landBoundaries[index] = bnd;
   } else {
@@ -1595,7 +1566,7 @@ void MeshImpl::addLandBoundary(size_t index, const Boundary &bnd) {
   }
 }
 
-void MeshImpl::deleteLandBoundary(size_t index) {
+void MeshPrivate::deleteLandBoundary(size_t index) {
   if (index < this->numLandBoundaries()) {
     this->m_landBoundaries.erase(this->m_landBoundaries.begin() + index);
   } else {
@@ -1604,7 +1575,7 @@ void MeshImpl::deleteLandBoundary(size_t index) {
   }
 }
 
-void MeshImpl::addOpenBoundary(size_t index, const Boundary &bnd) {
+void MeshPrivate::addOpenBoundary(size_t index, const Boundary &bnd) {
   if (index < this->numOpenBoundaries()) {
     this->m_openBoundaries[index] = bnd;
   } else {
@@ -1613,7 +1584,7 @@ void MeshImpl::addOpenBoundary(size_t index, const Boundary &bnd) {
   }
 }
 
-void MeshImpl::deleteOpenBoundary(size_t index) {
+void MeshPrivate::deleteOpenBoundary(size_t index) {
   if (index < this->numOpenBoundaries()) {
     this->m_openBoundaries.erase(this->m_openBoundaries.begin() + index);
   } else {
@@ -1629,7 +1600,7 @@ void MeshImpl::deleteOpenBoundary(size_t index) {
  *
  * If no output specifier is supplied, format is guessed from file extension.
  */
-void MeshImpl::write(const std::string &outputFile, MeshFormat format) {
+void MeshPrivate::write(const std::string &outputFile, MeshFormat format) {
   MeshFormat fmt;
   if (format == MeshUnknown) {
     fmt = this->getMeshFormat(outputFile);
@@ -1657,7 +1628,7 @@ void MeshImpl::write(const std::string &outputFile, MeshFormat format) {
  * @brief Writes an Mesh object to disk in ADCIRC ASCII format
  * @param filename name of the output file to write
  */
-void MeshImpl::writeAdcircMesh(const std::string &filename) {
+void MeshPrivate::writeAdcircMesh(const std::string &filename) {
   std::ofstream outputFile;
 
   outputFile.open(filename);
@@ -1710,7 +1681,7 @@ void MeshImpl::writeAdcircMesh(const std::string &filename) {
  * @brief Writes an Mesh object to disk in Aquaveo 2dm ASCII format
  * @param filename name of the output file to write
  */
-void MeshImpl::write2dmMesh(const std::string &filename) {
+void MeshPrivate::write2dmMesh(const std::string &filename) {
   std::ofstream outputFile;
   outputFile.open(filename);
 
@@ -1736,7 +1707,7 @@ void MeshImpl::write2dmMesh(const std::string &filename) {
  * @brief Get the maximum number of nodes per element
  * @return max nodes per element
  */
-size_t MeshImpl::getMaxNodesPerElement() {
+size_t MeshPrivate::getMaxNodesPerElement() {
   size_t n = 0;
   for (auto &e : this->m_elements) {
     if (e.n() > n) n = e.n();
@@ -1748,54 +1719,55 @@ size_t MeshImpl::getMaxNodesPerElement() {
  * @brief Writes the mesh to the DFlow-FM format
  * @param filename name of the output file (*_net.nc)
  */
-void MeshImpl::writeDflowMesh(const std::string &filename) {
+void MeshPrivate::writeDflowMesh(const std::string &filename) {
   std::vector<std::pair<Node *, Node *>> links = this->generateLinkTable();
   size_t nlinks = links.size();
   size_t maxelemnode = this->getMaxNodesPerElement();
 
-  double *xarray = new double[this->numNodes()];
-  double *yarray = new double[this->numNodes()];
-  double *zarray = new double[this->numNodes()];
-  int *linkArray = new int[nlinks * 2];
-  int *linkTypeArray = new int[nlinks * 2];
-  int *netElemNodearray = new int[this->numElements() * maxelemnode];
+  std::unique_ptr<double> xarray(new double[this->numNodes()]);
+  std::unique_ptr<double> yarray(new double[this->numNodes()]);
+  std::unique_ptr<double> zarray(new double[this->numNodes()]);
+  std::unique_ptr<int> linkArray(new int[nlinks * 2]);
+  std::unique_ptr<int> linkTypeArray(new int[nlinks * 2]);
+  std::unique_ptr<int> netElemNodearray(
+      new int[this->numElements() * maxelemnode]);
 
   for (size_t i = 0; i < this->numNodes(); ++i) {
-    xarray[i] = this->node(i)->x();
-    yarray[i] = this->node(i)->y();
-    zarray[i] = this->node(i)->z();
+    xarray.get()[i] = this->node(i)->x();
+    yarray.get()[i] = this->node(i)->y();
+    zarray.get()[i] = this->node(i)->z();
   }
 
   size_t idx = 0;
   for (size_t i = 0; i < nlinks; ++i) {
-    linkArray[idx] = links[i].first->id();
+    linkArray.get()[idx] = links[i].first->id();
     idx++;
-    linkArray[idx] = links[i].second->id();
+    linkArray.get()[idx] = links[i].second->id();
     idx++;
-    linkTypeArray[i] = 2;
+    linkTypeArray.get()[i] = 2;
   }
 
   idx = 0;
   for (size_t i = 0; i < this->numElements(); ++i) {
     if (this->element(i)->n() == 3) {
-      netElemNodearray[idx] = this->element(i)->node(0)->id();
+      netElemNodearray.get()[idx] = this->element(i)->node(0)->id();
       idx++;
-      netElemNodearray[idx] = this->element(i)->node(1)->id();
+      netElemNodearray.get()[idx] = this->element(i)->node(1)->id();
       idx++;
-      netElemNodearray[idx] = this->element(i)->node(2)->id();
+      netElemNodearray.get()[idx] = this->element(i)->node(2)->id();
       idx++;
       if (maxelemnode == 4) {
-        netElemNodearray[idx] = NC_FILL_INT;
+        netElemNodearray.get()[idx] = NC_FILL_INT;
         idx++;
       }
     } else {
-      netElemNodearray[idx] = this->element(i)->node(0)->id();
+      netElemNodearray.get()[idx] = this->element(i)->node(0)->id();
       idx++;
-      netElemNodearray[idx] = this->element(i)->node(1)->id();
+      netElemNodearray.get()[idx] = this->element(i)->node(1)->id();
       idx++;
-      netElemNodearray[idx] = this->element(i)->node(2)->id();
+      netElemNodearray.get()[idx] = this->element(i)->node(2)->id();
       idx++;
-      netElemNodearray[idx] = this->element(i)->node(3)->id();
+      netElemNodearray.get()[idx] = this->element(i)->node(3)->id();
       idx++;
     }
   }
@@ -1815,40 +1787,44 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
     adcircmodules_throw_exception(
         "Error creating dimensions for D-Flow netCDF format file");
 
-  int *dim1d = new int[1];
-  int *dim2d = new int[2];
+  std::unique_ptr<int> dim1d(new int[1]);
+  std::unique_ptr<int> dim2d(new int[2]);
 
   int varid_mesh2d, varid_netnodex, varid_netnodey, varid_netnodez;
   ierr += nc_def_var(ncid, "Mesh2D", NC_INT, 0, nullptr, &varid_mesh2d);
-  dim1d[0] = dimid_nnode;
-  ierr += nc_def_var(ncid, "NetNode_x", NC_DOUBLE, 1, dim1d, &varid_netnodex);
-  ierr += nc_def_var(ncid, "NetNode_y", NC_DOUBLE, 1, dim1d, &varid_netnodey);
-  ierr += nc_def_var(ncid, "NetNode_z", NC_DOUBLE, 1, dim1d, &varid_netnodez);
+  dim1d.get()[0] = dimid_nnode;
+  ierr +=
+      nc_def_var(ncid, "NetNode_x", NC_DOUBLE, 1, dim1d.get(), &varid_netnodex);
+  ierr +=
+      nc_def_var(ncid, "NetNode_y", NC_DOUBLE, 1, dim1d.get(), &varid_netnodey);
+  ierr +=
+      nc_def_var(ncid, "NetNode_z", NC_DOUBLE, 1, dim1d.get(), &varid_netnodez);
 
-  dim1d[0] = dimid_nlink;
-  dim2d[0] = dimid_nlink;
-  dim2d[1] = dimid_nlinkpts;
+  dim1d.get()[0] = dimid_nlink;
+  dim2d.get()[0] = dimid_nlink;
+  dim2d.get()[1] = dimid_nlinkpts;
 
   int varid_netlinktype, varid_netlink, varid_crs;
-  ierr += nc_def_var(ncid, "NetLinkType", NC_INT, 1, dim1d, &varid_netlinktype);
-  ierr += nc_def_var(ncid, "NetLink", NC_INT, 2, dim2d, &varid_netlink);
+  ierr += nc_def_var(ncid, "NetLinkType", NC_INT, 1, dim1d.get(),
+                     &varid_netlinktype);
+  ierr += nc_def_var(ncid, "NetLink", NC_INT, 2, dim2d.get(), &varid_netlink);
   ierr += nc_def_var(ncid, "crs", NC_INT, 0, nullptr, &varid_crs);
 
-  dim2d[0] = dimid_nelem;
-  dim2d[1] = dimid_maxnode;
+  dim2d.get()[0] = dimid_nelem;
+  dim2d.get()[1] = dimid_maxnode;
 
   int varid_netelemnode;
-  ierr += nc_def_var(ncid, "NetElemNode", NC_INT, 2, dim2d, &varid_netelemnode);
-  std::cout << nc_strerror(ierr);
+  ierr += nc_def_var(ncid, "NetElemNode", NC_INT, 2, dim2d.get(),
+                     &varid_netelemnode);
   if (ierr != NC_NOERR)
     adcircmodules_throw_exception(
         "Error defining variables for D-Flow netCDF format file");
 
   //...Define attributes
   ierr = nc_put_att_text(ncid, varid_mesh2d, "cf_role", 13, "mesh_topology");
-  dim1d[0] = 2;
+  dim1d.get()[0] = 2;
   ierr += nc_put_att_int(ncid, varid_mesh2d, "topology_dimension", NC_INT, 1,
-                         dim1d);
+                         dim1d.get());
   ierr += nc_put_att_text(ncid, varid_mesh2d, "node_coordinates", 19,
                           "NetNode_x NetNode_y");
   ierr += nc_put_att_text(ncid, varid_mesh2d, "node_dimension", 8, "nNetNode");
@@ -1873,11 +1849,12 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
     ierr += nc_put_att_text(ncid, varid_netnodey, "units", 13, "degrees_north");
     ierr +=
         nc_put_att_text(ncid, varid_netnodey, "standard_name", 8, "latitude");
-    dim1d[0] = 1;
-    ierr += nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d);
+    dim1d.get()[0] = 1;
+    ierr +=
+        nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d.get());
 
-    dim1d[0] = this->m_epsg;
-    ierr += nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d);
+    dim1d.get()[0] = this->m_epsg;
+    ierr += nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d.get());
   } else {
     ierr += nc_put_att_text(ncid, varid_netnodex, "axis", 1, "X");
     ierr += nc_put_att_text(ncid, varid_netnodex, "long_name", 32,
@@ -1893,11 +1870,12 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
     ierr += nc_put_att_text(ncid, varid_netnodey, "standard_name", 23,
                             "projection_y_coordinate");
 
-    dim1d[0] = 0;
-    ierr += nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d);
+    dim1d.get()[0] = 0;
+    ierr +=
+        nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d.get());
 
-    dim1d[0] = this->m_epsg;
-    ierr += nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d);
+    dim1d.get()[0] = this->m_epsg;
+    ierr += nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d.get());
   }
 
   ierr += nc_put_att_text(ncid, varid_netnodez, "axis", 1, "Z");
@@ -1909,10 +1887,11 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
   ierr += nc_put_att_text(ncid, varid_netnodez, "mesh", 6, "Mesh2D");
   ierr += nc_put_att_text(ncid, varid_netnodez, "location", 4, "node");
 
-  dim1d[0] = 1;
-  ierr += nc_put_att_int(ncid, varid_netlink, "start_index", NC_INT, 1, dim1d);
-  ierr +=
-      nc_put_att_int(ncid, varid_netelemnode, "start_index", NC_INT, 1, dim1d);
+  dim1d.get()[0] = 1;
+  ierr += nc_put_att_int(ncid, varid_netlink, "start_index", NC_INT, 1,
+                         dim1d.get());
+  ierr += nc_put_att_int(ncid, varid_netelemnode, "start_index", NC_INT, 1,
+                         dim1d.get());
   ierr += nc_put_att_text(ncid, NC_GLOBAL, "Conventions", 9, "UGRID-0.9");
 
   ierr = nc_enddef(ncid);
@@ -1920,22 +1899,13 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
     adcircmodules_throw_exception(
         "Error writing variable attributes for D-Flow netCDF format file");
 
-  ierr += nc_put_var_double(ncid, varid_netnodex, xarray);
-  ierr += nc_put_var_double(ncid, varid_netnodey, yarray);
-  ierr += nc_put_var_double(ncid, varid_netnodez, zarray);
-  ierr += nc_put_var_int(ncid, varid_netlink, linkArray);
-  ierr += nc_put_var_int(ncid, varid_netlinktype, linkTypeArray);
-  ierr += nc_put_var_int(ncid, varid_netelemnode, netElemNodearray);
+  ierr += nc_put_var_double(ncid, varid_netnodex, xarray.get());
+  ierr += nc_put_var_double(ncid, varid_netnodey, yarray.get());
+  ierr += nc_put_var_double(ncid, varid_netnodez, zarray.get());
+  ierr += nc_put_var_int(ncid, varid_netlink, linkArray.get());
+  ierr += nc_put_var_int(ncid, varid_netlinktype, linkTypeArray.get());
+  ierr += nc_put_var_int(ncid, varid_netelemnode, netElemNodearray.get());
   ierr += nc_close(ncid);
-
-  delete[] xarray;
-  delete[] yarray;
-  delete[] zarray;
-  delete[] dim1d;
-  delete[] dim2d;
-  delete[] linkArray;
-  delete[] linkTypeArray;
-  delete[] netElemNodearray;
 
   if (ierr != NC_NOERR)
     adcircmodules_throw_exception("Error writing D-Flow netCDF format file");
@@ -1948,14 +1918,16 @@ void MeshImpl::writeDflowMesh(const std::string &filename) {
  * ordering is logcical (i.e. sequential) or not
  * @return true if node ordering is sequential
  */
-bool MeshImpl::nodeOrderingIsLogical() { return this->m_nodeOrderingLogical; }
+bool MeshPrivate::nodeOrderingIsLogical() {
+  return this->m_nodeOrderingLogical;
+}
 
 /**
  * @brief Allows the user to know if the code has determined that the element
  * ordering is logcical (i.e. sequential) or not
  * @return true if element ordering is sequential
  */
-bool MeshImpl::elementOrderingIsLogical() {
+bool MeshPrivate::elementOrderingIsLogical() {
   return this->m_elementOrderingLogical;
 }
 
@@ -1964,7 +1936,7 @@ bool MeshImpl::elementOrderingIsLogical() {
  * @param id nodal id
  * @return array position
  */
-size_t MeshImpl::nodeIndexById(size_t id) {
+size_t MeshPrivate::nodeIndexById(size_t id) {
   if (this->m_nodeOrderingLogical) {
     return id - 1;
   } else {
@@ -1977,7 +1949,7 @@ size_t MeshImpl::nodeIndexById(size_t id) {
  * @param id element id
  * @return array position
  */
-size_t MeshImpl::elementIndexById(size_t id) {
+size_t MeshPrivate::elementIndexById(size_t id) {
   if (this->m_elementOrderingLogical) {
     return id;
   } else {
@@ -1991,7 +1963,7 @@ size_t MeshImpl::elementIndexById(size_t id) {
  *
  * Implemented mostly for the python interface
  */
-std::vector<double> MeshImpl::x() {
+std::vector<double> MeshPrivate::x() {
   std::vector<double> x;
   x.reserve(this->numNodes());
   for (const auto &n : this->m_nodes) {
@@ -2006,7 +1978,7 @@ std::vector<double> MeshImpl::x() {
  *
  * Implemented mostly for the python interface
  */
-std::vector<double> MeshImpl::y() {
+std::vector<double> MeshPrivate::y() {
   std::vector<double> y;
   y.reserve(this->numNodes());
   for (const auto &n : this->m_nodes) {
@@ -2021,7 +1993,7 @@ std::vector<double> MeshImpl::y() {
  *
  * Implemented mostly for the python interface
  */
-std::vector<double> MeshImpl::z() {
+std::vector<double> MeshPrivate::z() {
   std::vector<double> z;
   z.reserve(this->numNodes());
   for (const auto &n : this->m_nodes) {
@@ -2036,7 +2008,7 @@ std::vector<double> MeshImpl::z() {
  *
  * Implemented mostly for the python interface
  */
-std::vector<std::vector<double>> MeshImpl::xyz() {
+std::vector<std::vector<double>> MeshPrivate::xyz() {
   std::vector<std::vector<double>> xyz;
   xyz.resize(3);
   xyz[0] = this->x();
@@ -2051,7 +2023,7 @@ std::vector<std::vector<double>> MeshImpl::xyz() {
  *
  * Implemented mostly for the python interface
  */
-std::vector<std::vector<size_t>> MeshImpl::connectivity() {
+std::vector<std::vector<size_t>> MeshPrivate::connectivity() {
   std::vector<std::vector<size_t>> conn;
   conn.reserve(this->numElements());
   for (auto &e : this->m_elements) {
@@ -2070,7 +2042,7 @@ std::vector<std::vector<size_t>> MeshImpl::connectivity() {
  *
  * This is the projection used within adcirc internally
  */
-void MeshImpl::cpp(double lambda, double phi) {
+void MeshPrivate::cpp(double lambda, double phi) {
   for (auto &n : this->m_nodes) {
     Point i(n.x(), n.y());
     Point o;
@@ -2084,7 +2056,7 @@ void MeshImpl::cpp(double lambda, double phi) {
 /**
  * @brief Convertes mesh back from the carte parallelogrammatique projection
  */
-void MeshImpl::inverseCpp(double lambda, double phi) {
+void MeshPrivate::inverseCpp(double lambda, double phi) {
   for (auto &n : this->m_nodes) {
     Point i(n.x(), n.y());
     Point o;
@@ -2101,7 +2073,7 @@ void MeshImpl::inverseCpp(double lambda, double phi) {
  * @param y location to search
  * @return nearest node index
  */
-size_t MeshImpl::findNearestNode(double x, double y) {
+size_t MeshPrivate::findNearestNode(double x, double y) {
   if (!this->nodalSearchTreeInitialized()) {
     this->buildNodalSearchTree();
   }
@@ -2112,7 +2084,7 @@ size_t MeshImpl::findNearestNode(double x, double y) {
  * @param location location to search
  * @return nearest node index
  */
-size_t MeshImpl::findNearestNode(Point &location) {
+size_t MeshPrivate::findNearestNode(Point &location) {
   return this->findNearestNode(location.first, location.second);
 }
 
@@ -2122,7 +2094,7 @@ size_t MeshImpl::findNearestNode(Point &location) {
  * @param y location to search
  * @return nearest element index
  */
-size_t MeshImpl::findNearestElement(double x, double y) {
+size_t MeshPrivate::findNearestElement(double x, double y) {
   if (!this->elementalSearchTreeInitialized()) {
     this->buildElementalSearchTree();
   }
@@ -2133,7 +2105,7 @@ size_t MeshImpl::findNearestElement(double x, double y) {
  * @param location location to search
  * @return nearest element index
  */
-size_t MeshImpl::findNearestElement(Point &location) {
+size_t MeshPrivate::findNearestElement(Point &location) {
   return this->findNearestElement(location.first, location.second);
 }
 
@@ -2143,7 +2115,7 @@ size_t MeshImpl::findNearestElement(Point &location) {
  * @param y location to search
  * @return index of nearest element, large integer if not found
  */
-size_t MeshImpl::findElement(double x, double y) {
+size_t MeshPrivate::findElement(double x, double y) {
   std::vector<double> wt;
   return this->findElement(x, y, wt);
 }
@@ -2155,7 +2127,8 @@ size_t MeshImpl::findElement(double x, double y) {
  * @param weights interpolation weights for this x, y in the found element
  * @return index of nearest element, large integer if not found
  */
-size_t MeshImpl::findElement(double x, double y, std::vector<double> &weights) {
+size_t MeshPrivate::findElement(double x, double y,
+                                std::vector<double> &weights) {
   constexpr int searchDepth = 20;
 
   if (!this->elementalSearchTreeInitialized()) {
@@ -2189,7 +2162,7 @@ size_t MeshImpl::findElement(double x, double y, std::vector<double> &weights) {
  * @param location location to search
  * @return index of nearest element, large integer if not found
  */
-size_t MeshImpl::findElement(Point &location) {
+size_t MeshPrivate::findElement(Point &location) {
   return this->findElement(location.first, location.second);
 }
 
@@ -2197,7 +2170,7 @@ size_t MeshImpl::findElement(Point &location) {
  * @brief Computes average size of the element edges connected to each node
  * @return vector containing size at each node
  */
-std::vector<double> MeshImpl::computeMeshSize() {
+std::vector<double> MeshPrivate::computeMeshSize() {
   if (!this->m_elementTable.initialized()) {
     this->m_elementTable.setMesh(this);
     this->m_elementTable.build();
@@ -2268,7 +2241,7 @@ bool edgeTupleEqual(const std::tuple<Node *, Node *, Element *> &a,
  * is measured as deviation from cos(0) and is important in finite volume
  * calculations
  */
-std::vector<std::vector<double>> MeshImpl::orthogonality() {
+std::vector<std::vector<double>> MeshPrivate::orthogonality() {
   std::vector<std::vector<double>> o;
   o.reserve(this->numElements() * 2);
 
@@ -2325,7 +2298,7 @@ std::vector<std::vector<double>> MeshImpl::orthogonality() {
 /**
  * @brief Builds a list of elements connected to each node
  */
-void MeshImpl::buildElementTable() {
+void MeshPrivate::buildElementTable() {
   this->m_elementTable.setMesh(this);
   this->m_elementTable.build();
   return;
@@ -2336,7 +2309,7 @@ void MeshImpl::buildElementTable() {
  * @param n address of node
  * @return number of elements
  */
-size_t MeshImpl::numElementsAroundNode(Adcirc::Geometry::Node *n) {
+size_t MeshPrivate::numElementsAroundNode(Adcirc::Geometry::Node *n) {
   return this->m_elementTable.numElementsAroundNode(n);
 }
 
@@ -2345,7 +2318,7 @@ size_t MeshImpl::numElementsAroundNode(Adcirc::Geometry::Node *n) {
  * @param n index of node
  * @return number of elements
  */
-size_t MeshImpl::numElementsAroundNode(size_t nodeIndex) {
+size_t MeshPrivate::numElementsAroundNode(size_t nodeIndex) {
   return this->m_elementTable.numElementsAroundNode(nodeIndex);
 }
 
@@ -2355,8 +2328,8 @@ size_t MeshImpl::numElementsAroundNode(size_t nodeIndex) {
  * @param listIndex index of the element to return
  * @return element pointer
  */
-Adcirc::Geometry::Element *MeshImpl::elementTable(Adcirc::Geometry::Node *n,
-                                                  size_t listIndex) {
+Adcirc::Geometry::Element *MeshPrivate::elementTable(Adcirc::Geometry::Node *n,
+                                                     size_t listIndex) {
   return this->m_elementTable.elementTable(n, listIndex);
 }
 
@@ -2366,8 +2339,8 @@ Adcirc::Geometry::Element *MeshImpl::elementTable(Adcirc::Geometry::Node *n,
  * @param listIndex index of the element to return
  * @return element pointer
  */
-Adcirc::Geometry::Element *MeshImpl::elementTable(size_t nodeIndex,
-                                                  size_t listIndex) {
+Adcirc::Geometry::Element *MeshPrivate::elementTable(size_t nodeIndex,
+                                                     size_t listIndex) {
   return this->m_elementTable.elementTable(nodeIndex, listIndex);
 }
 
@@ -2376,12 +2349,12 @@ Adcirc::Geometry::Element *MeshImpl::elementTable(size_t nodeIndex,
  * @param n node pointer
  * @return vector of element references
  */
-std::vector<Adcirc::Geometry::Element *> MeshImpl::elementsAroundNode(
+std::vector<Adcirc::Geometry::Element *> MeshPrivate::elementsAroundNode(
     Adcirc::Geometry::Node *n) {
   return this->m_elementTable.elementList(n);
 }
 
-std::vector<Adcirc::Geometry::Node *> MeshImpl::boundaryNodes() {
+std::vector<Adcirc::Geometry::Node *> MeshPrivate::boundaryNodes() {
   std::vector<std::pair<Node *, Node *>> links = this->generateLinkTable();
   std::vector<size_t> count(links.size());
   std::fill(count.begin(), count.end(), 0);
@@ -2423,13 +2396,13 @@ std::vector<Adcirc::Geometry::Node *> MeshImpl::boundaryNodes() {
   return bdyVec;
 }
 
-std::string MeshImpl::hash(bool force) {
-  if (this->m_hash == nullptr || force) this->generateHash(force);
-  return std::string(this->m_hash);
+std::string MeshPrivate::hash(bool force) {
+  if (this->m_hash.get() == nullptr || force) this->generateHash(force);
+  return std::string(this->m_hash.get());
 }
 
-void MeshImpl::generateHash(bool force) {
-  Hash h(this->m_hashType);
+void MeshPrivate::generateHash(bool force) {
+  Adcirc::Cryptography::Hash h(this->m_hashType);
   for (auto &n : this->m_nodes) {
     h.addData(n.hash(this->m_hashType, force));
   }
@@ -2445,11 +2418,13 @@ void MeshImpl::generateHash(bool force) {
   for (auto &b : this->m_landBoundaries) {
     h.addData(b.hash(this->m_hashType, force));
   }
-  this->m_hash = h.getHash();
+  this->m_hash.reset(h.getHash());
 }
 
-HashType MeshImpl::hashType() const { return this->m_hashType; }
+Adcirc::Cryptography::HashType MeshPrivate::hashType() const {
+  return this->m_hashType;
+}
 
-void MeshImpl::setHashType(const HashType &hashType) {
+void MeshPrivate::setHashType(const Adcirc::Cryptography::HashType &hashType) {
   this->m_hashType = hashType;
 }

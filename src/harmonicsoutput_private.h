@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_HARMONICSOUTPUTIMPL_H
-#define ADCMOD_HARMONICSOUTPUTIMPL_H
+#ifndef ADCMOD_HARMONICSOUTPUTPRIVATE_H
+#define ADCMOD_HARMONICSOUTPUTPRIVATE_H
 
 #include <string>
 #include <vector>
@@ -25,9 +25,11 @@
 #include "filetypes.h"
 #include "harmonicsrecord.h"
 
-class HarmonicsOutputImpl {
+namespace Adcirc {
+namespace Private {
+class HarmonicsOutputPrivate {
  public:
-  HarmonicsOutputImpl(const std::string& filename = std::string());
+  HarmonicsOutputPrivate(const std::string& filename = std::string());
 
   void read();
 
@@ -116,5 +118,7 @@ class HarmonicsOutputImpl {
   void readNetcdfElevationData(int ncid, std::vector<int>& varids);
   void readNetcdfVelocityData(int ncid, std::vector<int>& varids);
 };
+}  // namespace Private
+}  // namespace Adcirc
 
-#endif  // ADCMOD_HARMONICSOUTPUTIMPL_H
+#endif  // ADCMOD_HARMONICSOUTPUTPRIVATE_H

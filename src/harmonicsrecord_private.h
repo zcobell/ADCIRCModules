@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,15 +16,17 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_HARMONICSRECORDIMPL_H
-#define ADCMOD_HARMONICSRECORDIMPL_H
+#ifndef ADCMOD_HARMONICSRECORDPRIVATE_H
+#define ADCMOD_HARMONICSRECORDPRIVATE_H
 
 #include <string>
 #include <vector>
 
-class HarmonicsRecordImpl {
+namespace Adcirc {
+namespace Private {
+class HarmonicsRecordPrivate {
  public:
-  HarmonicsRecordImpl();
+  HarmonicsRecordPrivate();
 
   std::string name() const;
   void setName(const std::string& name);
@@ -54,5 +56,7 @@ class HarmonicsRecordImpl {
   double m_nodalFactor;
   double m_equilibriumArg;
 };
+}  // namespace Private
+}  // namespace Adcirc
 
-#endif  // ADCMOD_HARMONICSRECORD_H
+#endif  // ADCMOD_HARMONICSRECORDPRIVATE_H

@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,12 +17,14 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "kdtree.h"
-#include "kdtree_impl.h"
+#include "kdtree_private.h"
+
+using namespace Adcirc;
 
 /**
  * @brief Default constructor for a new Kdtree object
  */
-Kdtree::Kdtree() : m_ptr(new Kdtree_impl()) {}
+Kdtree::Kdtree() : m_ptr(new Adcirc::Private::KdtreePrivate()) {}
 
 /**
  * @brief Get the number of nodes in the kdtree point cloud
@@ -32,8 +34,8 @@ size_t Kdtree::size() { return this->m_ptr->size(); }
 
 /**
  * @brief Builds the Kdtree using an x and y vector of doubles
- * @param x vector of doubles for x-position
- * @param y vector of doubles for y-position
+ * @param[in] x vector of doubles for x-position
+ * @param[in] y vector of doubles for y-position
  * @return error code
  */
 int Kdtree::build(std::vector<double> &x, std::vector<double> &y) {
@@ -44,8 +46,8 @@ int Kdtree::build(std::vector<double> &x, std::vector<double> &y) {
 
 /**
  * @brief Finds the nearest position in the x, y 2d pointcloud
- * @param x x-location for search
- * @param y y-location for search
+ * @param[in] x x-location for search
+ * @param[in] y y-location for search
  * @return index in x,y array
  */
 size_t Kdtree::findNearest(double x, double y) {
@@ -54,9 +56,9 @@ size_t Kdtree::findNearest(double x, double y) {
 
 /**
  * @brief Finds the nearest 'x' number of locations, sorted
- * @param x x-location for search
- * @param y y-location for search
- * @param n number of points to return
+ * @param[in] x x-location for search
+ * @param[in] y y-location for search
+ * @param[in] n number of points to return
  * @return vector of indicies in the x,y array
  */
 std::vector<size_t> Kdtree::findXNearest(double x, double y, size_t n) {
@@ -71,9 +73,9 @@ bool Kdtree::initialized() { return this->m_ptr->initialized(); }
 
 /**
  * @brief Finds all points within a given radius
- * @param x x-location for search
- * @param y y-location for search
- * @param radius search radius in native coordinates
+ * @param[in] x x-location for search
+ * @param[in] y y-location for search
+ * @param[in] radius search radius in native coordinates
  * @return vector with indicies of found points
  */
 std::vector<size_t> Kdtree::findWithinRadius(double x, double y,

@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,52 +16,56 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#include "harmonicsrecord_impl.h"
+#include "harmonicsrecord_private.h"
 #include <cassert>
 #include "default_values.h"
 #include "logging.h"
 
-HarmonicsRecordImpl::HarmonicsRecordImpl()
+using namespace Adcirc::Private;
+
+HarmonicsRecordPrivate::HarmonicsRecordPrivate()
     : m_name("none"),
       m_numNodes(0),
       m_frequency(0.0),
       m_equilibriumArg(0.0),
       m_nodalFactor(0.0) {}
 
-void HarmonicsRecordImpl::resize(size_t numNodes) {
+void HarmonicsRecordPrivate::resize(size_t numNodes) {
   this->m_numNodes = numNodes;
   this->m_data.resize(numNodes);
 }
 
-double HarmonicsRecordImpl::frequency() const { return this->m_frequency; }
+double HarmonicsRecordPrivate::frequency() const { return this->m_frequency; }
 
-void HarmonicsRecordImpl::setFrequency(double frequency) {
+void HarmonicsRecordPrivate::setFrequency(double frequency) {
   this->m_frequency = frequency;
 }
 
-double HarmonicsRecordImpl::nodalFactor() const { return this->m_nodalFactor; }
+double HarmonicsRecordPrivate::nodalFactor() const {
+  return this->m_nodalFactor;
+}
 
-void HarmonicsRecordImpl::setNodalFactor(double nodalFactor) {
+void HarmonicsRecordPrivate::setNodalFactor(double nodalFactor) {
   this->m_nodalFactor = nodalFactor;
 }
 
-double HarmonicsRecordImpl::equilibriumArg() const {
+double HarmonicsRecordPrivate::equilibriumArg() const {
   return this->m_equilibriumArg;
 }
 
-void HarmonicsRecordImpl::setEquilibriumArg(double equilibriumArg) {
+void HarmonicsRecordPrivate::setEquilibriumArg(double equilibriumArg) {
   this->m_equilibriumArg = equilibriumArg;
 }
 
-std::string HarmonicsRecordImpl::name() const { return this->m_name; }
+std::string HarmonicsRecordPrivate::name() const { return this->m_name; }
 
-void HarmonicsRecordImpl::setName(const std::string &name) {
+void HarmonicsRecordPrivate::setName(const std::string &name) {
   this->m_name = name;
 }
 
-std::vector<double> HarmonicsRecordImpl::values() { return this->m_data; }
+std::vector<double> HarmonicsRecordPrivate::values() { return this->m_data; }
 
-double HarmonicsRecordImpl::value(size_t index) {
+double HarmonicsRecordPrivate::value(size_t index) {
   assert(index < this->m_data.size());
   if (index < this->m_data.size()) {
     return this->m_data[index];
@@ -71,7 +75,7 @@ double HarmonicsRecordImpl::value(size_t index) {
   }
 }
 
-void HarmonicsRecordImpl::set(size_t index, double data) {
+void HarmonicsRecordPrivate::set(size_t index, double data) {
   assert(index < this->m_data.size());
   if (index < this->m_data.size()) {
     this->m_data[index] = data;
@@ -82,7 +86,7 @@ void HarmonicsRecordImpl::set(size_t index, double data) {
   return;
 }
 
-void HarmonicsRecordImpl::set(const std::vector<double> &value) {
+void HarmonicsRecordPrivate::set(const std::vector<double> &value) {
   assert(value.size() == this->m_data.size());
   if (value.size() != this->m_data.size()) {
     adcircmodules_throw_exception("HarmonicsRecord: Invalid data size");

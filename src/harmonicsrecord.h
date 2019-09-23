@@ -5,15 +5,19 @@
 #include <vector>
 #include "adcircmodules_global.h"
 
-class HarmonicsRecordImpl;
-
 namespace Adcirc {
+
+namespace Private {
+// Forward declaration for pimpl class
+class HarmonicsRecordPrivate;
+}  // namespace Private
+
 namespace Harmonics {
 
 /**
  * @class HarmonicsRecord
  * @author Zachary Cobell
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
  * is released under the terms of the GNU General Public License v3
  * @brief The HarmonicsRecord handles the individual records for each harmonic
  * constituent in a harmonics output file
@@ -46,7 +50,7 @@ class HarmonicsRecord {
   void ADCIRCMODULES_EXPORT setEquilibriumArg(double equilibriumArg);
 
  private:
-  HarmonicsRecordImpl* m_impl;
+  Adcirc::Private::HarmonicsRecordPrivate* m_impl;
 };
 }  // namespace Harmonics
 }  // namespace Adcirc

@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,21 +28,24 @@
 #include "default_values.h"
 #include "element.h"
 #include "filetypes.h"
+#include "kdtree.h"
 #include "node.h"
-
-class Kdtree;
-class MeshImpl;
 
 using Point = std::pair<double, double>;
 
 namespace Adcirc {
+
+namespace Private {
+class MeshPrivate;
+}
+
 namespace Geometry {
 
 /**
  * @class Mesh
  * @author Zachary Cobell
  * @brief Class that handles operations using Adcirc mesh files
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
  * is released under the terms of the GNU General Public License v3
  *
  * The Mesh class handles functions related to reading an
@@ -191,8 +194,8 @@ class Mesh {
   addOpenBoundary(size_t index, const Adcirc::Geometry::Boundary &bnd);
   void ADCIRCMODULES_EXPORT deleteOpenBoundary(size_t index);
 
-  Kdtree ADCIRCMODULES_EXPORT *nodalSearchTree() const;
-  Kdtree ADCIRCMODULES_EXPORT *elementalSearchTree() const;
+  Adcirc::Kdtree ADCIRCMODULES_EXPORT *nodalSearchTree() const;
+  Adcirc::Kdtree ADCIRCMODULES_EXPORT *elementalSearchTree() const;
 
   std::vector<double> ADCIRCMODULES_EXPORT computeMeshSize();
 
@@ -211,11 +214,11 @@ class Mesh {
 
   std::string ADCIRCMODULES_EXPORT hash(bool force = false);
 
-  HashType hashType() const;
-  void setHashType(const HashType &hashType);
+  Adcirc::Cryptography::HashType hashType() const;
+  void setHashType(const Adcirc::Cryptography::HashType &hashType);
 
  private:
-  std::unique_ptr<MeshImpl> m_impl;
+  std::unique_ptr<Adcirc::Private::MeshPrivate> m_impl;
 };
 
 }  // namespace Geometry

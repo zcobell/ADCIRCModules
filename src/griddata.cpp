@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,14 +17,22 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "griddata.h"
-#include "griddata_impl.h"
+#include "griddata_private.h"
 
-using namespace Interpolation;
+using namespace Adcirc::Interpolation;
 
-Griddata::Griddata() : m_impl(new GriddataImpl) {}
+/**
+ * @brief Default constructor
+ */
+Griddata::Griddata() : m_impl(new Adcirc::Private::GriddataPrivate) {}
 
+/**
+ * @brief Constructor that takes mesh and raster file
+ * @param[in] mesh pointer to mesh object
+ * @param[in] rasterFile gdal compatible raster file name
+ */
 Griddata::Griddata(Adcirc::Geometry::Mesh *mesh, const std::string rasterFile)
-    : m_impl(new GriddataImpl(mesh, rasterFile)) {}
+    : m_impl(new Adcirc::Private::GriddataPrivate(mesh, rasterFile)) {}
 
 /**
  * @brief Retrieves the filename of the raster currently being used for
@@ -38,7 +46,7 @@ void Griddata::setRasterFile(const std::string &rasterFile) {
 
 /**
  * @brief Reads a lookup table to be used with the interpolation
- * @param lookupTableFile name of lookup table
+ * @param[in] lookupTableFile name of lookup table
  *
  * The format for the lookup table should be:
  *
@@ -72,7 +80,7 @@ std::vector<int> Griddata::interpolationFlags() const {
 /**
  * @brief Sets the interpolation flags to a vector. The vector must be equal
  * length to the number of nodes in the mesh
- * @param interpolationFlags Vector of flags equal to the number of nodes in the
+ * @param[in] interpolationFlags Vector of flags equal to the number of nodes in the
  * mesh
  */
 void Griddata::setInterpolationFlags(
@@ -82,7 +90,7 @@ void Griddata::setInterpolationFlags(
 
 /**
  * @brief Sets the interpolation flags to a uniform value
- * @param interpolationFlag flag that will be set for all nodes
+ * @param[in] interpolationFlag flag that will be set for all nodes
  */
 void Griddata::setInterpolationFlags(int interpolationFlag) {
   this->m_impl->setInterpolationFlags(interpolationFlag);
@@ -90,7 +98,7 @@ void Griddata::setInterpolationFlags(int interpolationFlag) {
 
 /**
  * @brief Retrieves the interpolation flag for a specified node
- * @param index position to retrieve flag for
+ * @param[in] index position to retrieve flag for
  * @return interpolation flag
  */
 int Griddata::interpolationFlag(size_t index) {
@@ -99,8 +107,8 @@ int Griddata::interpolationFlag(size_t index) {
 
 /**
  * @brief Sets the interpolation flag at a specified node
- * @param index node position to set the flag
- * @param flag interpolation method to use
+ * @param[in] index node position to set the flag
+ * @param[in] flag interpolation method to use
  */
 void Griddata::setInterpolationFlag(size_t index, int flag) {
   this->m_impl->setInterpolationFlag(index, flag);
@@ -129,7 +137,7 @@ void Griddata::setFilterSizes(const std::vector<double> &filterSize) {
 /**
  * @brief Sets the relative filter sizes used to identify pixels of interest
  * when interpolating data to a mesh. All nodes set to a uniform value
- * @param filterSize mesh size multiplier
+ * @param[in] filterSize mesh size multiplier
  */
 void Griddata::setFilterSizes(double filterSize) {
   this->m_impl->setFilterSizes(filterSize);
@@ -138,7 +146,7 @@ void Griddata::setFilterSizes(double filterSize) {
 /**
  * @brief Returns the filter size (mean element size around node * [x]) at a
  * specified index
- * @param index node position
+ * @param[in] index node position
  * @return mesh size multiplier
  */
 double Griddata::filterSize(size_t index) {
@@ -148,8 +156,8 @@ double Griddata::filterSize(size_t index) {
 /**
  * @brief Sets the relative filter size (mean element size around node * [x]) at
  * a specified node
- * @param index node position
- * @param filterSize mesh size multiplier
+ * @param[in] index node position
+ * @param[in] filterSize mesh size multiplier
  */
 void Griddata::setFilterSize(size_t index, double filterSize) {
   return this->m_impl->setFilterSize(index, filterSize);
@@ -167,7 +175,7 @@ double Griddata::defaultValue() const { return this->m_impl->defaultValue(); }
  * @brief Sets the default value that will be applied to the output arrays when
  * no interpolation method is selected or the specified interpolation method
  * fails
- * @param defaultValue default value to use. Default is
+ * @param[in] defaultValue default value to use. Default is
  * return of adcircmodules_default_value<double>()
  */
 void Griddata::setDefaultValue(double defaultValue) {
@@ -179,7 +187,7 @@ void Griddata::setDefaultValue(double defaultValue) {
  * supplied. Returns the interpolated values in an array matching the node
  * indidices. This process is recommended but not required to be carried out in
  * planar (i.e. UTM) coordinates
- * @param useLookupTable determines if the code uses a lookup table or the
+ * @param[in] useLookupTable determines if the code uses a lookup table or the
  * values from the raster directly.
  * @return Vector of interpolated values
  *
@@ -195,7 +203,7 @@ std::vector<double> Griddata::computeValuesFromRaster(bool useLookupTable) {
  * @brief Computes the upwind directional wind roughness in 12 directions and
  * returns a 2d array of values indexed [1:numNodes][1:12]. This process is
  * required to be carried out in planar coordinates (i.e. UTM)
- * @param useLookupTable determines if the code uses a lookup table or the
+ * @param[in] useLookupTable determines if the code uses a lookup table or the
  * values from the raster directly.
  * @return 2d vector of interpolated values
  *
@@ -218,7 +226,7 @@ int Griddata::epsg() const { return this->m_impl->epsg(); }
 
 /**
  * @brief Sets the EPSG code used for the mesh
- * @param epsg coordinate system code
+ * @param[in] epsg coordinate system code
  */
 void Griddata::setEpsg(int epsg) { this->m_impl->setEpsg(epsg); }
 
@@ -232,7 +240,7 @@ bool Griddata::showProgressBar() const {
 
 /**
  * @brief Allows the user to enable or disable the progress bar
- * @param showProgressBar set to true if progress bar should be shown, false if
+ * @param[in] showProgressBar set to true if progress bar should be shown, false if
  * not
  */
 void Griddata::setShowProgressBar(bool showProgressBar) {
@@ -250,7 +258,7 @@ double Griddata::rasterMultiplier() const {
 /**
  * @brief Sets the raster multiplier that is applied when interpolation is
  * complete. Useful to define a unit conversion
- * @param rasterMultiplier multiplier
+ * @param[in] rasterMultiplier multiplier
  */
 void Griddata::setRasterMultiplier(double rasterMultiplier) {
   this->m_impl->setRasterMultiplier(rasterMultiplier);
@@ -269,7 +277,7 @@ bool Griddata::rasterInMemory() const { return this->m_impl->rasterInMemory(); }
 /**
  * @brief Sets to true, the code will read the raster into memory instead of
  * reading as required from disk
- * @param rasterInMemory true if raster should be read into RAM
+ * @param[in] rasterInMemory true if raster should be read into RAM
  *
  * Note that large rasters can exhaust the system memory and this should be used
  * only if the raster can safely be placed in RAM
@@ -286,7 +294,7 @@ double Griddata::datumShift() const { return this->m_impl->datumShift(); }
 
 /**
  * @brief Sets a datum shift that is added to the interpolated value
- * @param datumShift datum shift value
+ * @param[in] datumShift datum shift value
  */
 void Griddata::setDatumShift(double datumShift) {
   this->m_impl->setDatumShift(datumShift);
@@ -294,7 +302,7 @@ void Griddata::setDatumShift(double datumShift) {
 
 /**
  * @brief Sets the thresholding method (none by default)
- * @param method Thresholding method to use
+ * @param[in] method Thresholding method to use
  */
 void Griddata::setThresholdMethod(const Interpolation::Threshold &method) {
   this->m_impl->setThresholdMethod(method);
@@ -304,13 +312,13 @@ void Griddata::setThresholdMethod(const Interpolation::Threshold &method) {
  * @brief Returns the thresholding method
  * @return method
  */
-Interpolation::Threshold Griddata::thresholdMethod() const {
+Adcirc::Interpolation::Threshold Griddata::thresholdMethod() const {
   return this->m_impl->thresholdMethod();
 }
 
 /**
  * @brief Sets the value to use in conjunction with thresholdMethod.
- * @param value value to use for filtering
+ * @param[in] value value to use for filtering
  */
 void Griddata::setThresholdValue(const double &value) {
   this->m_impl->setThresholdValue(value);

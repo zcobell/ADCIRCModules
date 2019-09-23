@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "nodalattributes.h"
-#include "nodalattributes_impl.h"
+#include "nodalattributes_private.h"
 
 namespace Adcirc {
 namespace ModelParameters {
@@ -25,16 +25,16 @@ namespace ModelParameters {
 /**
  * @brief Default constructor
  */
-NodalAttributes::NodalAttributes() : m_impl(new NodalAttributesImpl()) {}
+NodalAttributes::NodalAttributes() : m_impl(new Adcirc::Private::NodalAttributesPrivate()) {}
 
 /**
  * @brief Constructor with filename and mesh
- * @param filename name of nodal attributes file
- * @param mesh optional mesh object to reference the nodal attributes to
+ * @param[in] filename name of nodal attributes file
+ * @param[in] mesh optional mesh object to reference the nodal attributes to
  */
 NodalAttributes::NodalAttributes(const std::string &filename,
                                  Adcirc::Geometry::Mesh *mesh)
-    : m_impl(new NodalAttributesImpl(filename, mesh)) {}
+    : m_impl(new Adcirc::Private::NodalAttributesPrivate(filename, mesh)) {}
 
 /**
  * @brief Reads the nodal attributes file
@@ -43,7 +43,7 @@ void NodalAttributes::read() { this->m_impl->read(); }
 
 /**
  * @brief NodalAttributes::setFilename
- * @param filename sets the filename of the nodal attributes file to be read
+ * @param[in] filename sets the filename of the nodal attributes file to be read
  */
 void NodalAttributes::setFilename(const std::string &filename) {
   this->m_impl->setFilename(filename);
@@ -57,7 +57,7 @@ std::string NodalAttributes::filename() { return this->m_impl->filename(); }
 
 /**
  * @brief Sets a pointer to the mesh currently being used
- * @param mesh mesh pointer
+ * @param[in] mesh mesh pointer
  */
 void NodalAttributes::setMesh(Adcirc::Geometry::Mesh *mesh) {
   this->m_impl->setMesh(mesh);
@@ -71,7 +71,7 @@ Adcirc::Geometry::Mesh *NodalAttributes::mesh() { return this->m_impl->mesh(); }
 
 /**
  * @brief Writes the current nodal attributes object to the specified filename
- * @param outputFilename name of ouptut file
+ * @param[in] outputFilename name of ouptut file
  */
 void NodalAttributes::write(const std::string &outputFilename) {
   this->m_impl->write(outputFilename);
@@ -79,7 +79,7 @@ void NodalAttributes::write(const std::string &outputFilename) {
 
 /**
  * @brief Returns the name of the nodal attribute at the specified index
- * @param index position for the requested attribute
+ * @param[in] index position for the requested attribute
  * @return name of requested attribute
  */
 std::string NodalAttributes::attributeNames(size_t index) {
@@ -88,7 +88,7 @@ std::string NodalAttributes::attributeNames(size_t index) {
 
 /**
  * @brief Locates the position of the nodal attribute in the object by name
- * @param attributeName name to search for
+ * @param[in] attributeName name to search for
  * @return position of the nodal attribute in the object
  */
 size_t NodalAttributes::locateAttribute(const std::string &attributeName) {
@@ -103,7 +103,7 @@ std::string NodalAttributes::header() const { return this->m_impl->header(); }
 
 /**
  * @brief Sets the header string in the nodal attribute object
- * @param title header string to put into the object
+ * @param[in] title header string to put into the object
  */
 void NodalAttributes::setHeader(const std::string &title) {
   this->m_impl->setHeader(title);
@@ -119,7 +119,7 @@ size_t NodalAttributes::numParameters() const {
 
 /**
  * @brief Sets the number of parameters in the nodal attributes file
- * @param numParameters number of parameters in the nodal attributes file
+ * @param[in] numParameters number of parameters in the nodal attributes file
  *
  * Note: No internal array resizing is done
  */
@@ -135,7 +135,7 @@ size_t NodalAttributes::numNodes() const { return this->m_impl->numNodes(); }
 
 /**
  * @brief Sets the number of nodes in the nodal attributes file
- * @param numNodes number of nodes
+ * @param[in] numNodes number of nodes
  *
  * Note: No internal array resizing is done
  */
@@ -145,8 +145,8 @@ void NodalAttributes::setNumNodes(size_t numNodes) {
 
 /**
  * @brief Returns a pointer to the nodal attribute object for a specified node
- * @param parameter index where the parameter is located
- * @param node node to return the data for
+ * @param[in] parameter index where the parameter is located
+ * @param[in] node node to return the data for
  * @return NodalAttributes object
  */
 Adcirc::ModelParameters::Attribute *NodalAttributes::attribute(size_t parameter,
@@ -156,8 +156,8 @@ Adcirc::ModelParameters::Attribute *NodalAttributes::attribute(size_t parameter,
 
 /**
  * @brief Returns a pointer to the nodal attribute object for a specified node
- * @param name name of the nodal parameter to return data for
- * @param node node to return the data for
+ * @param[in] name name of the nodal parameter to return data for
+ * @param[in] node node to return the data for
  * @return Attribute object
  */
 Adcirc::ModelParameters::Attribute *NodalAttributes::attribute(
@@ -167,7 +167,7 @@ Adcirc::ModelParameters::Attribute *NodalAttributes::attribute(
 
 /**
  * @brief Returns the nodal attribute metadata for the given index
- * @param parameter index for the parameter to return
+ * @param[in] parameter index for the parameter to return
  * @return AttributeMetadata object
  */
 Adcirc::ModelParameters::AttributeMetadata *NodalAttributes::metadata(
@@ -177,7 +177,7 @@ Adcirc::ModelParameters::AttributeMetadata *NodalAttributes::metadata(
 
 /**
  * @brief Returns the nodal attribute metadata for a given name
- * @param name nodal attribute name
+ * @param[in] name nodal attribute name
  * @return AttributeMetadata object
  */
 Adcirc::ModelParameters::AttributeMetadata *NodalAttributes::metadata(
@@ -187,8 +187,8 @@ Adcirc::ModelParameters::AttributeMetadata *NodalAttributes::metadata(
 
 /**
  * @brief Adds a new set of nodal attributes to the object
- * @param metadata object metadata
- * @param data object data
+ * @param[in] metadata object metadata
+ * @param[in] data object data
  */
 void NodalAttributes::addAttribute(AttributeMetadata &metadata,
                                    std::vector<Attribute> &data) {

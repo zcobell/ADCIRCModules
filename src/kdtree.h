@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,13 +24,18 @@
 #include <vector>
 #include "adcircmodules_global.h"
 
-class Kdtree_impl;
+namespace Adcirc {
+
+namespace Private {
+// Forward declaration of pimpl class
+class KdtreePrivate;
+}  // namespace Private
 
 /**
  * @class Kdtree
  * @author Zachary Cobell
  * @brief Class that handles neighbor searching using nanoflann
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
  * is released under the terms of the GNU General Public License v3
  *
  */
@@ -52,7 +57,8 @@ class Kdtree {
   ADCIRCMODULES_EXPORT bool initialized();
 
  private:
-  std::unique_ptr<Kdtree_impl> m_ptr;
+  std::unique_ptr<Adcirc::Private::KdtreePrivate> m_ptr;
 };
+}  // namespace Adcirc
 
 #endif  // ADCMOD_KDTREE_H

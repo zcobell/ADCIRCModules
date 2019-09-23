@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 
 #include <string>
 #include "adcircmodules_global.h"
-
+namespace Adcirc {
 std::string ADCIRCMODULES_EXPORT version();
-
+}
 #endif  // ADCMOD_CONFIG_H

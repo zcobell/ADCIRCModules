@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #ifndef ADCMOD_NODE_H
 #define ADCMOD_NODE_H
 
+#include <memory>
 #include <string>
 #include <utility>
 #include "adcircmodules_global.h"
@@ -32,8 +33,8 @@ namespace Geometry {
 /**
  * @class Node
  * @author Zachary Cobell
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
- * is released under the terms of the GNU General Public License v3
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
  * @brief The Node class describes the x, y, z position of a single mesh
  * node
  *
@@ -43,6 +44,9 @@ class Node {
  public:
   ADCIRCMODULES_EXPORT Node();
   ADCIRCMODULES_EXPORT Node(size_t id, double x, double y, double z);
+  ADCIRCMODULES_EXPORT Node(const Node &n);
+
+  ADCIRCMODULES_EXPORT Node &operator=(const Node &n);
 
   ADCIRCMODULES_EXPORT ~Node();
 
@@ -65,22 +69,30 @@ class Node {
 
   Point ADCIRCMODULES_EXPORT toPoint();
 
-  std::string ADCIRCMODULES_EXPORT hash(HashType h = AdcircDefaultHash,
-                                        bool force = false);
+  std::string ADCIRCMODULES_EXPORT
+  hash(Adcirc::Cryptography::HashType h =
+           Adcirc::Cryptography::AdcircDefaultHash,
+       bool force = false);
 
-  std::string ADCIRCMODULES_EXPORT positionHash(HashType h = AdcircDefaultHash,
-                                                bool force = false);
+  std::string ADCIRCMODULES_EXPORT
+  positionHash(Adcirc::Cryptography::HashType h =
+                   Adcirc::Cryptography::AdcircDefaultHash,
+               bool force = false);
 
  private:
-  size_t m_id;           /// Integer name of a mesh node
-  double m_x;            /// x position of a node
-  double m_y;            /// y position of a node
-  double m_z;            /// z position of a node
-  char* m_hash;          /// hash identifier for the node
-  char* m_positionHash;  /// has of only node's position
+  size_t m_id;                           /// Integer name of a mesh node
+  double m_x;                            /// x position of a node
+  double m_y;                            /// y position of a node
+  double m_z;                            /// z position of a node
+  std::unique_ptr<char> m_hash;          /// hash identifier for the node
+  std::unique_ptr<char> m_positionHash;  /// has of only node's position
 
-  void generateHash(HashType h = AdcircDefaultHash);
-  void generatePositionHash(HashType h = AdcircDefaultHash);
+  static void nodeCopier(Node *const a, const Node *b);
+
+  void generateHash(Adcirc::Cryptography::HashType h =
+                        Adcirc::Cryptography::AdcircDefaultHash);
+  void generatePositionHash(Adcirc::Cryptography::HashType h =
+                                Adcirc::Cryptography::AdcircDefaultHash);
 };
 }  // namespace Geometry
 }  // namespace Adcirc

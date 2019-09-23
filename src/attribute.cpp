@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ Attribute::Attribute()
 
 /**
  * @brief Constructor that accepts the number of values in this nodal attribute
- * @param size Number of nodal attributes to size this object for
+ * @param[in] size Number of nodal attributes to size this object for
  */
 Attribute::Attribute(size_t size)
     : m_node(nullptr), m_id(adcircmodules_default_value<size_t>()) {
@@ -49,7 +49,7 @@ void Attribute::resize(size_t size) { this->m_values.resize(size); }
 
 /**
  * @brief Returns the value of the nodal attribute at the specified index
- * @param index Index of the value to return
+ * @param[in] index Index of the value to return
  * @return value of nodal attribute at specified index
  */
 double Attribute::value(size_t index) const {
@@ -71,7 +71,7 @@ std::vector<double> Attribute::values() const { return this->m_values; }
 
 /**
  * @brief Set all values in the object to a single value
- * @param value Value applied to all indicies in the nodal attribute for the
+ * @param[in] value Value applied to all indicies in the nodal attribute for the
  * present node
  */
 void Attribute::setValue(const double &value) {
@@ -80,8 +80,8 @@ void Attribute::setValue(const double &value) {
 
 /**
  * @brief Sets a specific index to a specified value for the nodal attribute
- * @param index position to set to a value
- * @param value to set at index
+ * @param[in] index position to set to a value
+ * @param[in] value to set at index
  */
 void Attribute::setValue(size_t index, const double &value) {
   assert(index < this->size());
@@ -95,7 +95,7 @@ void Attribute::setValue(size_t index, const double &value) {
 
 /**
  * @brief Uses a vector of values to set nodal attributes
- * @param values Vector of values. Must have the same size has this->size()
+ * @param[in] values Vector of values. Must have the same size has this->size()
  */
 void Attribute::setValue(const std::vector<double> &values) {
   assert(values.size() == this->size());
@@ -110,11 +110,13 @@ void Attribute::setValue(const std::vector<double> &values) {
 /**
  * @brief Returns a pointer to the node for which the current nodal attribute
  * applies
+ * @return node pointer
  */
 Adcirc::Geometry::Node *Attribute::node() { return this->m_node; }
 
 /**
  * @brief Sets the pointer to the node that this nodal attribute is applied to
+ * @param[in] node sets the pointer for the internal node representation
  */
 void Attribute::setNode(Adcirc::Geometry::Node *node) { this->m_node = node; }
 
@@ -134,6 +136,7 @@ size_t Attribute::id() const { return this->m_id; }
 /**
  * @brief Sets the identifier for the current nodal attribute, usually the node
  * number specified in fort.13 file
+ * @param[in] id attribute id
  */
 void Attribute::setId(size_t id) { this->m_id = id; }
 

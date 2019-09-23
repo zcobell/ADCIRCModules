@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #include "default_values.h"
 #include "logging.h"
 #include "mesh.h"
-#include "mesh_impl.h"
+#include "mesh_private.h"
 
 using namespace Adcirc::Geometry;
 
@@ -34,36 +34,36 @@ ElementTable::ElementTable() : m_mesh(nullptr), m_initialized(false) {}
 
 /**
  * @brief Constructor with smart pointer meshimpl as a parameter
- * @param mesh sets the mesh used to generate the ElementTable
+ * @param[in] mesh sets the mesh used to generate the ElementTable
  */
-ElementTable::ElementTable(std::unique_ptr<MeshImpl> *mesh)
+ElementTable::ElementTable(std::unique_ptr<Adcirc::Private::MeshPrivate> *mesh)
     : m_mesh(mesh->get()), m_initialized(false) {}
 
 /**
  * @brief Constructor with mesh as a parameter
- * @param mesh sets the mesh used to generate the ElementTable
+ * @param[in] mesh sets the mesh used to generate the ElementTable
  */
 ElementTable::ElementTable(Adcirc::Geometry::Mesh *mesh)
     : m_mesh(mesh->m_impl.get()), m_initialized(false) {}
 
 /**
  * @brief Constructor with meshimpl as a parameter
- * @param mesh sets the mesh used to generate the ElementTable
+ * @param[in] mesh sets the mesh used to generate the ElementTable
  */
-ElementTable::ElementTable(MeshImpl *mesh)
+ElementTable::ElementTable(Adcirc::Private::MeshPrivate *mesh)
     : m_mesh(mesh), m_initialized(false) {}
 
 /**
  * @brief Returns the pointer to the mesh used to build the table
  * @return pointer to mesh used in this table
  */
-MeshImpl *ElementTable::mesh() const { return this->m_mesh; }
+Adcirc::Private::MeshPrivate *ElementTable::mesh() const { return this->m_mesh; }
 
 /**
  * @brief Sets the mesh used in the element table
- * @param mesh to use to build the table
+ * @param[in] mesh to use to build the table
  */
-void ElementTable::setMesh(MeshImpl *mesh) { this->m_mesh = mesh; }
+void ElementTable::setMesh(Adcirc::Private::MeshPrivate *mesh) { this->m_mesh = mesh; }
 
 /**
  * @brief Begin building the table
@@ -85,7 +85,7 @@ void ElementTable::build() {
 
 /**
  * @brief Returns the list of elements around a specified node
- * @param n node to return the element table for
+ * @param[in] n node to return the element table for
  * @return vector of element pointers around the node
  */
 std::vector<Element *> ElementTable::elementList(Node *n) {
@@ -99,7 +99,7 @@ std::vector<Element *> ElementTable::elementList(Node *n) {
 
 /**
  * @brief Returns the number of elements around a specified node pointer
- * @param n pointer to node to return the number of elements for
+ * @param[in] n pointer to node to return the number of elements for
  * @return number of elements around a specified node
  */
 size_t ElementTable::numElementsAroundNode(Adcirc::Geometry::Node *n) {
@@ -110,7 +110,7 @@ size_t ElementTable::numElementsAroundNode(Adcirc::Geometry::Node *n) {
 }
 
 /**
- * @param nodeIndex node index in the mesh to return the number of elements for
+ * @param[in] nodeIndex node index in the mesh to return the number of elements for
  * @return number of elements around a specified node
  */
 size_t ElementTable::numElementsAroundNode(size_t nodeIndex) {
@@ -125,8 +125,8 @@ size_t ElementTable::numElementsAroundNode(size_t nodeIndex) {
 /**
  * @brief Returns a pointer to the element at a position in the list for the
  * specified node
- * @param n pointer to node
- * @param listIndex index in list of elements
+ * @param[in] n pointer to node
+ * @param[in] listIndex index in list of elements
  * @return pointer to element
  */
 Adcirc::Geometry::Element *ElementTable::elementTable(Adcirc::Geometry::Node *n,
@@ -142,8 +142,8 @@ Adcirc::Geometry::Element *ElementTable::elementTable(Adcirc::Geometry::Node *n,
 }
 
 /**
- * @param nodeIndex node index in the mesh to return the number of elements for
- * @param listIndex index in list of elements
+ * @param[in] nodeIndex node index in the mesh to return the number of elements for
+ * @param[in] listIndex index in list of elements
  * @return pointer to element
  */
 Adcirc::Geometry::Element *ElementTable::elementTable(size_t nodeIndex,

@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,18 +18,43 @@
 //------------------------------------------------------------------------*/
 #include "hash.h"
 #include <string>
-#include "hash_impl.h"
+#include "hash_private.h"
 
-Hash::Hash(HashType h) : m_impl(new HashImpl(h)) {}
+using namespace Adcirc::Cryptography;
 
+/**
+ * @brief Constructor for hash object
+ * @param[in] h cryptographic hash type to use
+ */
+Hash::Hash(Adcirc::Cryptography::HashType h) : m_impl(new Adcirc::Private::HashPrivate(h)) {}
+
+/**
+ * @brief Destructor
+ */
 Hash::~Hash() { this->m_impl.reset(nullptr); }
 
+/**
+ * @brief Adds data to the hash
+ * @param[in] s string data to add to hash
+ */
 void Hash::addData(const std::string &s) { this->m_impl->addData(s); }
 
+/**
+ * @brief Returns a char pointer to the hash
+ * @return char pointer with hash data
+ */
 char *Hash::getHash() { return this->m_impl->getHash(); }
 
-HashType Hash::hashType() const { return this->m_impl->hashType(); }
+/**
+ * @brief Returns the hash type currently being used
+ * @return hash type
+ */
+Adcirc::Cryptography::HashType Hash::hashType() const { return this->m_impl->hashType(); }
 
-void Hash::setHashType(const HashType &hashType) {
+/**
+ * @brief Sets the hash type to use
+ * @param[in] hashType type of cryptographic hash
+ */
+void Hash::setHashType(const Adcirc::Cryptography::HashType &hashType) {
   this->m_impl->setHashType(hashType);
 }

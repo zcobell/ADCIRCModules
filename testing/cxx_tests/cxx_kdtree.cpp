@@ -29,7 +29,7 @@ int main() {
   std::vector<double> x = mesh->x();
   std::vector<double> y = mesh->y();
 
-  Kdtree k;
+  Adcirc::Kdtree k;
   k.build(x,y);
 
   const double searchX = -90.766116;

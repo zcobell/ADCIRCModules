@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,18 +23,22 @@
 #include <vector>
 #include "adcmap.h"
 #include "element.h"
-
-class MeshImpl;
-
 namespace Adcirc {
+
+namespace Private {
+// Forward declaration of Pimpl class
+class MeshPrivate;
+}  // namespace Private
+
 namespace Geometry {
 
+// Forward declaration of mesh class
 class Mesh;
 
 /**
  * @class ElementTable
  * @author Zachary Cobell
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
  * is released under the terms of the GNU General Public License v3
  * @brief The ElementTable class is used to develop a list of the elements that
  * surround each node
@@ -44,8 +48,8 @@ class Mesh;
 class ElementTable {
  public:
   ElementTable();
-  ElementTable(MeshImpl *mesh);
-  ElementTable(std::unique_ptr<MeshImpl> *mesh);
+  ElementTable(Adcirc::Private::MeshPrivate *mesh);
+  ElementTable(std::unique_ptr<Adcirc::Private::MeshPrivate> *mesh);
   ElementTable(Adcirc::Geometry::Mesh *mesh);
 
   std::vector<Adcirc::Geometry::Element *> elementList(
@@ -61,14 +65,14 @@ class ElementTable {
 
   bool initialized();
 
-  MeshImpl *mesh() const;
-  void setMesh(MeshImpl *mesh);
+  Adcirc::Private::MeshPrivate *mesh() const;
+  void setMesh(Adcirc::Private::MeshPrivate *mesh);
 
  private:
   adcmap<Adcirc::Geometry::Node *, std::vector<Adcirc::Geometry::Element *>>
       m_elementTable;
 
-  MeshImpl *m_mesh;
+  Adcirc::Private::MeshPrivate *m_mesh;
 
   bool m_initialized;
 };

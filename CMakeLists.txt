@@ -185,7 +185,7 @@ FIND_PACKAGE(SWIG 3.0)
 IF(SWIG_FOUND AND PythonLibs_FOUND AND PythonInterp_FOUND)
     INCLUDE(${SWIG_USE_FILE})
     IF(PythonLibs_FOUND)
-        #OPTION(PYTHON_TESTING "Test the Python Libraries with CTest" OFF)
+        OPTION(PYTHON_TESTING "Test the Python Libraries with CTest" OFF)
         EXECUTE_PROCESS( COMMAND ${PYTHON_EXECUTABLE} -m site --user-site 
                          OUTPUT_VARIABLE temp_PYTHON_SITE_DIRECTORY OUTPUT_STRIP_TRAILING_WHITESPACE)
         SET( PYTHON_INSTALL_DIRECTORY ${temp_PYTHON_SITE_DIRECTORY} CACHE STRING "Location where Python libraries will be installed" )
@@ -339,7 +339,7 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/node.cpp
                 ${CMAKE_SOURCE_DIR}/src/element.cpp
                 ${CMAKE_SOURCE_DIR}/src/hash.cpp
-                ${CMAKE_SOURCE_DIR}/src/hash_impl.cpp
+                ${CMAKE_SOURCE_DIR}/src/hash_private.cpp
                 ${CMAKE_SOURCE_DIR}/src/boundary.cpp
                 ${CMAKE_SOURCE_DIR}/src/fileio.cpp
                 ${CMAKE_SOURCE_DIR}/src/stringconversion.cpp
@@ -356,16 +356,16 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/meshchecker.cpp 
                 ${CMAKE_SOURCE_DIR}/src/multithreading.cpp 
                 ${CMAKE_SOURCE_DIR}/src/constants.cpp
-                ${CMAKE_SOURCE_DIR}/src/mesh_impl.cpp 
+                ${CMAKE_SOURCE_DIR}/src/mesh_private.cpp 
                 ${CMAKE_SOURCE_DIR}/src/kdtree.cpp
-                ${CMAKE_SOURCE_DIR}/src/kdtree_impl.cpp
-                ${CMAKE_SOURCE_DIR}/src/harmonicsoutput_impl.cpp 
-                ${CMAKE_SOURCE_DIR}/src/harmonicsrecord_impl.cpp 
-                ${CMAKE_SOURCE_DIR}/src/nodalattributes_impl.cpp )
+                ${CMAKE_SOURCE_DIR}/src/kdtree_private.cpp
+                ${CMAKE_SOURCE_DIR}/src/harmonicsoutput_private.cpp 
+                ${CMAKE_SOURCE_DIR}/src/harmonicsrecord_private.cpp 
+                ${CMAKE_SOURCE_DIR}/src/nodalattributes_private.cpp )
 
 IF( GDAL_FOUND )
     SET( ADCIRCMODULES_SOURCES ${ADCIRCMODULES_SOURCES} ${CMAKE_SOURCE_DIR}/src/griddata.cpp 
-                                                        ${CMAKE_SOURCE_DIR}/src/griddata_impl.cpp
+                                                        ${CMAKE_SOURCE_DIR}/src/griddata_private.cpp
                                                         ${CMAKE_SOURCE_DIR}/src/pixel.cpp
                                                         ${CMAKE_SOURCE_DIR}/src/rasterdata.cpp )
 ENDIF( GDAL_FOUND )
@@ -673,7 +673,7 @@ IF(UNIX OR CYGWIN)
                       cxx_checkmesh.cpp cxx_read2dm.cpp cxx_kdtree.cpp cxx_hash.cpp cxx_hashmesh.cpp 
                       cxx_writeasciifull.cpp cxx_writeasciisparse.cpp cxx_writeasciifullvector.cpp 
                       cxx_writeasciisparsevector.cpp cxx_writenetcdf.cpp cxx_writenetcdfvector.cpp 
-                      cxx_writehdf5.cpp )
+                      cxx_writehdf5.cpp cxx_makemesh.cpp )
 
         IF(ENABLE_GDAL)
             SET(TEST_LIST ${TEST_LIST} cxx_interpolateRaster.cpp cxx_interpolateManning.cpp cxx_interpolateDwind.cpp ) 
@@ -699,10 +699,17 @@ IF(UNIX OR CYGWIN)
         
         #...Python Test
         IF(PYTHON_TESTING)
-            ADD_TEST( NAME Python_Test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/testing/pyadcirc_testcase.py
-                    WORKING_DIRECTORY ${CMAKE_BINARY_DIR} )
-            SET_PROPERTY( TEST Python_Test PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
-            SET_PROPERTY( TEST Python_Test APPEND PROPERTY ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}")
+            IF(PYTHONTYPE EQUAL 2)
+               SET(PYTHON_TESTNAME TEST_python2_PyAdcirc)
+               ADD_TEST( NAME ${PYTHON_TESTNAME} COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/testing/python_tests/pyadcirc_python2_testcase.py
+                         WORKING_DIRECTORY ${CMAKE_BINARY_DIR} )
+            ELSE()
+               SET(PYTHON_TESTNAME TEST_python3_PyAdcirc)
+               ADD_TEST( NAME ${PYTHON_TESTNAME} COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/testing/python_tests/pyadcirc_python3_testcase.py
+                         WORKING_DIRECTORY ${CMAKE_BINARY_DIR} )
+            ENDIF()
+            SET_PROPERTY( TEST ${PYTHON_TESTNAME} PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
+            SET_PROPERTY( TEST ${PYTHON_TESTNAME} APPEND PROPERTY ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}")
         ENDIF(PYTHON_TESTING)
     ENDIF(BUILD_TESTS)
 ENDIF(UNIX OR CYGWIN)

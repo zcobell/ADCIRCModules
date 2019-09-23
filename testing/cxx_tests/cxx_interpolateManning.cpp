@@ -22,7 +22,7 @@
 
 int main() {
   using namespace Adcirc::Geometry;
-  using namespace Interpolation;
+  using namespace Adcirc::Interpolation;
   
   std::vector<double> control = {
      -9999.0,
@@ -41,7 +41,7 @@ int main() {
   m->defineProjection(4326, true);
   m->reproject(26915);
 
-  Multithreading::disable();
+  Adcirc::Multithreading::disable();
 
   std::unique_ptr<Griddata> g(
       new Griddata(m.get(), "test_files/lulc_samplelulcraster.tif"));

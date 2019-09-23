@@ -7,15 +7,17 @@
 #include "filetypes.h"
 #include "harmonicsrecord.h"
 
-class HarmonicsOutputImpl;
-
 namespace Adcirc {
+namespace Private {
+// Forward declaration for pimpl class
+class HarmonicsOutputPrivate;
+}  // namespace Private
 namespace Harmonics {
 
 /**
  * @class HarmonicsOutput
  * @author Zachary Cobell
- * @copyright Copyright 2018 Zachary Cobell. All Rights Reserved. This project
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
  * is released under the terms of the GNU General Public License v3
  * @brief The HarmonicsOutput class handles the reading/writing of ADCIRC
  * harmonics files
@@ -94,7 +96,7 @@ class HarmonicsOutput {
   int ADCIRCMODULES_EXPORT filetype() const;
 
  private:
-  std::unique_ptr<HarmonicsOutputImpl> m_impl;
+  std::unique_ptr<Adcirc::Private::HarmonicsOutputPrivate> m_impl;
 };
 }  // namespace Harmonics
 }  // namespace Adcirc

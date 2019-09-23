@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #define ADCMOD_STRINGCONVERSION_H
 
 #include <string>
-
+namespace Adcirc {
 class StringConversion {
  public:
   StringConversion() = default;
@@ -31,5 +31,6 @@ class StringConversion {
   static double stringToDouble(const std::string& a, bool& ok);
   static std::string sanitizeString(const std::string& a);
 };
+}  // namespace Adcirc
 
 #endif  // ADCMOD_STRINGCONVERSION_H

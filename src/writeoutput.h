@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef WRITEOUTPUT_H
-#define WRITEOUTPUT_H
+#ifndef ADCMOD_WRITEOUTPUT_H
+#define ADCMOD_WRITEOUTPUT_H
 
 #include <fstream>
 #include "mesh.h"
@@ -27,6 +27,15 @@
 namespace Adcirc {
 namespace Output {
 
+/**
+ * @class WriteOutput
+ * @author Zachary Cobell
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
+ * @brief The WriteOutput class is used to write ADCIRC formatted output files
+ * in ascii or netCDF format
+ *
+ */
 class WriteOutput {
  public:
   WriteOutput(const std::string &filename, ReadOutput *dataContainer,
@@ -58,8 +67,8 @@ class WriteOutput {
 
   void h5_createDataset(const std::string &name, bool isVector);
   void h5_appendRecord(const std::string &name,
-                         const Adcirc::Output::OutputRecord *record,
-                         bool isVector);
+                       const Adcirc::Output::OutputRecord *record,
+                       bool isVector);
   void h5_defineStringAttribute(int64_t id, const std::string &name,
                                 const std::string &value);
   void h5_defineIntegerAttribute(int64_t id, const std::string &name,
@@ -87,4 +96,4 @@ class WriteOutput {
 }  // namespace Output
 }  // namespace Adcirc
 
-#endif  // WRITEOUTPUT_H
+#endif  // ADCMOD_WRITEOUTPUT_H

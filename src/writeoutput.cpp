@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
 //------------------------------------------------------------------------*/
 
 //...Hack for multiple definition
-//   This seems to be an issue with the 
-//   build on some version of windows
+//   This seems to be an issue with the
+//   build on some versions of windows
 #if H5_SIZEOF_SSIZE_T == 0
 #define H5_SIZEOF_SSIZE_T H5_SIZEOF_LONG_LONG
 #endif
@@ -587,38 +587,32 @@ void WriteOutput::writeRecordNetCDF(const OutputRecord *record) {
   const size_t count[2] = {1, record->numNodes()};
 
   if (this->m_dataContainer->metadata()->dimension() == 1) {
-    double *z = new double[record->numNodes()];
+    std::unique_ptr<double> z(new double[record->numNodes()]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
-      z[i] = record->z(i);
+      z.get()[i] = record->z(i);
     }
-    nc_put_vara(this->m_ncid, this->m_varid[0], start, count, z);
-    delete[] z;
+    nc_put_vara(this->m_ncid, this->m_varid[0], start, count, z.get());
   } else if (this->m_dataContainer->metadata()->dimension() == 2) {
-    double *u = new double[record->numNodes()];
-    double *v = new double[record->numNodes()];
+    std::unique_ptr<double> u(new double[record->numNodes()]);
+    std::unique_ptr<double> v(new double[record->numNodes()]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
-      u[i] = record->u(i);
-      v[i] = record->v(i);
+      u.get()[i] = record->u(i);
+      v.get()[i] = record->v(i);
     }
-    nc_put_vara(this->m_ncid, this->m_varid[0], start, count, u);
-    nc_put_vara(this->m_ncid, this->m_varid[1], start, count, v);
-    delete[] u;
-    delete[] v;
+    nc_put_vara(this->m_ncid, this->m_varid[0], start, count, u.get());
+    nc_put_vara(this->m_ncid, this->m_varid[1], start, count, v.get());
   } else if (this->m_dataContainer->metadata()->dimension() == 3) {
-    double *u = new double[record->numNodes()];
-    double *v = new double[record->numNodes()];
-    double *w = new double[record->numNodes()];
+    std::unique_ptr<double> u(new double[record->numNodes()]);
+    std::unique_ptr<double> v(new double[record->numNodes()]);
+    std::unique_ptr<double> w(new double[record->numNodes()]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
-      u[i] = record->u(i);
-      v[i] = record->v(i);
-      w[i] = record->w(i);
+      u.get()[i] = record->u(i);
+      v.get()[i] = record->v(i);
+      w.get()[i] = record->w(i);
     }
-    nc_put_vara(this->m_ncid, this->m_varid[0], start, count, u);
-    nc_put_vara(this->m_ncid, this->m_varid[1], start, count, v);
-    nc_put_vara(this->m_ncid, this->m_varid[2], start, count, w);
-    delete[] u;
-    delete[] v;
-    delete[] w;
+    nc_put_vara(this->m_ncid, this->m_varid[0], start, count, u.get());
+    nc_put_vara(this->m_ncid, this->m_varid[1], start, count, v.get());
+    nc_put_vara(this->m_ncid, this->m_varid[2], start, count, w.get());
   }
   return;
 }
@@ -731,7 +725,7 @@ void WriteOutput::h5_appendRecord(const std::string &name,
 
   if (isVector) {
     size_t idx = 0;
-    float *uv = new float[record->numNodes() * 2];
+    std::unique_ptr<float> uv(new float[record->numNodes() * 2]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
       float u = static_cast<float>(record->u(i));
       float v = static_cast<float>(record->v(i));
@@ -741,30 +735,27 @@ void WriteOutput::h5_appendRecord(const std::string &name,
       if (u != 0.0f || v != 0.0f) m = std::sqrt(u * u + v * v);
       if (m > mx[0]) mx[0] = m;
       if (m < mn[0]) mn[0] = m;
-      uv[idx] = u;
+      uv.get()[idx] = u;
       idx++;
-      uv[idx] = v;
+      uv.get()[idx] = v;
       idx++;
     }
-    H5Dwrite(did_val, H5T_IEEE_F32LE, ms_val, fs_val, H5P_DEFAULT, uv);
-    delete[] uv;
+    H5Dwrite(did_val, H5T_IEEE_F32LE, ms_val, fs_val, H5P_DEFAULT, uv.get());
   } else {
-    float *wse = new float[record->numNodes()];
-    unsigned char *active = new unsigned char[record->numNodes()];
+    std::unique_ptr<float> wse(new float[record->numNodes()]);
+    std::unique_ptr<unsigned char> active ( new unsigned char[record->numNodes()]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
-      wse[i] = static_cast<float>(record->z(i));
-      if (wse[i] > mx[0]) mx[0] = wse[i];
-      if (wse[i] < mn[0]) mn[0] = wse[i];
-      if (wse[i] > -9990) {
-        active[i] = 1;
+      wse.get()[i] = static_cast<float>(record->z(i));
+      if (wse.get()[i] > mx[0]) mx[0] = wse.get()[i];
+      if (wse.get()[i] < mn[0]) mn[0] = wse.get()[i];
+      if (wse.get()[i] > -9990) {
+        active.get()[i] = 1;
       } else {
-        active[i] = 0;
+        active.get()[i] = 0;
       }
     }
-    H5Dwrite(did_val, H5T_IEEE_F32LE, ms_val, fs_val, H5P_DEFAULT, wse);
-    H5Dwrite(did_ac, H5T_STD_U8LE, ms_ac, fs_ac, H5P_DEFAULT, active);
-    delete[] wse;
-    delete[] active;
+    H5Dwrite(did_val, H5T_IEEE_F32LE, ms_val, fs_val, H5P_DEFAULT, wse.get());
+    H5Dwrite(did_ac, H5T_STD_U8LE, ms_ac, fs_ac, H5P_DEFAULT, active.get());
   }
 
   H5Dwrite(did_mx, H5T_IEEE_F32LE, ms_mx, fs_mx, H5P_DEFAULT, mx);

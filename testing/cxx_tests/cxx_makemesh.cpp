@@ -19,16 +19,24 @@
 #include <iostream>
 #include <memory>
 #include "adcircmodules.h"
+#include <vector>
 
 int main() {
-  using namespace Adcirc::Geometry;
-  std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));
-  mesh->read();
+  Adcirc::Geometry::Mesh m;
+  m.resizeMesh(3,1,0,0);
+  m.addNode(0,Adcirc::Geometry::Node(1,-90.0,20.0,0.0));
+  m.addNode(1,Adcirc::Geometry::Node(2,-95.0,25.0,0.0));
+  m.addNode(2,Adcirc::Geometry::Node(3,-88.0,30.0,0.0));
+  m.addElement(0,Adcirc::Geometry::Element(1,m.node(0),m.node(1),m.node(2)));
+  m.setMeshHeaderString("Manually generated mesh");
 
-  int index = mesh->findNearestNode(-90.766116, 30.002113);
-  int nid = mesh->node(index)->id();
+  m.write("../testing/test_files/manualmesh.grd");
 
-  if (nid != 14494) return 1;
+  double a = m.element(0)->area();
+  bool inside = m.element(0)->isInside(-89.0,26.0);
 
+  std::cout << "Element Area: " << a << std::endl;
+  std::cout << "Is inside: " << inside << std::endl;
+ 
   return 0;
 }

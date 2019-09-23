@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2018 Zachary Cobell
+// (c) 2015-2019 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -38,20 +38,102 @@ constexpr std::array<int, 15> c_bctypes_singleNodeBoundaries = {
  *
  * Initializes the boundary with code -1 and length 0.
  */
-Boundary::Boundary() : m_hash(nullptr) { this->setBoundary(-1, 0); }
+Boundary::Boundary() {
+  this->m_hash.reset(nullptr);
+  this->setBoundary(-1, 0);
+  this->m_averageLongitude = std::numeric_limits<double>::max();
+}
 
 /**
  * @brief Initializes the boundary with user specified boundary type and length
- * @param boundaryCode ADCIRC model boundary code
- * @param boundaryLength number of nodes along this boundary
+ * @param[in] boundaryCode ADCIRC model boundary code
+ * @param[in] boundaryLength number of nodes along this boundary
  */
-Boundary::Boundary(int boundaryCode, size_t boundaryLength) : m_hash(nullptr) {
+Boundary::Boundary(int boundaryCode, size_t boundaryLength) {
   this->setBoundaryCode(boundaryCode);
   this->setBoundaryLength(boundaryLength);
+  this->m_hash.reset(nullptr);
+  this->m_averageLongitude = std::numeric_limits<double>::max();
 }
 
-Boundary::~Boundary() {
-  if (this->m_hash != nullptr) delete[] this->m_hash;
+/**
+ * @brief Destructor
+ */
+Boundary::~Boundary() {}
+
+/**
+ * @brief Function to copy data in a boundary. Used in the copy constructor and
+ * copy assignment operators
+ * @param[inout] a resultant boundary
+ * @param[in] b boundary that is copied
+ */
+void Boundary::boundaryCopier(Boundary *const a, const Boundary *const b) {
+  a->m_boundaryCode = b->boundaryCode();
+  a->m_boundaryLength = b->boundaryLength();
+  if (b->isSingleNodeBoundary()) {
+    a->m_node1.resize(a->m_boundaryLength);
+    for (size_t i = 0; i < a->boundaryLength(); ++i) {
+      a->m_node1[i] = b->node1(i);
+    }
+  } else if (b->isExternalWeir()) {
+    a->m_node1.resize(a->m_boundaryLength);
+    a->m_crestElevation.resize(a->m_boundaryLength);
+    a->m_supercriticalWeirCoefficient.resize(a->m_boundaryLength);
+    for (size_t i = 0; i < a->m_boundaryLength; ++i) {
+      a->m_node1[i] = b->node1(i);
+      a->m_crestElevation[i] = b->crestElevation(i);
+      a->m_supercriticalWeirCoefficient[i] = b->supercriticalWeirCoefficient(i);
+    }
+  } else if (b->isInternalWeir()) {
+    a->m_node1.resize(a->m_boundaryLength);
+    a->m_node2.resize(a->m_boundaryLength);
+    a->m_crestElevation.resize(a->m_boundaryLength);
+    a->m_supercriticalWeirCoefficient.resize(a->m_boundaryLength);
+    a->m_subcriticalWeirCoefficient.resize(a->m_boundaryLength);
+    for (size_t i = 0; i < a->boundaryLength(); ++i) {
+      a->m_node1[i] = b->node1(i);
+      a->m_node2[i] = b->node2(i);
+      a->m_crestElevation[i] = b->crestElevation(i);
+      a->m_supercriticalWeirCoefficient[i] = b->supercriticalWeirCoefficient(i);
+      a->m_subcriticalWeirCoefficient[i] = b->subcriticalWeirCoefficient(i);
+    }
+  } else if (b->isInternalWeirWithPipes()) {
+    a->m_node1.resize(a->m_boundaryLength);
+    a->m_node2.resize(a->m_boundaryLength);
+    a->m_crestElevation.resize(a->m_boundaryLength);
+    a->m_supercriticalWeirCoefficient.resize(a->m_boundaryLength);
+    a->m_subcriticalWeirCoefficient.resize(a->m_boundaryLength);
+    a->m_pipeHeight.resize(a->m_boundaryLength);
+    a->m_pipeDiameter.resize(a->m_boundaryLength);
+    a->m_pipeCoefficient.resize(a->m_boundaryLength);
+    for (size_t i = 0; i < a->boundaryLength(); ++i) {
+      a->m_node1[i] = b->node1(i);
+      a->m_node2[i] = b->node2(i);
+      a->m_crestElevation[i] = b->crestElevation(i);
+      a->m_supercriticalWeirCoefficient[i] = b->supercriticalWeirCoefficient(i);
+      a->m_subcriticalWeirCoefficient[i] = b->subcriticalWeirCoefficient(i);
+      a->m_pipeHeight[i] = b->pipeHeight(i);
+      a->m_pipeDiameter[i] = b->pipeDiameter(i);
+      a->m_pipeCoefficient[i] = b->pipeCoefficient(i);
+    }
+  }
+  a->m_hash.reset(nullptr);
+}
+
+/**
+ * @brief Copy constructor
+ * @param[in] b boundary to copy
+ */
+Boundary::Boundary(const Boundary &b) { Boundary::boundaryCopier(this, &b); }
+
+/**
+ * @brief Copy assignment operator
+ * @param[in] b boundary to copy
+ * @return pointer to copied boundary
+ */
+Boundary &Boundary::operator=(const Boundary &b) {
+  Boundary::boundaryCopier(this, &b);
+  return *this;
 }
 
 /**
@@ -118,8 +200,8 @@ bool Boundary::isSingleNodeBoundary() const {
 
 /**
  * @brief User specified initialization of the boundary
- * @param boundaryCode ADCIRC model boundary code
- * @param boundaryLength number of nodes along this boundary
+ * @param[in] boundaryCode ADCIRC model boundary code
+ * @param[in] boundaryLength number of nodes along this boundary
  */
 void Boundary::setBoundary(int boundaryCode, size_t boundaryLength) {
   this->setBoundaryCode(boundaryCode);
@@ -149,7 +231,7 @@ size_t Boundary::length() const { return this->boundaryLength(); }
 
 /**
  * @brief Allocates the arrays used by the bounary
- * @param boundaryLength number of nodes along the boundary
+ * @param[in] boundaryLength number of nodes along the boundary
  */
 void Boundary::setBoundaryLength(size_t boundaryLength) {
   if (this->boundaryLength() != boundaryLength) {
@@ -180,17 +262,17 @@ int Boundary::boundaryCode() const { return this->m_boundaryCode; }
 
 /**
  * @brief Sets the model boundary to the user specified code
- * @param boundaryCode Adcirc model boundary code
+ * @param[in] boundaryCode Adcirc model boundary code
  */
 void Boundary::setBoundaryCode(int boundaryCode) {
   this->m_boundaryCode = boundaryCode;
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
  * @brief Returns the crest elevation for boundary types 3, 13, 23, 4, 24, 5,
  * and 25
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return crest elevation if applicable, otherwise
  * adcircmodules_default_value<double>().
  */
@@ -207,8 +289,8 @@ double Boundary::crestElevation(size_t index) const {
 /**
  * @brief Sets the crest elevation for boundary types 3, 13, 23, 4, 24, 5, and
  * 25
- * @param index position along the boundary
- * @param crestElevation height above the datum for the weir crest
+ * @param[in] index position along the boundary
+ * @param[in] crestElevation height above the datum for the weir crest
  */
 void Boundary::setCrestElevation(size_t index, double crestElevation) {
   if (this->isWeir()) {
@@ -220,13 +302,13 @@ void Boundary::setCrestElevation(size_t index, double crestElevation) {
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
  * @brief Returns the coeffieicnt of subcritical weir flow for boundary types 4,
  * 24, 5, and 25
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return subcritical weir coefficient
  */
 double Boundary::subcriticalWeirCoefficient(size_t index) const {
@@ -242,8 +324,8 @@ double Boundary::subcriticalWeirCoefficient(size_t index) const {
 /**
  * @brief Sets the coefficient of subcritical flow for boundary types 4, 24, 5,
  * and 25
- * @param index position along the boundary
- * @param subcriticalWeirCoefficient coefficient of subcritical flow
+ * @param[in] index position along the boundary
+ * @param[in] subcriticalWeirCoefficient coefficient of subcritical flow
  */
 void Boundary::setSubcriticalWeirCoefficient(
     size_t index, double subcriticalWeirCoefficient) {
@@ -256,13 +338,13 @@ void Boundary::setSubcriticalWeirCoefficient(
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
  * @brief Returns the coefficient of supercritical flow for the specified
  * position along the boundary for boundary types 3, 13, 23, 4, 24, 5, and 25
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return coefficient of supercritical flow
  */
 double Boundary::supercriticalWeirCoefficient(size_t index) const {
@@ -276,8 +358,8 @@ double Boundary::supercriticalWeirCoefficient(size_t index) const {
 }
 
 /**
- * @param index position along the boundary
- * @param supercriticalWeirCoefficient coefficient of supercritical flow for
+ * @param[in] index position along the boundary
+ * @param[in] supercriticalWeirCoefficient coefficient of supercritical flow for
  * boundarytypes 3, 13, 23, 4, 24, 5, and 25
  */
 void Boundary::setSupercriticalWeirCoefficient(
@@ -292,13 +374,13 @@ void Boundary::setSupercriticalWeirCoefficient(
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
  * @brief Returns the elevation of the pipe above datum for type 5 and 25
  * boundaries
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return height of pipe center above datum
  */
 double Boundary::pipeHeight(size_t index) const {
@@ -314,8 +396,8 @@ double Boundary::pipeHeight(size_t index) const {
 /**
  * @brief Sets the elevation of the pipe above datum for type 5 and 25
  * boundaries
- * @param index position along the boundary
- * @param pipeHeight elevation of the pipe center above datum
+ * @param[in] index position along the boundary
+ * @param[in] pipeHeight elevation of the pipe center above datum
  */
 void Boundary::setPipeHeight(size_t index, double pipeHeight) {
   if (this->isInternalWeirWithPipes()) {
@@ -327,12 +409,12 @@ void Boundary::setPipeHeight(size_t index, double pipeHeight) {
   } else {
     adcircmodules_throw_exception("Invalid attribute for boundary type");
   }
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
  * @brief Returns the diameter of the pipe
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return diameter of the pipe
  */
 double Boundary::pipeDiameter(size_t index) const {
@@ -347,8 +429,8 @@ double Boundary::pipeDiameter(size_t index) const {
 
 /**
  * @brief Sets the diameter of the pipe
- * @param index postion along the boundary
- * @param pipeDiameter diameter of the pipe
+ * @param[in] index postion along the boundary
+ * @param[in] pipeDiameter diameter of the pipe
  */
 void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
   if (this->isInternalWeirWithPipes()) {
@@ -360,12 +442,12 @@ void Boundary::setPipeDiameter(size_t index, double pipeDiameter) {
   } else {
     adcircmodules_throw_exception("Index exceeds bounds");
   }
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
  * @brief Returns the pipe coefficient
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return pipe coefficient
  */
 double Boundary::pipeCoefficient(size_t index) const {
@@ -380,8 +462,8 @@ double Boundary::pipeCoefficient(size_t index) const {
 
 /**
  * @brief Sets the pipe coefficient
- * @param index position along boundary
- * @param pipeCoefficient pipe coefficient
+ * @param[in] index position along boundary
+ * @param[in] pipeCoefficient pipe coefficient
  */
 void Boundary::setPipeCoefficient(size_t index, double pipeCoefficient) {
   if (this->isInternalWeirWithPipes()) {
@@ -396,7 +478,7 @@ void Boundary::setPipeCoefficient(size_t index, double pipeCoefficient) {
 
 /**
  * @brief Returns a pointer to the node on the boundary
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return pointer to an Node object
  */
 Node *Boundary::node1(size_t index) const {
@@ -409,8 +491,8 @@ Node *Boundary::node1(size_t index) const {
 
 /**
  * @brief Sets a pointer to a node
- * @param index position along the boundary
- * @param node1 Pointer to an Node object
+ * @param[in] index position along the boundary
+ * @param[in] node1 Pointer to an Node object
  */
 void Boundary::setNode1(size_t index, Node *node1) {
   if (index < this->boundaryLength()) {
@@ -418,13 +500,13 @@ void Boundary::setNode1(size_t index, Node *node1) {
   } else {
     adcircmodules_throw_exception("Index exceeds bounds");
   }
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
  * @brief Returns a pointer to the paired node for type 4, 24, 5, and 25
  * boundaries
- * @param index position along the boundary
+ * @param[in] index position along the boundary
  * @return Node pointer
  */
 Node *Boundary::node2(size_t index) const {
@@ -439,8 +521,8 @@ Node *Boundary::node2(size_t index) const {
 
 /**
  * @brief Sets the node pair for type 4, 24, 5, and 25 boundaries
- * @param index position along the boundary
- * @param node2 pointer to an Node object
+ * @param[in] index position along the boundary
+ * @param[in] node2 pointer to an Node object
  */
 void Boundary::setNode2(size_t index, Node *node2) {
   if (this->isInternalWeir()) {
@@ -450,7 +532,7 @@ void Boundary::setNode2(size_t index, Node *node2) {
       adcircmodules_throw_exception("Index exceeds bounds");
     }
   }
-  if (this->m_hash != nullptr) this->generateHash();
+  if (this->m_hash.get() != nullptr) this->generateHash();
 }
 
 /**
@@ -503,16 +585,17 @@ std::vector<std::string> Boundary::toStringList() {
  * heights, and coefficients
  * @return hash formatted as string
  */
-std::string Boundary::hash(HashType h, bool force) {
-  if (this->m_hash == nullptr || force) this->generateHash(h);
-  return std::string(this->m_hash);
+std::string Boundary::hash(Adcirc::Cryptography::HashType h, bool force) {
+  if (this->m_hash.get() == nullptr || force) this->generateHash(h);
+  return std::string(this->m_hash.get());
 }
 
 /**
  * @brief Generates the hash data for this boundary
+ * @param[in] h cryptographic hashing algorithm to use
  */
-void Boundary::generateHash(HashType h) {
-  Hash hash(h);
+void Boundary::generateHash(Adcirc::Cryptography::HashType h) {
+  Adcirc::Cryptography::Hash hash(h);
   for (size_t i = 0; i < this->m_boundaryLength; ++i) {
     hash.addData(boost::str(boost::format("%3.3i") % this->m_boundaryCode));
     hash.addData(this->m_node1[i]->positionHash());
@@ -537,13 +620,13 @@ void Boundary::generateHash(HashType h) {
       }
     }
   }
-  this->m_hash = hash.getHash();
+  this->m_hash.reset(hash.getHash());
   return;
 }
 
 /**
  * @brief Returns the average longitude of the boundary
- * @param force force recalculation of the average longitude
+ * @param[in] force force recalculation of the average longitude
  * @return average longitude
  */
 double Boundary::averageLongitude(bool force) {
