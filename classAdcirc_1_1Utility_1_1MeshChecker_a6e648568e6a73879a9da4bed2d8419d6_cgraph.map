@@ -1,6 +1,5 @@
 <map id="checkNodeNumbering" name="checkNodeNumbering">
-<area shape="rect" id="node1" title=" " alt="" coords="5,78,155,105"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh." alt="" coords="211,5,375,47"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a96bbda0a22e51f4ca5cf2364126956b9" title="Returns a pointer to the requested node in the internal node vector." alt="" coords="211,71,375,112"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the nodal id/label." alt="" coords="203,137,383,163"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh. " alt="" coords="213,5,377,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a96bbda0a22e51f4ca5cf2364126956b9" title="Returns a pointer to the requested node in the internal node vector. " alt="" coords="213,71,377,112"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the nodal id/label. " alt="" coords="204,137,385,163"/>
 </map>

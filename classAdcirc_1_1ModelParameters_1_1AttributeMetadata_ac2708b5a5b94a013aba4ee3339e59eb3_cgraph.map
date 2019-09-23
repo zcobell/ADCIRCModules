@@ -1,4 +1,3 @@
 <map id="setNumberOfValues" name="setNumberOfValues">
-<area shape="rect" id="node1" title="Sets the number of values for the nodal attribute." alt="" coords="5,5,144,32"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#ace87c1ad75b9f08770789cc74b864342" title="Returns the number of values for the nodal attribute." alt="" coords="192,5,311,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#ace87c1ad75b9f08770789cc74b864342" title="Returns the number of values for the nodal attribute. " alt="" coords="193,5,312,32"/>
 </map>

@@ -1,7 +1,6 @@
 <map id="numNonDefault" name="numNonDefault">
-<area shape="rect" id="node1" title=" " alt="" coords="5,78,116,105"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a0c226f7d9faa8d67f90e890c05cae088" title=" " alt="" coords="164,78,237,105"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a75aa79248b769329ed6b7d62280aa08c" title=" " alt="" coords="285,5,492,47"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a989b823eb23ed6799ec17b7ac8ca060b" title=" " alt="" coords="285,71,492,112"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1OutputRecord.html#af3c6e7460235c8bda8126219d3bcfef4" title=" " alt="" coords="342,137,435,163"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a0c226f7d9faa8d67f90e890c05cae088" title="isDefault" alt="" coords="167,78,241,105"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a75aa79248b769329ed6b7d62280aa08c" title="Returns the dimension of the object. " alt="" coords="289,5,496,47"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a989b823eb23ed6799ec17b7ac8ca060b" title="Checks if the object represents a maximum. " alt="" coords="289,71,496,112"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1OutputRecord.html#af3c6e7460235c8bda8126219d3bcfef4" title="defaultValue" alt="" coords="345,137,440,163"/>
 </map>

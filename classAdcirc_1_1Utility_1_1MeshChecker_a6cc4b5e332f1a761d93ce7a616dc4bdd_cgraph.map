@@ -1,6 +1,5 @@
 <map id="checkElementNumbering" name="checkElementNumbering">
-<area shape="rect" id="node1" title=" " alt="" coords="5,78,172,105"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#afdfd28c4c1db0086eee0969cdc0409db" title="Returns the number of elements in the mesh." alt="" coords="237,5,401,47"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a3543bba752ce5bb6f2a4ce69c0f09c3d" title="Returns a pointer to the requested element in the internal element vector." alt="" coords="237,71,401,112"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Element.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the element id/flag." alt="" coords="220,137,419,163"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#afdfd28c4c1db0086eee0969cdc0409db" title="Returns the number of elements in the mesh. " alt="" coords="239,5,403,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a3543bba752ce5bb6f2a4ce69c0f09c3d" title="Returns a pointer to the requested element in the internal element vector. " alt="" coords="239,71,403,112"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Element.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the element id/flag. " alt="" coords="221,137,420,163"/>
 </map>

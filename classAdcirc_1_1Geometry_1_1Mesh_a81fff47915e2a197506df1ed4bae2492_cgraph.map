@@ -1,4 +1,0 @@
-<map id="defineProjection" name="defineProjection">
-<area shape="rect" id="node1" title="Sets the mesh projection using an EPSG code. Note this does not reproject the mesh." alt="" coords="5,5,120,32"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ac6a3ad791b160ae157182192807bb6f3" title="Returns true if the mesh is in a geographic projection." alt="" coords="168,5,239,32"/>
-</map>

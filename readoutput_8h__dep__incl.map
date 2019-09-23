@@ -1,7 +1,6 @@
 <map id="readoutput.h" name="readoutput.h">
-<area shape="rect" id="node1" title=" " alt="" coords="102,5,197,32"/>
-<area shape="rect" id="node2" href="$adcircmodules_8h.html" title=" " alt="" coords="5,155,123,181"/>
-<area shape="rect" id="node3" href="$writeoutput_8h.html" title=" " alt="" coords="101,80,197,107"/>
-<area shape="rect" id="node5" href="$readoutput_8cpp.html" title=" " alt="" coords="222,80,330,107"/>
-<area shape="rect" id="node4" href="$writeoutput_8cpp.html" title=" " alt="" coords="147,155,258,181"/>
+<area shape="rect" id="node2" href="$adcircmodules_8h.html" title="adcircmodules.h" alt="" coords="5,155,123,181"/>
+<area shape="rect" id="node3" href="$writeoutput_8h.html" title="writeoutput.h" alt="" coords="102,80,199,107"/>
+<area shape="rect" id="node5" href="$readoutput_8cpp.html" title="readoutput.cpp" alt="" coords="223,80,331,107"/>
+<area shape="rect" id="node4" href="$writeoutput_8cpp.html" title="writeoutput.cpp" alt="" coords="147,155,258,181"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="elementTable" name="elementTable">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,104,32"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#acc970f861a865ba06177761fc2f86761" title="Returns the pointer to the mesh used to build the table." alt="" coords="152,5,207,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#acad091bcffab26f70d916db16ab1d308" title="Returns the pointer to the mesh used to build the table. " alt="" coords="221,5,275,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a83611a572514d6b2f73e9ee6431744c8" title="Returns a pointer to the requested node in the internal node vector. " alt="" coords="153,57,343,98"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh. " alt="" coords="391,57,580,98"/>
 </map>

@@ -1,5 +1,0 @@
-<map id="filterSize" name="filterSize">
-<area shape="rect" id="node1" title="Returns the filter size (mean element size around node * [x]) at a specified index." alt="" coords="156,31,229,57"/>
-<area shape="rect" id="node2" href="$classInterpolation_1_1Griddata.html#a3557b4e742a74c2ff9a5fb15f3a2b67f" title="Sets the relative filter sizes (mean element size around node * [x]) used to identify pixels of inter..." alt="" coords="5,5,108,32"/>
-<area shape="rect" id="node3" href="$classInterpolation_1_1Griddata.html#a823bc5d8642f927068127a62f211f5b8" title="Sets the relative filter size (mean element size around node * [x]) at a specified node." alt="" coords="9,56,104,83"/>
-</map>

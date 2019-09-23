@@ -1,5 +1,4 @@
 <map id="close" name="close">
-<area shape="rect" id="node1" title=" " alt="" coords="5,31,59,57"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a3a9ba7594ee74425dd345ecc263a5564" title=" " alt="" coords="107,5,170,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1ReadOutput.html#aed025721c159b7354eeaabf60080f103" title=" " alt="" coords="107,56,171,83"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a3a9ba7594ee74425dd345ecc263a5564" title="isOpen" alt="" coords="107,5,170,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1ReadOutput.html#aed025721c159b7354eeaabf60080f103" title="filetype" alt="" coords="107,56,171,83"/>
 </map>

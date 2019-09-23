@@ -1,7 +1,0 @@
-<map id="coordinateToPixel" name="coordinateToPixel">
-<area shape="rect" id="node1" title="Converts an x,y coordinate to the pixel i,j." alt="" coords="5,81,131,108"/>
-<area shape="rect" id="node2" href="$classRasterdata.html#a8ad6bb049f348feb818891249ff39d3b" title="x&#45;max value for raster" alt="" coords="179,5,233,32"/>
-<area shape="rect" id="node3" href="$classRasterdata.html#a5f0ad34b88c2466b6508984522961e5c" title="x&#45;min value for raster" alt="" coords="181,56,231,83"/>
-<area shape="rect" id="node4" href="$classRasterdata.html#a744f7797c62e0c6aed047f98268a4cc2" title="y&#45;max value for raster" alt="" coords="179,107,233,133"/>
-<area shape="rect" id="node5" href="$classRasterdata.html#af22a422492905c5012d80a314cc9eeda" title="y&#45;min value for raster" alt="" coords="181,157,231,184"/>
-</map>

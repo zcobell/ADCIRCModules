@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['open',['open',['../classRasterdata.html#adb20eae91802d6ad6366cdee0220c280',1,'Rasterdata::open()'],['../classAdcirc_1_1Output_1_1ReadOutput.html#a9e8555112049fc2b4945120b3c45f8ab',1,'Adcirc::Output::ReadOutput::open()'],['../classAdcirc_1_1Output_1_1WriteOutput.html#a9e8555112049fc2b4945120b3c45f8ab',1,'Adcirc::Output::WriteOutput::open()']]],
-  ['openboundary',['openBoundary',['../classAdcirc_1_1Geometry_1_1Mesh.html#abb00d35a302cdae528db75c07bfffb98',1,'Adcirc::Geometry::Mesh']]],
+  ['open',['open',['../classAdcirc_1_1Raster_1_1Rasterdata.html#adb20eae91802d6ad6366cdee0220c280',1,'Adcirc::Raster::Rasterdata::open()'],['../classAdcirc_1_1Output_1_1ReadOutput.html#a9e8555112049fc2b4945120b3c45f8ab',1,'Adcirc::Output::ReadOutput::open()'],['../classAdcirc_1_1Output_1_1WriteOutput.html#a9e8555112049fc2b4945120b3c45f8ab',1,'Adcirc::Output::WriteOutput::open()']]],
+  ['openboundary',['openBoundary',['../classAdcirc_1_1Geometry_1_1Mesh.html#abb00d35a302cdae528db75c07bfffb98',1,'Adcirc::Geometry::Mesh::openBoundary()'],['../classAdcirc_1_1Private_1_1MeshPrivate.html#a990e0e045ec74d72a2c48910a15f55f2',1,'Adcirc::Private::MeshPrivate::openBoundary()']]],
+  ['operator_3d',['operator=',['../classAdcirc_1_1Geometry_1_1Boundary.html#ab7ce6bd996c7cee85bb0a6bca511418b',1,'Adcirc::Geometry::Boundary::operator=()'],['../classAdcirc_1_1Geometry_1_1Element.html#a92c42bbc231bb54683df3c6dcdcf8841',1,'Adcirc::Geometry::Element::operator=()'],['../classAdcirc_1_1Geometry_1_1Node.html#a51eb21bff35eff0e1b5bb421b90ed846',1,'Adcirc::Geometry::Node::operator=()']]],
   ['operator_3d_3d',['operator==',['../classAdcirc_1_1Output_1_1OutputMetadata.html#a53687396790fdc85b1acd2e12ba507ba',1,'Adcirc::Output::OutputMetadata']]],
-  ['orthogonality',['orthogonality',['../classAdcirc_1_1Geometry_1_1Mesh.html#aa4c1eb531285e29ff29c8923ef1e581f',1,'Adcirc::Geometry::Mesh']]],
+  ['orthogonality',['orthogonality',['../classAdcirc_1_1Geometry_1_1Mesh.html#aa4c1eb531285e29ff29c8923ef1e581f',1,'Adcirc::Geometry::Mesh::orthogonality()'],['../classAdcirc_1_1Private_1_1MeshPrivate.html#aa4c1eb531285e29ff29c8923ef1e581f',1,'Adcirc::Private::MeshPrivate::orthogonality()']]],
   ['outputasciifull',['OutputAsciiFull',['../namespaceAdcirc_1_1Output.html#aeb712c6c6c0a8af0dfd79f451ecb9277a9175906ea3a7a8f6aa3c4d498b0a324c',1,'Adcirc::Output']]],
   ['outputasciisparse',['OutputAsciiSparse',['../namespaceAdcirc_1_1Output.html#aeb712c6c6c0a8af0dfd79f451ecb9277ad61c2d7e64b8255e7032fbde41858260',1,'Adcirc::Output']]],
   ['outputformat',['OutputFormat',['../namespaceAdcirc_1_1Output.html#aeb712c6c6c0a8af0dfd79f451ecb9277',1,'Adcirc::Output']]],

@@ -1,5 +1,3 @@
 <map id="Attribute" name="Attribute">
-<area shape="rect" id="node1" title="Constructor that accepts the number of values in this nodal attribute." alt="" coords="5,5,76,32"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1ModelParameters_1_1Attribute.html#a514affe27cc623fc5dccf1bf4648eb2a" title="Resizes the object to a new number of values in this nodal attribute." alt="" coords="124,5,181,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1ModelParameters_1_1Attribute.html#a259cb5a711406a8c3e5d937eb9350cca" title="Returns the current size of this nodal attribute." alt="" coords="229,5,276,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1ModelParameters_1_1Attribute.html#a514affe27cc623fc5dccf1bf4648eb2a" title="Resizes the object to a new number of values in this nodal attribute. " alt="" coords="124,5,181,32"/>
 </map>

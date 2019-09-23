@@ -1,34 +1,13 @@
-/*
-@ @licstart  The following is the entire license notice for the
-JavaScript code in this file.
-
-Copyright (C) 1997-2017 by Dimitri van Heesch
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
-@licend  The above is the entire license notice
-for the JavaScript code in this file
-*/
 var NAVTREE =
 [
   [ "ADCIRCModules", "index.html", [
-    [ "Namespaces", "namespaces.html", [
-      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
+    [ "Namespaces", null, [
+      [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
         [ "Functions", "namespacemembers_func.html", null ],
+        [ "Variables", "namespacemembers_vars.html", null ],
+        [ "Typedefs", "namespacemembers_type.html", null ],
         [ "Enumerations", "namespacemembers_enum.html", null ],
         [ "Enumerator", "namespacemembers_eval.html", null ]
       ] ]
@@ -45,15 +24,13 @@ var NAVTREE =
         [ "Related Functions", "functions_rela.html", null ]
       ] ]
     ] ],
-    [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ],
+    [ "Files", null, [
+      [ "File List", "files.html", "files" ],
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
         [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
-        [ "Enumerations", "globals_enum.html", null ],
-        [ "Enumerator", "globals_eval.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
@@ -63,9 +40,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "adcirc__outputfiles_8h.html",
-"classAdcirc_1_1ModelParameters_1_1Attribute.html#a56444519edfeb3fa09e10eadc109cfec",
-"classRasterdata.html#a8ad6bb049f348feb818891249ff39d3b",
-"kdtree_8cpp.html"
+"classAdcirc_1_1Harmonics_1_1HarmonicsRecord.html#a3a3a21cb65246a69e33472d9385caa04",
+"classAdcirc_1_1Private_1_1GriddataPrivate.html#acb8d2e3026ba65b02af212c74ca39ed7",
+"fileio_8h.html#a787bbdf9f55a70814131f846634ec9e3",
+"outputrecord_8h.html#a9fe832259f5fac304addc48ec1b70563"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

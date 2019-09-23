@@ -1,0 +1,13 @@
+<map id="searchBoxAroundPoint" name="searchBoxAroundPoint">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#aaf257244832c7dba44aefc6aea09a5cc" title="Converts an x,y coordinate to the pixel i,j. " alt="" coords="222,81,349,108"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Raster_1_1Pixel.html#afe93e17ac89cd97917811068ba2af214" title="Returns a boolean describing if the pixel is valid. " alt="" coords="214,133,357,174"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#a0ae524617adbd2d1763224670bb9ed45" title="Number of pixels in the x&#45;direction. " alt="" coords="266,199,305,225"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#aaef978e68f2f09a688c328a56dc4b23a" title="Number of pixels in the y&#45;direction. " alt="" coords="266,249,305,276"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Raster_1_1Pixel.html#a92b0b88b9a2c8ccada33e3fa7ce39244" title="Returns the i&#45;index. " alt="" coords="208,300,363,327"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Raster_1_1Pixel.html#aaf29b851413b2cac5242b33a4b6c24fd" title="Returns the j&#45;index. " alt="" coords="208,351,363,377"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Raster_1_1Pixel.html#a051bda95cf60584a1aa7aea3cb2d5215" title="Sets a pixel to an invalid value for detection later. " alt="" coords="214,402,357,443"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#a8ad6bb049f348feb818891249ff39d3b" title="x&#45;max value for raster " alt="" coords="411,5,465,32"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#a5f0ad34b88c2466b6508984522961e5c" title="x&#45;min value for raster " alt="" coords="413,56,463,83"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#a744f7797c62e0c6aed047f98268a4cc2" title="y&#45;max value for raster " alt="" coords="411,107,465,133"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#af22a422492905c5012d80a314cc9eeda" title="y&#45;min value for raster " alt="" coords="413,157,463,184"/>
+</map>

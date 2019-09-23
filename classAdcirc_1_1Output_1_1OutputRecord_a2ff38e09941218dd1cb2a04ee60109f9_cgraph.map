@@ -1,4 +1,3 @@
 <map id="directions" name="directions">
-<area shape="rect" id="node1" title=" " alt="" coords="5,13,84,39"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a434d8fdd91756a54ea935ba21de4f4f6" title=" " alt="" coords="132,5,339,47"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a434d8fdd91756a54ea935ba21de4f4f6" title="Returns true if this represents a vector object. " alt="" coords="132,5,339,47"/>
 </map>

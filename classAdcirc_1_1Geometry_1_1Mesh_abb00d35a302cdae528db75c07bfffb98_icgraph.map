@@ -1,5 +1,4 @@
 <map id="openBoundary" name="openBoundary">
-<area shape="rect" id="node1" title="Returns a pointer to an open boundary by index." alt="" coords="516,13,621,39"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ad873c200f2f8160c206511d083f4ffd7" title=" " alt="" coords="241,5,468,47"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title=" " alt="" coords="5,5,193,47"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ad873c200f2f8160c206511d083f4ffd7" title="Adcirc::Utility::MeshChecker\l::checkMissingBoundaryConditions" alt="" coords="159,5,385,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="433,5,624,47"/>
 </map>

@@ -1,0 +1,8 @@
+<map id="numLandBoundaries" name="numLandBoundaries">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a730dc8fcf0da2d9a4ff0f7ac3c614d00" title="Reads a specified mesh format. " alt="" coords="240,5,287,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a7230510e75d658c99606622e19ff7be6" title="Returns a pointer to a land boundary by index. " alt="" coords="213,56,314,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="219,107,308,133"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a636b9ae6106386d6ed313dc741693451" title="addLandBoundary" alt="" coords="200,157,327,184"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a7c5d9febc17248e57e031b62274125fd" title="deleteLandBoundary" alt="" coords="193,208,333,235"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a40e8e6dfd5b76435fd5bbcac818105e7" title="Writes an Mesh object to disk in ASCII format. " alt="" coords="238,259,289,285"/>
+</map>

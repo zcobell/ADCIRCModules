@@ -1,4 +1,4 @@
 <map id="setName" name="setName">
-<area shape="rect" id="node1" title="Sets the name of the harmonic constiuent in this object." alt="" coords="5,5,80,32"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Harmonics_1_1HarmonicsRecord.html#a1d89c28bd42ba9a52da008bb69367171" title="Returns the name of the harmonic constituent in this object." alt="" coords="128,5,183,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1HarmonicsRecordPrivate.html#a9d3a2685df23b5e7cbf59c19c4a1f9b5" title="Adcirc::Private::Harmonics\lRecordPrivate::setName" alt="" coords="128,5,307,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1HarmonicsRecordPrivate.html#a1d89c28bd42ba9a52da008bb69367171" title="Adcirc::Private::Harmonics\lRecordPrivate::name" alt="" coords="355,5,533,47"/>
 </map>

@@ -1,0 +1,5 @@
+<map id="ymax" name="ymax">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#aaf257244832c7dba44aefc6aea09a5cc" title="Converts an x,y coordinate to the pixel i,j. " alt="" coords="108,31,235,57"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#a9439e49dc3ac0cb7d87b144a2ac58b21" title="Converts an x,y coordinate to the pixel i,j. " alt="" coords="297,5,423,32"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#a8d89771bfebb681e1094bb8dc6e54ac2" title="Returns a search box of a given size around a given std::pair&lt;double,double&gt; " alt="" coords="283,56,437,83"/>
+</map>

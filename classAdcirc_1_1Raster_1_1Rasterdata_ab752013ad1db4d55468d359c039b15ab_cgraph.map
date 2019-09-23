@@ -1,0 +1,5 @@
+<map id="pixelValues" name="pixelValues">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#a0ae524617adbd2d1763224670bb9ed45" title="Number of pixels in the x&#45;direction. " alt="" coords="187,5,225,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#aaef978e68f2f09a688c328a56dc4b23a" title="Number of pixels in the y&#45;direction. " alt="" coords="187,56,225,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#acb64951c8bcd4cbe7e19eef01bb1e404" title="Calculates the coordinate of the pixel center. " alt="" coords="143,107,269,133"/>
+</map>

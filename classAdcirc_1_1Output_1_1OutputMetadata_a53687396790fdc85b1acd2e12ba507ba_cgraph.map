@@ -1,5 +1,4 @@
 <map id="operator==" name="operator==">
-<area shape="rect" id="node1" title=" " alt="" coords="5,31,91,57"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a75aa79248b769329ed6b7d62280aa08c" title=" " alt="" coords="139,5,220,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#afa13abbede0c3516e93986beac35aefb" title=" " alt="" coords="146,56,213,83"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a75aa79248b769329ed6b7d62280aa08c" title="Returns the dimension of the object. " alt="" coords="139,5,220,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#afa13abbede0c3516e93986beac35aefb" title="Returns the variable at the specified index. " alt="" coords="146,56,213,83"/>
 </map>

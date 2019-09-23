@@ -1,9 +1,0 @@
-<map id="elementSize" name="elementSize">
-<area shape="rect" id="node1" title="Calculates the average size of the legs of an element." alt="" coords="5,86,100,112"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#ac88f0961aa7ed7c7415550ab2cad49c8" title="Number of verticies in this element." alt="" coords="472,35,511,62"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Element.html#a9629c72872705d78fd8e6b09eea787d6" title="Returns a pair of nodes representing the leg of an element." alt="" coords="192,35,281,62"/>
-<area shape="rect" id="node5" href="$classConstants.html#a67bb34165d68f1fe958b93511d5ede05" title="Calculates the distance between two points." alt="" coords="167,86,306,112"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node." alt="" coords="148,136,325,163"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node." alt="" coords="148,187,325,214"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Element.html#a90cd93c7a0128962a366f0b32ffc459a" title="returns a pointer to the node at the specified position" alt="" coords="373,86,424,112"/>
-</map>

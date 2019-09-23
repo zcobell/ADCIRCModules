@@ -1,0 +1,10 @@
+<map id="resizeMesh" name="resizeMesh">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh. " alt="" coords="182,5,267,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ac8def9085449a17f9a36e41a4e501b88" title="Sets the number of nodes in the mesh. " alt="" coords="171,56,278,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#afdfd28c4c1db0086eee0969cdc0409db" title="Returns the number of elements in the mesh. " alt="" coords="173,107,276,133"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#af2fafa20dc6c1d5547a1ed36352e534a" title="Sets the number of elements in the mesh. " alt="" coords="163,157,286,184"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#af443f5205734c64e021aa1b96d254991" title="Returns the number of open boundaries in the model. " alt="" coords="153,208,296,235"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a8a3aca77e7318e0594bda6395881f529" title="Sets the number of open boundaries in the model. " alt="" coords="143,259,307,285"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ad5e2ed78e83daf7899f55c684005336f" title="Returns the number of land boundaries in the model. " alt="" coords="155,309,295,336"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a5d57ff3a0140fbe3022b7be8cce7f540" title="Sets the number of land boundaries in the model. " alt="" coords="144,360,305,387"/>
+</map>

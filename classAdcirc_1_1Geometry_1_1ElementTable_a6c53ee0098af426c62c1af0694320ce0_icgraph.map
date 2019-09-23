@@ -1,0 +1,4 @@
+<map id="elementList" name="elementList">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#aeb87845ce7689f495e96a156caa41631" title="Computes average size of the element edges connected to each node. " alt="" coords="143,5,332,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a386079f1610441ec3a150b6eb1378f5c" title="Returns a vector of pointers to the elements surrouding a node. " alt="" coords="143,71,332,112"/>
+</map>

@@ -1,5 +1,0 @@
-<map id="ny" name="ny">
-<area shape="rect" id="node1" title="Number of pixels in the y&#45;direction." alt="" coords="208,31,247,57"/>
-<area shape="rect" id="node2" href="$classRasterdata.html#aab8ae3f35154645c53085f424b775524" title="Returns the pixel value for the i,j index." alt="" coords="42,5,123,32"/>
-<area shape="rect" id="node3" href="$classRasterdata.html#ab8f51c470b8f9503defa8dcdbe3e1df7" title="Returns a search box of a given size around a given std::pair&lt;double,double&gt;" alt="" coords="5,56,160,83"/>
-</map>

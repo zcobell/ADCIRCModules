@@ -1,5 +1,4 @@
 <map id="pipeDiameter" name="pipeDiameter">
-<area shape="rect" id="node1" title="Returns the diameter of the pipe." alt="" coords="5,31,104,57"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#adee39f37571e564f0459d42b8d2449e4" title="Returns true if boundary condition is an internal weir with cross barrier pipes." alt="" coords="152,5,312,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary." alt="" coords="175,56,289,83"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#adee39f37571e564f0459d42b8d2449e4" title="Returns true if boundary condition is an internal weir with cross barrier pipes. " alt="" coords="152,5,315,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary. " alt="" coords="176,56,291,83"/>
 </map>

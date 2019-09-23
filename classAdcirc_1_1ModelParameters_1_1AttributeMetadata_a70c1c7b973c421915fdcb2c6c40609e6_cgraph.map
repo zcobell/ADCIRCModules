@@ -1,6 +1,5 @@
 <map id="checkIfDefaultValue" name="checkIfDefaultValue">
-<area shape="rect" id="node1" title=" " alt="" coords="5,35,144,61"/>
-<area shape="rect" id="node2" href="$attributemetadata_8cpp.html#af6563cdd7770cb4292e5103897d6d49a" title=" " alt="" coords="243,5,310,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1ModelParameters_1_1Attribute.html#af918796d8769eac0ca2c3258833fd31e" title="Returns the value of the nodal attribute at the specified index." alt="" coords="192,57,361,98"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1ModelParameters_1_1Attribute.html#a259cb5a711406a8c3e5d937eb9350cca" title="Returns the current size of this nodal attribute." alt="" coords="409,57,579,98"/>
+<area shape="rect" id="node2" href="$attributemetadata_8cpp.html#af6563cdd7770cb4292e5103897d6d49a" title="equalTo" alt="" coords="244,5,312,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1ModelParameters_1_1Attribute.html#af918796d8769eac0ca2c3258833fd31e" title="Returns the value of the nodal attribute at the specified index. " alt="" coords="193,57,363,98"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1ModelParameters_1_1Attribute.html#a259cb5a711406a8c3e5d937eb9350cca" title="Returns the current size of this nodal attribute. " alt="" coords="411,57,580,98"/>
 </map>

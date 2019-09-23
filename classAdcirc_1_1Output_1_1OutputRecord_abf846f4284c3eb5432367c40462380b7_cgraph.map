@@ -1,5 +1,4 @@
 <map id="set" name="set">
-<area shape="rect" id="node1" title=" " alt="" coords="5,42,45,69"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a75aa79248b769329ed6b7d62280aa08c" title=" " alt="" coords="93,5,300,47"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputRecord.html#ae8487e719ad1109f6db746e96a37c498" title=" " alt="" coords="155,71,239,98"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a75aa79248b769329ed6b7d62280aa08c" title="Returns the dimension of the object. " alt="" coords="93,5,300,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputRecord.html#ae8487e719ad1109f6db746e96a37c498" title="numNodes" alt="" coords="154,71,239,98"/>
 </map>

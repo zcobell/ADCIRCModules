@@ -1,5 +1,0 @@
-<map id="v_phase" name="v_phase">
-<area shape="rect" id="node1" title="Returns the v&#45;phase for a specified harmonic constituent." alt="" coords="5,5,76,32"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a9ed3ca88dd2104aaca079e3a807b671f" title="Returns the name of the harmonic constituent at the specified index." alt="" coords="124,5,179,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a0d8730ef2b8030b26e1b2e8e3d8f12d0" title="Returns the index for the specified harmonic constituent." alt="" coords="227,5,280,32"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="v_amplitude" name="v_amplitude">
-<area shape="rect" id="node1" title="Returns the v&#45;magnitude for a specified harmonic constituent." alt="" coords="5,5,97,32"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a0d8730ef2b8030b26e1b2e8e3d8f12d0" title="Returns the index for the specified harmonic constituent." alt="" coords="145,5,199,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Harmonics_1_1HarmonicsOutput.html#a9ed3ca88dd2104aaca079e3a807b671f" title="Returns the name of the harmonic constituent at the specified index." alt="" coords="247,5,301,32"/>
-</map>

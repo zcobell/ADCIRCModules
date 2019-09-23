@@ -1,4 +1,0 @@
-<map id="rasterMultiplier" name="rasterMultiplier">
-<area shape="rect" id="node1" title="Returns the raster multiplier applied after interpolation is complete." alt="" coords="184,5,291,32"/>
-<area shape="rect" id="node2" href="$classInterpolation_1_1Griddata.html#af5daf30619549ba12723af89b2d900e5" title="Sets the raster multiplier that is applied when interpolation is complete. Useful to define a unit co..." alt="" coords="5,5,136,32"/>
-</map>

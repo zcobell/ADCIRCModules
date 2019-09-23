@@ -1,0 +1,6 @@
+<map id="frequency" name="frequency">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Harmonics_1_1HarmonicsRecord.html#a336f3985dc2b20a76458d0450d5df661" title="Returns the frequency for this harmonic constituent. " alt="" coords="293,5,485,47"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1HarmonicsRecordPrivate.html#a1b73bb28268c6cd46ae66317fdb9f907" title="setFrequency" alt="" coords="132,71,233,98"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1HarmonicsOutputPrivate.html#aab00b52f4876ee13f021287e44b548b4" title="Adcirc::Private::Harmonics\lOutputPrivate::write" alt="" coords="544,39,723,80"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Harmonics_1_1HarmonicsRecord.html#a1b73bb28268c6cd46ae66317fdb9f907" title="Sets the frequency for this harmonic constituent. " alt="" coords="281,71,496,112"/>
+</map>

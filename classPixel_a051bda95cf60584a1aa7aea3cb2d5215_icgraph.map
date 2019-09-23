@@ -1,5 +1,0 @@
-<map id="setInvalid" name="setInvalid">
-<area shape="rect" id="node1" title="Sets a pixel to an invalid value for detection later." alt="" coords="249,35,328,61"/>
-<area shape="rect" id="node2" href="$classPixel.html#a3d22dc2630f1c1c69ec973cd4648b5d5" title="Default constructor." alt="" coords="78,5,129,32"/>
-<area shape="rect" id="node3" href="$classRasterdata.html#ab8f51c470b8f9503defa8dcdbe3e1df7" title="Returns a search box of a given size around a given std::pair&lt;double,double&gt;" alt="" coords="5,57,201,98"/>
-</map>

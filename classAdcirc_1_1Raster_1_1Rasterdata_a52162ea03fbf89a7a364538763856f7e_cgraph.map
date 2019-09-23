@@ -1,0 +1,5 @@
+<map id="Rasterdata" name="Rasterdata">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#a94c732bb0f167eab349228237a8fbe3c" title="Filename of raster being used in this object. " alt="" coords="152,5,223,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#a60d084931c73acb12750932c7e2cfb38" title="~Rasterdata" alt="" coords="140,56,235,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#a46143fd6de3be9ab9951f140d3ae8c2f" title="Closes the GDAL raster object. " alt="" coords="161,107,214,133"/>
+</map>

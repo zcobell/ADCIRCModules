@@ -1,7 +1,6 @@
 <map id="OutputMetadata" name="OutputMetadata">
-<area shape="rect" id="node1" title=" " alt="" coords="5,81,120,108"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#abf24ba5939b1cc968e1c7ab804fb7dea" title=" " alt="" coords="181,5,261,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a5c61312d4aabe8f81d42d1657ad58511" title=" " alt="" coords="168,56,275,83"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a6a58e3194485b839e0fbdb3a249b7bba" title=" " alt="" coords="196,107,247,133"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#ad8e84b459aeffa40b7083c3a5c3fc897" title=" " alt="" coords="179,157,264,184"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#abf24ba5939b1cc968e1c7ab804fb7dea" title="Returns long name at specified position. " alt="" coords="181,5,262,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a5c61312d4aabe8f81d42d1657ad58511" title="Returns standard name at specified position. " alt="" coords="168,56,275,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a6a58e3194485b839e0fbdb3a249b7bba" title="Returns units at specified position. " alt="" coords="196,107,247,133"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#ad8e84b459aeffa40b7083c3a5c3fc897" title="Returns convention at specified position. " alt="" coords="179,157,264,184"/>
 </map>

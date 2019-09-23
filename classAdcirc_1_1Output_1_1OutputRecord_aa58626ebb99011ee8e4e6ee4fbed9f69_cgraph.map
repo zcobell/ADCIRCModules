@@ -1,5 +1,4 @@
 <map id="magnitudes" name="magnitudes">
-<area shape="rect" id="node1" title=" " alt="" coords="5,46,95,73"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a434d8fdd91756a54ea935ba21de4f4f6" title=" " alt="" coords="143,5,349,47"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a75aa79248b769329ed6b7d62280aa08c" title=" " alt="" coords="143,71,349,112"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a434d8fdd91756a54ea935ba21de4f4f6" title="Returns true if this represents a vector object. " alt="" coords="143,5,349,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a75aa79248b769329ed6b7d62280aa08c" title="Returns the dimension of the object. " alt="" coords="143,71,349,112"/>
 </map>

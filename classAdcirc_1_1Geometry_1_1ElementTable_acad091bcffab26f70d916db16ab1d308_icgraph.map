@@ -1,0 +1,7 @@
+<map id="mesh" name="mesh">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#a6ba6267a9915ca018eb7b850c669b45d" title="Sets the mesh used in the element table. " alt="" coords="159,45,231,71"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#ac0775565a8826077707a94a3611bbf3f" title="numElementsAroundNode" alt="" coords="108,95,283,122"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#a477aeec054b51540ab70382872bd56ee" title="elementTable" alt="" coords="145,146,245,173"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#aeb87845ce7689f495e96a156caa41631" title="Computes average size of the element edges connected to each node. " alt="" coords="331,5,520,47"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a612375ca3799e85137b9d315491f1484" title="Builds a list of elements connected to each node. " alt="" coords="331,71,520,112"/>
+</map>

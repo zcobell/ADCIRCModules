@@ -1,0 +1,27 @@
+<map id="read" name="read">
+<area shape="rect" id="node2" href="$namespaceAdcirc_1_1FileIO_1_1Generic.html#afdd89841220a8b18e39e0844a833a18b" title="Checks if a file exists. " alt="" coords="124,5,279,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh. " alt="" coords="373,198,459,225"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#afdfd28c4c1db0086eee0969cdc0409db" title="Returns the number of elements in the mesh. " alt="" coords="150,122,253,149"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#afdeef43f911a631b40c7bd6de3c8ce6f" title="Returns a vector of the x&#45;coordinates. " alt="" coords="182,173,221,199"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ac226a4441605d69e0cc5564e7f0805ad" title="Returns a vector of the y&#45;coordinates. " alt="" coords="182,223,221,250"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ab93aa60ac4b272c586a0681478416aee" title="Returns a vector of the z&#45;coordinates. " alt="" coords="182,274,221,301"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a94c732bb0f167eab349228237a8fbe3c" title="Filename of the mesh to be read. " alt="" coords="166,325,237,351"/>
+<area shape="rect" id="node9" href="$namespaceAdcirc_1_1FileIO_1_1Generic.html#a467cf6f34400b5d07c81e65512e50f8d" title="Splits a string using spaces. Consecutive spaces are treated as one delimiter. " alt="" coords="124,376,279,417"/>
+<area shape="rect" id="node10" href="$namespaceAdcirc_1_1FileIO_1_1SMSIO.html#a787bbdf9f55a70814131f846634ec9e3" title="Splits the data in an SMS format 2dm node string. " alt="" coords="109,441,294,483"/>
+<area shape="rect" id="node11" href="$namespaceAdcirc_1_1FileIO_1_1SMSIO.html#a8ace0b370f1b11dce4fce4519e0b7115" title="Splits the data in an SMS format 2dm element string. " alt="" coords="100,507,303,548"/>
+<area shape="rect" id="node12" href="$namespaceAdcirc_1_1FileIO_1_1Generic.html#a9424817ba777cc65968d811652a948ef" title="Returns the file extension by reverse searching for &#39;.&#39;. " alt="" coords="124,572,279,613"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a7f038b98c946461f583f61e0d4921a5d" title="Sets the header for the mesh. " alt="" coords="127,638,275,665"/>
+<area shape="rect" id="node15" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#af2fafa20dc6c1d5547a1ed36352e534a" title="Sets the number of elements in the mesh. " alt="" coords="140,689,263,715"/>
+<area shape="rect" id="node16" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ac8def9085449a17f9a36e41a4e501b88" title="Sets the number of nodes in the mesh. " alt="" coords="148,739,255,766"/>
+<area shape="rect" id="node17" href="$namespaceAdcirc_1_1FileIO_1_1AdcircIO.html#a37b962e9e3987212803d8ca699f3f930" title="Splits a string from an ADCIRC mesh file into the data required to generate an adcirc node object..." alt="" coords="121,791,282,832"/>
+<area shape="rect" id="node18" href="$namespaceAdcirc_1_1FileIO_1_1AdcircIO.html#af8db258501bfd7fc48a54922832a59ae" title="Splits a string from an ADCIRC mesh file to the data for an element. " alt="" coords="121,856,282,897"/>
+<area shape="rect" id="node19" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a8a3aca77e7318e0594bda6395881f529" title="Sets the number of open boundaries in the model. " alt="" coords="119,922,283,949"/>
+<area shape="rect" id="node20" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#af443f5205734c64e021aa1b96d254991" title="Returns the number of open boundaries in the model. " alt="" coords="130,973,273,999"/>
+<area shape="rect" id="node21" href="$namespaceAdcirc_1_1FileIO_1_1AdcircIO.html#a89a3a31d430f3fb83487c84a7bb5d243" title="Splits a string for a single node boundary. " alt="" coords="106,1024,297,1065"/>
+<area shape="rect" id="node22" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a5d57ff3a0140fbe3022b7be8cce7f540" title="Sets the number of land boundaries in the model. " alt="" coords="121,1090,282,1117"/>
+<area shape="rect" id="node23" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ad5e2ed78e83daf7899f55c684005336f" title="Returns the number of land boundaries in the model. " alt="" coords="131,1141,271,1167"/>
+<area shape="rect" id="node24" href="$namespaceAdcirc_1_1FileIO_1_1AdcircIO.html#ae0cfdcac9806b3cb0d11f5d1fffe0ab0" title="Splits a string for an external weir boundary. " alt="" coords="102,1192,301,1233"/>
+<area shape="rect" id="node25" href="$namespaceAdcirc_1_1FileIO_1_1AdcircIO.html#a2753421676dd2e92bd7ae5bc7a8bf9a9" title="Splits a string for an internal weir boundary. " alt="" coords="102,1257,301,1299"/>
+<area shape="rect" id="node26" href="$namespaceAdcirc_1_1FileIO_1_1AdcircIO.html#aeea62395febeefe1a4ce93532478b432" title="Splits a string for an internal weir with pipes. " alt="" coords="102,1323,301,1364"/>
+<area shape="rect" id="node14" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#adc2bf9b67aabc0b183e50a5bb34bea32" title="Returns the mesh header from the processed mesh. " alt="" coords="351,638,481,665"/>
+</map>

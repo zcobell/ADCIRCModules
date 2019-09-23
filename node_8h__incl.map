@@ -1,7 +1,3 @@
 <map id="node.h" name="node.h">
-<area shape="rect" id="node1" title=" " alt="" coords="146,5,207,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,80,60,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="85,80,138,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="163,80,321,107"/>
-<area shape="rect" id="node5" href="$hashtype_8h.html" title=" " alt="" coords="345,80,432,107"/>
+<area shape="rect" id="node6" href="$hashtype_8h.html" title="hashtype.h" alt="" coords="439,80,526,107"/>
 </map>

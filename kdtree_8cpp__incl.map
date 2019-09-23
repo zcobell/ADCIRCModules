@@ -1,11 +1,4 @@
 <map id="kdtree.cpp" name="kdtree.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="315,5,398,32"/>
-<area shape="rect" id="node2" href="$kdtree_8h.html" title=" " alt="" coords="267,80,337,107"/>
-<area shape="rect" id="node7" href="$kdtree__impl_8h.html" title=" " alt="" coords="361,80,461,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,155,71,181"/>
-<area shape="rect" id="node4" title=" " alt="" coords="278,155,347,181"/>
-<area shape="rect" id="node5" title=" " alt="" coords="371,155,430,181"/>
-<area shape="rect" id="node6" title=" " alt="" coords="95,155,253,181"/>
-<area shape="rect" id="node8" title=" " alt="" coords="455,155,515,181"/>
-<area shape="rect" id="node9" title=" " alt="" coords="539,155,641,181"/>
+<area shape="rect" id="node2" href="$kdtree_8h.html" title="kdtree.h" alt="" coords="263,80,333,107"/>
+<area shape="rect" id="node7" href="$kdtree__private_8h.html" title="kdtree_private.h" alt="" coords="357,80,471,107"/>
 </map>

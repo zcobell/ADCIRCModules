@@ -1,5 +1,7 @@
 <map id="longName" name="longName">
-<area shape="rect" id="node1" title=" " alt="" coords="168,31,248,57"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a13259d43050ae61860083de94bf2cc4c" title=" " alt="" coords="5,5,120,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a93b028e75a4422e69e2702eff435a1ee" title=" " alt="" coords="11,56,114,83"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a13259d43050ae61860083de94bf2cc4c" title="Constructor for a 1d dataset. " alt="" coords="135,5,249,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a93b028e75a4422e69e2702eff435a1ee" title="Sets the long name for the variable at the specified index. " alt="" coords="141,56,243,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a4e4a032a952cf299fb95d22b8a3a4c87" title="defaultConvention" alt="" coords="297,100,424,127"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a1a79940e14d93b265d1c0ad6da79c4b6" title="Adcirc::Output::WriteOutput\l::write" alt="" coords="477,150,661,191"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a13262430da826bd8b0392773aa0511e0" title="Adcirc::Output::OutputRecord\l::OutputRecord" alt="" coords="472,85,667,126"/>
 </map>

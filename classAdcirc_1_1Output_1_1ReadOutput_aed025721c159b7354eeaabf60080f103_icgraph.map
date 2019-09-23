@@ -1,7 +1,8 @@
 <map id="filetype" name="filetype">
-<area shape="rect" id="node1" title=" " alt="" coords="239,81,303,108"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1ReadOutput.html#ae6b1f09075f62716afd1b68660c93a6c" title=" " alt="" coords="104,5,191,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a9e8555112049fc2b4945120b3c45f8ab" title=" " alt="" coords="5,31,56,57"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a5ae591df94fc66ccb85cbb6565368bca" title=" " alt="" coords="121,107,174,133"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a03178f1cd03b9e467b77562f0b89699a" title=" " alt="" coords="124,157,171,184"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1ReadOutput.html#ae6b1f09075f62716afd1b68660c93a6c" title="setFiletype" alt="" coords="117,5,204,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a9e8555112049fc2b4945120b3c45f8ab" title="open" alt="" coords="252,31,303,57"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a5ae591df94fc66ccb85cbb6565368bca" title="close" alt="" coords="134,107,187,133"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a03178f1cd03b9e467b77562f0b89699a" title="read" alt="" coords="137,157,184,184"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a82bc9df43381b4dac90bab886a46104f" title="setCurrentSnap" alt="" coords="351,31,464,57"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a0fb6a8a6a59488c7c267eeae2afc3ed6" title="dataAt" alt="" coords="512,31,572,57"/>
 </map>

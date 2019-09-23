@@ -1,0 +1,5 @@
+<map id="nx" name="nx">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#a97cdb7fedb573d9d57b3ee2d137952ba" title="Returns the pixel value for the i,j index. " alt="" coords="128,5,211,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#a8d89771bfebb681e1094bb8dc6e54ac2" title="Returns a search box of a given size around a given std::pair&lt;double,double&gt; " alt="" coords="92,56,247,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Raster_1_1Rasterdata.html#ab752013ad1db4d55468d359c039b15ab" title="Reads the pixel values for the given search box. " alt="" coords="125,107,214,133"/>
+</map>

@@ -1,5 +1,23 @@
 <map id="OutputRecord" name="OutputRecord">
-<area shape="rect" id="node1" title=" " alt="" coords="5,35,108,61"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputRecord.html#ae8487e719ad1109f6db746e96a37c498" title=" " alt="" coords="217,5,301,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a4e4a032a952cf299fb95d22b8a3a4c87" title=" " alt="" coords="156,57,363,98"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a4e4a032a952cf299fb95d22b8a3a4c87" title="Adcirc::Output::OutputMetadata\l::defaultConvention" alt="" coords="156,561,363,602"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a75aa79248b769329ed6b7d62280aa08c" title="Returns the dimension of the object. " alt="" coords="665,821,872,862"/>
+<area shape="rect" id="node22" href="$classAdcirc_1_1Output_1_1OutputRecord.html#ae8487e719ad1109f6db746e96a37c498" title="numNodes" alt="" coords="217,1127,302,1154"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#af8ca8016708e826c46f9a7020f36bc33" title="Default constructor. " alt="" coords="411,60,617,101"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a17e392a563481b051011787e765ffe77" title="Sets the dimension size for the object. " alt="" coords="665,30,872,72"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#abf24ba5939b1cc968e1c7ab804fb7dea" title="Returns long name at specified position. " alt="" coords="665,148,872,189"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a5c61312d4aabe8f81d42d1657ad58511" title="Returns standard name at specified position. " alt="" coords="665,265,872,306"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a6a58e3194485b839e0fbdb3a249b7bba" title="Returns units at specified position. " alt="" coords="665,382,872,424"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#ad8e84b459aeffa40b7083c3a5c3fc897" title="Returns convention at specified position. " alt="" coords="665,630,872,672"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a434d8fdd91756a54ea935ba21de4f4f6" title="Returns true if this represents a vector object. " alt="" coords="665,1065,872,1106"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a53687396790fdc85b1acd2e12ba507ba" title="Checks for equality between OutputMetadata objects. " alt="" coords="411,762,617,804"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#afa13abbede0c3516e93986beac35aefb" title="Returns the variable at the specified index. " alt="" coords="665,718,872,760"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#acb66908bcb6f5b9b5f34e9fef7b88006" title="Sets the variable name at the specified index. " alt="" coords="411,880,617,921"/>
+<area shape="rect" id="node14" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a93b028e75a4422e69e2702eff435a1ee" title="Sets the long name for the variable at the specified index. " alt="" coords="411,177,617,218"/>
+<area shape="rect" id="node15" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#afab5b5636cf363b1cf1d8b98a9a140fb" title="Sets the standard name for the variable at the specified index. " alt="" coords="411,294,617,336"/>
+<area shape="rect" id="node16" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a089dfcb596d1346f77f63d0e6b362b6b" title="Sets the units for the variable at the specified index. " alt="" coords="411,412,617,453"/>
+<area shape="rect" id="node17" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a99dcf799dd4b349e4eab1f8f64c3c46e" title="Sets the convention for the variable at the specified index. " alt="" coords="411,645,617,686"/>
+<area shape="rect" id="node18" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#abbf8d9ec3ab94b1fad1e026c10f9baaf" title="Returns true if the specified variable is found in this object. " alt="" coords="411,945,617,986"/>
+<area shape="rect" id="node19" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a989b823eb23ed6799ec17b7ac8ca060b" title="Checks if the object represents a maximum. " alt="" coords="665,506,872,548"/>
+<area shape="rect" id="node20" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#ad791e2fd5181bd50594355a133b568db" title="Sets the object to represent a vector (if true) " alt="" coords="411,1010,617,1052"/>
+<area shape="rect" id="node21" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a883ee2fafc84aeae8d936bb71a5a1125" title="Sets the object to represent a maximum (if true) " alt="" coords="411,477,617,518"/>
 </map>

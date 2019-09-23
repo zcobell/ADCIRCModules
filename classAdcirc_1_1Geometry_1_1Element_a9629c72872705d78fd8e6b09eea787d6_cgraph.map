@@ -1,5 +1,0 @@
-<map id="elementLeg" name="elementLeg">
-<area shape="rect" id="node1" title="Returns a pair of nodes representing the leg of an element." alt="" coords="5,5,95,32"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#ac88f0961aa7ed7c7415550ab2cad49c8" title="Number of verticies in this element." alt="" coords="241,5,280,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Element.html#a90cd93c7a0128962a366f0b32ffc459a" title="returns a pointer to the node at the specified position" alt="" coords="143,31,193,57"/>
-</map>

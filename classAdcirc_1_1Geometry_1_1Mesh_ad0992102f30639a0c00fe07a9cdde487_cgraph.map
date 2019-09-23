@@ -1,4 +1,0 @@
-<map id="setNumElements" name="setNumElements">
-<area shape="rect" id="node1" title="Sets the number of elements in the mesh. Note: This does not resize the mesh." alt="" coords="5,5,128,32"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#afdfd28c4c1db0086eee0969cdc0409db" title="Returns the number of elements in the mesh." alt="" coords="176,5,279,32"/>
-</map>

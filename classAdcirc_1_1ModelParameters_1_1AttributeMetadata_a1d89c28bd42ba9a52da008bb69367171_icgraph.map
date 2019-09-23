@@ -1,4 +1,4 @@
 <map id="name" name="name">
-<area shape="rect" id="node1" title="Returns the name of the nodal attribute." alt="" coords="128,5,183,32"/>
-<area shape="rect" id="node2" href="$classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#a9d3a2685df23b5e7cbf59c19c4a1f9b5" title="Sets the name of the nodal attribute." alt="" coords="5,5,80,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#a9d3a2685df23b5e7cbf59c19c4a1f9b5" title="Sets the name of the nodal attribute. " alt="" coords="174,5,249,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1NodalAttributesPrivate.html#a24569bef7ce8b610dfb4a4ba8c375495" title="Adcirc::Private::NodalAttributes\lPrivate::addAttribute" alt="" coords="108,57,315,98"/>
 </map>

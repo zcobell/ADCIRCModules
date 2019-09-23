@@ -1,9 +1,4 @@
 <map id="boundary.h" name="boundary.h">
-<area shape="rect" id="node1" title=" " alt="" coords="119,5,205,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,155,60,181"/>
-<area shape="rect" id="node3" title=" " alt="" coords="251,80,310,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="84,155,243,181"/>
-<area shape="rect" id="node5" href="$node_8h.html" title=" " alt="" coords="166,80,227,107"/>
-<area shape="rect" id="node6" title=" " alt="" coords="267,155,321,181"/>
-<area shape="rect" id="node7" href="$hashtype_8h.html" title=" " alt="" coords="345,155,432,181"/>
+<area shape="rect" id="node5" href="$node_8h.html" title="node.h" alt="" coords="201,80,262,107"/>
+<area shape="rect" id="node8" href="$hashtype_8h.html" title="hashtype.h" alt="" coords="439,155,525,181"/>
 </map>

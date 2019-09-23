@@ -1,7 +1,0 @@
-<map id="i" name="i">
-<area shape="rect" id="node1" title="Returns the i&#45;index." alt="" coords="249,81,288,108"/>
-<area shape="rect" id="node2" href="$classPixel.html#afd42a4495dbeb316b2174b6da9f53d5b" title="Sets the pixel indicies." alt="" coords="83,5,123,32"/>
-<area shape="rect" id="node3" href="$classRasterdata.html#aa82c1b4e2cd9fcd75f8375facefec365" title="Calculates the coordinate of the pixel center." alt="" coords="5,56,201,83"/>
-<area shape="rect" id="node4" href="$classRasterdata.html#aab8ae3f35154645c53085f424b775524" title="Returns the pixel value for the i,j index." alt="" coords="27,107,179,133"/>
-<area shape="rect" id="node5" href="$classRasterdata.html#ab8f51c470b8f9503defa8dcdbe3e1df7" title="Returns a search box of a given size around a given std::pair&lt;double,double&gt;" alt="" coords="5,158,201,199"/>
-</map>
