@@ -38,7 +38,7 @@ constexpr std::array<int, 15> c_bctypes_singleNodeBoundaries = {
  *
  * Initializes the boundary with code -1 and length 0.
  */
-Boundary::Boundary() {
+Boundary::Boundary() : m_boundaryLength(0), m_boundaryCode(-1) {
   this->m_hash.reset(nullptr);
   this->setBoundary(-1, 0);
   this->m_averageLongitude = std::numeric_limits<double>::max();
@@ -49,7 +49,8 @@ Boundary::Boundary() {
  * @param[in] boundaryCode ADCIRC model boundary code
  * @param[in] boundaryLength number of nodes along this boundary
  */
-Boundary::Boundary(int boundaryCode, size_t boundaryLength) {
+Boundary::Boundary(int boundaryCode, size_t boundaryLength)
+    : m_boundaryLength(0), m_boundaryCode(-1) {
   this->setBoundaryCode(boundaryCode);
   this->setBoundaryLength(boundaryLength);
   this->m_hash.reset(nullptr);

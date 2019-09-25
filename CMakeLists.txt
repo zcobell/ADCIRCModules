@@ -416,6 +416,7 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/readoutput.h
                 ${CMAKE_SOURCE_DIR}/src/writeoutput.h
                 ${CMAKE_SOURCE_DIR}/src/outputrecord.h
+                ${CMAKE_SOURCE_DIR}/src/outputmetadata.h
                 ${CMAKE_SOURCE_DIR}/src/meshchecker.h
                 ${CMAKE_SOURCE_DIR}/src/elementtable.h
                 ${CMAKE_SOURCE_DIR}/src/rasterdata.h 
