@@ -30,8 +30,8 @@ namespace Geometry {
 /**
  * @class Boundary
  * @author Zachary Cobell
- * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
- * is released under the terms of the GNU General Public License v3
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
  * @brief The boundary class handles ADCIRC mesh boundaries
  *
  * The Boundary class handles the interpretation of boundary
@@ -95,6 +95,7 @@ class Boundary {
 
   std::vector<std::string> ADCIRCMODULES_EXPORT toStringList();
 
+  bool ADCIRCMODULES_EXPORT isOpenBoundary() const;
   bool ADCIRCMODULES_EXPORT isWeir() const;
   bool ADCIRCMODULES_EXPORT isInternalWeir() const;
   bool ADCIRCMODULES_EXPORT isInternalWeirWithoutPipes() const;

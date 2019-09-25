@@ -32,6 +32,7 @@ constexpr std::array<int, 2> c_bctypes_internalWeirWithoutPipes = {4, 24};
 constexpr std::array<int, 2> c_bctypes_internalWeirWithPipes = {5, 25};
 constexpr std::array<int, 15> c_bctypes_singleNodeBoundaries = {
     0, 1, 2, 10, 11, 12, 20, 21, 22, 30, 52, 30, 102, 112, 122};
+constexpr std::array<int, 1> c_bctypes_openBoundaries = {-1};
 
 /**
  * @brief Default constructor
@@ -71,7 +72,7 @@ Boundary::~Boundary() {}
 void Boundary::boundaryCopier(Boundary *const a, const Boundary *const b) {
   a->m_boundaryCode = b->boundaryCode();
   a->m_boundaryLength = b->boundaryLength();
-  if (b->isSingleNodeBoundary()) {
+  if (b->isOpenBoundary() || b->isSingleNodeBoundary()) {
     a->m_node1.resize(a->m_boundaryLength);
     for (size_t i = 0; i < a->boundaryLength(); ++i) {
       a->m_node1[i] = b->node1(i);
@@ -135,6 +136,16 @@ Boundary::Boundary(const Boundary &b) { Boundary::boundaryCopier(this, &b); }
 Boundary &Boundary::operator=(const Boundary &b) {
   Boundary::boundaryCopier(this, &b);
   return *this;
+}
+
+/**
+ * @brief Returns true if this is an open boundary
+ * @return true if open boundary
+ */
+bool Boundary::isOpenBoundary() const {
+  return std::find(c_bctypes_openBoundaries.begin(),
+                   c_bctypes_openBoundaries.end(),
+                   this->m_boundaryCode) != c_bctypes_openBoundaries.end();
 }
 
 /**
@@ -545,7 +556,7 @@ std::vector<std::string> Boundary::toStringList() {
   std::vector<std::string> outputList;
   outputList.reserve(this->size());
 
-  if (this->boundaryCode() == -1) {
+  if (this->isOpenBoundary()) {
     outputList.push_back(boost::str(boost::format("%11i") % this->length()));
   } else {
     outputList.push_back(boost::str(boost::format("%11i %11i") %
@@ -553,7 +564,7 @@ std::vector<std::string> Boundary::toStringList() {
   }
 
   for (size_t i = 0; i < this->length(); ++i) {
-    if (this->boundaryCode() == -1 || this->isSingleNodeBoundary()) {
+    if (this->isOpenBoundary() || this->isSingleNodeBoundary()) {
       outputList.push_back(
           boost::str(boost::format("%11i") % this->node1(i)->id()));
     } else if (this->isExternalWeir()) {
