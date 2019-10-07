@@ -58,7 +58,7 @@ Node::~Node() {}
  * @param[inout] a target for Node copy
  * @param[in] b Node to be copied
  */
-void Node::nodeCopier(Node *const a, const Node *b) {
+void Node::nodeCopier(Node *a, const Node *b) {
   a->m_id = b->id();
   a->m_x = b->x();
   a->m_y = b->y();

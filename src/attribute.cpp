@@ -29,7 +29,7 @@ using namespace Adcirc::ModelParameters;
  * @brief Default Constructor
  */
 Attribute::Attribute()
-    : m_node(nullptr), m_id(adcircmodules_default_value<size_t>()) {
+    : m_id(adcircmodules_default_value<size_t>()), m_node(nullptr) {
   this->resize(1);
 }
 
@@ -38,7 +38,7 @@ Attribute::Attribute()
  * @param[in] size Number of nodal attributes to size this object for
  */
 Attribute::Attribute(size_t size)
-    : m_node(nullptr), m_id(adcircmodules_default_value<size_t>()) {
+    : m_id(adcircmodules_default_value<size_t>()), m_node(nullptr) {
   this->resize(size);
 }
 

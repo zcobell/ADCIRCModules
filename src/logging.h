@@ -32,7 +32,6 @@ namespace Adcirc {
  * @brief The Logging class is used to throw errors and log messages to standard
  * output
  */
-
 class Logging {
  public:
   Logging() = default;

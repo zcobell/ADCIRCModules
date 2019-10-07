@@ -39,7 +39,7 @@ constexpr std::array<int, 1> c_bctypes_openBoundaries = {-1};
  *
  * Initializes the boundary with code -1 and length 0.
  */
-Boundary::Boundary() : m_boundaryLength(0), m_boundaryCode(-1) {
+Boundary::Boundary() : m_boundaryCode(-1), m_boundaryLength(0) {
   this->m_hash.reset(nullptr);
   this->setBoundary(-1, 0);
   this->m_averageLongitude = std::numeric_limits<double>::max();
@@ -51,7 +51,7 @@ Boundary::Boundary() : m_boundaryLength(0), m_boundaryCode(-1) {
  * @param[in] boundaryLength number of nodes along this boundary
  */
 Boundary::Boundary(int boundaryCode, size_t boundaryLength)
-    : m_boundaryLength(0), m_boundaryCode(-1) {
+    : m_boundaryCode(-1), m_boundaryLength(0) {
   this->setBoundaryCode(boundaryCode);
   this->setBoundaryLength(boundaryLength);
   this->m_hash.reset(nullptr);
@@ -69,7 +69,7 @@ Boundary::~Boundary() {}
  * @param[inout] a resultant boundary
  * @param[in] b boundary that is copied
  */
-void Boundary::boundaryCopier(Boundary *const a, const Boundary *const b) {
+void Boundary::boundaryCopier(Boundary *a, const Boundary *b) {
   a->m_boundaryCode = b->boundaryCode();
   a->m_boundaryLength = b->boundaryLength();
   if (b->isOpenBoundary() || b->isSingleNodeBoundary()) {

@@ -124,7 +124,7 @@ class Boundary {
   std::vector<Adcirc::Geometry::Node *> m_node2;
   std::unique_ptr<char> m_hash;
 
-  static void boundaryCopier(Boundary *const a, const Boundary *const b);
+  static void boundaryCopier(Boundary *a, const Boundary *b);
 
   void generateHash(Adcirc::Cryptography::HashType h =
                         Adcirc::Cryptography::AdcircDefaultHash);

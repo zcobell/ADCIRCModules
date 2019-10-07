@@ -39,7 +39,6 @@ namespace Geometry {
  * node
  *
  */
-
 class Node {
  public:
   ADCIRCMODULES_EXPORT Node();
@@ -87,7 +86,7 @@ class Node {
   std::unique_ptr<char> m_hash;          /// hash identifier for the node
   std::unique_ptr<char> m_positionHash;  /// has of only node's position
 
-  static void nodeCopier(Node *const a, const Node *b);
+  static void nodeCopier(Node *a, const Node *b);
 
   void generateHash(Adcirc::Cryptography::HashType h =
                         Adcirc::Cryptography::AdcircDefaultHash);

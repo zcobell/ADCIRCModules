@@ -26,7 +26,6 @@ namespace ModelParameters {
  * Attributes (i.e. fort.13) files
  *
  */
-
 class NodalAttributes {
  public:
   ADCIRCMODULES_EXPORT NodalAttributes();

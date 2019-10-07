@@ -23,7 +23,6 @@ namespace Harmonics {
  * constituent in a harmonics output file
  *
  */
-
 class HarmonicsRecord {
  public:
   ADCIRCMODULES_EXPORT HarmonicsRecord();

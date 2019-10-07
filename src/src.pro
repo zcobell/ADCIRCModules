@@ -109,6 +109,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 SOURCES += \
+    fpcompare.cpp \
     griddata_private.cpp \
     harmonicsoutput_private.cpp \
     harmonicsrecord_private.cpp \
@@ -148,6 +149,7 @@ HEADERS += \
     adcirc_outputfiles.h \
     adcircmodules_global.h \
     adcmap.h \
+    fpcompare.h \
     griddata_private.h \
     harmonicsoutput_private.h \
     harmonicsrecord_private.h \

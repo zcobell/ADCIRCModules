@@ -80,7 +80,7 @@ Element::~Element() {}
  * @param[inout] a element pointer to copy into
  * @param[in] b element to copy
  */
-void Element::elementCopier(Element *const a, const Element *const b) {
+void Element::elementCopier(Element *a, const Element *b) {
   a->m_id = b->id();
   a->m_nodes.resize(b->n());
   for (size_t i = 0; i < b->n(); ++i) {
