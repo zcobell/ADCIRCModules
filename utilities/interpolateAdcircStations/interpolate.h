@@ -19,6 +19,9 @@ class Interpolate {
   void run();
 
  private:
+  Adcirc::Geometry::Mesh readMesh(const Adcirc::Output::OutputFormat &filetype);
+
+ private:
   InputOptions m_inputOptions;
 };
 

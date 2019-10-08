@@ -28,6 +28,13 @@ Mesh::Mesh() : m_impl(new Adcirc::Private::MeshPrivate) {}
 Mesh::Mesh(const std::string &filename)
     : m_impl(new Adcirc::Private::MeshPrivate(filename)) {}
 
+Mesh &Mesh::operator=(const Mesh &m) {
+  this->m_impl.reset(m.m_impl->clone());
+  return *this;
+}
+
+Mesh::Mesh(const Mesh &m) { this->m_impl.reset(m.m_impl->clone()); }
+
 /**
  * @brief Returns a vector of the x-coordinates
  * @return vector of x coordinates

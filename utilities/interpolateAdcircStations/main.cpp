@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
 
   Interpolate::InputOptions input;
 
-      // clang-format off
+  // clang-format off
   desc.add_options() ("help", "show this message")
                      ("mesh", po::value<std::string>(&input.mesh), "specify the ADCIRC geometry used in the global file")
                      ("global", po::value<std::string>(&input.globalfile),"specify the global ADCIRC output")
@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
   if (argc == 1) {
     std::cout << "Error: No options specified." << std::endl;
     std::cout << desc << std::endl;
+    return 1;
   }
 
   if (vm.count("help")) {

@@ -51,7 +51,8 @@ ReadOutput::ReadOutput(const std::string& filename)
       m_description("n/a"),
       m_name("n/a"),
       m_varid_time(0),
-      m_metadata(OutputMetadata()) {}
+      m_metadata(OutputMetadata()),
+      m_verbose(0) {}
 
 ReadOutput::~ReadOutput() { this->clear(); }
 
@@ -69,8 +70,7 @@ void ReadOutput::setFilename(const std::string& filename) {
 bool ReadOutput::isOpen() { return this->m_open; }
 
 bool ReadOutput::exists() {
-  std::ifstream f(this->m_filename.c_str());
-  return f.good();
+  return Adcirc::FileIO::Generic::fileExists(this->m_filename);
 }
 
 size_t ReadOutput::numSnaps() const { return this->m_numSnaps; }
@@ -108,6 +108,12 @@ void ReadOutput::setCurrentSnap(const size_t& currentSnap) {
 }
 
 void ReadOutput::setOpen(bool open) { this->m_open = open; }
+
+size_t ReadOutput::verbose() const { return this->m_verbose; }
+
+void ReadOutput::setVerbose(const size_t& verbose) {
+  this->m_verbose = verbose;
+}
 
 double ReadOutput::modelDt() const { return this->m_modelDt; }
 
@@ -207,9 +213,10 @@ void ReadOutput::read(size_t snap) {
   if (this->filetype() == Adcirc::Output::OutputAsciiFull ||
       this->filetype() == Adcirc::Output::OutputAsciiSparse) {
     if (snap != Adcirc::Output::nextOutputSnap()) {
-      Logging::warning(
-          "ASCII Output must be read record by "
-          "record. Specified snap number ignored.");
+      if (this->m_verbose > 0)
+        Logging::warning(
+            "ASCII Output must be read record by "
+            "record. Specified snap number ignored.");
     }
     if (this->currentSnap() > this->numSnaps()) {
       adcircmodules_throw_exception(

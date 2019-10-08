@@ -61,6 +61,37 @@ MeshPrivate::MeshPrivate(const std::string &filename)
   this->_init();
 }
 
+MeshPrivate &MeshPrivate::operator=(const MeshPrivate &m) {
+  MeshPrivate::meshCopier(this, &m);
+  return *this;
+}
+
+MeshPrivate *MeshPrivate::clone() { return new MeshPrivate(*this); }
+
+MeshPrivate::MeshPrivate(const MeshPrivate &m) {
+  MeshPrivate::meshCopier(this, &m);
+}
+
+void MeshPrivate::meshCopier(MeshPrivate *a, const MeshPrivate *b) {
+  a->setMeshHeaderString(b->meshHeaderString());
+  a->resizeMesh(b->numNodes(), b->numElements(), b->numOpenBoundaries(),
+                b->numLandBoundaries());
+  a->setHashType(b->hashType());
+  for (size_t i = 0; i < b->numNodes(); ++i) {
+    a->addNode(i, b->nodeC(i));
+  }
+  for (size_t i = 0; i < b->numElements(); ++i) {
+    a->addElement(i, b->elementC(i));
+  }
+  for (size_t i = 0; i < b->numOpenBoundaries(); ++i) {
+    a->addOpenBoundary(i, b->openBoundaryC(i));
+  }
+  for (size_t i = 0; i < b->numLandBoundaries(); ++i) {
+    a->addLandBoundary(i, b->landBoundaryC(i));
+  }
+  return;
+}
+
 /**
  * @brief Initialization routine called by all constructors
  */
@@ -946,6 +977,21 @@ Node *MeshPrivate::node(size_t index) {
 }
 
 /**
+ * @brief Returns the requested node from the internal node vector
+ * @param index location of the node in the vector
+ * @return Node
+ */
+Node MeshPrivate::nodeC(size_t index) const {
+  if (index < this->numNodes()) {
+    return this->m_nodes[index];
+  } else {
+    adcircmodules_throw_exception("Mesh: Node index " + std::to_string(index) +
+                                  " out of bounds");
+    return Node();
+  }
+}
+
+/**
  * @brief Returns a pointer to the requested element in the internal element
  * vector
  * @param index location of the node in the vector
@@ -957,6 +1003,21 @@ Element *MeshPrivate::element(size_t index) {
   } else {
     adcircmodules_throw_exception("Mesh: Element index out of bounds");
     return nullptr;
+  }
+}
+
+/**
+ * @brief Returns the requested element in the internal element
+ * vector
+ * @param index location of the node in the vector
+ * @return Element
+ */
+Element MeshPrivate::elementC(size_t index) const {
+  if (index < this->numElements()) {
+    return this->m_elements[index];
+  } else {
+    adcircmodules_throw_exception("Mesh: Element index out of bounds");
+    return Element();
   }
 }
 
@@ -1012,6 +1073,20 @@ Boundary *MeshPrivate::openBoundary(size_t index) {
 }
 
 /**
+ * @brief Returns the open boundary by index
+ * @param index index in the open boundary array
+ * @return Boundary
+ */
+Boundary MeshPrivate::openBoundaryC(size_t index) const {
+  if (index < this->numOpenBoundaries()) {
+    return this->m_openBoundaries[index];
+  } else {
+    adcircmodules_throw_exception("Mesh: Open boundary index out of bounds");
+    return Boundary();
+  }
+}
+
+/**
  * @brief Returns a pointer to a land boundary by index
  * @param index index in the land boundary array
  * @return Boundary pointer
@@ -1022,6 +1097,20 @@ Boundary *MeshPrivate::landBoundary(size_t index) {
   } else {
     adcircmodules_throw_exception("Mesh: Land boundary index out of bounds");
     return nullptr;
+  }
+}
+
+/**
+ * @brief Returns and boundary by index
+ * @param index index in the land boundary array
+ * @return Boundary
+ */
+Boundary MeshPrivate::landBoundaryC(size_t index) const {
+  if (index < this->numLandBoundaries()) {
+    return this->m_landBoundaries[index];
+  } else {
+    adcircmodules_throw_exception("Mesh: Land boundary index out of bounds");
+    return Boundary();
   }
 }
 

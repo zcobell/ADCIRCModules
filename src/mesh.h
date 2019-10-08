@@ -84,6 +84,10 @@ class Mesh {
   ADCIRCMODULES_EXPORT Mesh(const std::string &filename);
   ADCIRCMODULES_EXPORT ~Mesh();
 
+  Mesh(const Mesh &m);
+
+  Mesh &operator=(const Mesh &m);
+
   friend class ElementTable;
 
   std::vector<double> ADCIRCMODULES_EXPORT x();

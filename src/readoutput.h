@@ -103,7 +103,11 @@ class ReadOutput {
   void clear();
   void clearAt(size_t position);
 
- private:
+
+  size_t verbose() const;
+  void setVerbose(const size_t &verbose);
+
+private:
   void setOpen(bool open);
 
   // variables
@@ -125,6 +129,7 @@ class ReadOutput {
   std::string m_name;
   std::string m_header;
   Adcirc::Output::OutputMetadata m_metadata;
+  size_t m_verbose;
 
   // netcdf specific variables
   int m_ncid;
