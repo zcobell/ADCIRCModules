@@ -137,11 +137,11 @@ ENDIF(NOT CYGWIN)
 ###########################################################################
 # Boost
 ###########################################################################
-FIND_PACKAGE( Boost 1.60.0 )
-IF( NOT Boost_FOUND OR PACKAGE_VERSION_UNSUITABLE )
-    MESSAGE( STATUS "Using included Boost Version: 1.66.0")
-    SET( Boost_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 )
-ENDIF()
+FIND_PACKAGE( Boost 1.60.0 COMPONENTS program_options REQUIRED )
+#IF( NOT Boost_FOUND OR PACKAGE_VERSION_UNSUITABLE )
+#    MESSAGE( STATUS "Using included Boost Version: 1.66.0")
+#    SET( Boost_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 )
+#ENDIF()
 ###########################################################################
 
 
@@ -339,6 +339,10 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/node.cpp
                 ${CMAKE_SOURCE_DIR}/src/element.cpp
                 ${CMAKE_SOURCE_DIR}/src/hash.cpp
+                ${CMAKE_SOURCE_DIR}/src/hmdf.cpp
+                ${CMAKE_SOURCE_DIR}/src/hmdfstation.cpp
+                ${CMAKE_SOURCE_DIR}/src/netcdftimeseries.cpp
+                ${CMAKE_SOURCE_DIR}/src/cdate.cpp
                 ${CMAKE_SOURCE_DIR}/src/hash_private.cpp
                 ${CMAKE_SOURCE_DIR}/src/boundary.cpp
                 ${CMAKE_SOURCE_DIR}/src/fileio.cpp
@@ -404,6 +408,7 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/element.h
                 ${CMAKE_SOURCE_DIR}/src/hash.h
                 ${CMAKE_SOURCE_DIR}/src/hashtype.h
+                ${CMAKE_SOURCE_DIR}/src/hmdf.h
                 ${CMAKE_SOURCE_DIR}/src/logging.h
                 ${CMAKE_SOURCE_DIR}/src/filetypes.h
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.h
@@ -714,4 +719,17 @@ IF(UNIX OR CYGWIN)
         ENDIF(PYTHON_TESTING)
     ENDIF(BUILD_TESTS)
 ENDIF(UNIX OR CYGWIN)
+###########################################################################
+
+###########################################################################
+# Utilities
+###########################################################################
+ADD_EXECUTABLE( interpolateAdcircStations ${CMAKE_SOURCE_DIR}/utilities/interpolateAdcircStations/main.cpp 
+                   ${CMAKE_SOURCE_DIR}/utilities/interpolateAdcircStations/interpolate.cpp )
+TARGET_INCLUDE_DIRECTORIES( interpolateAdcircStations PRIVATE 
+                            ${CMAKE_SOURCE_DIR}/utilities/interpolateAdcircStations 
+                            ${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src
+                            ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src ) 
+ADD_DEPENDENCIES( interpolateAdcircStations adcircmodules )
+TARGET_LINK_LIBRARIES( interpolateAdcircStations PRIVATE adcircmodules ${Boost_LIBRARIES} )
 ###########################################################################

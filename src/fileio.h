@@ -28,62 +28,81 @@ namespace Adcirc {
 namespace FileIO {
 
 namespace Generic {
-void readFileData(const std::string &filename, std::vector<std::string> &data);
+void ADCIRCMODULES_EXPORT readFileData(const std::string &filename,
+                                       std::vector<std::string> &data);
 
-void splitString(std::string &data, std::vector<std::string> &result);
+void ADCIRCMODULES_EXPORT splitString(std::string &data,
+                                      std::vector<std::string> &result);
 
-std::string getFileExtension(const std::string &filename);
+std::string ADCIRCMODULES_EXPORT getFileExtension(const std::string &filename);
 
-bool fileExists(const std::string &filename);
+bool ADCIRCMODULES_EXPORT fileExists(const std::string &filename);
+
+std::string ADCIRCMODULES_EXPORT sanitizeString(const std::string &a);
 
 }  // namespace Generic
 
 namespace AdcircIO {
-bool splitStringNodeFormat(const std::string &data, size_t &id, double &x, double &y,
-                           double &z);
+bool ADCIRCMODULES_EXPORT splitStringNodeFormat(const std::string &data,
+                                                size_t &id, double &x,
+                                                double &y, double &z);
 
-bool splitStringElemFormat(const std::string &data, size_t &id,
-                           std::vector<size_t> &nodes);
+bool ADCIRCMODULES_EXPORT splitStringElemFormat(const std::string &data,
+                                                size_t &id,
+                                                std::vector<size_t> &nodes);
 
-bool splitStringBoundary0Format(const std::string &data, size_t &node1);
+bool ADCIRCMODULES_EXPORT splitStringBoundary0Format(const std::string &data,
+                                                     size_t &node1);
 
-bool splitStringBoundary23Format(const std::string &data, size_t &node1,
-                                 double &crest, double &supercritical);
+bool ADCIRCMODULES_EXPORT splitStringBoundary23Format(const std::string &data,
+                                                      size_t &node1,
+                                                      double &crest,
+                                                      double &supercritical);
 
-bool splitStringBoundary24Format(const std::string &data, size_t &node1,
-                                 size_t &node2, double &crest,
-                                 double &subcritical, double &supercritical);
+bool ADCIRCMODULES_EXPORT splitStringBoundary24Format(
+    const std::string &data, size_t &node1, size_t &node2, double &crest,
+    double &subcritical, double &supercritical);
 
-bool splitStringBoundary25Format(const std::string &data, size_t &node1,
-                                 size_t &node2, double &crest,
-                                 double &subcritical, double &supercritical,
-                                 double &pipeheight, double &pipecoef,
-                                 double &pipediam);
+bool ADCIRCMODULES_EXPORT splitStringBoundary25Format(
+    const std::string &data, size_t &node1, size_t &node2, double &crest,
+    double &subcritical, double &supercritical, double &pipeheight,
+    double &pipecoef, double &pipediam);
 
-bool splitStringAttribute1Format(const std::string &data, size_t &node,
-                                 double &value);
+bool ADCIRCMODULES_EXPORT splitStringAttribute1Format(const std::string &data,
+                                                      size_t &node,
+                                                      double &value);
 
-bool splitStringAttribute2Format(const std::string &data, size_t &node,
-                                 double &value1, double &value2);
+bool ADCIRCMODULES_EXPORT splitStringAttribute2Format(const std::string &data,
+                                                      size_t &node,
+                                                      double &value1,
+                                                      double &value2);
 
-bool splitStringAttributeNFormat(const std::string &data, size_t &node,
-                                 std::vector<double> &values);
+bool ADCIRCMODULES_EXPORT splitStringAttributeNFormat(
+    const std::string &data, size_t &node, std::vector<double> &values);
 
-bool splitStringHarmonicsElevationFormat(const std::string &data, double &amplitude,
-                                         double &phase);
+bool ADCIRCMODULES_EXPORT splitStringHarmonicsElevationFormat(
+    const std::string &data, double &amplitude, double &phase);
 
-bool splitStringHarmonicsVelocityFormat(const std::string &data, double &u_magnitude,
-                                        double &u_phase, double &v_magnitude,
-                                        double &v_phase);
+bool ADCIRCMODULES_EXPORT splitStringHarmonicsVelocityFormat(
+    const std::string &data, double &u_magnitude, double &u_phase,
+    double &v_magnitude, double &v_phase);
 }  // namespace AdcircIO
 namespace SMSIO {
 
-bool splitString2dmNodeFormat(const std::string &data, size_t &id, double &x,
-                              double &y, double &z);
+bool ADCIRCMODULES_EXPORT splitString2dmNodeFormat(const std::string &data,
+                                                   size_t &id, double &x,
+                                                   double &y, double &z);
 
-bool splitString2dmElementFormat(const std::string &data, size_t &id,
-                                 std::vector<size_t> &nodes);
+bool ADCIRCMODULES_EXPORT splitString2dmElementFormat(
+    const std::string &data, size_t &id, std::vector<size_t> &nodes);
 }  // namespace SMSIO
+
+namespace HMDFIO {
+bool ADCIRCMODULES_EXPORT splitStringHmdfFormat(const std::string &data,
+                                                int &year, int &month, int &day,
+                                                int &hour, int &minute,
+                                                int &second, double &value);
+}
 
 }  // namespace FileIO
 

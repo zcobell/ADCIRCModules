@@ -143,7 +143,11 @@ SOURCES += \
     constants.cpp \
     kdtree.cpp \
     logging.cpp \
-    writeoutput.cpp
+    writeoutput.cpp \
+    hmdf.cpp \
+    hmdfstation.cpp \
+    cdate.cpp \
+    netcdftimeseries.cpp
 
 HEADERS += \
     adcirc_outputfiles.h \
@@ -189,7 +193,11 @@ HEADERS += \
     kdtree.h \
     logging.h \
     default_values.h \
-    writeoutput.h
+    writeoutput.h \
+    hmdf.h \
+    hmdfstation.h \
+    cdate.h \
+    netcdftimeseries.h 
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib

@@ -19,5 +19,6 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS  = thirdparty libraries src utilities
+SUBDIRS  = \
+    interpolateAdcircStations
 CONFIG += ordered           

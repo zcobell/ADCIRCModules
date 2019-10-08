@@ -89,6 +89,13 @@ bool Adcirc::FileIO::Generic::fileExists(const std::string &filename) {
   return static_cast<bool>(ifile);
 }
 
+std::string Adcirc::FileIO::Generic::sanitizeString(const std::string &a) {
+  std::string b = a;
+  boost::algorithm::trim(b);
+  b.erase(std::remove(b.begin(), b.end(), '\r'), b.end());
+  return b;
+}
+
 /**
  * @brief Splits a string from an ADCIRC mesh file into the data required to
  * generate an adcirc node object
@@ -342,4 +349,33 @@ bool Adcirc::FileIO::SMSIO::splitString2dmElementFormat(
                             qi::space);
   }
   return false;
+}
+
+bool Adcirc::FileIO::HMDFIO::splitStringHmdfFormat(const std::string &data,
+                                                   int &year, int &month,
+                                                   int &day, int &hour,
+                                                   int &minute, int &second,
+                                                   double &value) {
+  bool r = qi::phrase_parse(data.begin(), data.end(),
+                            qi::int_[phoenix::ref(year) = qi::_1] >>
+                                qi::int_[phoenix::ref(month) = qi::_1] >>
+                                qi::int_[phoenix::ref(day) = qi::_1] >>
+                                qi::int_[phoenix::ref(hour) = qi::_1] >>
+                                qi::int_[phoenix::ref(minute) = qi::_1] >>
+                                qi::int_[phoenix::ref(second) = qi::_1] >>
+                                qi::int_[phoenix::ref(value) = qi::_1],
+                            qi::space);
+  if (!r) {
+    r = qi::phrase_parse(data.begin(), data.end(),
+                         qi::int_[phoenix::ref(year) = qi::_1] >>
+                             qi::int_[phoenix::ref(month) = qi::_1] >>
+                             qi::int_[phoenix::ref(day) = qi::_1] >>
+                             qi::int_[phoenix::ref(hour) = qi::_1] >>
+                             qi::int_[phoenix::ref(minute) = qi::_1] >>
+                             qi::int_[phoenix::ref(value) = qi::_1],
+                         qi::space);
+    second = 0;
+  }
+
+  return r;
 }

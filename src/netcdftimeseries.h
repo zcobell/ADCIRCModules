@@ -16,28 +16,44 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_ADCIRCMODULES_H
-#define ADCMOD_ADCIRCMODULES_H
+#ifndef NETCDFTIMESERIES_H
+#define NETCDFTIMESERIES_H
 
-#include "config.h"
-#include "constants.h"
-#include "default_values.h"
-#include "ezproj.h"
-#include "fileio.h"
-#include "filetypes.h"
-#include "griddata.h"
-#include "harmonicsoutput.h"
-#include "hash.h"
-#include "hashtype.h"
 #include "hmdf.h"
-#include "interpolationmethods.h"
-#include "kdtree.h"
-#include "logging.h"
-#include "mesh.h"
-#include "meshchecker.h"
-#include "multithreading.h"
-#include "nodalattributes.h"
-#include "readoutput.h"
-#include "writeoutput.h"
+#include <string>
+#include <vector>
 
-#endif  // ADCMOD_ADCIRCMODULES_H
+class NetcdfTimeseries  {
+ public:
+  explicit NetcdfTimeseries();
+
+  int read();
+
+  int toHmdf(Hmdf *hmdf);
+
+  std::string filename() const;
+  void setFilename(const std::string &filename);
+
+  int epsg() const;
+  void setEpsg(int epsg);
+
+  static int getEpsg(const std::string &file);
+
+private:
+  std::string m_filename;
+  std::string m_units;
+  std::string m_verticalDatum;
+  std::string m_horizontalProjection;
+  int m_epsg;
+  size_t m_numStations;
+
+  std::vector<double> m_fillValue;
+  std::vector<double> m_xcoor;
+  std::vector<double> m_ycoor;
+  std::vector<size_t> m_stationLength;
+  std::vector<std::string> m_stationName;
+  std::vector<std::vector<long long> > m_time;
+  std::vector<std::vector<double> > m_data;
+};
+
+#endif  // NETCDFTIMESERIES_H
