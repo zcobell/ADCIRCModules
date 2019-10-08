@@ -20,12 +20,12 @@
 #define HMDF_H
 
 #include <ctime>
+#include <limits>
 #include <string>
 #include <vector>
 #include "hmdfstation.h"
 
 class Hmdf {
-
  public:
   explicit Hmdf();
 

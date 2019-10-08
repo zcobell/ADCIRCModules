@@ -19,13 +19,13 @@
 #ifndef HMDFSTATION
 #define HMDFSTATION
 
+#include <limits>
 #include <numeric>
-#include <vector>
 #include <string>
+#include <vector>
 
 class HmdfStation {
  public:
-
   struct Coordinate {
     double latitude;
     double longitude;
