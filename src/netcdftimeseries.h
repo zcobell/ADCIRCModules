@@ -19,11 +19,15 @@
 #ifndef NETCDFTIMESERIES_H
 #define NETCDFTIMESERIES_H
 
-#include "hmdf.h"
 #include <string>
 #include <vector>
+#include "hmdf.h"
 
-class NetcdfTimeseries  {
+namespace Adcirc {
+
+namespace Output {
+
+class NetcdfTimeseries {
  public:
   explicit NetcdfTimeseries();
 
@@ -39,7 +43,7 @@ class NetcdfTimeseries  {
 
   static int getEpsg(const std::string &file);
 
-private:
+ private:
   std::string m_filename;
   std::string m_units;
   std::string m_verticalDatum;
@@ -55,5 +59,7 @@ private:
   std::vector<std::vector<long long> > m_time;
   std::vector<std::vector<double> > m_data;
 };
+}  // namespace Output
+}  // namespace Adcirc
 
 #endif  // NETCDFTIMESERIES_H

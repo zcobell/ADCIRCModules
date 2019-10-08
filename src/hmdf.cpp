@@ -20,11 +20,14 @@
 #include <fstream>
 #include "boost/algorithm/string.hpp"
 #include "boost/algorithm/string/replace.hpp"
+#include "boost/asio/ip/host_name.hpp"
 #include "boost/format.hpp"
 #include "cdate.h"
 #include "fileio.h"
 #include "netcdf.h"
 #include "netcdftimeseries.h"
+
+using namespace Adcirc::Output;
 
 #define NCCHECK(ierr)     \
   if (ierr != NC_NOERR) { \
@@ -83,7 +86,7 @@ void Hmdf::setStation(size_t index, HmdfStation &station) {
   this->m_station[index] = station;
 }
 
-void Hmdf::addStation(HmdfStation &station) {
+void Hmdf::addStation(const HmdfStation &station) {
   this->m_station.push_back(station);
 }
 
@@ -134,10 +137,9 @@ int Hmdf::readImeds(std::string filename) {
 
       if (status) {
         Date d(year, month, day, hour, minute, second);
-        long long secs = d.toMSeconds();
 
         //...Append to the station data
-        station.setNext(secs, value);
+        station.setNext(d.toMSeconds(), value);
       } else {
         break;
       }
@@ -179,7 +181,7 @@ int Hmdf::writeCsv(std::string filename) {
 
     for (size_t i = 0; i < this->station(s)->numSnaps(); i++) {
       Date d;
-      d.fromMSeconds(this->station(s)->date(i));
+      d.fromSeconds(this->station(s)->date(i));
       double value = this->station(s)->data(i);
       out << boost::str(boost::format("%s,%10.4e\n") % d.toString() % value);
     }
@@ -209,12 +211,12 @@ int Hmdf::writeImeds(std::string filename) {
                       this->station(s)->longitude());
 
     for (size_t i = 0; i < this->station(s)->numSnaps(); ++i) {
-      Date d;
-      d.fromMSeconds(this->station(s)->date(i));
+      Date t;
+      t.fromSeconds(this->station(s)->date(i));
       double value = this->station(s)->data(i);
       out << boost::str(
-          boost::format("%4.4i %2.2i %2.2i %2.2i %2.2i %2.2i %10.6e\n") %
-          d.year() % d.month() % d.day() % d.hour() % d.minute() % d.second() %
+          boost::format("%04.4i %02.2i %02.2i %02.2i %02.2i %02.2i %10.6e\n") %
+          t.year() % t.month() % t.day() % t.hour() % t.minute() % t.second() %
           value);
     }
   }
@@ -239,7 +241,7 @@ int Hmdf::writeNetcdf(std::string filename) {
   NCCHECK(nc_def_dim(ncid, "stationNameLen", 200, &dimid_stationNameLength))
   for (size_t i = 0; i < this->nstations(); i++) {
     std::string dimname =
-        boost::str(boost::format("stationLength_%4.4i") % (i + 1));
+        boost::str(boost::format("stationLength_%04.4i") % (i + 1));
     int d;
     NCCHECK(nc_def_dim(ncid, dimname.c_str(), this->station(i)->numSnaps(), &d))
     dimid_stationLength.push_back(d);
@@ -276,7 +278,7 @@ int Hmdf::writeNetcdf(std::string filename) {
     int v;
 
     std::string stationName =
-        boost::str(boost::format("station_%4.4i") % (i + 1));
+        boost::str(boost::format("station_%04.4i") % (i + 1));
     std::string timeVarName = "time_" + stationName;
     std::string dataVarName = "data_" + stationName;
 
@@ -309,9 +311,14 @@ int Hmdf::writeNetcdf(std::string filename) {
   }
 
   //...Metadata
-  std::string name = getenv("USER");
-  if (name == std::string()) name = getenv("USERNAME");
-  std::string host = getenv("HOSTNAME");
+#ifndef _WIN32
+  std::string host = boost::asio::ip::host_name();
+#else
+  std::string host = "ADCIRCModules";
+#endif
+
+  std::string name = std::string(getenv("USER"));
+  if (name == std::string()) name = std::string(getenv("USERNAME"));
   std::string createTime = Date::now().toString();
   std::string source = "ADCIRCModules";
   std::string ncVersion = std::string(nc_inq_libvers());
@@ -383,11 +390,11 @@ int Hmdf::write(std::string filename, HmdfFileType fileType) {
 int Hmdf::write(std::string filename) {
   std::string extension = Adcirc::FileIO::Generic::getFileExtension(filename);
   boost::algorithm::to_lower(extension);
-  if (extension == "imeds") {
+  if (extension == ".imeds") {
     return this->write(filename, HmdfImeds);
-  } else if (extension == "csv") {
+  } else if (extension == ".csv") {
     return this->write(filename, HmdfCsv);
-  } else if (extension == "nc") {
+  } else if (extension == ".nc") {
     return this->write(filename, HmdfNetCdf);
   }
   return 1;

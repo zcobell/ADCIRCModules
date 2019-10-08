@@ -16,13 +16,17 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef HMDFSTATION
-#define HMDFSTATION
+#ifndef ADCMOD_HMDFSTATION
+#define ADCMOD_HMDFSTATION
 
 #include <limits>
 #include <numeric>
 #include <string>
 #include <vector>
+
+namespace Adcirc {
+
+namespace Output {
 
 class HmdfStation {
  public:
@@ -101,5 +105,7 @@ class HmdfStation {
 
   bool m_isNull;
 };
+}  // namespace Output
+}  // namespace Adcirc
 
-#endif  // HMDFSTATION
+#endif  // ADCMOD_HMDFSTATION

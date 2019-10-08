@@ -32,6 +32,7 @@
 #include "logging.h"
 #include "stringconversion.h"
 
+using namespace Adcirc;
 using namespace Adcirc::Geometry;
 using namespace Adcirc::Interpolation;
 using namespace Adcirc::Private;

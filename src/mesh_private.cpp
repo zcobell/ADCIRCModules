@@ -2228,9 +2228,8 @@ size_t MeshPrivate::findElement(double x, double y,
       this->elementalSearchTree()->findXNearest(x, y, searchDepth);
   size_t en = adcircmodules_default_value<size_t>();
 
-  Point location(x, y);
   for (auto i : indicies) {
-    bool found = this->element(i)->isInside(location);
+    bool found = this->element(i)->isInside(x, y);
     if (found) {
       en = i;
       break;

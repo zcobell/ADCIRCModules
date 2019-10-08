@@ -1,9 +1,29 @@
+/*------------------------------GPL---------------------------------------//
+// This file is part of ADCIRCModules.
+//
+// (c) 2015-2019 Zachary Cobell
+//
+// ADCIRCModules is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// ADCIRCModules is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
+//------------------------------------------------------------------------*/
 #include <iostream>
 #include <string>
 #include "cxxopts.hpp"
 #include "interpolate.h"
+#include "logging.h"
 
 Interpolate::InputOptions parseCommandLineOptions(cxxopts::ParseResult &parser);
+void validateOptionsList(const Interpolate::InputOptions &input);
 
 int main(int argc, char *argv[]) {
   cxxopts::Options options("interpolateAdcircStations",
@@ -21,8 +41,8 @@ int main(int argc, char *argv[]) {
                      ("writeimeds", "write station data as IMEDS instead of fort.61")
                      ("readDFlow", "read a DFlow-FM polyline file for station locations")
                      ("writeDFlow","write DFlow-FM boundary conditions files")
-                     ("coldstart","date/time of the simulation cold start for time reference in IMEDS files. Ex: yyyymmddhhmmss (year-month-day-hour-minute-second)",cxxopts::value<std::string>())
-                     ("refdate","date/time reference used when writing input files for DFlow-FM. Ex: yyyymmddhhmmss (year-month-day-hour-minute-second)",cxxopts::value<std::string>())
+                     ("coldstart","date/time of the simulation cold start for time reference in IMEDS files. Ex: yyyyMMddhhmmss",cxxopts::value<std::string>())
+                     ("refdate","date/time reference used when writing input files for DFlow-FM. Ex: Ex: yyyyMMddhhmmss",cxxopts::value<std::string>())
                      ("multiplier","value multiplied to the output value",cxxopts::value<double>())
                      ("start_snap","start reading netCDF output at specified snap",cxxopts::value<int>())
                      ("end_snap","stop reading netCDF output at specified snap",cxxopts::value<int>())
@@ -34,7 +54,7 @@ int main(int argc, char *argv[]) {
   // clang-format on
 
   if (argc == 1) {
-    std::cout << "Error: No options specified." << std::endl;
+    Adcirc::Logging::logError("No options specified");
     std::cout << options.help() << std::endl;
     return 1;
   }
@@ -47,6 +67,7 @@ int main(int argc, char *argv[]) {
   }
 
   Interpolate::InputOptions input = parseCommandLineOptions(result);
+  validateOptionsList(input);
 
   Interpolate interp(input);
   interp.run();
@@ -93,4 +114,39 @@ Interpolate::InputOptions parseCommandLineOptions(
   if (parser["epsg_station"].count() > 0)
     input.epsg_station = parser["epsg_station"].as<int>();
   return input;
+}
+
+void validateOptionsList(const Interpolate::InputOptions &input) {
+  if (input.mesh == std::string()) {
+    Adcirc::Logging::logError("No mesh supplied");
+    exit(1);
+  }
+  if (input.globalfile == std::string()) {
+    Adcirc::Logging::logError("No global data supplied");
+    exit(1);
+  }
+  if (input.outputfile == std::string()) {
+    Adcirc::Logging::logError("No output file specified");
+    exit(1);
+  }
+  if (input.stationfile == std::string()) {
+    Adcirc::Logging::logError("No station file supplied");
+    exit(1);
+  }
+  if (input.writeimeds && input.coldstart == std::string()) {
+    Adcirc::Logging::logError(
+        "Must supply cold start date to write imeds format files.");
+    exit(1);
+  }
+  if (input.writedflow && input.coldstart == std::string()) {
+    Adcirc::Logging::logError(
+        "Must supply cold start date to write dflow format files.");
+    exit(1);
+  }
+  if (input.writedflow && input.refdate == std::string()) {
+    Adcirc::Logging::logError(
+        "Must supply reference date to write dflow format files.");
+    exit(1);
+  }
+  return;
 }

@@ -1,8 +1,28 @@
+/*------------------------------GPL---------------------------------------//
+// This file is part of ADCIRCModules.
+//
+// (c) 2015-2019 Zachary Cobell
+//
+// ADCIRCModules is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// ADCIRCModules is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
+//------------------------------------------------------------------------*/
 #ifndef INTERPOLATER_H
 #define INTERPOLATER_H
 
+#include <array>
 #include <string>
 #include "adcircmodules.h"
+#include "cdate.h"
 
 class Interpolate {
  public:
@@ -12,6 +32,27 @@ class Interpolate {
         readasciimesh, keepwet;
     int startsnap, endsnap, epsg_global, epsg_station, epsg_output;
     double multiplier;
+    InputOptions()
+        : mesh(std::string()),
+          globalfile(std::string()),
+          stationfile(std::string()),
+          outputfile(std::string()),
+          coldstart(std::string()),
+          refdate(std::string()),
+          magnitude(false),
+          direction(false),
+          readimeds(false),
+          writeimeds(false),
+          readdflow(false),
+          writedflow(false),
+          readasciimesh(false),
+          keepwet(false),
+          startsnap(-1),
+          endsnap(-1),
+          epsg_global(4326),
+          epsg_station(4326),
+          epsg_output(4326),
+          multiplier(1.0) {}
   };
 
   Interpolate(const InputOptions &options);
@@ -19,10 +60,25 @@ class Interpolate {
   void run();
 
  private:
-  Adcirc::Geometry::Mesh readMesh(const Adcirc::Output::OutputFormat &filetype);
+  struct Weight {
+    bool found;
+    std::array<size_t, 3> node_index;
+    std::array<double, 3> weight;
+    Weight() : found(false), node_index{0, 0, 0}, weight{0.0, 0.0, 0.0} {}
+  };
 
- private:
+  Adcirc::Geometry::Mesh readMesh(const Adcirc::Output::OutputFormat &filetype);
+  Adcirc::Output::Hmdf readStationLocations();
+  Adcirc::Output::Hmdf readStationList();
+  void generateInterpolationWeights(Adcirc::Geometry::Mesh &m,
+                                    Adcirc::Output::Hmdf &stn);
+  double interp(Adcirc::Output::ReadOutput &data, Weight &w);
+  double interpolateDryValues(double v1, double w1, double v2, double w2,
+                              double v3, double w3, double defaultVal);
+  Date dateFromString(const std::string &dateString);
+
   InputOptions m_inputOptions;
+  std::vector<Weight> m_weights;
 };
 
 #endif  // INTERPOLATER_H

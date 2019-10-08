@@ -20,17 +20,21 @@
 #define ADCMOD_FPCOMPARE_H
 
 #include <vector>
+#include "adcircmodules_global.h"
 #include "boost/math/special_functions/relative_difference.hpp"
+
+namespace Adcirc {
 
 namespace FpCompare {
 
 template <typename T>
-bool equalTo(const T &a, const T &b) {
+bool ADCIRCMODULES_EXPORT equalTo(const T &a, const T &b) {
   return !(boost::math::relative_difference(a, b) > 1);
 }
 
 template <typename T>
-bool equalTo(const std::vector<T> &a, const std::vector<T> &b) {
+bool ADCIRCMODULES_EXPORT equalTo(const std::vector<T> &a,
+                                  const std::vector<T> &b) {
   if (a.size() != b.size()) return false;
   for (size_t i = 0; i < a.size(); ++i) {
     if (!equalTo(a[i], b[i])) return false;
@@ -39,5 +43,16 @@ bool equalTo(const std::vector<T> &a, const std::vector<T> &b) {
 }
 
 };  // namespace FpCompare
+}  // namespace Adcirc
+
+//...Explicit instantiations
+template bool ADCIRCMODULES_EXPORT
+Adcirc::FpCompare::equalTo<double>(const double &a, const double &b);
+template bool ADCIRCMODULES_EXPORT
+Adcirc::FpCompare::equalTo<float>(const float &a, const float &b);
+template bool ADCIRCMODULES_EXPORT Adcirc::FpCompare::equalTo<double>(
+    const std::vector<double> &a, const std::vector<double> &b);
+template bool ADCIRCMODULES_EXPORT Adcirc::FpCompare::equalTo<float>(
+    const std::vector<float> &a, const std::vector<float> &b);
 
 #endif  // ADCMOD_FPCOMPARE_H

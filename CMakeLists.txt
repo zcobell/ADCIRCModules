@@ -338,8 +338,8 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/hmdf.cpp
                 ${CMAKE_SOURCE_DIR}/src/hmdfstation.cpp
                 ${CMAKE_SOURCE_DIR}/src/netcdftimeseries.cpp
-                ${CMAKE_SOURCE_DIR}/src/cdate.cpp
                 ${CMAKE_SOURCE_DIR}/src/hash_private.cpp
+                ${CMAKE_SOURCE_DIR}/src/cdate.cpp
                 ${CMAKE_SOURCE_DIR}/src/boundary.cpp
                 ${CMAKE_SOURCE_DIR}/src/fileio.cpp
                 ${CMAKE_SOURCE_DIR}/src/stringconversion.cpp

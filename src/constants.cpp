@@ -19,6 +19,8 @@
 #include "constants.h"
 #include <cmath>
 
+using namespace Adcirc;
+
 /**
  * @brief Returns the radius of Earth at a given latitude
  * @param[in] latitude location to generate a radius for

@@ -20,6 +20,8 @@
 #include <cassert>
 #include "fpcompare.h"
 
+using namespace Adcirc::Output;
+
 HmdfStation::HmdfStation() {
   this->m_coordinate = Coordinate();
   this->m_name = "noname";

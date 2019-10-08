@@ -59,8 +59,8 @@ void Adcirc::FileIO::Generic::readFileData(const std::string &filename,
  */
 void Adcirc::FileIO::Generic::splitString(std::string &data,
                                           std::vector<std::string> &fresult) {
-  boost::trim_if(data, boost::is_any_of(" "));
-  boost::algorithm::split(fresult, data, boost::is_any_of(" "),
+  boost::trim_if(data, boost::is_any_of(" ,"));
+  boost::algorithm::split(fresult, data, boost::is_any_of(" ,"),
                           boost::token_compress_on);
   return;
 }

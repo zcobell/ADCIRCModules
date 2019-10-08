@@ -21,30 +21,38 @@
 
 #include <iostream>
 #include <string>
+#include "adcircmodules_global.h"
 
 namespace Adcirc {
 
 /**
  * @class Logging
  * @author Zachary Cobell
- * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
- * is released under the terms of the GNU General Public License v3
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
  * @brief The Logging class is used to throw errors and log messages to standard
  * output
  */
 class Logging {
  public:
-  Logging() = default;
+  ADCIRCMODULES_EXPORT Logging() = default;
 
-  static void throwError(const std::string &s);
-  static void throwError(const std::string &s, const char *file, int line);
+  static void ADCIRCMODULES_EXPORT throwError(const std::string &s);
+  static void ADCIRCMODULES_EXPORT throwError(const std::string &s,
+                                              const char *file, int line);
 
-  static void warning(const std::string &s);
-  static void log(const std::string &s);
+  static void ADCIRCMODULES_EXPORT
+  logError(const std::string &s, const std::string &heading = std::string());
+  static void ADCIRCMODULES_EXPORT
+  warning(const std::string &s, const std::string &heading = std::string());
+  static void ADCIRCMODULES_EXPORT
+  log(const std::string &s, const std::string &heading = std::string());
 
  private:
   static void printMessage(const std::string &header,
                            const std::string &message);
+  static void printErrorMessage(const std::string &header,
+                                const std::string &message);
 };
 
 }  // namespace Adcirc

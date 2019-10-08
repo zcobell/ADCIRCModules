@@ -22,6 +22,8 @@
 #include "cdate.h"
 #include "netcdf.h"
 
+using namespace Adcirc::Output;
+
 #define NCCHECK(ierr)     \
   if (ierr != NC_NOERR) { \
     nc_close(ncid);       \
@@ -50,7 +52,6 @@ void NetcdfTimeseries::setEpsg(int epsg) { this->m_epsg = epsg; }
 int NetcdfTimeseries::read() {
   if (this->m_filename == std::string()) return 1;
 
-  Date refTime;
   std::string station_dim_string, station_time_var_string,
       station_data_var_string, stationNameString;
   size_t stationNameLength, length;
@@ -115,8 +116,9 @@ int NetcdfTimeseries::read() {
     NCCHECK(nc_inq_varid(ncid, station_data_var_string.c_str(), &varid_data))
     NCCHECK(nc_get_att_text(ncid, varid_time, "referenceDate", timeChar))
     std::string timeString = std::string(timeChar).substr(0, 19);
-    Date refTime;
-    refTime.fromString(timeString);
+
+    Date reftime;
+    reftime.fromString(timeString);
 
     double fillValue;
     NCCHECK(nc_inq_var_fill(ncid, varid_data, NULL, &fillValue))
@@ -134,11 +136,10 @@ int NetcdfTimeseries::read() {
 
     for (size_t j = 0; j < length; j++) {
       this->m_data[i][j] = varData.get()[j];
-        Date t = refTime;
-        t.add(timeData.get()[j]);
+      Date t = reftime;
+      t.add(timeData.get()[j]);
       this->m_time[i][j] = t.toMSeconds();
     }
-
   }
 
   NCCHECK(nc_close(ncid))

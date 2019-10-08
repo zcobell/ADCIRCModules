@@ -146,8 +146,8 @@ SOURCES += \
     writeoutput.cpp \
     hmdf.cpp \
     hmdfstation.cpp \
-    cdate.cpp \
-    netcdftimeseries.cpp
+    netcdftimeseries.cpp \
+    cdate.cpp
 
 HEADERS += \
     adcirc_outputfiles.h \
@@ -196,8 +196,8 @@ HEADERS += \
     writeoutput.h \
     hmdf.h \
     hmdfstation.h \
-    cdate.h \
-    netcdftimeseries.h 
+    netcdftimeseries.h \
+    cdate.h
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib

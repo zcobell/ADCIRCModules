@@ -16,14 +16,17 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef HMDF_H
-#define HMDF_H
+#ifndef ADCMOD_HMDF_H
+#define ADCMOD_HMDF_H
 
-#include <ctime>
 #include <limits>
 #include <string>
 #include <vector>
 #include "hmdfstation.h"
+
+namespace Adcirc {
+
+namespace Output {
 
 class Hmdf {
  public:
@@ -62,7 +65,7 @@ class Hmdf {
 
   HmdfStation *station(size_t index);
   void setStation(size_t index, HmdfStation &station);
-  void addStation(HmdfStation &station);
+  void addStation(const HmdfStation &station);
 
   bool success() const;
   void setSuccess(bool success);
@@ -87,4 +90,7 @@ class Hmdf {
   std::vector<HmdfStation> m_station;
 };
 
-#endif  // HMDF_H
+}  // namespace Output
+}  // namespace Adcirc
+
+#endif  // ADCMOD_HMDF_H

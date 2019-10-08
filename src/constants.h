@@ -23,11 +23,13 @@
 
 using Point = std::pair<double, double>;
 
+namespace Adcirc {
+
 /**
  * @class Constants
  * @author Zachary Cobell
- * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
- * is released under the terms of the GNU General Public License v3
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
  * @brief Set of static functions to use for geometric or Earth constant
  * calculations
  *
@@ -129,5 +131,6 @@ class Constants {
   static double geodesic_distance(double x1, double y1, double x2, double y2);
   static double cartesian_distance(double x1, double y1, double x2, double y2);
 };
+}  // namespace Adcirc
 
 #endif  // ADCMOD_CONSTANTS_H

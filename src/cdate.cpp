@@ -30,6 +30,10 @@ Date::Date() {
 }
 
 Date::Date(int year, int month, int day, int hour, int minute, int second) {
+  struct tm defaultTime = {0};
+  this->m_date = timegm(&defaultTime);
+  this->m_epoch_tm = defaultTime;
+  this->m_epoch = this->m_date;
   this->set(year, month, day, hour, minute, second);
 }
 
@@ -158,7 +162,7 @@ void Date::fromString(const std::string &datestr) {
 }
 
 std::string Date::toString() {
-  return boost::str(boost::format("%4.4i-%2.2i-%2.2i %2.2i:%2.2i:%2.2i") %
+  return boost::str(boost::format("%04.4i-%02.2i-%02.2i %02.2i:%02.2i:%02.2i") %
                     this->year() % this->month() % this->day() % this->hour() %
                     this->minute() % this->second());
 }
