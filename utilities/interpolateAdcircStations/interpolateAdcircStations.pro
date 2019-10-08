@@ -26,7 +26,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 #...Boost Library
 BOOSTPATH     = $$PWD/../../thirdparty/boost_1_66_0
 
-INCLUDEPATH += $$BOOSTPATH
+#...CXXOPTS Path
+CXXOPTSPATH   = $$PWD/../../thirdparty/cxxopts
+
+INCLUDEPATH += $$BOOSTPATH $$CXXOPTSPATH
 
 HEADERS += \
     interpolate.h

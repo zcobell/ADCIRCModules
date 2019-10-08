@@ -136,7 +136,11 @@ ENDIF(NOT CYGWIN)
 ###########################################################################
 # Boost
 ###########################################################################
-FIND_PACKAGE( Boost 1.60.0 COMPONENTS program_options REQUIRED )
+FIND_PACKAGE( Boost 1.60.0 )
+IF( NOT Boost_FOUND OR PACKAGE_VERSION_UNSUITABLE )
+    MESSAGE( STATUS "Using included Boost Version: 1.66.0")
+    SET( Boost_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/thirdparty/boost_1_66_0 )
+ENDIF()
 ###########################################################################
 
 ###########################################################################
@@ -721,6 +725,7 @@ ADD_EXECUTABLE( interpolateAdcircStations ${CMAKE_SOURCE_DIR}/utilities/interpol
 TARGET_INCLUDE_DIRECTORIES( interpolateAdcircStations PRIVATE 
                             ${CMAKE_SOURCE_DIR}/utilities/interpolateAdcircStations 
                             ${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src
+                            ${CMAKE_SOURCE_DIR}/thirdparty/cxxopts
                             ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src ) 
 ADD_DEPENDENCIES( interpolateAdcircStations adcircmodules )
 TARGET_LINK_LIBRARIES( interpolateAdcircStations PRIVATE adcircmodules ${Boost_LIBRARIES} )
