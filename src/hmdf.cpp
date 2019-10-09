@@ -20,7 +20,6 @@
 #include <fstream>
 #include "boost/algorithm/string.hpp"
 #include "boost/algorithm/string/replace.hpp"
-#include "boost/asio/ip/host_name.hpp"
 #include "boost/format.hpp"
 #include "cdate.h"
 #include "fileio.h"
@@ -312,9 +311,9 @@ int Hmdf::writeNetcdf(std::string filename) {
 
   //...Metadata
 #ifndef _WIN32
-  std::string host = boost::asio::ip::host_name();
+  std::string host = std::string(getenv("HOSTNAME"));
 #else
-  std::string host = "ADCIRCModules";
+  std::string host = std::string(getenv("COMPUTERNAME"));
 #endif
 
   std::string name = std::string(getenv("USER"));
