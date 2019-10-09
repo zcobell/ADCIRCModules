@@ -19,6 +19,7 @@
 #include "interpolate.h"
 #include "boost/format.hpp"
 #include "constants.h"
+#include "ezproj.h"
 #include "fpcompare.h"
 #include "logging.h"
 
@@ -35,7 +36,8 @@ Adcirc::Geometry::Mesh Interpolate::readMesh(
     } else {
       if (this->m_inputOptions.mesh != std::string()) {
         Adcirc::Logging::warning(
-            "Ignoring provided mesh file in favor of netCDF data", "[WARNING]: ");
+            "Ignoring provided mesh file in favor of netCDF data",
+            "[WARNING]: ");
       }
       mesh.setFilename(this->m_inputOptions.globalfile);
     }
@@ -51,7 +53,7 @@ Adcirc::Output::Hmdf Interpolate::readStationLocations() {
   if (this->m_inputOptions.readimeds) {
     std::string ext = Adcirc::FileIO::Generic::getFileExtension(
         this->m_inputOptions.stationfile);
-    if (ext == "nc") {
+    if (ext == ".nc") {
       stn.readNetcdf(this->m_inputOptions.stationfile);
     } else {
       stn.readImeds(this->m_inputOptions.stationfile);
@@ -90,13 +92,27 @@ void Interpolate::generateInterpolationWeights(Adcirc::Geometry::Mesh &m,
                                                Adcirc::Output::Hmdf &stn) {
   m.buildElementalSearchTree();
   size_t nFound = 0;
+  Ezproj e;
 
   this->m_weights.resize(stn.nstations());
 
   for (size_t i = 0; i < stn.nstations(); ++i) {
     std::vector<double> wt;
-    size_t eidx = m.findElement(stn.station(i)->longitude(),
-                                stn.station(i)->latitude(), wt);
+    double x1 = stn.station(i)->longitude();
+    double y1 = stn.station(i)->latitude();
+    double x2 = 0;
+    double y2 = 0;
+
+    if (this->m_inputOptions.epsg_station != this->m_inputOptions.epsg_global) {
+      bool latlon = false;
+      e.transform(this->m_inputOptions.epsg_station,
+                  this->m_inputOptions.epsg_global, x1, y1, x2, y2, latlon);
+    } else {
+      x2 = x1;
+      y2 = y1;
+    }
+
+    size_t eidx = m.findElement(x2, y2, wt);
 
     if (eidx == adcircmodules_default_value<size_t>()) {
       this->m_weights[i].found = false;
@@ -113,9 +129,11 @@ void Interpolate::generateInterpolationWeights(Adcirc::Geometry::Mesh &m,
 
   Adcirc::Logging::log(
       boost::str(boost::format("%i of %i stations found inside the mesh") %
-                 nFound % stn.nstations()),"[INFO]: ");
+                 nFound % stn.nstations()),
+      "[INFO]: ");
   if (nFound == 0) {
-    Adcirc::Logging::logError("No stations found for this interpolation.","[ERROR]: ");
+    Adcirc::Logging::logError("No stations found for this interpolation.",
+                              "[ERROR]: ");
     exit(1);
   }
   return;
@@ -161,8 +179,23 @@ void Interpolate::run() {
     std::string logMessage =
         boost::str(boost::format("Processing snap %6.6i of %6.6i (%6.2f%%)") %
                    (i + 1) % globalFile.numSnaps() % pct);
-    Adcirc::Logging::log(logMessage,"[INFO]: ");
+    Adcirc::Logging::log(logMessage, "[INFO]: ");
     globalFile.clearAt(0);
+  }
+
+  if (this->m_inputOptions.epsg_station != this->m_inputOptions.epsg_output) {
+    Ezproj e;
+    for (size_t i = 0; i < stationData.nstations(); ++i) {
+      double x1 = stationData.station(i)->longitude();
+      double y1 = stationData.station(i)->latitude();
+      double x2 = 0;
+      double y2 = 0;
+      bool latlon = false;
+      e.transform(this->m_inputOptions.epsg_station,
+                  this->m_inputOptions.epsg_output, x1, y1, x2, y2, latlon);
+      stationData.station(i)->setLongitude(x2);
+      stationData.station(i)->setLatitude(y2);
+    }
   }
 
   stationData.write(this->m_inputOptions.outputfile);
