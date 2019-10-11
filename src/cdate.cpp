@@ -151,13 +151,15 @@ void Date::setSecond(int second) {
   return;
 }
 
+#include <iostream>
 void Date::fromString(const std::string &datestr) {
   int year = stoi(datestr.substr(0, 4));
   int month = stoi(datestr.substr(5, 2));
-  int day = stoi(datestr.substr(7, 2));
-  int hour = stoi(datestr.substr(9, 2));
-  int minute = stoi(datestr.substr(11, 2));
-  int second = stoi(datestr.substr(13, 2));
+  int day = stoi(datestr.substr(8, 2));
+  int hour = stoi(datestr.substr(11, 2));
+  int minute = stoi(datestr.substr(14, 2));
+  int second = stoi(datestr.substr(17, 2));
+
   this->set(year, month, day, hour, minute, second);
 }
 
