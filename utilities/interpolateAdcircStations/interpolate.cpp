@@ -159,19 +159,64 @@ void Interpolate::run() {
 
   this->generateInterpolationWeights(m, stationData);
 
+  //...Data holders for ADCIRC 61/62 format
+  std::vector<double> date;
+  std::vector<long> it;
+  std::vector<std::vector<double>> v1;
+  std::vector<std::vector<double>> v2;
+
+  if (!this->m_inputOptions.writeimeds) {
+    date.reserve(globalFile.numSnaps());
+    it.reserve(globalFile.numSnaps());
+    v1.resize(stationData.nstations());
+    if (globalFile.metadata()->isVector()) {
+      v2.resize(stationData.nstations());
+    }
+    for (size_t i = 0; i < stationData.nstations(); ++i) {
+      v1[i].reserve(globalFile.numSnaps());
+      if (globalFile.metadata()->isVector()) {
+        v2[i].reserve(globalFile.numSnaps());
+      }
+    }
+  }
+
   for (size_t i = 0; i < globalFile.numSnaps(); ++i) {
     globalFile.read(i);
     Date d = coldstart;
     d.add(globalFile.dataAt(0)->time());
     long long datetime = d.toMSeconds();
     for (size_t j = 0; j < stationData.nstations(); ++j) {
-      double value = 0;
-      if (this->m_weights[j].found) {
-        value = this->interp(globalFile, this->m_weights[j]);
+      if (this->m_inputOptions.writeimeds) {
+        if (this->m_weights[j].found) {
+          stationData.station(j)->setNext(
+              datetime, this->interpScalar(globalFile, this->m_weights[j]));
+        } else {
+          stationData.station(j)->setNext(datetime, globalFile.defaultValue());
+        }
       } else {
-        value = globalFile.defaultValue();
+        date.push_back(globalFile.dataAt(0)->time());
+        it.push_back(globalFile.dataAt(0)->iteration());
+        if (globalFile.metadata()->isVector() &&
+            !this->m_inputOptions.magnitude &&
+            !this->m_inputOptions.direction) {
+          if (this->m_weights[j].found) {
+            double value1, value2;
+            std::tie(value1, value2) =
+                this->interpVector(globalFile, this->m_weights[j]);
+            v1[j].push_back(value1);
+            v2[j].push_back(value2);
+          } else {
+            v1[j].push_back(globalFile.defaultValue());
+            v2[j].push_back(globalFile.defaultValue());
+          }
+        } else {
+          if (this->m_weights[j].found) {
+            v1[j].push_back(this->interpScalar(globalFile, this->m_weights[j]));
+          } else {
+            v1[j].push_back(globalFile.defaultValue());
+          }
+        }
       }
-      stationData.station(j)->setNext(datetime, value);
     }
     double pct = (static_cast<double>(i + 1) /
                   static_cast<double>(globalFile.numSnaps())) *
@@ -198,12 +243,37 @@ void Interpolate::run() {
     }
   }
 
-  stationData.write(this->m_inputOptions.outputfile);
+  if (this->m_inputOptions.writeimeds) {
+    stationData.write(this->m_inputOptions.outputfile);
+  } else {
+    this->writeAdcirc(globalFile, stationData, date, it, v1, v2);
+  }
 
   return;
 }
 
-double Interpolate::interp(Adcirc::Output::ReadOutput &data, Weight &w) {
+std::tuple<double, double> Interpolate::interpVector(
+    Adcirc::Output::ReadOutput &data, Weight &w) {
+  size_t n1 = w.node_index[0];
+  size_t n2 = w.node_index[1];
+  size_t n3 = w.node_index[2];
+  double w1 = w.weight[0];
+  double w2 = w.weight[1];
+  double w3 = w.weight[2];
+  double v1x = data.dataAt(0)->u(n1);
+  double v1y = data.dataAt(0)->v(n1);
+  double v2x = data.dataAt(0)->u(n2);
+  double v2y = data.dataAt(0)->v(n2);
+  double v3x = data.dataAt(0)->u(n3);
+  double v3y = data.dataAt(0)->v(n3);
+  double vx = this->interpolateDryValues(v1x, w1, v2x, w2, v3x, w3,
+                                         data.defaultValue());
+  double vy = this->interpolateDryValues(v1y, w1, v2y, w2, v3y, w3,
+                                         data.defaultValue());
+  return std::make_tuple(vx, vy);
+}
+
+double Interpolate::interpScalar(Adcirc::Output::ReadOutput &data, Weight &w) {
   size_t n1 = w.node_index[0];
   size_t n2 = w.node_index[1];
   size_t n3 = w.node_index[2];
@@ -293,4 +363,36 @@ Date Interpolate::dateFromString(const std::string &dateString) {
   int minute = stoi(dateString.substr(10, 2));
   int second = stoi(dateString.substr(12, 2));
   return Date(year, month, day, hour, minute, second);
+}
+
+void Interpolate::writeAdcirc(Adcirc::Output::ReadOutput &output,
+                              Adcirc::Output::Hmdf &stn,
+                              const std::vector<double> &time,
+                              const std::vector<long> &iteration,
+                              const std::vector<std::vector<double>> &v1,
+                              const std::vector<std::vector<double>> &v2) {
+  std::ofstream out(this->m_inputOptions.outputfile);
+  out << output.header() << std::endl;
+  int nv = output.metadata()->isVector() ? 2 : 1;
+  out << boost::str(
+             boost::format(
+                 "%i    %i    %f    %i    %i    FileFmtVersion: 1050624") %
+             output.numSnaps() % v1.size() % output.dt() % output.dIteration() %
+             nv)
+      << std::endl;
+  for (size_t i = 0; i < output.numSnaps(); ++i) {
+    out << boost::str(boost::format("%12.9e  %i") % time[i] % iteration[i])
+        << std::endl;
+    for (size_t j = 0; j < stn.nstations(); ++j) {
+      if (output.metadata()->isVector() && !this->m_inputOptions.magnitude &&
+          !this->m_inputOptions.direction) {
+        out << boost::str(boost::format("%12.9e  %12.9e") % v1[j][i] % v2[j][i])
+            << std::endl;
+      } else {
+        out << boost::str(boost::format("%12.9e") % v1[j][i]) << std::endl;
+      }
+    }
+  }
+  out.close();
+  return;
 }

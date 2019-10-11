@@ -165,7 +165,7 @@ void validateOptionsList(const Interpolate::InputOptions &input) {
     exit(1);
   }
   if (input.mesh != std::string()) {
-    if (Adcirc::FileIO::Generic::fileExists(input.mesh)) {
+    if (!Adcirc::FileIO::Generic::fileExists(input.mesh)) {
       Adcirc::Logging::logError("Mesh file does not exist.", "[ERROR]: ");
       exit(1);
     }

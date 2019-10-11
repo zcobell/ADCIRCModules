@@ -41,7 +41,6 @@ class Hmdf {
   int writeImeds(const std::string &filename);
   int writeCsv(const std::string &filename);
   int writeNetcdf(const std::string &filename);
-  int writeAdcirc(const std::string &filename);
 
   int readImeds(const std::string &filename);
   int readNetcdf(const std::string &filename);

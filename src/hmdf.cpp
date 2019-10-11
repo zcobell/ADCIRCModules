@@ -311,13 +311,19 @@ int Hmdf::writeNetcdf(const std::string &filename) {
 
   //...Metadata
 #ifndef _WIN32
-  std::string host = std::string(getenv("HOSTNAME"));
+  char *h = std::getenv("HOSTNAME");
 #else
-  std::string host = std::string(getenv("COMPUTERNAME"));
+  char *h = getenv("COMPUTERNAME");
 #endif
+  std::string host;
+  if (h == nullptr) {
+    host = "unknown";
+  } else {
+    host = std::string(h);
+  }
 
-  std::string name = std::string(getenv("USER"));
-  if (name == std::string()) name = std::string(getenv("USERNAME"));
+  std::string name = std::string(std::getenv("USER"));
+  if (name == std::string()) name = std::string(std::getenv("USERNAME"));
   std::string createTime = Date::now().toString();
   std::string source = "ADCIRCModules";
   std::string ncVersion = std::string(nc_inq_libvers());
@@ -397,12 +403,6 @@ int Hmdf::write(const std::string &filename) {
     return this->write(filename, HmdfNetCdf);
   }
   return 1;
-}
-
-int Hmdf::writeAdcirc(const std::string &filename) {
-  //...ADCIRC format assumes that all stations have the same time
-  //characteristics
-
 }
 
 void Hmdf::dataBounds(long long &dateMin, long long &dateMax, double &minValue,

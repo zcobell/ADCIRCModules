@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include <iostream>
+#include <tuple>
 #include "adcircmodules.h"
 #include "boost/format.hpp"
 #include "cdate.h"
@@ -97,7 +98,8 @@ int main(int argc, char *argv[]) {
         (endSimDate.toSeconds() - startWindDate.toSeconds()) % swandt;
     if (swancheck != 0) {
       Adcirc::Logging::warning(
-          "Adding time to ensure end date falls on a SWAN cycle", "[WARNING]: ");
+          "Adding time to ensure end date falls on a SWAN cycle",
+          "[WARNING]: ");
       endSimDate.add(swandt - swancheck);
     }
   }

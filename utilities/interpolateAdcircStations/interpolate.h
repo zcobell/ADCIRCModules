@@ -22,6 +22,7 @@
 #include <array>
 #include <limits>
 #include <string>
+#include <tuple>
 #include "adcircmodules.h"
 #include "cdate.h"
 
@@ -72,9 +73,16 @@ class Interpolate {
   Adcirc::Geometry::Mesh readMesh(const Adcirc::Output::OutputFormat &filetype);
   Adcirc::Output::Hmdf readStationLocations();
   Adcirc::Output::Hmdf readStationList();
+  void writeAdcirc(Adcirc::Output::ReadOutput &output, Adcirc::Output::Hmdf &stn,
+                   const std::vector<double> &time,
+                   const std::vector<long> &iteration,
+                   const std::vector<std::vector<double>> &v1,
+                   const std::vector<std::vector<double>> &v2);
   void generateInterpolationWeights(Adcirc::Geometry::Mesh &m,
                                     Adcirc::Output::Hmdf &stn);
-  double interp(Adcirc::Output::ReadOutput &data, Weight &w);
+  double interpScalar(Adcirc::Output::ReadOutput &data, Weight &w);
+  std::tuple<double, double> interpVector(Adcirc::Output::ReadOutput &data,
+                                          Weight &w);
   double interpolateDryValues(double v1, double w1, double v2, double w2,
                               double v3, double w3, double defaultVal);
   Date dateFromString(const std::string &dateString);
