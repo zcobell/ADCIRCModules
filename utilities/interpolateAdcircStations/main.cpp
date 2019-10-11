@@ -18,6 +18,7 @@
 //------------------------------------------------------------------------*/
 #include <iostream>
 #include <string>
+#include "adcircmodules.h"
 #include "cxxopts.hpp"
 #include "interpolate.h"
 #include "logging.h"
@@ -117,36 +118,67 @@ Interpolate::InputOptions parseCommandLineOptions(
 }
 
 void validateOptionsList(const Interpolate::InputOptions &input) {
-  if (input.mesh == std::string()) {
-    Adcirc::Logging::logError("No mesh supplied");
-    exit(1);
+  if (input.readasciimesh ||
+      Adcirc::FileIO::Generic::getFileExtension(input.globalfile) != ".nc") {
+    if (input.mesh == std::string()) {
+      Adcirc::Logging::logError("No mesh supplied", "[ERROR]: ");
+      exit(1);
+    }
   }
   if (input.globalfile == std::string()) {
-    Adcirc::Logging::logError("No global data supplied");
+    Adcirc::Logging::logError("No global data supplied", "[ERROR]: ");
     exit(1);
   }
   if (input.outputfile == std::string()) {
-    Adcirc::Logging::logError("No output file specified");
+    Adcirc::Logging::logError("No output file specified", "[ERROR]: ");
     exit(1);
   }
   if (input.stationfile == std::string()) {
-    Adcirc::Logging::logError("No station file supplied");
+    Adcirc::Logging::logError("No station file supplied", "[ERROR]: ");
     exit(1);
   }
   if (input.writeimeds && input.coldstart == std::string()) {
     Adcirc::Logging::logError(
-        "Must supply cold start date to write imeds format files.");
+        "Must supply cold start date to write imeds format files.",
+        "[ERROR]: ");
     exit(1);
   }
   if (input.writedflow && input.coldstart == std::string()) {
     Adcirc::Logging::logError(
-        "Must supply cold start date to write dflow format files.");
+        "Must supply cold start date to write dflow format files.",
+        "[ERROR]: ");
     exit(1);
   }
   if (input.writedflow && input.refdate == std::string()) {
     Adcirc::Logging::logError(
-        "Must supply reference date to write dflow format files.");
+        "Must supply reference date to write dflow format files.", "[ERROR]: ");
     exit(1);
+  }
+  if (input.startsnap < std::numeric_limits<size_t>::max() &&
+      Adcirc::FileIO::Generic::getFileExtension(input.globalfile) != ".nc") {
+    Adcirc::Logging::logError("Must use netCDF format to dictate start snap.",
+                              "[ERROR]: ");
+    exit(1);
+  }
+  if (!Adcirc::FileIO::Generic::fileExists(input.globalfile)) {
+    Adcirc::Logging::logError("Global file does not exist.", "[ERROR]: ");
+    exit(1);
+  }
+  if (input.mesh != std::string()) {
+    if (Adcirc::FileIO::Generic::fileExists(input.mesh)) {
+      Adcirc::Logging::logError("Mesh file does not exist.", "[ERROR]: ");
+      exit(1);
+    }
+  }
+  if (input.endsnap < std::numeric_limits<size_t>::max()) {
+    Adcirc::Output::ReadOutput gbl(input.globalfile);
+    gbl.open();
+    if (input.endsnap > gbl.numSnaps()) {
+      gbl.close();
+      Adcirc::Logging::logError("Specified end snap exceeds file length",
+                                "[ERROR]: ");
+      exit(1);
+    }
   }
   return;
 }

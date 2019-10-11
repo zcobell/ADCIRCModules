@@ -700,3 +700,35 @@ Adcirc::Cryptography::HashType Mesh::hashType() const {
 void Mesh::setHashType(const Adcirc::Cryptography::HashType &hashType) {
   this->m_impl->setHashType(hashType);
 }
+
+/**
+ * @brief Returns the vector of nodes in the mesh
+ * @return pointer to vector of nodes
+ */
+std::vector<Adcirc::Geometry::Node> *Mesh::nodes() {
+  return this->m_impl->nodes();
+}
+
+/**
+ * @brief Returns the vector of elements in the mesh
+ * @return pointer to vector of elements
+ */
+std::vector<Adcirc::Geometry::Element> *Mesh::elements() {
+  return this->m_impl->elements();
+}
+
+/**
+ * @brief Returns the vector of open boundaries in the mesh
+ * @return pointer to vector of open boundaries
+ */
+std::vector<Adcirc::Geometry::Boundary> *Mesh::openBoundaries() {
+  return this->m_impl->openBoundaries();
+}
+
+/**
+ * @brief Returns the vector of land boundaries in the mesh
+ * @return pointer to vector of land boundaries
+ */
+std::vector<Adcirc::Geometry::Boundary> *Mesh::landBoundaries() {
+  return this->m_impl->landBoundaries();
+}

@@ -97,7 +97,7 @@ bool Hmdf::null() const { return this->m_null; }
 
 void Hmdf::setNull(bool null) { this->m_null = null; }
 
-int Hmdf::readImeds(std::string filename) {
+int Hmdf::readImeds(const std::string &filename) {
   std::fstream fid(filename.c_str());
   if (fid.bad()) return -1;
 
@@ -153,7 +153,7 @@ int Hmdf::readImeds(std::string filename) {
   return 0;
 }
 
-int Hmdf::readNetcdf(std::string filename) {
+int Hmdf::readNetcdf(const std::string &filename) {
   NetcdfTimeseries ncts;
   ncts.setFilename(filename);
   int ierr = ncts.read();
@@ -169,7 +169,7 @@ int Hmdf::readNetcdf(std::string filename) {
   return 0;
 }
 
-int Hmdf::writeCsv(std::string filename) {
+int Hmdf::writeCsv(const std::string &filename) {
   std::string value;
   std::ofstream out(filename);
 
@@ -190,7 +190,7 @@ int Hmdf::writeCsv(std::string filename) {
   return 0;
 }
 
-int Hmdf::writeImeds(std::string filename) {
+int Hmdf::writeImeds(const std::string &filename) {
   std::string value;
   std::ofstream out(filename);
 
@@ -223,7 +223,7 @@ int Hmdf::writeImeds(std::string filename) {
   return 0;
 }
 
-int Hmdf::writeNetcdf(std::string filename) {
+int Hmdf::writeNetcdf(const std::string &filename) {
   int ncid;
   int dimid_nstations, dimid_stationNameLength;
   int varid_stationName, varid_stationx, varid_stationy;
@@ -375,7 +375,7 @@ int Hmdf::writeNetcdf(std::string filename) {
   return 0;
 }
 
-int Hmdf::write(std::string filename, HmdfFileType fileType) {
+int Hmdf::write(const std::string &filename, HmdfFileType fileType) {
   if (fileType == HmdfImeds) {
     return this->writeImeds(filename);
   } else if (fileType == HmdfCsv) {
@@ -386,7 +386,7 @@ int Hmdf::write(std::string filename, HmdfFileType fileType) {
   return 1;
 }
 
-int Hmdf::write(std::string filename) {
+int Hmdf::write(const std::string &filename) {
   std::string extension = Adcirc::FileIO::Generic::getFileExtension(filename);
   boost::algorithm::to_lower(extension);
   if (extension == ".imeds") {
@@ -397,6 +397,12 @@ int Hmdf::write(std::string filename) {
     return this->write(filename, HmdfNetCdf);
   }
   return 1;
+}
+
+int Hmdf::writeAdcirc(const std::string &filename) {
+  //...ADCIRC format assumes that all stations have the same time
+  //characteristics
+
 }
 
 void Hmdf::dataBounds(long long &dateMin, long long &dateMax, double &minValue,

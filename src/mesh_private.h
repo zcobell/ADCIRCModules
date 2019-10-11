@@ -176,6 +176,11 @@ class MeshPrivate {
   Adcirc::Cryptography::HashType hashType() const;
   void setHashType(const Adcirc::Cryptography::HashType &hashType);
 
+  std::vector<Adcirc::Geometry::Node> *nodes();
+  std::vector<Adcirc::Geometry::Element> *elements();
+  std::vector<Adcirc::Geometry::Boundary> *openBoundaries();
+  std::vector<Adcirc::Geometry::Boundary> *landBoundaries();
+
  private:
   static void meshCopier(MeshPrivate *a, const MeshPrivate *b);
   static Adcirc::Geometry::MeshFormat getMeshFormat(

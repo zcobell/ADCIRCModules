@@ -20,6 +20,7 @@
 #define INTERPOLATER_H
 
 #include <array>
+#include <limits>
 #include <string>
 #include "adcircmodules.h"
 #include "cdate.h"
@@ -30,7 +31,8 @@ class Interpolate {
     std::string mesh, globalfile, stationfile, outputfile, coldstart, refdate;
     bool magnitude, direction, readimeds, writeimeds, readdflow, writedflow,
         readasciimesh, keepwet;
-    int startsnap, endsnap, epsg_global, epsg_station, epsg_output;
+    size_t startsnap, endsnap;
+    int epsg_global, epsg_station, epsg_output;
     double multiplier;
     InputOptions()
         : mesh(std::string()),
@@ -47,8 +49,8 @@ class Interpolate {
           writedflow(false),
           readasciimesh(false),
           keepwet(false),
-          startsnap(-1),
-          endsnap(-1),
+          startsnap(std::numeric_limits<size_t>::max()),
+          endsnap(std::numeric_limits<size_t>::max()),
           epsg_global(4326),
           epsg_station(4326),
           epsg_output(4326),

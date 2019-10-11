@@ -36,14 +36,15 @@ class Hmdf {
 
   enum HmdfFileType { HmdfImeds, HmdfCsv, HmdfNetCdf };
 
-  int write(std::string filename, HmdfFileType fileType);
-  int write(std::string filename);
-  int writeImeds(std::string filename);
-  int writeCsv(std::string filename);
-  int writeNetcdf(std::string filename);
+  int write(const std::string &filename, HmdfFileType fileType);
+  int write(const std::string &filename);
+  int writeImeds(const std::string &filename);
+  int writeCsv(const std::string &filename);
+  int writeNetcdf(const std::string &filename);
+  int writeAdcirc(const std::string &filename);
 
-  int readImeds(std::string filename);
-  int readNetcdf(std::string filename);
+  int readImeds(const std::string &filename);
+  int readNetcdf(const std::string &filename);
 
   size_t nstations() const;
   // void setNstations(size_t nstations);

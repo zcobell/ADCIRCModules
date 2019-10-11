@@ -77,6 +77,7 @@ void MeshPrivate::meshCopier(MeshPrivate *a, const MeshPrivate *b) {
   a->resizeMesh(b->numNodes(), b->numElements(), b->numOpenBoundaries(),
                 b->numLandBoundaries());
   a->setHashType(b->hashType());
+
   for (size_t i = 0; i < b->numNodes(); ++i) {
     a->addNode(i, b->nodeC(i));
   }
@@ -2515,4 +2516,20 @@ Adcirc::Cryptography::HashType MeshPrivate::hashType() const {
 
 void MeshPrivate::setHashType(const Adcirc::Cryptography::HashType &hashType) {
   this->m_hashType = hashType;
+}
+
+std::vector<Adcirc::Geometry::Node> *MeshPrivate::nodes() {
+  return &this->m_nodes;
+}
+
+std::vector<Adcirc::Geometry::Element> *MeshPrivate::elements() {
+  return &this->m_elements;
+}
+
+std::vector<Adcirc::Geometry::Boundary> *MeshPrivate::openBoundaries() {
+  return &this->m_openBoundaries;
+}
+
+std::vector<Adcirc::Geometry::Boundary> *MeshPrivate::landBoundaries() {
+  return &this->m_landBoundaries;
 }

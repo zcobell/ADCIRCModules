@@ -730,4 +730,13 @@ TARGET_INCLUDE_DIRECTORIES( interpolateAdcircStations PRIVATE
 ADD_DEPENDENCIES( interpolateAdcircStations adcircmodules ezproj )
 TARGET_LINK_LIBRARIES( interpolateAdcircStations PRIVATE adcircmodules ezproj ${Boost_LIBRARIES} )
 INSTALL( TARGETS interpolateAdcircStations RUNTIME DESTINATION bin )
+
+ADD_EXECUTABLE( generateAdcircSimulationDates ${CMAKE_SOURCE_DIR}/utilities/generateAdcircSimulationDates/main.cpp )
+TARGET_INCLUDE_DIRECTORIES( generateAdcircSimulationDates PRIVATE 
+                            ${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src
+                            ${CMAKE_SOURCE_DIR}/thirdparty/cxxopts
+                            ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src ) 
+ADD_DEPENDENCIES( generateAdcircSimulationDates adcircmodules ezproj )
+TARGET_LINK_LIBRARIES( generateAdcircSimulationDates PRIVATE adcircmodules ezproj ${Boost_LIBRARIES} )
+INSTALL( TARGETS generateAdcircSimulationDates RUNTIME DESTINATION bin )
 ###########################################################################
