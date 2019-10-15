@@ -49,21 +49,22 @@ Adcirc::Geometry::Mesh Interpolate::readMesh(
 }
 
 Adcirc::Output::Hmdf Interpolate::readStationLocations() {
-  Adcirc::Output::Hmdf stn;
+  Adcirc::Output::Hmdf tempStn;
   if (this->m_inputOptions.readimeds) {
     std::string ext = Adcirc::FileIO::Generic::getFileExtension(
         this->m_inputOptions.stationfile);
     if (ext == ".nc") {
-      stn.readNetcdf(this->m_inputOptions.stationfile);
+      tempStn.readNetcdf(this->m_inputOptions.stationfile);
     } else {
-      stn.readImeds(this->m_inputOptions.stationfile);
+      tempStn.readImeds(this->m_inputOptions.stationfile);
     }
+    return this->copyStationList(tempStn);
   } else if (this->m_inputOptions.readdflow) {
     adcircmodules_throw_exception("D-Flow I/O not implemented");
+    return Adcirc::Output::Hmdf();
   } else {
-    stn = this->readStationList();
+    return this->readStationList();
   }
-  return stn;
 }
 
 Adcirc::Output::Hmdf Interpolate::readStationList() {
@@ -86,6 +87,25 @@ Adcirc::Output::Hmdf Interpolate::readStationList() {
     h.addStation(s);
   }
   return h;
+}
+
+Adcirc::Output::Hmdf Interpolate::copyStationList(Adcirc::Output::Hmdf &list) {
+  Adcirc::Output::Hmdf out;
+  out.setHeader1(list.header1());
+  out.setHeader2(list.header2());
+  out.setHeader3(list.header3());
+  out.setDatum(list.datum());
+  out.setUnits(list.units());
+  for (size_t i = 0; i < list.nstations(); ++i) {
+    Adcirc::Output::HmdfStation s;
+    s.setId(list.station(i)->id());
+    s.setName(list.station(i)->name());
+    s.setStationIndex(list.station(i)->stationIndex());
+    s.setCoordinate({list.station(i)->coordinate()->longitude,
+                     list.station(i)->coordinate()->latitude});
+    out.addStation(s);
+  }
+  return out;
 }
 
 void Interpolate::generateInterpolationWeights(Adcirc::Geometry::Mesh &m,

@@ -73,8 +73,9 @@ class Interpolate {
   Adcirc::Geometry::Mesh readMesh(const Adcirc::Output::OutputFormat &filetype);
   Adcirc::Output::Hmdf readStationLocations();
   Adcirc::Output::Hmdf readStationList();
-  void writeAdcirc(Adcirc::Output::ReadOutput &output, Adcirc::Output::Hmdf &stn,
-                   const std::vector<double> &time,
+  Adcirc::Output::Hmdf copyStationList(Adcirc::Output::Hmdf &list);
+  void writeAdcirc(Adcirc::Output::ReadOutput &output,
+                   Adcirc::Output::Hmdf &stn, const std::vector<double> &time,
                    const std::vector<long> &iteration,
                    const std::vector<std::vector<double>> &v1,
                    const std::vector<std::vector<double>> &v2);
