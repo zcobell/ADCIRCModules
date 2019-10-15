@@ -54,7 +54,7 @@ Adcirc::Output::Hmdf Interpolate::readStationLocations() {
     std::string ext = Adcirc::FileIO::Generic::getFileExtension(
         this->m_inputOptions.stationfile);
     if (ext == ".nc") {
-      tempStn.readNetcdf(this->m_inputOptions.stationfile);
+      tempStn.readNetcdf(this->m_inputOptions.stationfile,true);
     } else {
       tempStn.readImeds(this->m_inputOptions.stationfile);
     }
@@ -101,8 +101,8 @@ Adcirc::Output::Hmdf Interpolate::copyStationList(Adcirc::Output::Hmdf &list) {
     s.setId(list.station(i)->id());
     s.setName(list.station(i)->name());
     s.setStationIndex(list.station(i)->stationIndex());
-    s.setCoordinate({list.station(i)->coordinate()->longitude,
-                     list.station(i)->coordinate()->latitude});
+    s.setLongitude(list.station(i)->coordinate()->longitude);
+    s.setLatitude(list.station(i)->coordinate()->latitude);
     out.addStation(s);
   }
   return out;
@@ -175,6 +175,10 @@ void Interpolate::run() {
   Date reftime;
   if (this->m_inputOptions.writedflow) {
     reftime = this->dateFromString(this->m_inputOptions.refdate);
+  }
+
+  for (size_t i = 0; i < stationData.nstations(); ++i) {
+    stationData.station(i)->reserve(globalFile.numSnaps());
   }
 
   this->generateInterpolationWeights(m, stationData);

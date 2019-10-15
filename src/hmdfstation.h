@@ -90,6 +90,8 @@ class HmdfStation {
   double nullValue() const;
   void setNullValue(double nullValue);
 
+  void reserve(size_t size);
+
  private:
   Coordinate m_coordinate;
 

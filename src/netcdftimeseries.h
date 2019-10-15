@@ -31,7 +31,7 @@ class NetcdfTimeseries {
  public:
   explicit NetcdfTimeseries();
 
-  int read();
+  int read(bool stationsOnly);
 
   int toHmdf(Hmdf *hmdf);
 
@@ -49,6 +49,7 @@ class NetcdfTimeseries {
   std::string m_verticalDatum;
   std::string m_horizontalProjection;
   int m_epsg;
+  bool m_hasData;
   size_t m_numStations;
 
   std::vector<double> m_fillValue;

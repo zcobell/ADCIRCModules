@@ -38,6 +38,7 @@ NetcdfTimeseries::NetcdfTimeseries() {
   this->m_verticalDatum = "unknown";
   this->m_horizontalProjection = "WGS84";
   this->m_numStations = 0;
+  this->m_hasData = false;
 }
 
 std::string NetcdfTimeseries::filename() const { return this->m_filename; }
@@ -50,7 +51,7 @@ int NetcdfTimeseries::epsg() const { return this->m_epsg; }
 
 void NetcdfTimeseries::setEpsg(int epsg) { this->m_epsg = epsg; }
 
-int NetcdfTimeseries::read() {
+int NetcdfTimeseries::read(bool stationsOnly = false) {
   if (this->m_filename == std::string()) return 1;
 
   std::string station_dim_string, station_time_var_string,
@@ -97,6 +98,11 @@ int NetcdfTimeseries::read() {
   for (size_t i = 0; i < this->m_numStations; i++) {
     std::string s = stationNameString.substr(200 * i, 200);
     this->m_stationName.push_back(s);
+  }
+
+  if (stationsOnly) {
+    this->m_hasData = false;
+    return 0;
   }
 
   this->m_time.resize(this->m_numStations);
@@ -146,6 +152,7 @@ int NetcdfTimeseries::read() {
 
   NCCHECK(nc_close(ncid))
 
+  this->m_hasData = true;
   return 0;
 }
 
@@ -158,8 +165,10 @@ int NetcdfTimeseries::toHmdf(Hmdf *hmdf) {
 
   for (size_t i = 0; i < this->m_numStations; i++) {
     HmdfStation station;
-    station.setDate(this->m_time[i]);
-    station.setData(this->m_data[i]);
+    if (this->m_hasData) {
+      station.setDate(this->m_time[i]);
+      station.setData(this->m_data[i]);
+    }
     station.setLatitude(this->m_ycoor[i]);
     station.setLongitude(this->m_xcoor[i]);
     station.setName(this->m_stationName[i]);

@@ -22,8 +22,12 @@
 #include <iostream>
 #include "boost/format.hpp"
 
+#ifdef _WIN32
+#define timegm _mkgmtime
+#endif
+
 Date::Date() {
-  struct tm defaultTime = {0};
+  struct tm defaultTime = {70,0,0};
   this->m_date = timegm(&defaultTime);
   this->m_epoch_tm = defaultTime;
   this->m_epoch = this->m_date;
@@ -151,7 +155,6 @@ void Date::setSecond(int second) {
   return;
 }
 
-#include <iostream>
 void Date::fromString(const std::string &datestr) {
   int year = stoi(datestr.substr(0, 4));
   int month = stoi(datestr.substr(5, 2));
@@ -159,7 +162,6 @@ void Date::fromString(const std::string &datestr) {
   int hour = stoi(datestr.substr(11, 2));
   int minute = stoi(datestr.substr(14, 2));
   int second = stoi(datestr.substr(17, 2));
-
   this->set(year, month, day, hour, minute, second);
 }
 

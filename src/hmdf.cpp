@@ -153,10 +153,10 @@ int Hmdf::readImeds(const std::string &filename) {
   return 0;
 }
 
-int Hmdf::readNetcdf(const std::string &filename) {
+int Hmdf::readNetcdf(const std::string &filename, bool stationsOnly) {
   NetcdfTimeseries ncts;
   ncts.setFilename(filename);
-  int ierr = ncts.read();
+  int ierr = ncts.read(stationsOnly);
   if (ierr != 0) {
     return 1;
   }

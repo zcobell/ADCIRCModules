@@ -159,3 +159,8 @@ double HmdfStation::nullValue() const { return this->m_nullValue; }
 void HmdfStation::setNullValue(double nullValue) {
   this->m_nullValue = nullValue;
 }
+
+void HmdfStation::reserve(size_t size) {
+  this->m_data.reserve(size);
+  this->m_date.reserve(size);
+}

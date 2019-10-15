@@ -43,7 +43,7 @@ class Hmdf {
   int writeNetcdf(const std::string &filename);
 
   int readImeds(const std::string &filename);
-  int readNetcdf(const std::string &filename);
+  int readNetcdf(const std::string &filename, bool stationsOnly = false);
 
   size_t nstations() const;
   // void setNstations(size_t nstations);
