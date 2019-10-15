@@ -467,8 +467,8 @@ IF(APPLE)
 ENDIF(APPLE)
 
 IF(USE_GOOGLE_FLAT_MAP)
-    TARGET_LINK_LIBRARIES(adcircmodules absl::base absl::container absl::hash)
-    ADD_DEPENDENCIES(adcircmodules absl::base absl::container absl::hash)
+    TARGET_LINK_LIBRARIES(adcircmodules absl::flat_hash_map)
+    ADD_DEPENDENCIES(adcircmodules absl::flat_hash_map)
     TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE USE_GOOGLE_FLAT_MAP )
 ENDIF(USE_GOOGLE_FLAT_MAP)
 
