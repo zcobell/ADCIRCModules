@@ -20,6 +20,7 @@
 #include <memory>
 #include "boost/format.hpp"
 #include "cdate.h"
+#include "fileio.h"
 #include "netcdf.h"
 
 using namespace Adcirc::Output;
@@ -91,6 +92,7 @@ int NetcdfTimeseries::read() {
       new char[stationNameLength * this->m_numStations]);
   NCCHECK(nc_get_var_text(ncid, varid_stationName, stationName.get()))
   stationNameString = std::string(stationName.get());
+  FileIO::Generic::sanitizeString(stationNameString);
 
   for (size_t i = 0; i < this->m_numStations; i++) {
     std::string s = stationNameString.substr(200 * i, 200);
