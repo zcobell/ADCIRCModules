@@ -205,9 +205,11 @@ void Interpolate::run() {
     }
   }
 
+  size_t nsnap =
+      this->m_inputOptions.endsnap - this->m_inputOptions.startsnap + 1;
   for (size_t i = this->m_inputOptions.startsnap;
-       i < this->m_inputOptions.endsnap; ++i) {
-    globalFile.read(i);
+       i <= this->m_inputOptions.endsnap; ++i) {
+    globalFile.read(i - 1);
     Date d = coldstart;
     d.add(globalFile.dataAt(0)->time());
     long long datetime = d.toMSeconds();
@@ -244,12 +246,13 @@ void Interpolate::run() {
         }
       }
     }
-    double pct = (static_cast<double>(i + 1) /
-                  static_cast<double>(globalFile.numSnaps())) *
+    double pct = (static_cast<double>(i - this->m_inputOptions.startsnap + 1) /
+                  static_cast<double>(nsnap)) *
                  100.0;
-    std::string logMessage =
-        boost::str(boost::format("Processing snap %6.6i of %6.6i (%6.2f%%)") %
-                   (i + 1) % globalFile.numSnaps() % pct);
+    std::string logMessage = boost::str(
+        boost::format(
+            "Processing snap %6.6i of %6.6i (File Snap: %6.6i) [%6.2f%%]") %
+        (i - this->m_inputOptions.startsnap + 1) % nsnap % i % pct);
     Adcirc::Logging::log(logMessage, "[INFO]: ");
     globalFile.clearAt(0);
   }

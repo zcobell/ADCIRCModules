@@ -168,11 +168,12 @@ void validateOptionsList(Interpolate::InputOptions &input) {
   Adcirc::Output::ReadOutput gbl(input.globalfile);
   gbl.open();
 
-  if (input.startsnap < std::numeric_limits<size_t>::max() &&
-      Adcirc::FileIO::Generic::getFileExtension(input.globalfile) != ".nc") {
-    Adcirc::Logging::logError("Must use netCDF format to dictate start snap.",
-                              "[ERROR]: ");
-    exit(1);
+  if (input.startsnap < std::numeric_limits<size_t>::max()) {
+    if (Adcirc::FileIO::Generic::getFileExtension(input.globalfile) != ".nc") {
+      Adcirc::Logging::logError("Must use netCDF format to dictate start snap.",
+                                "[ERROR]: ");
+      exit(1);
+    }
   } else {
     input.startsnap = 0;
   }
