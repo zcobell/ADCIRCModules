@@ -24,7 +24,7 @@
 #include "logging.h"
 
 Interpolate::InputOptions parseCommandLineOptions(cxxopts::ParseResult &parser);
-void validateOptionsList(const Interpolate::InputOptions &input);
+void validateOptionsList(Interpolate::InputOptions &input);
 
 int main(int argc, char *argv[]) {
   cxxopts::Options options("interpolateAdcircStations",
@@ -117,7 +117,7 @@ Interpolate::InputOptions parseCommandLineOptions(
   return input;
 }
 
-void validateOptionsList(const Interpolate::InputOptions &input) {
+void validateOptionsList(Interpolate::InputOptions &input) {
   if (input.readasciimesh ||
       Adcirc::FileIO::Generic::getFileExtension(input.globalfile) != ".nc") {
     if (input.mesh == std::string()) {
@@ -154,12 +154,6 @@ void validateOptionsList(const Interpolate::InputOptions &input) {
         "Must supply reference date to write dflow format files.", "[ERROR]: ");
     exit(1);
   }
-  if (input.startsnap < std::numeric_limits<size_t>::max() &&
-      Adcirc::FileIO::Generic::getFileExtension(input.globalfile) != ".nc") {
-    Adcirc::Logging::logError("Must use netCDF format to dictate start snap.",
-                              "[ERROR]: ");
-    exit(1);
-  }
   if (!Adcirc::FileIO::Generic::fileExists(input.globalfile)) {
     Adcirc::Logging::logError("Global file does not exist.", "[ERROR]: ");
     exit(1);
@@ -170,15 +164,27 @@ void validateOptionsList(const Interpolate::InputOptions &input) {
       exit(1);
     }
   }
+
+  Adcirc::Output::ReadOutput gbl(input.globalfile);
+  gbl.open();
+
+  if (input.startsnap < std::numeric_limits<size_t>::max() &&
+      Adcirc::FileIO::Generic::getFileExtension(input.globalfile) != ".nc") {
+    Adcirc::Logging::logError("Must use netCDF format to dictate start snap.",
+                              "[ERROR]: ");
+    exit(1);
+  } else {
+    input.startsnap = 0;
+  }
   if (input.endsnap < std::numeric_limits<size_t>::max()) {
-    Adcirc::Output::ReadOutput gbl(input.globalfile);
-    gbl.open();
     if (input.endsnap > gbl.numSnaps()) {
       gbl.close();
       Adcirc::Logging::logError("Specified end snap exceeds file length",
                                 "[ERROR]: ");
       exit(1);
     }
+  } else {
+    input.endsnap = gbl.numSnaps();
   }
   return;
 }

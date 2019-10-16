@@ -178,7 +178,8 @@ void Interpolate::run() {
   }
 
   for (size_t i = 0; i < stationData.nstations(); ++i) {
-    stationData.station(i)->reserve(globalFile.numSnaps());
+    stationData.station(i)->reserve(this->m_inputOptions.endsnap -
+                                    this->m_inputOptions.startsnap);
   }
 
   this->generateInterpolationWeights(m, stationData);
@@ -204,7 +205,8 @@ void Interpolate::run() {
     }
   }
 
-  for (size_t i = 0; i < globalFile.numSnaps(); ++i) {
+  for (size_t i = this->m_inputOptions.startsnap;
+       i < this->m_inputOptions.endsnap; ++i) {
     globalFile.read(i);
     Date d = coldstart;
     d.add(globalFile.dataAt(0)->time());
