@@ -54,7 +54,7 @@ Adcirc::Output::Hmdf Interpolate::readStationLocations() {
     std::string ext = Adcirc::FileIO::Generic::getFileExtension(
         this->m_inputOptions.stationfile);
     if (ext == ".nc") {
-      tempStn.readNetcdf(this->m_inputOptions.stationfile,true);
+      tempStn.readNetcdf(this->m_inputOptions.stationfile, true);
     } else {
       tempStn.readImeds(this->m_inputOptions.stationfile);
     }

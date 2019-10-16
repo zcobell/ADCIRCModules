@@ -160,6 +160,7 @@ int Hmdf::readNetcdf(const std::string &filename, bool stationsOnly) {
   if (ierr != 0) {
     return 1;
   }
+
   ierr = ncts.toHmdf(this);
 
   if (ierr != 0) return 1;

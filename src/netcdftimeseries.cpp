@@ -100,13 +100,10 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
     this->m_stationName.push_back(s);
   }
 
-  if (stationsOnly) {
-    this->m_hasData = false;
-    return 0;
+  if (!stationsOnly) {
+    this->m_time.resize(this->m_numStations);
+    this->m_data.resize(this->m_numStations);
   }
-
-  this->m_time.resize(this->m_numStations);
-  this->m_data.resize(this->m_numStations);
 
   for (size_t i = 0; i < this->m_numStations; i++) {
     std::string station_dim_string =
@@ -133,26 +130,28 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
     if (fillValue == NC_FILL_DOUBLE) fillValue = -99999.0;
     this->m_fillValue.push_back(fillValue);
 
-    std::unique_ptr<long long> timeData(new long long[length]);
-    std::unique_ptr<double> varData(new double[length]);
+    if (!stationsOnly) {
+      std::unique_ptr<long long> timeData(new long long[length]);
+      std::unique_ptr<double> varData(new double[length]);
 
-    NCCHECK(nc_get_var_double(ncid, varid_data, varData.get()))
-    NCCHECK(nc_get_var_longlong(ncid, varid_time, timeData.get()))
+      NCCHECK(nc_get_var_double(ncid, varid_data, varData.get()))
+      NCCHECK(nc_get_var_longlong(ncid, varid_time, timeData.get()))
 
-    this->m_data[i].resize(length);
-    this->m_time[i].resize(length);
+      this->m_data[i].resize(length);
+      this->m_time[i].resize(length);
 
-    for (size_t j = 0; j < length; j++) {
-      this->m_data[i][j] = varData.get()[j];
-      Date t = reftime;
-      t.add(timeData.get()[j]);
-      this->m_time[i][j] = t.toMSeconds();
+      for (size_t j = 0; j < length; j++) {
+        this->m_data[i][j] = varData.get()[j];
+        Date t = reftime;
+        t.add(timeData.get()[j]);
+        this->m_time[i][j] = t.toMSeconds();
+      }
     }
   }
 
   NCCHECK(nc_close(ncid))
 
-  this->m_hasData = true;
+  this->m_hasData = !stationsOnly;
   return 0;
 }
 

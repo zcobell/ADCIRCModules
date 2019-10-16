@@ -26,19 +26,16 @@
 #define timegm _mkgmtime
 #endif
 
-Date::Date() {
-  struct tm defaultTime = {70,0,0};
-  this->m_date = timegm(&defaultTime);
-  this->m_epoch_tm = defaultTime;
-  this->m_epoch = this->m_date;
-}
+Date::Date() { this->init(); }
 
 Date::Date(int year, int month, int day, int hour, int minute, int second) {
+  this->init();
+  this->set(year, month, day, hour, minute, second);
+}
+
+void Date::init() {
   struct tm defaultTime = {0};
   this->m_date = timegm(&defaultTime);
-  this->m_epoch_tm = defaultTime;
-  this->m_epoch = this->m_date;
-  this->set(year, month, day, hour, minute, second);
 }
 
 void Date::add(long seconds) {
@@ -76,7 +73,8 @@ void Date::set(int year, int month, int day, int hour, int minute, int second) {
   return;
 }
 
-void Date::get(int year, int month, int day, int hour, int minute, int second) {
+void Date::get(int &year, int &month, int &day, int &hour, int &minute,
+               int &second) {
   year = this->year();
   month = this->month();
   day = this->day();
@@ -87,7 +85,7 @@ void Date::get(int year, int month, int day, int hour, int minute, int second) {
 }
 
 void Date::fromSeconds(long long seconds) {
-  this->m_date = this->m_epoch + seconds;
+  this->m_date = seconds;
   this->buildTm();
   this->buildDate();
   return;
@@ -97,7 +95,14 @@ void Date::fromMSeconds(long long mseconds) {
   this->fromSeconds(mseconds / 1000);
 }
 
-long long Date::toSeconds() { return this->m_date - this->m_epoch; }
+long long Date::toSeconds() {
+  return this->m_tm.tm_sec + this->m_tm.tm_min * 60 +
+         this->m_tm.tm_hour * 3600 + this->m_tm.tm_yday * 86400 +
+         (this->m_tm.tm_year - 70) * 31536000 +
+         ((this->m_tm.tm_year - 69) / 4) * 86400 -
+         ((this->m_tm.tm_year - 1) / 100) * 86400 +
+         ((this->m_tm.tm_year + 299) / 400) * 86400;
+}
 
 long long Date::toMSeconds() { return this->toSeconds() * 1000; }
 

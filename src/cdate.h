@@ -28,8 +28,8 @@ class Date {
 
   void add(long seconds);
 
-  void get(int year, int month, int day, int hour, int minute,
-           int second);
+  void get(int &year, int &month, int &day, int &hour, int &minute,
+           int &second);
 
   void set(int year, int month, int day, int hour, int minute, int second);
 
@@ -70,10 +70,9 @@ class Date {
   void buildDate(int year, int month, int day, int hour, int minute,
                  int second);
   void buildDate();
+  void init();
 
   std::time_t m_date;
-  std::time_t m_epoch;
   struct std::tm m_tm;
-  struct std::tm m_epoch_tm;
 };
 #endif
