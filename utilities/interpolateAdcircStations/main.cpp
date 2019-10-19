@@ -167,25 +167,27 @@ void validateOptionsList(Interpolate::InputOptions &input) {
 
   Adcirc::Output::ReadOutput gbl(input.globalfile);
   gbl.open();
+  size_t ns = gbl.numSnaps();
+  gbl.close();
 
-  if (input.startsnap < std::numeric_limits<size_t>::max()) {
+  if (input.startsnap < std::numeric_limits<size_t>::max() ||
+      input.startsnap == 0) {
     if (Adcirc::FileIO::Generic::getFileExtension(input.globalfile) != ".nc") {
       Adcirc::Logging::logError("Must use netCDF format to dictate start snap.",
                                 "[ERROR]: ");
       exit(1);
     }
   } else {
-    input.startsnap = 0;
+    input.startsnap = 1;
   }
   if (input.endsnap < std::numeric_limits<size_t>::max()) {
     if (input.endsnap > gbl.numSnaps()) {
-      gbl.close();
       Adcirc::Logging::logError("Specified end snap exceeds file length",
                                 "[ERROR]: ");
       exit(1);
     }
   } else {
-    input.endsnap = gbl.numSnaps();
+    input.endsnap = ns;
   }
   return;
 }

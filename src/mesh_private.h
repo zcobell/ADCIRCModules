@@ -145,6 +145,7 @@ class MeshPrivate {
                   size_t numLandBoundaries);
 
   void addNode(size_t index, const Adcirc::Geometry::Node &node);
+  void addNode(size_t index, const Adcirc::Geometry::Node *node);
   void deleteNode(size_t index);
 
   void addElement(size_t index, const Adcirc::Geometry::Element &element);
@@ -180,6 +181,11 @@ class MeshPrivate {
   std::vector<Adcirc::Geometry::Element> *elements();
   std::vector<Adcirc::Geometry::Boundary> *openBoundaries();
   std::vector<Adcirc::Geometry::Boundary> *landBoundaries();
+
+  bool containsNode(const Geometry::Node *n, size_t &index);
+  bool containsNode(const Geometry::Node &n, size_t &index);
+  bool containsElement(const Adcirc::Geometry::Element *e, size_t &index);
+  bool containsElement(const Adcirc::Geometry::Element &e, size_t &index);
 
  private:
   static void meshCopier(MeshPrivate *a, const MeshPrivate *b);

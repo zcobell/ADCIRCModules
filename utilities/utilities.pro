@@ -21,5 +21,6 @@ TEMPLATE = subdirs
 
 SUBDIRS  = \
     generateAdcircSimulationDates \
-    interpolateAdcircStations
+    interpolateAdcircStations \
+    resultsScope
 CONFIG += ordered           

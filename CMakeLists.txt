@@ -739,4 +739,14 @@ TARGET_INCLUDE_DIRECTORIES( generateAdcircSimulationDates PRIVATE
 ADD_DEPENDENCIES( generateAdcircSimulationDates adcircmodules ezproj )
 TARGET_LINK_LIBRARIES( generateAdcircSimulationDates PRIVATE adcircmodules ezproj ${Boost_LIBRARIES} )
 INSTALL( TARGETS generateAdcircSimulationDates RUNTIME DESTINATION bin )
+
+
+ADD_EXECUTABLE( resultsScope ${CMAKE_SOURCE_DIR}/utilities/resultsScope/main.cpp )
+TARGET_INCLUDE_DIRECTORIES( resultsScope PRIVATE 
+                            ${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src
+                            ${CMAKE_SOURCE_DIR}/thirdparty/cxxopts
+                            ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src ) 
+ADD_DEPENDENCIES( resultsScope adcircmodules ezproj )
+TARGET_LINK_LIBRARIES( resultsScope PRIVATE adcircmodules ezproj ${Boost_LIBRARIES} )
+INSTALL( TARGETS resultsScope RUNTIME DESTINATION bin )
 ###########################################################################

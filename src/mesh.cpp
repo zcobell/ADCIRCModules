@@ -530,6 +530,9 @@ void Mesh::resizeMesh(size_t numNodes, size_t numElements,
 void Mesh::addNode(size_t index, const Node &node) {
   return this->m_impl->addNode(index, node);
 }
+void Mesh::addNode(size_t index, const Node *node) {
+  return this->m_impl->addNode(index, node);
+}
 
 /**
  * @brief Deletes an Node object at the specified index and shifts the
@@ -731,4 +734,20 @@ std::vector<Adcirc::Geometry::Boundary> *Mesh::openBoundaries() {
  */
 std::vector<Adcirc::Geometry::Boundary> *Mesh::landBoundaries() {
   return this->m_impl->landBoundaries();
+}
+
+bool Mesh::containsNode(Adcirc::Geometry::Node &n, size_t &index) {
+  return this->m_impl->containsNode(n, index);
+}
+
+bool Mesh::containsNode(Adcirc::Geometry::Node *n, size_t &index) {
+  return this->m_impl->containsNode(n, index);
+}
+
+bool Mesh::containsElement(Adcirc::Geometry::Element &e, size_t &index) {
+  return this->m_impl->containsElement(e, index);
+}
+
+bool Mesh::containsElement(Adcirc::Geometry::Element *e, size_t &index) {
+  return this->m_impl->containsElement(e, index);
 }

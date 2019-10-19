@@ -1566,22 +1566,18 @@ void MeshPrivate::resizeMesh(size_t numNodes, size_t numElements,
                              size_t numOpenBoundaries,
                              size_t numLandBoundaries) {
   if (numNodes != this->numNodes()) {
-    this->m_nodes.resize(numNodes);
     this->setNumNodes(numNodes);
   }
 
   if (numElements != this->numElements()) {
-    this->m_elements.resize(numElements);
     this->setNumElements(numElements);
   }
 
   if (numOpenBoundaries != this->numOpenBoundaries()) {
-    this->m_openBoundaries.resize(numOpenBoundaries);
     this->setNumOpenBoundaries(numOpenBoundaries);
   }
 
   if (numLandBoundaries != this->numLandBoundaries()) {
-    this->m_landBoundaries.resize(numLandBoundaries);
     this->setNumLandBoundaries(numLandBoundaries);
   }
 
@@ -1599,7 +1595,15 @@ void MeshPrivate::addNode(size_t index, const Node &node) {
   } else {
     adcircmodules_throw_exception("Mesh: Node index > number of nodes");
   }
-
+  return;
+}
+void MeshPrivate::addNode(size_t index, const Node *node) {
+  if (index < this->numNodes()) {
+    this->m_nodes[index] =
+        Adcirc::Geometry::Node(node->id(), node->x(), node->y(), node->z());
+  } else {
+    adcircmodules_throw_exception("Mesh: Node index > number of nodes");
+  }
   return;
 }
 
@@ -2532,4 +2536,50 @@ std::vector<Adcirc::Geometry::Boundary> *MeshPrivate::openBoundaries() {
 
 std::vector<Adcirc::Geometry::Boundary> *MeshPrivate::landBoundaries() {
   return &this->m_landBoundaries;
+}
+
+bool MeshPrivate::containsNode(const Adcirc::Geometry::Node *n, size_t &index) {
+  auto id = std::find(this->m_nodes.begin(), this->m_nodes.end(), n);
+  bool found = id != this->m_nodes.end();
+  if (found) {
+    index = id - this->m_nodes.begin();
+  } else {
+    index = std::numeric_limits<size_t>::max();
+  }
+  return found;
+}
+
+bool MeshPrivate::containsNode(const Adcirc::Geometry::Node &n, size_t &index) {
+  auto id = std::find(this->m_nodes.begin(), this->m_nodes.end(), n);
+  bool found = id != this->m_nodes.end();
+  if (found) {
+    index = id - this->m_nodes.begin();
+  } else {
+    index = std::numeric_limits<size_t>::max();
+  }
+  return found;
+}
+
+bool MeshPrivate::containsElement(const Adcirc::Geometry::Element *e,
+                                  size_t &index) {
+  auto id = std::find(this->m_elements.begin(), this->m_elements.end(), e);
+  bool found = id != this->m_elements.end();
+  if (found) {
+    index = id - this->m_elements.begin();
+  } else {
+    index = std::numeric_limits<size_t>::max();
+  }
+  return found;
+}
+
+bool MeshPrivate::containsElement(const Adcirc::Geometry::Element &e,
+                                  size_t &index) {
+  auto id = std::find(this->m_elements.begin(), this->m_elements.end(), e);
+  bool found = id != this->m_elements.end();
+  if (found) {
+    index = id - this->m_elements.begin();
+  } else {
+    index = std::numeric_limits<size_t>::max();
+  }
+  return found;
 }

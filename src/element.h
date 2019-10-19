@@ -55,6 +55,8 @@ class Element {
   ADCIRCMODULES_EXPORT Element(const Element &e);
 
   ADCIRCMODULES_EXPORT Element &operator=(const Element &e);
+  ADCIRCMODULES_EXPORT bool operator==(const Element &e);
+  ADCIRCMODULES_EXPORT bool operator==(const Element *e);
 
   ADCIRCMODULES_EXPORT ~Element();
 

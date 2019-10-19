@@ -46,6 +46,8 @@ class Node {
   ADCIRCMODULES_EXPORT Node(const Node &n);
 
   ADCIRCMODULES_EXPORT Node &operator=(const Node &n);
+  ADCIRCMODULES_EXPORT bool operator==(const Node &n);
+  ADCIRCMODULES_EXPORT bool operator==(const Node *n);
 
   ADCIRCMODULES_EXPORT ~Node();
 
