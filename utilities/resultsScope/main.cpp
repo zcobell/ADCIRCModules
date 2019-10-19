@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iostream>
+#include <memory>
 #include <set>
 #include "adcircmodules.h"
 #include "boost/format.hpp"
@@ -28,18 +29,16 @@ int checkInputOptions(const _inputOptions &input);
 int generateSubdomain(const std::string &meshFile,
                       const std::string &subdomainFile,
                       const std::string &subdomainMeshFile,
-                      std::unordered_map<size_t, size_t> &nodeMap,
+                      std::vector<size_t> &nodeMap,
                       Adcirc::Geometry::Mesh &subdomainMesh);
 
-int generateSubdomainOutput(
-    Adcirc::Geometry::Mesh &subdomainMesh,
-    std::unordered_map<size_t, size_t> translation_table,
-    const std::string &globalOutputFile,
-    const std::string &subdomainOutputFile);
+int generateSubdomainOutput(Adcirc::Geometry::Mesh &subdomainMesh,
+                            std::vector<size_t> translation_table,
+                            const std::string &globalOutputFile,
+                            const std::string &subdomainOutputFile);
 
 Adcirc::Output::OutputRecord *subsetRecord(
-    std::unordered_map<size_t, size_t> table,
-    Adcirc::Output::OutputRecord *global);
+    std::vector<size_t> table, Adcirc::Output::OutputRecord *global);
 
 int main(int argc, char *argv[]) {
   cxxopts::Options options("resultScope", "Trim ADCIRC output files to domain");
@@ -73,7 +72,7 @@ int main(int argc, char *argv[]) {
   }
 
   Adcirc::Geometry::Mesh subdomain;
-  std::unordered_map<size_t, size_t> translation;
+  std::vector<size_t> translation;
   int ierr = generateSubdomain(input.mesh, input.subdomain, input.outputMesh,
                                translation, subdomain);
   if (ierr != 0) {
@@ -141,7 +140,7 @@ int checkInputOptions(const _inputOptions &input) {
 int generateSubdomain(const std::string &meshFile,
                       const std::string &subdomainFile,
                       const std::string &subdomainMeshFile,
-                      std::unordered_map<size_t, size_t> &nodeMap,
+                      std::vector<size_t> &nodeMap,
                       Adcirc::Geometry::Mesh &subdomainMesh) {
   Adcirc::Geometry::Mesh globalMesh(meshFile);
   Adcirc::Geometry::Mesh subdomainTemplateMesh(subdomainFile);
@@ -210,7 +209,7 @@ int generateSubdomain(const std::string &meshFile,
 
   for (size_t i = 0; i < nodeListVector.size(); ++i) {
     revNodeMap[nodeListVector[i]->id() - 1] = i;
-    nodeMap[i] = nodeListVector[i]->id() - 1;
+    nodeMap.push_back(nodeListVector[i]->id() - 1);
     subdomainMesh.addNode(i, nodeListVector[i]);
   }
   nodeListVector.clear();
@@ -242,11 +241,10 @@ int generateSubdomain(const std::string &meshFile,
   return 0;
 }
 
-int generateSubdomainOutput(
-    Adcirc::Geometry::Mesh &subdomainMesh,
-    std::unordered_map<size_t, size_t> translation_table,
-    const std::string &globalOutputFile,
-    const std::string &subdomainOutputFile) {
+int generateSubdomainOutput(Adcirc::Geometry::Mesh &subdomainMesh,
+                            std::vector<size_t> translation_table,
+                            const std::string &globalOutputFile,
+                            const std::string &subdomainOutputFile) {
   Adcirc::Logging::log("Writing subdomain output data", "[INFO]: ");
 
   Adcirc::Output::ReadOutput global(globalOutputFile);
@@ -274,18 +272,16 @@ int generateSubdomainOutput(
 }
 
 Adcirc::Output::OutputRecord *subsetRecord(
-    std::unordered_map<size_t, size_t> table,
-    Adcirc::Output::OutputRecord *global) {
+    std::vector<size_t> table, Adcirc::Output::OutputRecord *global) {
   size_t nn = table.size();
   Adcirc::Output::OutputRecord *r = new Adcirc::Output::OutputRecord(
       global->record(), nn, *global->metadata());
   for (size_t i = 0; i < nn; ++i) {
-    size_t index = table[i];
     if (r->metadata()->isVector()) {
-      r->setU(i, global->u(index));
-      r->setV(i, global->v(index));
+      r->setU(i, global->u(table[i]));
+      r->setV(i, global->v(table[i]));
     } else {
-      r->set(i, global->z(index));
+      r->set(i, global->z(table[i]));
     }
   }
   return r;
