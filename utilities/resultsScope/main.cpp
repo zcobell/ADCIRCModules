@@ -276,6 +276,7 @@ Adcirc::Output::OutputRecord *subsetRecord(
   size_t nn = table.size();
   Adcirc::Output::OutputRecord *r = new Adcirc::Output::OutputRecord(
       global->record(), nn, *global->metadata());
+  r->setTime(global->time());
   for (size_t i = 0; i < nn; ++i) {
     if (r->metadata()->isVector()) {
       r->setU(i, global->u(table[i]));
