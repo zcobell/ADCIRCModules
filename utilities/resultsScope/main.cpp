@@ -247,26 +247,25 @@ int generateSubdomainOutput(
     std::unordered_map<size_t, size_t> translation_table,
     const std::string &globalOutputFile,
     const std::string &subdomainOutputFile) {
+  Adcirc::Logging::log("Writing subdomain output data", "[INFO]: ");
+
   Adcirc::Output::ReadOutput global(globalOutputFile);
   global.open();
 
   Adcirc::Output::WriteOutput out(subdomainOutputFile, &global, &subdomainMesh);
   out.open();
 
-  boost::progress_display *progress =
-      new boost::progress_display(global.numSnaps());
+  std::unique_ptr<boost::progress_display> progress(
+      new boost::progress_display(global.numSnaps()));
 
   for (size_t i = 0; i < global.numSnaps(); ++i) {
-    ++(*progress);
+    ++(*progress.get());
     global.read(i);
-    Adcirc::Output::OutputRecord *r =
-        subsetRecord(translation_table, global.dataAt(0));
-    out.write(r);
+    std::unique_ptr<Adcirc::Output::OutputRecord> r(
+        subsetRecord(translation_table, global.dataAt(0)));
+    out.write(r.get());
     global.clearAt(0);
-    delete r;
   }
-
-  delete progress;
 
   global.close();
   out.close();
