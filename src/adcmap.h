@@ -23,6 +23,7 @@
 #include "absl/container/flat_hash_map.h"
 #else
 #include <unordered_map>
+#include "boost/functional/hash.hpp"
 #endif
 
 //...Alias for using the Google hashtable if
@@ -32,7 +33,7 @@ template <typename T1, typename T2>
 #ifdef USE_GOOGLE_FLAT_MAP
 using adcmap = absl::flat_hash_map<T1, T2>;
 #else
-using adcmap = std::unordered_map<T1, T2>;
+using adcmap = std::unordered_map<T1, T2, boost::hash<T1> >;
 #endif
 
 #endif  // ADCMOD_ADCMAP_H
