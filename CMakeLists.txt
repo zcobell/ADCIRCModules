@@ -13,6 +13,8 @@
 INCLUDE (CheckIncludeFiles)
 INCLUDE (CheckLibraryExists) 
 INCLUDE (CheckFunctionExists)
+INCLUDE (GNUInstallDirs)
+INCLUDE (CMakePackageConfigHelpers)
 
 #...Set the default build type
 IF(DEFINED CMAKE_BUILD_TYPE)
@@ -310,7 +312,7 @@ ENDIF(ENABLE_GDAL)
 ###########################################################################
 #  EzProj Library
 ###########################################################################
-add_subdirectory( ${CMAKE_SOURCE_DIR}/thirdparty/ezproj )
+add_subdirectory( ${CMAKE_SOURCE_DIR}/thirdparty/ezproj EXCLUDE_FROM_ALL )
 ###########################################################################
 
 ###########################################################################
@@ -432,18 +434,20 @@ SET_TARGET_PROPERTIES( adcircmodules PROPERTIES PUBLIC_HEADER "${HEADER_LIST}" )
 
 IF(${CMAKE_INSTALL_PREFIX} STREQUAL "/usr/local" OR ${CMAKE_INSTALL_PREFIX} STREQUAL "/usr/local/" OR
    ${CMAKE_INSTALL_PREFIX} STREQUAL "/usr/" OR ${CMAKE_INSTALL_PREFIX} STREQUAL "/usr/")
-    SET(HEADER_DEST "include/adcircmodules")
+    SET(HEADER_DEST "${CMAKE_INSTALL_INCLUDEDIR}/adcircmodules")
 ELSE()
-    SET(HEADER_DEST "include")
+    SET(HEADER_DEST ${CMAKE_INSTALL_INCLUDEDIR})
 ENDIF()
 
-IF(WIN32)
-    INSTALL(TARGETS adcircmodules LIBRARY DESTINATION bin RUNTIME DESTINATION lib PUBLIC_HEADER DESTINATION ${HEADER_DEST})
-ELSEIF(CYGWIN)
-    INSTALL(TARGETS adcircmodules LIBRARY DESTINATION lib RUNTIME DESTINATION lib PUBLIC_HEADER DESTINATION ${HEADER_DEST})
-ELSE(WIN32)
-    INSTALL( TARGETS adcircmodules LIBRARY DESTINATION lib PUBLIC_HEADER DESTINATION ${HEADER_DEST})
-ENDIF(WIN32)
+WRITE_BASIC_PACKAGE_VERSION_FILE( adcircmodulesConfigVersion.cmake VERSION ${ADCIRCMODULES_VERSION_STRING} COMPATIBILITY SameMajorVersion )
+INSTALL( TARGETS adcircmodules RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT ADCIRCMODULES_RUNTIME
+                               LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT ADCIRCMODULES_RUNTIME
+                               ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT ADCIRCMODULES_DEVELOPMENT
+                               PUBLIC_HEADER DESTINATION ${HEADER_DEST}    COMPONENT ADCIRCMODULES_DEVELOPMENT )
+INSTALL( FILES ${CMAKE_CURRENT_BINARY_DIR}/adcircmodulesConfigVersion.cmake DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake )
+
+SET_TARGET_PROPERTIES(adcircmodules PROPERTIES CMAKE_CXX_VISIBILITY_PRESET hidden)
+SET_TARGET_PROPERTIES(adcircmodules PROPERTIES CMAKE_CXX_INLINES_HIDDEN YES)
 
 TARGET_LINK_LIBRARIES( adcircmodules ezproj shapelib )
 
