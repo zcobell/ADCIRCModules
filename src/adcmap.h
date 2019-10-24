@@ -26,6 +26,7 @@
 #include "boost/functional/hash.hpp"
 #endif
 
+namespace Adcirc {
 //...Alias for using the Google hashtable if
 //   available. Prevents using ifdefs throughout
 //   source files
@@ -35,5 +36,6 @@ using adcmap = absl::flat_hash_map<T1, T2>;
 #else
 using adcmap = std::unordered_map<T1, T2, boost::hash<T1> >;
 #endif
+}  // namespace Adcirc
 
 #endif  // ADCMOD_ADCMAP_H

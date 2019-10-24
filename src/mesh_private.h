@@ -221,8 +221,8 @@ class MeshPrivate {
 
   void generateHash(bool force = false);
 
-  adcmap<size_t, size_t> m_nodeLookup;
-  adcmap<size_t, size_t> m_elementLookup;
+  Adcirc::adcmap<size_t, size_t> m_nodeLookup;
+  Adcirc::adcmap<size_t, size_t> m_elementLookup;
 
   Adcirc::Cryptography::HashType m_hashType;
 

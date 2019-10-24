@@ -643,7 +643,8 @@ void ReadOutput::readNetcdfRecord(size_t snap,
     if (this->metadata()->dimension() == 1) {
       std::unique_ptr<double> u(new double[this->numNodes()]);
       int ierr = nc_get_var(this->m_ncid, this->m_varid_data[0], u.get());
-
+      record->setAll(this->numNodes(), u.get());
+        
       if (ierr != NC_NOERR) {
         adcircmodules_throw_exception(
             "ReadOutput: Error reading netcdf record");

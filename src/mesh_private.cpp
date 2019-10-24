@@ -2451,7 +2451,7 @@ std::vector<Adcirc::Geometry::Node *> MeshPrivate::boundaryNodes() {
   std::vector<std::pair<Node *, Node *>> links = this->generateLinkTable();
   std::vector<size_t> count(links.size());
   std::fill(count.begin(), count.end(), 0);
-  adcmap<std::pair<Node *, Node *>, size_t> lookup;
+  Adcirc::adcmap<std::pair<Node *, Node *>, size_t> lookup;
 
   lookup.reserve(links.size());
   for (size_t i = 0; i < links.size(); ++i) {

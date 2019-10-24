@@ -90,9 +90,9 @@ class HarmonicsOutputPrivate {
   std::vector<Adcirc::Harmonics::HarmonicsRecord> m_uphase;
   std::vector<Adcirc::Harmonics::HarmonicsRecord> m_vphase;
 
-  adcmap<size_t, size_t> m_nodeIndex;
-  adcmap<std::string, size_t> m_index;
-  adcmap<size_t, std::string> m_reverseIndex;
+  Adcirc::adcmap<size_t, size_t> m_nodeIndex;
+  Adcirc::adcmap<std::string, size_t> m_index;
+  Adcirc::adcmap<size_t, std::string> m_reverseIndex;
 
   void getFiletype();
   Adcirc::Harmonics::HarmonicsFormat getHarmonicsFormatFromExtension(

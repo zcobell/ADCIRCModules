@@ -407,6 +407,7 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/hash.h
                 ${CMAKE_SOURCE_DIR}/src/hashtype.h
                 ${CMAKE_SOURCE_DIR}/src/hmdf.h
+                ${CMAKE_SOURCE_DIR}/src/hmdfstation.h
                 ${CMAKE_SOURCE_DIR}/src/logging.h
                 ${CMAKE_SOURCE_DIR}/src/filetypes.h
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.h

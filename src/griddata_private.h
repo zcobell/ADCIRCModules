@@ -155,7 +155,7 @@ class GriddataPrivate {
   std::string m_rasterFile;
   std::vector<int> m_interpolationFlags;
   int m_epsg;
-  adcmap<unsigned short, double> m_lookup;
+  Adcirc::adcmap<unsigned short, double> m_lookup;
 
   Interpolation::Threshold m_thresholdMethod;
   double m_rasterMultiplier;
