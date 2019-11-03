@@ -17,12 +17,11 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "rasterdata.h"
+
 #include <algorithm>
 #include <cassert>
 #include <iostream>
-#include "cpl_conv.h"
-#include "cpl_error.h"
-#include "gdal_priv.h"
+
 #include "logging.h"
 
 using namespace Adcirc::Raster;
@@ -363,10 +362,7 @@ void Rasterdata::readDoubleRasterToMemory() {
       GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
       static_cast<GDALDataType>(this->m_readType), 0, 0);
 
-  this->m_doubleOnDisk.resize(this->nx());
-  for (size_t i = 0; i < this->m_doubleOnDisk.size(); ++i) {
-    this->m_doubleOnDisk[i].resize(this->ny());
-  }
+  this->m_doubleOnDisk.resize(boost::extents[this->m_nx][this->m_ny]);
 
   size_t k = 0;
   for (size_t j = 0; j < this->ny(); ++j) {
@@ -375,6 +371,7 @@ void Rasterdata::readDoubleRasterToMemory() {
       k++;
     }
   }
+
   CPLFree(buf);
 }
 
@@ -391,10 +388,7 @@ void Rasterdata::readIntegerRasterToMemory() {
       GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
       static_cast<GDALDataType>(this->m_readType), 0, 0);
 
-  this->m_intOnDisk.resize(this->nx());
-  for (size_t i = 0; i < this->m_intOnDisk.size(); ++i) {
-    this->m_intOnDisk[i].resize(this->ny());
-  }
+  this->m_intOnDisk.resize(boost::extents[this->m_nx][this->m_ny]);
 
   size_t k = 0;
   for (size_t j = 0; j < this->ny(); ++j) {
