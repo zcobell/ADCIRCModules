@@ -79,6 +79,15 @@ std::string Adcirc::FileIO::Generic::getFileExtension(
   return "";
 }
 
+std::string Adcirc::FileIO::Generic::getFileWithoutExtension(
+    const std::string &filename) {
+  size_t pos = filename.rfind('.');
+  if (pos != std::string::npos) {
+    return std::string(filename.begin(), filename.begin() + pos);
+  }
+  return filename;
+}
+
 /**
  * @brief Checks if a file exists
  * @param[in] filename name of file to check for
@@ -280,8 +289,8 @@ bool Adcirc::FileIO::AdcircIO::splitStringHarmonicsElevationFormat(
 }
 
 /**
- * @brief Splits the harmonics velocity data read from an adcirc ascii harmonics
- * file
+ * @brief Splits the harmonics velocity data read from an adcirc ascii
+ * harmonics file
  * @param[in] data string read from file
  * @param[out] u_magnitude u-component of velocity magnitude
  * @param[out] u_phase u-component of velocity phase

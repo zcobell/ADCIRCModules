@@ -36,6 +36,8 @@ void ADCIRCMODULES_EXPORT splitString(std::string &data,
 
 std::string ADCIRCMODULES_EXPORT getFileExtension(const std::string &filename);
 
+std::string ADCIRCMODULES_EXPORT getFileWithoutExtension(const std::string &filename);
+
 bool ADCIRCMODULES_EXPORT fileExists(const std::string &filename);
 
 std::string ADCIRCMODULES_EXPORT sanitizeString(const std::string &a);
