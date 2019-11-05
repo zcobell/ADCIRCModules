@@ -221,6 +221,8 @@ class MeshPrivate {
 
   void generateHash(bool force = false);
 
+  void writePrjFile(const std::string &outputFile);
+
   Adcirc::adcmap<size_t, size_t> m_nodeLookup;
   Adcirc::adcmap<size_t, size_t> m_elementLookup;
 

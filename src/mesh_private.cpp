@@ -32,6 +32,7 @@
 #include "logging.h"
 #include "mesh.h"
 #include "netcdf.h"
+#include "ogr_spatialref.h"
 #include "shapefil.h"
 #include "stringconversion.h"
 
@@ -1205,6 +1206,34 @@ void MeshPrivate::toNodeShapefile(const std::string &outputFile) {
   DBFClose(dbfid);
   SHPClose(shpid);
 
+  if (this->m_epsg != 0) {
+    this->writePrjFile(outputFile);
+  }
+
+  return;
+}
+
+/**
+ * @brief Writes the .prj file associated with a shapefile
+ * @param outputFile name of output file (.shp) being created
+ */
+void MeshPrivate::writePrjFile(const std::string &outputFile) {
+  std::string outputPrj =
+      Adcirc::FileIO::Generic::getFileWithoutExtension(outputFile);
+  outputPrj += ".prj";
+  OGRSpatialReference s;
+  OGRErr e = s.importFromEPSG(this->m_epsg);
+  if (e != 0) {
+    Adcirc::Logging::warning("Could not convert EPSG to write PRJ file");
+    return;
+  }
+
+  s.morphToESRI();
+  std::ofstream f(outputPrj);
+  char *pj;
+  s.exportToWkt(&pj);
+  f << pj;
+  f.close();
   return;
 }
 
@@ -1278,6 +1307,10 @@ void MeshPrivate::toConnectivityShapefile(const std::string &outputFile) {
   DBFClose(dbfid);
   SHPClose(shpid);
 
+  if (this->m_epsg != 0) {
+    this->writePrjFile(outputFile);
+  }
+
   return;
 }
 
@@ -1286,7 +1319,7 @@ void MeshPrivate::toConnectivityShapefile(const std::string &outputFile) {
  * @param outputFile output file with .shp extension
  */
 void MeshPrivate::toElementShapefile(const std::string &outputFile) {
-  SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POLYGONZ);
+  SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POLYGON);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
   DBFAddField(dbfid, "elementid", FTInteger, 16, 0);
   DBFAddField(dbfid, "node1", FTInteger, 16, 0);
@@ -1321,7 +1354,7 @@ void MeshPrivate::toElementShapefile(const std::string &outputFile) {
     }
 
     SHPObject *shpobj =
-        SHPCreateSimpleObject(SHPT_POLYGONZ, e.n(), longitude, latitude, nodez);
+        SHPCreateSimpleObject(SHPT_POLYGON, e.n(), longitude, latitude, nodez);
     int shp_index = SHPWriteObject(shpid, -1, shpobj);
     SHPDestroyObject(shpobj);
 
@@ -1339,6 +1372,10 @@ void MeshPrivate::toElementShapefile(const std::string &outputFile) {
 
   DBFClose(dbfid);
   SHPClose(shpid);
+
+  if (this->m_epsg != 0) {
+    this->writePrjFile(outputFile);
+  }
 
   return;
 }
@@ -1452,6 +1489,10 @@ void MeshPrivate::toBoundaryShapefile(const std::string &outputFile) {
 
   DBFClose(dbfid);
   SHPClose(shpid);
+
+  if (this->m_epsg != 0) {
+    this->writePrjFile(outputFile);
+  }
 
   return;
 }
