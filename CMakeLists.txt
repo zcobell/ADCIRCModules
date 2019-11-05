@@ -374,29 +374,6 @@ ENDIF( GDAL_FOUND )
 
 ADD_LIBRARY( adcircmodules SHARED ${ADCIRCMODULES_SOURCES} )
 
-IF(GDAL_FOUND)
-   TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${GDAL_INCLUDE_DIR})
-   LINK_DIRECTORIES( ${GDAL_LIBPATH} )
-   TARGET_LINK_LIBRARIES( adcircmodules ${GDAL_LIBRARY})
-ENDIF(GDAL_FOUND)
-TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
-                                ${CMAKE_SOURCE_DIR}/src/pimpl
-                                ${CMAKE_SOURCE_DIR}/src
-                                ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src
-                                ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
-                                ${CMAKE_SOURCE_DIR}/thirdparty/abseil
-                                ${CMAKE_SOURCE_DIR}/thirdparty/nanoflann/include
-                                ${CMAKE_SOURCE_DIR}/libraries/constants
-                                ${Boost_INCLUDE_DIRS} 
-                                ${NETCDF_INCLUDE_DIR} ) 
-
-ADD_DEPENDENCIES( adcircmodules ezproj shapelib )
-
-TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE GIT_VERSION="${GIT_VERSION}")
-TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE ADCIRCMODULES_LIBRARY )
-
-SET_TARGET_PROPERTIES( adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING} SOVERSION ${ADCIRCMODULES_VERSION_MAJOR} )
-
 SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/adcircmodules_global.h
                 ${CMAKE_SOURCE_DIR}/src/attribute.h
@@ -423,13 +400,40 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/outputmetadata.h
                 ${CMAKE_SOURCE_DIR}/src/meshchecker.h
                 ${CMAKE_SOURCE_DIR}/src/elementtable.h
-                ${CMAKE_SOURCE_DIR}/src/rasterdata.h 
-                ${CMAKE_SOURCE_DIR}/src/griddata.h 
                 ${CMAKE_SOURCE_DIR}/src/multithreading.h  
                 ${CMAKE_SOURCE_DIR}/src/constants.h 
                 ${CMAKE_SOURCE_DIR}/src/kdtree.h
                 ${CMAKE_SOURCE_DIR}/src/default_values.h
                 ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src/ezproj.h )
+
+IF(GDAL_FOUND)
+   TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE "USE_GDAL" )
+   TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${GDAL_INCLUDE_DIR})
+   LINK_DIRECTORIES( ${GDAL_LIBPATH} )
+   TARGET_LINK_LIBRARIES( adcircmodules ${GDAL_LIBRARY})
+   SET( HEADER_LIST ${HEADER_LIST} 
+                    ${CMAKE_SOURCE_DIR}/src/rasterdata.h 
+                    ${CMAKE_SOURCE_DIR}/src/griddata.h ) 
+ENDIF(GDAL_FOUND)
+TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
+                                ${CMAKE_SOURCE_DIR}/src/pimpl
+                                ${CMAKE_SOURCE_DIR}/src
+                                ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src
+                                ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
+                                ${CMAKE_SOURCE_DIR}/thirdparty/abseil
+                                ${CMAKE_SOURCE_DIR}/thirdparty/nanoflann/include
+                                ${CMAKE_SOURCE_DIR}/libraries/constants
+                                ${Boost_INCLUDE_DIRS} 
+                                ${NETCDF_INCLUDE_DIR} ) 
+
+ADD_DEPENDENCIES( adcircmodules ezproj shapelib )
+
+TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE GIT_VERSION="${GIT_VERSION}")
+TARGET_COMPILE_DEFINITIONS( adcircmodules PRIVATE ADCIRCMODULES_LIBRARY )
+
+SET_TARGET_PROPERTIES( adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING} SOVERSION ${ADCIRCMODULES_VERSION_MAJOR} )
+
+ 
 
 SET_TARGET_PROPERTIES( adcircmodules PROPERTIES PUBLIC_HEADER "${HEADER_LIST}" ) 
 

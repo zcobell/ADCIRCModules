@@ -32,9 +32,14 @@
 #include "logging.h"
 #include "mesh.h"
 #include "netcdf.h"
-#include "ogr_spatialref.h"
 #include "shapefil.h"
 #include "stringconversion.h"
+
+#ifdef USE_GDAL
+#include "cpl_conv.h"
+#include "cpl_error.h"
+#include "ogr_spatialref.h"
+#endif
 
 using namespace Adcirc::Private;
 using namespace Adcirc::Geometry;
@@ -1218,9 +1223,11 @@ void MeshPrivate::toNodeShapefile(const std::string &outputFile) {
  * @param outputFile name of output file (.shp) being created
  */
 void MeshPrivate::writePrjFile(const std::string &outputFile) {
+#ifdef USE_GDAL
   std::string outputPrj =
       Adcirc::FileIO::Generic::getFileWithoutExtension(outputFile);
   outputPrj += ".prj";
+
   OGRSpatialReference s;
   OGRErr e = s.importFromEPSG(this->m_epsg);
   if (e != 0) {
@@ -1228,12 +1235,20 @@ void MeshPrivate::writePrjFile(const std::string &outputFile) {
     return;
   }
 
-  s.morphToESRI();
-  std::ofstream f(outputPrj);
+  //...Generate the Wkt string
   char *pj;
+  s.morphToESRI();
   s.exportToWkt(&pj);
+
+  //...Write the output file
+  std::ofstream f(outputPrj);
   f << pj;
   f.close();
+  CPLFree(pj);
+#else
+  Adcirc::Logging::warning(
+      "ESRI .prj file not written because GDAL not enabled.");
+#endif
   return;
 }
 
