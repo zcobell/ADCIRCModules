@@ -97,10 +97,10 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
   char *ptr = stationName.get();
   for (size_t i = 0; i < this->m_numStations; i++) {
     char tmp[201];
-    std::memset(tmp,'\0',201);
-    std::memcpy(tmp,&ptr[200*i],200);
+    std::memset(tmp, '\0', 201);
+    std::memcpy(tmp, &ptr[200 * i], 200);
     std::string s(tmp);
-    s.erase(s.find_last_not_of("\t\n\v\f\r ")+1);
+    s.erase(s.find_last_not_of("\t\n\v\f\r ") + 1);
     this->m_stationName.push_back(s);
   }
 

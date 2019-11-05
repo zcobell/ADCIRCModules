@@ -211,7 +211,7 @@ void Interpolate::run() {
        i <= this->m_inputOptions.endsnap; ++i) {
     globalFile.read(i - 1);
     Date d = coldstart;
-    d.add(globalFile.dataAt(0)->time());
+    d.add(static_cast<long long>(globalFile.dataAt(0)->time()));
     long long datetime = d.toMSeconds();
     for (size_t j = 0; j < stationData.nstations(); ++j) {
       if (this->m_inputOptions.writeimeds) {
@@ -231,15 +231,16 @@ void Interpolate::run() {
             double value1, value2;
             std::tie(value1, value2) =
                 this->interpVector(globalFile, this->m_weights[j]);
-            v1[j].push_back(value1);
-            v2[j].push_back(value2);
+            v1[j].push_back(value1 * this->m_inputOptions.multiplier);
+            v2[j].push_back(value2 * this->m_inputOptions.multiplier);
           } else {
             v1[j].push_back(globalFile.defaultValue());
             v2[j].push_back(globalFile.defaultValue());
           }
         } else {
           if (this->m_weights[j].found) {
-            v1[j].push_back(this->interpScalar(globalFile, this->m_weights[j]));
+            v1[j].push_back(this->interpScalar(globalFile, this->m_weights[j]) *
+                            this->m_inputOptions.multiplier);
           } else {
             v1[j].push_back(globalFile.defaultValue());
           }
