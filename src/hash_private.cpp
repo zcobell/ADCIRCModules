@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "hash_private.h"
+
 #include "logging.h"
 
 using namespace Adcirc::Private;
@@ -44,9 +45,15 @@ void HashPrivate::setHashType(const Adcirc::Cryptography::HashType &hashType) {
 }
 
 #ifndef ADCMOD_HAVE_OPENSSL
-void HashPrivate::addData(const std::string &s) { return; }
+void HashPrivate::addData(const std::string &s) {
+  adcircmodules_throw_exception("OpenSSL library not enabled.");
+  return;
+}
 
-char *HashPrivate::getHash() { return nullptr; }
+char *HashPrivate::getHash() {
+  adcircmodules_throw_exception("OpenSSL library not enabled.");
+  return nullptr;
+}
 
 #else
 void HashPrivate::initialize() {

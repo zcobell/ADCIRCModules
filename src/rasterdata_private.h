@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_RASTERDATA_H
-#define ADCMOD_RASTERDATA_H
+#ifndef ADCMOD_RASTERDATAPRIVATE_H
+#define ADCMOD_RASTERDATAPRIVATE_H
 
 #include <string>
 #include <vector>
@@ -32,34 +32,23 @@ using Point = std::pair<double, double>;
 
 namespace Adcirc {
 
-namespace Raster {
+namespace Private {
 
 /**
- * @class Rasterdata
+ * @class RasterdataPrivate
  * @author Zachary Cobell
  * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
  * project is released under the terms of the GNU General Public License v3
  * @brief Class that accesses raster data through the GDAL library
  *
  */
-class Rasterdata {
+class RasterdataPrivate {
  public:
-  Rasterdata();
+  RasterdataPrivate();
 
-  Rasterdata(const std::string &filename);
+  RasterdataPrivate(const std::string &filename);
 
-  ~Rasterdata();
-
-  enum RasterTypes {
-    Bool,
-    Unsigned,
-    Float,
-    Double,
-    Integer,
-    ComplexInt,
-    ComplexDouble,
-    Unknown
-  };
+  ~RasterdataPrivate();
 
   bool open();
   bool close();
@@ -118,9 +107,23 @@ class Rasterdata {
   bool isOpen() const;
 
  private:
+  enum RasterTypes {
+    Bool,
+    Unsigned,
+    Float,
+    Double,
+    Integer,
+    ComplexInt,
+    ComplexDouble,
+    Unknown
+  };
+
+  typedef boost::multi_array<double, 2> double_array_2d;
+  typedef boost::multi_array<int, 2> int_array_2d;
+
   void init();
   bool getRasterMetadata();
-  Adcirc::Raster::Rasterdata::RasterTypes selectRasterType(int d);
+  Adcirc::Private::RasterdataPrivate::RasterTypes selectRasterType(int d);
 
   template <typename T>
   int pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
@@ -135,11 +138,11 @@ class Rasterdata {
   void readIntegerRasterToMemory();
   void readDoubleRasterToMemory();
 
-  GDALDataset *m_file;
-  GDALRasterBand *m_band;
+  std::unique_ptr<GDALDataset> m_file;
+  std::unique_ptr<GDALRasterBand> m_band;
 
-  boost::multi_array<double, 2> m_doubleOnDisk;
-  boost::multi_array<int, 2> m_intOnDisk;
+  double_array_2d m_doubleOnDisk;
+  int_array_2d m_intOnDisk;
 
   bool m_isOpen;
   bool m_isRead;
@@ -154,7 +157,9 @@ class Rasterdata {
   std::string m_projectionReference;
   std::string m_filename;
 };
-}  // namespace Raster
+
+}  // namespace Private
 }  // namespace Adcirc
 
-#endif  // ADCMOD_RASTERDATA_H
+
+#endif  // ADCMOD_RASTERDATAPRIVATE_H

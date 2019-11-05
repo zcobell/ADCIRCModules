@@ -95,6 +95,9 @@ macx{
         LIBS += -L$$NETCDFHOME/lib -lnetcdf
         INCLUDEPATH += $$NETCDFHOME/include
     }
+    isEmpty(GDALHOME){
+        INCLUDEPATH += /usr/local/Cellar/gdal/2.4.2_2/include
+    }
     LIBS+= -lgdal
 }
 
