@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "netcdftimeseries.h"
+#include <cstring>
 #include <memory>
 #include "boost/format.hpp"
 #include "cdate.h"
@@ -55,7 +56,7 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
   if (this->m_filename == std::string()) return 1;
 
   std::string station_dim_string, station_time_var_string,
-      station_data_var_string, stationNameString;
+      station_data_var_string;
   size_t stationNameLength, length;
   int ncid;
   int dimid_nstations, dimidStationLength, dimid_stationNameLen;
@@ -92,11 +93,14 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
   std::unique_ptr<char> stationName(
       new char[stationNameLength * this->m_numStations]);
   NCCHECK(nc_get_var_text(ncid, varid_stationName, stationName.get()))
-  stationNameString = std::string(stationName.get());
-  FileIO::Generic::sanitizeString(stationNameString);
 
+  char *ptr = stationName.get();
   for (size_t i = 0; i < this->m_numStations; i++) {
-    std::string s = stationNameString.substr(200 * i, 200);
+    char tmp[201];
+    std::memset(tmp,'\0',201);
+    std::memcpy(tmp,&ptr[200*i],200);
+    std::string s(tmp);
+    s.erase(s.find_last_not_of("\t\n\v\f\r ")+1);
     this->m_stationName.push_back(s);
   }
 
