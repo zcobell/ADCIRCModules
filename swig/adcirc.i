@@ -61,7 +61,6 @@
 
 #ifdef _USE_GDAL
 %{
-#include "rasterdata.h"
 #include "griddata.h"
 #include "interpolationmethods.h"
 %}
@@ -115,7 +114,6 @@ namespace std {
 %include "multithreading.h"
 %include "constants.h"
 #ifdef _USE_GDAL
-%include "rasterdata.h"
 %include "griddata.h"
 %include "interpolationmethods.h"
 #endif
