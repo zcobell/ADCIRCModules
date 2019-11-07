@@ -20,6 +20,7 @@
 #include <cassert>
 #include <cmath>
 #include "constants.h"
+#include "fpcompare.h"
 #include "logging.h"
 
 using namespace Adcirc::Output;
@@ -203,6 +204,7 @@ double OutputRecord::magnitude(size_t index) const {
     return 0.0;
   }
   if (index < this->numNodes()) {
+    if (this->isDefault(index)) return this->defaultValue();
     if (this->m_metadata.dimension() == 2) {
       return pow(pow(this->m_u[index], 2.0) + pow(this->m_v[index], 2.0), 0.5);
     } else if (this->m_metadata.dimension() == 3) {
@@ -248,6 +250,7 @@ double OutputRecord::direction(size_t index, AngleUnits angleType) const {
     return 0.0;
   }
   if (index < this->numNodes()) {
+    if (this->isDefault(index)) return this->defaultValue();
     return this->angle(this->m_u[index], this->m_v[index], angleType);
   } else {
     adcircmodules_throw_exception("OutputRecord: Index out of range");
@@ -475,11 +478,9 @@ std::vector<double> OutputRecord::magnitudes() {
   m.resize(this->m_numNodes);
   for (size_t i = 0; i < this->m_numNodes; ++i) {
     if (this->m_metadata.dimension() == 2) {
-      m[i] = pow(pow(this->m_u[i], 2.0) + pow(this->m_v[i], 2.0), 0.5);
+      m[i] = this->magnitude(i);
     } else if (this->m_metadata.dimension() == 3) {
-      m[i] = pow(pow(this->m_u[i], 2.0) + pow(this->m_v[i], 2.0) +
-                     pow(this->m_w[i], 2.0),
-                 0.5);
+      m[i] = this->magnitude(i);
     }
   }
   return m;
@@ -495,27 +496,21 @@ std::vector<double> OutputRecord::directions(AngleUnits angleType) {
   std::vector<double> d;
   d.resize(this->m_numNodes);
   for (size_t i = 0; i < this->m_numNodes; ++i) {
-    d[i] = this->angle(this->m_u[i], this->m_v[i], angleType);
+    d[i] = this->direction(i);
   }
   return d;
 }
 
 bool OutputRecord::isDefault(size_t index) const {
   if (this->m_metadata.dimension() == 1 || this->m_metadata.isMax()) {
-    return std::abs(this->m_u[index] - this->defaultValue()) <=
-           std::numeric_limits<double>::epsilon();
+    return FpCompare::equalTo(this->m_u[index], this->defaultValue());
   } else if (this->m_metadata.dimension() == 2) {
-    return std::abs(this->m_u[index] - this->defaultValue()) <=
-               std::numeric_limits<double>::epsilon() &&
-           std::abs(this->m_v[index] - this->defaultValue()) <=
-               std::numeric_limits<double>::epsilon();
+    return FpCompare::equalTo(this->m_u[index], this->defaultValue()) &&
+           FpCompare::equalTo(this->m_v[index], this->defaultValue());
   } else if (this->m_metadata.dimension() == 3) {
-    return std::abs(this->m_u[index] - this->defaultValue()) <=
-               std::numeric_limits<double>::epsilon() &&
-           std::abs(this->m_v[index] - this->defaultValue()) <=
-               std::numeric_limits<double>::epsilon() &&
-           std::abs(this->m_w[index] - this->defaultValue()) <=
-               std::numeric_limits<double>::epsilon();
+    return FpCompare::equalTo(this->m_u[index], this->defaultValue()) &&
+           FpCompare::equalTo(this->m_v[index], this->defaultValue()) &&
+           FpCompare::equalTo(this->m_w[index], this->defaultValue());
   } else {
     return false;
   }
