@@ -19,16 +19,18 @@
 #include "hmdfstation.h"
 #include <cassert>
 #include "fpcompare.h"
+#include "logging.h"
 
 using namespace Adcirc::Output;
 
-HmdfStation::HmdfStation() {
+HmdfStation::HmdfStation(bool isVector) {
   this->m_coordinate = Coordinate();
   this->m_name = "noname";
   this->m_id = "noid";
   this->m_isNull = true;
   this->m_stationIndex = 0;
   this->m_nullValue = HmdfStation::nullDataValue();
+  this->m_isVector = isVector;
 }
 
 void HmdfStation::clear() {
@@ -37,7 +39,8 @@ void HmdfStation::clear() {
   this->m_id = "noid";
   this->m_isNull = true;
   this->m_stationIndex = 0;
-  this->m_data.clear();
+  this->m_isVector = false;
+  this->m_data_u.clear();
   this->m_date.clear();
   return;
 }
@@ -50,7 +53,7 @@ std::string HmdfStation::id() const { return this->m_id; }
 
 void HmdfStation::setId(const std::string &id) { this->m_id = id; }
 
-size_t HmdfStation::numSnaps() const { return this->m_data.size(); }
+size_t HmdfStation::numSnaps() const { return this->m_data_u.size(); }
 
 size_t HmdfStation::stationIndex() const { return this->m_stationIndex; }
 
@@ -68,15 +71,52 @@ long long HmdfStation::date(size_t index) const {
 
 double HmdfStation::data(size_t index) const {
   assert(index < this->numSnaps());
+  assert(!this->m_isVector);
+  if (this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Attempt to retrieve scalar data from vector station.");
+  }
   if (index < this->numSnaps())
-    return this->m_data[index];
+    return this->m_data_u[index];
+  else
+    return 0;
+}
+
+double HmdfStation::data_u(size_t index) const {
+  assert(this->isVector());
+  assert(index < this->m_data_u.size());
+  if (!this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Attempt to retrieve vector data from scalar station.");
+  }
+  if (index < this->numSnaps())
+    return this->m_data_u[index];
+  else
+    return 0;
+}
+
+double HmdfStation::data_v(size_t index) const {
+  assert(this->isVector());
+  assert(index < this->m_data_v.size());
+  if (!this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Attempt to retrieve vector data from scalar station.");
+  }
+  if (index < this->numSnaps())
+    return this->m_data_v[index];
   else
     return 0;
 }
 
 void HmdfStation::setData(const double &data, size_t index) {
   assert(index < this->numSnaps());
-  if (index < this->numSnaps()) this->m_data[index] = data;
+  assert(!this->m_isVector);
+  if (this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Attempt to assign scalar data to vector station.");
+    return;
+  }
+  if (index < this->numSnaps()) this->m_data_u[index] = data;
 }
 
 void HmdfStation::setDate(const long long &date, size_t index) {
@@ -94,26 +134,111 @@ void HmdfStation::setDate(const std::vector<long long> &date) {
 }
 
 void HmdfStation::setData(const std::vector<double> &data) {
-  this->m_data = data;
+  assert(!this->m_isVector);
+  if (this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Attempt to assign scalar data to vector station.");
+    return;
+  }
+  this->m_data_u = data;
   return;
 }
 
 void HmdfStation::setData(const std::vector<float> &data) {
-  this->m_data.resize(data.size());
+  if (this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Attempt to assign scalar data to vector station.");
+    return;
+  }
+  this->m_data_u.resize(data.size());
   for (size_t i = 0; i < data.size(); ++i) {
-    this->m_data[i] = static_cast<double>(data[i]);
+    this->m_data_u[i] = static_cast<double>(data[i]);
+  }
+  return;
+}
+
+void HmdfStation::setData(const std::vector<double> &data_u,
+                          const std::vector<double> &data_v) {
+  assert(this->m_isVector);
+  if (!this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Attempt to assign vector data to scalar station.");
+    return;
+  }
+  this->m_data_u = data_u;
+  this->m_data_v = data_v;
+  return;
+}
+
+void HmdfStation::setData(const std::vector<float> &data_u,
+                          const std::vector<float> &data_v) {
+  if (this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Attempt to assign vector data to scalar station.");
+    return;
+  }
+  assert(data_u.size() == data_v.size());
+  if (data_u.size() != data_v.size()) {
+    adcircmodules_throw_exception(
+        "Cannot assign different data sizes for vector components");
+  }
+  this->m_data_u.resize(data_u.size());
+  for (size_t i = 0; i < data_u.size(); ++i) {
+    this->m_data_u[i] = static_cast<double>(data_u[i]);
+    this->m_data_v[i] = static_cast<double>(data_v[i]);
   }
   return;
 }
 
 void HmdfStation::setNext(const long long &date, const double &data) {
+  if (this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Attempt to assign scalar data to vector station.");
+    return;
+  }
   this->m_date.push_back(date);
-  this->m_data.push_back(data);
+  this->m_data_u.push_back(data);
+}
+
+void HmdfStation::setNext(const long long &date, const double &data_u,
+                          const double &data_v) {
+  if (!this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Attempt to assign vector data to scalar station.");
+    return;
+  }
+  this->m_date.push_back(date);
+  this->m_data_u.push_back(data_u);
+  this->m_data_v.push_back(data_v);
 }
 
 std::vector<long long> HmdfStation::allDate() const { return this->m_date; }
 
-std::vector<double> HmdfStation::allData() const { return this->m_data; }
+std::vector<double> HmdfStation::allData() const {
+  if (this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Attempt to retrieve scalar data from vector station.");
+  }
+  return this->m_data_u;
+}
+
+std::vector<double> HmdfStation::allData_u() const {
+  assert(this->m_isVector);
+  if (!this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Attempt to retrieve scalar data from vector station");
+  }
+  return this->m_data_u;
+}
+
+std::vector<double> HmdfStation::allData_v() const {
+  assert(this->m_isVector);
+  if (!this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Attempt to retrieve scalar data from vector station");
+  }
+  return this->m_data_v;
+}
 
 void HmdfStation::setLatitude(const double latitude) {
   this->m_coordinate.latitude = latitude;
@@ -135,22 +260,33 @@ HmdfStation::Coordinate *HmdfStation::coordinate() {
   return &this->m_coordinate;
 }
 
-void HmdfStation::dataBounds(long long &minDate, long long &maxDate,
-                             double &minValue, double &maxValue) {
-  minDate = *std::min_element(this->m_date.begin(), this->m_date.end());
-  maxDate = *std::max_element(this->m_date.begin(), this->m_date.end());
-
-  std::vector<double> sortedData = this->m_data;
+std::tuple<double, double> HmdfStation::getVectorBounds(
+    const std::vector<double> &v) {
+  std::vector<double> sortedData = v;
   std::sort(sortedData.begin(), sortedData.end());
-
+  double minValue;
   if (FpCompare::equalTo(sortedData.front(), sortedData.back())) {
     minValue = *std::upper_bound(sortedData.begin(), sortedData.end(),
                                  this->nullDataValue());
   } else {
     minValue = sortedData.front();
   }
-  maxValue = sortedData.back();
+  return std::make_tuple(minValue, sortedData.back());
+}
 
+void HmdfStation::dataBounds(long long &minDate, long long &maxDate,
+                             double &minValue, double &maxValue) {
+  minDate = *std::min_element(this->m_date.begin(), this->m_date.end());
+  maxDate = *std::max_element(this->m_date.begin(), this->m_date.end());
+  if (this->isVector()) {
+    double umin, umax, vmin, vmax;
+    std::tie(umin, umax) = this->getVectorBounds(this->m_data_u);
+    std::tie(vmin, vmax) = this->getVectorBounds(this->m_data_v);
+    minValue = std::min(umin, vmin);
+    maxValue = std::min(umax, vmax);
+  } else {
+    std::tie(minValue, maxValue) = this->getVectorBounds(this->m_data_u);
+  }
   return;
 }
 
@@ -161,6 +297,9 @@ void HmdfStation::setNullValue(double nullValue) {
 }
 
 void HmdfStation::reserve(size_t size) {
-  this->m_data.reserve(size);
+  this->m_data_u.reserve(size);
   this->m_date.reserve(size);
+  if (this->m_isVector) this->m_data_v.reserve(size);
 }
+
+bool HmdfStation::isVector() const { return this->m_isVector; }

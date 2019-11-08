@@ -19,12 +19,16 @@
 #include <iostream>
 #include <string>
 #include "adcircmodules.h"
+#include "boost/format.hpp"
 #include "cxxopts.hpp"
+#include "hmdf.h"
 #include "interpolate.h"
 #include "logging.h"
+#include "stringconversion.h"
 
 Interpolate::InputOptions parseCommandLineOptions(cxxopts::ParseResult &parser);
 void validateOptionsList(Interpolate::InputOptions &input);
+std::vector<double> readPositiveDirectionFile(const std::string &filename);
 
 int main(int argc, char *argv[]) {
   cxxopts::Options options("interpolateAdcircStations",
@@ -38,16 +42,16 @@ int main(int argc, char *argv[]) {
                      ("o,output", "specify the output file to be created",cxxopts::value<std::string>())
                      ("magnitude","write out the magnitude of vector quantities")
                      ("direction","write out the direction of vector quantities")
+                     ("positive_direction","use this direction (in degrees) to denote flood and ebb tide when extracting currents. "
+                                            "A single value will be used for all stations or specify a file with values for each location. "
+                                            "North = 90 degrees.",cxxopts::value<std::string>())
                      ("readimeds", "read station data as IMEDS instead of xyz")
-                     ("writeimeds", "write station data as IMEDS instead of fort.61")
-                     ("readDFlow", "read a DFlow-FM polyline file for station locations")
-                     ("writeDFlow","write DFlow-FM boundary conditions files")
                      ("coldstart","date/time of the simulation cold start for time reference in IMEDS files. Ex: yyyyMMddhhmmss",cxxopts::value<std::string>())
                      ("refdate","date/time reference used when writing input files for DFlow-FM. Ex: Ex: yyyyMMddhhmmss",cxxopts::value<std::string>())
                      ("multiplier","value multiplied to the output value",cxxopts::value<double>())
-                     ("start_snap","start reading netCDF output at specified snap",cxxopts::value<int>())
-                     ("end_snap","stop reading netCDF output at specified snap",cxxopts::value<int>())
-                     ("keepwet", "If a point goes dry, use the previous wet value")
+                     ("start_snap","start reading netCDF output at specified snap",cxxopts::value<unsigned long long>())
+                     ("end_snap","stop reading netCDF output at specified snap",cxxopts::value<unsigned long long>())
+                     //("keepwet", "If a point goes dry, use the previous wet value")
                      ("readAsciiMesh", "Force the code to read an ascii meshfile instead of defaulting to the NetCDF ADCIRC output file data")
                      ("epsg_global","Specify the coordinate system of the global time series file (default: 4326)",cxxopts::value<int>())
                      ("epsg_station","Specify the coordinate system of the input station locations (default: 4326)",cxxopts::value<int>())
@@ -92,12 +96,6 @@ Interpolate::InputOptions parseCommandLineOptions(
     input.direction = parser["direction"].as<bool>();
   if (parser["readimeds"].count() > 0)
     input.readimeds = parser["readimeds"].as<bool>();
-  if (parser["writeimeds"].count() > 0)
-    input.writeimeds = parser["writeimeds"].as<bool>();
-  if (parser["readDFlow"].count() > 0)
-    input.readdflow = parser["readDFlow"].as<bool>();
-  if (parser["writeDFlow"].count() > 0)
-    input.writedflow = parser["writeDFlow"].as<bool>();
   if (parser["coldstart"].count() > 0)
     input.coldstart = parser["coldstart"].as<std::string>();
   if (parser["refdate"].count() > 0)
@@ -105,16 +103,63 @@ Interpolate::InputOptions parseCommandLineOptions(
   if (parser["multiplier"].count() > 0)
     input.multiplier = parser["multiplier"].as<double>();
   if (parser["start_snap"].count() > 0)
-    input.startsnap = parser["start_snap"].as<int>();
+    input.startsnap = parser["start_snap"].as<unsigned long long>();
   if (parser["end_snap"].count() > 0)
-    input.endsnap = parser["end_snap"].as<int>();
+    input.endsnap = parser["end_snap"].as<unsigned long long>();
   if (parser["epsg_global"].count() > 0)
     input.epsg_global = parser["epsg_global"].as<int>();
   if (parser["epsg_output"].count() > 0)
     input.epsg_output = parser["epsg_output"].as<int>();
   if (parser["epsg_station"].count() > 0)
     input.epsg_station = parser["epsg_station"].as<int>();
+  if (parser["positive_direction"].count() > 0) {
+    std::string positive_direction_string =
+        parser["positive_direction"].as<std::string>();
+    bool ok;
+    double pd =
+        Adcirc::StringConversion::stringToDouble(positive_direction_string, ok);
+    if (ok) {
+      input.positive_direction = {pd};
+    } else {
+      input.positive_direction =
+          readPositiveDirectionFile(positive_direction_string);
+    }
+  }
   return input;
+}
+
+std::vector<double> readPositiveDirectionFile(const std::string &filename) {
+  std::ifstream file(filename);
+  std::vector<double> v;
+  while (true) {
+    std::string line;
+    bool ok;
+    std::getline(file, line);
+    double pd = Adcirc::StringConversion::stringToDouble(line, ok);
+    if (!ok) {
+      Adcirc::Logging::logError("Could not read the positive directions file",
+                                "[ERROR]: ");
+    } else {
+      v.push_back(pd);
+    }
+    if (file.eof()) break;
+  }
+
+  for (size_t i = 0; i < v.size(); ++i) {
+    if (v[i] < -360.0 || v[i] > 360.0) {
+      std::string errorString = boost::str(
+          boost::format(
+              "Specified positive_direction at index %i is out of bounds.") %
+          i);
+      Adcirc::Logging::logError(errorString, "[ERROR]: ");
+    } else if (v[i] < -180.0) {
+      v[i] += 360.0;
+    } else if (v[i] > 180.0) {
+      v[i] -= 360.0;
+    }
+  }
+
+  return v;
 }
 
 void validateOptionsList(Interpolate::InputOptions &input) {
@@ -137,12 +182,19 @@ void validateOptionsList(Interpolate::InputOptions &input) {
     Adcirc::Logging::logError("No station file supplied", "[ERROR]: ");
     exit(1);
   }
-  if (input.writeimeds && input.coldstart == std::string()) {
+
+  Adcirc::Output::Hmdf::HmdfFileType ft =
+      Adcirc::Output::Hmdf::getFiletype(input.outputfile);
+  bool needsDate = ft == Adcirc::Output::Hmdf::HmdfImeds ||
+                   ft == Adcirc::Output::Hmdf::HmdfCsv ||
+                   ft == Adcirc::Output::Hmdf::HmdfImeds;
+  if (needsDate && input.coldstart == std::string()) {
     Adcirc::Logging::logError(
         "Must supply cold start date to write imeds format files.",
         "[ERROR]: ");
     exit(1);
   }
+
   if (input.writedflow && input.coldstart == std::string()) {
     Adcirc::Logging::logError(
         "Must supply cold start date to write dflow format files.",
@@ -163,6 +215,14 @@ void validateOptionsList(Interpolate::InputOptions &input) {
       Adcirc::Logging::logError("Mesh file does not exist.", "[ERROR]: ");
       exit(1);
     }
+  }
+  if (input.positive_direction != std::vector<double>()) {
+    if (input.direction || !input.magnitude) {
+      Adcirc::Logging::logError(
+          "Option --positive_direction must be used with --magnitude only",
+          "[ERROR]: ");
+    }
+    exit(1);
   }
 
   Adcirc::Output::ReadOutput gbl(input.globalfile);
@@ -189,5 +249,15 @@ void validateOptionsList(Interpolate::InputOptions &input) {
   } else {
     input.endsnap = ns;
   }
+
+  bool canWriteVector = ft == Adcirc::Output::Hmdf::HmdfCsv ||
+                        ft == Adcirc::Output::Hmdf::HmdfAdcirc;
+  if (!canWriteVector && gbl.metadata()->isVector() && !input.magnitude &&
+      !input.direction) {
+    Adcirc::Logging::logError("Specified file type cannot write vector data",
+                              "[ERROR]: ");
+    exit(1);
+  }
+
   return;
 }

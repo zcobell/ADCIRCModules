@@ -48,7 +48,7 @@ Adcirc::Geometry::Mesh Interpolate::readMesh(
   return mesh;
 }
 
-Adcirc::Output::Hmdf Interpolate::readStationLocations() {
+Adcirc::Output::Hmdf Interpolate::readStationLocations(bool vector) {
   Adcirc::Output::Hmdf tempStn;
   if (this->m_inputOptions.readimeds) {
     std::string ext = Adcirc::FileIO::Generic::getFileExtension(
@@ -58,17 +58,17 @@ Adcirc::Output::Hmdf Interpolate::readStationLocations() {
     } else {
       tempStn.readImeds(this->m_inputOptions.stationfile);
     }
-    return this->copyStationList(tempStn);
+    return this->copyStationList(tempStn, vector);
   } else if (this->m_inputOptions.readdflow) {
     adcircmodules_throw_exception("D-Flow I/O not implemented");
     return Adcirc::Output::Hmdf();
   } else {
-    return this->readStationList();
+    return this->readStationList(vector);
   }
 }
 
-Adcirc::Output::Hmdf Interpolate::readStationList() {
-  Adcirc::Output::Hmdf h;
+Adcirc::Output::Hmdf Interpolate::readStationList(bool vector) {
+  Adcirc::Output::Hmdf h(vector);
   std::ifstream infile(this->m_inputOptions.stationfile);
   std::string templine;
   std::getline(infile, templine);
@@ -77,7 +77,7 @@ Adcirc::Output::Hmdf Interpolate::readStationList() {
     std::getline(infile, templine);
     std::vector<std::string> templist;
     Adcirc::FileIO::Generic::splitString(templine, templist);
-    Adcirc::Output::HmdfStation s;
+    Adcirc::Output::HmdfStation s(vector);
     std::string name = boost::str(boost::format("Station_%04.4i") % (i + 1));
     s.setId(name);
     s.setName(name);
@@ -89,15 +89,16 @@ Adcirc::Output::Hmdf Interpolate::readStationList() {
   return h;
 }
 
-Adcirc::Output::Hmdf Interpolate::copyStationList(Adcirc::Output::Hmdf &list) {
-  Adcirc::Output::Hmdf out;
+Adcirc::Output::Hmdf Interpolate::copyStationList(Adcirc::Output::Hmdf &list,
+                                                  bool vector) {
+  Adcirc::Output::Hmdf out(vector);
   out.setHeader1(list.header1());
   out.setHeader2(list.header2());
   out.setHeader3(list.header3());
   out.setDatum(list.datum());
   out.setUnits(list.units());
   for (size_t i = 0; i < list.nstations(); ++i) {
-    Adcirc::Output::HmdfStation s;
+    Adcirc::Output::HmdfStation s(vector);
     s.setId(list.station(i)->id());
     s.setName(list.station(i)->name());
     s.setStationIndex(list.station(i)->stationIndex());
@@ -160,15 +161,41 @@ void Interpolate::generateInterpolationWeights(Adcirc::Geometry::Mesh &m,
 }
 
 void Interpolate::run() {
-  Adcirc::Output::Hmdf stationData = this->readStationLocations();
   Adcirc::Output::ReadOutput globalFile(this->m_inputOptions.globalfile);
   globalFile.open();
+
+  bool writeVector = false;
+  if (globalFile.metadata()->isVector() && !this->m_inputOptions.magnitude &&
+      !this->m_inputOptions.direction) {
+    writeVector = true;
+  }
+
+  Adcirc::Output::Hmdf stationData = this->readStationLocations(writeVector);
+
+  if (this->m_inputOptions.positive_direction != std::vector<double>()) {
+    if (this->m_inputOptions.positive_direction.size() == 1) {
+      double pd = this->m_inputOptions.positive_direction[0];
+      this->m_inputOptions.positive_direction.resize(stationData.nstations());
+      std::fill(this->m_inputOptions.positive_direction.begin(),
+                this->m_inputOptions.positive_direction.end(), pd);
+    } else if (this->m_inputOptions.positive_direction.size() !=
+               stationData.nstations()) {
+      Adcirc::Logging::logError(
+          "Number of stations and number positive directions provided do not "
+          "match.",
+          "[ERROR]: ");
+    }
+  }
 
   Adcirc::Output::OutputFormat filetype = globalFile.filetype();
   Adcirc::Geometry::Mesh m = this->readMesh(filetype);
 
   Date coldstart;
-  if (this->m_inputOptions.writeimeds) {
+  Adcirc::Output::Hmdf::HmdfFileType ft =
+      Adcirc::Output::Hmdf::getFiletype(this->m_inputOptions.outputfile);
+  if (ft == Adcirc::Output::Hmdf::HmdfImeds ||
+      ft == Adcirc::Output::Hmdf::HmdfCsv ||
+      ft == Adcirc::Output::Hmdf::HmdfNetCdf) {
     coldstart = this->dateFromString(this->m_inputOptions.coldstart);
   }
 
@@ -184,69 +211,39 @@ void Interpolate::run() {
 
   this->generateInterpolationWeights(m, stationData);
 
-  //...Data holders for ADCIRC 61/62 format
-  std::vector<double> date;
-  std::vector<long> it;
-  std::vector<std::vector<double>> v1;
-  std::vector<std::vector<double>> v2;
-
-  if (!this->m_inputOptions.writeimeds) {
-    date.reserve(globalFile.numSnaps());
-    it.reserve(globalFile.numSnaps());
-    v1.resize(stationData.nstations());
-    if (globalFile.metadata()->isVector()) {
-      v2.resize(stationData.nstations());
-    }
-    for (size_t i = 0; i < stationData.nstations(); ++i) {
-      v1[i].reserve(globalFile.numSnaps());
-      if (globalFile.metadata()->isVector()) {
-        v2[i].reserve(globalFile.numSnaps());
-      }
-    }
-  }
-
   size_t nsnap =
       this->m_inputOptions.endsnap - this->m_inputOptions.startsnap + 1;
+
   for (size_t i = this->m_inputOptions.startsnap;
        i <= this->m_inputOptions.endsnap; ++i) {
     globalFile.read(i - 1);
     Date d = coldstart;
-    d.add(static_cast<long long>(globalFile.dataAt(0)->time()));
+    d.add(static_cast<long>(globalFile.dataAt(0)->time()));
     long long datetime = d.toMSeconds();
+
     for (size_t j = 0; j < stationData.nstations(); ++j) {
-      if (this->m_inputOptions.writeimeds) {
-        if (this->m_weights[j].found) {
-          stationData.station(j)->setNext(
-              datetime, this->interpScalar(globalFile, this->m_weights[j]));
+      if (this->m_weights[j].found) {
+        if (writeVector) {
+          double v1, v2;
+          std::tie(v1, v2) = this->interpVector(globalFile, this->m_weights[j]);
+          stationData.station(j)->setNext(datetime, v1, v2);
         } else {
-          stationData.station(j)->setNext(datetime, globalFile.defaultValue());
+          if (this->m_inputOptions.positive_direction !=
+              std::vector<double>()) {
+            stationData.station(j)->setNext(
+                datetime,
+                this->interpScalar(globalFile, this->m_weights[j],
+                                   this->m_inputOptions.positive_direction[j]));
+          } else {
+            stationData.station(j)->setNext(
+                datetime, this->interpScalar(globalFile, this->m_weights[j]));
+          }
         }
       } else {
-        date.push_back(globalFile.dataAt(0)->time());
-        it.push_back(globalFile.dataAt(0)->iteration());
-        if (globalFile.metadata()->isVector() &&
-            !this->m_inputOptions.magnitude &&
-            !this->m_inputOptions.direction) {
-          if (this->m_weights[j].found) {
-            double value1, value2;
-            std::tie(value1, value2) =
-                this->interpVector(globalFile, this->m_weights[j]);
-            v1[j].push_back(value1 * this->m_inputOptions.multiplier);
-            v2[j].push_back(value2 * this->m_inputOptions.multiplier);
-          } else {
-            v1[j].push_back(globalFile.defaultValue());
-            v2[j].push_back(globalFile.defaultValue());
-          }
-        } else {
-          if (this->m_weights[j].found) {
-            v1[j].push_back(this->interpScalar(globalFile, this->m_weights[j]) *
-                            this->m_inputOptions.multiplier);
-          } else {
-            v1[j].push_back(globalFile.defaultValue());
-          }
-        }
+        stationData.station(j)->setNext(datetime, globalFile.defaultValue());
       }
     }
+
     double pct = (static_cast<double>(i - this->m_inputOptions.startsnap + 1) /
                   static_cast<double>(nsnap)) *
                  100.0;
@@ -272,12 +269,7 @@ void Interpolate::run() {
       stationData.station(i)->setLatitude(y2);
     }
   }
-
-  if (this->m_inputOptions.writeimeds) {
-    stationData.write(this->m_inputOptions.outputfile);
-  } else {
-    this->writeAdcirc(globalFile, stationData, date, it, v1, v2);
-  }
+  stationData.write(this->m_inputOptions.outputfile);
 
   return;
 }
@@ -303,7 +295,9 @@ std::tuple<double, double> Interpolate::interpVector(
   return std::make_tuple(vx, vy);
 }
 
-double Interpolate::interpScalar(Adcirc::Output::ReadOutput &data, Weight &w) {
+double Interpolate::interpScalar(Adcirc::Output::ReadOutput &data, Weight &w,
+                                 const double positive_direction) {
+  using namespace Adcirc::FpCompare;
   size_t n1 = w.node_index[0];
   size_t n2 = w.node_index[1];
   size_t n3 = w.node_index[2];
@@ -312,12 +306,40 @@ double Interpolate::interpScalar(Adcirc::Output::ReadOutput &data, Weight &w) {
   double w3 = w.weight[2];
 
   if (data.metadata()->isVector()) {
-    if (this->m_inputOptions.magnitude) {
+    if (this->m_inputOptions.magnitude &&
+        equalTo(positive_direction, -9999.0)) {
       double v1 = data.dataAt(0)->magnitude(n1);
       double v2 = data.dataAt(0)->magnitude(n2);
       double v3 = data.dataAt(0)->magnitude(n3);
       return this->interpolateDryValues(v1, w1, v2, w2, v3, w3,
                                         data.defaultValue());
+    } else if (this->m_inputOptions.magnitude &&
+               !equalTo(positive_direction, -9999.0)) {
+      double v1x = data.dataAt(0)->u(n1);
+      double v1y = data.dataAt(0)->v(n1);
+      double v2x = data.dataAt(0)->u(n2);
+      double v2y = data.dataAt(0)->v(n2);
+      double v3x = data.dataAt(0)->u(n3);
+      double v3y = data.dataAt(0)->v(n3);
+      double vx = this->interpolateDryValues(v1x, w1, v2x, w2, v3x, w3,
+                                             data.defaultValue());
+      double vy = this->interpolateDryValues(v1y, w1, v2y, w2, v3y, w3,
+                                             data.defaultValue());
+      if (equalTo(vx, data.defaultValue()) ||
+          equalTo(vy, data.defaultValue())) {
+        return data.defaultValue();
+      }
+      double magnitude = std::sqrt(std::pow(vx, 2.0) + std::pow(vy, 2.0));
+      double direction = std::atan2(vy, vx) * Adcirc::Constants::rad2deg() -
+                         positive_direction;
+
+      if (direction < -180.0)
+        direction += 360.0;
+      else if (direction > 180.0)
+        direction -= 360.0;
+
+      return direction < 90.0 && direction > -90.0 ? magnitude : -magnitude;
+
     } else if (this->m_inputOptions.direction) {
       double v1x = data.dataAt(0)->u(n1);
       double v1y = data.dataAt(0)->v(n1);
@@ -329,7 +351,12 @@ double Interpolate::interpScalar(Adcirc::Output::ReadOutput &data, Weight &w) {
                                              data.defaultValue());
       double vy = this->interpolateDryValues(v1y, w1, v2y, w2, v3y, w3,
                                              data.defaultValue());
-      return std::atan2(vy, vx) * Adcirc::Constants::rad2deg();
+      if (equalTo(vx, data.defaultValue()) ||
+          equalTo(vy, data.defaultValue())) {
+        return data.defaultValue();
+      } else {
+        return std::atan2(vy, vx) * Adcirc::Constants::rad2deg();
+      }
     } else {
       adcircmodules_throw_exception(
           "Cannot write vector data. Select --magnitude or --direction");
@@ -393,36 +420,4 @@ Date Interpolate::dateFromString(const std::string &dateString) {
   int minute = stoi(dateString.substr(10, 2));
   int second = stoi(dateString.substr(12, 2));
   return Date(year, month, day, hour, minute, second);
-}
-
-void Interpolate::writeAdcirc(Adcirc::Output::ReadOutput &output,
-                              Adcirc::Output::Hmdf &stn,
-                              const std::vector<double> &time,
-                              const std::vector<long> &iteration,
-                              const std::vector<std::vector<double>> &v1,
-                              const std::vector<std::vector<double>> &v2) {
-  std::ofstream out(this->m_inputOptions.outputfile);
-  out << output.header() << std::endl;
-  int nv = output.metadata()->isVector() ? 2 : 1;
-  out << boost::str(
-             boost::format(
-                 "%i    %i    %f    %i    %i    FileFmtVersion: 1050624") %
-             output.numSnaps() % v1.size() % output.dt() % output.dIteration() %
-             nv)
-      << std::endl;
-  for (size_t i = 0; i < output.numSnaps(); ++i) {
-    out << boost::str(boost::format("%12.9e  %i") % time[i] % iteration[i])
-        << std::endl;
-    for (size_t j = 0; j < stn.nstations(); ++j) {
-      if (output.metadata()->isVector() && !this->m_inputOptions.magnitude &&
-          !this->m_inputOptions.direction) {
-        out << boost::str(boost::format("%12.9e  %12.9e") % v1[j][i] % v2[j][i])
-            << std::endl;
-      } else {
-        out << boost::str(boost::format("%12.9e") % v1[j][i]) << std::endl;
-      }
-    }
-  }
-  out.close();
-  return;
 }

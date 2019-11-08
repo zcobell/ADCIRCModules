@@ -30,17 +30,18 @@ namespace Output {
 
 class Hmdf {
  public:
-  explicit Hmdf();
+  Hmdf(bool isVector = false);
 
   void clear();
 
-  enum HmdfFileType { HmdfImeds, HmdfCsv, HmdfNetCdf };
+  enum HmdfFileType { HmdfImeds, HmdfCsv, HmdfNetCdf, HmdfAdcirc };
 
   int write(const std::string &filename, HmdfFileType fileType);
   int write(const std::string &filename);
   int writeImeds(const std::string &filename);
   int writeCsv(const std::string &filename);
   int writeNetcdf(const std::string &filename);
+  int writeAdcirc(const std::string &filename);
 
   int readImeds(const std::string &filename);
   int readNetcdf(const std::string &filename, bool stationsOnly = false);
@@ -76,11 +77,15 @@ class Hmdf {
   void dataBounds(long long &dateMin, long long &dateMax, double &minValue,
                   double &maxValue);
 
+  bool isVector() const;
+
+  static HmdfFileType getFiletype(const std::string &filename);
+
  private:
   void init();
 
   //...Variables
-  bool m_success, m_null;
+  bool m_success, m_null, m_isVector;
 
   std::string m_header1;
   std::string m_header2;

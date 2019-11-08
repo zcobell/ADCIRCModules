@@ -17,12 +17,14 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "hmdf.h"
+#include <cmath>
 #include <fstream>
 #include "boost/algorithm/string.hpp"
 #include "boost/algorithm/string/replace.hpp"
 #include "boost/format.hpp"
 #include "cdate.h"
 #include "fileio.h"
+#include "logging.h"
 #include "netcdf.h"
 #include "netcdftimeseries.h"
 
@@ -34,7 +36,7 @@ using namespace Adcirc::Output;
     return ierr;          \
   }
 
-Hmdf::Hmdf() { this->init(); }
+Hmdf::Hmdf(bool isVector) : m_isVector(isVector) { this->init(); }
 
 void Hmdf::init() {
   this->setHeader1("");
@@ -46,6 +48,8 @@ void Hmdf::init() {
   this->setNull(true);
   return;
 }
+
+bool Hmdf::isVector() const { return this->m_isVector; }
 
 void Hmdf::clear() {
   this->m_station.clear();
@@ -86,6 +90,10 @@ void Hmdf::setStation(size_t index, HmdfStation &station) {
 }
 
 void Hmdf::addStation(const HmdfStation &station) {
+  if (station.isVector() != this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Cannot mix vector and scalar station types.");
+  }
   this->m_station.push_back(station);
 }
 
@@ -98,7 +106,11 @@ bool Hmdf::null() const { return this->m_null; }
 void Hmdf::setNull(bool null) { this->m_null = null; }
 
 int Hmdf::readImeds(const std::string &filename) {
-  std::fstream fid(filename.c_str());
+  if (this->m_isVector) {
+    adcircmodules_throw_exception(
+        "imeds format files cannot contain vector data.");
+  }
+  std::ifstream fid(filename.c_str());
   if (fid.bad()) return -1;
 
   //...Read Header
@@ -114,7 +126,7 @@ int Hmdf::readImeds(const std::string &filename) {
   std::getline(fid, templine);
 
   while (!fid.eof()) {
-    HmdfStation station;
+    HmdfStation station(false);
 
     templine = Adcirc::FileIO::Generic::sanitizeString(templine);
 
@@ -154,6 +166,10 @@ int Hmdf::readImeds(const std::string &filename) {
 }
 
 int Hmdf::readNetcdf(const std::string &filename, bool stationsOnly) {
+  if (this->m_isVector) {
+    adcircmodules_throw_exception(
+        "generic netcdf format files cannot contain vector data.");
+  }
   NetcdfTimeseries ncts;
   ncts.setFilename(filename);
   int ierr = ncts.read(stationsOnly);
@@ -182,8 +198,15 @@ int Hmdf::writeCsv(const std::string &filename) {
     for (size_t i = 0; i < this->station(s)->numSnaps(); i++) {
       Date d;
       d.fromSeconds(this->station(s)->date(i));
-      double value = this->station(s)->data(i);
-      out << boost::str(boost::format("%s,%10.4e\n") % d.toString() % value);
+      if (this->isVector()) {
+        double value1 = this->station(s)->data_u(i);
+        double value2 = this->station(s)->data_v(i);
+        out << boost::str(boost::format("%s,%10.4e,%10.4e\n") % d.toString() %
+                          value1 % value2);
+      } else {
+        double value = this->station(s)->data(i);
+        out << boost::str(boost::format("%s,%10.4e\n") % d.toString() % value);
+      }
     }
     out << "\n\n\n";
   }
@@ -382,6 +405,51 @@ int Hmdf::writeNetcdf(const std::string &filename) {
   return 0;
 }
 
+int Hmdf::writeAdcirc(const std::string &filename) {
+  for (size_t i = 0; i < this->nstations(); ++i) {
+    if (this->m_station[0].numSnaps() != this->m_station[i].numSnaps()) {
+      adcircmodules_throw_exception(
+          "To write adcirc format, all stations must have the same number of "
+          "time snaps");
+    }
+  }
+  std::ofstream out(filename);
+
+  if (this->header1() == std::string()) {
+    out << "ADCIRCModules" << std::endl;
+  } else {
+    out << this->header1() << std::endl;
+  }
+
+  double dt = this->station(0)->date(1) - this->station(0)->date(0);
+  int dit = static_cast<int>(std::floor(dt));
+
+  int nv = this->isVector() ? 2 : 1;
+  out << boost::str(
+             boost::format(
+                 "%i    %i    %f    %i    %i    FileFmtVersion: 1050624") %
+             this->station(0)->numSnaps() % this->nstations() % dt % dit % nv)
+      << std::endl;
+  for (size_t i = 0; i < this->station(0)->numSnaps(); ++i) {
+    double t = this->station(0)->date(i) - this->station(0)->date(0) + dt;
+    int it = static_cast<int>(std::floor(t));
+    out << boost::str(boost::format("%12.9e  %i") % t % it) << std::endl;
+    for (size_t j = 0; j < this->nstations(); ++j) {
+      if (this->isVector()) {
+        out << boost::str(boost::format("%12.9e  %12.9e") %
+                          this->station(j)->data_u(i) %
+                          this->station(j)->data_v(i))
+            << std::endl;
+      } else {
+        out << boost::str(boost::format("%12.9e") % this->station(j)->data(i))
+            << std::endl;
+      }
+    }
+  }
+  out.close();
+  return 0;
+}
+
 int Hmdf::write(const std::string &filename, HmdfFileType fileType) {
   if (fileType == HmdfImeds) {
     return this->writeImeds(filename);
@@ -389,21 +457,32 @@ int Hmdf::write(const std::string &filename, HmdfFileType fileType) {
     return this->writeCsv(filename);
   } else if (fileType == HmdfNetCdf) {
     return this->writeNetcdf(filename);
+  } else if (fileType == HmdfAdcirc) {
+    return this->writeAdcirc(filename);
   }
   return 1;
 }
 
-int Hmdf::write(const std::string &filename) {
+Hmdf::HmdfFileType Hmdf::getFiletype(const std::string &filename) {
   std::string extension = Adcirc::FileIO::Generic::getFileExtension(filename);
   boost::algorithm::to_lower(extension);
   if (extension == ".imeds") {
-    return this->write(filename, HmdfImeds);
+    return HmdfImeds;
   } else if (extension == ".csv") {
-    return this->write(filename, HmdfCsv);
+    return HmdfCsv;
   } else if (extension == ".nc") {
-    return this->write(filename, HmdfNetCdf);
+    return HmdfNetCdf;
+  } else if (extension == ".61" || extension == ".62" || extension == ".71" ||
+             extension == ".72") {
+    return HmdfAdcirc;
+  } else {
+    adcircmodules_throw_exception("No valid HMDF filetype found");
   }
-  return 1;
+}
+
+int Hmdf::write(const std::string &filename) {
+  HmdfFileType ft = this->getFiletype(filename);
+  return this->write(filename, ft);
 }
 
 void Hmdf::dataBounds(long long &dateMin, long long &dateMax, double &minValue,

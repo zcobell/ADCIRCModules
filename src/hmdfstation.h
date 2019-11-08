@@ -22,6 +22,7 @@
 #include <limits>
 #include <numeric>
 #include <string>
+#include <tuple>
 #include <vector>
 
 namespace Adcirc {
@@ -35,7 +36,7 @@ class HmdfStation {
     double longitude;
   };
 
-  explicit HmdfStation();
+  explicit HmdfStation(bool isVector = false);
 
   void clear();
 
@@ -72,17 +73,28 @@ class HmdfStation {
   void setDate(const std::vector<long long> &date);
 
   void setNext(const long long &date, const double &data);
+  void setNext(const long long &date, const double &data_u,
+               const double &data_v);
 
   bool isNull() const;
   void setIsNull(bool isNull);
 
   double data(size_t index) const;
+  double data_u(size_t index) const;
+  double data_v(size_t index) const;
+
   void setData(const double &data, size_t index);
   void setData(const std::vector<double> &data);
   void setData(const std::vector<float> &data);
+  void setData(const std::vector<double> &data_u,
+               const std::vector<double> &data_v);
+  void setData(const std::vector<float> &data_u,
+               const std::vector<float> &data_v);
 
   std::vector<long long> allDate() const;
   std::vector<double> allData() const;
+  std::vector<double> allData_u() const;
+  std::vector<double> allData_v() const;
 
   void dataBounds(long long &minDate, long long &maxDate, double &minValue,
                   double &maxValue);
@@ -92,7 +104,11 @@ class HmdfStation {
 
   void reserve(size_t size);
 
+  bool isVector() const;
+
  private:
+  std::tuple<double, double> getVectorBounds(const std::vector<double> &v);
+
   Coordinate m_coordinate;
 
   std::string m_name;
@@ -103,9 +119,11 @@ class HmdfStation {
   double m_nullValue;
 
   std::vector<long long> m_date;
-  std::vector<double> m_data;
+  std::vector<double> m_data_u;
+  std::vector<double> m_data_v;
 
   bool m_isNull;
+  bool m_isVector;
 };
 }  // namespace Output
 }  // namespace Adcirc

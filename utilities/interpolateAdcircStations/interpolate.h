@@ -30,11 +30,12 @@ class Interpolate {
  public:
   struct InputOptions {
     std::string mesh, globalfile, stationfile, outputfile, coldstart, refdate;
-    bool magnitude, direction, readimeds, writeimeds, readdflow, writedflow,
-        readasciimesh, keepwet;
+    bool magnitude, direction, readimeds, readdflow, writedflow, readasciimesh,
+        keepwet;
     size_t startsnap, endsnap;
     int epsg_global, epsg_station, epsg_output;
     double multiplier;
+    std::vector<double> positive_direction;
     InputOptions()
         : mesh(std::string()),
           globalfile(std::string()),
@@ -45,7 +46,6 @@ class Interpolate {
           magnitude(false),
           direction(false),
           readimeds(false),
-          writeimeds(false),
           readdflow(false),
           writedflow(false),
           readasciimesh(false),
@@ -55,7 +55,8 @@ class Interpolate {
           epsg_global(4326),
           epsg_station(4326),
           epsg_output(4326),
-          multiplier(1.0) {}
+          multiplier(1.0),
+          positive_direction(std::vector<double>()) {}
   };
 
   Interpolate(const InputOptions &options);
@@ -71,17 +72,15 @@ class Interpolate {
   };
 
   Adcirc::Geometry::Mesh readMesh(const Adcirc::Output::OutputFormat &filetype);
-  Adcirc::Output::Hmdf readStationLocations();
-  Adcirc::Output::Hmdf readStationList();
-  Adcirc::Output::Hmdf copyStationList(Adcirc::Output::Hmdf &list);
-  void writeAdcirc(Adcirc::Output::ReadOutput &output,
-                   Adcirc::Output::Hmdf &stn, const std::vector<double> &time,
-                   const std::vector<long> &iteration,
-                   const std::vector<std::vector<double>> &v1,
-                   const std::vector<std::vector<double>> &v2);
+  Adcirc::Output::Hmdf readStationLocations(bool vector = false);
+  Adcirc::Output::Hmdf readStationList(bool vector = false);
+  Adcirc::Output::Hmdf copyStationList(Adcirc::Output::Hmdf &list,
+                                       bool vector = false);
+
   void generateInterpolationWeights(Adcirc::Geometry::Mesh &m,
                                     Adcirc::Output::Hmdf &stn);
-  double interpScalar(Adcirc::Output::ReadOutput &data, Weight &w);
+  double interpScalar(Adcirc::Output::ReadOutput &data, Weight &w,
+                      const double positive_direction = -9999.0);
   std::tuple<double, double> interpVector(Adcirc::Output::ReadOutput &data,
                                           Weight &w);
   double interpolateDryValues(double v1, double w1, double v2, double w2,
