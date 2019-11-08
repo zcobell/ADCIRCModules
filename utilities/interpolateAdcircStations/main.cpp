@@ -135,6 +135,7 @@ std::vector<double> readPositiveDirectionFile(const std::string &filename) {
     std::string line;
     bool ok;
     std::getline(file, line);
+    if (file.eof()) break;
     double pd = Adcirc::StringConversion::stringToDouble(line, ok);
     if (!ok) {
       Adcirc::Logging::logError("Could not read the positive directions file",
@@ -142,7 +143,6 @@ std::vector<double> readPositiveDirectionFile(const std::string &filename) {
     } else {
       v.push_back(pd);
     }
-    if (file.eof()) break;
   }
 
   for (size_t i = 0; i < v.size(); ++i) {
@@ -158,7 +158,6 @@ std::vector<double> readPositiveDirectionFile(const std::string &filename) {
       v[i] -= 360.0;
     }
   }
-
   return v;
 }
 
@@ -217,12 +216,12 @@ void validateOptionsList(Interpolate::InputOptions &input) {
     }
   }
   if (input.positive_direction != std::vector<double>()) {
-    if (input.direction || !input.magnitude) {
+    if (!input.magnitude) {
       Adcirc::Logging::logError(
           "Option --positive_direction must be used with --magnitude only",
           "[ERROR]: ");
+      exit(1);
     }
-    exit(1);
   }
 
   Adcirc::Output::ReadOutput gbl(input.globalfile);
