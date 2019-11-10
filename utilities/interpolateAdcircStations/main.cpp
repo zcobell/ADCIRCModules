@@ -36,6 +36,7 @@ int main(int argc, char *argv[]) {
 
   // clang-format off
   options.add_options() ("h,help", "show this message")
+                     ("v,version","prints the adcircmodules version this code is based on")
                      ("m,mesh", "specify the ADCIRC geometry used in the global file",cxxopts::value<std::string>())
                      ("g,global","specify the global ADCIRC output",cxxopts::value<std::string>())
                      ("s,station", "specify the station locations to be used",cxxopts::value<std::string>())
@@ -72,6 +73,12 @@ int main(int argc, char *argv[]) {
   }
 
   Interpolate::InputOptions input = parseCommandLineOptions(result);
+
+  if (result["version"].count() > 0) {
+    std::cout << Adcirc::version() << std::endl;
+    return 0;
+  }
+
   validateOptionsList(input);
 
   Interpolate interp(input);
