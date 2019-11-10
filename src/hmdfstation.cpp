@@ -212,6 +212,18 @@ void HmdfStation::setNext(const long long &date, const double &data_u,
   this->m_data_v.push_back(data_v);
 }
 
+void HmdfStation::setNext(const long long &date,
+                          const std::tuple<double, double> &data) {
+  if (!this->m_isVector) {
+    adcircmodules_throw_exception(
+        "Attempt to assign vector data to scalar station.");
+    return;
+  }
+  this->m_date.push_back(date);
+  this->m_data_u.push_back(std::get<0>(data));
+  this->m_data_v.push_back(std::get<1>(data));
+}
+
 std::vector<long long> HmdfStation::allDate() const { return this->m_date; }
 
 std::vector<double> HmdfStation::allData() const {

@@ -46,8 +46,6 @@ class Interpolate {
           magnitude(false),
           direction(false),
           readimeds(false),
-          readdflow(false),
-          writedflow(false),
           readasciimesh(false),
           keepwet(false),
           startsnap(std::numeric_limits<size_t>::max()),
@@ -71,16 +69,37 @@ class Interpolate {
     Weight() : found(false), node_index{0, 0, 0}, weight{0.0, 0.0, 0.0} {}
   };
 
+  void reprojectStationOutput(Adcirc::Output::Hmdf &output);
+  Date getColdstartDate();
   Adcirc::Geometry::Mesh readMesh(const Adcirc::Output::OutputFormat &filetype);
   Adcirc::Output::Hmdf readStationLocations(bool vector = false);
   Adcirc::Output::Hmdf readStationList(bool vector = false);
   Adcirc::Output::Hmdf copyStationList(Adcirc::Output::Hmdf &list,
-                                       bool vector = false);
+                                       const bool vector = false);
 
+  void interpolateTimeSnapToStations(const size_t snap, const bool writeVector,
+                                     const bool hasDirection,
+                                     const Date &coldstart,
+                                     Adcirc::Output::ReadOutput &globalFile,
+                                     Adcirc::Output::Hmdf &stationData);
+  void allocateStationArrays(Adcirc::Output::Hmdf &stationData);
+  void logProgress(const size_t nsnap, const size_t i);
+  void validatePositiveFlowDirections(Adcirc::Output::Hmdf &stationData);
   void generateInterpolationWeights(Adcirc::Geometry::Mesh &m,
                                     Adcirc::Output::Hmdf &stn);
   double interpScalar(Adcirc::Output::ReadOutput &data, Weight &w,
                       const double positive_direction = -9999.0);
+
+  double interpScalarFromVector(Adcirc::Output::ReadOutput &data, Weight &w,
+                                const double positive_direction = -9999.0);
+
+  double interpScalarFromVectorWithoutFlowDirection(
+      Adcirc::Output::ReadOutput &data, Weight &w);
+  double interpScalarFromVectorWithFlowDirection(
+      Adcirc::Output::ReadOutput &data, Weight &w,
+      const double positive_direction);
+  double interpDirectionFromVector(Adcirc::Output::ReadOutput &data, Weight &w);
+
   std::tuple<double, double> interpVector(Adcirc::Output::ReadOutput &data,
                                           Weight &w);
   double interpolateDryValues(double v1, double w1, double v2, double w2,

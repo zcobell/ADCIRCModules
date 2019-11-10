@@ -75,6 +75,7 @@ class HmdfStation {
   void setNext(const long long &date, const double &data);
   void setNext(const long long &date, const double &data_u,
                const double &data_v);
+  void setNext(const long long &date, const std::tuple<double, double> &data);
 
   bool isNull() const;
   void setIsNull(bool isNull);
