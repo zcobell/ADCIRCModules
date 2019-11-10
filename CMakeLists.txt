@@ -333,6 +333,7 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/config.cpp
                 ${CMAKE_SOURCE_DIR}/src/logging.cpp
                 ${CMAKE_SOURCE_DIR}/src/filetypes.cpp
+		${CMAKE_SOURCE_DIR}/src/formatting.cpp
                 ${CMAKE_SOURCE_DIR}/src/mesh.cpp 
                 ${CMAKE_SOURCE_DIR}/src/node.cpp
                 ${CMAKE_SOURCE_DIR}/src/element.cpp

@@ -17,13 +17,16 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "hmdf.h"
+
 #include <cmath>
 #include <fstream>
+
 #include "boost/algorithm/string.hpp"
 #include "boost/algorithm/string/replace.hpp"
 #include "boost/format.hpp"
 #include "cdate.h"
 #include "fileio.h"
+#include "formatting.h"
 #include "logging.h"
 #include "netcdf.h"
 #include "netcdftimeseries.h"
@@ -406,11 +409,18 @@ int Hmdf::writeNetcdf(const std::string &filename) {
 }
 
 int Hmdf::writeAdcirc(const std::string &filename) {
-  for (size_t i = 0; i < this->nstations(); ++i) {
+  for (size_t i = 1; i < this->nstations(); ++i) {
     if (this->m_station[0].numSnaps() != this->m_station[i].numSnaps()) {
       adcircmodules_throw_exception(
           "To write adcirc format, all stations must have the same number of "
           "time snaps");
+    }
+    for (size_t j = 0; i < this->m_station[i].numSnaps(); ++j) {
+      if (this->m_station[i].date(j) != this->m_station[0].date(j)) {
+        adcircmodules_throw_exception(
+            "To write adcirc format, all stations must have the same set of "
+            "time snaps");
+      }
     }
   }
   std::ofstream out(filename);
@@ -425,24 +435,19 @@ int Hmdf::writeAdcirc(const std::string &filename) {
   int dit = static_cast<int>(std::floor(dt));
 
   int nv = this->isVector() ? 2 : 1;
-  out << boost::str(
-             boost::format(
-                 "%i    %i    %f    %i    %i    FileFmtVersion: 1050624") %
-             this->station(0)->numSnaps() % this->nstations() % dt % dit % nv)
-      << std::endl;
+  out << Adcirc::Output::Formatting::adcircFileHeader(
+      this->station(0)->numSnaps(), this->nstations(), dt, dit, nv);
   for (size_t i = 0; i < this->station(0)->numSnaps(); ++i) {
     double t = this->station(0)->date(i) - this->station(0)->date(0) + dt;
     int it = static_cast<int>(std::floor(t));
-    out << boost::str(boost::format("%12.9e  %i") % t % it) << std::endl;
+    out << Adcirc::Output::Formatting::adcircFullFormatRecordHeader(t, it);
     for (size_t j = 0; j < this->nstations(); ++j) {
       if (this->isVector()) {
-        out << boost::str(boost::format("%12.9e  %12.9e") %
-                          this->station(j)->data_u(i) %
-                          this->station(j)->data_v(i))
-            << std::endl;
+        out << Adcirc::Output::Formatting::adcircVectorLineFormat(
+            j + 1, this->station(j)->data_u(i), this->station(i)->data_v(i));
       } else {
-        out << boost::str(boost::format("%12.9e") % this->station(j)->data(i))
-            << std::endl;
+        out << Adcirc::Output::Formatting::adcircScalarLineFormat(
+            j + 1, this->station(j)->data(i));
       }
     }
   }
