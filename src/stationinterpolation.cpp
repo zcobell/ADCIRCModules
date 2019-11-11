@@ -19,6 +19,7 @@
 #include "stationinterpolation.h"
 
 #include "boost/format.hpp"
+#include "boost/progress.hpp"
 #include "constants.h"
 #include "ezproj.h"
 #include "fileio.h"
@@ -50,10 +51,12 @@ void StationInterpolation::run() {
 
   size_t nsnap = this->m_options.endsnap() - this->m_options.startsnap() + 1;
 
+  boost::progress_display progress_bar(nsnap);
+
   for (size_t i = this->m_options.startsnap(); i <= this->m_options.endsnap();
        ++i) {
     this->interpolateTimeSnapToStations(i, writeVector, coldstart, globalFile);
-    this->logProgress(nsnap, i);
+    ++progress_bar;
     globalFile.clearAt(0);
   }
 
@@ -135,17 +138,6 @@ void StationInterpolation::generateInterpolationWeights(
     exit(1);
   }
   return;
-}
-
-void StationInterpolation::logProgress(const size_t nsnap, const size_t i) {
-  double pct = (static_cast<double>(i - this->m_options.startsnap() + 1) /
-                static_cast<double>(nsnap)) *
-               100.0;
-  std::string logMessage = boost::str(
-      boost::format(
-          "Processing snap %6.6i of %6.6i (File Snap: %6.6i) [%6.2f%%]") %
-      (i - this->m_options.startsnap() + 1) % nsnap % i % pct);
-  Adcirc::Logging::log(logMessage, "[INFO]: ");
 }
 
 void StationInterpolation::allocateStationArrays() {

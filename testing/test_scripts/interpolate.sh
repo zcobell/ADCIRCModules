@@ -20,7 +20,6 @@
 #...Interpolate and write imeds formatted data
 ../../build/interpolateAdcircStations --station locations.txt --coldstart 20191110000000 --mesh ../test_files/internal_overflow.grd --global ../test_files/fort.63 --output interp_wse.nc
 ../../build/interpolateAdcircStations --station locations.txt --coldstart 20191110000000 --global ../test_files/fort.63.nc --output interp_wsenc.nc
-../../build/interpolateAdcircStations --station locations.txt --coldstart 20191110000000 --global ../test_files/fort.64.nc --output interp_velnc.nc
 ../../build/interpolateAdcircStations --station locations.txt --coldstart 20191110000000 --global ../test_files/fort.64.nc --output interp_magnc.nc --magnitude
 ../../build/interpolateAdcircStations --station locations.txt --coldstart 20191110000000 --global ../test_files/fort.64.nc --output interp_magdirnc.nc --magnitude --positive_direction 180
 ../../build/interpolateAdcircStations --station locations.txt --coldstart 20191110000000 --global ../test_files/fort.64.nc --output interp_dirnc.nc --direction

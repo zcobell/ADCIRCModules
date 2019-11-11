@@ -61,7 +61,6 @@ class StationInterpolation {
                                      const Date &coldstart,
                                      Adcirc::Output::ReadOutput &globalFile);
   void allocateStationArrays();
-  void logProgress(const size_t nsnap, const size_t i);
   void generateInterpolationWeights(Adcirc::Geometry::Mesh &m);
   double interpScalar(Adcirc::Output::ReadOutput &data, Weight &w,
                       const double positive_direction = -9999.0);
