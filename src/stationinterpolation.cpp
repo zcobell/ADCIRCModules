@@ -182,7 +182,7 @@ Date StationInterpolation::getColdstartDate() {
       ft == Adcirc::Output::Hmdf::HmdfNetCdf) {
     return this->dateFromString(this->m_options.coldstart());
   }
-  return Date();
+  return Date(1970, 1, 1, 0, 0, 0);
 }
 
 void StationInterpolation::interpolateTimeSnapToStations(
@@ -192,30 +192,29 @@ void StationInterpolation::interpolateTimeSnapToStations(
   Date d = coldstart;
   Hmdf *stationData = this->m_options.stations();
   d.add(static_cast<long>(globalFile.dataAt(0)->time()));
-  long long datetime = d.toMSeconds();
 
   for (size_t j = 0; j < stationData->nstations(); ++j) {
     if (this->m_weights[j].found) {
       if (writeVector) {
         stationData->station(j)->setNext(
-            datetime, this->interpVector(globalFile, this->m_weights[j]));
+            d, this->interpVector(globalFile, this->m_weights[j]));
       } else {
         if (this->m_options.hasPositiveDirection()) {
           stationData->station(j)->setNext(
-              datetime, this->interpScalar(
-                            globalFile, this->m_weights[j],
-                            this->m_options.station(j)->positiveDirection()));
+              d, this->interpScalar(
+                     globalFile, this->m_weights[j],
+                     this->m_options.station(j)->positiveDirection()));
         } else {
           stationData->station(j)->setNext(
-              datetime, this->interpScalar(globalFile, this->m_weights[j]));
+              d, this->interpScalar(globalFile, this->m_weights[j]));
         }
       }
     } else {
       if (writeVector) {
-        stationData->station(j)->setNext(datetime, globalFile.defaultValue(),
+        stationData->station(j)->setNext(d, globalFile.defaultValue(),
                                          globalFile.defaultValue());
       } else {
-        stationData->station(j)->setNext(datetime, globalFile.defaultValue());
+        stationData->station(j)->setNext(d, globalFile.defaultValue());
       }
     }
   }

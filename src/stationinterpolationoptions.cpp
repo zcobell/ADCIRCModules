@@ -153,6 +153,9 @@ void StationInterpolationOptions::readStations(const std::string &stationFile) {
   }
 
   std::string ext = Adcirc::FileIO::Generic::getFileExtension(stn);
+  if (!Adcirc::FileIO::Generic::fileExists(stn)) {
+    adcircmodules_throw_exception("Station file does not exist.");
+  }
   if (ext == ".nc") {
     this->m_hmdf.readNetcdf(stn, true);
   } else if (ext == ".imeds") {

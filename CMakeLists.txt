@@ -712,6 +712,10 @@ IF(UNIX OR CYGWIN)
                SET_TESTS_PROPERTIES( TEST_${TESTNAME} PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
             ENDIF(CYGWIN)
         ENDFOREACH()
+
+	#...Script base testing
+	ADD_TEST( NAME sh_interpStations COMMAND bash interpolate.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/testing/test_scripts ) 
+	SET_PROPERTY( TEST sh_interpStations  PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
         
         #...Python Test
         IF(PYTHON_TESTING)

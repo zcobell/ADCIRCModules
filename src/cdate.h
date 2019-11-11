@@ -26,6 +26,13 @@ class Date {
   Date();
   Date(int year, int month, int day, int hour, int minute, int second);
 
+  bool operator<(const Date &d) const;
+  bool operator==(const Date &d) const;
+  bool operator!=(const Date &d) const;
+
+  static Date maxDate();
+  static Date minDate();
+
   void add(long seconds);
 
   void get(int &year, int &month, int &day, int &hour, int &minute,
@@ -37,31 +44,30 @@ class Date {
 
   void fromMSeconds(long long mseconds);
 
-  long long toSeconds();
+  long long toSeconds() const;
 
-  long long toMSeconds();
+  long long toMSeconds() const;
 
-  int year();
+  int year() const;
   void setYear(int year);
-
-  int month();
+  int month() const;
   void setMonth(int month);
 
-  int day();
+  int day() const;
   void setDay(int day);
 
-  int hour();
+  int hour() const;
   void setHour(int hour);
 
-  int minute();
+  int minute() const;
   void setMinute(int month);
 
-  int second();
+  int second() const;
   void setSecond(int second);
 
   void fromString(const std::string &datestr);
 
-  std::string toString();
+  std::string toString() const;
 
   static Date now();
 

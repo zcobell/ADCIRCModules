@@ -166,7 +166,7 @@ int Hmdf::readImeds(const std::string &filename) {
         Date d(year, month, day, hour, minute, second);
 
         //...Append to the station data
-        station.setNext(d.toMSeconds(), value);
+        station.setNext(d, value);
       } else {
         break;
       }
@@ -225,16 +225,16 @@ int Hmdf::writeCsv(const std::string &filename) {
     out << boost::str(boost::format("Units: %s\n") % this->units());
 
     for (size_t i = 0; i < this->station(s)->numSnaps(); i++) {
-      Date d;
-      d.fromSeconds(this->station(s)->date(i));
       if (this->isVector()) {
         double value1 = this->station(s)->data_u(i);
         double value2 = this->station(s)->data_v(i);
-        out << boost::str(boost::format("%s,%10.4e,%10.4e\n") % d.toString() %
-                          value1 % value2);
+        out << boost::str(boost::format("%s,%10.4e,%10.4e\n") %
+                          this->station(s)->date(i).toString() % value1 %
+                          value2);
       } else {
         double value = this->station(s)->data(i);
-        out << boost::str(boost::format("%s,%10.4e\n") % d.toString() % value);
+        out << boost::str(boost::format("%s,%10.4e\n") %
+                          this->station(s)->date(i).toString() % value);
       }
     }
     out << "\n\n\n";
@@ -263,13 +263,13 @@ int Hmdf::writeImeds(const std::string &filename) {
                       this->station(s)->longitude());
 
     for (size_t i = 0; i < this->station(s)->numSnaps(); ++i) {
-      Date t;
-      t.fromSeconds(this->station(s)->date(i));
       double value = this->station(s)->data(i);
       out << boost::str(
           boost::format("%04.4i %02.2i %02.2i %02.2i %02.2i %02.2i %10.6e\n") %
-          t.year() % t.month() % t.day() % t.hour() % t.minute() % t.second() %
-          value);
+          this->station(s)->date(i).year() % this->station(s)->date(i).month() %
+          this->station(s)->date(i).day() % this->station(s)->date(i).hour() %
+          this->station(s)->date(i).minute() %
+          this->station(s)->date(i).second() % value);
     }
   }
   out.close();
@@ -415,7 +415,7 @@ int Hmdf::writeNetcdf(const std::string &filename) {
     this->station(i)->id().copy(id.get(), this->station(i)->id().length(), 0);
 
     for (size_t j = 0; j < this->station(i)->numSnaps(); j++) {
-      time.get()[j] = this->station(i)->date(j) / 1000;
+      time.get()[j] = this->station(i)->date(j).toSeconds();
       data.get()[j] = this->station(i)->data(j);
     }
 
@@ -440,7 +440,7 @@ int Hmdf::writeAdcirc(const std::string &filename) {
             "To write adcirc format, all stations must have the same number of "
             "time snaps");
       }
-      for (size_t j = 0; i < this->m_station[i].numSnaps(); ++j) {
+      for (size_t j = 0; j < this->m_station[0].numSnaps(); ++j) {
         if (this->m_station[i].date(j) != this->m_station[0].date(j)) {
           adcircmodules_throw_exception(
               "To write adcirc format, all stations must have the same set of "
@@ -457,15 +457,16 @@ int Hmdf::writeAdcirc(const std::string &filename) {
     out << this->header1() << std::endl;
   }
 
-  double dt = (this->station(0)->date(1) - this->station(0)->date(0)) / 1000.0;
+  double dt = this->station(0)->date(1).toSeconds() -
+              this->station(0)->date(0).toSeconds();
   int dit = static_cast<int>(std::floor(dt));
 
   int nv = this->isVector() ? 2 : 1;
   out << Adcirc::Output::Formatting::adcircFileHeader(
       this->station(0)->numSnaps(), this->nstations(), dt, dit, nv);
   for (size_t i = 0; i < this->station(0)->numSnaps(); ++i) {
-    double t =
-        (this->station(0)->date(i) - this->station(0)->date(0) + dt) / 1000.0;
+    double t = this->station(0)->date(i).toSeconds() -
+               this->station(0)->date(0).toSeconds() + dt;
     int it = static_cast<int>(std::floor(t));
     out << Adcirc::Output::Formatting::adcircFullFormatRecordHeader(t, it);
     for (size_t j = 0; j < this->nstations(); ++j) {
@@ -518,15 +519,15 @@ int Hmdf::write(const std::string &filename) {
   return this->write(filename, ft);
 }
 
-void Hmdf::dataBounds(long long &dateMin, long long &dateMax, double &minValue,
+void Hmdf::dataBounds(Date &dateMin, Date &dateMax, double &minValue,
                       double &maxValue) {
-  dateMax = std::numeric_limits<long long>::max();
-  dateMin = -std::numeric_limits<long long>::max();
+  dateMax = Date::maxDate();
+  dateMin = Date::minDate();
   maxValue = -std::numeric_limits<double>::max();
   minValue = std::numeric_limits<double>::max();
 
   for (size_t i = 0; i < this->nstations(); i++) {
-    long long tempDateMin, tempDateMax;
+    Date tempDateMin, tempDateMax;
     double tempMinValue, tempMaxValue;
     if (!this->station(i)->isNull()) {
       this->station(i)->dataBounds(tempDateMin, tempDateMax, tempMinValue,
