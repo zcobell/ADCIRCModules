@@ -22,6 +22,7 @@
 #include <limits>
 #include <string>
 #include <vector>
+
 #include "hmdfstation.h"
 
 namespace Adcirc {
@@ -46,6 +47,8 @@ class Hmdf {
   int readImeds(const std::string &filename);
   int readNetcdf(const std::string &filename, bool stationsOnly = false);
 
+  void copyStationList(Adcirc::Output::Hmdf &templateStations);
+
   size_t nstations() const;
   // void setNstations(size_t nstations);
 
@@ -64,9 +67,9 @@ class Hmdf {
   std::string datum() const;
   void setDatum(const std::string &datum);
 
-  HmdfStation *station(size_t index);
-  void setStation(size_t index, HmdfStation &station);
-  void addStation(const HmdfStation &station);
+  Adcirc::Output::HmdfStation *station(size_t index);
+  void setStation(size_t index, Adcirc::Output::HmdfStation &station);
+  void addStation(const Adcirc::Output::HmdfStation &station);
 
   bool success() const;
   void setSuccess(bool success);
@@ -77,9 +80,11 @@ class Hmdf {
   void dataBounds(long long &dateMin, long long &dateMax, double &minValue,
                   double &maxValue);
 
+  void setVector(bool vector);
   bool isVector() const;
 
-  static HmdfFileType getFiletype(const std::string &filename);
+  static Adcirc::Output::Hmdf::HmdfFileType getFiletype(
+      const std::string &filename);
 
  private:
   void init();
@@ -92,7 +97,7 @@ class Hmdf {
   std::string m_header3;
   std::string m_units;
   std::string m_datum;
-  std::vector<HmdfStation> m_station;
+  std::vector<Adcirc::Output::HmdfStation> m_station;
 };
 
 }  // namespace Output

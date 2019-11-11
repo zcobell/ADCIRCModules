@@ -21,6 +21,10 @@
 #include <cmath>
 #include <fstream>
 
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#include <unistd.h>
+#endif
+
 #include "boost/algorithm/string.hpp"
 #include "boost/algorithm/string/replace.hpp"
 #include "boost/format.hpp"
@@ -84,7 +88,16 @@ void Hmdf::setDatum(const std::string &datum) { this->m_datum = datum; }
 
 HmdfStation *Hmdf::station(size_t index) {
   assert(index < this->m_station.size());
-  return &this->m_station[index];
+  if (index < this->m_station.size()) {
+    return &this->m_station[index];
+  } else {
+    std::string error = boost::str(
+        boost::format(
+            "Index %i greater than number of stations in hmdf object (%i)") %
+        index % this->m_station.size());
+    adcircmodules_throw_exception(error);
+    return nullptr;
+  }
 }
 
 void Hmdf::setStation(size_t index, HmdfStation &station) {
@@ -187,6 +200,19 @@ int Hmdf::readNetcdf(const std::string &filename, bool stationsOnly) {
   this->setNull(false);
 
   return 0;
+}
+
+void Hmdf::copyStationList(Adcirc::Output::Hmdf &templateStations) {
+  this->m_station.clear();
+  for (size_t i = 0; i < templateStations.nstations(); ++i) {
+    HmdfStation s;
+    s.setLatitude(templateStations.station(i)->latitude());
+    s.setLongitude(templateStations.station(i)->longitude());
+    s.setStationIndex(templateStations.station(i)->stationIndex());
+    s.setName(templateStations.station(i)->name());
+    s.setId(templateStations.station(i)->id());
+    this->addStation(s);
+  }
 }
 
 int Hmdf::writeCsv(const std::string &filename) {
@@ -337,17 +363,15 @@ int Hmdf::writeNetcdf(const std::string &filename) {
   }
 
   //...Metadata
-#ifndef _WIN32
-  char *h = std::getenv("HOSTNAME");
+#if defined(__unix__) || defined(__APPLE__)
+  char hostname[256];
+  gethostname(hostname, 256);
+  std::string host(hostname);
+#elif _WIN32
+  std::string host = std::string(std::getenv("COMPUTERNAME"));
 #else
-  char *h = getenv("COMPUTERNAME");
+  std::string host = "unknown";
 #endif
-  std::string host;
-  if (h == nullptr) {
-    host = "unknown";
-  } else {
-    host = std::string(h);
-  }
 
   std::string name = std::string(std::getenv("USER"));
   if (name == std::string()) name = std::string(std::getenv("USERNAME"));
@@ -409,17 +433,19 @@ int Hmdf::writeNetcdf(const std::string &filename) {
 }
 
 int Hmdf::writeAdcirc(const std::string &filename) {
-  for (size_t i = 1; i < this->nstations(); ++i) {
-    if (this->m_station[0].numSnaps() != this->m_station[i].numSnaps()) {
-      adcircmodules_throw_exception(
-          "To write adcirc format, all stations must have the same number of "
-          "time snaps");
-    }
-    for (size_t j = 0; i < this->m_station[i].numSnaps(); ++j) {
-      if (this->m_station[i].date(j) != this->m_station[0].date(j)) {
+  if (this->nstations() > 1) {
+    for (size_t i = 1; i < this->nstations(); ++i) {
+      if (this->m_station[0].numSnaps() != this->m_station[i].numSnaps()) {
         adcircmodules_throw_exception(
-            "To write adcirc format, all stations must have the same set of "
+            "To write adcirc format, all stations must have the same number of "
             "time snaps");
+      }
+      for (size_t j = 0; i < this->m_station[i].numSnaps(); ++j) {
+        if (this->m_station[i].date(j) != this->m_station[0].date(j)) {
+          adcircmodules_throw_exception(
+              "To write adcirc format, all stations must have the same set of "
+              "time snaps");
+        }
       }
     }
   }
@@ -431,20 +457,21 @@ int Hmdf::writeAdcirc(const std::string &filename) {
     out << this->header1() << std::endl;
   }
 
-  double dt = this->station(0)->date(1) - this->station(0)->date(0);
+  double dt = (this->station(0)->date(1) - this->station(0)->date(0)) / 1000.0;
   int dit = static_cast<int>(std::floor(dt));
 
   int nv = this->isVector() ? 2 : 1;
   out << Adcirc::Output::Formatting::adcircFileHeader(
       this->station(0)->numSnaps(), this->nstations(), dt, dit, nv);
   for (size_t i = 0; i < this->station(0)->numSnaps(); ++i) {
-    double t = this->station(0)->date(i) - this->station(0)->date(0) + dt;
+    double t =
+        (this->station(0)->date(i) - this->station(0)->date(0) + dt) / 1000.0;
     int it = static_cast<int>(std::floor(t));
     out << Adcirc::Output::Formatting::adcircFullFormatRecordHeader(t, it);
     for (size_t j = 0; j < this->nstations(); ++j) {
       if (this->isVector()) {
         out << Adcirc::Output::Formatting::adcircVectorLineFormat(
-            j + 1, this->station(j)->data_u(i), this->station(i)->data_v(i));
+            j + 1, this->station(j)->data_u(i), this->station(j)->data_v(i));
       } else {
         out << Adcirc::Output::Formatting::adcircScalarLineFormat(
             j + 1, this->station(j)->data(i));
@@ -482,6 +509,7 @@ Hmdf::HmdfFileType Hmdf::getFiletype(const std::string &filename) {
     return HmdfAdcirc;
   } else {
     adcircmodules_throw_exception("No valid HMDF filetype found");
+    return Hmdf::HmdfFileType();
   }
 }
 
@@ -510,4 +538,11 @@ void Hmdf::dataBounds(long long &dateMin, long long &dateMax, double &minValue,
     }
   }
   return;
+}
+
+void Hmdf::setVector(bool vector) {
+  this->m_isVector = vector;
+  for (auto &s : this->m_station) {
+    s.setVector(vector);
+  }
 }

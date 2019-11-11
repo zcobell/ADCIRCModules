@@ -16,50 +16,30 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef INTERPOLATER_H
-#define INTERPOLATER_H
+#ifndef ADCMOD_STATIONINTERPOLATION_H
+#define ADCMOD_STATIONINTERPOLATION_H
 
 #include <array>
 #include <limits>
 #include <string>
 #include <tuple>
-#include "adcircmodules.h"
+
+#include "adcircmodules_global.h"
 #include "cdate.h"
+#include "hmdf.h"
+#include "mesh.h"
+#include "readoutput.h"
+#include "stationinterpolationoptions.h"
 
-class Interpolate {
+namespace Adcirc {
+namespace Output {
+
+class StationInterpolation {
  public:
-  struct InputOptions {
-    std::string mesh, globalfile, stationfile, outputfile, coldstart, refdate;
-    bool magnitude, direction, readimeds, readdflow, writedflow, readasciimesh,
-        keepwet;
-    size_t startsnap, endsnap;
-    int epsg_global, epsg_station, epsg_output;
-    double multiplier;
-    std::vector<double> positive_direction;
-    InputOptions()
-        : mesh(std::string()),
-          globalfile(std::string()),
-          stationfile(std::string()),
-          outputfile(std::string()),
-          coldstart(std::string()),
-          refdate(std::string()),
-          magnitude(false),
-          direction(false),
-          readimeds(false),
-          readasciimesh(false),
-          keepwet(false),
-          startsnap(std::numeric_limits<size_t>::max()),
-          endsnap(std::numeric_limits<size_t>::max()),
-          epsg_global(4326),
-          epsg_station(4326),
-          epsg_output(4326),
-          multiplier(1.0),
-          positive_direction(std::vector<double>()) {}
-  };
+  ADCIRCMODULES_EXPORT StationInterpolation(
+      const Adcirc::Output::StationInterpolationOptions &options);
 
-  Interpolate(const InputOptions &options);
-
-  void run();
+  void ADCIRCMODULES_EXPORT run();
 
  private:
   struct Weight {
@@ -69,7 +49,7 @@ class Interpolate {
     Weight() : found(false), node_index{0, 0, 0}, weight{0.0, 0.0, 0.0} {}
   };
 
-  void reprojectStationOutput(Adcirc::Output::Hmdf &output);
+  void reprojectStationOutput();
   Date getColdstartDate();
   Adcirc::Geometry::Mesh readMesh(const Adcirc::Output::OutputFormat &filetype);
   Adcirc::Output::Hmdf readStationLocations(bool vector = false);
@@ -78,15 +58,11 @@ class Interpolate {
                                        const bool vector = false);
 
   void interpolateTimeSnapToStations(const size_t snap, const bool writeVector,
-                                     const bool hasDirection,
                                      const Date &coldstart,
-                                     Adcirc::Output::ReadOutput &globalFile,
-                                     Adcirc::Output::Hmdf &stationData);
-  void allocateStationArrays(Adcirc::Output::Hmdf &stationData);
+                                     Adcirc::Output::ReadOutput &globalFile);
+  void allocateStationArrays();
   void logProgress(const size_t nsnap, const size_t i);
-  void validatePositiveFlowDirections(Adcirc::Output::Hmdf &stationData);
-  void generateInterpolationWeights(Adcirc::Geometry::Mesh &m,
-                                    Adcirc::Output::Hmdf &stn);
+  void generateInterpolationWeights(Adcirc::Geometry::Mesh &m);
   double interpScalar(Adcirc::Output::ReadOutput &data, Weight &w,
                       const double positive_direction = -9999.0);
 
@@ -106,8 +82,11 @@ class Interpolate {
                               double v3, double w3, double defaultVal);
   Date dateFromString(const std::string &dateString);
 
-  InputOptions m_inputOptions;
   std::vector<Weight> m_weights;
+  Adcirc::Output::StationInterpolationOptions m_options;
 };
 
-#endif  // INTERPOLATER_H
+}  // namespace Output
+}  // namespace Adcirc
+
+#endif  // ADCMOD_STATIONINTERPOLATION_H

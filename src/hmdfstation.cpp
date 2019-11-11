@@ -17,7 +17,9 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "hmdfstation.h"
+
 #include <cassert>
+
 #include "fpcompare.h"
 #include "logging.h"
 
@@ -31,6 +33,7 @@ HmdfStation::HmdfStation(bool isVector) {
   this->m_stationIndex = 0;
   this->m_nullValue = HmdfStation::nullDataValue();
   this->m_isVector = isVector;
+  this->m_positiveDirection = 0;
 }
 
 void HmdfStation::clear() {
@@ -40,8 +43,7 @@ void HmdfStation::clear() {
   this->m_isNull = true;
   this->m_stationIndex = 0;
   this->m_isVector = false;
-  this->m_data_u.clear();
-  this->m_date.clear();
+  this->m_positiveDirection = 0;
   return;
 }
 
@@ -286,6 +288,21 @@ std::tuple<double, double> HmdfStation::getVectorBounds(
   return std::make_tuple(minValue, sortedData.back());
 }
 
+double HmdfStation::positiveDirection() const {
+  return this->m_positiveDirection;
+}
+
+void HmdfStation::setPositiveDirection(double positiveDirection) {
+  if (positiveDirection < -360.0 || positiveDirection > 360.0) {
+    adcircmodules_throw_exception("Positive direction is out of bounds");
+  } else if (positiveDirection < -180.0) {
+    positiveDirection += 360.0;
+  } else if (positiveDirection > 180.0) {
+    positiveDirection -= 360.0;
+  }
+  this->m_positiveDirection = positiveDirection;
+}
+
 void HmdfStation::dataBounds(long long &minDate, long long &maxDate,
                              double &minValue, double &maxValue) {
   minDate = *std::min_element(this->m_date.begin(), this->m_date.end());
@@ -312,6 +329,13 @@ void HmdfStation::reserve(size_t size) {
   this->m_data_u.reserve(size);
   this->m_date.reserve(size);
   if (this->m_isVector) this->m_data_v.reserve(size);
+}
+
+void HmdfStation::setVector(const bool vector) {
+  this->m_data_u.clear();
+  this->m_date.clear();
+  this->m_data_v.clear();
+  this->m_isVector = vector;
 }
 
 bool HmdfStation::isVector() const { return this->m_isVector; }

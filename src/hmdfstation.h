@@ -105,7 +105,11 @@ class HmdfStation {
 
   void reserve(size_t size);
 
+  void setVector(const bool vector);
   bool isVector() const;
+
+  double positiveDirection() const;
+  void setPositiveDirection(double positiveDirection);
 
  private:
   std::tuple<double, double> getVectorBounds(const std::vector<double> &v);
@@ -118,6 +122,7 @@ class HmdfStation {
   size_t m_stationIndex;
 
   double m_nullValue;
+  double m_positiveDirection;
 
   std::vector<long long> m_date;
   std::vector<double> m_data_u;
