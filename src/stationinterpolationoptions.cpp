@@ -2,6 +2,7 @@
 
 #include <fstream>
 
+#include "boost/algorithm/string.hpp"
 #include "boost/format.hpp"
 #include "fileio.h"
 #include "logging.h"
@@ -156,6 +157,9 @@ void StationInterpolationOptions::readStations(const std::string &stationFile) {
   if (!Adcirc::FileIO::Generic::fileExists(stn)) {
     adcircmodules_throw_exception("Station file does not exist.");
   }
+
+  boost::algorithm::to_lower(ext);
+
   if (ext == ".nc") {
     this->m_hmdf.readNetcdf(stn, true);
   } else if (ext == ".imeds") {
