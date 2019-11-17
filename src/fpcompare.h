@@ -29,7 +29,7 @@ namespace FpCompare {
 
 template <typename T>
 bool ADCIRCMODULES_EXPORT equalTo(const T &a, const T &b) {
-  return !(boost::math::relative_difference(a, b) > 1);
+  return !(boost::math::relative_difference(a, b) > 0);
 }
 
 template <typename T>
