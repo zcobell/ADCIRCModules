@@ -25,6 +25,8 @@
 #include <tuple>
 #include <vector>
 
+#include "cdate.h"
+
 namespace Adcirc {
 
 namespace Output {
@@ -68,14 +70,13 @@ class HmdfStation {
   size_t stationIndex() const;
   void setStationIndex(size_t stationIndex);
 
-  long long date(size_t index) const;
-  void setDate(const long long &date, size_t index);
-  void setDate(const std::vector<long long> &date);
+  Date date(size_t index) const;
+  void setDate(const Date &date, size_t index);
+  void setDate(const std::vector<Date> &date);
 
-  void setNext(const long long &date, const double &data);
-  void setNext(const long long &date, const double &data_u,
-               const double &data_v);
-  void setNext(const long long &date, const std::tuple<double, double> &data);
+  void setNext(const Date &date, const double &data);
+  void setNext(const Date &date, const double &data_u, const double &data_v);
+  void setNext(const Date &date, const std::tuple<double, double> &data);
 
   bool isNull() const;
   void setIsNull(bool isNull);
@@ -92,12 +93,12 @@ class HmdfStation {
   void setData(const std::vector<float> &data_u,
                const std::vector<float> &data_v);
 
-  std::vector<long long> allDate() const;
+  std::vector<Date> allDate() const;
   std::vector<double> allData() const;
   std::vector<double> allData_u() const;
   std::vector<double> allData_v() const;
 
-  void dataBounds(long long &minDate, long long &maxDate, double &minValue,
+  void dataBounds(Date &minDate, Date &maxDate, double &minValue,
                   double &maxValue);
 
   double nullValue() const;
@@ -105,7 +106,11 @@ class HmdfStation {
 
   void reserve(size_t size);
 
+  void setVector(const bool vector);
   bool isVector() const;
+
+  double positiveDirection() const;
+  void setPositiveDirection(double positiveDirection);
 
  private:
   std::tuple<double, double> getVectorBounds(const std::vector<double> &v);
@@ -118,8 +123,9 @@ class HmdfStation {
   size_t m_stationIndex;
 
   double m_nullValue;
+  double m_positiveDirection;
 
-  std::vector<long long> m_date;
+  std::vector<Date> m_date;
   std::vector<double> m_data_u;
   std::vector<double> m_data_v;
 

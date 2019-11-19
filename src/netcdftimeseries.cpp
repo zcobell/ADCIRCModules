@@ -148,7 +148,7 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
         this->m_data[i][j] = varData.get()[j];
         Date t = reftime;
         t.add(timeData.get()[j]);
-        this->m_time[i][j] = t.toMSeconds();
+        this->m_time[i][j] = t;
       }
     }
   }

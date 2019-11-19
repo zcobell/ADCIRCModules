@@ -17,7 +17,9 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "hmdfstation.h"
+
 #include <cassert>
+
 #include "fpcompare.h"
 #include "logging.h"
 
@@ -31,6 +33,7 @@ HmdfStation::HmdfStation(bool isVector) {
   this->m_stationIndex = 0;
   this->m_nullValue = HmdfStation::nullDataValue();
   this->m_isVector = isVector;
+  this->m_positiveDirection = 0;
 }
 
 void HmdfStation::clear() {
@@ -40,8 +43,7 @@ void HmdfStation::clear() {
   this->m_isNull = true;
   this->m_stationIndex = 0;
   this->m_isVector = false;
-  this->m_data_u.clear();
-  this->m_date.clear();
+  this->m_positiveDirection = 0;
   return;
 }
 
@@ -61,12 +63,14 @@ void HmdfStation::setStationIndex(size_t stationIndex) {
   this->m_stationIndex = stationIndex;
 }
 
-long long HmdfStation::date(size_t index) const {
+Date HmdfStation::date(size_t index) const {
   assert(index < this->numSnaps());
   if (index < this->numSnaps())
     return this->m_date[index];
-  else
-    return 0;
+  else {
+    adcircmodules_throw_exception("Out of bounds");
+    return Date();
+  }
 }
 
 double HmdfStation::data(size_t index) const {
@@ -78,8 +82,10 @@ double HmdfStation::data(size_t index) const {
   }
   if (index < this->numSnaps())
     return this->m_data_u[index];
-  else
+  else {
+    adcircmodules_throw_exception("Out of bounds");
     return 0;
+  }
 }
 
 double HmdfStation::data_u(size_t index) const {
@@ -119,7 +125,7 @@ void HmdfStation::setData(const double &data, size_t index) {
   if (index < this->numSnaps()) this->m_data_u[index] = data;
 }
 
-void HmdfStation::setDate(const long long &date, size_t index) {
+void HmdfStation::setDate(const Date &date, size_t index) {
   assert(index < this->numSnaps());
   if (index < this->numSnaps()) this->m_date[index] = date;
 }
@@ -128,7 +134,7 @@ bool HmdfStation::isNull() const { return this->m_isNull; }
 
 void HmdfStation::setIsNull(bool isNull) { this->m_isNull = isNull; }
 
-void HmdfStation::setDate(const std::vector<long long> &date) {
+void HmdfStation::setDate(const std::vector<Date> &date) {
   this->m_date = date;
   return;
 }
@@ -190,7 +196,7 @@ void HmdfStation::setData(const std::vector<float> &data_u,
   return;
 }
 
-void HmdfStation::setNext(const long long &date, const double &data) {
+void HmdfStation::setNext(const Date &date, const double &data) {
   if (this->m_isVector) {
     adcircmodules_throw_exception(
         "Attempt to assign scalar data to vector station.");
@@ -200,7 +206,7 @@ void HmdfStation::setNext(const long long &date, const double &data) {
   this->m_data_u.push_back(data);
 }
 
-void HmdfStation::setNext(const long long &date, const double &data_u,
+void HmdfStation::setNext(const Date &date, const double &data_u,
                           const double &data_v) {
   if (!this->m_isVector) {
     adcircmodules_throw_exception(
@@ -212,7 +218,7 @@ void HmdfStation::setNext(const long long &date, const double &data_u,
   this->m_data_v.push_back(data_v);
 }
 
-void HmdfStation::setNext(const long long &date,
+void HmdfStation::setNext(const Date &date,
                           const std::tuple<double, double> &data) {
   if (!this->m_isVector) {
     adcircmodules_throw_exception(
@@ -224,7 +230,7 @@ void HmdfStation::setNext(const long long &date,
   this->m_data_v.push_back(std::get<1>(data));
 }
 
-std::vector<long long> HmdfStation::allDate() const { return this->m_date; }
+std::vector<Date> HmdfStation::allDate() const { return this->m_date; }
 
 std::vector<double> HmdfStation::allData() const {
   if (this->m_isVector) {
@@ -286,8 +292,23 @@ std::tuple<double, double> HmdfStation::getVectorBounds(
   return std::make_tuple(minValue, sortedData.back());
 }
 
-void HmdfStation::dataBounds(long long &minDate, long long &maxDate,
-                             double &minValue, double &maxValue) {
+double HmdfStation::positiveDirection() const {
+  return this->m_positiveDirection;
+}
+
+void HmdfStation::setPositiveDirection(double positiveDirection) {
+  if (positiveDirection < -360.0 || positiveDirection > 360.0) {
+    adcircmodules_throw_exception("Positive direction is out of bounds");
+  } else if (positiveDirection < -180.0) {
+    positiveDirection += 360.0;
+  } else if (positiveDirection > 180.0) {
+    positiveDirection -= 360.0;
+  }
+  this->m_positiveDirection = positiveDirection;
+}
+
+void HmdfStation::dataBounds(Date &minDate, Date &maxDate, double &minValue,
+                             double &maxValue) {
   minDate = *std::min_element(this->m_date.begin(), this->m_date.end());
   maxDate = *std::max_element(this->m_date.begin(), this->m_date.end());
   if (this->isVector()) {
@@ -312,6 +333,13 @@ void HmdfStation::reserve(size_t size) {
   this->m_data_u.reserve(size);
   this->m_date.reserve(size);
   if (this->m_isVector) this->m_data_v.reserve(size);
+}
+
+void HmdfStation::setVector(const bool vector) {
+  this->m_data_u.clear();
+  this->m_date.clear();
+  this->m_data_v.clear();
+  this->m_isVector = vector;
 }
 
 bool HmdfStation::isVector() const { return this->m_isVector; }

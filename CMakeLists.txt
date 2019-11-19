@@ -340,6 +340,8 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/hash.cpp
                 ${CMAKE_SOURCE_DIR}/src/hmdf.cpp
                 ${CMAKE_SOURCE_DIR}/src/hmdfstation.cpp
+		${CMAKE_SOURCE_DIR}/src/stationinterpolationoptions.cpp
+		${CMAKE_SOURCE_DIR}/src/stationinterpolation.cpp
                 ${CMAKE_SOURCE_DIR}/src/netcdftimeseries.cpp
                 ${CMAKE_SOURCE_DIR}/src/hash_private.cpp
                 ${CMAKE_SOURCE_DIR}/src/cdate.cpp
@@ -386,6 +388,8 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/hashtype.h
                 ${CMAKE_SOURCE_DIR}/src/hmdf.h
                 ${CMAKE_SOURCE_DIR}/src/hmdfstation.h
+		${CMAKE_SOURCE_DIR}/src/stationinterpolationoptions.h
+		${CMAKE_SOURCE_DIR}/src/stationinterpolation.h
                 ${CMAKE_SOURCE_DIR}/src/logging.h
                 ${CMAKE_SOURCE_DIR}/src/filetypes.h
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.h
@@ -708,6 +712,10 @@ IF(UNIX OR CYGWIN)
                SET_TESTS_PROPERTIES( TEST_${TESTNAME} PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
             ENDIF(CYGWIN)
         ENDFOREACH()
+
+	#...Script base testing
+	ADD_TEST( NAME sh_interpStations COMMAND bash interpolate.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/testing/test_scripts ) 
+	SET_PROPERTY( TEST sh_interpStations  PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
         
         #...Python Test
         IF(PYTHON_TESTING)
@@ -730,8 +738,7 @@ ENDIF(UNIX OR CYGWIN)
 ###########################################################################
 # Utilities
 ###########################################################################
-ADD_EXECUTABLE( interpolateAdcircStations ${CMAKE_SOURCE_DIR}/utilities/interpolateAdcircStations/main.cpp 
-                   ${CMAKE_SOURCE_DIR}/utilities/interpolateAdcircStations/interpolate.cpp )
+ADD_EXECUTABLE( interpolateAdcircStations ${CMAKE_SOURCE_DIR}/utilities/interpolateAdcircStations/main.cpp  )
 TARGET_INCLUDE_DIRECTORIES( interpolateAdcircStations PRIVATE 
                             ${CMAKE_SOURCE_DIR}/utilities/interpolateAdcircStations 
                             ${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src

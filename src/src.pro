@@ -124,6 +124,8 @@ SOURCES += \
     nodalattributes_private.cpp \
     outputmetadata.cpp \
     readoutput.cpp \
+    stationinterpolation.cpp \
+    stationinterpolationoptions.cpp \
     stringconversion.cpp \
     boundary.cpp \
     element.cpp \
@@ -171,6 +173,8 @@ HEADERS += \
     outputfile.h \
     outputmetadata.h \
     readoutput.h \
+    stationinterpolation.h \
+    stationinterpolationoptions.h \
     stringconversion.h \
     boundary.h \
     element.h \

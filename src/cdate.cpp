@@ -17,9 +17,12 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "cdate.h"
+
 #include <time.h>
+
 #include <chrono>
 #include <iostream>
+
 #include "boost/format.hpp"
 
 #ifdef _WIN32
@@ -31,6 +34,32 @@ Date::Date() { this->init(); }
 Date::Date(int year, int month, int day, int hour, int minute, int second) {
   this->init();
   this->set(year, month, day, hour, minute, second);
+}
+
+bool Date::operator<(const Date &d) const {
+  return this->toMSeconds() < d.toMSeconds();
+}
+
+bool Date::operator==(const Date &d) const {
+  return this->toMSeconds() == d.toMSeconds();
+}
+
+bool Date::operator!=(const Date &d) const {
+  return this->toMSeconds() != d.toMSeconds();
+}
+
+Date Date::maxDate() {
+  std::time_t mx = std::numeric_limits<time_t>::max();
+  std::tm mx_tm = *gmtime(&mx);
+  return Date(mx_tm.tm_year - 1900, mx_tm.tm_mon - 1, mx_tm.tm_mday,
+              mx_tm.tm_hour, mx_tm.tm_min, mx_tm.tm_sec);
+}
+
+Date Date::minDate() {
+  std::time_t mn = std::numeric_limits<time_t>::min();
+  std::tm mn_tm = *gmtime(&mn);
+  return Date(mn_tm.tm_year - 1900, mn_tm.tm_mon - 1, mn_tm.tm_mday,
+              mn_tm.tm_hour, mn_tm.tm_min, mn_tm.tm_sec);
 }
 
 void Date::init() {
@@ -95,7 +124,7 @@ void Date::fromMSeconds(long long mseconds) {
   this->fromSeconds(mseconds / 1000);
 }
 
-long long Date::toSeconds() {
+long long Date::toSeconds() const {
   return this->m_tm.tm_sec + this->m_tm.tm_min * 60 +
          this->m_tm.tm_hour * 3600 + this->m_tm.tm_yday * 86400 +
          (this->m_tm.tm_year - 70) * 31536000 +
@@ -104,9 +133,9 @@ long long Date::toSeconds() {
          ((this->m_tm.tm_year + 299) / 400) * 86400;
 }
 
-long long Date::toMSeconds() { return this->toSeconds() * 1000; }
+long long Date::toMSeconds() const { return this->toSeconds() * 1000; }
 
-int Date::year() { return this->m_tm.tm_year + 1900; }
+int Date::year() const { return this->m_tm.tm_year + 1900; }
 
 void Date::setYear(int year) {
   this->m_tm.tm_year = year - 1900;
@@ -115,7 +144,7 @@ void Date::setYear(int year) {
   return;
 }
 
-int Date::month() { return this->m_tm.tm_mon + 1; }
+int Date::month() const { return this->m_tm.tm_mon + 1; }
 
 void Date::setMonth(int month) {
   this->m_tm.tm_mon = month - 1;
@@ -124,7 +153,7 @@ void Date::setMonth(int month) {
   return;
 }
 
-int Date::day() { return this->m_tm.tm_mday; }
+int Date::day() const { return this->m_tm.tm_mday; }
 
 void Date::setDay(int day) {
   this->m_tm.tm_mday = day;
@@ -133,7 +162,7 @@ void Date::setDay(int day) {
   return;
 }
 
-int Date::hour() { return this->m_tm.tm_hour; }
+int Date::hour() const { return this->m_tm.tm_hour; }
 
 void Date::setHour(int hour) {
   this->m_tm.tm_hour = hour;
@@ -142,7 +171,7 @@ void Date::setHour(int hour) {
   return;
 }
 
-int Date::minute() { return this->m_tm.tm_min; }
+int Date::minute() const { return this->m_tm.tm_min; }
 
 void Date::setMinute(int minute) {
   this->m_tm.tm_min = minute;
@@ -151,7 +180,7 @@ void Date::setMinute(int minute) {
   return;
 }
 
-int Date::second() { return this->m_tm.tm_sec; }
+int Date::second() const { return this->m_tm.tm_sec; }
 
 void Date::setSecond(int second) {
   this->m_tm.tm_sec = second;
@@ -170,7 +199,7 @@ void Date::fromString(const std::string &datestr) {
   this->set(year, month, day, hour, minute, second);
 }
 
-std::string Date::toString() {
+std::string Date::toString() const {
   return boost::str(boost::format("%04.4i-%02.2i-%02.2i %02.2i:%02.2i:%02.2i") %
                     this->year() % this->month() % this->day() % this->hour() %
                     this->minute() % this->second());

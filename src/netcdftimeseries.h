@@ -19,8 +19,11 @@
 #ifndef NETCDFTIMESERIES_H
 #define NETCDFTIMESERIES_H
 
+#include <cdate.h>
+
 #include <string>
 #include <vector>
+
 #include "hmdf.h"
 
 namespace Adcirc {
@@ -57,7 +60,7 @@ class NetcdfTimeseries {
   std::vector<double> m_ycoor;
   std::vector<size_t> m_stationLength;
   std::vector<std::string> m_stationName;
-  std::vector<std::vector<long long> > m_time;
+  std::vector<std::vector<Date> > m_time;
   std::vector<std::vector<double> > m_data;
 };
 }  // namespace Output
