@@ -1648,6 +1648,8 @@ void MeshPrivate::resizeMesh(size_t numNodes, size_t numElements,
 void MeshPrivate::addNode(size_t index, const Node &node) {
   if (index < this->numNodes()) {
     this->m_nodes[index] = node;
+  } else if (index == this->numNodes()) {
+    this->m_nodes.push_back(node);
   } else {
     adcircmodules_throw_exception("Mesh: Node index > number of nodes");
   }
@@ -1686,8 +1688,10 @@ void MeshPrivate::deleteNode(size_t index) {
 void MeshPrivate::addElement(size_t index, const Element &element) {
   if (index < this->numElements()) {
     this->m_elements[index] = element;
+  } else if (index == this->numElements()) {
+    this->m_elements.push_back(element);
   } else {
-    adcircmodules_throw_exception("Mesh: Element index > number of nodes");
+    adcircmodules_throw_exception("Mesh: Element index > number of elements");
   }
   return;
 }
@@ -1702,7 +1706,7 @@ void MeshPrivate::deleteElement(size_t index) {
     this->m_elements.erase(this->m_elements.begin() + index);
     this->setNumElements(this->m_elements.size());
   } else {
-    adcircmodules_throw_exception("Mesh: Element index > number of nodes");
+    adcircmodules_throw_exception("Mesh: Element index > number of elements");
   }
   return;
 }
@@ -1710,6 +1714,8 @@ void MeshPrivate::deleteElement(size_t index) {
 void MeshPrivate::addLandBoundary(size_t index, const Boundary &bnd) {
   if (index < this->numLandBoundaries()) {
     this->m_landBoundaries[index] = bnd;
+  } else if (index == this->numLandBoundaries()) {
+    this->m_landBoundaries.push_back(bnd);
   } else {
     adcircmodules_throw_exception(
         "Mesh: Land boundary index > number of boundaries");
@@ -1728,6 +1734,8 @@ void MeshPrivate::deleteLandBoundary(size_t index) {
 void MeshPrivate::addOpenBoundary(size_t index, const Boundary &bnd) {
   if (index < this->numOpenBoundaries()) {
     this->m_openBoundaries[index] = bnd;
+  } else if (index == this->numOpenBoundaries()) {
+    this->m_openBoundaries.push_back(bnd);
   } else {
     adcircmodules_throw_exception(
         "Mesh: Open boundary index > number of boundaries");
