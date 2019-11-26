@@ -39,7 +39,7 @@ constexpr std::array<int, 1> c_bctypes_openBoundaries = {-1};
  *
  * Initializes the boundary with code -1 and length 0.
  */
-Boundary::Boundary() : m_boundaryCode(-1), m_boundaryLength(0) {
+Boundary::Boundary() : m_boundaryCode(-1) {
   this->m_hash.reset(nullptr);
   this->setBoundary(-1, 0);
   this->m_averageLongitude = std::numeric_limits<double>::max();
@@ -51,7 +51,7 @@ Boundary::Boundary() : m_boundaryCode(-1), m_boundaryLength(0) {
  * @param[in] boundaryLength number of nodes along this boundary
  */
 Boundary::Boundary(int boundaryCode, size_t boundaryLength)
-    : m_boundaryCode(-1), m_boundaryLength(0) {
+    : m_boundaryCode(-1) {
   this->setBoundaryCode(boundaryCode);
   this->setBoundaryLength(boundaryLength);
   this->m_hash.reset(nullptr);
@@ -71,27 +71,18 @@ Boundary::~Boundary() {}
  */
 void Boundary::boundaryCopier(Boundary *a, const Boundary *b) {
   a->m_boundaryCode = b->boundaryCode();
-  a->m_boundaryLength = b->boundaryLength();
+  a->setBoundaryLength(b->boundaryLength());
   if (b->isOpenBoundary() || b->isSingleNodeBoundary()) {
-    a->m_node1.resize(a->m_boundaryLength);
     for (size_t i = 0; i < a->boundaryLength(); ++i) {
       a->m_node1[i] = b->node1(i);
     }
   } else if (b->isExternalWeir()) {
-    a->m_node1.resize(a->m_boundaryLength);
-    a->m_crestElevation.resize(a->m_boundaryLength);
-    a->m_supercriticalWeirCoefficient.resize(a->m_boundaryLength);
-    for (size_t i = 0; i < a->m_boundaryLength; ++i) {
+    for (size_t i = 0; i < a->boundaryLength(); ++i) {
       a->m_node1[i] = b->node1(i);
       a->m_crestElevation[i] = b->crestElevation(i);
       a->m_supercriticalWeirCoefficient[i] = b->supercriticalWeirCoefficient(i);
     }
   } else if (b->isInternalWeir()) {
-    a->m_node1.resize(a->m_boundaryLength);
-    a->m_node2.resize(a->m_boundaryLength);
-    a->m_crestElevation.resize(a->m_boundaryLength);
-    a->m_supercriticalWeirCoefficient.resize(a->m_boundaryLength);
-    a->m_subcriticalWeirCoefficient.resize(a->m_boundaryLength);
     for (size_t i = 0; i < a->boundaryLength(); ++i) {
       a->m_node1[i] = b->node1(i);
       a->m_node2[i] = b->node2(i);
@@ -100,14 +91,6 @@ void Boundary::boundaryCopier(Boundary *a, const Boundary *b) {
       a->m_subcriticalWeirCoefficient[i] = b->subcriticalWeirCoefficient(i);
     }
   } else if (b->isInternalWeirWithPipes()) {
-    a->m_node1.resize(a->m_boundaryLength);
-    a->m_node2.resize(a->m_boundaryLength);
-    a->m_crestElevation.resize(a->m_boundaryLength);
-    a->m_supercriticalWeirCoefficient.resize(a->m_boundaryLength);
-    a->m_subcriticalWeirCoefficient.resize(a->m_boundaryLength);
-    a->m_pipeHeight.resize(a->m_boundaryLength);
-    a->m_pipeDiameter.resize(a->m_boundaryLength);
-    a->m_pipeCoefficient.resize(a->m_boundaryLength);
     for (size_t i = 0; i < a->boundaryLength(); ++i) {
       a->m_node1[i] = b->node1(i);
       a->m_node2[i] = b->node2(i);
@@ -225,7 +208,7 @@ void Boundary::setBoundary(int boundaryCode, size_t boundaryLength) {
  * @brief Returns the length of the boundary
  * @return number of nodes in boundary
  */
-size_t Boundary::boundaryLength() const { return this->m_boundaryLength; }
+size_t Boundary::boundaryLength() const { return this->m_node1.size(); }
 
 /**
  * @brief Returns the length of the boundary. Same as
@@ -247,9 +230,7 @@ size_t Boundary::length() const { return this->boundaryLength(); }
  */
 void Boundary::setBoundaryLength(size_t boundaryLength) {
   if (this->boundaryLength() != boundaryLength) {
-    this->m_boundaryLength = boundaryLength;
-    this->m_node1.resize(this->boundaryLength());
-
+    this->m_node1.resize(boundaryLength);
     if (this->isWeir()) {
       this->m_crestElevation.resize(this->boundaryLength());
       this->m_supercriticalWeirCoefficient.resize(this->boundaryLength());
@@ -593,6 +574,95 @@ std::vector<std::string> Boundary::toStringList() {
 }
 
 /**
+ * @brief Adds a single node type boundary node to the boundary string
+ * @param[in] node pointer to node to add to boundary
+ */
+void Boundary::addNode(Node *node) {
+  assert(this->isSingleNodeBoundary());
+  if (!this->isSingleNodeBoundary()) {
+    adcircmodules_throw_exception(
+        "Incorrect addNode call for this boundary type");
+  }
+  this->m_node1.push_back(node);
+  return;
+}
+
+/**
+ * @brief Adds an external weir type boundary node to the boundary string
+ * @param[in] node pointer to node
+ * @param[in] crestElevation crest elevation of external weir
+ * @param[in] supercriticalWeirCoefficient coefficient for external weir
+ */
+void Boundary::addNode(Node *node, double crestElevation,
+                       double supercriticalWeirCoefficient) {
+  assert(this->isExternalWeir());
+  if (!this->isExternalWeir()) {
+    adcircmodules_throw_exception(
+        "Incorrect addNode call for this boundary type");
+  }
+  this->m_node1.push_back(node);
+  this->m_crestElevation.push_back(crestElevation);
+  this->m_supercriticalWeirCoefficient.push_back(supercriticalWeirCoefficient);
+}
+
+/**
+ * @brief Adds an internal weir type boundary node to the boundary string
+ * @param[in] node1 pointer to node 1
+ * @param[in] node2 pointer to node 2
+ * @param[in] crestElevation crest elevation of internal weir
+ * @param[in] supercriticalWeirCoefficient coefficient of internal weir
+ * supercritical flow
+ * @param[in] subcriticalWeirCoefficient coefficient of internal weir
+ * subcritical flow
+ */
+void Boundary::addNode(Node *node1, Node *node2, double crestElevation,
+                       double supercriticalWeirCoefficient,
+                       double subcriticalWeirCoefficient) {
+  assert(this->isInternalWeirWithoutPipes());
+  if (!this->isInternalWeirWithoutPipes()) {
+    adcircmodules_throw_exception(
+        "Incorrect addNode call for this boundary type");
+  }
+  this->m_node1.push_back(node1);
+  this->m_node2.push_back(node2);
+  this->m_crestElevation.push_back(crestElevation);
+  this->m_subcriticalWeirCoefficient.push_back(subcriticalWeirCoefficient);
+  this->m_supercriticalWeirCoefficient.push_back(supercriticalWeirCoefficient);
+  return;
+}
+
+/**
+ * @brief Adds an internal weir type boudnary with cross-barrier pipes to the boundary string
+ * @param[in] node1 pointer to node 1
+ * @param[in] node2 pointer to node 2
+ * @param[in] crestElevation crest elevation of internal weir
+ * @param[in] supercriticalWeirCoefficient coefficient of internal weir
+ * supercritical flow
+ * @param[in] pipeHeight elevation of pipe
+ * @param[in] pipeDiameter diameter of pipe
+ * @param[in] pipeCoefficient coefficient of pipe
+ */
+void Boundary::addNode(Node *node1, Node *node2, double crestElevation,
+                       double supercriticalWeirCoefficient,
+                       double subcriticalWeirCoefficient, double pipeHeight,
+                       double pipeDiameter, double pipeCoefficient) {
+  assert(this->isInternalWeirWithPipes());
+  if (!this->isInternalWeirWithPipes()) {
+    adcircmodules_throw_exception(
+        "Incorrect addNode call for this boundary type");
+  }
+  this->m_node1.push_back(node1);
+  this->m_node2.push_back(node2);
+  this->m_crestElevation.push_back(crestElevation);
+  this->m_subcriticalWeirCoefficient.push_back(subcriticalWeirCoefficient);
+  this->m_supercriticalWeirCoefficient.push_back(supercriticalWeirCoefficient);
+  this->m_pipeDiameter.push_back(pipeDiameter);
+  this->m_pipeHeight.push_back(pipeHeight);
+  this->m_pipeCoefficient.push_back(pipeCoefficient);
+  return;
+}
+
+/**
  * @brief Returns the hash of the boundary based upon boundary type nodes,
  * heights, and coefficients
  * @return hash formatted as string
@@ -608,7 +678,7 @@ std::string Boundary::hash(Adcirc::Cryptography::HashType h, bool force) {
  */
 void Boundary::generateHash(Adcirc::Cryptography::HashType h) {
   Adcirc::Cryptography::Hash hash(h);
-  for (size_t i = 0; i < this->m_boundaryLength; ++i) {
+  for (size_t i = 0; i < this->boundaryLength(); ++i) {
     hash.addData(boost::str(boost::format("%3.3i") % this->m_boundaryCode));
     hash.addData(this->m_node1[i]->positionHash());
     if (this->isWeir()) {
