@@ -1,5 +1,5 @@
-#ifndef DATE_H
-#define DATE_H
+#ifndef ADCMODULES_CDATE_H
+#define ADCMODULES_CDATE_H
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
@@ -18,33 +18,115 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#include <ctime>
+#include <array>
+#include <chrono>
+#include <cmath>
+#include <ratio>
 #include <string>
+#include <type_traits>
+#include <vector>
+#include "logging.h"
 
-class Date {
+namespace Adcirc {
+
+class CDate {
  public:
-  Date();
-  Date(int year, int month, int day, int hour, int minute, int second);
+  using milliseconds = std::chrono::milliseconds;
+  using seconds = std::chrono::seconds;
+  using minutes = std::chrono::minutes;
+  using hours = std::chrono::hours;
+  using days = std::chrono::duration<
+      int, std::ratio_multiply<std::ratio<24>, std::chrono::hours::period>>;
+  using weeks =
+      std::chrono::duration<int,
+                            std::ratio_multiply<std::ratio<7>, days::period>>;
+  using years = std::chrono::duration<
+      int, std::ratio_multiply<std::ratio<146097, 400>, days::period>>;
+  using months =
+      std::chrono::duration<int,
+                            std::ratio_divide<years::period, std::ratio<12>>>;
 
-  bool operator<(const Date &d) const;
-  bool operator==(const Date &d) const;
-  bool operator!=(const Date &d) const;
+  CDate();
+  CDate(const std::chrono::system_clock::time_point &t);
+  CDate(const std::vector<int> &v);
+  CDate(const std::array<int, 6> &v);
+  CDate(const CDate &d);
+  CDate(int year, int month, int day, int hour, int minute, int second);
 
-  static Date maxDate();
-  static Date minDate();
+  bool operator<(const CDate &d) const;
+  bool operator==(const CDate &d) const;
+  bool operator!=(const CDate &d) const;
 
-  void add(long seconds);
+  template <class T, typename std::enable_if<std::is_integral<T>::value>::type
+                         * = nullptr>
+  CDate &operator+=(const T &rhs) {
+    this->m_datetime += Adcirc::CDate::seconds(rhs);
+    return *this;
+  }
+  template <class T, typename std::enable_if<
+                         std::is_floating_point<T>::value>::type * = nullptr>
+  CDate &operator+=(const T &rhs) {
+    this->m_datetime += Adcirc::CDate::milliseconds(
+        static_cast<long>(std::floor(rhs * 1000.0)));
+    return *this;
+  }
+  template <class T, typename std::enable_if<
+                         !std::is_integral<T>::value &&
+                         !std::is_floating_point<T>::value>::type * = nullptr>
+  CDate &operator+=(const T &rhs) {
+    this->m_datetime += rhs;
+    return *this;
+  }
 
-  void get(int &year, int &month, int &day, int &hour, int &minute,
-           int &second);
+  template <class T, typename std::enable_if<std::is_integral<T>::value>::type
+                         * = nullptr>
+  CDate &operator-=(const T &rhs) {
+    this->m_datetime -= Adcirc::CDate::seconds(rhs);
+    return *this;
+  }
+  template <class T, typename std::enable_if<
+                         std::is_floating_point<T>::value>::type * = nullptr>
+  CDate &operator-=(const T &rhs) {
+    this->m_datetime -= Adcirc::CDate::milliseconds(
+        static_cast<long>(std::floor(rhs * 1000.0)));
+    return *this;
+  }
+  template <class T, typename std::enable_if<
+                         !std::is_integral<T>::value &&
+                         !std::is_floating_point<T>::value>::type * = nullptr>
+  CDate &operator-=(const T &rhs) {
+    this->m_datetime -= rhs;
+    return *this;
+  }
 
+  template <typename T>
+  friend CDate operator+(CDate lhs, const T &rhs) {
+    lhs += rhs;
+    return lhs;
+  }
+
+  template <typename T>
+  friend CDate operator-(CDate lhs, const T &rhs) {
+    lhs -= rhs;
+    return lhs;
+  }
+
+  static CDate maxDate() { return CDate(3000, 1, 1, 0, 0, 0); }
+  static CDate minDate() { return CDate(1900, 1, 1, 0, 0, 0); }
+
+  std::vector<int> get() const;
+
+  void set(const std::vector<int> &v);
+  void set(const std::array<int, 6> &v);
+  void set(const std::chrono::system_clock::time_point &t);
+  void set(const CDate &v);
   void set(int year, int month, int day, int hour, int minute, int second);
 
-  void fromSeconds(long long seconds);
+  void fromSeconds(long seconds);
 
   void fromMSeconds(long long mseconds);
 
-  long long toSeconds() const;
+  long toSeconds() const;
 
   long long toMSeconds() const;
 
@@ -69,16 +151,14 @@ class Date {
 
   std::string toString() const;
 
-  static Date now();
+  std::chrono::system_clock::time_point time_point() const;
+
+  static CDate now();
 
  private:
-  void buildTm();
-  void buildDate(int year, int month, int day, int hour, int minute,
-                 int second);
-  void buildDate();
-  void init();
-
-  std::time_t m_date;
-  struct std::tm m_tm;
+  std::chrono::system_clock::time_point m_datetime;
 };
-#endif
+
+}  // namespace Adcirc
+
+#endif  // ADCMODULES_CDATE_H

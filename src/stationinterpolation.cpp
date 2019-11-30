@@ -45,7 +45,7 @@ void StationInterpolation::run() {
 
   Adcirc::Output::OutputFormat filetype = globalFile.filetype();
   Adcirc::Geometry::Mesh m = this->readMesh(filetype);
-  Date coldstart = this->getColdstartDate();
+  Adcirc::CDate coldstart = this->getColdstartDate();
   this->allocateStationArrays();
   this->generateInterpolationWeights(m);
 
@@ -166,7 +166,7 @@ void StationInterpolation::reprojectStationOutput() {
   return;
 }
 
-Date StationInterpolation::getColdstartDate() {
+Adcirc::CDate StationInterpolation::getColdstartDate() {
   Adcirc::Output::Hmdf::HmdfFileType ft =
       Adcirc::Output::Hmdf::getFiletype(this->m_options.outputfile());
   if (ft == Adcirc::Output::Hmdf::HmdfImeds ||
@@ -174,16 +174,15 @@ Date StationInterpolation::getColdstartDate() {
       ft == Adcirc::Output::Hmdf::HmdfNetCdf) {
     return this->dateFromString(this->m_options.coldstart());
   }
-  return Date(1970, 1, 1, 0, 0, 0);
+  return Adcirc::CDate(1970, 1, 1, 0, 0, 0);
 }
 
 void StationInterpolation::interpolateTimeSnapToStations(
-    const size_t snap, const bool writeVector, const Date &coldstart,
+    const size_t snap, const bool writeVector, const Adcirc::CDate &coldstart,
     Adcirc::Output::ReadOutput &globalFile) {
   globalFile.read(snap - 1);
-  Date d = coldstart;
+  Adcirc::CDate d = coldstart + globalFile.dataAt(0)->time();
   Hmdf *stationData = this->m_options.stations();
-  d.add(static_cast<long>(globalFile.dataAt(0)->time()));
 
   for (size_t j = 0; j < stationData->nstations(); ++j) {
     if (this->m_weights[j].found) {
@@ -379,12 +378,12 @@ double StationInterpolation::interpolateDryValues(double v1, double w1,
   return v1 * w1 + v2 * w2 + v3 * w3;
 }
 
-Date StationInterpolation::dateFromString(const std::string &dateString) {
+Adcirc::CDate StationInterpolation::dateFromString(const std::string &dateString) {
   int year = stoi(dateString.substr(0, 4));
   int month = stoi(dateString.substr(4, 2));
   int day = stoi(dateString.substr(6, 2));
   int hour = stoi(dateString.substr(8, 2));
   int minute = stoi(dateString.substr(10, 2));
   int second = stoi(dateString.substr(12, 2));
-  return Date(year, month, day, hour, minute, second);
+  return Adcirc::CDate(year, month, day, hour, minute, second);
 }

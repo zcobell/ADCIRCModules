@@ -64,15 +64,22 @@ ENDIF(COVERAGE)
 
 
 ###########################################################################
-# C++ 11 Check
+# C++ 11/14 Check
 ###########################################################################
 INCLUDE(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-IF(COMPILER_SUPPORTS_CXX11)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-ELSE(COMPILER_SUPPORTS_CXX11)
-    message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
-ENDIF(COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++14" COMPILER_SUPPORTS_CXX14)
+IF(COMPILER_SUPPORTS_CXX14)
+    SET(CMAKE_CXX_STANDARD 14)
+    SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+ELSE(COMPILER_SUPPORTS_CXX14)
+    CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+    IF(COMPILER_SUPPORTS_CXX11)
+        SET(CMAKE_CXX_STANDARD 11)
+        SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+    ELSE(COMPILER_SUPPORTS_CXX11)
+        message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11/14 support. Please use a different C++ compiler.")
+    ENDIF(COMPILER_SUPPORTS_CXX11)
+ENDIF(COMPILER_SUPPORTS_CXX14)
 ###########################################################################
 
 
@@ -426,8 +433,8 @@ TARGET_INCLUDE_DIRECTORIES( adcircmodules PRIVATE ${CMAKE_SOURCE_DIR}/src
                                 ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src
                                 ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
                                 ${CMAKE_SOURCE_DIR}/thirdparty/abseil
+                                ${CMAKE_SOURCE_DIR}/thirdparty/date/include/date
                                 ${CMAKE_SOURCE_DIR}/thirdparty/nanoflann/include
-                                ${CMAKE_SOURCE_DIR}/libraries/constants
                                 ${Boost_INCLUDE_DIRS} 
                                 ${NETCDF_INCLUDE_DIR} ) 
 

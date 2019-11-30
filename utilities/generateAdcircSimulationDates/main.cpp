@@ -24,10 +24,11 @@
 #include "cxxopts.hpp"
 #include "logging.h"
 
-std::string toTidefacString(Date &d);
-std::string toSwanString(Date &d);
-std::tuple<Date, Date, int> readOceanweatherDates(const std::string &filename);
-Date dateFromOWIString(const std::string &str);
+std::string toTidefacString(Adcirc::CDate &d);
+std::string toSwanString(Adcirc::CDate &d);
+std::tuple<Adcirc::CDate, Adcirc::CDate, int> readOceanweatherDates(
+    const std::string &filename);
+Adcirc::CDate dateFromOWIString(const std::string &str);
 
 int main(int argc, char *argv[]) {
   cxxopts::Options options("generateAdcircSimulationDates",
@@ -78,15 +79,16 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  Date startWindDate, endWindDate;
+  Adcirc::CDate startWindDate, endWindDate;
   int owiStep;
   std::tie(startWindDate, endWindDate, owiStep) =
       readOceanweatherDates(owifile);
 
-  Date startSimDate = startWindDate;
-  startSimDate.add(-std::floor(spinup_days * 86400.0));
-  Date endSimDate = endWindDate;
-  endSimDate.add(std::floor(spindown_days * 86400.0));
+  Adcirc::CDate startSimDate =
+      startWindDate - Adcirc::CDate::days(static_cast<long>(std::floor(spinup_days)));
+  Adcirc::CDate endSimDate =
+      endWindDate + Adcirc::CDate::days(static_cast<long>(std::floor(spindown_days)));
+
   double duration =
       (endSimDate.toSeconds() - startSimDate.toSeconds()) / 86400.0;
   double windDuration =
@@ -100,7 +102,7 @@ int main(int argc, char *argv[]) {
       Adcirc::Logging::warning(
           "Adding time to ensure end date falls on a SWAN cycle",
           "[WARNING]: ");
-      endSimDate.add(swandt - swancheck);
+      endSimDate += Adcirc::CDate::seconds(swandt - swancheck);
     }
   }
 
@@ -126,7 +128,8 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-std::tuple<Date, Date, int> readOceanweatherDates(const std::string &owifile) {
+std::tuple<Adcirc::CDate, Adcirc::CDate, int> readOceanweatherDates(
+    const std::string &owifile) {
   std::ifstream owi(owifile);
   std::string line;
   std::getline(owi, line);
@@ -135,8 +138,8 @@ std::tuple<Date, Date, int> readOceanweatherDates(const std::string &owifile) {
   std::string dateStartString = split[split.size() - 2];
   std::string dateEndString = split.back();
 
-  Date dateStart = dateFromOWIString(dateStartString);
-  Date dateEnd = dateFromOWIString(dateEndString);
+  Adcirc::CDate dateStart = dateFromOWIString(dateStartString);
+  Adcirc::CDate dateEnd = dateFromOWIString(dateEndString);
 
   std::getline(owi, line);
   Adcirc::FileIO::Generic::sanitizeString(line);
@@ -151,13 +154,13 @@ std::tuple<Date, Date, int> readOceanweatherDates(const std::string &owifile) {
   }
   std::getline(owi, line);
   std::string d2 = line.substr(68, 12);
-  Date snap1 = dateFromOWIString(d1);
-  Date snap2 = dateFromOWIString(d2);
+  Adcirc::CDate snap1 = dateFromOWIString(d1);
+  Adcirc::CDate snap2 = dateFromOWIString(d2);
   long long dt = snap2.toSeconds() - snap1.toSeconds();
   return std::make_tuple(dateStart, dateEnd, dt);
 }
 
-Date dateFromOWIString(const std::string &str) {
+Adcirc::CDate dateFromOWIString(const std::string &str) {
   int year, month, day, hour, minute, second;
   minute = 0;
   second = 0;
@@ -166,15 +169,15 @@ Date dateFromOWIString(const std::string &str) {
   day = stoi(str.substr(6, 2));
   hour = stoi(str.substr(8, 2));
   if (str.size() == 12) minute = stoi(str.substr(10, 2));
-  return Date(year, month, day, hour, minute, second);
+  return Adcirc::CDate(year, month, day, hour, minute, second);
 }
 
-std::string toTidefacString(Date &d) {
+std::string toTidefacString(Adcirc::CDate &d) {
   return boost::str(boost::format("%i,%i,%i,%i") % d.hour() % d.day() %
                     d.month() % d.year());
 }
 
-std::string toSwanString(Date &d) {
+std::string toSwanString(Adcirc::CDate &d) {
   return boost::str(boost::format("%04.4i%02.2i%02.2i.%02.2i%02.2i%02.2i") %
                     d.year() % d.month() % d.day() % d.hour() % d.minute() %
                     d.second());

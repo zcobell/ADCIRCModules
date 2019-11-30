@@ -56,8 +56,8 @@ size_t KdtreePrivate::findNearest(double x, double y) {
 
 std::vector<size_t> KdtreePrivate::findXNearest(double x, double y, size_t n) {
   n = std::min(this->size(), n);
-  std::unique_ptr<size_t> index(new size_t[n]);
-  std::unique_ptr<double> out_dist_sqr(new double[n]);
+  std::unique_ptr<size_t[]> index(new size_t[n]);
+  std::unique_ptr<double[]> out_dist_sqr(new double[n]);
   nanoflann::KNNResultSet<double> resultSet(n);
   resultSet.init(index.get(), out_dist_sqr.get());
   const double query_pt[2] = {x, y};

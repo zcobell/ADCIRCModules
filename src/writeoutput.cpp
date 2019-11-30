@@ -576,14 +576,14 @@ void WriteOutput::writeRecordNetCDF(const OutputRecord *record) {
   const size_t count[2] = {1, record->numNodes()};
 
   if (this->m_dataContainer->metadata()->dimension() == 1) {
-    std::unique_ptr<double> z(new double[record->numNodes()]);
+    std::unique_ptr<double[]> z(new double[record->numNodes()]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
       z.get()[i] = record->z(i);
     }
     nc_put_vara(this->m_ncid, this->m_varid[0], start, count, z.get());
   } else if (this->m_dataContainer->metadata()->dimension() == 2) {
-    std::unique_ptr<double> u(new double[record->numNodes()]);
-    std::unique_ptr<double> v(new double[record->numNodes()]);
+    std::unique_ptr<double[]> u(new double[record->numNodes()]);
+    std::unique_ptr<double[]> v(new double[record->numNodes()]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
       u.get()[i] = record->u(i);
       v.get()[i] = record->v(i);
@@ -591,9 +591,9 @@ void WriteOutput::writeRecordNetCDF(const OutputRecord *record) {
     nc_put_vara(this->m_ncid, this->m_varid[0], start, count, u.get());
     nc_put_vara(this->m_ncid, this->m_varid[1], start, count, v.get());
   } else if (this->m_dataContainer->metadata()->dimension() == 3) {
-    std::unique_ptr<double> u(new double[record->numNodes()]);
-    std::unique_ptr<double> v(new double[record->numNodes()]);
-    std::unique_ptr<double> w(new double[record->numNodes()]);
+    std::unique_ptr<double[]> u(new double[record->numNodes()]);
+    std::unique_ptr<double[]> v(new double[record->numNodes()]);
+    std::unique_ptr<double[]> w(new double[record->numNodes()]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
       u.get()[i] = record->u(i);
       v.get()[i] = record->v(i);
@@ -714,7 +714,7 @@ void WriteOutput::h5_appendRecord(const std::string &name,
 
   if (isVector) {
     size_t idx = 0;
-    std::unique_ptr<float> uv(new float[record->numNodes() * 2]);
+    std::unique_ptr<float[]> uv(new float[record->numNodes() * 2]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
       float u = static_cast<float>(record->u(i));
       float v = static_cast<float>(record->v(i));
@@ -731,8 +731,8 @@ void WriteOutput::h5_appendRecord(const std::string &name,
     }
     H5Dwrite(did_val, H5T_IEEE_F32LE, ms_val, fs_val, H5P_DEFAULT, uv.get());
   } else {
-    std::unique_ptr<float> wse(new float[record->numNodes()]);
-    std::unique_ptr<unsigned char> active(
+    std::unique_ptr<float[]> wse(new float[record->numNodes()]);
+    std::unique_ptr<unsigned char[]> active(
         new unsigned char[record->numNodes()]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
       wse.get()[i] = static_cast<float>(record->z(i));

@@ -23,6 +23,7 @@
 #include <limits>
 #include <vector>
 #include "adcircmodules_global.h"
+#include "cdate.h"
 #include "default_values.h"
 #include "node.h"
 #include "outputmetadata.h"
@@ -50,10 +51,12 @@ enum AngleUnits { Degrees, Radians };
 class OutputRecord {
  public:
   OutputRecord();
-  OutputRecord(size_t record, size_t numNodes,
-               Adcirc::Output::OutputMetadata& metadata);
-  OutputRecord(size_t record, size_t numNodes, bool isMax, bool isVector,
-               size_t dimension);
+  OutputRecord(const size_t record, const size_t numNodes,
+               Adcirc::Output::OutputMetadata& metadata,
+               const CDate& coldstart = CDate(1970, 1, 1, 0, 0, 0));
+  OutputRecord(const size_t record, const size_t numNodes, const bool isMax,
+               const bool isVector, const size_t dimension,
+               const CDate& coldstart = CDate(1970, 1, 1, 0, 0, 0));
 
   void fill(double z);
 
@@ -112,6 +115,10 @@ class OutputRecord {
   Adcirc::Output::OutputMetadata* metadata();
   void setMetadata(const Adcirc::Output::OutputMetadata& metadata);
 
+  void setColdstart(const CDate& date);
+  Adcirc::CDate coldstart() const;
+  Adcirc::CDate date() const;
+
  private:
   std::vector<double> m_u;
   std::vector<double> m_v;
@@ -122,6 +129,8 @@ class OutputRecord {
   double m_time;
   size_t m_numNodes;
   double m_defaultValue;
+  Adcirc::CDate m_coldstart;
+  Adcirc::CDate m_date;
 
   double angle(double x, double y, AngleUnits units) const;
   void allocate();

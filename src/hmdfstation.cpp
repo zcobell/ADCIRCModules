@@ -63,13 +63,13 @@ void HmdfStation::setStationIndex(size_t stationIndex) {
   this->m_stationIndex = stationIndex;
 }
 
-Date HmdfStation::date(size_t index) const {
+Adcirc::CDate HmdfStation::date(size_t index) const {
   assert(index < this->numSnaps());
   if (index < this->numSnaps())
     return this->m_date[index];
   else {
     adcircmodules_throw_exception("Out of bounds");
-    return Date();
+    return Adcirc::CDate();
   }
 }
 
@@ -125,7 +125,7 @@ void HmdfStation::setData(const double &data, size_t index) {
   if (index < this->numSnaps()) this->m_data_u[index] = data;
 }
 
-void HmdfStation::setDate(const Date &date, size_t index) {
+void HmdfStation::setDate(const Adcirc::CDate &date, size_t index) {
   assert(index < this->numSnaps());
   if (index < this->numSnaps()) this->m_date[index] = date;
 }
@@ -134,7 +134,7 @@ bool HmdfStation::isNull() const { return this->m_isNull; }
 
 void HmdfStation::setIsNull(bool isNull) { this->m_isNull = isNull; }
 
-void HmdfStation::setDate(const std::vector<Date> &date) {
+void HmdfStation::setDate(const std::vector<Adcirc::CDate> &date) {
   this->m_date = date;
   return;
 }
@@ -196,7 +196,7 @@ void HmdfStation::setData(const std::vector<float> &data_u,
   return;
 }
 
-void HmdfStation::setNext(const Date &date, const double &data) {
+void HmdfStation::setNext(const Adcirc::CDate &date, const double &data) {
   if (this->m_isVector) {
     adcircmodules_throw_exception(
         "Attempt to assign scalar data to vector station.");
@@ -206,7 +206,7 @@ void HmdfStation::setNext(const Date &date, const double &data) {
   this->m_data_u.push_back(data);
 }
 
-void HmdfStation::setNext(const Date &date, const double &data_u,
+void HmdfStation::setNext(const Adcirc::CDate &date, const double &data_u,
                           const double &data_v) {
   if (!this->m_isVector) {
     adcircmodules_throw_exception(
@@ -218,7 +218,7 @@ void HmdfStation::setNext(const Date &date, const double &data_u,
   this->m_data_v.push_back(data_v);
 }
 
-void HmdfStation::setNext(const Date &date,
+void HmdfStation::setNext(const Adcirc::CDate &date,
                           const std::tuple<double, double> &data) {
   if (!this->m_isVector) {
     adcircmodules_throw_exception(
@@ -230,7 +230,7 @@ void HmdfStation::setNext(const Date &date,
   this->m_data_v.push_back(std::get<1>(data));
 }
 
-std::vector<Date> HmdfStation::allDate() const { return this->m_date; }
+std::vector<Adcirc::CDate> HmdfStation::allDate() const { return this->m_date; }
 
 std::vector<double> HmdfStation::allData() const {
   if (this->m_isVector) {
@@ -307,7 +307,7 @@ void HmdfStation::setPositiveDirection(double positiveDirection) {
   this->m_positiveDirection = positiveDirection;
 }
 
-void HmdfStation::dataBounds(Date &minDate, Date &maxDate, double &minValue,
+void HmdfStation::dataBounds(Adcirc::CDate &minDate, Adcirc::CDate &maxDate, double &minValue,
                              double &maxValue) {
   minDate = *std::min_element(this->m_date.begin(), this->m_date.end());
   maxDate = *std::max_element(this->m_date.begin(), this->m_date.end());

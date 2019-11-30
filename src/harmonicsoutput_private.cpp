@@ -356,7 +356,7 @@ void HarmonicsOutputPrivate::writeNetcdfHeader(const int& ncid) {
   ierr = nc_enddef(ncid);
 
   for (size_t i = 0; i < this->numConstituents(); ++i) {
-    std::unique_ptr<char> c(new char[11]);
+    std::unique_ptr<char[]> c(new char[11]);
     double f[1], e[1], n[1];
     size_t start1[1], start2[2];
     size_t count2[2];
@@ -408,7 +408,7 @@ void HarmonicsOutputPrivate::writeNetcdfFormatElevation(const int& ncid) {
 
     for (size_t j = 0; j < 2; ++j) {
       std::vector<double> vec = ptr[j]->values();
-      std::unique_ptr<double> u(new double[this->numNodes()]);
+      std::unique_ptr<double[]> u(new double[this->numNodes()]);
       std::copy(vec.begin(), vec.end(), u.get());
       vec.clear();
       nc_put_vara(ncid, varid[j], start, count, u.get());
@@ -438,7 +438,7 @@ void HarmonicsOutputPrivate::writeNetcdfFormatVelocity(const int& ncid) {
 
     for (size_t j = 0; j < 4; ++j) {
       std::vector<double> vec = ptr[j]->values();
-      std::unique_ptr<double> u(new double[this->numNodes()]);
+      std::unique_ptr<double[]> u(new double[this->numNodes()]);
       std::copy(vec.begin(), vec.end(), u.get());
       vec.clear();
       nc_put_vara(ncid, varid[j], start, count, u.get());
@@ -710,7 +710,7 @@ void HarmonicsOutputPrivate::readNetcdfFormatHeader(int ncid,
     hasFrequency = true;
   }
 
-  std::unique_ptr<char> constituents(new char[charlen + 1]);
+  std::unique_ptr<char[]> constituents(new char[charlen + 1]);
   std::fill(constituents.get(), constituents.get() + charlen + 1, 0);
   for (size_t i = 0; i < this->numConstituents(); ++i) {
     size_t start[2];
@@ -730,9 +730,9 @@ void HarmonicsOutputPrivate::readNetcdfFormatHeader(int ncid,
     }
   }
 
-  std::unique_ptr<double> frequency(new double[this->numConstituents()]);
-  std::unique_ptr<double> nodeFactor(new double[this->numConstituents()]);
-  std::unique_ptr<double> equilibriumArg(new double[this->numConstituents()]);
+  std::unique_ptr<double[]> frequency(new double[this->numConstituents()]);
+  std::unique_ptr<double[]> nodeFactor(new double[this->numConstituents()]);
+  std::unique_ptr<double[]> equilibriumArg(new double[this->numConstituents()]);
   if (hasFrequency) {
     ierr = nc_get_var(ncid, varid_freq, frequency.get());
     if (ierr != NC_NOERR) {
@@ -858,7 +858,7 @@ void HarmonicsOutputPrivate::readNetcdfElevationData(int ncid,
                                                      std::vector<int>& varids) {
   assert(varids.size() == 2);
 
-  std::unique_ptr<double> v(new double[this->numNodes()]);
+  std::unique_ptr<double[]> v(new double[this->numNodes()]);
   size_t start[2], count[2];
   for (size_t i = 0; i < this->numConstituents(); ++i) {
     start[0] = 0;
@@ -886,7 +886,7 @@ void HarmonicsOutputPrivate::readNetcdfVelocityData(int ncid,
                                                     std::vector<int>& varids) {
   assert(varids.size() == 4);
 
-  std::unique_ptr<double> v(new double[this->numNodes()]);
+  std::unique_ptr<double[]> v(new double[this->numNodes()]);
   size_t start[2], count[2];
 
   for (size_t i = 0; i < this->numConstituents(); ++i) {

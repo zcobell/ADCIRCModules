@@ -77,8 +77,8 @@ class Hmdf {
   bool null() const;
   void setNull(bool null);
 
-  void dataBounds(Date &dateMin, Date &dateMax, double &minValue,
-                  double &maxValue);
+  void dataBounds(Adcirc::CDate &dateMin, Adcirc::CDate &dateMax,
+                  double &minValue, double &maxValue);
 
   void setVector(bool vector);
   bool isVector() const;

@@ -85,8 +85,8 @@ class Node {
   double m_x;                            /// x position of a node
   double m_y;                            /// y position of a node
   double m_z;                            /// z position of a node
-  std::unique_ptr<char> m_hash;          /// hash identifier for the node
-  std::unique_ptr<char> m_positionHash;  /// has of only node's position
+  std::unique_ptr<char[]> m_hash;          /// hash identifier for the node
+  std::unique_ptr<char[]> m_positionHash;  /// has of only node's position
 
   static void nodeCopier(Node *a, const Node *b);
 

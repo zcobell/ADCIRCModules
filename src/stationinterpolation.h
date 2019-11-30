@@ -50,7 +50,7 @@ class StationInterpolation {
   };
 
   void reprojectStationOutput();
-  Date getColdstartDate();
+  CDate getColdstartDate();
   Adcirc::Geometry::Mesh readMesh(const Adcirc::Output::OutputFormat &filetype);
   Adcirc::Output::Hmdf readStationLocations(bool vector = false);
   Adcirc::Output::Hmdf readStationList(bool vector = false);
@@ -58,7 +58,7 @@ class StationInterpolation {
                                        const bool vector = false);
 
   void interpolateTimeSnapToStations(const size_t snap, const bool writeVector,
-                                     const Date &coldstart,
+                                     const CDate &coldstart,
                                      Adcirc::Output::ReadOutput &globalFile);
   void allocateStationArrays();
   void generateInterpolationWeights(Adcirc::Geometry::Mesh &m);
@@ -79,7 +79,7 @@ class StationInterpolation {
                                           Weight &w);
   double interpolateDryValues(double v1, double w1, double v2, double w2,
                               double v3, double w3, double defaultVal);
-  Date dateFromString(const std::string &dateString);
+  CDate dateFromString(const std::string &dateString);
 
   std::vector<Weight> m_weights;
   Adcirc::Output::StationInterpolationOptions m_options;

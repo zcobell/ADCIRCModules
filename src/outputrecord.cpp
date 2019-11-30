@@ -31,21 +31,30 @@ OutputRecord::OutputRecord()
       m_iteration(0),
       m_defaultValue(Adcirc::Output::defaultOutputValue()),
       m_numNodes(0),
-      m_metadata(OutputMetadata()) {}
+      m_metadata(OutputMetadata()),
+      m_coldstart(1970, 1, 1, 0, 0, 0),
+      m_date(1970, 1, 1, 0, 0, 0) {}
 
-OutputRecord::OutputRecord(size_t record, size_t numNodes,
-                           OutputMetadata& metadata)
-    : m_record(record), m_numNodes(numNodes), m_metadata(metadata) {
+OutputRecord::OutputRecord(const size_t record, const size_t numNodes,
+                           OutputMetadata& metadata, const CDate& coldstart)
+    : m_record(record),
+      m_numNodes(numNodes),
+      m_metadata(metadata),
+      m_coldstart(coldstart),
+      m_date(coldstart) {
   assert(numNodes != 0);
   this->allocate();
 }
 
-OutputRecord::OutputRecord(size_t record, size_t numNodes, bool isVector,
-                           bool isMax, size_t dimension)
+OutputRecord::OutputRecord(const size_t record, const size_t numNodes,
+                           const bool isVector, const bool isMax,
+                           const size_t dimension, const CDate& coldstart)
     : m_record(record),
       m_time(0),
       m_numNodes(numNodes),
       m_iteration(0),
+      m_coldstart(coldstart),
+      m_date(coldstart),
       m_defaultValue(Adcirc::Output::defaultOutputValue()) {
   assert(numNodes != 0);
   if (dimension == 1) {
@@ -99,7 +108,10 @@ void OutputRecord::fill(double value) {
 
 double OutputRecord::time() const { return this->m_time; }
 
-void OutputRecord::setTime(double time) { this->m_time = time; }
+void OutputRecord::setTime(double time) {
+  this->m_time = time;
+  this->m_date = this->m_coldstart += time;
+}
 
 size_t OutputRecord::numNodes() const { return this->m_numNodes; }
 
@@ -531,3 +543,11 @@ Adcirc::Output::OutputMetadata* OutputRecord::metadata() {
 void OutputRecord::setMetadata(const Adcirc::Output::OutputMetadata& metadata) {
   this->m_metadata = metadata;
 }
+
+void OutputRecord::setColdstart(const Adcirc::CDate& date) {
+  this->m_coldstart = date;
+}
+
+Adcirc::CDate OutputRecord::coldstart() const { return this->m_coldstart; }
+
+Adcirc::CDate OutputRecord::date() const { return this->m_date; }

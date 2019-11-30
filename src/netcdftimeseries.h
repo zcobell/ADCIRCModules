@@ -60,7 +60,7 @@ class NetcdfTimeseries {
   std::vector<double> m_ycoor;
   std::vector<size_t> m_stationLength;
   std::vector<std::string> m_stationName;
-  std::vector<std::vector<Date> > m_time;
+  std::vector<std::vector<CDate> > m_time;
   std::vector<std::vector<double> > m_data;
 };
 }  // namespace Output

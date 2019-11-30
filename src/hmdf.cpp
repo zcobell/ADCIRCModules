@@ -163,7 +163,7 @@ int Hmdf::readImeds(const std::string &filename) {
           templine, year, month, day, hour, minute, second, value);
 
       if (status) {
-        Date d(year, month, day, hour, minute, second);
+        Adcirc::CDate d(year, month, day, hour, minute, second);
 
         //...Append to the station data
         station.setNext(d, value);
@@ -375,7 +375,7 @@ int Hmdf::writeNetcdf(const std::string &filename) {
 
   std::string name = std::string(std::getenv("USER"));
   if (name == std::string()) name = std::string(std::getenv("USERNAME"));
-  std::string createTime = Date::now().toString();
+  std::string createTime = Adcirc::CDate::now().toString();
   std::string source = "ADCIRCModules";
   std::string ncVersion = std::string(nc_inq_libvers());
   std::string format = "20180123";
@@ -401,11 +401,11 @@ int Hmdf::writeNetcdf(const std::string &filename) {
     double lat[1] = {this->station(i)->latitude()};
     double lon[1] = {this->station(i)->longitude()};
 
-    std::unique_ptr<long long> time(
+    std::unique_ptr<long long[]> time(
         new long long[this->station(i)->numSnaps()]);
-    std::unique_ptr<double> data(new double[this->station(i)->numSnaps()]);
-    std::unique_ptr<char> name(new char[200]);
-    std::unique_ptr<char> id(new char[200]);
+    std::unique_ptr<double[]> data(new double[this->station(i)->numSnaps()]);
+    std::unique_ptr<char[]> name(new char[200]);
+    std::unique_ptr<char[]> id(new char[200]);
 
     memset(name.get(), ' ', 200);
     memset(id.get(), ' ', 200);
@@ -519,15 +519,15 @@ int Hmdf::write(const std::string &filename) {
   return this->write(filename, ft);
 }
 
-void Hmdf::dataBounds(Date &dateMin, Date &dateMax, double &minValue,
+void Hmdf::dataBounds(CDate &dateMin, CDate &dateMax, double &minValue,
                       double &maxValue) {
-  dateMax = Date::maxDate();
-  dateMin = Date::minDate();
+  dateMax = CDate::maxDate();
+  dateMin = CDate::minDate();
   maxValue = -std::numeric_limits<double>::max();
   minValue = std::numeric_limits<double>::max();
 
   for (size_t i = 0; i < this->nstations(); i++) {
-    Date tempDateMin, tempDateMax;
+    CDate tempDateMin, tempDateMax;
     double tempMinValue, tempMaxValue;
     if (!this->station(i)->isNull()) {
       this->station(i)->dataBounds(tempDateMin, tempDateMax, tempMinValue,

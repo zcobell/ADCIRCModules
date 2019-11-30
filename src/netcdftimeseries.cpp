@@ -76,8 +76,8 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
 
   this->setEpsg(epsg);
 
-  std::unique_ptr<double> xcoor(new double[this->m_numStations]);
-  std::unique_ptr<double> ycoor(new double[this->m_numStations]);
+  std::unique_ptr<double[]> xcoor(new double[this->m_numStations]);
+  std::unique_ptr<double[]> ycoor(new double[this->m_numStations]);
 
   NCCHECK(nc_get_var_double(ncid, varid_xcoor, xcoor.get()))
   NCCHECK(nc_get_var_double(ncid, varid_ycoor, ycoor.get()))
@@ -90,7 +90,7 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
   xcoor.reset(nullptr);
   ycoor.reset(nullptr);
 
-  std::unique_ptr<char> stationName(
+  std::unique_ptr<char[]> stationName(
       new char[stationNameLength * this->m_numStations]);
   NCCHECK(nc_get_var_text(ncid, varid_stationName, stationName.get()))
 
@@ -126,7 +126,7 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
     NCCHECK(nc_get_att_text(ncid, varid_time, "referenceDate", timeChar))
     std::string timeString = std::string(timeChar).substr(0, 19);
 
-    Date reftime;
+    CDate reftime;
     reftime.fromString(timeString);
 
     double fillValue;
@@ -135,8 +135,8 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
     this->m_fillValue.push_back(fillValue);
 
     if (!stationsOnly) {
-      std::unique_ptr<long long> timeData(new long long[length]);
-      std::unique_ptr<double> varData(new double[length]);
+      std::unique_ptr<long long[]> timeData(new long long[length]);
+      std::unique_ptr<double[]> varData(new double[length]);
 
       NCCHECK(nc_get_var_double(ncid, varid_data, varData.get()))
       NCCHECK(nc_get_var_longlong(ncid, varid_time, timeData.get()))
@@ -146,8 +146,8 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
 
       for (size_t j = 0; j < length; j++) {
         this->m_data[i][j] = varData.get()[j];
-        Date t = reftime;
-        t.add(timeData.get()[j]);
+        CDate t = reftime;
+        t += static_cast<long>(timeData.get()[j]);
         this->m_time[i][j] = t;
       }
     }

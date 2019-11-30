@@ -70,13 +70,15 @@ class HmdfStation {
   size_t stationIndex() const;
   void setStationIndex(size_t stationIndex);
 
-  Date date(size_t index) const;
-  void setDate(const Date &date, size_t index);
-  void setDate(const std::vector<Date> &date);
+  Adcirc::CDate date(size_t index) const;
+  void setDate(const Adcirc::CDate &date, size_t index);
+  void setDate(const std::vector<Adcirc::CDate> &date);
 
-  void setNext(const Date &date, const double &data);
-  void setNext(const Date &date, const double &data_u, const double &data_v);
-  void setNext(const Date &date, const std::tuple<double, double> &data);
+  void setNext(const Adcirc::CDate &date, const double &data);
+  void setNext(const Adcirc::CDate &date, const double &data_u,
+               const double &data_v);
+  void setNext(const Adcirc::CDate &date,
+               const std::tuple<double, double> &data);
 
   bool isNull() const;
   void setIsNull(bool isNull);
@@ -93,13 +95,13 @@ class HmdfStation {
   void setData(const std::vector<float> &data_u,
                const std::vector<float> &data_v);
 
-  std::vector<Date> allDate() const;
+  std::vector<Adcirc::CDate> allDate() const;
   std::vector<double> allData() const;
   std::vector<double> allData_u() const;
   std::vector<double> allData_v() const;
 
-  void dataBounds(Date &minDate, Date &maxDate, double &minValue,
-                  double &maxValue);
+  void dataBounds(Adcirc::CDate &minDate, Adcirc::CDate &maxDate,
+                  double &minValue, double &maxValue);
 
   double nullValue() const;
   void setNullValue(double nullValue);
@@ -125,7 +127,7 @@ class HmdfStation {
   double m_nullValue;
   double m_positiveDirection;
 
-  std::vector<Date> m_date;
+  std::vector<Adcirc::CDate> m_date;
   std::vector<double> m_data_u;
   std::vector<double> m_data_v;
 

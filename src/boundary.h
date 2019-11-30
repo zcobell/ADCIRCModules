@@ -132,7 +132,7 @@ class Boundary {
   double m_averageLongitude;
   std::vector<Adcirc::Geometry::Node *> m_node1;
   std::vector<Adcirc::Geometry::Node *> m_node2;
-  std::unique_ptr<char> m_hash;
+  std::unique_ptr<char[]> m_hash;
 
   static void boundaryCopier(Boundary *a, const Boundary *b);
 

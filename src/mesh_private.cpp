@@ -281,9 +281,9 @@ void MeshPrivate::readAdcircMeshNetcdf() {
   ierr += nc_inq_varid(ncid, "element", &varid_elem);
   if (ierr != 0) adcircmodules_throw_exception("Could not read the varids");
 
-  std::unique_ptr<double> x(new double[nn]);
-  std::unique_ptr<double> y(new double[nn]);
-  std::unique_ptr<double> z(new double[nn]);
+  std::unique_ptr<double[]> x(new double[nn]);
+  std::unique_ptr<double[]> y(new double[nn]);
+  std::unique_ptr<double[]> z(new double[nn]);
 
   ierr += nc_get_var_double(ncid, varid_x, x.get());
   ierr += nc_get_var_double(ncid, varid_y, y.get());
@@ -300,10 +300,10 @@ void MeshPrivate::readAdcircMeshNetcdf() {
   this->m_nodeOrderingLogical = true;
   this->m_elementOrderingLogical = true;
 
-  std::unique_ptr<int> n1(new int[ne]);
-  std::unique_ptr<int> n2(new int[ne]);
-  std::unique_ptr<int> n3(new int[ne]);
-  std::unique_ptr<int> n4(new int[ne]);
+  std::unique_ptr<int[]> n1(new int[ne]);
+  std::unique_ptr<int[]> n2(new int[ne]);
+  std::unique_ptr<int[]> n3(new int[ne]);
+  std::unique_ptr<int[]> n4(new int[ne]);
   size_t start[2], count[2];
   start[0] = 0;
   start[1] = 0;
@@ -423,10 +423,10 @@ void MeshPrivate::readDflowMesh() {
 
   if (isFill == 1) elemFillValue = NC_FILL_INT;
 
-  std::unique_ptr<double> xcoor(new double[nn]);
-  std::unique_ptr<double> ycoor(new double[nn]);
-  std::unique_ptr<double> zcoor(new double[nn]);
-  std::unique_ptr<int> elem(new int[ne * nmaxnode]);
+  std::unique_ptr<double[]> xcoor(new double[nn]);
+  std::unique_ptr<double[]> ycoor(new double[nn]);
+  std::unique_ptr<double[]> zcoor(new double[nn]);
+  std::unique_ptr<int[]> elem(new int[ne * nmaxnode]);
 
   ierr += nc_get_var_double(ncid, varid_x, xcoor.get());
   ierr += nc_get_var_double(ncid, varid_y, ycoor.get());
@@ -1882,12 +1882,12 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
   size_t nlinks = links.size();
   size_t maxelemnode = this->getMaxNodesPerElement();
 
-  std::unique_ptr<double> xarray(new double[this->numNodes()]);
-  std::unique_ptr<double> yarray(new double[this->numNodes()]);
-  std::unique_ptr<double> zarray(new double[this->numNodes()]);
-  std::unique_ptr<int> linkArray(new int[nlinks * 2]);
-  std::unique_ptr<int> linkTypeArray(new int[nlinks * 2]);
-  std::unique_ptr<int> netElemNodearray(
+  std::unique_ptr<double[]> xarray(new double[this->numNodes()]);
+  std::unique_ptr<double[]> yarray(new double[this->numNodes()]);
+  std::unique_ptr<double[]> zarray(new double[this->numNodes()]);
+  std::unique_ptr<int[]> linkArray(new int[nlinks * 2]);
+  std::unique_ptr<int[]> linkTypeArray(new int[nlinks * 2]);
+  std::unique_ptr<int[]> netElemNodearray(
       new int[this->numElements() * maxelemnode]);
 
   for (size_t i = 0; i < this->numNodes(); ++i) {
@@ -1945,8 +1945,8 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
     adcircmodules_throw_exception(
         "Error creating dimensions for D-Flow netCDF format file");
 
-  std::unique_ptr<int> dim1d(new int[1]);
-  std::unique_ptr<int> dim2d(new int[2]);
+  std::unique_ptr<int[]> dim1d(new int[1]);
+  std::unique_ptr<int[]> dim2d(new int[2]);
 
   int varid_mesh2d, varid_netnodex, varid_netnodey, varid_netnodez;
   ierr += nc_def_var(ncid, "Mesh2D", NC_INT, 0, nullptr, &varid_mesh2d);
