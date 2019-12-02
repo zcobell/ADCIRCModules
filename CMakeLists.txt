@@ -340,15 +340,15 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/config.cpp
                 ${CMAKE_SOURCE_DIR}/src/logging.cpp
                 ${CMAKE_SOURCE_DIR}/src/filetypes.cpp
-		${CMAKE_SOURCE_DIR}/src/formatting.cpp
+                ${CMAKE_SOURCE_DIR}/src/formatting.cpp
                 ${CMAKE_SOURCE_DIR}/src/mesh.cpp 
                 ${CMAKE_SOURCE_DIR}/src/node.cpp
                 ${CMAKE_SOURCE_DIR}/src/element.cpp
                 ${CMAKE_SOURCE_DIR}/src/hash.cpp
                 ${CMAKE_SOURCE_DIR}/src/hmdf.cpp
                 ${CMAKE_SOURCE_DIR}/src/hmdfstation.cpp
-		${CMAKE_SOURCE_DIR}/src/stationinterpolationoptions.cpp
-		${CMAKE_SOURCE_DIR}/src/stationinterpolation.cpp
+                ${CMAKE_SOURCE_DIR}/src/stationinterpolationoptions.cpp
+                ${CMAKE_SOURCE_DIR}/src/stationinterpolation.cpp
                 ${CMAKE_SOURCE_DIR}/src/netcdftimeseries.cpp
                 ${CMAKE_SOURCE_DIR}/src/hash_private.cpp
                 ${CMAKE_SOURCE_DIR}/src/cdate.cpp
@@ -696,7 +696,7 @@ IF(UNIX OR CYGWIN)
                       cxx_checkmesh.cpp cxx_read2dm.cpp cxx_kdtree.cpp cxx_hash.cpp cxx_hashmesh.cpp 
                       cxx_writeasciifull.cpp cxx_writeasciisparse.cpp cxx_writeasciifullvector.cpp 
                       cxx_writeasciisparsevector.cpp cxx_writenetcdf.cpp cxx_writenetcdfvector.cpp 
-                      cxx_writehdf5.cpp cxx_makemesh.cpp )
+                      cxx_writehdf5.cpp cxx_makemesh.cpp cxx_date.cpp )
 
         IF(ENABLE_GDAL)
             SET(TEST_LIST ${TEST_LIST} cxx_interpolateRaster.cpp cxx_interpolateManning.cpp cxx_interpolateDwind.cpp ) 

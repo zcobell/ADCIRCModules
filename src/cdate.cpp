@@ -39,37 +39,51 @@ struct s_date {
 
 struct s_datetime {
  private:
+  std::chrono::system_clock::time_point t;
   date::year_month_day dd;
   date::hh_mm_ss<std::chrono::duration<long int, std::ratio<1, 1000000000>>> tt;
 
  public:
   s_datetime(const std::chrono::system_clock::time_point &t)
-      : dd(date::year_month_day(date::floor<date::days>(t))),
+      : t(t),
+        dd(date::year_month_day(date::floor<date::days>(t))),
         tt(date::make_time(t - date::sys_days(dd))) {}
+  date::year_month_day ymd() { return dd; }
   int year() const { return int(dd.year()); }
   unsigned month() const { return unsigned(dd.month()); }
   unsigned day() const { return unsigned(dd.day()); }
   int hour() const { return tt.hours().count(); }
   int minute() const { return tt.minutes().count(); }
   int second() const { return tt.seconds().count(); }
+  int milliseconds() const {
+    CDate c(year(), month(), day(), hour(), minute(), second());
+    return std::chrono::duration_cast<std::chrono::milliseconds>(t -
+                                                                 c.time_point())
+        .count();
+  }
 };
+
+date::year_month_day normalize(date::year_month_day ymd) {
+  ymd += date::months{0};
+  ymd = date::sys_days{ymd};
+  return ymd;
+}
 
 constexpr date::year_month_day c_epoch() {
   date::year_month_day(date::year(1970) / 1 / 1);
 }
 
-CDate::CDate() { this->set(1970, 1, 1, 0, 0, 0); }
+CDate::CDate() { this->set(1970, 1, 1, 0, 0, 0, 0); }
 
 CDate::CDate(const std::chrono::system_clock::time_point &t) { this->set(t); }
 
 CDate::CDate(const std::vector<int> &v) { this->set(v); }
 
-CDate::CDate(const std::array<int, 6> &v) { this->set(v); }
-
 CDate::CDate(const CDate &d) { this->set(d.get()); }
 
-CDate::CDate(int year, int month, int day, int hour, int minute, int second) {
-  this->set(year, month, day, hour, minute, second);
+CDate::CDate(int year, int month, int day, int hour, int minute, int second,
+             int millisecond) {
+  this->set(year, month, day, hour, minute, second, millisecond);
 }
 
 bool CDate::operator<(const CDate &d) const {
@@ -84,38 +98,77 @@ bool CDate::operator!=(const CDate &d) const {
   return this->time_point() != d.time_point();
 }
 
-void CDate::set(int year, int month, int day, int hour, int minute,
-                int second) {
+CDate &CDate::operator-=(const CDate::months &rhs) {
+  s_datetime d(this->m_datetime);
+  date::year_month_day dd = d.ymd();
+  dd -= date::months(rhs);
+  dd = normalize(dd);
+  this->set(int(dd.year()), unsigned(dd.month()), unsigned(dd.day()),
+            this->hour(), this->minute(), this->second(), this->millisecond());
+  return *this;
+}
+
+CDate &CDate::operator-=(const CDate::years &rhs) {
+  s_datetime d(this->m_datetime);
+  date::year_month_day dd = d.ymd();
+  dd -= date::years(rhs);
+  dd = normalize(dd);
+  this->set(int(dd.year()), unsigned(dd.month()), unsigned(dd.day()),
+            this->hour(), this->minute(), this->second(), this->millisecond());
+  return *this;
+}
+
+CDate &CDate::operator+=(const CDate::months &rhs) {
+  s_datetime d(this->m_datetime);
+  date::year_month_day dd = d.ymd();
+  dd += date::months(rhs);
+  dd = normalize(dd);
+  this->set(int(dd.year()), unsigned(dd.month()), unsigned(dd.day()),
+            this->hour(), this->minute(), this->second(), this->millisecond());
+  return *this;
+}
+
+CDate &CDate::operator+=(const CDate::years &rhs) {
+  s_datetime d(this->m_datetime);
+  date::year_month_day dd = d.ymd();
+  dd += date::years(rhs);
+  dd = normalize(dd);
+  this->set(int(dd.year()), unsigned(dd.month()), unsigned(dd.day()),
+            this->hour(), this->minute(), this->second(), this->millisecond());
+  return *this;
+}
+
+void CDate::set(int year, int month, int day, int hour, int minute, int second,
+                int millisecond) {
   auto ymd = date::year(year) / date::month(month) / date::day(day);
   if (!ymd.ok()) {
     adcircmodules_throw_exception("Invalid date");
   }
   this->m_datetime = date::sys_days(ymd) + std::chrono::hours(hour) +
                      std::chrono::minutes(minute) +
-                     std::chrono::seconds(second);
+                     std::chrono::seconds(second) +
+                     std::chrono::milliseconds(millisecond);
   return;
 }
 
 std::vector<int> CDate::get() const {
   s_datetime time(this->m_datetime);
-  std::vector<int> v(6);
+  std::vector<int> v(7);
   v[0] = time.year();
   v[1] = time.month();
   v[2] = time.day();
   v[3] = time.hour();
   v[4] = time.minute();
   v[5] = time.second();
+  v[6] = time.milliseconds();
   return v;
 }
 
 void CDate::set(const std::vector<int> &v) {
-  if (v.size() != 6)
-    adcircmodules_throw_exception("Must contain 6 values to set time");
-  this->set(v[0], v[1], v[2], v[3], v[4], v[5]);
-}
+  std::vector<int> v2(7);
+  std::copy(v.begin(), v.end(), v2.begin());
 
-void CDate::set(const std::array<int, 6> &v) {
-  this->set(v[0], v[1], v[2], v[3], v[4], v[5]);
+  this->set(v[0], v[1], v[2], v[3], v[4], v[5], v[6]);
 }
 
 void CDate::set(const std::chrono::system_clock::time_point &t) {
@@ -207,6 +260,18 @@ void CDate::setSecond(int second) {
   return;
 }
 
+int CDate::millisecond() const {
+  s_datetime d(this->m_datetime);
+  return d.milliseconds();
+}
+
+void CDate::setMillisecond(int milliseconds) {
+  s_datetime d(this->m_datetime);
+  this->set(d.year(), d.month(), d.day(), d.hour(), d.minute(), d.second(),
+            milliseconds);
+  return;
+}
+
 void CDate::fromString(const std::string &datestr) {
   int year = stoi(datestr.substr(0, 4));
   int month = stoi(datestr.substr(5, 2));
@@ -218,9 +283,10 @@ void CDate::fromString(const std::string &datestr) {
 }
 
 std::string CDate::toString() const {
-  return boost::str(boost::format("%04.4i-%02.2i-%02.2i %02.2i:%02.2i:%02.2i") %
-                    this->year() % this->month() % this->day() % this->hour() %
-                    this->minute() % this->second());
+  return boost::str(
+      boost::format("%04.4i-%02.2i-%02.2i %02.2i:%02.2i:%02.2i.%04.4i") %
+      this->year() % this->month() % this->day() % this->hour() %
+      this->minute() % this->second() % this->millisecond());
 }
 
 std::chrono::system_clock::time_point CDate::time_point() const {
