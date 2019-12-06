@@ -17,8 +17,10 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "cdate.h"
+
 #include <chrono>
 #include <iostream>
+
 #include "boost/format.hpp"
 #include "date.h"
 #include "logging.h"
@@ -70,7 +72,7 @@ date::year_month_day normalize(date::year_month_day ymd) {
 }
 
 constexpr date::year_month_day c_epoch() {
-  date::year_month_day(date::year(1970) / 1 / 1);
+  return date::year_month_day(date::year(1970) / 1 / 1);
 }
 
 CDate::CDate() { this->set(1970, 1, 1, 0, 0, 0, 0); }
@@ -85,6 +87,20 @@ CDate::CDate(int year, int month, int day, int hour, int minute, int second,
              int millisecond) {
   this->set(year, month, day, hour, minute, second, millisecond);
 }
+
+void CDate::addSeconds(const int &value) { this->m_datetime += seconds(value); }
+
+void CDate::addMinutes(const int &value) { this->m_datetime += minutes(value); }
+
+void CDate::addHours(const int &value) { this->m_datetime += hours(value); }
+
+void CDate::addDays(const int &value) { this->m_datetime += days(value); }
+
+void CDate::addWeeks(const int &value) { this->m_datetime += weeks(value); }
+
+void CDate::addMonths(const int &value) { this->m_datetime += months(value); }
+
+void CDate::addYears(const int &value) { this->m_datetime += years(value); }
 
 bool CDate::operator<(const CDate &d) const {
   return this->time_point() < d.time_point();

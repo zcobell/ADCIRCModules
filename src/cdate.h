@@ -25,6 +25,7 @@
 #include <string>
 #include <type_traits>
 #include <vector>
+
 #include "logging.h"
 
 namespace Adcirc {
@@ -50,11 +51,11 @@ class CDate {
   CDate(const std::chrono::system_clock::time_point &t);
   CDate(const std::vector<int> &v);
   CDate(const CDate &d);
-  CDate(int year, int month = 1, int day = 1, int hour = 1, int minute = 0,
+  CDate(int year, int month = 1, int day = 1, int hour = 0, int minute = 0,
         int second = 0, int millisecond = 0);
 
+#ifndef SWIG
   //...operator overloads
-
   bool operator<(const CDate &d) const;
   bool operator==(const CDate &d) const;
   bool operator!=(const CDate &d) const;
@@ -123,6 +124,15 @@ class CDate {
   }
 
   // end operator overloads
+#endif
+
+  void addSeconds(const int &value);
+  void addMinutes(const int &value);
+  void addHours(const int &value);
+  void addDays(const int &value);
+  void addWeeks(const int &value);
+  void addMonths(const int &value);
+  void addYears(const int &value);
 
   static CDate maxDate() { return CDate(3000, 1, 1, 0, 0, 0); }
   static CDate minDate() { return CDate(1900, 1, 1, 0, 0, 0); }
