@@ -25,10 +25,12 @@
 #include <unistd.h>
 #endif
 
+#include <memory>
 #include "boost/algorithm/string.hpp"
 #include "boost/algorithm/string/replace.hpp"
 #include "boost/format.hpp"
 #include "cdate.h"
+#include "ezproj.h"
 #include "fileio.h"
 #include "formatting.h"
 #include "logging.h"
@@ -53,6 +55,31 @@ void Hmdf::init() {
   this->setSuccess(false);
   this->setUnits("");
   this->setNull(true);
+  this->setEpsg(-1);
+  return;
+}
+
+int Hmdf::getEpsg() const { return this->m_epsg; }
+
+void Hmdf::setEpsg(int epsg) { this->m_epsg = epsg; }
+
+void Hmdf::reproject(int epsg) {
+  if (this->m_epsg == -1) {
+    adcircmodules_throw_exception(
+        "Error: Must define projection before reprojecting");
+  }
+  std::unique_ptr<Ezproj> p(new Ezproj());
+
+  for (auto &m : this->m_station) {
+    double x = m.longitude();
+    double y = m.latitude();
+    double outx, outy;
+    bool islatlon;
+    p->transform(this->m_epsg, epsg, x, y, outx, outy, islatlon);
+    m.setLongitude(outx);
+    m.setLatitude(outy);
+  }
+  this->setEpsg(epsg);
   return;
 }
 

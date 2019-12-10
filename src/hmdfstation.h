@@ -38,81 +38,81 @@ class HmdfStation {
     double longitude;
   };
 
-  explicit HmdfStation(bool isVector = false);
+  explicit ADCIRCMODULES_EXPORT HmdfStation(bool isVector = false);
 
-  void clear();
+  void ADCIRCMODULES_EXPORT clear();
 
-  static constexpr double nullDataValue() {
+  static constexpr double ADCIRCMODULES_EXPORT nullDataValue() {
     return -std::numeric_limits<double>::max();
   }
 
-  static constexpr double nullDateValue() {
+  static constexpr double ADCIRCMODULES_EXPORT nullDateValue() {
     return -std::numeric_limits<long long>::max();
   }
 
-  Coordinate *coordinate();
-  void setCoordinate(const Coordinate coordinate);
+  Coordinate ADCIRCMODULES_EXPORT *coordinate();
+  void ADCIRCMODULES_EXPORT setCoordinate(const Coordinate coordinate);
 
-  double latitude() const;
-  double longitude() const;
+  double ADCIRCMODULES_EXPORT latitude() const;
+  double ADCIRCMODULES_EXPORT longitude() const;
 
-  void setLatitude(const double latitude);
-  void setLongitude(const double longitude);
+  void ADCIRCMODULES_EXPORT setLatitude(const double latitude);
+  void ADCIRCMODULES_EXPORT setLongitude(const double longitude);
 
-  std::string name() const;
-  void setName(const std::string &name);
+  std::string ADCIRCMODULES_EXPORT name() const;
+  void ADCIRCMODULES_EXPORT setName(const std::string &name);
 
-  std::string id() const;
-  void setId(const std::string &id);
+  std::string ADCIRCMODULES_EXPORT id() const;
+  void ADCIRCMODULES_EXPORT setId(const std::string &id);
 
-  size_t numSnaps() const;
+  size_t ADCIRCMODULES_EXPORT numSnaps() const;
 
-  size_t stationIndex() const;
-  void setStationIndex(size_t stationIndex);
+  size_t ADCIRCMODULES_EXPORT stationIndex() const;
+  void ADCIRCMODULES_EXPORT setStationIndex(size_t stationIndex);
 
-  Adcirc::CDate date(size_t index) const;
-  void setDate(const Adcirc::CDate &date, size_t index);
-  void setDate(const std::vector<Adcirc::CDate> &date);
+  Adcirc::CDate ADCIRCMODULES_EXPORT date(size_t index) const;
+  void ADCIRCMODULES_EXPORT setDate(const Adcirc::CDate &date, size_t index);
+  void ADCIRCMODULES_EXPORT setDate(const std::vector<Adcirc::CDate> &date);
 
-  void setNext(const Adcirc::CDate &date, const double &data);
-  void setNext(const Adcirc::CDate &date, const double &data_u,
+  void ADCIRCMODULES_EXPORT setNext(const Adcirc::CDate &date, const double &data);
+  void ADCIRCMODULES_EXPORT setNext(const Adcirc::CDate &date, const double &data_u,
                const double &data_v);
-  void setNext(const Adcirc::CDate &date,
+  void ADCIRCMODULES_EXPORT setNext(const Adcirc::CDate &date,
                const std::tuple<double, double> &data);
 
-  bool isNull() const;
-  void setIsNull(bool isNull);
+  bool ADCIRCMODULES_EXPORT isNull() const;
+  void ADCIRCMODULES_EXPORT setIsNull(bool isNull);
 
-  double data(size_t index) const;
-  double data_u(size_t index) const;
-  double data_v(size_t index) const;
+  double ADCIRCMODULES_EXPORT data(size_t index) const;
+  double ADCIRCMODULES_EXPORT data_u(size_t index) const;
+  double ADCIRCMODULES_EXPORT data_v(size_t index) const;
 
-  void setData(const double &data, size_t index);
-  void setData(const std::vector<double> &data);
-  void setData(const std::vector<float> &data);
-  void setData(const std::vector<double> &data_u,
+  void ADCIRCMODULES_EXPORT setData(const double &data, size_t index);
+  void ADCIRCMODULES_EXPORT setData(const std::vector<double> &data);
+  void ADCIRCMODULES_EXPORT setData(const std::vector<float> &data);
+  void ADCIRCMODULES_EXPORT setData(const std::vector<double> &data_u,
                const std::vector<double> &data_v);
-  void setData(const std::vector<float> &data_u,
+  void ADCIRCMODULES_EXPORT setData(const std::vector<float> &data_u,
                const std::vector<float> &data_v);
 
-  std::vector<Adcirc::CDate> allDate() const;
-  std::vector<double> allData() const;
-  std::vector<double> allData_u() const;
-  std::vector<double> allData_v() const;
+  std::vector<Adcirc::CDate> ADCIRCMODULES_EXPORT allDate() const;
+  std::vector<double> ADCIRCMODULES_EXPORT allData() const;
+  std::vector<double> ADCIRCMODULES_EXPORT allData_u() const;
+  std::vector<double> ADCIRCMODULES_EXPORT allData_v() const;
 
-  void dataBounds(Adcirc::CDate &minDate, Adcirc::CDate &maxDate,
+  void ADCIRCMODULES_EXPORT dataBounds(Adcirc::CDate &minDate, Adcirc::CDate &maxDate,
                   double &minValue, double &maxValue);
 
-  double nullValue() const;
-  void setNullValue(double nullValue);
+  double ADCIRCMODULES_EXPORT nullValue() const;
+  void ADCIRCMODULES_EXPORT setNullValue(double nullValue);
 
-  void reserve(size_t size);
+  void ADCIRCMODULES_EXPORT reserve(size_t size);
 
-  void setVector(const bool vector);
-  bool isVector() const;
+  void ADCIRCMODULES_EXPORT setVector(const bool vector);
+  bool ADCIRCMODULES_EXPORT isVector() const;
 
-  double positiveDirection() const;
-  void setPositiveDirection(double positiveDirection);
+  double ADCIRCMODULES_EXPORT positiveDirection() const;
+  void ADCIRCMODULES_EXPORT setPositiveDirection(double positiveDirection);
 
  private:
   std::tuple<double, double> getVectorBounds(const std::vector<double> &v);
