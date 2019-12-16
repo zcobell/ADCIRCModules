@@ -88,19 +88,19 @@ CDate::CDate(int year, int month, int day, int hour, int minute, int second,
   this->set(year, month, day, hour, minute, second, millisecond);
 }
 
-void CDate::addSeconds(const int &value) { this->m_datetime += seconds(value); }
+void CDate::addSeconds(const long &value) { this->m_datetime += seconds(value); }
 
-void CDate::addMinutes(const int &value) { this->m_datetime += minutes(value); }
+void CDate::addMinutes(const long &value) { this->m_datetime += minutes(value); }
 
-void CDate::addHours(const int &value) { this->m_datetime += hours(value); }
+void CDate::addHours(const long &value) { this->m_datetime += hours(value); }
 
-void CDate::addDays(const int &value) { this->m_datetime += days(value); }
+void CDate::addDays(const long &value) { this->m_datetime += days(value); }
 
-void CDate::addWeeks(const int &value) { this->m_datetime += weeks(value); }
+void CDate::addWeeks(const long &value) { this->m_datetime += weeks(value); }
 
-void CDate::addMonths(const int &value) { this->m_datetime += months(value); }
+void CDate::addMonths(const long &value) { this->m_datetime += months(value); }
 
-void CDate::addYears(const int &value) { this->m_datetime += years(value); }
+void CDate::addYears(const long &value) { this->m_datetime += years(value); }
 
 bool CDate::operator<(const CDate &d) const {
   return this->time_point() < d.time_point();

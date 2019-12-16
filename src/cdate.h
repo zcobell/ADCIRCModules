@@ -126,13 +126,13 @@ class CDate {
   // end operator overloads
 #endif
 
-  void addSeconds(const int &value);
-  void addMinutes(const int &value);
-  void addHours(const int &value);
-  void addDays(const int &value);
-  void addWeeks(const int &value);
-  void addMonths(const int &value);
-  void addYears(const int &value);
+  void addSeconds(const long &value);
+  void addMinutes(const long &value);
+  void addHours(const long &value);
+  void addDays(const long &value);
+  void addWeeks(const long &value);
+  void addMonths(const long &value);
+  void addYears(const long &value);
 
   static CDate maxDate() { return CDate(3000, 1, 1, 0, 0, 0); }
   static CDate minDate() { return CDate(1900, 1, 1, 0, 0, 0); }
