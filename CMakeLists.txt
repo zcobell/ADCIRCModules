@@ -395,8 +395,8 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/hashtype.h
                 ${CMAKE_SOURCE_DIR}/src/hmdf.h
                 ${CMAKE_SOURCE_DIR}/src/hmdfstation.h
-		${CMAKE_SOURCE_DIR}/src/stationinterpolationoptions.h
-		${CMAKE_SOURCE_DIR}/src/stationinterpolation.h
+        		${CMAKE_SOURCE_DIR}/src/stationinterpolationoptions.h
+        		${CMAKE_SOURCE_DIR}/src/stationinterpolation.h
                 ${CMAKE_SOURCE_DIR}/src/logging.h
                 ${CMAKE_SOURCE_DIR}/src/filetypes.h
                 ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.h
@@ -416,6 +416,7 @@ SET(HEADER_LIST ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
                 ${CMAKE_SOURCE_DIR}/src/constants.h 
                 ${CMAKE_SOURCE_DIR}/src/kdtree.h
                 ${CMAKE_SOURCE_DIR}/src/default_values.h
+                ${CMAKE_SOURCE_DIR}/src/cdate.h
                 ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src/ezproj.h )
 
 IF(GDAL_FOUND)
