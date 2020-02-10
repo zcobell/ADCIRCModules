@@ -21,6 +21,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include "boost/algorithm/string/replace.hpp"
 #include "boost/algorithm/string/split.hpp"
 #include "boost/algorithm/string/trim.hpp"
 #include "boost/config/warning_disable.hpp"
@@ -101,6 +102,7 @@ bool Adcirc::FileIO::Generic::fileExists(const std::string &filename) {
 std::string Adcirc::FileIO::Generic::sanitizeString(const std::string &a) {
   std::string b = a;
   boost::algorithm::trim(b);
+  boost::algorithm::replace_all(b, "\t", " ");
   b.erase(std::remove(b.begin(), b.end(), '\r'), b.end());
   return b;
 }
@@ -372,7 +374,7 @@ bool Adcirc::FileIO::HMDFIO::splitStringHmdfFormat(const std::string &data,
                                 qi::int_[phoenix::ref(hour) = qi::_1] >>
                                 qi::int_[phoenix::ref(minute) = qi::_1] >>
                                 qi::int_[phoenix::ref(second) = qi::_1] >>
-                                qi::int_[phoenix::ref(value) = qi::_1],
+                                qi::double_[phoenix::ref(value) = qi::_1],
                             qi::space);
   if (!r) {
     r = qi::phrase_parse(data.begin(), data.end(),
@@ -381,7 +383,7 @@ bool Adcirc::FileIO::HMDFIO::splitStringHmdfFormat(const std::string &data,
                              qi::int_[phoenix::ref(day) = qi::_1] >>
                              qi::int_[phoenix::ref(hour) = qi::_1] >>
                              qi::int_[phoenix::ref(minute) = qi::_1] >>
-                             qi::int_[phoenix::ref(value) = qi::_1],
+                             qi::double_[phoenix::ref(value) = qi::_1],
                          qi::space);
     second = 0;
   }
