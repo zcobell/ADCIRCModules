@@ -20,7 +20,6 @@
 #define ADCMOD_READOUTPUT_H
 
 #include <fstream>
-#include <memory>
 #include <unordered_map>
 #include <vector>
 #include "adcircmodules_global.h"
@@ -110,13 +109,15 @@ class ReadOutput {
   void setColdstart(Adcirc::CDate coldstart);
   Adcirc::CDate coldstart();
 
+  void addRecord(const Adcirc::Output::OutputRecord &record);
+
  private:
   void setOpen(bool open);
 
   // variables
   std::fstream m_fid;
-  std::vector<std::unique_ptr<Adcirc::Output::OutputRecord>> m_records;
-  std::unordered_map<size_t, Adcirc::Output::OutputRecord *> m_recordMap;
+  std::vector<Adcirc::Output::OutputRecord> m_records;
+  std::unordered_map<size_t, size_t> m_recordMap;
   bool m_open;
   Adcirc::Output::OutputFormat m_filetype;
   size_t m_currentSnap;
@@ -156,8 +157,8 @@ class ReadOutput {
   void readAsciiHeader();
   void readNetcdfHeader();
 
-  void readAsciiRecord(std::unique_ptr<OutputRecord> &record);
-  void readNetcdfRecord(size_t snap, std::unique_ptr<OutputRecord> &record);
+  void readAsciiRecord();
+  void readNetcdfRecord(size_t snap);
   int netcdfVariableSearch(size_t variableIndex, OutputMetadata &filetypeFound);
 };
 }  // namespace Output

@@ -122,6 +122,11 @@ void ReadOutput::setColdstart(Adcirc::CDate coldstart) {
 
 Adcirc::CDate ReadOutput::coldstart() { return this->m_coldstart; }
 
+void ReadOutput::addRecord(const OutputRecord& record) {
+  this->m_records.push_back(record);
+  this->rebuildMap();
+}
+
 double ReadOutput::modelDt() const { return this->m_modelDt; }
 
 void ReadOutput::setModelDt(double modelDt) { this->m_modelDt = modelDt; }
@@ -139,9 +144,6 @@ void ReadOutput::setDefaultValue(double defaultValue) {
 }
 
 void ReadOutput::clear() {
-  for (auto& m_record : this->m_records) {
-    m_record.reset(nullptr);
-  }
   this->m_records.clear();
   this->m_recordMap.clear();
 }
@@ -149,7 +151,6 @@ void ReadOutput::clear() {
 void ReadOutput::clearAt(size_t position) {
   assert(position < this->m_records.size());
   if (position < this->m_records.size()) {
-    this->m_records[position].reset(nullptr);
     this->m_records.erase(this->m_records.begin() + position);
     this->rebuildMap();
   } else {
@@ -215,8 +216,6 @@ void ReadOutput::close() {
 }
 
 void ReadOutput::read(size_t snap) {
-  std::unique_ptr<OutputRecord> record;
-
   if (this->filetype() == Adcirc::Output::OutputAsciiFull ||
       this->filetype() == Adcirc::Output::OutputAsciiSparse) {
     if (snap != Adcirc::Output::nextOutputSnap()) {
@@ -229,15 +228,13 @@ void ReadOutput::read(size_t snap) {
       adcircmodules_throw_exception(
           "ReadOutput: Attempt to read past last record in file");
     }
-    this->readAsciiRecord(record);
+    this->readAsciiRecord();
   } else if (this->filetype() == Adcirc::Output::OutputNetcdf3 ||
              this->filetype() == Adcirc::Output::OutputNetcdf4) {
-    this->readNetcdfRecord(snap, record);
+    this->readNetcdfRecord(snap);
   } else {
     adcircmodules_throw_exception("ReadOutput: Unknown filetype");
   }
-
-  this->m_records.push_back(std::move(record));
 
   return;
 }
@@ -304,7 +301,7 @@ OutputRecord* ReadOutput::data(size_t snap, bool& ok) {
     return nullptr;
   } else {
     ok = true;
-    return this->m_recordMap[snap];
+    return &this->m_records[this->m_recordMap[snap]];
   }
 }
 
@@ -323,7 +320,7 @@ OutputRecord* ReadOutput::dataAt(size_t position, bool& ok) {
     return nullptr;
   } else {
     ok = true;
-    return this->m_records[position].get();
+    return &this->m_records[position];
   }
 }
 
@@ -545,11 +542,12 @@ void ReadOutput::readNetcdfHeader() {
   return;
 }
 
-void ReadOutput::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
+void ReadOutput::readAsciiRecord() {
   std::string line;
 
-  record = std::unique_ptr<OutputRecord>(new OutputRecord(
-      this->currentSnap(), this->numNodes(), *(this->metadata())));
+  this->m_records.push_back(
+      OutputRecord(this->currentSnap(), this->numNodes(), *(this->metadata())));
+  OutputRecord* record = &this->m_records.back();
 
   //...Record header
   std::getline(this->m_fid, line);
@@ -561,7 +559,6 @@ void ReadOutput::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
   if (ok) {
     record->setTime(t);
   } else {
-    record.reset(nullptr);
     adcircmodules_throw_exception("ReadOutput: Error reading ascii record");
   }
 
@@ -569,7 +566,6 @@ void ReadOutput::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
   if (ok) {
     record->setIteration(it);
   } else {
-    record.reset(nullptr);
     adcircmodules_throw_exception("ReadOutput: Error reading ascii record");
   }
 
@@ -579,13 +575,11 @@ void ReadOutput::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
   if (list.size() > 2) {
     numNonDefault = StringConversion::stringToSizet(list[2], ok);
     if (!ok) {
-      record.reset(nullptr);
       adcircmodules_throw_exception("ReadOutput: Error reading ascii record");
     }
 
     dflt = StringConversion::stringToDouble(list[3], ok);
     if (!ok) {
-      record.reset(nullptr);
       adcircmodules_throw_exception("ReadOutput: Error reading ascii record");
     }
   }
@@ -602,7 +596,6 @@ void ReadOutput::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
       if (FileIO::AdcircIO::splitStringAttribute2Format(line, id, v1, v2)) {
         record->set(id - 1, v1, v2);
       } else {
-        record.reset(nullptr);
         adcircmodules_throw_exception("ReadOutput: Error reading ascii record");
       }
     } else {
@@ -611,21 +604,19 @@ void ReadOutput::readAsciiRecord(std::unique_ptr<OutputRecord>& record) {
       if (FileIO::AdcircIO::splitStringAttribute1Format(line, id, v1)) {
         record->set(id - 1, v1);
       } else {
-        record.reset(nullptr);
         adcircmodules_throw_exception("ReadOutput: Error reading ascii record");
       }
     }
   }
 
   //...Setup the map for record indicies
-  this->m_recordMap[record->record()] = record.get();
+  this->m_recordMap[record->record()] = this->m_records.size() - 1;
   this->setCurrentSnap(this->currentSnap() + 1);
 
   return;
 }
 
-void ReadOutput::readNetcdfRecord(size_t snap,
-                                  std::unique_ptr<OutputRecord>& record) {
+void ReadOutput::readNetcdfRecord(size_t snap) {
   if (snap == Output::nextOutputSnap()) {
     snap = this->currentSnap();
   }
@@ -637,9 +628,10 @@ void ReadOutput::readNetcdfRecord(size_t snap,
     adcircmodules_throw_exception(
         "ReadOutput: Record requested > number of records in file");
   }
-  record = std::unique_ptr<OutputRecord>(new OutputRecord(
-      snap, this->numNodes(), this->metadata()->isVector(),
-      this->metadata()->isMax(), this->metadata()->dimension()));
+  this->m_records.push_back(
+      OutputRecord(snap, this->numNodes(), this->metadata()->isVector(),
+                   this->metadata()->isMax(), this->metadata()->dimension()));
+  OutputRecord* record = &this->m_records.back();
 
   record->setTime(this->m_time[snap]);
   record->setIteration(std::floor(this->m_time[snap] / this->dt()));
@@ -735,14 +727,14 @@ void ReadOutput::readNetcdfRecord(size_t snap,
     }
   }
 
-  this->m_recordMap[record->record()] = record.get();
+  this->m_recordMap[record->record()] = this->m_records.size() - 1;
   this->setCurrentSnap(this->currentSnap() + 1);
 }
 
 void ReadOutput::rebuildMap() {
   this->m_recordMap.clear();
-  for (auto& m_record : this->m_records) {
-    this->m_recordMap[m_record->record()] = m_record.get();
+  for (size_t i = 0; i < this->m_records.size(); ++i) {
+    this->m_recordMap[this->m_records[i].record()] = i;
   }
   return;
 }
