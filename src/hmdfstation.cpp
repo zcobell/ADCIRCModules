@@ -307,8 +307,34 @@ void HmdfStation::setPositiveDirection(double positiveDirection) {
   this->m_positiveDirection = positiveDirection;
 }
 
-void HmdfStation::dataBounds(Adcirc::CDate &minDate, Adcirc::CDate &maxDate, double &minValue,
-                             double &maxValue) {
+void HmdfStation::sanitize(const double minValid, const double maxValid) {
+  std::vector<m_DataPair> d(this->m_date.size());
+  for (size_t i = 0; i < d.size(); ++i) {
+    d[i].m_date = this->m_date[i];
+    d[i].m_data_u = this->m_data_u[i];
+    if (this->m_isVector) {
+      d[i].m_data_v = this->m_data_v[i];
+    }
+  }
+  std::sort(d.begin(), d.end());
+  for (size_t i = 0; i < d.size(); ++i) {
+    this->m_date[i] = d[i].m_date;
+    this->m_data_u[i] =
+        d[i].m_data_u < minValid
+            ? this->nullDataValue()
+            : d[i].m_data_u > maxValid ? this->nullDataValue() : d[i].m_data_u;
+    if (this->m_isVector) {
+      this->m_data_v[i] = d[i].m_data_v < minValid
+                              ? this->nullDataValue()
+                              : d[i].m_data_v > maxValid ? this->nullDataValue()
+                                                         : d[i].m_data_v;
+    }
+  }
+  return;
+}
+
+void HmdfStation::dataBounds(Adcirc::CDate &minDate, Adcirc::CDate &maxDate,
+                             double &minValue, double &maxValue) {
   minDate = *std::min_element(this->m_date.begin(), this->m_date.end());
   maxDate = *std::max_element(this->m_date.begin(), this->m_date.end());
   if (this->isVector()) {

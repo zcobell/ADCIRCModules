@@ -24,6 +24,7 @@
 #include <string>
 #include <tuple>
 #include <vector>
+#include "fpcompare.h"
 
 #include "cdate.h"
 
@@ -74,11 +75,12 @@ class HmdfStation {
   void ADCIRCMODULES_EXPORT setDate(const Adcirc::CDate &date, size_t index);
   void ADCIRCMODULES_EXPORT setDate(const std::vector<Adcirc::CDate> &date);
 
-  void ADCIRCMODULES_EXPORT setNext(const Adcirc::CDate &date, const double &data);
-  void ADCIRCMODULES_EXPORT setNext(const Adcirc::CDate &date, const double &data_u,
-               const double &data_v);
   void ADCIRCMODULES_EXPORT setNext(const Adcirc::CDate &date,
-               const std::tuple<double, double> &data);
+                                    const double &data);
+  void ADCIRCMODULES_EXPORT setNext(const Adcirc::CDate &date,
+                                    const double &data_u, const double &data_v);
+  void ADCIRCMODULES_EXPORT setNext(const Adcirc::CDate &date,
+                                    const std::tuple<double, double> &data);
 
   bool ADCIRCMODULES_EXPORT isNull() const;
   void ADCIRCMODULES_EXPORT setIsNull(bool isNull);
@@ -91,17 +93,18 @@ class HmdfStation {
   void ADCIRCMODULES_EXPORT setData(const std::vector<double> &data);
   void ADCIRCMODULES_EXPORT setData(const std::vector<float> &data);
   void ADCIRCMODULES_EXPORT setData(const std::vector<double> &data_u,
-               const std::vector<double> &data_v);
+                                    const std::vector<double> &data_v);
   void ADCIRCMODULES_EXPORT setData(const std::vector<float> &data_u,
-               const std::vector<float> &data_v);
+                                    const std::vector<float> &data_v);
 
   std::vector<Adcirc::CDate> ADCIRCMODULES_EXPORT allDate() const;
   std::vector<double> ADCIRCMODULES_EXPORT allData() const;
   std::vector<double> ADCIRCMODULES_EXPORT allData_u() const;
   std::vector<double> ADCIRCMODULES_EXPORT allData_v() const;
 
-  void ADCIRCMODULES_EXPORT dataBounds(Adcirc::CDate &minDate, Adcirc::CDate &maxDate,
-                  double &minValue, double &maxValue);
+  void ADCIRCMODULES_EXPORT dataBounds(Adcirc::CDate &minDate,
+                                       Adcirc::CDate &maxDate, double &minValue,
+                                       double &maxValue);
 
   double ADCIRCMODULES_EXPORT nullValue() const;
   void ADCIRCMODULES_EXPORT setNullValue(double nullValue);
@@ -114,7 +117,23 @@ class HmdfStation {
   double ADCIRCMODULES_EXPORT positiveDirection() const;
   void ADCIRCMODULES_EXPORT setPositiveDirection(double positiveDirection);
 
+  void ADCIRCMODULES_EXPORT sanitize(const double minValid,
+                                     const double maxValid);
+
  private:
+  struct m_DataPair {
+    Adcirc::CDate m_date;
+    double m_data_u = HmdfStation::nullDataValue();
+    double m_data_v = HmdfStation::nullDataValue();
+
+    bool operator<(const m_DataPair &a) { return this->m_date < a.m_date; }
+    bool operator==(const m_DataPair &a) {
+      return this->m_date == a.m_date &&
+             FpCompare::equalTo(this->m_data_u, a.m_data_u) &&
+             FpCompare::equalTo(this->m_data_v, a.m_data_v);
+    }
+  };
+
   std::tuple<double, double> getVectorBounds(const std::vector<double> &v);
 
   Coordinate m_coordinate;
