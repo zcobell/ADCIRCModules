@@ -24,7 +24,6 @@
 #include <string>
 #include <tuple>
 #include <vector>
-#include "fpcompare.h"
 
 #include "cdate.h"
 
@@ -121,18 +120,6 @@ class HmdfStation {
                                      const double maxValid);
 
  private:
-  struct m_DataPair {
-    Adcirc::CDate m_date;
-    double m_data_u = HmdfStation::nullDataValue();
-    double m_data_v = HmdfStation::nullDataValue();
-
-    bool operator<(const m_DataPair &a) { return this->m_date < a.m_date; }
-    bool operator==(const m_DataPair &a) {
-      return this->m_date == a.m_date &&
-             FpCompare::equalTo(this->m_data_u, a.m_data_u) &&
-             FpCompare::equalTo(this->m_data_v, a.m_data_v);
-    }
-  };
 
   std::tuple<double, double> getVectorBounds(const std::vector<double> &v);
 

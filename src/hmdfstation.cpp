@@ -25,6 +25,21 @@
 
 using namespace Adcirc::Output;
 
+struct m_DataPair {
+  Adcirc::CDate m_date;
+  double m_data_u = HmdfStation::nullDataValue();
+  double m_data_v = HmdfStation::nullDataValue();
+};
+
+bool operator<(const m_DataPair &a, m_DataPair &b) {
+  return a.m_date < b.m_date;
+}
+bool operator==(const m_DataPair &a, const m_DataPair &b) {
+  return a.m_date == b.m_date &&
+         Adcirc::FpCompare::equalTo(a.m_data_u, b.m_data_u) &&
+         Adcirc::FpCompare::equalTo(a.m_data_v, b.m_data_v);
+}
+
 HmdfStation::HmdfStation(bool isVector) {
   this->m_coordinate = Coordinate();
   this->m_name = "noname";
