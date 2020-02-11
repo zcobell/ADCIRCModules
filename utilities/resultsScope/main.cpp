@@ -33,7 +33,7 @@ int generateSubdomain(const std::string &meshFile,
                       Adcirc::Geometry::Mesh &subdomainMesh);
 
 int generateSubdomainOutput(Adcirc::Geometry::Mesh &subdomainMesh,
-                            std::vector<size_t> translation_table,
+                            std::vector<size_t> &translation_table,
                             const std::string &globalOutputFile,
                             const std::string &subdomainOutputFile);
 
@@ -242,7 +242,7 @@ int generateSubdomain(const std::string &meshFile,
 }
 
 int generateSubdomainOutput(Adcirc::Geometry::Mesh &subdomainMesh,
-                            std::vector<size_t> translation_table,
+                            std::vector<size_t> &translation_table,
                             const std::string &globalOutputFile,
                             const std::string &subdomainOutputFile) {
   Adcirc::Logging::log("Writing subdomain output data", "[INFO]: ");

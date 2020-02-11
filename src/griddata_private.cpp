@@ -85,7 +85,7 @@ GriddataPrivate::GriddataPrivate()
       m_thresholdMethod(Interpolation::Threshold::NoThreshold),
       m_rasterInMemory(false) {}
 
-GriddataPrivate::GriddataPrivate(Mesh *mesh, std::string rasterFile)
+GriddataPrivate::GriddataPrivate(Mesh *mesh, const std::string &rasterFile)
     : m_mesh(mesh),
       m_rasterFile(rasterFile),
       m_defaultValue(-9999.0),

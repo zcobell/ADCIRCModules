@@ -37,7 +37,7 @@ using Point = std::pair<double, double>;
 class GriddataPrivate {
  public:
   GriddataPrivate();
-  GriddataPrivate(Adcirc::Geometry::Mesh *mesh, std::string rasterFile);
+  GriddataPrivate(Adcirc::Geometry::Mesh *mesh, const std::string &rasterFile);
 
   std::string rasterFile() const;
   void setRasterFile(const std::string &rasterFile);
