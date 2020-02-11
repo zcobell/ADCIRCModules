@@ -90,9 +90,9 @@ int main(int argc, char *argv[]) {
       endWindDate + Adcirc::CDate::days(static_cast<long>(std::floor(spindown_days)));
 
   double duration =
-      (endSimDate.toSeconds() - startSimDate.toSeconds()) / 86400.0;
+      static_cast<double>((endSimDate.toSeconds() - startSimDate.toSeconds())) / 86400.0;
   double windDuration =
-      (endWindDate.toSeconds() - startWindDate.toSeconds()) / 86400.0;
+      static_cast<double>((endWindDate.toSeconds() - startWindDate.toSeconds())) / 86400.0;
 
   if (result["swandt"].count() > 0) {
     unsigned swandt = result["swandt"].as<unsigned>();
