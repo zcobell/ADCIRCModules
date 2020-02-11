@@ -37,7 +37,7 @@ using Point = std::pair<double, double>;
 class GriddataPrivate {
  public:
   GriddataPrivate();
-  GriddataPrivate(Adcirc::Geometry::Mesh *mesh, std::string rasterFile);
+  GriddataPrivate(Adcirc::Geometry::Mesh *mesh, const std::string &rasterFile);
 
   std::string rasterFile() const;
   void setRasterFile(const std::string &rasterFile);
@@ -155,7 +155,7 @@ class GriddataPrivate {
   std::string m_rasterFile;
   std::vector<int> m_interpolationFlags;
   int m_epsg;
-  adcmap<unsigned short, double> m_lookup;
+  Adcirc::adcmap<unsigned short, double> m_lookup;
 
   Interpolation::Threshold m_thresholdMethod;
   double m_rasterMultiplier;

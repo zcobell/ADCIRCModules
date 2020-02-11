@@ -69,7 +69,7 @@ class ElementTable {
   void setMesh(Adcirc::Private::MeshPrivate *mesh);
 
  private:
-  adcmap<Adcirc::Geometry::Node *, std::vector<Adcirc::Geometry::Element *>>
+  Adcirc::adcmap<Adcirc::Geometry::Node *, std::vector<Adcirc::Geometry::Element *>>
       m_elementTable;
 
   Adcirc::Private::MeshPrivate *m_mesh;

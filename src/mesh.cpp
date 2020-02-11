@@ -28,6 +28,13 @@ Mesh::Mesh() : m_impl(new Adcirc::Private::MeshPrivate) {}
 Mesh::Mesh(const std::string &filename)
     : m_impl(new Adcirc::Private::MeshPrivate(filename)) {}
 
+Mesh &Mesh::operator=(const Mesh &m) {
+  this->m_impl.reset(m.m_impl->clone());
+  return *this;
+}
+
+Mesh::Mesh(const Mesh &m) { this->m_impl.reset(m.m_impl->clone()); }
+
 /**
  * @brief Returns a vector of the x-coordinates
  * @return vector of x coordinates
@@ -523,6 +530,9 @@ void Mesh::resizeMesh(size_t numNodes, size_t numElements,
 void Mesh::addNode(size_t index, const Node &node) {
   return this->m_impl->addNode(index, node);
 }
+void Mesh::addNode(size_t index, const Node *node) {
+  return this->m_impl->addNode(index, node);
+}
 
 /**
  * @brief Deletes an Node object at the specified index and shifts the
@@ -692,4 +702,52 @@ Adcirc::Cryptography::HashType Mesh::hashType() const {
  */
 void Mesh::setHashType(const Adcirc::Cryptography::HashType &hashType) {
   this->m_impl->setHashType(hashType);
+}
+
+/**
+ * @brief Returns the vector of nodes in the mesh
+ * @return pointer to vector of nodes
+ */
+std::vector<Adcirc::Geometry::Node> *Mesh::nodes() {
+  return this->m_impl->nodes();
+}
+
+/**
+ * @brief Returns the vector of elements in the mesh
+ * @return pointer to vector of elements
+ */
+std::vector<Adcirc::Geometry::Element> *Mesh::elements() {
+  return this->m_impl->elements();
+}
+
+/**
+ * @brief Returns the vector of open boundaries in the mesh
+ * @return pointer to vector of open boundaries
+ */
+std::vector<Adcirc::Geometry::Boundary> *Mesh::openBoundaries() {
+  return this->m_impl->openBoundaries();
+}
+
+/**
+ * @brief Returns the vector of land boundaries in the mesh
+ * @return pointer to vector of land boundaries
+ */
+std::vector<Adcirc::Geometry::Boundary> *Mesh::landBoundaries() {
+  return this->m_impl->landBoundaries();
+}
+
+bool Mesh::containsNode(Adcirc::Geometry::Node &n, size_t &index) {
+  return this->m_impl->containsNode(n, index);
+}
+
+bool Mesh::containsNode(Adcirc::Geometry::Node *n, size_t &index) {
+  return this->m_impl->containsNode(n, index);
+}
+
+bool Mesh::containsElement(Adcirc::Geometry::Element &e, size_t &index) {
+  return this->m_impl->containsElement(e, index);
+}
+
+bool Mesh::containsElement(Adcirc::Geometry::Element *e, size_t &index) {
+  return this->m_impl->containsElement(e, index);
 }

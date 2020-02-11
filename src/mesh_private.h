@@ -45,6 +45,14 @@ class MeshPrivate {
 
   ~MeshPrivate();
 
+  MeshPrivate(const MeshPrivate &m);
+
+  MeshPrivate &operator=(const MeshPrivate &m);
+
+  MeshPrivate *clone();
+
+  friend class Adcirc::Geometry::Mesh;
+
   std::vector<double> x();
   std::vector<double> y();
   std::vector<double> z();
@@ -117,10 +125,15 @@ class MeshPrivate {
 
   std::vector<Adcirc::Geometry::Node *> boundaryNodes();
 
+  Adcirc::Geometry::Node nodeC(size_t index) const;
+  Adcirc::Geometry::Element elementC(size_t index) const;
+  Adcirc::Geometry::Boundary openBoundaryC(size_t index) const;
+  Adcirc::Geometry::Boundary landBoundaryC(size_t index) const;
+
   Adcirc::Geometry::Node *node(size_t index);
   Adcirc::Geometry::Element *element(size_t index);
   Adcirc::Geometry::Boundary *openBoundary(size_t index);
-  Adcirc::Geometry::Boundary *landBoundary(size_t index);
+  Geometry::Boundary *landBoundary(size_t index);
 
   Adcirc::Geometry::Node *nodeById(size_t id);
   Adcirc::Geometry::Element *elementById(size_t id);
@@ -132,6 +145,7 @@ class MeshPrivate {
                   size_t numLandBoundaries);
 
   void addNode(size_t index, const Adcirc::Geometry::Node &node);
+  void addNode(size_t index, const Adcirc::Geometry::Node *node);
   void deleteNode(size_t index);
 
   void addElement(size_t index, const Adcirc::Geometry::Element &element);
@@ -163,7 +177,18 @@ class MeshPrivate {
   Adcirc::Cryptography::HashType hashType() const;
   void setHashType(const Adcirc::Cryptography::HashType &hashType);
 
+  std::vector<Adcirc::Geometry::Node> *nodes();
+  std::vector<Adcirc::Geometry::Element> *elements();
+  std::vector<Adcirc::Geometry::Boundary> *openBoundaries();
+  std::vector<Adcirc::Geometry::Boundary> *landBoundaries();
+
+  bool containsNode(const Geometry::Node *n, size_t &index);
+  bool containsNode(const Geometry::Node &n, size_t &index);
+  bool containsElement(const Adcirc::Geometry::Element *e, size_t &index);
+  bool containsElement(const Adcirc::Geometry::Element &e, size_t &index);
+
  private:
+  static void meshCopier(MeshPrivate *a, const MeshPrivate *b);
   static Adcirc::Geometry::MeshFormat getMeshFormat(
       const std::string &filename);
   void readAdcircMeshAscii();
@@ -196,14 +221,16 @@ class MeshPrivate {
 
   void generateHash(bool force = false);
 
-  adcmap<size_t, size_t> m_nodeLookup;
-  adcmap<size_t, size_t> m_elementLookup;
+  void writePrjFile(const std::string &outputFile);
+
+  Adcirc::adcmap<size_t, size_t> m_nodeLookup;
+  Adcirc::adcmap<size_t, size_t> m_elementLookup;
 
   Adcirc::Cryptography::HashType m_hashType;
 
   std::string m_filename;
   std::string m_meshHeaderString;
-  std::unique_ptr<char> m_hash;
+  std::unique_ptr<char[]> m_hash;
   std::vector<Adcirc::Geometry::Node> m_nodes;
   std::vector<Adcirc::Geometry::Element> m_elements;
   std::vector<Adcirc::Geometry::Boundary> m_openBoundaries;

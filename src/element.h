@@ -55,6 +55,8 @@ class Element {
   ADCIRCMODULES_EXPORT Element(const Element &e);
 
   ADCIRCMODULES_EXPORT Element &operator=(const Element &e);
+  ADCIRCMODULES_EXPORT bool operator==(const Element &e);
+  ADCIRCMODULES_EXPORT bool operator==(const Element *e);
 
   ADCIRCMODULES_EXPORT ~Element();
 
@@ -102,7 +104,7 @@ class Element {
  private:
   size_t m_id;
   std::vector<Adcirc::Geometry::Node *> m_nodes;
-  std::unique_ptr<char> m_hash;
+  std::unique_ptr<char[]> m_hash;
 
   static void elementCopier(Element *a, const Element *b);
 

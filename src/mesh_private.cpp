@@ -35,6 +35,12 @@
 #include "shapefil.h"
 #include "stringconversion.h"
 
+#ifdef USE_GDAL
+#include "cpl_conv.h"
+#include "cpl_error.h"
+#include "ogr_spatialref.h"
+#endif
+
 using namespace Adcirc::Private;
 using namespace Adcirc::Geometry;
 
@@ -59,6 +65,38 @@ MeshPrivate::MeshPrivate(const std::string &filename)
       m_epsg(-1),
       m_hashType(Adcirc::Cryptography::AdcircDefaultHash) {
   this->_init();
+}
+
+MeshPrivate &MeshPrivate::operator=(const MeshPrivate &m) {
+  MeshPrivate::meshCopier(this, &m);
+  return *this;
+}
+
+MeshPrivate *MeshPrivate::clone() { return new MeshPrivate(*this); }
+
+MeshPrivate::MeshPrivate(const MeshPrivate &m) {
+  MeshPrivate::meshCopier(this, &m);
+}
+
+void MeshPrivate::meshCopier(MeshPrivate *a, const MeshPrivate *b) {
+  a->setMeshHeaderString(b->meshHeaderString());
+  a->resizeMesh(b->numNodes(), b->numElements(), b->numOpenBoundaries(),
+                b->numLandBoundaries());
+  a->setHashType(b->hashType());
+
+  for (size_t i = 0; i < b->numNodes(); ++i) {
+    a->addNode(i, b->nodeC(i));
+  }
+  for (size_t i = 0; i < b->numElements(); ++i) {
+    a->addElement(i, b->elementC(i));
+  }
+  for (size_t i = 0; i < b->numOpenBoundaries(); ++i) {
+    a->addOpenBoundary(i, b->openBoundaryC(i));
+  }
+  for (size_t i = 0; i < b->numLandBoundaries(); ++i) {
+    a->addLandBoundary(i, b->landBoundaryC(i));
+  }
+  return;
 }
 
 /**
@@ -243,9 +281,9 @@ void MeshPrivate::readAdcircMeshNetcdf() {
   ierr += nc_inq_varid(ncid, "element", &varid_elem);
   if (ierr != 0) adcircmodules_throw_exception("Could not read the varids");
 
-  std::unique_ptr<double> x(new double[nn]);
-  std::unique_ptr<double> y(new double[nn]);
-  std::unique_ptr<double> z(new double[nn]);
+  std::unique_ptr<double[]> x(new double[nn]);
+  std::unique_ptr<double[]> y(new double[nn]);
+  std::unique_ptr<double[]> z(new double[nn]);
 
   ierr += nc_get_var_double(ncid, varid_x, x.get());
   ierr += nc_get_var_double(ncid, varid_y, y.get());
@@ -262,10 +300,10 @@ void MeshPrivate::readAdcircMeshNetcdf() {
   this->m_nodeOrderingLogical = true;
   this->m_elementOrderingLogical = true;
 
-  std::unique_ptr<int> n1(new int[ne]);
-  std::unique_ptr<int> n2(new int[ne]);
-  std::unique_ptr<int> n3(new int[ne]);
-  std::unique_ptr<int> n4(new int[ne]);
+  std::unique_ptr<int[]> n1(new int[ne]);
+  std::unique_ptr<int[]> n2(new int[ne]);
+  std::unique_ptr<int[]> n3(new int[ne]);
+  std::unique_ptr<int[]> n4(new int[ne]);
   size_t start[2], count[2];
   start[0] = 0;
   start[1] = 0;
@@ -385,10 +423,10 @@ void MeshPrivate::readDflowMesh() {
 
   if (isFill == 1) elemFillValue = NC_FILL_INT;
 
-  std::unique_ptr<double> xcoor(new double[nn]);
-  std::unique_ptr<double> ycoor(new double[nn]);
-  std::unique_ptr<double> zcoor(new double[nn]);
-  std::unique_ptr<int> elem(new int[ne * nmaxnode]);
+  std::unique_ptr<double[]> xcoor(new double[nn]);
+  std::unique_ptr<double[]> ycoor(new double[nn]);
+  std::unique_ptr<double[]> zcoor(new double[nn]);
+  std::unique_ptr<int[]> elem(new int[ne * nmaxnode]);
 
   ierr += nc_get_var_double(ncid, varid_x, xcoor.get());
   ierr += nc_get_var_double(ncid, varid_y, ycoor.get());
@@ -946,6 +984,21 @@ Node *MeshPrivate::node(size_t index) {
 }
 
 /**
+ * @brief Returns the requested node from the internal node vector
+ * @param index location of the node in the vector
+ * @return Node
+ */
+Node MeshPrivate::nodeC(size_t index) const {
+  if (index < this->numNodes()) {
+    return this->m_nodes[index];
+  } else {
+    adcircmodules_throw_exception("Mesh: Node index " + std::to_string(index) +
+                                  " out of bounds");
+    return Node();
+  }
+}
+
+/**
  * @brief Returns a pointer to the requested element in the internal element
  * vector
  * @param index location of the node in the vector
@@ -957,6 +1010,21 @@ Element *MeshPrivate::element(size_t index) {
   } else {
     adcircmodules_throw_exception("Mesh: Element index out of bounds");
     return nullptr;
+  }
+}
+
+/**
+ * @brief Returns the requested element in the internal element
+ * vector
+ * @param index location of the node in the vector
+ * @return Element
+ */
+Element MeshPrivate::elementC(size_t index) const {
+  if (index < this->numElements()) {
+    return this->m_elements[index];
+  } else {
+    adcircmodules_throw_exception("Mesh: Element index out of bounds");
+    return Element();
   }
 }
 
@@ -1012,6 +1080,20 @@ Boundary *MeshPrivate::openBoundary(size_t index) {
 }
 
 /**
+ * @brief Returns the open boundary by index
+ * @param index index in the open boundary array
+ * @return Boundary
+ */
+Boundary MeshPrivate::openBoundaryC(size_t index) const {
+  if (index < this->numOpenBoundaries()) {
+    return this->m_openBoundaries[index];
+  } else {
+    adcircmodules_throw_exception("Mesh: Open boundary index out of bounds");
+    return Boundary();
+  }
+}
+
+/**
  * @brief Returns a pointer to a land boundary by index
  * @param index index in the land boundary array
  * @return Boundary pointer
@@ -1022,6 +1104,20 @@ Boundary *MeshPrivate::landBoundary(size_t index) {
   } else {
     adcircmodules_throw_exception("Mesh: Land boundary index out of bounds");
     return nullptr;
+  }
+}
+
+/**
+ * @brief Returns and boundary by index
+ * @param index index in the land boundary array
+ * @return Boundary
+ */
+Boundary MeshPrivate::landBoundaryC(size_t index) const {
+  if (index < this->numLandBoundaries()) {
+    return this->m_landBoundaries[index];
+  } else {
+    adcircmodules_throw_exception("Mesh: Land boundary index out of bounds");
+    return Boundary();
   }
 }
 
@@ -1115,6 +1211,44 @@ void MeshPrivate::toNodeShapefile(const std::string &outputFile) {
   DBFClose(dbfid);
   SHPClose(shpid);
 
+  if (this->m_epsg != 0) {
+    this->writePrjFile(outputFile);
+  }
+
+  return;
+}
+
+/**
+ * @brief Writes the .prj file associated with a shapefile
+ * @param outputFile name of output file (.shp) being created
+ */
+void MeshPrivate::writePrjFile(const std::string &outputFile) {
+#ifdef USE_GDAL
+  std::string outputPrj =
+      Adcirc::FileIO::Generic::getFileWithoutExtension(outputFile);
+  outputPrj += ".prj";
+
+  OGRSpatialReference s;
+  OGRErr e = s.importFromEPSG(this->m_epsg);
+  if (e != 0) {
+    Adcirc::Logging::warning("Could not convert EPSG to write PRJ file");
+    return;
+  }
+
+  //...Generate the Wkt string
+  char *pj;
+  s.morphToESRI();
+  s.exportToWkt(&pj);
+
+  //...Write the output file
+  std::ofstream f(outputPrj);
+  f << pj;
+  f.close();
+  CPLFree(pj);
+#else
+  Adcirc::Logging::warning(
+      "ESRI .prj file not written because GDAL not enabled.");
+#endif
   return;
 }
 
@@ -1188,6 +1322,10 @@ void MeshPrivate::toConnectivityShapefile(const std::string &outputFile) {
   DBFClose(dbfid);
   SHPClose(shpid);
 
+  if (this->m_epsg != 0) {
+    this->writePrjFile(outputFile);
+  }
+
   return;
 }
 
@@ -1196,7 +1334,7 @@ void MeshPrivate::toConnectivityShapefile(const std::string &outputFile) {
  * @param outputFile output file with .shp extension
  */
 void MeshPrivate::toElementShapefile(const std::string &outputFile) {
-  SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POLYGONZ);
+  SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POLYGON);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
   DBFAddField(dbfid, "elementid", FTInteger, 16, 0);
   DBFAddField(dbfid, "node1", FTInteger, 16, 0);
@@ -1231,7 +1369,7 @@ void MeshPrivate::toElementShapefile(const std::string &outputFile) {
     }
 
     SHPObject *shpobj =
-        SHPCreateSimpleObject(SHPT_POLYGONZ, e.n(), longitude, latitude, nodez);
+        SHPCreateSimpleObject(SHPT_POLYGON, e.n(), longitude, latitude, nodez);
     int shp_index = SHPWriteObject(shpid, -1, shpobj);
     SHPDestroyObject(shpobj);
 
@@ -1249,6 +1387,10 @@ void MeshPrivate::toElementShapefile(const std::string &outputFile) {
 
   DBFClose(dbfid);
   SHPClose(shpid);
+
+  if (this->m_epsg != 0) {
+    this->writePrjFile(outputFile);
+  }
 
   return;
 }
@@ -1363,6 +1505,10 @@ void MeshPrivate::toBoundaryShapefile(const std::string &outputFile) {
   DBFClose(dbfid);
   SHPClose(shpid);
 
+  if (this->m_epsg != 0) {
+    this->writePrjFile(outputFile);
+  }
+
   return;
 }
 
@@ -1476,22 +1622,18 @@ void MeshPrivate::resizeMesh(size_t numNodes, size_t numElements,
                              size_t numOpenBoundaries,
                              size_t numLandBoundaries) {
   if (numNodes != this->numNodes()) {
-    this->m_nodes.resize(numNodes);
     this->setNumNodes(numNodes);
   }
 
   if (numElements != this->numElements()) {
-    this->m_elements.resize(numElements);
     this->setNumElements(numElements);
   }
 
   if (numOpenBoundaries != this->numOpenBoundaries()) {
-    this->m_openBoundaries.resize(numOpenBoundaries);
     this->setNumOpenBoundaries(numOpenBoundaries);
   }
 
   if (numLandBoundaries != this->numLandBoundaries()) {
-    this->m_landBoundaries.resize(numLandBoundaries);
     this->setNumLandBoundaries(numLandBoundaries);
   }
 
@@ -1511,7 +1653,15 @@ void MeshPrivate::addNode(size_t index, const Node &node) {
   } else {
     adcircmodules_throw_exception("Mesh: Node index > number of nodes");
   }
-
+  return;
+}
+void MeshPrivate::addNode(size_t index, const Node *node) {
+  if (index < this->numNodes()) {
+    this->m_nodes[index] =
+        Adcirc::Geometry::Node(node->id(), node->x(), node->y(), node->z());
+  } else {
+    adcircmodules_throw_exception("Mesh: Node index > number of nodes");
+  }
   return;
 }
 
@@ -1732,12 +1882,12 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
   size_t nlinks = links.size();
   size_t maxelemnode = this->getMaxNodesPerElement();
 
-  std::unique_ptr<double> xarray(new double[this->numNodes()]);
-  std::unique_ptr<double> yarray(new double[this->numNodes()]);
-  std::unique_ptr<double> zarray(new double[this->numNodes()]);
-  std::unique_ptr<int> linkArray(new int[nlinks * 2]);
-  std::unique_ptr<int> linkTypeArray(new int[nlinks * 2]);
-  std::unique_ptr<int> netElemNodearray(
+  std::unique_ptr<double[]> xarray(new double[this->numNodes()]);
+  std::unique_ptr<double[]> yarray(new double[this->numNodes()]);
+  std::unique_ptr<double[]> zarray(new double[this->numNodes()]);
+  std::unique_ptr<int[]> linkArray(new int[nlinks * 2]);
+  std::unique_ptr<int[]> linkTypeArray(new int[nlinks * 2]);
+  std::unique_ptr<int[]> netElemNodearray(
       new int[this->numElements() * maxelemnode]);
 
   for (size_t i = 0; i < this->numNodes(); ++i) {
@@ -1795,8 +1945,8 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
     adcircmodules_throw_exception(
         "Error creating dimensions for D-Flow netCDF format file");
 
-  std::unique_ptr<int> dim1d(new int[1]);
-  std::unique_ptr<int> dim2d(new int[2]);
+  std::unique_ptr<int[]> dim1d(new int[1]);
+  std::unique_ptr<int[]> dim2d(new int[2]);
 
   int varid_mesh2d, varid_netnodex, varid_netnodey, varid_netnodez;
   ierr += nc_def_var(ncid, "Mesh2D", NC_INT, 0, nullptr, &varid_mesh2d);
@@ -2147,9 +2297,8 @@ size_t MeshPrivate::findElement(double x, double y,
       this->elementalSearchTree()->findXNearest(x, y, searchDepth);
   size_t en = adcircmodules_default_value<size_t>();
 
-  Point location(x, y);
   for (auto i : indicies) {
-    bool found = this->element(i)->isInside(location);
+    bool found = this->element(i)->isInside(x, y);
     if (found) {
       en = i;
       break;
@@ -2366,7 +2515,7 @@ std::vector<Adcirc::Geometry::Node *> MeshPrivate::boundaryNodes() {
   std::vector<std::pair<Node *, Node *>> links = this->generateLinkTable();
   std::vector<size_t> count(links.size());
   std::fill(count.begin(), count.end(), 0);
-  adcmap<std::pair<Node *, Node *>, size_t> lookup;
+  Adcirc::adcmap<std::pair<Node *, Node *>, size_t> lookup;
 
   lookup.reserve(links.size());
   for (size_t i = 0; i < links.size(); ++i) {
@@ -2435,4 +2584,66 @@ Adcirc::Cryptography::HashType MeshPrivate::hashType() const {
 
 void MeshPrivate::setHashType(const Adcirc::Cryptography::HashType &hashType) {
   this->m_hashType = hashType;
+}
+
+std::vector<Adcirc::Geometry::Node> *MeshPrivate::nodes() {
+  return &this->m_nodes;
+}
+
+std::vector<Adcirc::Geometry::Element> *MeshPrivate::elements() {
+  return &this->m_elements;
+}
+
+std::vector<Adcirc::Geometry::Boundary> *MeshPrivate::openBoundaries() {
+  return &this->m_openBoundaries;
+}
+
+std::vector<Adcirc::Geometry::Boundary> *MeshPrivate::landBoundaries() {
+  return &this->m_landBoundaries;
+}
+
+bool MeshPrivate::containsNode(const Adcirc::Geometry::Node *n, size_t &index) {
+  auto id = std::find(this->m_nodes.begin(), this->m_nodes.end(), n);
+  bool found = id != this->m_nodes.end();
+  if (found) {
+    index = id - this->m_nodes.begin();
+  } else {
+    index = std::numeric_limits<size_t>::max();
+  }
+  return found;
+}
+
+bool MeshPrivate::containsNode(const Adcirc::Geometry::Node &n, size_t &index) {
+  auto id = std::find(this->m_nodes.begin(), this->m_nodes.end(), n);
+  bool found = id != this->m_nodes.end();
+  if (found) {
+    index = id - this->m_nodes.begin();
+  } else {
+    index = std::numeric_limits<size_t>::max();
+  }
+  return found;
+}
+
+bool MeshPrivate::containsElement(const Adcirc::Geometry::Element *e,
+                                  size_t &index) {
+  auto id = std::find(this->m_elements.begin(), this->m_elements.end(), e);
+  bool found = id != this->m_elements.end();
+  if (found) {
+    index = id - this->m_elements.begin();
+  } else {
+    index = std::numeric_limits<size_t>::max();
+  }
+  return found;
+}
+
+bool MeshPrivate::containsElement(const Adcirc::Geometry::Element &e,
+                                  size_t &index) {
+  auto id = std::find(this->m_elements.begin(), this->m_elements.end(), e);
+  bool found = id != this->m_elements.end();
+  if (found) {
+    index = id - this->m_elements.begin();
+  } else {
+    index = std::numeric_limits<size_t>::max();
+  }
+  return found;
 }

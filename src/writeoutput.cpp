@@ -25,21 +25,16 @@
 #endif
 
 #include "writeoutput.h"
+
 #include <cstring>
+
 #include "adcirc_outputfiles.h"
-#include "boost/format.hpp"
+#include "formatting.h"
 #include "hdf5.h"
 #include "logging.h"
 #include "netcdf.h"
 
 using namespace Adcirc::Output;
-
-static boost::format s_adcircAsciiScalar("%8i     %20.10e");
-static boost::format s_adcircAsciiVector("%8i     %20.10e     %20.10e");
-static boost::format s_adcircAscii3d("%8i     %20.10e     %20.10e     %20.10e");
-static boost::format s_adcircRecordHeaderSparse(
-    "%20.10e     %10i  %10i %20.10e");
-static boost::format s_adcircRecordHeaderFull("%20.10e     %10i ");
 
 WriteOutput::WriteOutput(const std::string &filename,
                          Adcirc::Output::ReadOutput *dataContainer,
@@ -114,13 +109,10 @@ void WriteOutput::write(const OutputRecord *record,
 void WriteOutput::openFileAscii() {
   this->m_fid.open(this->filename(), std::ios::out);
   this->m_fid << this->m_dataContainer->header() << std::endl;
-  int fileformat = 1050624;
-  std::string headerline = boost::str(
-      boost::format("%6i %10i %10.6f %6i %6i FileFmtVersion: %10i") %
-      this->m_dataContainer->numSnaps() % this->m_dataContainer->numNodes() %
-      this->m_dataContainer->dt() % this->m_dataContainer->dIteration() %
-      this->m_dataContainer->metadata()->dimension() % fileformat);
-  this->m_fid << headerline << std::endl;
+  this->m_fid << Adcirc::Output::Formatting::adcircFileHeader(
+      this->m_dataContainer->numSnaps(), this->m_dataContainer->numNodes(),
+      this->m_dataContainer->dt(), this->m_dataContainer->dIteration(),
+      this->m_dataContainer->metadata()->dimension());
   return;
 }
 
@@ -521,47 +513,44 @@ void WriteOutput::setFilename(const std::string &filename) {
 std::string WriteOutput::filename() const { return this->m_filename; }
 
 void WriteOutput::writeAsciiNodeRecord(size_t i, const OutputRecord *record) {
-  std::string l;
   if (this->m_dataContainer->metadata()->dimension() == 1) {
-    l = boost::str(s_adcircAsciiScalar % (i + 1) % record->z(i));
+    this->m_fid << Adcirc::Output::Formatting::adcircScalarLineFormat(
+        i + 1, record->z(i));
   } else if (this->m_dataContainer->metadata()->dimension() == 2) {
     if (this->m_dataContainer->metadata()->isMax()) {
-      l = boost::str(s_adcircAsciiScalar % (i + 1) % record->z(i));
+      this->m_fid << Adcirc::Output::Formatting::adcircScalarLineFormat(
+          i + 1, record->z(i));
     } else {
-      l = boost::str(s_adcircAsciiVector % (i + 1) % record->u(i) %
-                     record->v(i));
+      this->m_fid << Adcirc::Output::Formatting::adcircVectorLineFormat(
+          i + 1, record->u(i), record->v(i));
     }
   } else if (this->m_dataContainer->metadata()->dimension() == 3) {
-    l = boost::str(s_adcircAscii3d % (i + 1) % record->u(i) % record->v(i) %
-                   record->w(i));
+    this->m_fid << Adcirc::Output::Formatting::adcirc3dLineFormat(
+        i + 1, record->u(i), record->v(i), record->w(i));
   }
-  this->m_fid << l << std::endl;
   return;
 }
 
 void WriteOutput::writeRecordAsciiFull(const OutputRecord *record) {
-  std::string header = boost::str(s_adcircRecordHeaderFull % record->time() %
-                                  record->iteration());
-  this->m_fid << header << std::endl;
+  this->m_fid << Adcirc::Output::Formatting::adcircFullFormatRecordHeader(
+      record->time(), record->iteration());
   for (size_t i = 0; i < record->numNodes(); ++i) {
     this->writeAsciiNodeRecord(i, record);
   }
   if (this->m_dataContainer->metadata()->isMax() &&
       this->m_dataContainer->metadata()->dimension() == 2) {
     for (size_t i = 0; i < record->numNodes(); ++i) {
-      this->m_fid << boost::str(s_adcircAsciiScalar % (i + 1) % record->v(i))
-                  << std::endl;
+      this->m_fid << Adcirc::Output::Formatting::adcircScalarLineFormat(
+          i + 1, record->v(i));
     }
   }
   return;
 }
 
 void WriteOutput::writeRecordAsciiSparse(const OutputRecord *record) {
-  std::string header = boost::str(
-      s_adcircRecordHeaderSparse % record->time() % record->iteration() %
-      record->numNonDefault() % record->defaultValue());
-
-  this->m_fid << header << std::endl;
+  this->m_fid << Adcirc::Output::Formatting::adcircSparseFormatRecordHeader(
+      record->time(), record->iteration(), record->numNonDefault(),
+      record->defaultValue());
   for (size_t i = 0; i < record->numNodes(); ++i) {
     if (!record->isDefault(i)) {
       this->writeAsciiNodeRecord(i, record);
@@ -571,8 +560,8 @@ void WriteOutput::writeRecordAsciiSparse(const OutputRecord *record) {
       this->m_dataContainer->metadata()->dimension() == 2) {
     for (size_t i = 0; i < record->numNodes(); ++i) {
       if (!record->isDefault(i)) {
-        this->m_fid << boost::str(s_adcircAsciiScalar % (i + 1) % record->v(i))
-                    << std::endl;
+        this->m_fid << Adcirc::Output::Formatting::adcircScalarLineFormat(
+            i + 1, record->v(i));
       }
     }
   }
@@ -587,14 +576,14 @@ void WriteOutput::writeRecordNetCDF(const OutputRecord *record) {
   const size_t count[2] = {1, record->numNodes()};
 
   if (this->m_dataContainer->metadata()->dimension() == 1) {
-    std::unique_ptr<double> z(new double[record->numNodes()]);
+    std::unique_ptr<double[]> z(new double[record->numNodes()]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
       z.get()[i] = record->z(i);
     }
     nc_put_vara(this->m_ncid, this->m_varid[0], start, count, z.get());
   } else if (this->m_dataContainer->metadata()->dimension() == 2) {
-    std::unique_ptr<double> u(new double[record->numNodes()]);
-    std::unique_ptr<double> v(new double[record->numNodes()]);
+    std::unique_ptr<double[]> u(new double[record->numNodes()]);
+    std::unique_ptr<double[]> v(new double[record->numNodes()]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
       u.get()[i] = record->u(i);
       v.get()[i] = record->v(i);
@@ -602,9 +591,9 @@ void WriteOutput::writeRecordNetCDF(const OutputRecord *record) {
     nc_put_vara(this->m_ncid, this->m_varid[0], start, count, u.get());
     nc_put_vara(this->m_ncid, this->m_varid[1], start, count, v.get());
   } else if (this->m_dataContainer->metadata()->dimension() == 3) {
-    std::unique_ptr<double> u(new double[record->numNodes()]);
-    std::unique_ptr<double> v(new double[record->numNodes()]);
-    std::unique_ptr<double> w(new double[record->numNodes()]);
+    std::unique_ptr<double[]> u(new double[record->numNodes()]);
+    std::unique_ptr<double[]> v(new double[record->numNodes()]);
+    std::unique_ptr<double[]> w(new double[record->numNodes()]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
       u.get()[i] = record->u(i);
       v.get()[i] = record->v(i);
@@ -725,7 +714,7 @@ void WriteOutput::h5_appendRecord(const std::string &name,
 
   if (isVector) {
     size_t idx = 0;
-    std::unique_ptr<float> uv(new float[record->numNodes() * 2]);
+    std::unique_ptr<float[]> uv(new float[record->numNodes() * 2]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
       float u = static_cast<float>(record->u(i));
       float v = static_cast<float>(record->v(i));
@@ -742,8 +731,9 @@ void WriteOutput::h5_appendRecord(const std::string &name,
     }
     H5Dwrite(did_val, H5T_IEEE_F32LE, ms_val, fs_val, H5P_DEFAULT, uv.get());
   } else {
-    std::unique_ptr<float> wse(new float[record->numNodes()]);
-    std::unique_ptr<unsigned char> active ( new unsigned char[record->numNodes()]);
+    std::unique_ptr<float[]> wse(new float[record->numNodes()]);
+    std::unique_ptr<unsigned char[]> active(
+        new unsigned char[record->numNodes()]);
     for (size_t i = 0; i < record->numNodes(); ++i) {
       wse.get()[i] = static_cast<float>(record->z(i));
       if (wse.get()[i] > mx[0]) mx[0] = wse.get()[i];

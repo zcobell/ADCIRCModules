@@ -31,7 +31,7 @@ Griddata::Griddata() : m_impl(new Adcirc::Private::GriddataPrivate) {}
  * @param[in] mesh pointer to mesh object
  * @param[in] rasterFile gdal compatible raster file name
  */
-Griddata::Griddata(Adcirc::Geometry::Mesh *mesh, const std::string rasterFile)
+Griddata::Griddata(Adcirc::Geometry::Mesh *mesh, const std::string &rasterFile)
     : m_impl(new Adcirc::Private::GriddataPrivate(mesh, rasterFile)) {}
 
 /**
@@ -80,8 +80,8 @@ std::vector<int> Griddata::interpolationFlags() const {
 /**
  * @brief Sets the interpolation flags to a vector. The vector must be equal
  * length to the number of nodes in the mesh
- * @param[in] interpolationFlags Vector of flags equal to the number of nodes in the
- * mesh
+ * @param[in] interpolationFlags Vector of flags equal to the number of nodes in
+ * the mesh
  */
 void Griddata::setInterpolationFlags(
     const std::vector<int> &interpolationFlags) {
@@ -240,8 +240,8 @@ bool Griddata::showProgressBar() const {
 
 /**
  * @brief Allows the user to enable or disable the progress bar
- * @param[in] showProgressBar set to true if progress bar should be shown, false if
- * not
+ * @param[in] showProgressBar set to true if progress bar should be shown, false
+ * if not
  */
 void Griddata::setShowProgressBar(bool showProgressBar) {
   this->m_impl->setShowProgressBar(showProgressBar);

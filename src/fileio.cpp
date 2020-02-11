@@ -21,6 +21,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include "boost/algorithm/string/replace.hpp"
 #include "boost/algorithm/string/split.hpp"
 #include "boost/algorithm/string/trim.hpp"
 #include "boost/config/warning_disable.hpp"
@@ -59,8 +60,8 @@ void Adcirc::FileIO::Generic::readFileData(const std::string &filename,
  */
 void Adcirc::FileIO::Generic::splitString(std::string &data,
                                           std::vector<std::string> &fresult) {
-  boost::trim_if(data, boost::is_any_of(" "));
-  boost::algorithm::split(fresult, data, boost::is_any_of(" "),
+  boost::trim_if(data, boost::is_any_of(" ,"));
+  boost::algorithm::split(fresult, data, boost::is_any_of(" ,"),
                           boost::token_compress_on);
   return;
 }
@@ -79,6 +80,15 @@ std::string Adcirc::FileIO::Generic::getFileExtension(
   return "";
 }
 
+std::string Adcirc::FileIO::Generic::getFileWithoutExtension(
+    const std::string &filename) {
+  size_t pos = filename.rfind('.');
+  if (pos != std::string::npos) {
+    return std::string(filename.begin(), filename.begin() + pos);
+  }
+  return filename;
+}
+
 /**
  * @brief Checks if a file exists
  * @param[in] filename name of file to check for
@@ -87,6 +97,14 @@ std::string Adcirc::FileIO::Generic::getFileExtension(
 bool Adcirc::FileIO::Generic::fileExists(const std::string &filename) {
   std::ifstream ifile(filename.c_str());
   return static_cast<bool>(ifile);
+}
+
+std::string Adcirc::FileIO::Generic::sanitizeString(const std::string &a) {
+  std::string b = a;
+  boost::algorithm::trim(b);
+  boost::algorithm::replace_all(b, "\t", " ");
+  b.erase(std::remove(b.begin(), b.end(), '\r'), b.end());
+  return b;
 }
 
 /**
@@ -273,8 +291,8 @@ bool Adcirc::FileIO::AdcircIO::splitStringHarmonicsElevationFormat(
 }
 
 /**
- * @brief Splits the harmonics velocity data read from an adcirc ascii harmonics
- * file
+ * @brief Splits the harmonics velocity data read from an adcirc ascii
+ * harmonics file
  * @param[in] data string read from file
  * @param[out] u_magnitude u-component of velocity magnitude
  * @param[out] u_phase u-component of velocity phase
@@ -342,4 +360,33 @@ bool Adcirc::FileIO::SMSIO::splitString2dmElementFormat(
                             qi::space);
   }
   return false;
+}
+
+bool Adcirc::FileIO::HMDFIO::splitStringHmdfFormat(const std::string &data,
+                                                   int &year, int &month,
+                                                   int &day, int &hour,
+                                                   int &minute, int &second,
+                                                   double &value) {
+  bool r = qi::phrase_parse(data.begin(), data.end(),
+                            qi::int_[phoenix::ref(year) = qi::_1] >>
+                                qi::int_[phoenix::ref(month) = qi::_1] >>
+                                qi::int_[phoenix::ref(day) = qi::_1] >>
+                                qi::int_[phoenix::ref(hour) = qi::_1] >>
+                                qi::int_[phoenix::ref(minute) = qi::_1] >>
+                                qi::int_[phoenix::ref(second) = qi::_1] >>
+                                qi::double_[phoenix::ref(value) = qi::_1],
+                            qi::space);
+  if (!r) {
+    r = qi::phrase_parse(data.begin(), data.end(),
+                         qi::int_[phoenix::ref(year) = qi::_1] >>
+                             qi::int_[phoenix::ref(month) = qi::_1] >>
+                             qi::int_[phoenix::ref(day) = qi::_1] >>
+                             qi::int_[phoenix::ref(hour) = qi::_1] >>
+                             qi::int_[phoenix::ref(minute) = qi::_1] >>
+                             qi::double_[phoenix::ref(value) = qi::_1],
+                         qi::space);
+    second = 0;
+  }
+
+  return r;
 }

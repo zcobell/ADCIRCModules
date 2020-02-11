@@ -21,14 +21,14 @@
 
 #include <string>
 #include <vector>
-#include "adcircmodules_global.h"
+
+#include "boost/multi_array.hpp"
+#include "cpl_conv.h"
+#include "cpl_error.h"
+#include "gdal_priv.h"
 #include "pixel.h"
 
 using Point = std::pair<double, double>;
-
-// Forward declaration of GDAL classes
-class GDALDataset;
-class GDALRasterBand;
 
 namespace Adcirc {
 
@@ -44,9 +44,9 @@ namespace Raster {
  */
 class Rasterdata {
  public:
-  ADCIRCMODULES_EXPORT Rasterdata();
+  Rasterdata();
 
-  ADCIRCMODULES_EXPORT Rasterdata(const std::string &filename);
+  Rasterdata(const std::string &filename);
 
   ~Rasterdata();
 
@@ -61,64 +61,61 @@ class Rasterdata {
     Unknown
   };
 
-  ADCIRCMODULES_EXPORT bool open();
-  ADCIRCMODULES_EXPORT bool close();
-  ADCIRCMODULES_EXPORT void read();
+  bool open();
+  bool close();
+  void read();
 
-  ADCIRCMODULES_EXPORT size_t nx() const;
+  size_t nx() const;
 
-  ADCIRCMODULES_EXPORT size_t ny() const;
+  size_t ny() const;
 
-  ADCIRCMODULES_EXPORT double dx() const;
+  double dx() const;
 
-  ADCIRCMODULES_EXPORT double dy() const;
+  double dy() const;
 
-  ADCIRCMODULES_EXPORT double xmin() const;
+  double xmin() const;
 
-  ADCIRCMODULES_EXPORT double xmax() const;
+  double xmax() const;
 
-  ADCIRCMODULES_EXPORT double ymin() const;
+  double ymin() const;
 
-  ADCIRCMODULES_EXPORT double ymax() const;
-
-  template <typename T>
-  ADCIRCMODULES_EXPORT T nodata() const;
-
-  ADCIRCMODULES_EXPORT Point pixelToCoordinate(size_t i, size_t j);
-  ADCIRCMODULES_EXPORT Point pixelToCoordinate(Adcirc::Raster::Pixel &p);
-
-  ADCIRCMODULES_EXPORT Adcirc::Raster::Pixel coordinateToPixel(double x,
-                                                               double y);
-  ADCIRCMODULES_EXPORT Adcirc::Raster::Pixel coordinateToPixel(Point &p);
-
-  ADCIRCMODULES_EXPORT std::string projectionString() const;
-
-  ADCIRCMODULES_EXPORT int searchBoxAroundPoint(
-      double x, double y, double halfSide, Adcirc::Raster::Pixel &upperLeft,
-      Adcirc::Raster::Pixel &lowerRight);
-
-  ADCIRCMODULES_EXPORT std::string filename() const;
-  ADCIRCMODULES_EXPORT void setFilename(const std::string &filename);
+  double ymax() const;
 
   template <typename T>
-  ADCIRCMODULES_EXPORT T pixelValue(Adcirc::Raster::Pixel &p);
+  T nodata() const;
+
+  Point pixelToCoordinate(size_t i, size_t j);
+  Point pixelToCoordinate(Adcirc::Raster::Pixel &p);
+
+  Adcirc::Raster::Pixel coordinateToPixel(double x, double y);
+  Adcirc::Raster::Pixel coordinateToPixel(Point &p);
+
+  std::string projectionString() const;
+
+  int searchBoxAroundPoint(double x, double y, double halfSide,
+                           Adcirc::Raster::Pixel &upperLeft,
+                           Adcirc::Raster::Pixel &lowerRight);
+
+  std::string filename() const;
+  void setFilename(const std::string &filename);
 
   template <typename T>
-  ADCIRCMODULES_EXPORT T pixelValue(size_t i, size_t j);
+  T pixelValue(Adcirc::Raster::Pixel &p);
 
   template <typename T>
-  ADCIRCMODULES_EXPORT int pixelValues(size_t ibegin, size_t jbegin,
-                                       size_t iend, size_t jend,
-                                       std::vector<double> &x,
-                                       std::vector<double> &y,
-                                       std::vector<T> &z);
+  T pixelValue(size_t i, size_t j);
 
-  ADCIRCMODULES_EXPORT int rasterType() const;
+  template <typename T>
+  int pixelValues(size_t ibegin, size_t jbegin, size_t iend, size_t jend,
+                  std::vector<double> &x, std::vector<double> &y,
+                  std::vector<T> &z);
 
-  ADCIRCMODULES_EXPORT int epsg() const;
-  ADCIRCMODULES_EXPORT void setEpsg(int epsg);
+  int rasterType() const;
 
-  ADCIRCMODULES_EXPORT bool isOpen() const;
+  int epsg() const;
+  void setEpsg(int epsg);
+
+  bool isOpen() const;
 
  private:
   void init();
@@ -141,8 +138,8 @@ class Rasterdata {
   GDALDataset *m_file;
   GDALRasterBand *m_band;
 
-  std::vector<std::vector<double>> m_doubleOnDisk;
-  std::vector<std::vector<int>> m_intOnDisk;
+  boost::multi_array<double, 2> m_doubleOnDisk;
+  boost::multi_array<int, 2> m_intOnDisk;
 
   bool m_isOpen;
   bool m_isRead;

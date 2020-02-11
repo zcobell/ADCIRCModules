@@ -95,6 +95,17 @@ class Boundary {
 
   std::vector<std::string> ADCIRCMODULES_EXPORT toStringList();
 
+  void addNode(Adcirc::Geometry::Node *node);
+  void addNode(Adcirc::Geometry::Node *node, double crestElevation,
+               double supercriticalWeirCoefficient);
+  void addNode(Adcirc::Geometry::Node *node1, Adcirc::Geometry::Node *node2,
+               double crestElevation, double supercriticalWeirCoefficient,
+               double subcriticalWeirCoefficient);
+  void addNode(Adcirc::Geometry::Node *node1, Adcirc::Geometry::Node *node2,
+               double crestElevation, double supercriticalWeirCoefficient,
+               double subcriticalWeirCoefficient, double pipeHeight,
+               double pipeDiameter, double pipeCoefficient);
+
   bool ADCIRCMODULES_EXPORT isOpenBoundary() const;
   bool ADCIRCMODULES_EXPORT isWeir() const;
   bool ADCIRCMODULES_EXPORT isInternalWeir() const;
@@ -112,7 +123,6 @@ class Boundary {
 
  private:
   int m_boundaryCode;
-  size_t m_boundaryLength;
   std::vector<double> m_crestElevation;
   std::vector<double> m_subcriticalWeirCoefficient;
   std::vector<double> m_supercriticalWeirCoefficient;
@@ -122,7 +132,7 @@ class Boundary {
   double m_averageLongitude;
   std::vector<Adcirc::Geometry::Node *> m_node1;
   std::vector<Adcirc::Geometry::Node *> m_node2;
-  std::unique_ptr<char> m_hash;
+  std::unique_ptr<char[]> m_hash;
 
   static void boundaryCopier(Boundary *a, const Boundary *b);
 

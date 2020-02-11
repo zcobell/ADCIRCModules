@@ -104,6 +104,22 @@ Element &Element::operator=(const Element &e) {
   return *this;
 }
 
+bool Element::operator==(const Element &e) {
+  if (this->n() != e.n()) return false;
+  for (size_t i = 0; i < this->n(); ++i) {
+    if (e.node(i) != this->node(i)) return false;
+  }
+  return true;
+}
+
+bool Element::operator==(const Element *e) {
+  if (this->n() != e->n()) return false;
+  for (size_t i = 0; i < this->n(); ++i) {
+    if (e->node(i) != this->node(i)) return false;
+  }
+  return true;
+}
+
 /**
  * @brief Resizes the internal array of verticies
  * @param[in] nVertex number of verticies. Must be 3 or 4.

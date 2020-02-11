@@ -19,5 +19,5 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS  = thirdparty libraries src
+SUBDIRS  = thirdparty libraries src utilities
 CONFIG += ordered           

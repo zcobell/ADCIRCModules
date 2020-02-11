@@ -19,6 +19,7 @@
 #include "node.h"
 #include "boost/format.hpp"
 #include "default_values.h"
+#include "fpcompare.h"
 #include "hash.h"
 
 using namespace Adcirc::Geometry;
@@ -81,6 +82,14 @@ Node::Node(const Node &n) { Node::nodeCopier(this, &n); }
 Node &Node::operator=(const Node &n) {
   Node::nodeCopier(this, &n);
   return *this;
+}
+
+bool Node::operator==(const Node &n) {
+  return n.x() == this->x() && n.y() == this->y() && n.z() == this->z();
+}
+
+bool Node::operator==(const Node *n) {
+  return n->x() == this->x() && n->y() == this->y() && n->z() == this->z();
 }
 
 /**

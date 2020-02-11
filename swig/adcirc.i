@@ -40,6 +40,11 @@
 #include "hash.h"
 #include "hashtype.h"
 #include "mesh.h"
+#include "cdate.h"
+#include "hmdf.h"
+#include "hmdfstation.h"
+#include "stationinterpolationoptions.h"
+#include "stationinterpolation.h"
 #include "node.h"
 #include "element.h"
 #include "boundary.h"
@@ -61,7 +66,6 @@
 
 #ifdef _USE_GDAL
 %{
-#include "rasterdata.h"
 #include "griddata.h"
 #include "interpolationmethods.h"
 %}
@@ -98,6 +102,11 @@ namespace std {
 %include "hash.h"
 %include "hashtype.h"
 %include "mesh.h"
+%include "cdate.h"
+%include "hmdf.h"
+%include "hmdfstation.h"
+%include "stationinterpolationoptions.h"
+%include "stationinterpolation.h"
 %include "node.h"
 %include "element.h"
 %include "boundary.h"
@@ -116,7 +125,6 @@ namespace std {
 %include "multithreading.h"
 %include "constants.h"
 #ifdef _USE_GDAL
-%include "rasterdata.h"
 %include "griddata.h"
 %include "interpolationmethods.h"
 #endif

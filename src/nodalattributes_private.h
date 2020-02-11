@@ -82,7 +82,7 @@ class NodalAttributesPrivate {
 
   /// Mapping function between the name of a nodal parameter and its position in
   /// the nodalParameters vector
-  adcmap<std::string, size_t> m_attributeLocations;
+  Adcirc::adcmap<std::string, size_t> m_attributeLocations;
 
   /// Filename of the file that will be read or was read
   std::string m_filename;

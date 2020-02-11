@@ -26,6 +26,7 @@ comment:
   require_changes: no
 
 ignore:
-  - thirdparty/*
-  - testing/*
-  - libraries/projection/epsg.cpp
+  - thirdparty/.*
+  - testing/.*
+  - libraries/.*
+  - build/.*

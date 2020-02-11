@@ -23,7 +23,7 @@ TARGET = adcircmodules
 TEMPLATE = lib
 VERSION = 0.1.0
 CONFIG -= qt
-CONFIG += c++11
+CONFIG += c++14
 #CONFIG += static
 
 DEFINES += ADCIRCMODULES_LIBRARY
@@ -36,6 +36,9 @@ BOOSTPATH     = $$PWD/../thirdparty/boost_1_66_0
 
 #...Nanoflann
 NANOFLANNPATH  = $$PWD/../thirdparty/nanoflann/include
+
+#...Date
+DATEPATH = $$PWD/../thirdparty/date/include/date
 
 #...OpenSSL
 macx{
@@ -95,6 +98,9 @@ macx{
         LIBS += -L$$NETCDFHOME/lib -lnetcdf
         INCLUDEPATH += $$NETCDFHOME/include
     }
+    isEmpty(GDALHOME){
+        INCLUDEPATH += /usr/local/Cellar/gdal/2.4.2_2/include
+    }
     LIBS+= -lgdal
 }
 
@@ -109,7 +115,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 SOURCES += \
-    fpcompare.cpp \
+    cdate.cpp \
+    formatting.cpp \
     griddata_private.cpp \
     harmonicsoutput_private.cpp \
     harmonicsrecord_private.cpp \
@@ -120,6 +127,8 @@ SOURCES += \
     nodalattributes_private.cpp \
     outputmetadata.cpp \
     readoutput.cpp \
+    stationinterpolation.cpp \
+    stationinterpolationoptions.cpp \
     stringconversion.cpp \
     boundary.cpp \
     element.cpp \
@@ -143,12 +152,17 @@ SOURCES += \
     constants.cpp \
     kdtree.cpp \
     logging.cpp \
-    writeoutput.cpp
+    writeoutput.cpp \
+    hmdf.cpp \
+    hmdfstation.cpp \
+    netcdftimeseries.cpp
 
 HEADERS += \
     adcirc_outputfiles.h \
     adcircmodules_global.h \
     adcmap.h \
+    cdate.h \
+    formatting.h \
     fpcompare.h \
     griddata_private.h \
     harmonicsoutput_private.h \
@@ -162,6 +176,8 @@ HEADERS += \
     outputfile.h \
     outputmetadata.h \
     readoutput.h \
+    stationinterpolation.h \
+    stationinterpolationoptions.h \
     stringconversion.h \
     boundary.h \
     element.h \
@@ -189,9 +205,12 @@ HEADERS += \
     kdtree.h \
     logging.h \
     default_values.h \
-    writeoutput.h
+    writeoutput.h \
+    hmdf.h \
+    hmdfstation.h \
+    netcdftimeseries.h
 
-INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH
+INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH $$DATEPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib
 
 unix {

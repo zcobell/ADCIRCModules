@@ -45,8 +45,8 @@ namespace Geometry {
  * @class Mesh
  * @author Zachary Cobell
  * @brief Class that handles operations using Adcirc mesh files
- * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
- * is released under the terms of the GNU General Public License v3
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
  *
  * The Mesh class handles functions related to reading an
  * unstructured mesh into memory and provides some facilities for
@@ -83,6 +83,10 @@ class Mesh {
   ADCIRCMODULES_EXPORT Mesh();
   ADCIRCMODULES_EXPORT Mesh(const std::string &filename);
   ADCIRCMODULES_EXPORT ~Mesh();
+
+  Mesh(const Mesh &m);
+
+  Mesh &operator=(const Mesh &m);
 
   friend class ElementTable;
 
@@ -180,6 +184,8 @@ class Mesh {
 
   void ADCIRCMODULES_EXPORT addNode(size_t index,
                                     const Adcirc::Geometry::Node &node);
+  void ADCIRCMODULES_EXPORT addNode(size_t index,
+                                    const Adcirc::Geometry::Node *node);
   void ADCIRCMODULES_EXPORT deleteNode(size_t index);
 
   void ADCIRCMODULES_EXPORT
@@ -216,6 +222,16 @@ class Mesh {
 
   Adcirc::Cryptography::HashType hashType() const;
   void setHashType(const Adcirc::Cryptography::HashType &hashType);
+
+  std::vector<Adcirc::Geometry::Node> *nodes();
+  std::vector<Adcirc::Geometry::Element> *elements();
+  std::vector<Adcirc::Geometry::Boundary> *openBoundaries();
+  std::vector<Adcirc::Geometry::Boundary> *landBoundaries();
+
+  bool containsNode(Adcirc::Geometry::Node &n, size_t &index);
+  bool containsNode(Adcirc::Geometry::Node *n, size_t &index);
+  bool containsElement(Adcirc::Geometry::Element &e, size_t &index);
+  bool containsElement(Adcirc::Geometry::Element *e, size_t &index);
 
  private:
   std::unique_ptr<Adcirc::Private::MeshPrivate> m_impl;
