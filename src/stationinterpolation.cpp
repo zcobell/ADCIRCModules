@@ -240,10 +240,10 @@ std::tuple<double, double> StationInterpolation::interpVector(
   double v2y = data.dataAt(0)->v(n2);
   double v3x = data.dataAt(0)->u(n3);
   double v3y = data.dataAt(0)->v(n3);
-  double vx = this->interpolateDryValues(v1x, w1, v2x, w2, v3x, w3,
-                                         data.defaultValue());
-  double vy = this->interpolateDryValues(v1y, w1, v2y, w2, v3y, w3,
-                                         data.defaultValue());
+  double vx = StationInterpolation::interpolateDryValues(
+      v1x, w1, v2x, w2, v3x, w3, data.defaultValue());
+  double vy = StationInterpolation::interpolateDryValues(
+      v1y, w1, v2y, w2, v3y, w3, data.defaultValue());
   return std::make_tuple(vx, vy);
 }
 

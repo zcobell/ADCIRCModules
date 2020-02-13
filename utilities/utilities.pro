@@ -21,6 +21,7 @@ TEMPLATE = subdirs
 
 SUBDIRS  = \
     generateAdcircSimulationDates \
+    highWaterMarks \
     interpolateAdcircStations \
     resultsScope
 CONFIG += ordered           
