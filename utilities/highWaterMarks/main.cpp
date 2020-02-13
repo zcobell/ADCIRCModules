@@ -202,7 +202,7 @@ Locations generateHighWaterMarks(const HighWaterMarkOptions &options) {
       const double w3 = loc.location(i)->weighting()->weight[2];
 
       v1 = Adcirc::Output::StationInterpolation::interpolateDryValues(
-          z1, z2, z3, w1, w2, w3, Adcirc::Output::defaultOutputValue());
+          z1, w1, z2, w2, z3, w3, Adcirc::Output::defaultOutputValue());
     } else {
       v1 = Adcirc::Output::defaultOutputValue();
     }
@@ -311,8 +311,9 @@ void writeShapefile(Locations &hwm, const HighWaterMarkOptions &options) {
   SHPClose(shp);
   DBFClose(dbf);
 
-  writePrjFile(Adcirc::FileIO::Generic::getFileWithoutExtension(
-      options.output()) + ".prj");
+  writePrjFile(
+      Adcirc::FileIO::Generic::getFileWithoutExtension(options.output()) +
+      ".prj");
 
   return;
 }
