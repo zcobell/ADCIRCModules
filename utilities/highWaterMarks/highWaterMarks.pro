@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         highwatermarkoptions.cpp \
+        hwmstats.cpp \
         location.cpp \
         locations.cpp \
         main.cpp
@@ -71,5 +72,6 @@ else:unix: PRE_TARGETDEPS += $$OUT_PWD/../../libraries/shapelib/libshapelib.a
 
 HEADERS += \
     highwatermarkoptions.h \
+    hwmstats.h \
     location.h \
     locations.h
