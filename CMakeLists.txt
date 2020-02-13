@@ -112,6 +112,6 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/test_cases.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/generateAdcircSimulationDates.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/interpolateAdcircStations.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/resultsScope.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/highWaterMarks.cmake)
 # ##############################################################################
-
 

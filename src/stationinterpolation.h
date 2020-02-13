@@ -41,7 +41,6 @@ class StationInterpolation {
 
   void ADCIRCMODULES_EXPORT run();
 
- private:
   struct Weight {
     bool found;
     std::array<size_t, 3> node_index;
@@ -49,6 +48,13 @@ class StationInterpolation {
     Weight() : found(false), node_index{0, 0, 0}, weight{0.0, 0.0, 0.0} {}
   };
 
+  double interpScalar(Adcirc::Output::ReadOutput &data, Weight &w,
+                      const double positive_direction = -9999.0);
+
+  static double interpolateDryValues(double v1, double w1, double v2, double w2,
+                                     double v3, double w3, double defaultVal);
+
+ private:
   void reprojectStationOutput();
   CDate getColdstartDate();
   Adcirc::Geometry::Mesh readMesh(const Adcirc::Output::OutputFormat &filetype);
@@ -60,14 +66,8 @@ class StationInterpolation {
   void interpolateTimeSnapToStations(const size_t snap, const bool writeVector,
                                      const CDate &coldstart,
                                      Adcirc::Output::ReadOutput &globalFile);
-  void allocateStationArrays();
-  void generateInterpolationWeights(Adcirc::Geometry::Mesh &m);
-  double interpScalar(Adcirc::Output::ReadOutput &data, Weight &w,
-                      const double positive_direction = -9999.0);
-
   double interpScalarFromVector(Adcirc::Output::ReadOutput &data, Weight &w,
                                 const double positive_direction = -9999.0);
-
   double interpScalarFromVectorWithoutFlowDirection(
       Adcirc::Output::ReadOutput &data, Weight &w);
   double interpScalarFromVectorWithFlowDirection(
@@ -75,10 +75,11 @@ class StationInterpolation {
       const double positive_direction);
   double interpDirectionFromVector(Adcirc::Output::ReadOutput &data, Weight &w);
 
-  std::tuple<double, double> interpVector(Adcirc::Output::ReadOutput &data,
-                                          Weight &w);
-  double interpolateDryValues(double v1, double w1, double v2, double w2,
-                              double v3, double w3, double defaultVal);
+  static std::tuple<double, double> interpVector(
+      Adcirc::Output::ReadOutput &data, Weight &w);
+  void allocateStationArrays();
+  void generateInterpolationWeights(Adcirc::Geometry::Mesh &m);
+
   CDate dateFromString(const std::string &dateString);
 
   std::vector<Weight> m_weights;
