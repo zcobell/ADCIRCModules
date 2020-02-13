@@ -25,6 +25,12 @@
 #include "locations.h"
 #include "shapefil.h"
 
+#ifdef USE_GDAL
+#include "cpl_conv.h"
+#include "cpl_error.h"
+#include "ogr_spatialref.h"
+#endif
+
 HighWaterMarkOptions parseCommandLineOptions(
     const cxxopts::ParseResult &parser);
 
@@ -37,6 +43,7 @@ std::pair<double, double> findNearestWet(const double x, const double y,
 void writeOutput(Locations &hwm, const HighWaterMarkOptions &options);
 void writeShapefile(Locations &hwm, const HighWaterMarkOptions &options);
 void writeCsv(Locations &hwm, const HighWaterMarkOptions &options);
+void writePrjFile(const std::string &outputPrj);
 
 int main(int argc, char *argv[]) {
   cxxopts::Options options("highWaterMarks",
@@ -213,10 +220,10 @@ Locations generateHighWaterMarks(const HighWaterMarkOptions &options) {
     loc.location(i)->setMovedDist(moveDist);
   }
 
-  Adcirc::Logging::log(boost::str(
-      boost::format(
-          "Rewetted %d locations using nearest wet location within %0.2f meters") %
-      nRewetted % options.distance()));
+  Adcirc::Logging::log(
+      boost::str(boost::format("Rewetted %d locations using nearest wet "
+                               "location within %0.2f meters") %
+                 nRewetted % options.distance()));
 
   return loc;
 }
@@ -304,6 +311,9 @@ void writeShapefile(Locations &hwm, const HighWaterMarkOptions &options) {
   SHPClose(shp);
   DBFClose(dbf);
 
+  writePrjFile(Adcirc::FileIO::Generic::getFileWithoutExtension(
+      options.output()) + ".prj");
+
   return;
 }
 
@@ -322,4 +332,28 @@ void writeCsv(Locations &hwm, const HighWaterMarkOptions &options) {
   f.close();
 
   return;
+}
+
+void writePrjFile(const std::string &outputPrj) {
+#ifdef USE_GDAL
+  OGRSpatialReference s;
+  OGRErr e = s.importFromEPSG(4326);
+  if (e != 0) {
+    Adcirc::Logging::warning("Could not convert EPSG to write PRJ file");
+    return;
+  }
+
+  //...Generate the Wkt string
+  char *pj;
+  s.morphToESRI();
+  s.exportToWkt(&pj);
+
+  //...Write the output file
+  std::ofstream f(outputPrj);
+  f << pj;
+  f.close();
+  CPLFree(pj);
+#else
+  Adcirc::Logging::log("GDAL not available. No .prj file written.");
+#endif
 }
