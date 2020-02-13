@@ -51,7 +51,9 @@ HighWaterMarkOptions::HighWaterMarkOptions(const cxxopts::ParseResult &parser) {
     this->m_stats = parser["stats"].as<bool>();
   }
   if (parser["zero"].count()) {
-    this->m_zero = parser["zero"].as<bool>();
+    this->m_zero = true;
+  } else {
+    this->m_zero = false;
   }
   if (parser["field"].count()) {
     this->m_field = parser["field"].as<std::string>();

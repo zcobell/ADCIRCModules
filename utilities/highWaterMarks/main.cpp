@@ -21,6 +21,7 @@
 #include "cxxopts.hpp"
 #include "fpcompare.h"
 #include "highwatermarkoptions.h"
+#include "hwmstats.h"
 #include "locations.h"
 #include "shapefil.h"
 
@@ -75,6 +76,11 @@ int main(int argc, char *argv[]) {
   Locations hwm = generateHighWaterMarks(option);
 
   writeOutput(hwm, option);
+
+  if (option.stats()) {
+    HwmStats stat(hwm, option.zero());
+    stat.print();
+  }
 
   return 0;
 }
@@ -173,6 +179,7 @@ Locations generateHighWaterMarks(const HighWaterMarkOptions &options) {
   Adcirc::Logging::log(boost::str(
       boost::format("Found %d high water marks outside mesh") % numNotFound));
 
+  size_t nRewetted = 0;
   for (size_t i = 0; i < loc.size(); ++i) {
     double v1;
     double moveDist = 0.0;
@@ -192,15 +199,24 @@ Locations generateHighWaterMarks(const HighWaterMarkOptions &options) {
     } else {
       v1 = Adcirc::Output::defaultOutputValue();
     }
+
     if (Adcirc::FpCompare::equalTo(v1, Adcirc::Output::defaultOutputValue()) &&
         options.distance() > 0.0) {
       std::tie(v1, moveDist) = findNearestWet(
           loc.location(i)->x(), loc.location(i)->y(), mesh, maxele.dataAt(0),
           options.distance(), options.searchDepth());
+      if (!Adcirc::FpCompare::equalTo(moveDist, 0.0)) {
+        nRewetted++;
+      }
     }
     loc.location(i)->setModeled(v1);
     loc.location(i)->setMovedDist(moveDist);
   }
+
+  Adcirc::Logging::log(boost::str(
+      boost::format(
+          "Rewetted %d locations using nearest wet location within %0.2f meters") %
+      nRewetted % options.distance()));
 
   return loc;
 }
@@ -251,10 +267,20 @@ void writeShapefile(Locations &hwm, const HighWaterMarkOptions &options) {
 
   DBFAddField(dbf, "longitude", FTDouble, 16, 5);
   DBFAddField(dbf, "latitude", FTDouble, 16, 5);
-  DBFAddField(dbf, "observed", FTDouble, 16, 5);
-  DBFAddField(dbf, "modeled", FTDouble, 16, 5);
-  DBFAddField(dbf, "difference", FTDouble, 16, 5);
-  DBFAddField(dbf, "movedist_m", FTDouble, 16, 5);
+
+  if (options.outUnits()) {
+    DBFAddField(dbf, "observed_ft", FTDouble, 16, 5);
+    DBFAddField(dbf, "modeled_ft", FTDouble, 16, 5);
+    DBFAddField(dbf, "difference_ft", FTDouble, 16, 5);
+    DBFAddField(dbf, "movedist_ft", FTDouble, 16, 5);
+  } else {
+    DBFAddField(dbf, "longitude", FTDouble, 16, 5);
+    DBFAddField(dbf, "latitude", FTDouble, 16, 5);
+    DBFAddField(dbf, "observed", FTDouble, 16, 5);
+    DBFAddField(dbf, "modeled", FTDouble, 16, 5);
+    DBFAddField(dbf, "difference", FTDouble, 16, 5);
+    DBFAddField(dbf, "movedist_m", FTDouble, 16, 5);
+  }
 
   double multiplier = options.outConversion();
 
