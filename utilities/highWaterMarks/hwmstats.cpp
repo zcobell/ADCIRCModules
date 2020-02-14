@@ -21,7 +21,7 @@
 #include <iostream>
 #include "boost/format.hpp"
 
-HwmStats::HwmStats(const Locations &hwm, bool zero)
+HwmStats::HwmStats(const Locations &hwm, bool zero, double adcircMultiplier, double dataMultiplier)
     : m_nwet(0),
       m_ndry(0),
       m_r2(0),
@@ -29,7 +29,9 @@ HwmStats::HwmStats(const Locations &hwm, bool zero)
       m_b(0),
       m_sigma(0),
       m_zero(zero),
-      m_location(hwm) {
+      m_location(hwm), 
+      m_adcircMultiplier(adcircMultiplier),
+      m_dataMultiplier(dataMultiplier) {
   this->compute();
 }
 
@@ -49,13 +51,15 @@ void HwmStats::compute() {
 
   for (size_t i = 0; i < this->m_location.size(); ++i) {
     if (this->m_location.location(i)->modeled() > -900) {
-      sumx += this->m_location.location(i)->measured();
-      sumy += this->m_location.location(i)->modeled();
+      sumx += this->m_location.location(i)->measured()*this->m_dataMultiplier;
+      sumy += this->m_location.location(i)->modeled()*this->m_adcircMultiplier;
       sumxy += this->m_location.location(i)->measured() *
-               this->m_location.location(i)->modeled();
-      sumx2 += std::pow(this->m_location.location(i)->measured(), 2.0);
-      sumy2 += std::pow(this->m_location.location(i)->modeled(), 2.0);
-      sumErr += this->m_location.location(i)->difference();
+               this->m_location.location(i)->modeled() * this->m_adcircMultiplier *
+               this->m_dataMultiplier;
+      sumx2 += std::pow(this->m_location.location(i)->measured()*this->m_dataMultiplier, 2.0);
+      sumy2 += std::pow(this->m_location.location(i)->modeled()*this->m_adcircMultiplier, 2.0);
+      sumErr += this->m_location.location(i)->measured()*this->m_dataMultiplier - 
+          this->m_location.location(i)->modeled()*this->m_adcircMultiplier;
       this->m_nwet++;
     } else {
       this->m_ndry++;
@@ -69,7 +73,7 @@ void HwmStats::compute() {
     double sstot = 0;
     for (size_t i = 0; i < this->m_location.size(); ++i) {
       if (this->m_location.location(i)->modeled() > -900) {
-        sstot += std::pow(this->m_location.location(i)->modeled() - ybar, 2.0);
+        sstot += std::pow(this->m_location.location(i)->modeled()*this->m_adcircMultiplier - ybar, 2.0);
       }
     }
     double sse = sumy2 - std::pow(this->m_m, 2.0) * sumx2;
@@ -89,8 +93,10 @@ void HwmStats::compute() {
   double sumSqerr = 0;
   for (size_t i = 0; i < this->m_location.size(); ++i) {
     if (this->m_location.location(i)->modeled() > -900) {
+      double d = this->m_location.location(i)->measured()*this->m_dataMultiplier - 
+            this->m_location.location(i)->modeled()*this->m_adcircMultiplier;
       sumSqerr +=
-          std::pow(this->m_location.location(i)->difference() - meanerr, 2.0);
+          std::pow(d - meanerr, 2.0);
     }
   }
   this->m_sigma = std::sqrt(sumSqerr / this->m_nwet);

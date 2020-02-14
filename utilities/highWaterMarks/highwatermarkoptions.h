@@ -51,20 +51,14 @@ class HighWaterMarkOptions {
   std::string field() const;
   void setField(const std::string &field);
 
-  bool units() const;
-  void setUnits(bool units);
-
-  double conversion() const;
-  void setConversion(double conversion);
-
   size_t searchDepth() const;
   void setSearchDepth(const size_t &searchDepth);
 
-  bool outUnits() const;
-  void setOutUnits(bool outUnits);
+  double adcircMultiplier() const;
+  void setAdcircMultiplier(double multiplier);
 
-  double outConversion() const;
-  void setOutConversion(double outConversion);
+  double dataMultiplier() const;
+  void setDataMultiplier(double multiplier);
 
 private:
   std::string m_mesh;
@@ -72,13 +66,11 @@ private:
   std::string m_station;
   std::string m_output;
   double m_distance;
-  double m_outConversion;
+  double m_adcircMultiplier;
+  double m_dataMultiplier;
   bool m_stats;
   bool m_zero;
   std::string m_field;
-  bool m_units;
-  bool m_outUnits;
-  double m_conversion;
   size_t m_searchDepth;
 };
 

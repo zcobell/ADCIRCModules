@@ -60,8 +60,8 @@ int main(int argc, char *argv[]) {
                      ("stats","show high water mark statistics when complete")
                      ("zero","force high water mark trendline through zero")
                      ("field","shapefile fieldname for elevation",cxxopts::value<std::string>()->default_value("observed"))
-                     ("inunits","units contained in the hwm dataset. ft or m",cxxopts::value<std::string>()->default_value("m"))
-                     ("outunits","units contained in the output data. ft or m",cxxopts::value<std::string>()->default_value("m"))
+                     ("cadcirc","conversion factor for ADCIRC data",cxxopts::value<double>()->default_value("1.0"))
+                     ("cobs","conversion factor for observation data",cxxopts::value<double>()->default_value("1.0"))
                      ("sdepth","Number of nearest nodes to search for when finding nearest non-dry location. Default: Number of mesh nodes (Warning: slow)",cxxopts::value<size_t>());
   // clang-format on
 
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
   writeOutput(hwm, option);
 
   if (option.stats()) {
-    HwmStats stat(hwm, option.zero());
+    HwmStats stat(hwm, option.zero(), option.adcircMultiplier(), option.dataMultiplier());
     stat.print();
   }
 
@@ -158,7 +158,7 @@ Locations generateHighWaterMarks(const HighWaterMarkOptions &options) {
     exit(1);
   }
 
-  Locations loc(options.station(), options.field(), options.units());
+  Locations loc(options.station(), options.field());
   loc.read();
 
   size_t numNotFound = 0;
@@ -274,39 +274,27 @@ void writeShapefile(Locations &hwm, const HighWaterMarkOptions &options) {
 
   DBFAddField(dbf, "longitude", FTDouble, 16, 5);
   DBFAddField(dbf, "latitude", FTDouble, 16, 5);
-
-  if (options.outUnits()) {
-    DBFAddField(dbf, "observed_ft", FTDouble, 16, 5);
-    DBFAddField(dbf, "modeled_ft", FTDouble, 16, 5);
-    DBFAddField(dbf, "difference_ft", FTDouble, 16, 5);
-    DBFAddField(dbf, "movedist_ft", FTDouble, 16, 5);
-  } else {
-    DBFAddField(dbf, "longitude", FTDouble, 16, 5);
-    DBFAddField(dbf, "latitude", FTDouble, 16, 5);
-    DBFAddField(dbf, "observed", FTDouble, 16, 5);
-    DBFAddField(dbf, "modeled", FTDouble, 16, 5);
-    DBFAddField(dbf, "difference", FTDouble, 16, 5);
-    DBFAddField(dbf, "movedist_m", FTDouble, 16, 5);
-  }
-
-  double multiplier = options.outConversion();
+  DBFAddField(dbf, "observed", FTDouble, 16, 5);
+  DBFAddField(dbf, "modeled", FTDouble, 16, 5);
+  DBFAddField(dbf, "difference", FTDouble, 16, 5);
+  DBFAddField(dbf, "movedist", FTDouble, 16, 5);
 
   for (size_t i = 0; i < hwm.size(); ++i) {
     double x = hwm.location(i)->x();
     double y = hwm.location(i)->y();
-    double obs = hwm.location(i)->measured();
-    double mod = hwm.location(i)->modeled();
-    double diff = hwm.location(i)->difference();
+    double obs = hwm.location(i)->measured() * options.dataMultiplier();
+    double mod = hwm.location(i)->modeled() * options.adcircMultiplier();
+    double diff = obs - mod;
     double movedist = hwm.location(i)->movedDist();
     SHPObject *obj = SHPCreateSimpleObject(SHPT_POINT, 1, &x, &y, nullptr);
     SHPWriteObject(shp, -1, obj);
     SHPDestroyObject(obj);
     DBFWriteDoubleAttribute(dbf, i, 0, x);
     DBFWriteDoubleAttribute(dbf, i, 1, y);
-    DBFWriteDoubleAttribute(dbf, i, 2, obs * multiplier);
-    DBFWriteDoubleAttribute(dbf, i, 3, mod * multiplier);
-    DBFWriteDoubleAttribute(dbf, i, 4, diff * multiplier);
-    DBFWriteDoubleAttribute(dbf, i, 5, movedist * multiplier);
+    DBFWriteDoubleAttribute(dbf, i, 2, obs);
+    DBFWriteDoubleAttribute(dbf, i, 3, mod);
+    DBFWriteDoubleAttribute(dbf, i, 4, diff);
+    DBFWriteDoubleAttribute(dbf, i, 5, movedist);
   }
   SHPClose(shp);
   DBFClose(dbf);
@@ -325,8 +313,10 @@ void writeCsv(Locations &hwm, const HighWaterMarkOptions &options) {
   for (size_t i = 0; i < hwm.size(); ++i) {
     f << boost::str(boost::format("%f,%f,0.0,%f,%f,%f,%f") %
                     hwm.location(i)->x() % hwm.location(i)->y() %
-                    hwm.location(i)->measured() % hwm.location(i)->modeled() %
-                    hwm.location(i)->difference() %
+                    (hwm.location(i)->measured()*options.dataMultiplier()) % 
+                    (hwm.location(i)->modeled()*options.adcircMultiplier()) %
+                    (hwm.location(i)->modeled()*options.adcircMultiplier() - 
+                    hwm.location(i)->measured()*options.dataMultiplier()) %
                     hwm.location(i)->movedDist())
       << std::endl;
   }

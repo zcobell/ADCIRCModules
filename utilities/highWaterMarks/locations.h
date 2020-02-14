@@ -25,8 +25,7 @@
 
 class Locations {
  public:
-  Locations(const std::string &filename, const std::string &fieldname,
-            bool unitFlag = false);
+  Locations(const std::string &filename, const std::string &fieldname);
   void read();
 
   Location *location(size_t index);
@@ -35,9 +34,7 @@ class Locations {
  private:
   void readShapefile();
   void readCsv();
-
   bool m_unitFlag;
-  double m_conversion;
 
   std::string m_filename;
   std::string m_dbfFilename;

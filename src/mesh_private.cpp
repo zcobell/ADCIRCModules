@@ -1016,12 +1016,12 @@ Node MeshPrivate::nodeC(size_t index) const {
  * @return Element pointer
  */
 Element *MeshPrivate::element(size_t index) {
-  if (index < this->numElements()) {
+  //if (index < this->numElements()) {
     return &this->m_elements[index];
-  } else {
-    adcircmodules_throw_exception("Mesh: Element index out of bounds");
-    return nullptr;
-  }
+  //} else {
+  //  adcircmodules_throw_exception("Mesh: Element index out of bounds");
+  //  return nullptr;
+  //}
 }
 
 /**

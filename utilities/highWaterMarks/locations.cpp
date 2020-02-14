@@ -23,15 +23,12 @@
 #include "adcircmodules.h"
 #include "shapefil.h"
 
-Locations::Locations(const std::string &filename, const std::string &fieldname,
-                     const bool unitFlag) {
+Locations::Locations(const std::string &filename, const std::string &fieldname) {
   this->m_filename = filename;
   this->m_fieldname = fieldname;
   this->m_dbfFilename =
       Adcirc::FileIO::Generic::getFileWithoutExtension(this->m_filename) +
       ".dbf";
-  this->m_unitFlag = unitFlag;
-  this->m_conversion = unitFlag ? 3.28084 : 1.0;
 }
 
 size_t Locations::size() { return this->m_locations.size(); }
@@ -78,8 +75,7 @@ void Locations::readShapefile() {
     if (pType == SHPT_POINT || pType == SHPT_POINTZ) {
       l.setX(p->padfX[0]);
       l.setY(p->padfY[0]);
-      l.setMeasured(DBFReadDoubleAttribute(d, i, dbfField) /
-                    this->m_conversion);
+      l.setMeasured(DBFReadDoubleAttribute(d, i, dbfField));
       this->m_locations.push_back(l);
     } else {
       Adcirc::Logging::logError("Invalid shapefile object type");
