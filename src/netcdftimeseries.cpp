@@ -115,7 +115,7 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
     std::string station_time_var_string =
         boost::str(boost::format("time_station_%04.4i") % (i + 1));
     std::string station_data_var_string =
-        boost::str(boost::format("time_station_%04.4i") % (i + 1));
+        boost::str(boost::format("data_station_%04.4i") % (i + 1));
 
     NCCHECK(nc_inq_dimid(ncid, station_dim_string.c_str(), &dimidStationLength))
     NCCHECK(nc_inq_dimlen(ncid, dimidStationLength, &length))
