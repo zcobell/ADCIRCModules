@@ -88,6 +88,12 @@ class HmdfStation {
   double ADCIRCMODULES_EXPORT data_u(size_t index) const;
   double ADCIRCMODULES_EXPORT data_v(size_t index) const;
 
+  void ADCIRCMODULES_EXPORT set(const size_t length, CDate &refTime,
+                                const long long *time, const double *data);
+  void ADCIRCMODULES_EXPORT set(const size_t length, CDate &refTime,
+                                const long long *time, const double *data_u,
+                                const double *data_v);
+
   void ADCIRCMODULES_EXPORT setData(const double &data, size_t index);
   void ADCIRCMODULES_EXPORT setData(const std::vector<double> &data);
   void ADCIRCMODULES_EXPORT setData(const std::vector<float> &data);
@@ -95,6 +101,10 @@ class HmdfStation {
                                     const std::vector<double> &data_v);
   void ADCIRCMODULES_EXPORT setData(const std::vector<float> &data_u,
                                     const std::vector<float> &data_v);
+
+  void ADCIRCMODULES_EXPORT setData(const size_t length, const double *data);
+  void ADCIRCMODULES_EXPORT setData(const size_t length, const double *data_u,
+                                    const double *data_v);
 
   std::vector<Adcirc::CDate> ADCIRCMODULES_EXPORT allDate() const;
   std::vector<double> ADCIRCMODULES_EXPORT allData() const;
@@ -120,7 +130,6 @@ class HmdfStation {
                                      const double maxValid);
 
  private:
-
   std::tuple<double, double> getVectorBounds(const std::vector<double> &v);
 
   Coordinate m_coordinate;

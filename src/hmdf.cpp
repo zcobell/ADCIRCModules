@@ -35,7 +35,6 @@
 #include "formatting.h"
 #include "logging.h"
 #include "netcdf.h"
-#include "netcdftimeseries.h"
 
 using namespace Adcirc::Output;
 
@@ -208,23 +207,171 @@ int Hmdf::readImeds(const std::string &filename) {
   return 0;
 }
 
+int Hmdf::readNetcdfScalarStations(int ncid, size_t nstations,
+                                   const double *xcoor, const double *ycoor,
+                                   const std::vector<std::string> &names) {
+  for (size_t i = 0; i < nstations; i++) {
+    std::string station_dim_string =
+        boost::str(boost::format("stationLength_%04.4i") % (i + 1));
+    std::string station_time_var_string =
+        boost::str(boost::format("time_station_%04.4i") % (i + 1));
+    std::string station_data_var_u_string =
+        boost::str(boost::format("data_station_%04.4i") % (i + 1));
+
+    int dimidStationLength;
+    size_t length;
+    NCCHECK(
+        nc_inq_dimid(ncid, station_dim_string.c_str(), &dimidStationLength));
+    NCCHECK(nc_inq_dimlen(ncid, dimidStationLength, &length));
+    int varid_time, varid_data;
+    NCCHECK(nc_inq_varid(ncid, station_time_var_string.c_str(), &varid_time));
+    NCCHECK(nc_inq_varid(ncid, station_data_var_u_string.c_str(), &varid_data));
+    char timeChar[80];
+    NCCHECK(nc_get_att_text(ncid, varid_time, "referenceDate", timeChar));
+    std::string timeString = std::string(timeChar).substr(0, 19);
+
+    CDate reftime;
+    reftime.fromString(timeString);
+
+    double fillValue;
+    NCCHECK(nc_inq_var_fill(ncid, varid_data, NULL, &fillValue));
+    if (fillValue == NC_FILL_DOUBLE) fillValue = -99999.0;
+
+    std::unique_ptr<long long[]> timeData(new long long[length]);
+    std::unique_ptr<double[]> varData(new double[length]);
+
+    NCCHECK(nc_get_var_double(ncid, varid_data, varData.get()));
+    NCCHECK(nc_get_var_longlong(ncid, varid_time, timeData.get()));
+
+    HmdfStation s;
+    s.setLongitude(xcoor[i]);
+    s.setLatitude(ycoor[i]);
+    s.setName(names[i]);
+    s.setId(boost::str(boost::format("%d") % i));
+    s.setVector(false);
+    s.setStationIndex(i);
+    s.set(length, reftime, timeData.get(), varData.get());
+
+    this->m_station.push_back(s);
+  }
+  return 0;
+}
+
+int Hmdf::readNetcdfVectorStations(int ncid, size_t nstations,
+                                   const double *xcoor, const double *ycoor,
+                                   const std::vector<std::string> &names) {
+  for (size_t i = 0; i < nstations; i++) {
+    std::string station_dim_string =
+        boost::str(boost::format("stationLength_%04.4i") % (i + 1));
+    std::string station_time_var_string =
+        boost::str(boost::format("time_station_%04.4i") % (i + 1));
+    std::string station_data_var_u_string =
+        boost::str(boost::format("datau_station_%04.4i") % (i + 1));
+    std::string station_data_var_v_string =
+        boost::str(boost::format("datav_station_%04.4i") % (i + 1));
+
+    int dimidStationLength;
+    size_t length;
+    NCCHECK(
+        nc_inq_dimid(ncid, station_dim_string.c_str(), &dimidStationLength));
+    NCCHECK(nc_inq_dimlen(ncid, dimidStationLength, &length));
+    int varid_time, varid_datau, varid_datav;
+    NCCHECK(nc_inq_varid(ncid, station_time_var_string.c_str(), &varid_time));
+    NCCHECK(
+        nc_inq_varid(ncid, station_data_var_u_string.c_str(), &varid_datau));
+    NCCHECK(nc_inq_varid(ncid, station_data_var_v_string.c_str(), &varid_datav))
+
+    char timeChar[80];
+    NCCHECK(nc_get_att_text(ncid, varid_time, "referenceDate", timeChar));
+    std::string timeString = std::string(timeChar).substr(0, 19);
+
+    CDate reftime;
+    reftime.fromString(timeString);
+
+    double fillValue;
+    NCCHECK(nc_inq_var_fill(ncid, varid_datau, NULL, &fillValue));
+    if (fillValue == NC_FILL_DOUBLE) fillValue = -99999.0;
+
+    std::unique_ptr<long long[]> timeData(new long long[length]);
+    std::unique_ptr<double[]> varDataU(new double[length]);
+    std::unique_ptr<double[]> varDataV(new double[length]);
+
+    NCCHECK(nc_get_var_double(ncid, varid_datau, varDataU.get()));
+    NCCHECK(nc_get_var_double(ncid, varid_datav, varDataV.get()));
+    NCCHECK(nc_get_var_longlong(ncid, varid_time, timeData.get()));
+
+    HmdfStation s;
+    s.setLongitude(xcoor[i]);
+    s.setLatitude(ycoor[i]);
+    s.set(length, reftime, timeData.get(), varDataU.get(), varDataV.get());
+    s.setName(names[i]);
+    s.setId(boost::str(boost::format("%d") % i));
+    s.setVector(true);
+    s.setStationIndex(i);
+
+    this->m_station.push_back(s);
+  }
+  return 0;
+}
+
+std::vector<std::string> Hmdf::parseStationNames(size_t nstation,
+                                                 size_t namelen, char *names) {
+  std::vector<std::string> stationNames(nstation);
+
+  for (size_t i = 0; i < nstation; i++) {
+    char tmp[201];
+    std::memset(tmp, '\0', 201);
+    std::memcpy(tmp, &names[namelen * i], namelen);
+    std::string s(tmp);
+    s.erase(s.find_last_not_of("\t\n\v\f\r ") + 1);
+    stationNames.push_back(s);
+  }
+
+  return stationNames;
+}
+
 int Hmdf::readNetcdf(const std::string &filename, bool stationsOnly) {
-  if (this->m_isVector) {
-    adcircmodules_throw_exception(
-        "generic netcdf format files cannot contain vector data.");
+  bool isVector;
+  int ncid;
+  int dimid_nstations, dimid_stationNameLen;
+  size_t nstations, stationNameLength;
+  int varid_xcoor, varid_ycoor, varid_stationName, epsg;
+  int iv;
+
+  NCCHECK(nc_open(filename.c_str(), NC_NOWRITE, &ncid));
+  NCCHECK(nc_inq_dimid(ncid, "numStations", &dimid_nstations));
+  NCCHECK(nc_inq_dimlen(ncid, dimid_nstations, &nstations));
+  NCCHECK(nc_inq_dimid(ncid, "stationNameLen", &dimid_stationNameLen));
+  NCCHECK(nc_inq_dimlen(ncid, dimid_stationNameLen, &stationNameLength));
+  NCCHECK(nc_inq_varid(ncid, "stationXCoordinate", &varid_xcoor));
+  NCCHECK(nc_inq_varid(ncid, "stationYCoordinate", &varid_ycoor));
+  NCCHECK(nc_inq_varid(ncid, "stationName", &varid_stationName));
+  NCCHECK(nc_get_att_int(ncid, varid_xcoor, "HorizontalProjectionEPSG", &epsg));
+  NCCHECK(nc_get_att_int(ncid, NC_GLOBAL, "vector", &iv));
+  isVector = iv == 1;
+
+  this->setEpsg(epsg);
+
+  std::unique_ptr<double[]> xcoor(new double[nstations]);
+  std::unique_ptr<double[]> ycoor(new double[nstations]);
+
+  NCCHECK(nc_get_var_double(ncid, varid_xcoor, xcoor.get()));
+  NCCHECK(nc_get_var_double(ncid, varid_ycoor, ycoor.get()));
+
+  std::unique_ptr<char[]> ptrStationName(
+      new char[stationNameLength * nstations]);
+  NCCHECK(nc_get_var_text(ncid, varid_stationName, ptrStationName.get()))
+
+  std::vector<std::string> stationNames = this->parseStationNames(
+      nstations, stationNameLength, ptrStationName.get());
+
+  if (isVector) {
+    this->readNetcdfVectorStations(ncid, nstations, xcoor.get(), ycoor.get(),
+                                   stationNames);
+  } else {
+    this->readNetcdfScalarStations(ncid, nstations, xcoor.get(), ycoor.get(),
+                                   stationNames);
   }
-  NetcdfTimeseries ncts;
-  ncts.setFilename(filename);
-  int ierr = ncts.read(stationsOnly);
-  if (ierr != 0) {
-    return 1;
-  }
-
-  ierr = ncts.toHmdf(this);
-
-  if (ierr != 0) return 1;
-
-  this->setNull(false);
 
   return 0;
 }
@@ -311,6 +458,7 @@ int Hmdf::writeNetcdf(const std::string &filename) {
 
   std::vector<int> dimid_stationLength;
   std::vector<int> varid_stationDate, varid_stationData;
+  std::vector<int> varid_stationDataU, varid_stationDataV;
 
   //...Open file
   NCCHECK(nc_create(filename.c_str(), NC_NETCDF4, &ncid))
@@ -349,6 +497,14 @@ int Hmdf::writeNetcdf(const std::string &filename) {
   NCCHECK(nc_put_att_int(ncid, varid_stationy, "HorizontalProjectionEPSG",
                          NC_INT, 1, wgs84))
 
+  if (this->isVector()) {
+    int v = 1;
+    NCCHECK(nc_put_att_int(ncid, NC_GLOBAL, "vector", NC_INT, 1, &v))
+  } else {
+    int v = 0;
+    NCCHECK(nc_put_att_int(ncid, NC_GLOBAL, "vector", NC_INT, 1, &v))
+  }
+
   for (size_t i = 0; i < this->nstations(); i++) {
     const int d[1] = {dimid_stationLength[i]};
     const char epoch[20] = "1970-01-01 00:00:00";
@@ -360,7 +516,6 @@ int Hmdf::writeNetcdf(const std::string &filename) {
         boost::str(boost::format("station_%04.4i") % (i + 1));
     std::string timeVarName = "time_" + stationName;
     std::string dataVarName = "data_" + stationName;
-
     NCCHECK(nc_def_var(ncid, timeVarName.c_str(), NC_INT64, 1, d, &v))
     NCCHECK(nc_put_att_text(ncid, v, "StationName",
                             this->station(i)->name().length(),
@@ -374,19 +529,53 @@ int Hmdf::writeNetcdf(const std::string &filename) {
     NCCHECK(nc_def_var_deflate(ncid, v, 1, 1, 2))
     varid_stationDate.push_back(v);
 
-    NCCHECK(nc_def_var(ncid, dataVarName.c_str(), NC_DOUBLE, 1, d, &v))
-    NCCHECK(nc_put_att_text(ncid, v, "StationName",
-                            this->station(i)->name().length(),
-                            this->station(i)->name().c_str()))
-    NCCHECK(nc_put_att_text(ncid, v, "StationID",
-                            this->station(i)->id().length(),
-                            this->station(i)->id().c_str()))
-    NCCHECK(nc_put_att_text(ncid, v, "units", this->units().length(),
-                            this->units().c_str()))
-    NCCHECK(nc_put_att_text(ncid, v, "datum", this->datum().length(),
-                            this->datum().c_str()))
-    NCCHECK(nc_def_var_deflate(ncid, v, 1, 1, 2))
-    varid_stationData.push_back(v);
+    if (this->isVector()) {
+      std::string dataVarNameU = "datau_" + stationName;
+      std::string dataVarNameV = "datav_" + stationName;
+
+      NCCHECK(nc_def_var(ncid, dataVarNameU.c_str(), NC_DOUBLE, 1, d, &v))
+      NCCHECK(nc_put_att_text(ncid, v, "StationName",
+                              this->station(i)->name().length(),
+                              this->station(i)->name().c_str()))
+      NCCHECK(nc_put_att_text(ncid, v, "StationID",
+                              this->station(i)->id().length(),
+                              this->station(i)->id().c_str()))
+      NCCHECK(nc_put_att_text(ncid, v, "units", this->units().length(),
+                              this->units().c_str()))
+      NCCHECK(nc_put_att_text(ncid, v, "datum", this->datum().length(),
+                              this->datum().c_str()))
+      NCCHECK(nc_def_var_deflate(ncid, v, 1, 1, 2))
+      varid_stationDataU.push_back(v);
+
+      NCCHECK(nc_def_var(ncid, dataVarNameV.c_str(), NC_DOUBLE, 1, d, &v))
+      NCCHECK(nc_put_att_text(ncid, v, "StationName",
+                              this->station(i)->name().length(),
+                              this->station(i)->name().c_str()))
+      NCCHECK(nc_put_att_text(ncid, v, "StationID",
+                              this->station(i)->id().length(),
+                              this->station(i)->id().c_str()))
+      NCCHECK(nc_put_att_text(ncid, v, "units", this->units().length(),
+                              this->units().c_str()))
+      NCCHECK(nc_put_att_text(ncid, v, "datum", this->datum().length(),
+                              this->datum().c_str()))
+      NCCHECK(nc_def_var_deflate(ncid, v, 1, 1, 2))
+      varid_stationDataV.push_back(v);
+
+    } else {
+      NCCHECK(nc_def_var(ncid, dataVarName.c_str(), NC_DOUBLE, 1, d, &v))
+      NCCHECK(nc_put_att_text(ncid, v, "StationName",
+                              this->station(i)->name().length(),
+                              this->station(i)->name().c_str()))
+      NCCHECK(nc_put_att_text(ncid, v, "StationID",
+                              this->station(i)->id().length(),
+                              this->station(i)->id().c_str()))
+      NCCHECK(nc_put_att_text(ncid, v, "units", this->units().length(),
+                              this->units().c_str()))
+      NCCHECK(nc_put_att_text(ncid, v, "datum", this->datum().length(),
+                              this->datum().c_str()))
+      NCCHECK(nc_def_var_deflate(ncid, v, 1, 1, 2))
+      varid_stationData.push_back(v);
+    }
   }
 
   //...Metadata
@@ -428,9 +617,18 @@ int Hmdf::writeNetcdf(const std::string &filename) {
     double lat[1] = {this->station(i)->latitude()};
     double lon[1] = {this->station(i)->longitude()};
 
+    std::unique_ptr<double[]> data;
+    std::unique_ptr<double[]> datau;
+    std::unique_ptr<double[]> datav;
+
     std::unique_ptr<long long[]> time(
         new long long[this->station(i)->numSnaps()]);
-    std::unique_ptr<double[]> data(new double[this->station(i)->numSnaps()]);
+    if (this->isVector()) {
+      datau.reset(new double[this->station(i)->numSnaps()]);
+      datav.reset(new double[this->station(i)->numSnaps()]);
+    } else {
+      data.reset(new double[this->station(i)->numSnaps()]);
+    }
     std::unique_ptr<char[]> name(new char[200]);
     std::unique_ptr<char[]> id(new char[200]);
 
@@ -443,15 +641,25 @@ int Hmdf::writeNetcdf(const std::string &filename) {
 
     for (size_t j = 0; j < this->station(i)->numSnaps(); j++) {
       time.get()[j] = this->station(i)->date(j).toSeconds();
-      data.get()[j] = this->station(i)->data(j);
+      if (this->isVector()) {
+        datau.get()[j] = this->station(i)->data_u(j);
+        datav.get()[j] = this->station(i)->data_v(i);
+      } else {
+        data.get()[j] = this->station(i)->data(j);
+      }
     }
 
     NCCHECK(nc_put_var1_double(ncid, varid_stationx, stindex, lon))
     NCCHECK(nc_put_var1_double(ncid, varid_stationy, stindex, lat))
     NCCHECK(nc_put_var_longlong(ncid, varid_stationDate[i], time.get()))
-    NCCHECK(nc_put_var_double(ncid, varid_stationData[i], data.get()))
     NCCHECK(nc_put_vara_text(ncid, varid_stationName, index, count, name.get()))
     NCCHECK(nc_put_vara_text(ncid, varid_stationId, index, count, id.get()))
+    if (this->isVector()) {
+      NCCHECK(nc_put_var_double(ncid, varid_stationDataU[i], datau.get()))
+      NCCHECK(nc_put_var_double(ncid, varid_stationDataV[i], datav.get()))
+    } else {
+      NCCHECK(nc_put_var_double(ncid, varid_stationData[i], data.get()))
+    }
   }
 
   nc_close(ncid);
@@ -464,13 +672,15 @@ int Hmdf::writeAdcirc(const std::string &filename) {
     for (size_t i = 1; i < this->nstations(); ++i) {
       if (this->m_station[0].numSnaps() != this->m_station[i].numSnaps()) {
         adcircmodules_throw_exception(
-            "To write adcirc format, all stations must have the same number of "
+            "To write adcirc format, all stations must have the same number "
+            "of "
             "time snaps");
       }
       for (size_t j = 0; j < this->m_station[0].numSnaps(); ++j) {
         if (this->m_station[i].date(j) != this->m_station[0].date(j)) {
           adcircmodules_throw_exception(
-              "To write adcirc format, all stations must have the same set of "
+              "To write adcirc format, all stations must have the same set "
+              "of "
               "time snaps");
         }
       }
@@ -510,6 +720,29 @@ int Hmdf::writeAdcirc(const std::string &filename) {
   return 0;
 }
 
+int Hmdf::read(const std::string &filename) {
+  HmdfFileType ft = this->getFiletype(filename);
+  return this->read(filename, ft);
+}
+
+int Hmdf::read(const std::string &filename, const Hmdf::HmdfFileType filetype) {
+  if (filetype == HmdfImeds) {
+    return this->readImeds(filename);
+  } else if (filetype == HmdfCsv) {
+    return this->writeCsv(filename);
+  } else if (filetype == HmdfNetCdf) {
+    return this->writeNetcdf(filename);
+  } else if (filetype == HmdfAdcirc) {
+    return this->writeAdcirc(filename);
+  }
+  return 1;
+}
+
+int Hmdf::write(const std::string &filename) {
+  HmdfFileType ft = this->getFiletype(filename);
+  return this->write(filename, ft);
+}
+
 int Hmdf::write(const std::string &filename, HmdfFileType fileType) {
   if (fileType == HmdfImeds) {
     return this->writeImeds(filename);
@@ -539,11 +772,6 @@ Hmdf::HmdfFileType Hmdf::getFiletype(const std::string &filename) {
     adcircmodules_throw_exception("No valid HMDF filetype found");
     return Hmdf::HmdfFileType();
   }
-}
-
-int Hmdf::write(const std::string &filename) {
-  HmdfFileType ft = this->getFiletype(filename);
-  return this->write(filename, ft);
 }
 
 void Hmdf::dataBounds(CDate &dateMin, CDate &dateMax, double &minValue,

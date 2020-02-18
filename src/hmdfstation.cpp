@@ -129,6 +129,31 @@ double HmdfStation::data_v(size_t index) const {
     return 0;
 }
 
+void HmdfStation::set(const size_t length, CDate &refTime,
+                      const long long *time, const double *data) {
+  this->m_date.reserve(length);
+  this->m_data_u.reserve(length);
+  for (size_t i = 0; i < length; ++i) {
+    this->m_date[i] = refTime + time[i];
+    this->m_data_u[i] = data[i];
+  }
+  return;
+}
+
+void HmdfStation::set(const size_t length, CDate &refTime,
+                      const long long *time, const double *data_u,
+                      const double *data_v) {
+  this->m_date.reserve(length);
+  this->m_data_u.reserve(length);
+  this->m_data_v.reserve(length);
+  for (size_t i = 0; i < length; ++i) {
+    this->m_date[i] = refTime + time[i];
+    this->m_data_u[i] = data_u[i];
+    this->m_data_v[i] = data_v[i];
+  }
+  return;
+}
+
 void HmdfStation::setData(const double &data, size_t index) {
   assert(index < this->numSnaps());
   assert(!this->m_isVector);
@@ -207,6 +232,25 @@ void HmdfStation::setData(const std::vector<float> &data_u,
   for (size_t i = 0; i < data_u.size(); ++i) {
     this->m_data_u[i] = static_cast<double>(data_u[i]);
     this->m_data_v[i] = static_cast<double>(data_v[i]);
+  }
+  return;
+}
+
+void HmdfStation::setData(size_t length, const double *data) {
+  this->m_data_u.reserve(length);
+  for (size_t i = 0; i < length; ++i) {
+    this->m_data_u.push_back(data[i]);
+  }
+  return;
+}
+
+void HmdfStation::setData(const size_t length, const double *data_u,
+                          const double *data_v) {
+  this->m_data_u.reserve(length);
+  this->m_data_v.reserve(length);
+  for (size_t i = 0; i < length; ++i) {
+    this->m_data_u.push_back(data_u[i]);
+    this->m_data_v.push_back(data_v[i]);
   }
   return;
 }

@@ -349,7 +349,6 @@ SET( ADCIRCMODULES_SOURCES
                 ${CMAKE_SOURCE_DIR}/src/hmdfstation.cpp
                 ${CMAKE_SOURCE_DIR}/src/stationinterpolationoptions.cpp
                 ${CMAKE_SOURCE_DIR}/src/stationinterpolation.cpp
-                ${CMAKE_SOURCE_DIR}/src/netcdftimeseries.cpp
                 ${CMAKE_SOURCE_DIR}/src/hash_private.cpp
                 ${CMAKE_SOURCE_DIR}/src/cdate.cpp
                 ${CMAKE_SOURCE_DIR}/src/boundary.cpp

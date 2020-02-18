@@ -38,14 +38,17 @@ class Hmdf {
 
   enum HmdfFileType { HmdfImeds, HmdfCsv, HmdfNetCdf, HmdfAdcirc };
 
+  int ADCIRCMODULES_EXPORT write(const std::string &filename);
   int ADCIRCMODULES_EXPORT write(const std::string &filename,
                                  HmdfFileType fileType);
-  int ADCIRCMODULES_EXPORT write(const std::string &filename);
   int ADCIRCMODULES_EXPORT writeImeds(const std::string &filename);
   int ADCIRCMODULES_EXPORT writeCsv(const std::string &filename);
   int ADCIRCMODULES_EXPORT writeNetcdf(const std::string &filename);
   int ADCIRCMODULES_EXPORT writeAdcirc(const std::string &filename);
 
+  int ADCIRCMODULES_EXPORT read(const std::string &filename);
+  int ADCIRCMODULES_EXPORT read(const std::string &filename,
+                                const HmdfFileType filetype);
   int ADCIRCMODULES_EXPORT readImeds(const std::string &filename);
   int ADCIRCMODULES_EXPORT readNetcdf(const std::string &filename,
                                       bool stationsOnly = false);
@@ -54,7 +57,6 @@ class Hmdf {
   copyStationList(Adcirc::Output::Hmdf &templateStations);
 
   size_t ADCIRCMODULES_EXPORT nstations() const;
-  // void setNstations(size_t nstations);
 
   std::string ADCIRCMODULES_EXPORT header1() const;
   void ADCIRCMODULES_EXPORT setHeader1(const std::string &header1);
@@ -73,9 +75,9 @@ class Hmdf {
 
   Adcirc::Output::HmdfStation ADCIRCMODULES_EXPORT *station(size_t index);
   void ADCIRCMODULES_EXPORT setStation(size_t index,
-                                      Adcirc::Output::HmdfStation &station);
-  void ADCIRCMODULES_EXPORT addStation(
-      const Adcirc::Output::HmdfStation &station);
+                                       Adcirc::Output::HmdfStation &station);
+  void ADCIRCMODULES_EXPORT
+  addStation(const Adcirc::Output::HmdfStation &station);
 
   bool ADCIRCMODULES_EXPORT success() const;
   void ADCIRCMODULES_EXPORT setSuccess(bool success);
@@ -100,6 +102,12 @@ class Hmdf {
 
  private:
   void init();
+  int readNetcdfScalarStations(int ncid, size_t nstations, const double *xcoor,
+                               const double *ycoor, const std::vector<std::string> &names);
+  int readNetcdfVectorStations(int ncid, size_t nstations, const double *xcoor,
+                               const double *ycoor, const std::vector<std::string> &names);
+
+  std::vector<std::string> parseStationNames(size_t nstation, size_t namelen, char* names);
 
   //...Variables
   bool m_success, m_null, m_isVector;
