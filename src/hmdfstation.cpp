@@ -31,7 +31,7 @@ struct m_DataPair {
   double m_data_v = HmdfStation::nullDataValue();
 };
 
-bool operator<(const m_DataPair &a, m_DataPair &b) {
+bool operator<(const m_DataPair &a, const m_DataPair &b) {
   return a.m_date < b.m_date;
 }
 bool operator==(const m_DataPair &a, const m_DataPair &b) {
