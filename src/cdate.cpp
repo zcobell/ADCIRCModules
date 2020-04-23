@@ -43,7 +43,7 @@ struct s_datetime {
  private:
   std::chrono::system_clock::time_point t;
   date::year_month_day dd;
-  date::hh_mm_ss<std::chrono::duration<long int, std::ratio<1, 1000000000>>> tt;
+  date::hh_mm_ss<std::chrono::system_clock::duration> tt;
 
  public:
   s_datetime(const std::chrono::system_clock::time_point &t)
@@ -88,9 +88,13 @@ CDate::CDate(int year, int month, int day, int hour, int minute, int second,
   this->set(year, month, day, hour, minute, second, millisecond);
 }
 
-void CDate::addSeconds(const long &value) { this->m_datetime += seconds(value); }
+void CDate::addSeconds(const long &value) {
+  this->m_datetime += seconds(value);
+}
 
-void CDate::addMinutes(const long &value) { this->m_datetime += minutes(value); }
+void CDate::addMinutes(const long &value) {
+  this->m_datetime += minutes(value);
+}
 
 void CDate::addHours(const long &value) { this->m_datetime += hours(value); }
 
