@@ -19,15 +19,22 @@
 #include <iostream>
 #include <memory>
 #include "adcircmodules.h"
+#include <vector>
 
 int main() {
   using namespace Adcirc::Geometry;
+  using namespace Adcirc::Output;
+ 
   std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));
+  std::unique_ptr<ReadOutput> output(new ReadOutput("test_files/fort.63"));
+
   mesh->read();
-  mesh->toNodeShapefile("test_files/ms-riv-nodes.shp");
-  mesh->toConnectivityShapefile("test_files/ms-riv-connectivity.shp");
-  mesh->toElementShapefile("test_files/ms-riv-elements.shp");
-  mesh->toBoundaryShapefile("test_files/ms-riv-boundaries.shp");
-  mesh->toBoundaryLineShapefile("test_files/ms-riv-boundarylines.shp");
+  mesh->toRaster("adcirc_depth.img",mesh->z(),mesh->extent(),0.001,-9999.0);
+
+  output->open();
+  output->read();
+  mesh->toRaster("adcirc_wse.img",output->data(0)->values(),mesh->extent(),0.001,-99999.0);
+
   return 0;
+
 }

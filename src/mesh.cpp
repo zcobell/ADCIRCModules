@@ -310,6 +310,15 @@ void Mesh::toBoundaryShapefile(const std::string &outputFile) {
 }
 
 /**
+ * @brief Writes the boundary conditions of the mesh to ESRI shapefile format as
+ * lines
+ * @param[in] outputFile output file with .shp extension
+ */
+void Mesh::toBoundaryLineShapefile(const std::string &outputFile) {
+  this->m_impl->toBoundaryLineShapefile(outputFile);
+}
+
+/**
  * @brief Builds a kd-tree object with the mesh nodes as the search locations
  */
 void Mesh::buildNodalSearchTree() { this->m_impl->buildNodalSearchTree(); }

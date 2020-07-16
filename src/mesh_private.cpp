@@ -1519,6 +1519,71 @@ void MeshPrivate::toBoundaryShapefile(const std::string &outputFile) {
   return;
 }
 
+void MeshPrivate::toBoundaryLineShapefile(const std::string &outputFile) {
+  SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_ARCZ);
+  DBFHandle dbfid = DBFCreate(outputFile.c_str());
+  DBFAddField(dbfid, "bndId", FTInteger, 16, 0);
+  DBFAddField(dbfid, "bndCode", FTInteger, 16, 0);
+
+  int bcid = 0;
+  for (auto &b : this->m_openBoundaries) {
+    auto lon = std::make_unique<double[]>(b.size());
+    auto lat = std::make_unique<double[]>(b.size());
+    auto elv = std::make_unique<double[]>(b.size());
+    for (size_t i = 0; i < b.size(); ++i) {
+      lon[i] = b.node1(i)->x();
+      lat[i] = b.node1(i)->y();
+      elv[i] = -9999.0;
+    }
+
+    SHPObject *shpobj = SHPCreateSimpleObject(SHPT_ARCZ, b.size(), lon.get(),
+                                              lat.get(), elv.get());
+    int shp_index = SHPWriteObject(shpid, -1, shpobj);
+    SHPDestroyObject(shpobj);
+    DBFWriteIntegerAttribute(dbfid, shp_index, 0, bcid);
+    DBFWriteIntegerAttribute(dbfid, shp_index, 1, b.boundaryCode());
+    bcid++;
+  }
+
+  for (auto &b : this->m_landBoundaries) {
+    auto lon = std::make_unique<double[]>(b.size());
+    auto lat = std::make_unique<double[]>(b.size());
+    auto elv = std::make_unique<double[]>(b.size());
+    for (size_t i = 0; i < b.size(); ++i) {
+      if (b.isInternalWeir()) {
+        lon[i] = (b.node1(i)->x() + b.node2(i)->x()) / 2.0;
+        lat[i] = (b.node1(i)->y() + b.node2(i)->y()) / 2.0;
+        elv[i] = b.crestElevation(i);
+      } else if (b.isExternalWeir()) {
+        lon[i] = b.node1(i)->x();
+        lat[i] = b.node1(i)->y();
+        elv[i] = b.crestElevation(i);
+      } else {
+        lon[i] = b.node1(i)->x();
+        lat[i] = b.node1(i)->y();
+        elv[i] = -9999.0;
+      }
+    }
+
+    SHPObject *shpobj = SHPCreateSimpleObject(SHPT_ARCZ, b.size(), lon.get(),
+                                              lat.get(), elv.get());
+    int shp_index = SHPWriteObject(shpid, -1, shpobj);
+    SHPDestroyObject(shpobj);
+    DBFWriteIntegerAttribute(dbfid, shp_index, 0, bcid);
+    DBFWriteIntegerAttribute(dbfid, shp_index, 1, b.boundaryCode());
+    bcid++;
+  }
+
+  if (this->m_epsg != 0) {
+    this->writePrjFile(outputFile);
+  }
+
+  DBFClose(dbfid);
+  SHPClose(shpid);
+
+  return;
+}
+
 /**
  * @brief Builds a kd-tree object with the mesh nodes as the search locations
  */
@@ -2855,8 +2920,9 @@ float MeshPrivate::calculateValueWithPartialWetting(
   bool b1 = FpCompare::equalTo(v1, nullvalue);
   bool b2 = FpCompare::equalTo(v2, nullvalue);
   bool b3 = FpCompare::equalTo(v3, nullvalue);
-  double w1, w2, w3;
-  if (b1 || b2 || b3) {
+  if (b1 && b2 && b3) {
+    return weight[0] * v1 + weight[1] * v2 + weight[2] * v3;
+  } else if (b1 || b2 || b3) {
     return nullvalue;
   } else if (b1 && b2 && !b3) {
     return v3;
@@ -2866,23 +2932,13 @@ float MeshPrivate::calculateValueWithPartialWetting(
     return v1;
   } else if (b1 && b2 && !b3) {
     double f = 1.0 / (weight[0] + weight[1]);
-    w1 = weight[0] * f;
-    w2 = weight[1] * f;
-    w3 = 0.0;
+    return weight[0] * f * v1 + weight[1] * f * v2;
   } else if (b1 && b3 && !b2) {
     double f = 1.0 / (weight[0] + weight[2]);
-    w1 = weight[0] * f;
-    w2 = 0.0;
-    w3 = weight[2] * f;
+    return weight[0] * f * v1 + weight[2] * f * v3;
   } else if (b2 && b3 && !b1) {
     double f = 1.0 / (weight[1] + weight[2]);
-    w1 = 0.0;
-    w2 = weight[1] * f;
-    w3 = weight[2] * f;
-  } else {
-    w1 = weight[0];
-    w2 = weight[1];
-    w3 = weight[2];
+    return weight[1] * f * v2 + weight[2] * f * v3;
   }
-  return w1 * v1 + w2 * v2 + w3 * v3;
+  return std::numeric_limits<float>::max();
 }
