@@ -700,7 +700,7 @@ IF(UNIX OR CYGWIN)
                       cxx_writehdf5.cpp cxx_makemesh.cpp cxx_date.cpp )
 
         IF(ENABLE_GDAL)
-            SET(TEST_LIST ${TEST_LIST} cxx_interpolateRaster.cpp cxx_interpolateManning.cpp cxx_interpolateDwind.cpp ) 
+            SET(TEST_LIST ${TEST_LIST} cxx_interpolateRaster.cpp cxx_interpolateManning.cpp cxx_interpolateDwind.cpp cxx_writeraster.cpp ) 
         ENDIF(ENABLE_GDAL)
 
         FOREACH(TESTFILE ${TEST_LIST} ) 

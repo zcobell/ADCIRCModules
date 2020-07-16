@@ -536,6 +536,18 @@ void GriddataPrivate::setThresholdMethod(
   m_thresholdMethod = thresholdMethod;
 }
 
+std::vector<double> GriddataPrivate::extents() const {
+  if (this->m_raster) {
+    if (!this->m_raster->isOpen()) {
+      this->m_raster->open();
+    }
+    return std::vector<double>{this->m_raster->xmin(), this->m_raster->ymin(),
+                               this->m_raster->xmax(), this->m_raster->ymax()};
+  } else {
+    return std::vector<double>(4);
+  }
+}
+
 double GriddataPrivate::thresholdValue() const { return m_thresholdValue; }
 
 void GriddataPrivate::setThresholdValue(double filterValue) {

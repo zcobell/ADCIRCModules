@@ -21,12 +21,14 @@
 #include <set>
 #include <string>
 #include <tuple>
+#include <utility>
 #include "boost/format.hpp"
 #include "default_values.h"
 #include "elementtable.h"
 #include "ezproj.h"
 #include "fileio.h"
 #include "filetypes.h"
+#include "fpcompare.h"
 #include "hash.h"
 #include "kdtree.h"
 #include "logging.h"
@@ -35,9 +37,14 @@
 #include "shapefil.h"
 #include "stringconversion.h"
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 #ifdef USE_GDAL
 #include "cpl_conv.h"
 #include "cpl_error.h"
+#include "gdal_priv.h"
 #include "ogr_spatialref.h"
 #endif
 
@@ -2646,4 +2653,236 @@ bool MeshPrivate::containsElement(const Adcirc::Geometry::Element &e,
     index = std::numeric_limits<size_t>::max();
   }
   return found;
+}
+
+std::vector<double> MeshPrivate::extent() const {
+  double xmax = -std::numeric_limits<double>::max();
+  double xmin = std::numeric_limits<double>::max();
+  double ymax = -std::numeric_limits<double>::max();
+  double ymin = std::numeric_limits<double>::max();
+  double zmax = -std::numeric_limits<double>::max();
+  double zmin = std::numeric_limits<double>::max();
+  for (auto &n : this->m_nodes) {
+    double x = n.x();
+    double y = n.y();
+    double z = n.z();
+    xmin = std::min(xmin, x);
+    xmax = std::max(xmax, x);
+    ymin = std::min(ymin, y);
+    ymax = std::max(ymax, y);
+    zmin = std::min(zmin, z);
+    zmax = std::max(zmax, z);
+  }
+  return std::vector<double>{xmin, ymin, xmax, ymax, zmin, zmax};
+}
+
+void MeshPrivate::toRaster(const std::string &filename,
+                           const std::vector<double> &z,
+                           const std::vector<double> &extent,
+                           const double resolution, const float nullvalue,
+                           const std::string &description,
+                           const std::string &units,
+                           const bool partialWetting) {
+#ifndef USE_GDAL
+  adcircmodules_throw_exception("GDAL is not enabled.");
+#else
+
+  auto getfmt = [&](const std::string &ext) -> std::string {
+    if (ext == ".tif") return "GTiff";
+    if (ext == ".img") return "HFA";
+    return std::string();
+  };
+
+  std::string fmt = getfmt(Adcirc::FileIO::Generic::getFileExtension(filename));
+
+  if (fmt.empty()) {
+    adcircmodules_throw_exception("Could not determine the raster format");
+  }
+
+  GDALAllRegister();
+  GDALDriver *driver = GetGDALDriverManager()->GetDriverByName(fmt.c_str());
+
+  char **options = nullptr;
+  if (fmt == "GTiff") {
+    options = CSLSetNameValue(options, "BIGTIFF", "IF_SAFER");
+    options = CSLSetNameValue(options, "TILED", "YES");
+    options = CSLSetNameValue(options, "COMPRESS", "LZW");
+  } else {
+    options = CSLSetNameValue(options, "COMPRESS", "YES");
+  }
+
+  double xmax = std::max(extent[0], extent[2]);
+  double xmin = std::min(extent[0], extent[2]);
+  double ymax = std::max(extent[3], extent[1]);
+  double ymin = std::min(extent[3], extent[1]);
+  int nx = std::floor(std::abs(xmax - xmin) / resolution) + 1;
+  int ny = std::floor(std::abs(ymax - ymin) / resolution) + 1;
+
+  if (nx < 3 || ny < 3) {
+    adcircmodules_throw_exception("Invalid resolution specified.");
+  }
+
+  GDALDataset *raster =
+      driver->Create(filename.c_str(), nx, ny, 1, GDT_Float32, options);
+
+  double transform[6] = {xmin, resolution, 0, ymax, 0, -resolution};
+  raster->SetGeoTransform(transform);
+
+  char *cwkt = nullptr;
+  OGRSpatialReference sref;
+  std::string srefstr = boost::str(boost::format("EPSG:%i") % this->m_epsg);
+  sref.SetWellKnownGeogCS(srefstr.c_str());
+  sref.exportToWkt(&cwkt);
+  raster->SetProjection(cwkt);
+  CPLFree(cwkt);
+
+  GDALRasterBand *band = raster->GetRasterBand(1);
+  band->SetDescription(description.c_str());
+  band->SetUnitType(units.c_str());
+  band->SetNoDataValue(nullvalue);
+  band->Fill(nullvalue);
+
+  std::vector<std::vector<double>> weight;
+  std::vector<size_t> elements;
+  std::tie(weight, elements) =
+      this->computeRasterInterpolationWeights(extent, nx, ny, resolution);
+  std::unique_ptr<float[]> zr =
+      this->getRasterValues(z, nullvalue, elements, weight, partialWetting);
+
+  CPLErr cr = band->RasterIO(GF_Write, 0, 0, nx, ny, zr.get(), nx, ny,
+                             GDT_Float32, 0, 0);
+  if (cr != CE_None) {
+    adcircmodules_throw_exception("Error during Raster I/O in GDAL library");
+  }
+
+  double bmin, bmax, bmean, bsigma;
+  band->ComputeStatistics(true, &bmin, &bmax, &bmean, &bsigma, nullptr,
+                          nullptr);
+  band->SetStatistics(bmin, bmax, bmean, bsigma);
+
+  GDALClose(static_cast<GDALDatasetH>(raster));
+
+#endif
+}
+
+std::unique_ptr<float[]> MeshPrivate::getRasterValues(
+    const std::vector<double> &z, const double nullvalue,
+    const std::vector<size_t> &elements,
+    const std::vector<std::vector<double>> &weights,
+    const bool partialWetting) {
+  size_t sz = elements.size();
+  auto zv = std::make_unique<float[]>(sz);
+  for (size_t i = 0; i < sz; ++i) {
+    size_t e = elements[i];
+    if (e == adcircmodules_default_value<size_t>()) {
+      zv.get()[i] = nullvalue;
+    } else {
+      size_t n1 = this->element(e)->node(0)->id() - 1;
+      size_t n2 = this->element(e)->node(1)->id() - 1;
+      size_t n3 = this->element(e)->node(2)->id() - 1;
+      double v1 = z[n1];
+      double v2 = z[n2];
+      double v3 = z[n3];
+      zv.get()[i] = partialWetting
+                        ? MeshPrivate::calculateValueWithPartialWetting(
+                              v1, v2, v3, nullvalue, weights[i])
+                        : MeshPrivate::calculateValueWithoutPartialWetting(
+                              v1, v2, v3, nullvalue, weights[i]);
+    }
+  }
+  return zv;
+}
+
+std::pair<std::vector<std::vector<double>>, std::vector<size_t>>
+MeshPrivate::computeRasterInterpolationWeights(
+    const std::vector<double> &extent, const size_t nx, const size_t ny,
+    const double &resolution) {
+  double xmin = extent[0];
+  double ymax = extent[3];
+
+  std::vector<size_t> elements;
+  std::vector<std::vector<double>> weight;
+  elements.resize(nx * ny);
+  weight.resize(nx * ny);
+
+#ifdef _OPENMP
+  std::string parmessage = boost::str(
+      boost::format("Using %i threads to compute interpolation weights.") %
+      omp_get_num_procs());
+  Adcirc::Logging::log(parmessage);
+#endif
+
+  if (!this->elementalSearchTreeInitialized()) {
+    this->buildElementalSearchTree();
+  }
+
+#pragma omp parallel for shared(m_elements, m_nodes, m_elementalSearchTree, \
+                                weight, elements, resolution, xmin, ymax)   \
+    schedule(dynamic)
+  for (size_t j = 0; j < ny; ++j) {
+    for (size_t i = 0; i < nx; ++i) {
+      size_t k = j * nx + i;
+      double x, y;
+      std::tie(x, y) =
+          MeshPrivate::pixelToCoordinate(i, j, resolution, xmin, ymax);
+      std::vector<double> w;
+      elements[k] = this->findElement(x, y, weight[k]);
+    }
+  }
+  return {weight, elements};
+}
+
+std::pair<double, double> MeshPrivate::pixelToCoordinate(
+    const size_t i, const size_t j, const double resolution, const double xmin,
+    const double ymax) {
+  return {i * resolution + xmin + 0.5 * resolution,
+          ymax - (j + 1) * resolution + 0.5 * resolution};
+}
+
+float MeshPrivate::calculateValueWithoutPartialWetting(
+    const double v1, const double v2, const double v3, const double nullvalue,
+    const std::vector<double> &weight) {
+  return FpCompare::equalTo(v1, nullvalue) ||
+                 FpCompare::equalTo(v2, nullvalue) ||
+                 FpCompare::equalTo(v3, nullvalue)
+             ? nullvalue
+             : v1 * weight[0] + v2 * weight[1] + v3 * weight[2];
+}
+
+float MeshPrivate::calculateValueWithPartialWetting(
+    const double v1, const double v2, const double v3, const double nullvalue,
+    const std::vector<double> &weight) {
+  bool b1 = FpCompare::equalTo(v1, nullvalue);
+  bool b2 = FpCompare::equalTo(v2, nullvalue);
+  bool b3 = FpCompare::equalTo(v3, nullvalue);
+  double w1, w2, w3;
+  if (b1 || b2 || b3) {
+    return nullvalue;
+  } else if (b1 && b2 && !b3) {
+    return v3;
+  } else if (b1 && b3 && !b2) {
+    return v2;
+  } else if (b2 && b3 && !b1) {
+    return v1;
+  } else if (b1 && b2 && !b3) {
+    double f = 1.0 / (weight[0] + weight[1]);
+    w1 = weight[0] * f;
+    w2 = weight[1] * f;
+    w3 = 0.0;
+  } else if (b1 && b3 && !b2) {
+    double f = 1.0 / (weight[0] + weight[2]);
+    w1 = weight[0] * f;
+    w2 = 0.0;
+    w3 = weight[2] * f;
+  } else if (b2 && b3 && !b1) {
+    double f = 1.0 / (weight[1] + weight[2]);
+    w1 = 0.0;
+    w2 = weight[1] * f;
+    w3 = weight[2] * f;
+  } else {
+    w1 = weight[0];
+    w2 = weight[1];
+    w3 = weight[2];
+  }
+  return w1 * v1 + w2 * v2 + w3 * v3;
 }

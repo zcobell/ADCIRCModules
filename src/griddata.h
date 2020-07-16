@@ -116,6 +116,8 @@ class Griddata {
   double ADCIRCMODULES_EXPORT thresholdValue() const;
   void ADCIRCMODULES_EXPORT setThresholdValue(const double &value);
 
+  std::vector<double> extents() const;
+
  private:
   std::unique_ptr<Adcirc::Private::GriddataPrivate> m_impl;
 };

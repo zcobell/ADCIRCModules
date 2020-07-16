@@ -187,6 +187,13 @@ class MeshPrivate {
   bool containsElement(const Adcirc::Geometry::Element *e, size_t &index);
   bool containsElement(const Adcirc::Geometry::Element &e, size_t &index);
 
+  std::vector<double> extent() const;
+
+  void toRaster(const std::string &filename, const std::vector<double> &z,
+                const std::vector<double> &extent, const double resolution,
+                const float nullvalue, const std::string &description,
+                const std::string &units, const bool partialWetting = true);
+
  private:
   static void meshCopier(MeshPrivate *a, const MeshPrivate *b);
   static Adcirc::Geometry::MeshFormat getMeshFormat(
@@ -245,6 +252,32 @@ class MeshPrivate {
 
   std::unique_ptr<Kdtree> m_nodalSearchTree;
   std::unique_ptr<Kdtree> m_elementalSearchTree;
+
+  std::unique_ptr<float[]> getRasterValues(
+      const std::vector<double> &z, const double nullvalue,
+      const std::vector<size_t> &elements,
+      const std::vector<std::vector<double>> &weights,
+      const bool partialWetting = false);
+
+  std::pair<std::vector<std::vector<double>>, std::vector<size_t>>
+  computeRasterInterpolationWeights(const std::vector<double> &extent,
+                                    const size_t nx, const size_t ny,
+                                    const double &resolution);
+
+  static std::pair<double, double> pixelToCoordinate(const size_t i,
+                                                     const size_t j,
+                                                     const double resolution,
+                                                     const double xmin,
+                                                     const double ymax);
+
+  float calculateValueWithoutPartialWetting(const double v1, const double v2,
+                                            const double v3,
+                                            const double nullvalue,
+                                            const std::vector<double> &weight);
+  float calculateValueWithPartialWetting(const double v1, const double v2,
+                                         const double v3,
+                                         const double nullvalue,
+                                         const std::vector<double> &weight);
 };
 }  // namespace Private
 }  // namespace Adcirc

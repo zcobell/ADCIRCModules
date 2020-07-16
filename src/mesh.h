@@ -220,18 +220,36 @@ class Mesh {
 
   std::string ADCIRCMODULES_EXPORT hash(bool force = false);
 
-  Adcirc::Cryptography::HashType hashType() const;
-  void setHashType(const Adcirc::Cryptography::HashType &hashType);
+  Adcirc::Cryptography::HashType ADCIRCMODULES_EXPORT hashType() const;
+  void ADCIRCMODULES_EXPORT
+  setHashType(const Adcirc::Cryptography::HashType &hashType);
 
-  std::vector<Adcirc::Geometry::Node> *nodes();
-  std::vector<Adcirc::Geometry::Element> *elements();
-  std::vector<Adcirc::Geometry::Boundary> *openBoundaries();
-  std::vector<Adcirc::Geometry::Boundary> *landBoundaries();
+  std::vector<Adcirc::Geometry::Node> ADCIRCMODULES_EXPORT *nodes();
+  std::vector<Adcirc::Geometry::Element> ADCIRCMODULES_EXPORT *elements();
+  std::vector<Adcirc::Geometry::Boundary> ADCIRCMODULES_EXPORT *
+  openBoundaries();
+  std::vector<Adcirc::Geometry::Boundary> ADCIRCMODULES_EXPORT *
+  landBoundaries();
 
-  bool containsNode(Adcirc::Geometry::Node &n, size_t &index);
-  bool containsNode(Adcirc::Geometry::Node *n, size_t &index);
-  bool containsElement(Adcirc::Geometry::Element &e, size_t &index);
-  bool containsElement(Adcirc::Geometry::Element *e, size_t &index);
+  bool ADCIRCMODULES_EXPORT containsNode(Adcirc::Geometry::Node &n,
+                                         size_t &index);
+  bool ADCIRCMODULES_EXPORT containsNode(Adcirc::Geometry::Node *n,
+                                         size_t &index);
+  bool ADCIRCMODULES_EXPORT containsElement(Adcirc::Geometry::Element &e,
+                                            size_t &index);
+  bool ADCIRCMODULES_EXPORT containsElement(Adcirc::Geometry::Element *e,
+                                            size_t &index);
+
+  std::vector<double> ADCIRCMODULES_EXPORT extent() const;
+
+  void ADCIRCMODULES_EXPORT toRaster(const std::string &filename,
+                                     const std::vector<double> &z,
+                                     const std::vector<double> &extent,
+                                     const double resolution,
+                                     const double nullvalue = -99999.0,
+                                     const std::string &description = "none",
+                                     const std::string &units = "none",
+                                     const bool partialWetting = true) const;
 
  private:
   std::unique_ptr<Adcirc::Private::MeshPrivate> m_impl;

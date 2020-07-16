@@ -87,6 +87,8 @@ class GriddataPrivate {
   Interpolation::Threshold thresholdMethod() const;
   void setThresholdMethod(const Interpolation::Threshold &thresholdMethod);
 
+  std::vector<double> extents() const;
+
  private:
   bool getKeyValue(unsigned short key, double &value);
 

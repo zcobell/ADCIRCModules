@@ -85,7 +85,7 @@ class Element {
 
   double ADCIRCMODULES_EXPORT elementSize(bool geodesic = true) const;
 
-  void ADCIRCMODULES_EXPORT sortVerticiesAboutCenter();
+  void ADCIRCMODULES_EXPORT sortVerticiesAboutCenter(bool clockwise = true);
 
   std::pair<Adcirc::Geometry::Node *, Adcirc::Geometry::Node *>
       ADCIRCMODULES_EXPORT elementLeg(size_t i) const;

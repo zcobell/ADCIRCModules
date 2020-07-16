@@ -751,3 +751,29 @@ bool Mesh::containsElement(Adcirc::Geometry::Element &e, size_t &index) {
 bool Mesh::containsElement(Adcirc::Geometry::Element *e, size_t &index) {
   return this->m_impl->containsElement(e, index);
 }
+
+/**
+ * @brief Gets the extents of the current raster as
+ * xmin,ymin,xmax,ymax,zmin,zmax
+ * @return vector of raster extents
+ */
+std::vector<double> Mesh::extent() const { return this->m_impl->extent(); }
+
+/**
+ * @brief Convert a mesh to a raster using gdal
+ * @param[in] filename name of the output raster to write
+ * @param[in] z vector containing the nodal z values
+ * @param[in] extent x1,y1,x2,y2 to use
+ * @param[in] resolution horizontal resolution in the raster
+ * @param[in] nullvalue value to use for dry areas
+ * @param[in] description description of the data
+ * @param[in] units data units
+ * @param[in] partialWetting compute values for partially wet elements
+ */
+void Mesh::toRaster(const std::string &filename, const std::vector<double> &z,
+                    const std::vector<double> &extent, const double resolution,
+                    const double nullvalue, const std::string &description,
+                    const std::string &units, const bool partialWetting) const {
+  this->m_impl->toRaster(filename, z, extent, resolution, nullvalue,
+                         description, units, partialWetting);
+}

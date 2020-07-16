@@ -325,6 +325,14 @@ void Griddata::setThresholdValue(const double &value) {
 }
 
 /**
+ * @brief Gets the extents of the current raster as xmin,ymin,xmax,ymax
+ * @return vector of raster extents
+ */
+std::vector<double> Griddata::extents() const {
+  return this->m_impl->extents();
+}
+
+/**
  * @brief Returns the value that is being used for thresholding
  * @return thresholding value
  */

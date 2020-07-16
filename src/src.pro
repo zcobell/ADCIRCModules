@@ -54,6 +54,7 @@ win32 {
     #...Set extension for a windows dll (avoids tracking version numbering in filename)
     #TARGET_EXT = .dll
 
+    DEFINES+= USE_GDAL
     INCLUDEPATH += C:/OSGeo4W64/include
     LIBS+= -LC:/OSGeo4W64/lib -lgdal_i
 
