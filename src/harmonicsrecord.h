@@ -1,6 +1,7 @@
 #ifndef ADCMOD_HARMONICSRECORD_H
 #define ADCMOD_HARMONICSRECORD_H
 
+#include <memory>
 #include <string>
 #include <vector>
 
