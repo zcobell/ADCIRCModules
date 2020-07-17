@@ -2810,10 +2810,10 @@ void MeshPrivate::toRaster(const std::string &filename,
   std::vector<size_t> elements;
   std::tie(weight, elements) =
       this->computeRasterInterpolationWeights(extent, nx, ny, resolution);
-  std::unique_ptr<float[]> zr =
+  std::vector<float> zr =
       this->getRasterValues(z, nullvalue, elements, weight, partialWetting);
 
-  CPLErr cr = band->RasterIO(GF_Write, 0, 0, nx, ny, zr.get(), nx, ny,
+  CPLErr cr = band->RasterIO(GF_Write, 0, 0, nx, ny, zr.data(), nx, ny,
                              GDT_Float32, 0, 0);
   if (cr != CE_None) {
     GDALClose(static_cast<GDALDatasetH>(raster));
@@ -2832,17 +2832,17 @@ void MeshPrivate::toRaster(const std::string &filename,
 #endif
 }
 
-std::unique_ptr<float[]> MeshPrivate::getRasterValues(
+std::vector<float> MeshPrivate::getRasterValues(
     const std::vector<double> &z, const double nullvalue,
     const std::vector<size_t> &elements,
     const std::vector<std::vector<double>> &weights,
     const bool partialWetting) {
   size_t sz = elements.size();
-  auto zv = std::make_unique<float[]>(sz);
+  auto zv = std::vector<float>(sz);
   for (size_t i = 0; i < sz; ++i) {
     size_t e = elements[i];
     if (e == adcircmodules_default_value<size_t>()) {
-      zv.get()[i] = nullvalue;
+      zv[i] = nullvalue;
     } else {
       size_t n1 = this->element(e)->node(0)->id() - 1;
       size_t n2 = this->element(e)->node(1)->id() - 1;
@@ -2850,11 +2850,10 @@ std::unique_ptr<float[]> MeshPrivate::getRasterValues(
       double v1 = z[n1];
       double v2 = z[n2];
       double v3 = z[n3];
-      zv.get()[i] = partialWetting
-                        ? MeshPrivate::calculateValueWithPartialWetting(
-                              v1, v2, v3, nullvalue, weights[i])
-                        : MeshPrivate::calculateValueWithoutPartialWetting(
-                              v1, v2, v3, nullvalue, weights[i]);
+      zv[i] = partialWetting ? MeshPrivate::calculateValueWithPartialWetting(
+                                   v1, v2, v3, nullvalue, weights[i])
+                             : MeshPrivate::calculateValueWithoutPartialWetting(
+                                   v1, v2, v3, nullvalue, weights[i]);
     }
   }
   return zv;

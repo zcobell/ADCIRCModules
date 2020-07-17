@@ -254,7 +254,7 @@ class MeshPrivate {
   std::unique_ptr<Kdtree> m_nodalSearchTree;
   std::unique_ptr<Kdtree> m_elementalSearchTree;
 
-  std::unique_ptr<float[]> getRasterValues(
+  std::vector<float> getRasterValues(
       const std::vector<double> &z, const double nullvalue,
       const std::vector<size_t> &elements,
       const std::vector<std::vector<double>> &weights,
