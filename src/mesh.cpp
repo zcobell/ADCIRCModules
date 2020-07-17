@@ -17,23 +17,24 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "mesh.h"
+
 #include "mesh_private.h"
 
 using namespace Adcirc::Geometry;
 
 using Point = std::pair<double, double>;
 
-Mesh::Mesh() : m_impl(new Adcirc::Private::MeshPrivate) {}
+Mesh::Mesh() : m_impl(std::make_unique<Adcirc::Private::MeshPrivate>()) {}
 
 Mesh::Mesh(const std::string &filename)
-    : m_impl(new Adcirc::Private::MeshPrivate(filename)) {}
+    : m_impl(std::make_unique<Adcirc::Private::MeshPrivate>(filename)) {}
 
 Mesh &Mesh::operator=(const Mesh &m) {
-  this->m_impl.reset(m.m_impl->clone());
+  this->m_impl = m.m_impl->clone();
   return *this;
 }
 
-Mesh::Mesh(const Mesh &m) { this->m_impl.reset(m.m_impl->clone()); }
+Mesh::Mesh(const Mesh &m) { this->m_impl = m.m_impl->clone(); }
 
 /**
  * @brief Returns a vector of the x-coordinates

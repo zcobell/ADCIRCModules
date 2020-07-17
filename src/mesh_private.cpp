@@ -17,11 +17,13 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "mesh_private.h"
+
 #include <algorithm>
 #include <set>
 #include <string>
 #include <tuple>
 #include <utility>
+
 #include "boost/format.hpp"
 #include "default_values.h"
 #include "elementtable.h"
@@ -79,7 +81,9 @@ MeshPrivate &MeshPrivate::operator=(const MeshPrivate &m) {
   return *this;
 }
 
-MeshPrivate *MeshPrivate::clone() { return new MeshPrivate(*this); }
+std::unique_ptr<MeshPrivate> MeshPrivate::clone() const {
+  return std::make_unique<MeshPrivate>(*(this));
+}
 
 MeshPrivate::MeshPrivate(const MeshPrivate &m) {
   MeshPrivate::meshCopier(this, &m);
@@ -116,8 +120,8 @@ void MeshPrivate::_init() {
   this->m_nodeOrderingLogical = true;
   this->m_elementOrderingLogical = true;
   this->m_hash.reset(nullptr);
-  this->m_elementalSearchTree = std::unique_ptr<Kdtree>(new Kdtree());
-  this->m_nodalSearchTree = std::unique_ptr<Kdtree>(new Kdtree());
+  this->m_elementalSearchTree = std::make_unique<Kdtree>();
+  this->m_nodalSearchTree = std::make_unique<Kdtree>();
 }
 
 /**
@@ -288,9 +292,9 @@ void MeshPrivate::readAdcircMeshNetcdf() {
   ierr += nc_inq_varid(ncid, "element", &varid_elem);
   if (ierr != 0) adcircmodules_throw_exception("Could not read the varids");
 
-  std::unique_ptr<double[]> x(new double[nn]);
-  std::unique_ptr<double[]> y(new double[nn]);
-  std::unique_ptr<double[]> z(new double[nn]);
+  auto x(std::make_unique<double[]>(nn));
+  auto y(std::make_unique<double[]>(nn));
+  auto z(std::make_unique<double[]>(nn));
 
   ierr += nc_get_var_double(ncid, varid_x, x.get());
   ierr += nc_get_var_double(ncid, varid_y, y.get());
@@ -307,10 +311,10 @@ void MeshPrivate::readAdcircMeshNetcdf() {
   this->m_nodeOrderingLogical = true;
   this->m_elementOrderingLogical = true;
 
-  std::unique_ptr<int[]> n1(new int[ne]);
-  std::unique_ptr<int[]> n2(new int[ne]);
-  std::unique_ptr<int[]> n3(new int[ne]);
-  std::unique_ptr<int[]> n4(new int[ne]);
+  auto n1(std::make_unique<int[]>(ne));
+  auto n2(std::make_unique<int[]>(ne));
+  auto n3(std::make_unique<int[]>(ne));
+  auto n4(std::make_unique<int[]>(ne));
   size_t start[2], count[2];
   start[0] = 0;
   start[1] = 0;
@@ -430,10 +434,10 @@ void MeshPrivate::readDflowMesh() {
 
   if (isFill == 1) elemFillValue = NC_FILL_INT;
 
-  std::unique_ptr<double[]> xcoor(new double[nn]);
-  std::unique_ptr<double[]> ycoor(new double[nn]);
-  std::unique_ptr<double[]> zcoor(new double[nn]);
-  std::unique_ptr<int[]> elem(new int[ne * nmaxnode]);
+  auto xcoor(std::make_unique<double[]>(nn));
+  auto ycoor(std::make_unique<double[]>(nn));
+  auto zcoor(std::make_unique<double[]>(nn));
+  auto elem(std::make_unique<int[]>(ne * nmaxnode));
 
   ierr += nc_get_var_double(ncid, varid_x, xcoor.get());
   ierr += nc_get_var_double(ncid, varid_y, ycoor.get());
@@ -1954,13 +1958,13 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
   size_t nlinks = links.size();
   size_t maxelemnode = this->getMaxNodesPerElement();
 
-  std::unique_ptr<double[]> xarray(new double[this->numNodes()]);
-  std::unique_ptr<double[]> yarray(new double[this->numNodes()]);
-  std::unique_ptr<double[]> zarray(new double[this->numNodes()]);
-  std::unique_ptr<int[]> linkArray(new int[nlinks * 2]);
-  std::unique_ptr<int[]> linkTypeArray(new int[nlinks * 2]);
-  std::unique_ptr<int[]> netElemNodearray(
-      new int[this->numElements() * maxelemnode]);
+  auto xarray(std::make_unique<double[]>(this->numNodes()));
+  auto yarray(std::make_unique<double[]>(this->numNodes()));
+  auto zarray(std::make_unique<double[]>(this->numNodes()));
+  auto linkArray(std::make_unique<int[]>(nlinks * 2));
+  auto linkTypeArray(std::make_unique<int[]>(nlinks * 2));
+  auto netElemNodearray(
+      std::make_unique<int[]>(this->numElements() * maxelemnode));
 
   for (size_t i = 0; i < this->numNodes(); ++i) {
     xarray.get()[i] = this->node(i)->x();
@@ -2017,8 +2021,8 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
     adcircmodules_throw_exception(
         "Error creating dimensions for D-Flow netCDF format file");
 
-  std::unique_ptr<int[]> dim1d(new int[1]);
-  std::unique_ptr<int[]> dim2d(new int[2]);
+  auto dim1d(std::make_unique<int[]>(1));
+  auto dim2d(std::make_unique<int[]>(2));
 
   int varid_mesh2d, varid_netnodex, varid_netnodey, varid_netnodez;
   ierr += nc_def_var(ncid, "Mesh2D", NC_INT, 0, nullptr, &varid_mesh2d);

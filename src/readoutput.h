@@ -22,6 +22,7 @@
 #include <fstream>
 #include <unordered_map>
 #include <vector>
+
 #include "adcircmodules_global.h"
 #include "cdate.h"
 #include "filetypes.h"
@@ -112,6 +113,7 @@ class ReadOutput {
   void addRecord(const Adcirc::Output::OutputRecord &record);
 
  private:
+
   void setOpen(bool open);
 
   // variables

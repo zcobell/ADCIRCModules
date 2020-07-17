@@ -93,7 +93,7 @@ unix:!macx{
 macx{
     isEmpty(NETCDFHOME){
         LIBS += -lnetcdf
-        INCLUDEPATH += /usr/local/Cellar/netcdf/4.6.3_1/include
+        INCLUDEPATH += /usr/local/Cellar/netcdf/4.7.4/include
         INCLUDEPATH += /usr/local/Cellar/hdf5/1.10.5_1/include
     }else{
         LIBS += -L$$NETCDFHOME/lib -lnetcdf

@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "nodalattributes.h"
+
 #include "nodalattributes_private.h"
 
 namespace Adcirc {
@@ -25,7 +26,8 @@ namespace ModelParameters {
 /**
  * @brief Default constructor
  */
-NodalAttributes::NodalAttributes() : m_impl(new Adcirc::Private::NodalAttributesPrivate()) {}
+NodalAttributes::NodalAttributes()
+    : m_impl(std::make_unique<Adcirc::Private::NodalAttributesPrivate>()) {}
 
 /**
  * @brief Constructor with filename and mesh
@@ -34,7 +36,8 @@ NodalAttributes::NodalAttributes() : m_impl(new Adcirc::Private::NodalAttributes
  */
 NodalAttributes::NodalAttributes(const std::string &filename,
                                  Adcirc::Geometry::Mesh *mesh)
-    : m_impl(new Adcirc::Private::NodalAttributesPrivate(filename, mesh)) {}
+    : m_impl(std::make_unique<Adcirc::Private::NodalAttributesPrivate>(filename,
+                                                                       mesh)) {}
 
 /**
  * @brief Reads the nodal attributes file

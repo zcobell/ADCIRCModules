@@ -19,9 +19,11 @@
 #ifndef ADCMOD_NODE_H
 #define ADCMOD_NODE_H
 
+#include <array>
 #include <memory>
 #include <string>
 #include <utility>
+
 #include "adcircmodules_global.h"
 #include "hashtype.h"
 
@@ -48,8 +50,6 @@ class Node {
   ADCIRCMODULES_EXPORT Node &operator=(const Node &n);
   ADCIRCMODULES_EXPORT bool operator==(const Node &n);
   ADCIRCMODULES_EXPORT bool operator==(const Node *n);
-
-  ADCIRCMODULES_EXPORT ~Node();
 
   void ADCIRCMODULES_EXPORT setNode(size_t id, double x, double y, double z);
 
@@ -81,12 +81,10 @@ class Node {
                bool force = false);
 
  private:
-  size_t m_id;                           /// Integer name of a mesh node
-  double m_x;                            /// x position of a node
-  double m_y;                            /// y position of a node
-  double m_z;                            /// z position of a node
+  size_t m_id;                             /// Integer name of a mesh node
   std::unique_ptr<char[]> m_hash;          /// hash identifier for the node
-  std::unique_ptr<char[]> m_positionHash;  /// has of only node's position
+  std::unique_ptr<char[]> m_positionHash;  /// hash of only node's position
+  std::array<double, 3> m_position;
 
   static void nodeCopier(Node *a, const Node *b);
 

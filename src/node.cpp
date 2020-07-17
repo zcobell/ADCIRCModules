@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "node.h"
+
 #include "boost/format.hpp"
 #include "default_values.h"
 #include "fpcompare.h"
@@ -29,12 +30,11 @@ using namespace Adcirc::Geometry;
  */
 Node::Node()
     : m_id(0),
-      m_x(adcircmodules_default_value<double>()),
-      m_y(adcircmodules_default_value<double>()),
-      m_z(adcircmodules_default_value<double>()) {
-  this->m_hash.reset(nullptr);
-  this->m_positionHash.reset(nullptr);
-}
+      m_hash(nullptr),
+      m_positionHash(nullptr),
+      m_position{adcircmodules_default_value<double>(),
+                 adcircmodules_default_value<double>(),
+                 adcircmodules_default_value<double>()} {}
 
 /**
  * @brief Constructor taking the id, x, y, and z for the node
@@ -44,15 +44,7 @@ Node::Node()
  * @param[in] z z elevation
  */
 Node::Node(size_t id, double x, double y, double z)
-    : m_id(id), m_x(x), m_y(y), m_z(z) {
-  this->m_hash.reset(nullptr);
-  this->m_positionHash.reset(nullptr);
-}
-
-/**
- * @brief Destructor
- */
-Node::~Node() {}
+    : m_id(id), m_hash(nullptr), m_positionHash(nullptr), m_position{x, y, z} {}
 
 /**
  * @brief Copies a Node object
@@ -61,9 +53,7 @@ Node::~Node() {}
  */
 void Node::nodeCopier(Node *a, const Node *b) {
   a->m_id = b->id();
-  a->m_x = b->x();
-  a->m_y = b->y();
-  a->m_z = b->z();
+  a->m_position = {b->x(), b->y(), b->z()};
   a->m_hash.reset(nullptr);
   a->m_positionHash.reset(nullptr);
 }
@@ -101,9 +91,7 @@ bool Node::operator==(const Node *n) {
  */
 void Node::setNode(size_t id, double x, double y, double z) {
   this->m_id = id;
-  this->m_x = x;
-  this->m_y = y;
-  this->m_z = z;
+  this->m_position = {x, y, z};
   if (this->m_hash.get() != nullptr) this->generateHash();
   return;
 }
@@ -112,37 +100,37 @@ void Node::setNode(size_t id, double x, double y, double z) {
  * @brief Returns the x-location of the node
  * @return x-location
  */
-double Node::x() const { return this->m_x; }
+double Node::x() const { return this->m_position[0]; }
 
 /**
  * @brief Sets the x-location of the node
  * @param[in] x x-location
  */
-void Node::setX(double x) { this->m_x = x; }
+void Node::setX(double x) { this->m_position[0] = x; }
 
 /**
  * @brief Returns the y-location of the node
  * @return y-location
  */
-double Node::y() const { return this->m_y; }
+double Node::y() const { return this->m_position[1]; }
 
 /**
  * @brief Sets the y-location of the node
  * @param[in] y y-location
  */
-void Node::setY(double y) { this->m_y = y; }
+void Node::setY(double y) { this->m_position[1] = y; }
 
 /**
  * @brief Returns the z-elevation of the node
  * @return y-elevation
  */
-double Node::z() const { return this->m_z; }
+double Node::z() const { return this->m_position[2]; }
 
 /**
  * @brief Sets the z-elevation of the node
  * @param[in] z z-location
  */
-void Node::setZ(double z) { this->m_z = z; }
+void Node::setZ(double z) { this->m_position[2] = z; }
 
 /**
  * @brief Returns the nodal id/label
@@ -187,7 +175,9 @@ std::string Node::to2dmString(bool geographicCoordinates) {
  * @brief Generates a point object from a node
  * @return Point (x,y) using node coordinates
  */
-Point Node::toPoint() { return Point(this->m_x, this->m_y); }
+Point Node::toPoint() {
+  return Point(this->m_position[0], this->m_position[1]);
+}
 
 /**
  * @brief Returns the hash of this node based upon it's position and elevation

@@ -49,7 +49,7 @@ class MeshPrivate {
 
   MeshPrivate &operator=(const MeshPrivate &m);
 
-  MeshPrivate *clone();
+  std::unique_ptr<MeshPrivate> clone() const;
 
   friend class Adcirc::Geometry::Mesh;
 

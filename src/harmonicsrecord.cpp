@@ -17,14 +17,21 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "harmonicsrecord.h"
+
 #include "harmonicsrecord_private.h"
 
 namespace Adcirc {
 namespace Harmonics {
 
-HarmonicsRecord::HarmonicsRecord() : m_impl(new Adcirc::Private::HarmonicsRecordPrivate()) {}
+HarmonicsRecord::HarmonicsRecord()
+    : m_impl(std::make_unique<Adcirc::Private::HarmonicsRecordPrivate>()) {}
 
-HarmonicsRecord::~HarmonicsRecord() { delete this->m_impl; }
+HarmonicsRecord::~HarmonicsRecord() {}
+
+HarmonicsRecord::HarmonicsRecord(const HarmonicsRecord& h) {
+  this->m_impl = std::make_unique<Adcirc::Private::HarmonicsRecordPrivate>(
+      *(this->m_impl.get()));
+}
 
 /**
  * @brief Returns the name of the harmonic constituent in this object

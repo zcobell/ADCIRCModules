@@ -26,6 +26,7 @@
 #endif
 
 #include <memory>
+
 #include "boost/algorithm/string.hpp"
 #include "boost/algorithm/string/replace.hpp"
 #include "boost/format.hpp"
@@ -68,7 +69,7 @@ void Hmdf::reproject(int epsg) {
     adcircmodules_throw_exception(
         "Error: Must define projection before reprojecting");
   }
-  std::unique_ptr<Ezproj> p(new Ezproj());
+  auto p(std::make_unique<Ezproj>());
 
   for (auto &m : this->m_station) {
     double x = m.longitude();
@@ -428,11 +429,10 @@ int Hmdf::writeNetcdf(const std::string &filename) {
     double lat[1] = {this->station(i)->latitude()};
     double lon[1] = {this->station(i)->longitude()};
 
-    std::unique_ptr<long long[]> time(
-        new long long[this->station(i)->numSnaps()]);
-    std::unique_ptr<double[]> data(new double[this->station(i)->numSnaps()]);
-    std::unique_ptr<char[]> name(new char[200]);
-    std::unique_ptr<char[]> id(new char[200]);
+    auto time(std::make_unique<long long[]>(this->station(i)->numSnaps()));
+    auto data(std::make_unique<double[]>(this->station(i)->numSnaps()));
+    auto name(std::make_unique<char[]>(200));
+    auto id(std::make_unique<char[]>(200));
 
     memset(name.get(), ' ', 200);
     memset(id.get(), ' ', 200);

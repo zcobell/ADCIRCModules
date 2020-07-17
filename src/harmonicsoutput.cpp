@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "harmonicsoutput.h"
+
 #include "harmonicsoutput_private.h"
 
 namespace Adcirc {
@@ -24,11 +25,13 @@ namespace Harmonics {
 
 /**
  * @param[in] filename name of the harmonics file to read
- * @param[in] velocity true of the file contains velocity information, false if it
- * does not
+ * @param[in] velocity true of the file contains velocity information, false if
+ * it does not
  */
 HarmonicsOutput::HarmonicsOutput(const std::string& filename)
-    : m_impl(new Adcirc::Private::HarmonicsOutputPrivate(filename)) {}
+    : m_impl(
+          std::make_unique<Adcirc::Private::HarmonicsOutputPrivate>(filename)) {
+}
 
 /**
  * @brief Read the harmonics file

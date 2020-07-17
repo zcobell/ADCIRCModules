@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+
 #include "adcircmodules_global.h"
 
 namespace Adcirc {
@@ -17,8 +18,8 @@ namespace Harmonics {
 /**
  * @class HarmonicsRecord
  * @author Zachary Cobell
- * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
- * is released under the terms of the GNU General Public License v3
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
  * @brief The HarmonicsRecord handles the individual records for each harmonic
  * constituent in a harmonics output file
  *
@@ -27,6 +28,8 @@ class HarmonicsRecord {
  public:
   ADCIRCMODULES_EXPORT HarmonicsRecord();
   ADCIRCMODULES_EXPORT ~HarmonicsRecord();
+
+  ADCIRCMODULES_EXPORT HarmonicsRecord(const HarmonicsRecord &h);
 
   std::string ADCIRCMODULES_EXPORT name() const;
   void ADCIRCMODULES_EXPORT setName(const std::string& name);
@@ -49,7 +52,7 @@ class HarmonicsRecord {
   void ADCIRCMODULES_EXPORT setEquilibriumArg(double equilibriumArg);
 
  private:
-  Adcirc::Private::HarmonicsRecordPrivate* m_impl;
+  std::unique_ptr<Adcirc::Private::HarmonicsRecordPrivate> m_impl;
 };
 }  // namespace Harmonics
 }  // namespace Adcirc

@@ -119,6 +119,9 @@ class OutputRecord {
   Adcirc::CDate coldstart() const;
   Adcirc::CDate date() const;
 
+  friend class ReadOutput;
+  friend class WriteOutput;
+
  private:
   std::vector<double> m_u;
   std::vector<double> m_v;

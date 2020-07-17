@@ -17,7 +17,9 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "boundary.h"
+
 #include <array>
+
 #include "boost/format.hpp"
 #include "default_values.h"
 #include "hash.h"
@@ -39,11 +41,10 @@ constexpr std::array<int, 1> c_bctypes_openBoundaries = {-1};
  *
  * Initializes the boundary with code -1 and length 0.
  */
-Boundary::Boundary() : m_boundaryCode(-1) {
-  this->m_hash.reset(nullptr);
-  this->setBoundary(-1, 0);
-  this->m_averageLongitude = std::numeric_limits<double>::max();
-}
+Boundary::Boundary()
+    : m_boundaryCode(-1),
+      m_averageLongitude(std::numeric_limits<double>::max()),
+      m_hash(nullptr) {}
 
 /**
  * @brief Initializes the boundary with user specified boundary type and length
@@ -51,17 +52,11 @@ Boundary::Boundary() : m_boundaryCode(-1) {
  * @param[in] boundaryLength number of nodes along this boundary
  */
 Boundary::Boundary(int boundaryCode, size_t boundaryLength)
-    : m_boundaryCode(-1) {
-  this->setBoundaryCode(boundaryCode);
+    : m_boundaryCode(boundaryCode),
+      m_averageLongitude(std::numeric_limits<double>::max()),
+      m_hash(nullptr) {
   this->setBoundaryLength(boundaryLength);
-  this->m_hash.reset(nullptr);
-  this->m_averageLongitude = std::numeric_limits<double>::max();
 }
-
-/**
- * @brief Destructor
- */
-Boundary::~Boundary() {}
 
 /**
  * @brief Function to copy data in a boundary. Used in the copy constructor and
@@ -632,7 +627,8 @@ void Boundary::addNode(Node *node1, Node *node2, double crestElevation,
 }
 
 /**
- * @brief Adds an internal weir type boudnary with cross-barrier pipes to the boundary string
+ * @brief Adds an internal weir type boudnary with cross-barrier pipes to the
+ * boundary string
  * @param[in] node1 pointer to node 1
  * @param[in] node2 pointer to node 2
  * @param[in] crestElevation crest elevation of internal weir

@@ -17,6 +17,7 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "kdtree_private.h"
+
 #include "kdtree.h"
 
 using namespace Adcirc::Private;
@@ -36,8 +37,8 @@ int KdtreePrivate::build(std::vector<double> &x, std::vector<double> &y) {
     this->m_cloud.pts[i].x = x[i];
     this->m_cloud.pts[i].y = y[i];
   }
-  this->m_tree = std::unique_ptr<kd_tree_t>(new kd_tree_t(
-      2, this->m_cloud, nanoflann::KDTreeSingleIndexAdaptorParams(10)));
+  this->m_tree = std::make_unique<kd_tree_t>(
+      2, this->m_cloud, nanoflann::KDTreeSingleIndexAdaptorParams(10));
   this->m_tree->buildIndex();
   this->m_initialized = true;
   return 0;
@@ -56,8 +57,8 @@ size_t KdtreePrivate::findNearest(double x, double y) {
 
 std::vector<size_t> KdtreePrivate::findXNearest(double x, double y, size_t n) {
   n = std::min(this->size(), n);
-  std::unique_ptr<size_t[]> index(new size_t[n]);
-  std::unique_ptr<double[]> out_dist_sqr(new double[n]);
+  auto index(std::make_unique<size_t[]>(n));
+  auto out_dist_sqr(std::make_unique<double[]>(n));
   nanoflann::KNNResultSet<double> resultSet(n);
   resultSet.init(index.get(), out_dist_sqr.get());
   const double query_pt[2] = {x, y};

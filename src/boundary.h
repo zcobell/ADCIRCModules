@@ -21,6 +21,7 @@
 
 #include <string>
 #include <vector>
+
 #include "adcircmodules_global.h"
 #include "node.h"
 
@@ -49,8 +50,6 @@ class Boundary {
   ADCIRCMODULES_EXPORT Boundary(const Boundary &b);
 
   ADCIRCMODULES_EXPORT Boundary &operator=(const Boundary &b);
-
-  ADCIRCMODULES_EXPORT ~Boundary();
 
   void ADCIRCMODULES_EXPORT setBoundary(int boundaryCode,
                                         size_t boundaryLength);

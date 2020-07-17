@@ -17,8 +17,10 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "netcdftimeseries.h"
+
 #include <cstring>
 #include <memory>
+
 #include "boost/format.hpp"
 #include "cdate.h"
 #include "fileio.h"
@@ -76,8 +78,8 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
 
   this->setEpsg(epsg);
 
-  std::unique_ptr<double[]> xcoor(new double[this->m_numStations]);
-  std::unique_ptr<double[]> ycoor(new double[this->m_numStations]);
+  auto xcoor(std::make_unique<double[]>(this->m_numStations));
+  auto ycoor(std::make_unique<double[]>(this->m_numStations));
 
   NCCHECK(nc_get_var_double(ncid, varid_xcoor, xcoor.get()))
   NCCHECK(nc_get_var_double(ncid, varid_ycoor, ycoor.get()))
@@ -90,8 +92,8 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
   xcoor.reset(nullptr);
   ycoor.reset(nullptr);
 
-  std::unique_ptr<char[]> stationName(
-      new char[stationNameLength * this->m_numStations]);
+  auto stationName(
+      std::make_unique<char[]>(stationNameLength * this->m_numStations));
   NCCHECK(nc_get_var_text(ncid, varid_stationName, stationName.get()))
 
   char *ptr = stationName.get();
@@ -135,8 +137,8 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
     this->m_fillValue.push_back(fillValue);
 
     if (!stationsOnly) {
-      std::unique_ptr<long long[]> timeData(new long long[length]);
-      std::unique_ptr<double[]> varData(new double[length]);
+      auto timeData(std::make_unique<long long[]>(length));
+      auto varData(std::make_unique<double[]>(length));
 
       NCCHECK(nc_get_var_double(ncid, varid_data, varData.get()))
       NCCHECK(nc_get_var_longlong(ncid, varid_time, timeData.get()))

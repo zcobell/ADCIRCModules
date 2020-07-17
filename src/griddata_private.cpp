@@ -18,11 +18,13 @@
 //------------------------------------------------------------------------*/
 
 #include "griddata_private.h"
+
 #include <algorithm>
 #include <array>
 #include <fstream>
 #include <numeric>
 #include <utility>
+
 #include "boost/progress.hpp"
 #include "constants.h"
 #include "default_values.h"
@@ -97,8 +99,8 @@ GriddataPrivate::GriddataPrivate(Mesh *mesh, const std::string &rasterFile)
       m_calculatePointPtr(nullptr),
       m_thresholdValue(0.0),
       m_thresholdMethod(Interpolation::Threshold::NoThreshold),
-      m_rasterInMemory(false) {
-  this->m_raster.reset(new Adcirc::Raster::Rasterdata(this->m_rasterFile));
+      m_rasterInMemory(false),
+      m_raster(std::make_unique<Adcirc::Raster::Rasterdata>(rasterFile)) {
   this->m_interpolationFlags.resize(this->m_mesh->numNodes());
   std::fill(this->m_interpolationFlags.begin(),
             this->m_interpolationFlags.end(), Average);
@@ -879,7 +881,8 @@ std::vector<double> GriddataPrivate::computeValuesFromRaster(
   result.resize(this->m_mesh->numNodes());
 
   if (this->showProgressBar()) {
-    progress.reset(new boost::progress_display(this->m_mesh->numNodes()));
+    progress =
+        std::make_unique<boost::progress_display>(this->m_mesh->numNodes());
   }
 
 #pragma omp parallel for schedule(dynamic) shared(progress)
@@ -946,7 +949,8 @@ GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
   result.resize(this->m_mesh->numNodes());
 
   if (this->showProgressBar()) {
-    progress.reset(new boost::progress_display(this->m_mesh->numNodes()));
+    progress =
+        std::make_unique<boost::progress_display>(this->m_mesh->numNodes());
   }
 
 #pragma omp parallel for schedule(dynamic) shared(progress)
