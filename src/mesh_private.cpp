@@ -2370,8 +2370,7 @@ size_t MeshPrivate::findElement(double x, double y,
   size_t en = adcircmodules_default_value<size_t>();
 
   for (auto i : indicies) {
-    bool found = this->element(i)->isInside(x, y);
-    if (found) {
+    if (this->element(i)->isInside(x, y)) {
       en = i;
       break;
     }
@@ -2817,6 +2816,8 @@ void MeshPrivate::toRaster(const std::string &filename,
   CPLErr cr = band->RasterIO(GF_Write, 0, 0, nx, ny, zr.get(), nx, ny,
                              GDT_Float32, 0, 0);
   if (cr != CE_None) {
+    GDALClose(static_cast<GDALDatasetH>(raster));
+    CSLDestroy(options);
     adcircmodules_throw_exception("Error during Raster I/O in GDAL library");
   }
 
@@ -2826,6 +2827,7 @@ void MeshPrivate::toRaster(const std::string &filename,
   band->SetStatistics(bmin, bmax, bmean, bsigma);
 
   GDALClose(static_cast<GDALDatasetH>(raster));
+  CSLDestroy(options);
 
 #endif
 }
@@ -2917,12 +2919,15 @@ float MeshPrivate::calculateValueWithoutPartialWetting(
 float MeshPrivate::calculateValueWithPartialWetting(
     const double v1, const double v2, const double v3, const double nullvalue,
     const std::vector<double> &weight) {
-  bool b1 = FpCompare::equalTo(v1, nullvalue);
-  bool b2 = FpCompare::equalTo(v2, nullvalue);
-  bool b3 = FpCompare::equalTo(v3, nullvalue);
-  if (b1 && b2 && b3) {
+  bool b1 = FpCompare::equalTo(v1, nullvalue) ||
+            FpCompare::equalTo(v1, adcircmodules_default_value<double>());
+  bool b2 = FpCompare::equalTo(v2, nullvalue) ||
+            FpCompare::equalTo(v2, adcircmodules_default_value<double>());
+  bool b3 = FpCompare::equalTo(v3, nullvalue) ||
+            FpCompare::equalTo(v3, adcircmodules_default_value<double>());
+  if (!b1 && !b2 && !b3) {
     return weight[0] * v1 + weight[1] * v2 + weight[2] * v3;
-  } else if (b1 || b2 || b3) {
+  } else if (b1 && b2 && b3) {
     return nullvalue;
   } else if (b1 && b2 && !b3) {
     return v3;
