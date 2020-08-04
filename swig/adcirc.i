@@ -93,6 +93,7 @@ namespace std {
     %template(DoubleDoubleVector) vector<vector<double>>;
     %template(SizetSizetVector) vector<vector<size_t>>;
     %template(NodeVector) vector<Adcirc::Geometry::Node*>;
+    %template(DateVector) vector<Adcirc::CDate>;
 }
 
 %include "adcircmodules_global.h"
