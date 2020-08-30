@@ -2958,8 +2958,7 @@ MeshPrivate::computeRasterInterpolationWeights(
     this->buildElementalSearchTree();
   }
 
-#pragma omp parallel for shared(m_elements, m_nodes, m_elementalSearchTree, \
-                                weight, elements, resolution, xmin, ymax)   \
+#pragma omp parallel for shared(weight, elements, resolution, xmin, ymax)   \
     schedule(dynamic)
   for (size_t j = 0; j < ny; ++j) {
     for (size_t i = 0; i < nx; ++i) {
