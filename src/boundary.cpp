@@ -21,11 +21,15 @@
 #include <array>
 
 #include "boost/format.hpp"
+#include "boost/geometry.hpp"
 #include "default_values.h"
 #include "hash.h"
 #include "logging.h"
 
 using namespace Adcirc::Geometry;
+namespace bg = boost::geometry;
+typedef bg::model::point<double, 2, bg::cs::cartesian> point_t;
+typedef bg::model::polygon<point_t> polygon_t;
 
 constexpr std::array<int, 7> c_bctypes_weir = {3, 13, 23, 4, 24, 5, 25};
 constexpr std::array<int, 3> c_bctypes_externalWeir = {3, 13, 23};
@@ -712,6 +716,31 @@ double Boundary::averageLongitude(bool force) {
     this->calculateAverageLongitude();
   }
   return this->m_averageLongitude;
+}
+
+polygon_t boundary2polygon(Boundary *b) {
+  polygon_t p;
+  for (size_t i = 0; i < b->size(); ++i) {
+    bg::append(p, point_t(b->node1(i)->x(), b->node1(i)->y()));
+  }
+  if (b->isInternalWeir()) {
+    for (size_t i = b->size(); i > 0; --i) {
+      bg::append(p, point_t(b->node2(i - 1)->x(), b->node2(i - 1)->y()));
+    }
+  }
+  bg::append(p, point_t(b->node1(0)->x(), b->node1(0)->y()));
+  bg::correct(p);
+  return p;
+}
+
+/**
+ * @brief Returns the centroid of the boundary
+ * @return pair of x,y
+ */
+std::pair<double, double> Boundary::centroid() {
+  point_t pt;
+  bg::centroid(boundary2polygon(this), pt);
+  return {pt.get<0>(), pt.get<1>()};
 }
 
 /**

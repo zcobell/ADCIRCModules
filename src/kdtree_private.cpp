@@ -37,8 +37,8 @@ int KdtreePrivate::build(std::vector<double> &x, std::vector<double> &y) {
     this->m_cloud.pts[i].x = x[i];
     this->m_cloud.pts[i].y = y[i];
   }
-  this->m_tree = std::make_unique<kd_tree_t>(
-      2, this->m_cloud, nanoflann::KDTreeSingleIndexAdaptorParams(10));
+  this->m_tree.reset(new kd_tree_t(
+      2, this->m_cloud, nanoflann::KDTreeSingleIndexAdaptorParams(10)));
   this->m_tree->buildIndex();
   this->m_initialized = true;
   return 0;
@@ -57,16 +57,16 @@ size_t KdtreePrivate::findNearest(double x, double y) {
 
 std::vector<size_t> KdtreePrivate::findXNearest(double x, double y, size_t n) {
   n = std::min(this->size(), n);
-  auto index(std::make_unique<size_t[]>(n));
-  auto out_dist_sqr(std::make_unique<double[]>(n));
+  std::vector<size_t> index(n);
+  std::vector<double> out_dist_sqr(n);
+
   nanoflann::KNNResultSet<double> resultSet(n);
-  resultSet.init(index.get(), out_dist_sqr.get());
+  resultSet.init(index.data(), out_dist_sqr.data());
   const double query_pt[2] = {x, y};
 
   this->m_tree->findNeighbors(resultSet, &query_pt[0],
                               nanoflann::SearchParams(10));
-  std::vector<size_t> result(index.get(), index.get() + n);
-  return result;
+  return index;
 }
 
 std::vector<size_t> KdtreePrivate::findWithinRadius(double x, double y,

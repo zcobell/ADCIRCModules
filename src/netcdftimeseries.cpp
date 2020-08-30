@@ -78,30 +78,22 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
 
   this->setEpsg(epsg);
 
-  auto xcoor(std::make_unique<double[]>(this->m_numStations));
-  auto ycoor(std::make_unique<double[]>(this->m_numStations));
+  std::vector<double> xcoor(this->m_numStations);
+  std::vector<double> ycoor(this->m_numStations);
 
-  NCCHECK(nc_get_var_double(ncid, varid_xcoor, xcoor.get()))
-  NCCHECK(nc_get_var_double(ncid, varid_ycoor, ycoor.get()))
+  NCCHECK(nc_get_var_double(ncid, varid_xcoor, xcoor.data()))
+  NCCHECK(nc_get_var_double(ncid, varid_ycoor, ycoor.data()))
 
   for (size_t i = 0; i < this->m_numStations; i++) {
-    this->m_xcoor.push_back(xcoor.get()[i]);
-    this->m_ycoor.push_back(ycoor.get()[i]);
+    this->m_xcoor.push_back(xcoor[i]);
+    this->m_ycoor.push_back(ycoor[i]);
   }
 
-  xcoor.reset(nullptr);
-  ycoor.reset(nullptr);
+  std::string stationName(stationNameLength * this->m_numStations, ' ');
+  NCCHECK(nc_get_var_text(ncid, varid_stationName, &stationName[0]))
 
-  auto stationName(
-      std::make_unique<char[]>(stationNameLength * this->m_numStations));
-  NCCHECK(nc_get_var_text(ncid, varid_stationName, stationName.get()))
-
-  char *ptr = stationName.get();
   for (size_t i = 0; i < this->m_numStations; i++) {
-    char tmp[201];
-    std::memset(tmp, '\0', 201);
-    std::memcpy(tmp, &ptr[200 * i], 200);
-    std::string s(tmp);
+    std::string s = stationName.substr(200 * i, 200);
     s.erase(s.find_last_not_of("\t\n\v\f\r ") + 1);
     this->m_stationName.push_back(s);
   }
@@ -137,19 +129,19 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
     this->m_fillValue.push_back(fillValue);
 
     if (!stationsOnly) {
-      auto timeData(std::make_unique<long long[]>(length));
-      auto varData(std::make_unique<double[]>(length));
+      std::vector<long long> timeData(length);
+      std::vector<double> varData(length);
 
-      NCCHECK(nc_get_var_double(ncid, varid_data, varData.get()))
-      NCCHECK(nc_get_var_longlong(ncid, varid_time, timeData.get()))
+      NCCHECK(nc_get_var_double(ncid, varid_data, varData.data()))
+      NCCHECK(nc_get_var_longlong(ncid, varid_time, timeData.data()))
 
       this->m_data[i].resize(length);
       this->m_time[i].resize(length);
 
       for (size_t j = 0; j < length; j++) {
-        this->m_data[i][j] = varData.get()[j];
+        this->m_data[i][j] = varData[j];
         CDate t = reftime;
-        t += static_cast<long>(timeData.get()[j]);
+        t += static_cast<long>(timeData[j]);
         this->m_time[i][j] = t;
       }
     }

@@ -33,10 +33,10 @@ typedef bg::model::polygon<point_t> polygon_t;
 /**
  * @brief Default constructor
  */
-Element::Element() : m_id(0) {
-  this->m_hash.reset(nullptr);
-  this->resize(3);
-}
+Element::Element()
+    : m_id(std::numeric_limits<size_t>::max()),
+      m_nodes{nullptr, nullptr, nullptr},
+      m_hash(nullptr) {}
 
 /**
  * @brief Constructor using references to three Node objects
@@ -45,13 +45,8 @@ Element::Element() : m_id(0) {
  * @param[in] n2 pointer to node 2
  * @param[in] n3 pointer to node 3
  */
-Element::Element(size_t id, Node *n1, Node *n2, Node *n3) : m_id(id) {
-  this->resize(3);
-  this->m_nodes[0] = n1;
-  this->m_nodes[1] = n2;
-  this->m_nodes[2] = n3;
-  this->m_hash.reset(nullptr);
-}
+Element::Element(size_t id, Node *n1, Node *n2, Node *n3)
+    : m_id(id), m_nodes{n1, n2, n3}, m_hash(nullptr) {}
 
 /**
  * @brief Constructor using references to three Node objects
@@ -61,19 +56,8 @@ Element::Element(size_t id, Node *n1, Node *n2, Node *n3) : m_id(id) {
  * @param[in] n3 pointer to node 3
  * @param[in] n4 pointer to node 4
  */
-Element::Element(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) : m_id(id) {
-  this->resize(4);
-  this->m_nodes[0] = n1;
-  this->m_nodes[1] = n2;
-  this->m_nodes[2] = n3;
-  this->m_nodes[3] = n4;
-  this->m_hash.reset(nullptr);
-}
-
-/**
- * @brief Destructor
- */
-Element::~Element() {}
+Element::Element(size_t id, Node *n1, Node *n2, Node *n3, Node *n4)
+    : m_id(id), m_nodes{n1, n2, n3, n4}, m_hash(nullptr) {}
 
 /**
  * @brief Element::elementCopier
@@ -141,11 +125,7 @@ void Element::resize(size_t nVertex) {
  */
 void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3) {
   this->m_id = id;
-  this->m_nodes.resize(3);
-  this->m_nodes[0] = n1;
-  this->m_nodes[1] = n2;
-  this->m_nodes[2] = n3;
-  if (this->m_hash != nullptr) this->generateHash();
+  this->m_nodes = {n1, n2, n3};
 }
 
 /**
@@ -159,12 +139,7 @@ void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3) {
  */
 void Element::setElement(size_t id, Node *n1, Node *n2, Node *n3, Node *n4) {
   this->m_id = id;
-  this->m_nodes.resize(4);
-  this->m_nodes[0] = n1;
-  this->m_nodes[1] = n2;
-  this->m_nodes[2] = n3;
-  this->m_nodes[3] = n4;
-  if (this->m_hash != nullptr) this->generateHash();
+  this->m_nodes = {n1, n2, n3, n4};
 }
 
 /**

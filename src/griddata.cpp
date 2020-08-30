@@ -25,8 +25,7 @@ using namespace Adcirc::Interpolation;
 /**
  * @brief Default constructor
  */
-Griddata::Griddata()
-    : m_impl(std::make_unique<Adcirc::Private::GriddataPrivate>()) {}
+Griddata::Griddata() : m_impl(new Adcirc::Private::GriddataPrivate()) {}
 
 /**
  * @brief Constructor that takes mesh and raster file
@@ -34,8 +33,7 @@ Griddata::Griddata()
  * @param[in] rasterFile gdal compatible raster file name
  */
 Griddata::Griddata(Adcirc::Geometry::Mesh *mesh, const std::string &rasterFile)
-    : m_impl(std::make_unique<Adcirc::Private::GriddataPrivate>(mesh,
-                                                                rasterFile)) {}
+    : m_impl(new Adcirc::Private::GriddataPrivate(mesh, rasterFile)) {}
 
 /**
  * @brief Retrieves the filename of the raster currently being used for

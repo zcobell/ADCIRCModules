@@ -58,8 +58,6 @@ class Element {
   ADCIRCMODULES_EXPORT bool operator==(const Element &e);
   ADCIRCMODULES_EXPORT bool operator==(const Element *e);
 
-  ADCIRCMODULES_EXPORT ~Element();
-
   void ADCIRCMODULES_EXPORT setElement(size_t id, Adcirc::Geometry::Node *n1,
                                        Adcirc::Geometry::Node *n2,
                                        Adcirc::Geometry::Node *n3);

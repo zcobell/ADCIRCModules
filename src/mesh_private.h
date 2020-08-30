@@ -102,7 +102,9 @@ class MeshPrivate {
   void toConnectivityShapefile(const std::string &outputFile);
   void toElementShapefile(const std::string &outputFile);
   void toBoundaryShapefile(const std::string &outputFile);
-  void toBoundaryLineShapefile(const std::string &outputFile);
+  void toBoundaryLineShapefile(const std::string &outputFile,
+                               const bool bothSides = false);
+  void toWeirPolygonShapefile(const std::string &outputFile);
 
   void buildNodalSearchTree();
   void buildElementalSearchTree();

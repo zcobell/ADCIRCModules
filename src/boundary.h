@@ -115,6 +115,8 @@ class Boundary {
 
   double ADCIRCMODULES_EXPORT averageLongitude(bool force = false);
 
+  std::pair<double, double> ADCIRCMODULES_EXPORT centroid();
+
   std::string ADCIRCMODULES_EXPORT
   hash(Adcirc::Cryptography::HashType h =
            Adcirc::Cryptography::AdcircDefaultHash,

@@ -69,14 +69,15 @@ void Hmdf::reproject(int epsg) {
     adcircmodules_throw_exception(
         "Error: Must define projection before reprojecting");
   }
-  auto p(std::make_unique<Ezproj>());
+
+  Ezproj p;
 
   for (auto &m : this->m_station) {
     double x = m.longitude();
     double y = m.latitude();
     double outx, outy;
     bool islatlon;
-    p->transform(this->m_epsg, epsg, x, y, outx, outy, islatlon);
+    p.transform(this->m_epsg, epsg, x, y, outx, outy, islatlon);
     m.setLongitude(outx);
     m.setLatitude(outy);
   }
@@ -423,35 +424,26 @@ int Hmdf::writeNetcdf(const std::string &filename) {
   NCCHECK(nc_enddef(ncid))
 
   for (size_t i = 0; i < this->nstations(); i++) {
-    size_t index[2] = {i, 0};
-    size_t stindex[1] = {i};
-    size_t count[2] = {1, 200};
-    double lat[1] = {this->station(i)->latitude()};
-    double lon[1] = {this->station(i)->longitude()};
+    size_t index[] = {i, 0};
+    size_t stindex[] = {i};
+    size_t count[] = {1, 200};
+    double lat[] = {this->station(i)->latitude()};
+    double lon[] = {this->station(i)->longitude()};
 
-    auto time(std::make_unique<long long[]>(this->station(i)->numSnaps()));
-    auto data(std::make_unique<double[]>(this->station(i)->numSnaps()));
-    auto name(std::make_unique<char[]>(200));
-    auto id(std::make_unique<char[]>(200));
-
-    memset(name.get(), ' ', 200);
-    memset(id.get(), ' ', 200);
-
-    this->station(i)->name().copy(name.get(), this->station(i)->name().length(),
-                                  0);
-    this->station(i)->id().copy(id.get(), this->station(i)->id().length(), 0);
-
+    std::vector<long long> time(this->station(i)->numSnaps());
     for (size_t j = 0; j < this->station(i)->numSnaps(); j++) {
-      time.get()[j] = this->station(i)->date(j).toSeconds();
-      data.get()[j] = this->station(i)->data(j);
+      time[j] = this->station(i)->date(j).toSeconds();
     }
 
     NCCHECK(nc_put_var1_double(ncid, varid_stationx, stindex, lon))
     NCCHECK(nc_put_var1_double(ncid, varid_stationy, stindex, lat))
-    NCCHECK(nc_put_var_longlong(ncid, varid_stationDate[i], time.get()))
-    NCCHECK(nc_put_var_double(ncid, varid_stationData[i], data.get()))
-    NCCHECK(nc_put_vara_text(ncid, varid_stationName, index, count, name.get()))
-    NCCHECK(nc_put_vara_text(ncid, varid_stationId, index, count, id.get()))
+    NCCHECK(nc_put_var_longlong(ncid, varid_stationDate[i], time.data()))
+    NCCHECK(nc_put_var_double(ncid, varid_stationData[i],
+                              this->station(i)->allData().data()))
+    NCCHECK(nc_put_vara_text(ncid, varid_stationName, index, count,
+                             &this->station(i)->name()[0]))
+    NCCHECK(nc_put_vara_text(ncid, varid_stationId, index, count,
+                             &this->station(i)->id()[0]))
   }
 
   nc_close(ncid);

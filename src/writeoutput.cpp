@@ -702,7 +702,7 @@ void WriteOutput::h5_appendRecord(const std::string &name,
 
   if (isVector) {
     size_t idx = 0;
-    auto uv(std::make_unique<float[]>(record->numNodes() * 2));
+    std::vector<float> uv(record->numNodes() * 2);
     for (size_t i = 0; i < record->numNodes(); ++i) {
       float u = static_cast<float>(record->u(i));
       float v = static_cast<float>(record->v(i));
@@ -712,27 +712,28 @@ void WriteOutput::h5_appendRecord(const std::string &name,
       if (u != 0.0f || v != 0.0f) m = std::sqrt(u * u + v * v);
       if (m > mx[0]) mx[0] = m;
       if (m < mn[0]) mn[0] = m;
-      uv.get()[idx] = u;
+      uv[idx] = u;
       idx++;
-      uv.get()[idx] = v;
+      uv[idx] = v;
       idx++;
     }
-    H5Dwrite(did_val, H5T_IEEE_F32LE, ms_val, fs_val, H5P_DEFAULT, uv.get());
+    H5Dwrite(did_val, H5T_IEEE_F32LE, ms_val, fs_val, H5P_DEFAULT, uv.data());
   } else {
-    auto wse(std::make_unique<float[]>(record->numNodes()));
-    auto active(std::make_unique<unsigned char[]>(record->numNodes()));
+    std::vector<float> wse(record->numNodes());
+    std::vector<unsigned char> active(record->numNodes());
+
     for (size_t i = 0; i < record->numNodes(); ++i) {
-      wse.get()[i] = static_cast<float>(record->z(i));
-      if (wse.get()[i] > mx[0]) mx[0] = wse.get()[i];
-      if (wse.get()[i] < mn[0]) mn[0] = wse.get()[i];
-      if (wse.get()[i] > -9990) {
-        active.get()[i] = 1;
+      wse[i] = static_cast<float>(record->z(i));
+      if (wse[i] > mx[0]) mx[0] = wse[i];
+      if (wse[i] < mn[0]) mn[0] = wse[i];
+      if (wse[i] > -9990) {
+        active[i] = 1;
       } else {
-        active.get()[i] = 0;
+        active[i] = 0;
       }
     }
-    H5Dwrite(did_val, H5T_IEEE_F32LE, ms_val, fs_val, H5P_DEFAULT, wse.get());
-    H5Dwrite(did_ac, H5T_STD_U8LE, ms_ac, fs_ac, H5P_DEFAULT, active.get());
+    H5Dwrite(did_val, H5T_IEEE_F32LE, ms_val, fs_val, H5P_DEFAULT, wse.data());
+    H5Dwrite(did_ac, H5T_STD_U8LE, ms_ac, fs_ac, H5P_DEFAULT, active.data());
   }
 
   H5Dwrite(did_mx, H5T_IEEE_F32LE, ms_mx, fs_mx, H5P_DEFAULT, mx);

@@ -82,7 +82,9 @@ MeshPrivate &MeshPrivate::operator=(const MeshPrivate &m) {
 }
 
 std::unique_ptr<MeshPrivate> MeshPrivate::clone() const {
-  return std::make_unique<MeshPrivate>(*(this));
+  std::unique_ptr<MeshPrivate> m;
+  MeshPrivate::meshCopier(m.get(), this);
+  return m;
 }
 
 MeshPrivate::MeshPrivate(const MeshPrivate &m) {
@@ -120,8 +122,8 @@ void MeshPrivate::_init() {
   this->m_nodeOrderingLogical = true;
   this->m_elementOrderingLogical = true;
   this->m_hash.reset(nullptr);
-  this->m_elementalSearchTree = std::make_unique<Kdtree>();
-  this->m_nodalSearchTree = std::make_unique<Kdtree>();
+  this->m_elementalSearchTree = std::unique_ptr<Kdtree>(new Kdtree());
+  this->m_nodalSearchTree = std::unique_ptr<Kdtree>(new Kdtree());
 }
 
 /**
@@ -292,46 +294,44 @@ void MeshPrivate::readAdcircMeshNetcdf() {
   ierr += nc_inq_varid(ncid, "element", &varid_elem);
   if (ierr != 0) adcircmodules_throw_exception("Could not read the varids");
 
-  auto x(std::make_unique<double[]>(nn));
-  auto y(std::make_unique<double[]>(nn));
-  auto z(std::make_unique<double[]>(nn));
+  std::vector<double> x(nn);
+  std::vector<double> y(nn);
+  std::vector<double> z(nn);
 
-  ierr += nc_get_var_double(ncid, varid_x, x.get());
-  ierr += nc_get_var_double(ncid, varid_y, y.get());
-  ierr += nc_get_var_double(ncid, varid_z, z.get());
+  ierr += nc_get_var_double(ncid, varid_x, x.data());
+  ierr += nc_get_var_double(ncid, varid_y, y.data());
+  ierr += nc_get_var_double(ncid, varid_z, z.data());
   if (ierr != 0) {
     adcircmodules_throw_exception("Could not read nodal data");
   }
 
   this->m_nodes.reserve(nn);
   for (size_t i = 0; i < nn; ++i) {
-    this->m_nodes.push_back(Node(i + 1, x.get()[i], y.get()[i], z.get()[i]));
+    this->m_nodes.push_back(Node(i + 1, x[i], y[i], z[i]));
   }
 
   this->m_nodeOrderingLogical = true;
   this->m_elementOrderingLogical = true;
 
-  auto n1(std::make_unique<int[]>(ne));
-  auto n2(std::make_unique<int[]>(ne));
-  auto n3(std::make_unique<int[]>(ne));
-  auto n4(std::make_unique<int[]>(ne));
-  size_t start[2], count[2];
-  start[0] = 0;
-  start[1] = 0;
-  count[0] = ne;
-  count[1] = 1;
+  std::vector<int> n1(ne);
+  std::vector<int> n2(ne);
+  std::vector<int> n3(ne);
+  std::vector<int> n4(ne);
 
-  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n1.get());
+  size_t start[] = {0, 0};
+  size_t count[] = {ne, 1};
+
+  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n1.data());
   start[1] = 1;
-  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n2.get());
+  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n2.data());
   start[1] = 2;
-  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n3.get());
+  ierr += nc_get_vara_int(ncid, varid_elem, start, count, n3.data());
   if (n_max_vertex == 4) {
     start[1] = 3;
-    ierr += nc_get_vara_int(ncid, varid_elem, start, count, n4.get());
+    ierr += nc_get_vara_int(ncid, varid_elem, start, count, n4.data());
   } else {
     for (size_t i = 0; i < ne; ++i) {
-      n4.get()[i] = NC_FILL_INT;
+      n4[i] = NC_FILL_INT;
     }
   }
 
@@ -341,15 +341,14 @@ void MeshPrivate::readAdcircMeshNetcdf() {
 
   this->m_elements.reserve(ne);
   for (size_t i = 0; i < ne; ++i) {
-    if (n4.get()[i] == NC_FILL_INT) {
-      this->m_elements.push_back(Element(i + 1, &this->m_nodes[n1.get()[i] - 1],
-                                         &this->m_nodes[n2.get()[i] - 1],
-                                         &this->m_nodes[n3.get()[i] - 1]));
+    if (n4[i] == NC_FILL_INT) {
+      this->m_elements.push_back(Element(i + 1, &this->m_nodes[n1[i] - 1],
+                                         &this->m_nodes[n2[i] - 1],
+                                         &this->m_nodes[n3[i] - 1]));
     } else {
-      this->m_elements.push_back(Element(i + 1, &this->m_nodes[n1.get()[i] - 1],
-                                         &this->m_nodes[n2.get()[i] - 1],
-                                         &this->m_nodes[n3.get()[i] - 1],
-                                         &this->m_nodes[n4.get()[i] - 1]));
+      this->m_elements.push_back(
+          Element(i + 1, &this->m_nodes[n1[i] - 1], &this->m_nodes[n2[i] - 1],
+                  &this->m_nodes[n3[i] - 1], &this->m_nodes[n4[i] - 1]));
     }
   }
 
@@ -434,15 +433,15 @@ void MeshPrivate::readDflowMesh() {
 
   if (isFill == 1) elemFillValue = NC_FILL_INT;
 
-  auto xcoor(std::make_unique<double[]>(nn));
-  auto ycoor(std::make_unique<double[]>(nn));
-  auto zcoor(std::make_unique<double[]>(nn));
-  auto elem(std::make_unique<int[]>(ne * nmaxnode));
+  std::vector<double> xcoor(nn);
+  std::vector<double> ycoor(nn);
+  std::vector<double> zcoor(nn);
+  std::vector<int> elem(ne * nmaxnode);
 
-  ierr += nc_get_var_double(ncid, varid_x, xcoor.get());
-  ierr += nc_get_var_double(ncid, varid_y, ycoor.get());
-  ierr += nc_get_var_double(ncid, varid_z, zcoor.get());
-  ierr += nc_get_var_int(ncid, varid_elem, elem.get());
+  ierr += nc_get_var_double(ncid, varid_x, xcoor.data());
+  ierr += nc_get_var_double(ncid, varid_y, ycoor.data());
+  ierr += nc_get_var_double(ncid, varid_z, zcoor.data());
+  ierr += nc_get_var_int(ncid, varid_elem, elem.data());
   nc_close(ncid);
 
   if (ierr != 0) {
@@ -452,19 +451,18 @@ void MeshPrivate::readDflowMesh() {
 
   this->m_nodes.resize(nn);
   for (size_t i = 0; i < nn; ++i) {
-    this->m_nodes[i] =
-        Node(i + 1, xcoor.get()[i], ycoor.get()[i], zcoor.get()[i]);
+    this->m_nodes[i] = Node(i + 1, xcoor[i], ycoor[i], zcoor[i]);
   }
 
-  xcoor.reset(nullptr);
-  ycoor.reset(nullptr);
-  zcoor.reset(nullptr);
+  xcoor.clear();
+  ycoor.clear();
+  zcoor.clear();
 
   for (size_t i = 0; i < ne; ++i) {
     std::vector<size_t> n(nmaxnode);
     size_t nfill = 0;
     for (size_t j = 0; j < nmaxnode; ++j) {
-      n[j] = elem.get()[i * nmaxnode + j];
+      n[j] = elem[i * nmaxnode + j];
       if (n[j] == elemFillValue || n[j] == NC_FILL_INT || n[j] == NC_FILL_INT64)
         nfill++;
     }
@@ -1523,7 +1521,8 @@ void MeshPrivate::toBoundaryShapefile(const std::string &outputFile) {
   return;
 }
 
-void MeshPrivate::toBoundaryLineShapefile(const std::string &outputFile) {
+void MeshPrivate::toBoundaryLineShapefile(const std::string &outputFile,
+                                          const bool bothSides) {
   SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_ARCZ);
   DBFHandle dbfid = DBFCreate(outputFile.c_str());
   DBFAddField(dbfid, "bndId", FTInteger, 16, 0);
@@ -1531,17 +1530,18 @@ void MeshPrivate::toBoundaryLineShapefile(const std::string &outputFile) {
 
   int bcid = 0;
   for (auto &b : this->m_openBoundaries) {
-    auto lon = std::make_unique<double[]>(b.size());
-    auto lat = std::make_unique<double[]>(b.size());
-    auto elv = std::make_unique<double[]>(b.size());
+    std::vector<double> lon(b.size());
+    std::vector<double> lat(b.size());
+    std::vector<double> elv(b.size());
+
     for (size_t i = 0; i < b.size(); ++i) {
       lon[i] = b.node1(i)->x();
       lat[i] = b.node1(i)->y();
       elv[i] = -9999.0;
     }
 
-    SHPObject *shpobj = SHPCreateSimpleObject(SHPT_ARCZ, b.size(), lon.get(),
-                                              lat.get(), elv.get());
+    SHPObject *shpobj = SHPCreateSimpleObject(SHPT_ARCZ, b.size(), lon.data(),
+                                              lat.data(), elv.data());
     int shp_index = SHPWriteObject(shpid, -1, shpobj);
     SHPDestroyObject(shpobj);
     DBFWriteIntegerAttribute(dbfid, shp_index, 0, bcid);
@@ -1550,31 +1550,65 @@ void MeshPrivate::toBoundaryLineShapefile(const std::string &outputFile) {
   }
 
   for (auto &b : this->m_landBoundaries) {
-    auto lon = std::make_unique<double[]>(b.size());
-    auto lat = std::make_unique<double[]>(b.size());
-    auto elv = std::make_unique<double[]>(b.size());
-    for (size_t i = 0; i < b.size(); ++i) {
-      if (b.isInternalWeir()) {
-        lon[i] = (b.node1(i)->x() + b.node2(i)->x()) / 2.0;
-        lat[i] = (b.node1(i)->y() + b.node2(i)->y()) / 2.0;
-        elv[i] = b.crestElevation(i);
-      } else if (b.isExternalWeir()) {
-        lon[i] = b.node1(i)->x();
-        lat[i] = b.node1(i)->y();
-        elv[i] = b.crestElevation(i);
-      } else {
-        lon[i] = b.node1(i)->x();
-        lat[i] = b.node1(i)->y();
-        elv[i] = -9999.0;
-      }
+    std::vector<double> lon1;
+    std::vector<double> lat1;
+    std::vector<double> elv1;
+    std::vector<double> lon2;
+    std::vector<double> lat2;
+
+    lon1.reserve(b.size());
+    lat1.reserve(b.size());
+    elv1.reserve(b.size());
+    if (b.isInternalWeir()) {
+      lon2.reserve(b.size());
+      lat2.reserve(b.size());
     }
 
-    SHPObject *shpobj = SHPCreateSimpleObject(SHPT_ARCZ, b.size(), lon.get(),
-                                              lat.get(), elv.get());
-    int shp_index = SHPWriteObject(shpid, -1, shpobj);
-    SHPDestroyObject(shpobj);
-    DBFWriteIntegerAttribute(dbfid, shp_index, 0, bcid);
-    DBFWriteIntegerAttribute(dbfid, shp_index, 1, b.boundaryCode());
+    if (b.isInternalWeir() && bothSides) {
+      for (size_t i = 0; i < b.size(); ++i) {
+        lon1.push_back(b.node1(i)->x());
+        lat1.push_back(b.node1(i)->y());
+        lon2.push_back(b.node2(i)->x());
+        lat2.push_back(b.node2(i)->y());
+        elv1.push_back(b.crestElevation(i));
+
+        SHPObject *shpobj1 = SHPCreateSimpleObject(
+            SHPT_ARCZ, lon1.size(), lon1.data(), lat1.data(), elv1.data());
+        int shp_index1 = SHPWriteObject(shpid, -1, shpobj1);
+        SHPDestroyObject(shpobj1);
+        DBFWriteIntegerAttribute(dbfid, shp_index1, 0, bcid);
+        DBFWriteIntegerAttribute(dbfid, shp_index1, 1, b.boundaryCode());
+
+        SHPObject *shpobj2 = SHPCreateSimpleObject(
+            SHPT_ARCZ, lon2.size(), lon2.data(), lat2.data(), elv1.data());
+        int shp_index2 = SHPWriteObject(shpid, -1, shpobj2);
+        SHPDestroyObject(shpobj2);
+        DBFWriteIntegerAttribute(dbfid, shp_index2, 0, bcid);
+        DBFWriteIntegerAttribute(dbfid, shp_index2, 1, b.boundaryCode());
+      }
+    } else {
+      for (size_t i = 0; i < b.size(); ++i) {
+        if (b.isInternalWeir()) {
+          lon1.push_back((b.node1(i)->x() + b.node2(i)->x()) / 2.0);
+          lat1.push_back((b.node1(i)->y() + b.node2(i)->y()) / 2.0);
+          elv1.push_back(b.crestElevation(i));
+        } else if (b.isExternalWeir()) {
+          lon1.push_back(b.node1(i)->x());
+          lat1.push_back(b.node1(i)->y());
+          elv1.push_back(b.crestElevation(i));
+        } else {
+          lon1.push_back(b.node1(i)->x());
+          lat1.push_back(b.node1(i)->y());
+          elv1.push_back(-9999.0);
+        }
+      }
+      SHPObject *shpobj = SHPCreateSimpleObject(
+          SHPT_ARCZ, lon1.size(), lon1.data(), lat1.data(), elv1.data());
+      int shp_index = SHPWriteObject(shpid, -1, shpobj);
+      SHPDestroyObject(shpobj);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 0, bcid);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 1, b.boundaryCode());
+    }
     bcid++;
   }
 
@@ -1586,6 +1620,53 @@ void MeshPrivate::toBoundaryLineShapefile(const std::string &outputFile) {
   SHPClose(shpid);
 
   return;
+}
+
+void MeshPrivate::toWeirPolygonShapefile(const std::string &outputFile) {
+  SHPHandle shpid = SHPCreate(outputFile.c_str(), SHPT_POLYGON);
+  DBFHandle dbfid = DBFCreate(outputFile.c_str());
+  DBFAddField(dbfid, "bndId", FTInteger, 16, 0);
+
+  size_t bndid = 0;
+  for (auto &b : this->m_landBoundaries) {
+    if (b.isInternalWeir()) {
+      std::vector<double> lon;
+      std::vector<double> lat;
+      // std::vector<double> elv;
+      lon.reserve((b.size() * 2) + 1);
+      lat.reserve((b.size() * 2) + 1);
+      // elv.reserve((b.size() * 2) + 1);
+      for (size_t j = 0; j < b.size(); ++j) {
+        lon.push_back(b.node1(j)->x());
+        lat.push_back(b.node1(j)->y());
+        // elv.push_back(b.crestElevation(j));
+      }
+      for (size_t j = b.size(); j > 0; --j) {
+        lon.push_back(b.node2(j - 1)->x());
+        lat.push_back(b.node2(j - 1)->y());
+        // elv.push_back(b.crestElevation(j - 1));
+      }
+      lon.push_back(b.node1(0)->x());
+      lat.push_back(b.node1(0)->y());
+      // elv.push_back(b.crestElevation(0));
+
+      SHPObject *shpobj = SHPCreateSimpleObject(SHPT_POLYGON, lon.size(),
+                                                lon.data(), lat.data(), NULL);
+
+      int shp_index = SHPWriteObject(shpid, -1, shpobj);
+      SHPDestroyObject(shpobj);
+      DBFWriteIntegerAttribute(dbfid, shp_index, 0, bndid);
+
+      bndid++;
+    }
+  }
+
+  if (this->m_epsg != 0) {
+    this->writePrjFile(outputFile);
+  }
+
+  SHPClose(shpid);
+  DBFClose(dbfid);
 }
 
 /**
@@ -1958,50 +2039,49 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
   size_t nlinks = links.size();
   size_t maxelemnode = this->getMaxNodesPerElement();
 
-  auto xarray(std::make_unique<double[]>(this->numNodes()));
-  auto yarray(std::make_unique<double[]>(this->numNodes()));
-  auto zarray(std::make_unique<double[]>(this->numNodes()));
-  auto linkArray(std::make_unique<int[]>(nlinks * 2));
-  auto linkTypeArray(std::make_unique<int[]>(nlinks * 2));
-  auto netElemNodearray(
-      std::make_unique<int[]>(this->numElements() * maxelemnode));
+  std::vector<double> xarray(this->numNodes());
+  std::vector<double> yarray(this->numNodes());
+  std::vector<double> zarray(this->numNodes());
+  std::vector<int> linkArray(nlinks * 2);
+  std::vector<int> linkTypeArray(nlinks * 2);
+  std::vector<int> netElemNodearray(this->numElements() * maxelemnode);
 
   for (size_t i = 0; i < this->numNodes(); ++i) {
-    xarray.get()[i] = this->node(i)->x();
-    yarray.get()[i] = this->node(i)->y();
-    zarray.get()[i] = this->node(i)->z();
+    xarray[i] = this->node(i)->x();
+    yarray[i] = this->node(i)->y();
+    zarray[i] = this->node(i)->z();
   }
 
   size_t idx = 0;
   for (size_t i = 0; i < nlinks; ++i) {
-    linkArray.get()[idx] = links[i].first->id();
+    linkArray[idx] = links[i].first->id();
     idx++;
-    linkArray.get()[idx] = links[i].second->id();
+    linkArray[idx] = links[i].second->id();
     idx++;
-    linkTypeArray.get()[i] = 2;
+    linkTypeArray[i] = 2;
   }
 
   idx = 0;
   for (size_t i = 0; i < this->numElements(); ++i) {
     if (this->element(i)->n() == 3) {
-      netElemNodearray.get()[idx] = this->element(i)->node(0)->id();
+      netElemNodearray[idx] = this->element(i)->node(0)->id();
       idx++;
-      netElemNodearray.get()[idx] = this->element(i)->node(1)->id();
+      netElemNodearray[idx] = this->element(i)->node(1)->id();
       idx++;
-      netElemNodearray.get()[idx] = this->element(i)->node(2)->id();
+      netElemNodearray[idx] = this->element(i)->node(2)->id();
       idx++;
       if (maxelemnode == 4) {
-        netElemNodearray.get()[idx] = NC_FILL_INT;
+        netElemNodearray[idx] = NC_FILL_INT;
         idx++;
       }
     } else {
-      netElemNodearray.get()[idx] = this->element(i)->node(0)->id();
+      netElemNodearray[idx] = this->element(i)->node(0)->id();
       idx++;
-      netElemNodearray.get()[idx] = this->element(i)->node(1)->id();
+      netElemNodearray[idx] = this->element(i)->node(1)->id();
       idx++;
-      netElemNodearray.get()[idx] = this->element(i)->node(2)->id();
+      netElemNodearray[idx] = this->element(i)->node(2)->id();
       idx++;
-      netElemNodearray.get()[idx] = this->element(i)->node(3)->id();
+      netElemNodearray[idx] = this->element(i)->node(3)->id();
       idx++;
     }
   }
@@ -2021,44 +2101,39 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
     adcircmodules_throw_exception(
         "Error creating dimensions for D-Flow netCDF format file");
 
-  auto dim1d(std::make_unique<int[]>(1));
-  auto dim2d(std::make_unique<int[]>(2));
+  int dim1d[1];
+  int dim2d[2];
 
   int varid_mesh2d, varid_netnodex, varid_netnodey, varid_netnodez;
   ierr += nc_def_var(ncid, "Mesh2D", NC_INT, 0, nullptr, &varid_mesh2d);
-  dim1d.get()[0] = dimid_nnode;
-  ierr +=
-      nc_def_var(ncid, "NetNode_x", NC_DOUBLE, 1, dim1d.get(), &varid_netnodex);
-  ierr +=
-      nc_def_var(ncid, "NetNode_y", NC_DOUBLE, 1, dim1d.get(), &varid_netnodey);
-  ierr +=
-      nc_def_var(ncid, "NetNode_z", NC_DOUBLE, 1, dim1d.get(), &varid_netnodez);
+  dim1d[0] = dimid_nnode;
+  ierr += nc_def_var(ncid, "NetNode_x", NC_DOUBLE, 1, dim1d, &varid_netnodex);
+  ierr += nc_def_var(ncid, "NetNode_y", NC_DOUBLE, 1, dim1d, &varid_netnodey);
+  ierr += nc_def_var(ncid, "NetNode_z", NC_DOUBLE, 1, dim1d, &varid_netnodez);
 
-  dim1d.get()[0] = dimid_nlink;
-  dim2d.get()[0] = dimid_nlink;
-  dim2d.get()[1] = dimid_nlinkpts;
+  dim1d[0] = dimid_nlink;
+  dim2d[0] = dimid_nlink;
+  dim2d[1] = dimid_nlinkpts;
 
   int varid_netlinktype, varid_netlink, varid_crs;
-  ierr += nc_def_var(ncid, "NetLinkType", NC_INT, 1, dim1d.get(),
-                     &varid_netlinktype);
-  ierr += nc_def_var(ncid, "NetLink", NC_INT, 2, dim2d.get(), &varid_netlink);
+  ierr += nc_def_var(ncid, "NetLinkType", NC_INT, 1, dim1d, &varid_netlinktype);
+  ierr += nc_def_var(ncid, "NetLink", NC_INT, 2, dim2d, &varid_netlink);
   ierr += nc_def_var(ncid, "crs", NC_INT, 0, nullptr, &varid_crs);
 
-  dim2d.get()[0] = dimid_nelem;
-  dim2d.get()[1] = dimid_maxnode;
+  dim2d[0] = dimid_nelem;
+  dim2d[1] = dimid_maxnode;
 
   int varid_netelemnode;
-  ierr += nc_def_var(ncid, "NetElemNode", NC_INT, 2, dim2d.get(),
-                     &varid_netelemnode);
+  ierr += nc_def_var(ncid, "NetElemNode", NC_INT, 2, dim2d, &varid_netelemnode);
   if (ierr != NC_NOERR)
     adcircmodules_throw_exception(
         "Error defining variables for D-Flow netCDF format file");
 
   //...Define attributes
   ierr = nc_put_att_text(ncid, varid_mesh2d, "cf_role", 13, "mesh_topology");
-  dim1d.get()[0] = 2;
+  dim1d[0] = 2;
   ierr += nc_put_att_int(ncid, varid_mesh2d, "topology_dimension", NC_INT, 1,
-                         dim1d.get());
+                         dim1d);
   ierr += nc_put_att_text(ncid, varid_mesh2d, "node_coordinates", 19,
                           "NetNode_x NetNode_y");
   ierr += nc_put_att_text(ncid, varid_mesh2d, "node_dimension", 8, "nNetNode");
@@ -2083,12 +2158,11 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
     ierr += nc_put_att_text(ncid, varid_netnodey, "units", 13, "degrees_north");
     ierr +=
         nc_put_att_text(ncid, varid_netnodey, "standard_name", 8, "latitude");
-    dim1d.get()[0] = 1;
-    ierr +=
-        nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d.get());
+    dim1d[0] = 1;
+    ierr += nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d);
 
-    dim1d.get()[0] = this->m_epsg;
-    ierr += nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d.get());
+    dim1d[0] = this->m_epsg;
+    ierr += nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d);
   } else {
     ierr += nc_put_att_text(ncid, varid_netnodex, "axis", 1, "X");
     ierr += nc_put_att_text(ncid, varid_netnodex, "long_name", 32,
@@ -2104,12 +2178,11 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
     ierr += nc_put_att_text(ncid, varid_netnodey, "standard_name", 23,
                             "projection_y_coordinate");
 
-    dim1d.get()[0] = 0;
-    ierr +=
-        nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d.get());
+    dim1d[0] = 0;
+    ierr += nc_put_att_int(ncid, NC_GLOBAL, "Spherical", NC_INT, 1, dim1d);
 
-    dim1d.get()[0] = this->m_epsg;
-    ierr += nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d.get());
+    dim1d[0] = this->m_epsg;
+    ierr += nc_put_att_int(ncid, varid_crs, "EPSG", NC_INT, 1, dim1d);
   }
 
   ierr += nc_put_att_text(ncid, varid_netnodez, "axis", 1, "Z");
@@ -2121,11 +2194,10 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
   ierr += nc_put_att_text(ncid, varid_netnodez, "mesh", 6, "Mesh2D");
   ierr += nc_put_att_text(ncid, varid_netnodez, "location", 4, "node");
 
-  dim1d.get()[0] = 1;
-  ierr += nc_put_att_int(ncid, varid_netlink, "start_index", NC_INT, 1,
-                         dim1d.get());
-  ierr += nc_put_att_int(ncid, varid_netelemnode, "start_index", NC_INT, 1,
-                         dim1d.get());
+  dim1d[0] = 1;
+  ierr += nc_put_att_int(ncid, varid_netlink, "start_index", NC_INT, 1, dim1d);
+  ierr +=
+      nc_put_att_int(ncid, varid_netelemnode, "start_index", NC_INT, 1, dim1d);
   ierr += nc_put_att_text(ncid, NC_GLOBAL, "Conventions", 9, "UGRID-0.9");
 
   ierr = nc_enddef(ncid);
@@ -2133,12 +2205,12 @@ void MeshPrivate::writeDflowMesh(const std::string &filename) {
     adcircmodules_throw_exception(
         "Error writing variable attributes for D-Flow netCDF format file");
 
-  ierr += nc_put_var_double(ncid, varid_netnodex, xarray.get());
-  ierr += nc_put_var_double(ncid, varid_netnodey, yarray.get());
-  ierr += nc_put_var_double(ncid, varid_netnodez, zarray.get());
-  ierr += nc_put_var_int(ncid, varid_netlink, linkArray.get());
-  ierr += nc_put_var_int(ncid, varid_netlinktype, linkTypeArray.get());
-  ierr += nc_put_var_int(ncid, varid_netelemnode, netElemNodearray.get());
+  ierr += nc_put_var_double(ncid, varid_netnodex, xarray.data());
+  ierr += nc_put_var_double(ncid, varid_netnodey, yarray.data());
+  ierr += nc_put_var_double(ncid, varid_netnodez, zarray.data());
+  ierr += nc_put_var_int(ncid, varid_netlink, linkArray.data());
+  ierr += nc_put_var_int(ncid, varid_netlinktype, linkTypeArray.data());
+  ierr += nc_put_var_int(ncid, varid_netelemnode, netElemNodearray.data());
   ierr += nc_close(ncid);
 
   if (ierr != NC_NOERR)

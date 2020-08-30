@@ -515,21 +515,21 @@ void ReadOutput::readNetcdfHeader() {
   }
   this->setModelDt(dt);
 
-  auto t = std::make_unique<double[]>(this->numSnaps());
+  std::vector<double> t(this->numSnaps());
 
-  ierr = nc_get_var_double(this->m_ncid, this->m_varid_time, t.get());
+  ierr = nc_get_var_double(this->m_ncid, this->m_varid_time, t.data());
   if (ierr != NC_NOERR) {
     adcircmodules_throw_exception("Error getting time variable");
     return;
   }
 
   if (this->numSnaps() > 1) {
-    this->setDt(t.get()[1] - t.get()[0]);
+    this->setDt(t[1] - t[0]);
   } else {
-    this->setDt(t.get()[0]);
+    this->setDt(t[0]);
   }
   this->setDiteration(this->dt() / dt);
-  this->m_time = std::vector<double>(t.get(), t.get() + this->numSnaps());
+  this->m_time = t;
 
   this->findNetcdfVarId();
 

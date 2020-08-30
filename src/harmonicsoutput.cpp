@@ -29,9 +29,7 @@ namespace Harmonics {
  * it does not
  */
 HarmonicsOutput::HarmonicsOutput(const std::string& filename)
-    : m_impl(
-          std::make_unique<Adcirc::Private::HarmonicsOutputPrivate>(filename)) {
-}
+    : m_impl(new Adcirc::Private::HarmonicsOutputPrivate(filename)) {}
 
 /**
  * @brief Read the harmonics file

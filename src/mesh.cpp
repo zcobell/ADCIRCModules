@@ -24,10 +24,10 @@ using namespace Adcirc::Geometry;
 
 using Point = std::pair<double, double>;
 
-Mesh::Mesh() : m_impl(std::make_unique<Adcirc::Private::MeshPrivate>()) {}
+Mesh::Mesh() : m_impl(new Adcirc::Private::MeshPrivate()) {}
 
 Mesh::Mesh(const std::string &filename)
-    : m_impl(std::make_unique<Adcirc::Private::MeshPrivate>(filename)) {}
+    : m_impl(new Adcirc::Private::MeshPrivate(filename)) {}
 
 Mesh &Mesh::operator=(const Mesh &m) {
   this->m_impl = m.m_impl->clone();
@@ -315,8 +315,17 @@ void Mesh::toBoundaryShapefile(const std::string &outputFile) {
  * lines
  * @param[in] outputFile output file with .shp extension
  */
-void Mesh::toBoundaryLineShapefile(const std::string &outputFile) {
-  this->m_impl->toBoundaryLineShapefile(outputFile);
+void Mesh::toBoundaryLineShapefile(const std::string &outputFile,
+                                   const bool bothSides) {
+  this->m_impl->toBoundaryLineShapefile(outputFile, bothSides);
+}
+
+/**
+ * @brief Writes the weirs as closed polygons to a shapefile
+ * @param[in] outputFile output file with .shp extension
+ */
+void Mesh::toWeirPolygonShapefile(const std::string &outputFile) {
+  this->m_impl->toWeirPolygonShapefile(outputFile);
 }
 
 /**
