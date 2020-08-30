@@ -332,7 +332,7 @@ double GriddataPrivate::calculateAverage(Point &p, double w) {
         n++;
       }
     }
-    return n > 0 ? a / n : this->defaultValue();
+    return n > 0 ? a / static_cast<double>(n) : this->defaultValue();
   } else {
     return this->defaultValue();
   }
@@ -354,7 +354,7 @@ double GriddataPrivate::calculateAverageFromLookup(Point &p, double w) {
         }
       }
     }
-    return (n > 0 ? a / n : this->defaultValue());
+    return (n > 0 ? a / static_cast<double>(n) : this->defaultValue());
   } else {
     return this->defaultValue();
   }
@@ -605,12 +605,12 @@ double GriddataPrivate::calculateOutsideStandardDeviation(Point &p, double w,
     double a = 0;
     size_t np = 0;
     for (size_t i = 0; i < z2.size(); i++) {
-      if (z[i] >= cutoff) {
-        a += z[i];
+      if (z2[i] >= cutoff) {
+        a += z2[i];
         np++;
       }
     }
-    return np > 0 ? a / np : this->calculateAverage(p, w);
+    return np > 0 ? a / static_cast<double>(np) : this->calculateAverage(p, w);
   }
   return this->defaultValue();
 }
@@ -632,19 +632,19 @@ double GriddataPrivate::calculateOutsideStandardDeviationFromLookup(Point &p,
       }
     }
     double mean = std::accumulate(z2.begin(), z2.end(), 0.0) / z2.size();
-    double stddev = sqrt(
+    double stddev = std::sqrt(
         std::inner_product(z2.begin(), z2.end(), z2.begin(), 0.0) / z2.size() -
         (mean * mean));
     double cutoff = mean + n * stddev;
-    double a = 0;
+    double a = 0.0;
     size_t np = 0;
     for (size_t i = 0; i < z2.size(); i++) {
-      if (z[i] >= cutoff) {
-        a += z[i];
+      if (z2[i] >= cutoff) {
+        a += z2[i];
         np++;
       }
     }
-    return np > 0 ? a / np : this->calculateAverageFromLookup(p, w);
+    return np > 0 ? a / static_cast<double>(np) : this->calculateAverageFromLookup(p, w);
   }
   return this->defaultValue();
 }
