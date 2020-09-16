@@ -36,7 +36,7 @@ using Point = std::pair<double, double>;
 
 class GriddataPrivate {
  public:
-  GriddataPrivate();
+  //GriddataPrivate();
   GriddataPrivate(Adcirc::Geometry::Mesh *mesh, const std::string &rasterFile);
 
   std::string rasterFile() const;
@@ -125,9 +125,9 @@ class GriddataPrivate {
                               double &radius);
 
   template <typename T>
-  bool pixelDataInRadius(Point &p, double radius, std::vector<double> &x,
-                         std::vector<double> &y, std::vector<T> &z,
-                         std::vector<bool> &valid);
+  bool pixelDataInRadius(Point &p, double radius, size_t &n, 
+                         std::vector<double> &x, std::vector<double> &y, 
+                         std::vector<T> &z, std::vector<bool> &valid);
 
   template <typename T>
   void thresholdData(std::vector<T> &z, std::vector<bool> &v);
@@ -150,9 +150,9 @@ class GriddataPrivate {
   void assignInterpolationFunctionPointer(bool useLookupTable);
   double calculateExpansionLevelForPoints(size_t n);
 
+  Adcirc::Geometry::Mesh *m_mesh;
   std::vector<double> m_filterSize;
   double m_defaultValue;
-  Adcirc::Geometry::Mesh *m_mesh;
   std::unique_ptr<Adcirc::Raster::Rasterdata> m_raster;
   std::string m_rasterFile;
   std::vector<int> m_interpolationFlags;

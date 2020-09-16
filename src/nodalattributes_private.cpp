@@ -37,13 +37,13 @@ NodalAttributes::~NodalAttributes() = default;
 
 NodalAttributesPrivate::NodalAttributesPrivate()
     : m_filename(std::string()),
-      m_mesh(nullptr),
       m_numParameters(0),
-      m_numNodes(0) {}
+      m_numNodes(0),
+      m_mesh(nullptr){}
 
 NodalAttributesPrivate::NodalAttributesPrivate(const std::string &filename,
                                                Adcirc::Geometry::Mesh *mesh)
-    : m_filename(filename), m_mesh(mesh), m_numParameters(0) {
+    : m_filename(filename), m_numParameters(0), m_mesh(mesh) {
   if (this->m_mesh != nullptr) {
     this->m_numNodes = mesh->numNodes();
   }
@@ -368,8 +368,8 @@ void NodalAttributesPrivate::_writeFort13Body(std::ofstream &fid) {
   return;
 }
 
-size_t NodalAttributesPrivate::_countDefault(AttributeMetadata &metadata,
-                                             std::vector<Attribute> &values) {
+size_t NodalAttributesPrivate::_countDefault(const AttributeMetadata &metadata,
+                                             const std::vector<Attribute> &values) {
   size_t n = 0;
   for (auto &v : values) {
     if (!metadata.checkIfDefaultValue(v)) {
@@ -402,4 +402,20 @@ void NodalAttributesPrivate::addAttribute(AttributeMetadata &metadata,
   this->m_attributeLocations[metadata.name()] =
       this->m_nodalParameters.size() - 1;
   this->m_numParameters = this->m_nodalParameters.size();
+}
+
+void NodalAttributesPrivate::setAttributeData(size_t parameter, const std::vector<double> &values){
+    assert(values.size()==this->numNodes());
+    assert(values[0].size()==this->m_nodalParameters[parameter].numberOfValues());
+    for(size_t i=0;i<this->numNodes();++i){
+        this->m_nodalData[parameter][i].setValue(values[i]);
+    }
+}
+
+void NodalAttributesPrivate::setAttributeData(size_t parameter, const std::vector<std::vector<double>> &values){
+    assert(values.size()==this->numNodes());
+    assert(values[0].size()==this->m_nodalParameters[parameter].numberOfValues());
+    for(size_t i=0;i<this->numNodes();++i){
+        this->m_nodalData[parameter][i].setValue(values[i]);
+    }
 }

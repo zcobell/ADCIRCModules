@@ -156,7 +156,7 @@ std::string AttributeMetadata::headerString() {
  * Note that if the nodal attribute contains multiple values, every value is
  *checked to ensure equality
  **/
-bool AttributeMetadata::checkIfDefaultValue(const double &value) {
+bool AttributeMetadata::checkIfDefaultValue(const double &value) const {
   if (this->m_numValues != 1) return false;
   return FpCompare::equalTo(value, this->m_defaultValue[0]);
 }
@@ -168,7 +168,7 @@ bool AttributeMetadata::checkIfDefaultValue(const double &value) {
  * Vector version of above function. Checks to see if the supplied vector
  * is equal to the default value vector
  **/
-bool AttributeMetadata::checkIfDefaultValue(const std::vector<double> &value) {
+bool AttributeMetadata::checkIfDefaultValue(const std::vector<double> &value) const {
   return FpCompare::equalTo(this->m_defaultValue, value);
 }
 
@@ -180,6 +180,6 @@ bool AttributeMetadata::checkIfDefaultValue(const std::vector<double> &value) {
  *supplied vector is equal to the default value vector
  **/
 bool AttributeMetadata::checkIfDefaultValue(
-    const Adcirc::ModelParameters::Attribute &a) {
+    const Adcirc::ModelParameters::Attribute &a) const {
   return FpCompare::equalTo(this->m_defaultValue, a.values());
 }

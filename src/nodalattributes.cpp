@@ -197,5 +197,13 @@ void NodalAttributes::addAttribute(AttributeMetadata &metadata,
   this->m_impl->addAttribute(metadata, data);
 }
 
+void NodalAttributes::setAttributeData( size_t parameter, const std::vector<double> &values ){
+  this->m_impl->setAttributeData(parameter,values);
+}
+
+void NodalAttributes::setAttributeData( size_t parameter, const std::vector<std::vector<double>> &values ){
+  this->m_impl->setAttributeData(parameter,values);
+}
+
 }  // namespace ModelParameters
 }  // namespace Adcirc

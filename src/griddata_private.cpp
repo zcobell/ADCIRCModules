@@ -70,43 +70,40 @@ bool GriddataPrivate::getKeyValue(unsigned short key, double &value) {
 
 Griddata::~Griddata() = default;
 
-GriddataPrivate::GriddataPrivate()
-    : m_mesh(nullptr),
-      m_raster(nullptr),
-      m_rasterFile(std::string()),
-      m_interpolationFlags(std::vector<int>()),
-      m_filterSize(std::vector<double>()),
-      m_defaultValue(-9999.0),
-      m_epsg(4326),
-      m_datumShift(0.0),
-      m_showProgressBar(false),
-      m_rasterMultiplier(1.0),
-      m_calculateDwindPtr(nullptr),
-      m_calculatePointPtr(nullptr),
-      m_thresholdValue(0.0),
-      m_thresholdMethod(Interpolation::Threshold::NoThreshold),
-      m_rasterInMemory(false) {}
+//GriddataPrivate::GriddataPrivate()
+//    : 
+//      m_calculatePointPtr(nullptr),
+//      m_calculateDwindPtr(nullptr),
+//      m_mesh(nullptr),
+//      m_filterSize(0),
+//      m_defaultValue(-9999.0),
+//      m_raster(nullptr),
+//      m_rasterFile(std::string()),
+//      m_interpolationFlags(0),
+//      m_epsg(4326),
+//      m_thresholdMethod(Interpolation::Threshold::NoThreshold),
+//      m_rasterMultiplier(1.0),
+//      m_datumShift(0.0),
+//      m_thresholdValue(0.0),
+//      m_showProgressBar(false),
+//      m_rasterInMemory(false) {}
 
 GriddataPrivate::GriddataPrivate(Mesh *mesh, const std::string &rasterFile)
-    : m_mesh(mesh),
-      m_rasterFile(rasterFile),
-      m_defaultValue(-9999.0),
-      m_epsg(4326),
-      m_datumShift(0.0),
-      m_showProgressBar(false),
-      m_rasterMultiplier(1.0),
+    : m_calculatePointPtr(nullptr),
       m_calculateDwindPtr(nullptr),
-      m_calculatePointPtr(nullptr),
-      m_thresholdValue(0.0),
+      m_mesh(mesh),
+      m_filterSize(m_mesh->numNodes(),1.0),
+      m_defaultValue(-9999.0),
+      m_raster(new Adcirc::Raster::Rasterdata(rasterFile)),
+      m_rasterFile(rasterFile),
+      m_interpolationFlags(m_mesh->numNodes(),Average),
+      m_epsg(4326),
       m_thresholdMethod(Interpolation::Threshold::NoThreshold),
-      m_rasterInMemory(false),
-      m_raster(new Adcirc::Raster::Rasterdata(rasterFile)) {
-  this->m_interpolationFlags.resize(this->m_mesh->numNodes());
-  std::fill(this->m_interpolationFlags.begin(),
-            this->m_interpolationFlags.end(), Average);
-  this->m_filterSize.resize(this->m_mesh->numNodes());
-  std::fill(this->m_filterSize.begin(), this->m_filterSize.end(), 1.0);
-}
+      m_rasterMultiplier(1.0),
+      m_datumShift(0.0),
+      m_thresholdValue(0.0),
+      m_showProgressBar(false),
+      m_rasterInMemory(false){}
 
 std::string GriddataPrivate::rasterFile() const { return this->m_rasterFile; }
 
@@ -224,6 +221,7 @@ void GriddataPrivate::setRasterInMemory(bool rasterInMemory) {
 
 template <typename T>
 bool GriddataPrivate::pixelDataInRadius(Point &p, double radius,
+                                        size_t &n,
                                         std::vector<double> &x,
                                         std::vector<double> &y,
                                         std::vector<T> &z,
@@ -231,9 +229,9 @@ bool GriddataPrivate::pixelDataInRadius(Point &p, double radius,
   Adcirc::Raster::Pixel ul, lr;
   this->m_raster.get()->searchBoxAroundPoint(p.first, p.second, radius, ul, lr);
   bool r = false;
+  n = 0;
 
   if (ul.isValid() && lr.isValid()) {
-    size_t n = 0;
     this->m_raster.get()->pixelValues<T>(ul.i(), ul.j(), lr.i(), lr.j(), n, x,
                                          y, z);
 
@@ -325,10 +323,11 @@ double GriddataPrivate::calculatePointFromLookup(Point &p, double searchRadius,
 double GriddataPrivate::calculateAverage(Point &p, double w) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
-  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+  size_t np = 0;
+  if (this->pixelDataInRadius(p, w, np, x, y, z, v)) {
     double a = 0.0;
     size_t n = 0;
-    for (size_t i = 0; i < x.size(); ++i) {
+    for (size_t i = 0; i < np; ++i) {
       if (v[i]) {
         a += z[i];
         n++;
@@ -344,10 +343,11 @@ double GriddataPrivate::calculateAverageFromLookup(Point &p, double w) {
   std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
-  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+  size_t np = 0;
+  if (this->pixelDataInRadius(p, w, np, x, y, z, v)) {
     size_t n = 0;
     double a = 0.0;
-    for (size_t i = 0; i < x.size(); ++i) {
+    for (size_t i = 0; i < np; ++i) {
       if (v[i]) {
         double zl;
         if (this->getKeyValue(z[i], zl)) {
@@ -385,11 +385,12 @@ double GriddataPrivate::calculateBilskieAveragingFromLookup(
 double GriddataPrivate::calculateInverseDistanceWeighted(Point &p, double w) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
-  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+  size_t np = 0;
+  if (this->pixelDataInRadius(p, w, np, x, y, z, v)) {
     double n = 0.0;
     double d = 0.0;
     size_t num = 0;
-    for (size_t i = 0; i < z.size(); ++i) {
+    for (size_t i = 0; i < np; ++i) {
       if (v[i]) {
         double dis = Constants::distance(p, x[i], y[i]);
         n += z[i] / dis;
@@ -406,15 +407,16 @@ double GriddataPrivate::calculateInverseDistanceWeightedNPoints(Point &p,
                                                                 double n) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
-  int maxPoints = static_cast<size_t>(n);
+  size_t maxPoints = static_cast<size_t>(n);
 
   double w = this->calculateExpansionLevelForPoints(maxPoints);
 
-  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+  size_t onp = 0;
+  if (this->pixelDataInRadius(p, w, onp, x, y, z, v)) {
     double val = 0.0;
     double d = 0.0;
     size_t np = 0;
-    for (size_t i = 0; i < z.size(); ++i) {
+    for (size_t i = 0; i < onp; ++i) {
       if (v[i]) {
         double dis = Constants::distance(p, x[i], y[i]);
         val += z[i] / dis;
@@ -438,10 +440,11 @@ double GriddataPrivate::calculateAverageNearestN(Point &p, double n) {
   size_t maxPoints = static_cast<size_t>(n);
   double w = this->calculateExpansionLevelForPoints(maxPoints);
   std::vector<Point> pts;
+  size_t onp = 0;
 
-  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+  if (this->pixelDataInRadius(p, w, onp, x, y, z, v)) {
     pts.reserve(z.size());
-    for (size_t i = 0; i < z.size(); ++i) {
+    for (size_t i = 0; i < onp; ++i) {
       if (v[i]) {
         pts.push_back(Point(Constants::distance(p, x[i], y[i]), z[i]));
       }
@@ -469,10 +472,11 @@ double GriddataPrivate::calculateAverageNearestNFromLookup(Point &p, double n) {
   size_t maxPoints = static_cast<size_t>(n);
   double w = this->calculateExpansionLevelForPoints(maxPoints);
   std::vector<Point> pts;
+  size_t onp = 0;
 
-  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
-    pts.reserve(z.size());
-    for (size_t i = 0; i < z.size(); ++i) {
+  if (this->pixelDataInRadius(p, w, onp, x, y, z, v)) {
+    pts.reserve(onp);
+    for (size_t i = 0; i < onp; ++i) {
       if (v[i]) {
         double zl;
         if (this->getKeyValue(z[i], zl)) {
@@ -501,11 +505,12 @@ double GriddataPrivate::calculateInverseDistanceWeightedFromLookup(Point &p,
   std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
-  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+  size_t onp = 0;
+  if (this->pixelDataInRadius(p, w, onp, x, y, z, v)) {
     double n = 0.0;
     double d = 0.0;
     size_t num = 0;
-    for (size_t i = 0; i < z.size(); ++i) {
+    for (size_t i = 0; i < onp; ++i) {
       if (v[i]) {
         double zl;
         if (this->getKeyValue(z[i], zl)) {
@@ -563,15 +568,16 @@ double GriddataPrivate::calculateInverseDistanceWeightedNPointsFromLookup(
   std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
-  int maxPoints = static_cast<size_t>(n);
+  size_t maxPoints = static_cast<size_t>(n);
 
   double w = calculateExpansionLevelForPoints(n);
+  size_t onp = 0;
 
-  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+  if (this->pixelDataInRadius(p, w, onp, x, y, z, v)) {
     double val = 0.0;
     double d = 0.0;
     size_t np = 0;
-    for (size_t i = 0; i < z.size(); ++i) {
+    for (size_t i = 0; i < onp; ++i) {
       if (v[i]) {
         double zl;
         if (this->getKeyValue(z[i], zl)) {
@@ -592,9 +598,10 @@ double GriddataPrivate::calculateOutsideStandardDeviation(Point &p, double w,
                                                           int n) {
   std::vector<double> x, y, z, z2;
   std::vector<bool> v;
-  z2.reserve(z.size());
-  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
-    for (size_t i = 0; i < z.size(); ++i) {
+  size_t onp = 0;
+  if (this->pixelDataInRadius(p, w, onp, x, y, z, v)) {
+    z2.reserve(z.size());
+    for (size_t i = 0; i < onp; ++i) {
       if (v[i]) {
         z2.push_back(z[i]);
       }
@@ -620,12 +627,14 @@ double GriddataPrivate::calculateOutsideStandardDeviation(Point &p, double w,
 double GriddataPrivate::calculateOutsideStandardDeviationFromLookup(Point &p,
                                                                     double w,
                                                                     int n) {
-  std::vector<double> x, y, z2;
+  std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
-  z2.reserve(z.size());
-  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
-    for (size_t i = 0; i < z.size(); ++i) {
+  size_t onp;
+  if (this->pixelDataInRadius(p, w, onp, x, y, z, v)) {
+    std::vector<double> z2;
+    z2.reserve(z.size());
+    for (size_t i = 0; i < onp; ++i) {
       if (v[i]) {
         double zl;
         if (this->getKeyValue(z[i], zl)) {
@@ -685,9 +694,10 @@ double GriddataPrivate::calculateNearestFromLookup(Point &p, double w) {
 double GriddataPrivate::calculateHighest(Point &p, double w) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
-  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+  size_t onp = 0;
+  if (this->pixelDataInRadius(p, w, onp, x, y, z, v)) {
     double zm = std::numeric_limits<double>::min();
-    for (size_t i = 0; i < x.size(); ++i) {
+    for (size_t i = 0; i < onp; ++i) {
       if (v[i]) {
         if (z[i] > zm) {
           zm = z[i];
@@ -704,9 +714,10 @@ double GriddataPrivate::calculateHighestFromLookup(Point &p, double w) {
   std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
-  if (this->pixelDataInRadius(p, w, x, y, z, v)) {
+  size_t onp = 0;
+  if (this->pixelDataInRadius(p, w, onp, x, y, z, v)) {
     double zm = std::numeric_limits<double>::min();
-    for (size_t i = 0; i < x.size(); ++i) {
+    for (size_t i = 0; i < onp; ++i) {
       if (v[i]) {
         double zl;
         if (this->getKeyValue(z[i], zl)) {
@@ -764,17 +775,16 @@ void GriddataPrivate::computeWeightedDirectionalWindValues(
 std::vector<double> GriddataPrivate::calculateDirectionalWindFromRaster(
     Point &p) {
   double nearWeight = 0.0;
-  std::vector<double> x, y, z, wind, weight;
+  std::vector<double> x, y, z;
   std::vector<bool> v;
-  wind.resize(12);
-  weight.resize(12);
 
-  std::fill(weight.begin(), weight.end(), 0.0);
-  std::fill(wind.begin(), wind.end(), 0.0);
+  std::vector<double> weight(12,0.0);
+  std::vector<double> wind(12,0.0);
+  size_t onp = 0;
 
-  this->pixelDataInRadius(p, this->windRadius(), x, y, z, v);
+  this->pixelDataInRadius(p, this->windRadius(), onp, x, y, z, v);
 
-  for (size_t i = 0; i < x.size(); ++i) {
+  for (size_t i = 0; i < onp; ++i) {
     if (v[i]) {
       double w = 0.0;
       int dir = 0;
@@ -795,18 +805,26 @@ std::vector<double> GriddataPrivate::calculateDirectionalWindFromRaster(
 std::vector<double> GriddataPrivate::calculateDirectionalWindFromLookup(
     Point &p) {
   double nearWeight = 0.0;
-  std::vector<double> x, y, wind, weight;
+  std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
-  wind.resize(12);
-  weight.resize(12);
 
-  std::fill(weight.begin(), weight.end(), 0.0);
-  std::fill(wind.begin(), wind.end(), 0.0);
+  std::vector<double> wind(12,0.0);
+  std::vector<double> weight(12,0.0);
+  size_t n = 0;
 
-  this->pixelDataInRadius(p, this->windRadius(), x, y, z, v);
+  this->pixelDataInRadius(p, this->windRadius(), n, x, y, z, v);
+  if(std::all_of(z.begin(),z.end(),[&](const double &r){return r==z.front();})){
+    if(v.front()){    
+        double zl = 0.0;
+        if(this->getKeyValue(z.front(),zl)){
+            std::fill(wind.begin(),wind.end(),zl);
+        }
+    }
+    return wind;
+  }
 
-  for (size_t i = 0; i < x.size(); ++i) {
+  for (size_t i = 0; i < n; ++i) {
     if (v[i]) {
       double zl;
       if (this->getKeyValue(z[i], zl)) {
@@ -948,31 +966,31 @@ GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
     this->m_raster.get()->read();
   }
 
-  std::vector<std::vector<double>> result;
-  result.resize(this->m_mesh->numNodes());
-
   if (this->showProgressBar()) {
     progress = std::unique_ptr<boost::progress_display>(
         new boost::progress_display(this->m_mesh->numNodes()));
   }
 
-#pragma omp parallel for schedule(dynamic) shared(progress)
-  for (signed long long i = 0;
-       i < static_cast<signed long long>(this->m_mesh->numNodes()); ++i) {
+  std::vector<std::vector<double>> result(m_mesh->numNodes());
+  for(auto &r : result){
+      r = std::vector<double>(12,0.0);
+  }
+
+#pragma omp parallel for schedule(dynamic) shared(progress, result)
+  for (size_t i = 0; i < this->m_mesh->numNodes(); ++i) {
     if (this->m_showProgressBar) {
 #pragma omp critical
       ++(*progress);
     }
 
-    if (this->m_interpolationFlags[i] != NoThreshold) {
+    if (this->m_interpolationFlags[i] != NoMethod) {
       Point p(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
       result[i] = (this->*m_calculateDwindPtr)(p);
-      for (auto &r : result[i]) {
-        r += this->m_datumShift;
+      if(m_datumShift!=0.0){
+        for (auto &r : result[i]) {
+          r += this->m_datumShift;
+        }
       }
-    } else {
-      result[i] = std::vector<double>(12);
-      std::fill(result[i].begin(), result[i].end(), this->defaultValue());
     }
   }
 

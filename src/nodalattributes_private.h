@@ -62,6 +62,9 @@ class NodalAttributesPrivate {
   Adcirc::ModelParameters::Attribute *attribute(size_t parameter, size_t node);
   Adcirc::ModelParameters::Attribute *attribute(const std::string &name,
                                                 size_t node);
+  
+  void setAttributeData(size_t parameter, const std::vector<double> &values);
+  void setAttributeData(size_t parameter, const std::vector<std::vector<double>> &values);
 
   Adcirc::ModelParameters::AttributeMetadata *metadata(size_t parameter);
   Adcirc::ModelParameters::AttributeMetadata *metadata(const std::string &name);
@@ -77,8 +80,8 @@ class NodalAttributesPrivate {
   void _writeFort13Header(std::ofstream &fid);
   void _fillDefaultValues();
   void _mapNodes();
-  size_t _countDefault(Adcirc::ModelParameters::AttributeMetadata &metadata,
-                       std::vector<Adcirc::ModelParameters::Attribute> &values);
+  size_t _countDefault(const Adcirc::ModelParameters::AttributeMetadata &metadata,
+                       const std::vector<Adcirc::ModelParameters::Attribute> &values);
 
   /// Mapping function between the name of a nodal parameter and its position in
   /// the nodalParameters vector

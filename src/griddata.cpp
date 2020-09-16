@@ -25,7 +25,7 @@ using namespace Adcirc::Interpolation;
 /**
  * @brief Default constructor
  */
-Griddata::Griddata() : m_impl(new Adcirc::Private::GriddataPrivate()) {}
+//Griddata::Griddata() : m_impl(new Adcirc::Private::GriddataPrivate()) {}
 
 /**
  * @brief Constructor that takes mesh and raster file

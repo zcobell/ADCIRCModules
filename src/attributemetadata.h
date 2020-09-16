@@ -65,10 +65,10 @@ class AttributeMetadata {
   void ADCIRCMODULES_EXPORT setDefaultValue(size_t index, const double &value);
   void ADCIRCMODULES_EXPORT setDefaultValue(const std::vector<double> &value);
   bool ADCIRCMODULES_EXPORT
-  checkIfDefaultValue(const std::vector<double> &value);
-  bool ADCIRCMODULES_EXPORT checkIfDefaultValue(const double &value);
+  checkIfDefaultValue(const std::vector<double> &value) const;
+  bool ADCIRCMODULES_EXPORT checkIfDefaultValue(const double &value) const;
   bool ADCIRCMODULES_EXPORT
-  checkIfDefaultValue(const Adcirc::ModelParameters::Attribute &a);
+  checkIfDefaultValue(const Adcirc::ModelParameters::Attribute &a) const;
 
   std::string ADCIRCMODULES_EXPORT headerString();
 

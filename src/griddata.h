@@ -61,7 +61,7 @@ namespace Interpolation {
  */
 class Griddata {
  public:
-  ADCIRCMODULES_EXPORT Griddata();
+  //ADCIRCMODULES_EXPORT Griddata();
   ADCIRCMODULES_EXPORT Griddata(Adcirc::Geometry::Mesh *mesh,
                                 const std::string &rasterFile);
   ADCIRCMODULES_EXPORT ~Griddata();
