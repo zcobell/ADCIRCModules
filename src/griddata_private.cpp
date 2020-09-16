@@ -233,12 +233,14 @@ bool GriddataPrivate::pixelDataInRadius(Point &p, double radius,
   bool r = false;
 
   if (ul.isValid() && lr.isValid()) {
-    this->m_raster.get()->pixelValues<T>(ul.i(), ul.j(), lr.i(), lr.j(), x, y,
-                                         z);
-    valid.resize(x.size());
+    size_t n = 0;
+    this->m_raster.get()->pixelValues<T>(ul.i(), ul.j(), lr.i(), lr.j(), n, x,
+                                         y, z);
+
+    if (valid.size() != x.size()) valid.resize(x.size());
     std::fill(valid.begin(), valid.end(), false);
 
-    for (size_t i = 0; i < x.size(); ++i) {
+    for (size_t i = 0; i < n; ++i) {
       if (z[i] != this->m_raster.get()->nodata<T>()) {
         if (Constants::distance(p, x[i], y[i]) <= radius) {
           valid[i] = true;
@@ -644,7 +646,8 @@ double GriddataPrivate::calculateOutsideStandardDeviationFromLookup(Point &p,
         np++;
       }
     }
-    return np > 0 ? a / static_cast<double>(np) : this->calculateAverageFromLookup(p, w);
+    return np > 0 ? a / static_cast<double>(np)
+                  : this->calculateAverageFromLookup(p, w);
   }
   return this->defaultValue();
 }

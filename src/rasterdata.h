@@ -107,7 +107,7 @@ class Rasterdata {
 
   template <typename T>
   int pixelValues(size_t ibegin, size_t jbegin, size_t iend, size_t jend,
-                  std::vector<double> &x, std::vector<double> &y,
+                  size_t &n, std::vector<double> &x, std::vector<double> &y,
                   std::vector<T> &z);
 
   int rasterType() const;
@@ -124,12 +124,12 @@ class Rasterdata {
 
   template <typename T>
   int pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
-                          size_t jend, std::vector<double> &x,
+                          size_t jend, size_t &n, std::vector<double> &x,
                           std::vector<double> &y, std::vector<T> &z);
 
   template <typename T>
   int pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
-                            size_t jend, std::vector<double> &x,
+                            size_t jend, size_t &n, std::vector<double> &x,
                             std::vector<double> &y, std::vector<T> &z);
 
   void readIntegerRasterToMemory();

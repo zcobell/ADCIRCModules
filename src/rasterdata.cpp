@@ -30,10 +30,10 @@ using namespace Adcirc::Raster;
 template int Adcirc::Raster::Rasterdata::pixelValue<int>(Pixel &p);
 template double Adcirc::Raster::Rasterdata::pixelValue<double>(Pixel &p);
 template int Adcirc::Raster::Rasterdata::pixelValues<int>(
-    size_t ibegin, size_t jbegin, size_t iend, size_t jend,
+    size_t ibegin, size_t jbegin, size_t iend, size_t jend, size_t &n,
     std::vector<double> &x, std::vector<double> &y, std::vector<int> &z);
 template int Adcirc::Raster::Rasterdata::pixelValues<double>(
-    size_t ibegin, size_t jbegin, size_t iend, size_t jend,
+    size_t ibegin, size_t jbegin, size_t iend, size_t jend, size_t &n,
     std::vector<double> &x, std::vector<double> &y, std::vector<double> &z);
 template int Adcirc::Raster::Rasterdata::nodata<int>() const;
 template double Adcirc::Raster::Rasterdata::nodata<double>() const;
@@ -433,12 +433,13 @@ void Rasterdata::read() {
  */
 template <typename T>
 int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
-                            size_t jend, std::vector<double> &x,
+                            size_t jend, size_t &n, std::vector<double> &x,
                             std::vector<double> &y, std::vector<T> &z) {
   if (this->m_isRead) {
-    return this->pixelValuesFromMemory<T>(ibegin, jbegin, iend, jend, x, y, z);
+    return this->pixelValuesFromMemory<T>(ibegin, jbegin, iend, jend, n, x, y,
+                                          z);
   } else {
-    return this->pixelValuesFromDisk<T>(ibegin, jbegin, iend, jend, x, y, z);
+    return this->pixelValuesFromDisk<T>(ibegin, jbegin, iend, jend, n, x, y, z);
   }
 }
 
@@ -455,14 +456,15 @@ int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
  */
 template <typename T>
 int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
-                                      size_t jend, std::vector<double> &x,
+                                      size_t jend, size_t &n,
+                                      std::vector<double> &x,
                                       std::vector<double> &y,
                                       std::vector<T> &z) {
-  size_t nx = iend - ibegin + 1;
-  size_t ny = jend - jbegin + 1;
-  size_t n = nx * ny;
+  const size_t nx = iend - ibegin + 1;
+  const size_t ny = jend - jbegin + 1;
+  n = nx * ny;
 
-  if (x.size() != n) {
+  if (x.size() < n) {
     x.resize(n);
     y.resize(n);
     z.resize(n);
@@ -471,9 +473,7 @@ int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
   size_t k = 0;
   for (size_t j = jbegin; j <= jend; ++j) {
     for (size_t i = ibegin; i <= iend; ++i) {
-      Point p = this->pixelToCoordinate(i, j);
-      x[k] = p.first;
-      y[k] = p.second;
+      std::tie(x[k],y[k]) = this->pixelToCoordinate(i,j);
       if (std::is_same<T, int>::value) {
         z[k] = this->m_intOnDisk[i][j];
       } else if (std::is_same<T, double>::value) {
@@ -500,36 +500,32 @@ int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
  */
 template <typename T>
 int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
-                                    size_t jend, std::vector<double> &x,
+                                    size_t jend, size_t &n,
+                                    std::vector<double> &x,
                                     std::vector<double> &y, std::vector<T> &z) {
-  size_t nx = iend - ibegin + 1;
-  size_t ny = jend - jbegin + 1;
-  size_t n = nx * ny;
-  T *buf = static_cast<T *>(CPLMalloc(sizeof(T) * n));
+  const size_t nx = iend - ibegin + 1;
+  const size_t ny = jend - jbegin + 1;
+  n = nx * ny;
 
-  CPLErr e = CPLErr();
-
-#pragma omp critical
-  e = this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, buf, nx, ny,
-                             static_cast<GDALDataType>(this->m_readType), 0, 0);
-
-  if (x.size() != n) {
+  if (x.size() < n) {
     x.resize(n);
     y.resize(n);
     z.resize(n);
   }
 
+  CPLErr e = CPLErr();
+
+#pragma omp critical
+  e = this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, z.data(), nx, ny,
+                             static_cast<GDALDataType>(this->m_readType), 0, 0);
+
   size_t k = 0;
   for (size_t j = jbegin; j <= jend; ++j) {
     for (size_t i = ibegin; i <= iend; ++i) {
-      Point p = this->pixelToCoordinate(i, j);
-      x[k] = p.first;
-      y[k] = p.second;
-      z[k] = buf[k];
+      std::tie(x[k], y[k]) = this->pixelToCoordinate(i, j);
       k++;
     }
   }
-  CPLFree(buf);
   return static_cast<int>(e);
 }
 
