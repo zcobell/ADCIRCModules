@@ -358,6 +358,7 @@ void Rasterdata::readDoubleRasterToMemory() {
   size_t n = this->nx() * this->ny();
   double *buf = (double *)CPLMalloc(sizeof(double) * n);
 
+#pragma omp critical
   CPLErr e = this->m_band->RasterIO(
       GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
       static_cast<GDALDataType>(this->m_readType), 0, 0);
@@ -384,6 +385,7 @@ void Rasterdata::readIntegerRasterToMemory() {
   size_t n = this->nx() * this->ny();
   int *buf = static_cast<int *>(CPLMalloc(sizeof(int) * n));
 
+#pragma omp critical
   CPLErr e = this->m_band->RasterIO(
       GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
       static_cast<GDALDataType>(this->m_readType), 0, 0);
@@ -473,7 +475,7 @@ int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
   size_t k = 0;
   for (size_t j = jbegin; j <= jend; ++j) {
     for (size_t i = ibegin; i <= iend; ++i) {
-      std::tie(x[k],y[k]) = this->pixelToCoordinate(i,j);
+      std::tie(x[k], y[k]) = this->pixelToCoordinate(i, j);
       if (std::is_same<T, int>::value) {
         z[k] = this->m_intOnDisk[i][j];
       } else if (std::is_same<T, double>::value) {
@@ -507,7 +509,7 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
   const size_t ny = jend - jbegin + 1;
   n = nx * ny;
 
-  if (x.size() < n) {
+  if (z.size() < n) {
     x.resize(n);
     y.resize(n);
     z.resize(n);

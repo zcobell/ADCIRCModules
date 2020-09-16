@@ -70,8 +70,8 @@ bool GriddataPrivate::getKeyValue(unsigned short key, double &value) {
 
 Griddata::~Griddata() = default;
 
-//GriddataPrivate::GriddataPrivate()
-//    : 
+// GriddataPrivate::GriddataPrivate()
+//    :
 //      m_calculatePointPtr(nullptr),
 //      m_calculateDwindPtr(nullptr),
 //      m_mesh(nullptr),
@@ -92,18 +92,18 @@ GriddataPrivate::GriddataPrivate(Mesh *mesh, const std::string &rasterFile)
     : m_calculatePointPtr(nullptr),
       m_calculateDwindPtr(nullptr),
       m_mesh(mesh),
-      m_filterSize(m_mesh->numNodes(),1.0),
+      m_filterSize(m_mesh->numNodes(), 1.0),
       m_defaultValue(-9999.0),
       m_raster(new Adcirc::Raster::Rasterdata(rasterFile)),
       m_rasterFile(rasterFile),
-      m_interpolationFlags(m_mesh->numNodes(),Average),
+      m_interpolationFlags(m_mesh->numNodes(), Average),
       m_epsg(4326),
       m_thresholdMethod(Interpolation::Threshold::NoThreshold),
       m_rasterMultiplier(1.0),
       m_datumShift(0.0),
       m_thresholdValue(0.0),
       m_showProgressBar(false),
-      m_rasterInMemory(false){}
+      m_rasterInMemory(false) {}
 
 std::string GriddataPrivate::rasterFile() const { return this->m_rasterFile; }
 
@@ -220,8 +220,7 @@ void GriddataPrivate::setRasterInMemory(bool rasterInMemory) {
 }
 
 template <typename T>
-bool GriddataPrivate::pixelDataInRadius(Point &p, double radius,
-                                        size_t &n,
+bool GriddataPrivate::pixelDataInRadius(Point &p, double radius, size_t &n,
                                         std::vector<double> &x,
                                         std::vector<double> &y,
                                         std::vector<T> &z,
@@ -773,25 +772,26 @@ void GriddataPrivate::computeWeightedDirectionalWindValues(
 }
 
 std::vector<double> GriddataPrivate::calculateDirectionalWindFromRaster(
-    Point &p) {
+    Point &p, std::vector<double> &buffer_x, std::vector<double> &buffer_y,
+    std::vector<double> &buffer_z, std::vector<bool> &buffer_v) {
   double nearWeight = 0.0;
-  std::vector<double> x, y, z;
-  std::vector<bool> v;
 
-  std::vector<double> weight(12,0.0);
-  std::vector<double> wind(12,0.0);
+  std::vector<double> weight(12, 0.0);
+  std::vector<double> wind(12, 0.0);
   size_t onp = 0;
 
-  this->pixelDataInRadius(p, this->windRadius(), onp, x, y, z, v);
+  this->pixelDataInRadius(p, this->windRadius(), onp, buffer_x, buffer_y,
+                          buffer_z, buffer_v);
 
   for (size_t i = 0; i < onp; ++i) {
-    if (v[i]) {
+    if (buffer_v[i]) {
       double w = 0.0;
       int dir = 0;
 
-      if (this->computeWindDirectionAndWeight(p, x[i], y[i], w, dir)) {
+      if (this->computeWindDirectionAndWeight(p, buffer_x[i], buffer_y[i], w,
+                                              dir)) {
         weight[dir] += w;
-        wind[dir] += w * z[i];
+        wind[dir] += w * buffer_z[i];
       } else {
         nearWeight += w;
       }
@@ -803,35 +803,35 @@ std::vector<double> GriddataPrivate::calculateDirectionalWindFromRaster(
 }
 
 std::vector<double> GriddataPrivate::calculateDirectionalWindFromLookup(
-    Point &p) {
+    Point &p, std::vector<double> &buffer_x, std::vector<double> &buffer_y,
+    std::vector<double> &buffer_z, std::vector<bool> &buffer_v) {
   double nearWeight = 0.0;
-  std::vector<double> x, y;
-  std::vector<int> z;
-  std::vector<bool> v;
-
-  std::vector<double> wind(12,0.0);
-  std::vector<double> weight(12,0.0);
   size_t n = 0;
+  std::vector<double> wind(12, 0.0);
+  std::vector<double> weight(12, 0.0);
 
-  this->pixelDataInRadius(p, this->windRadius(), n, x, y, z, v);
-  if(std::all_of(z.begin(),z.end(),[&](const double &r){return r==z.front();})){
-    if(v.front()){    
-        double zl = 0.0;
-        if(this->getKeyValue(z.front(),zl)){
-            std::fill(wind.begin(),wind.end(),zl);
-        }
+  this->pixelDataInRadius(p, this->windRadius(), n, buffer_x, buffer_y,
+                          buffer_z, buffer_v);
+  if (std::all_of(buffer_z.begin(), buffer_z.end(),
+                  [&](const double &r) { return r == buffer_z.front(); })) {
+    if (buffer_v.front()) {
+      double zl = 0.0;
+      if (this->getKeyValue(buffer_z.front(), zl)) {
+        std::fill(wind.begin(), wind.end(), zl);
+      }
     }
     return wind;
   }
 
   for (size_t i = 0; i < n; ++i) {
-    if (v[i]) {
+    if (buffer_v[i]) {
       double zl;
-      if (this->getKeyValue(z[i], zl)) {
+      if (this->getKeyValue(buffer_z[i], zl)) {
         double w = 0.0;
         int dir = 0;
 
-        if (this->computeWindDirectionAndWeight(p, x[i], y[i], w, dir)) {
+        if (this->computeWindDirectionAndWeight(p, buffer_x[i], buffer_y[i], w,
+                                                dir)) {
           weight[dir] += w;
           wind[dir] += w * zl;
         } else {
@@ -972,9 +972,16 @@ GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
   }
 
   std::vector<std::vector<double>> result(m_mesh->numNodes());
-  for(auto &r : result){
-      r = std::vector<double>(12,0.0);
+  for (auto &r : result) {
+    r = std::vector<double>(12, 0.0);
   }
+
+  const size_t npixels =
+      std::pow((this->windRadius() / this->m_raster->dx()) * 2.1, 2.0);
+  std::vector<double> xbuffer(npixels, 0.0);
+  std::vector<double> ybuffer(npixels, 0.0);
+  std::vector<double> zbuffer(npixels, 0.0);
+  std::vector<bool> vbuffer(npixels, 0.0);
 
 #pragma omp parallel for schedule(dynamic) shared(progress, result)
   for (size_t i = 0; i < this->m_mesh->numNodes(); ++i) {
@@ -985,8 +992,9 @@ GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
 
     if (this->m_interpolationFlags[i] != NoMethod) {
       Point p(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
-      result[i] = (this->*m_calculateDwindPtr)(p);
-      if(m_datumShift!=0.0){
+      result[i] =
+          (this->*m_calculateDwindPtr)(p, xbuffer, ybuffer, zbuffer, vbuffer);
+      if (m_datumShift != 0.0) {
         for (auto &r : result[i]) {
           r += this->m_datumShift;
         }

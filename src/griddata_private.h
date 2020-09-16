@@ -36,7 +36,7 @@ using Point = std::pair<double, double>;
 
 class GriddataPrivate {
  public:
-  //GriddataPrivate();
+  // GriddataPrivate();
   GriddataPrivate(Adcirc::Geometry::Mesh *mesh, const std::string &rasterFile);
 
   std::string rasterFile() const;
@@ -119,21 +119,28 @@ class GriddataPrivate {
                                                  double gsMultiplier,
                                                  Interpolation::Method method);
 
-  std::vector<double> (GriddataPrivate::*m_calculateDwindPtr)(Point &p);
+  std::vector<double> (GriddataPrivate::*m_calculateDwindPtr)(
+      Point &p, std::vector<double> &buffer_x, std::vector<double> &buffer_y,
+      std::vector<double> &buffer_z, std::vector<bool> &buffer_v);
 
   bool calculateBilskieRadius(double meshSize, double rasterCellSize,
                               double &radius);
 
   template <typename T>
-  bool pixelDataInRadius(Point &p, double radius, size_t &n, 
-                         std::vector<double> &x, std::vector<double> &y, 
+  bool pixelDataInRadius(Point &p, double radius, size_t &n,
+                         std::vector<double> &x, std::vector<double> &y,
                          std::vector<T> &z, std::vector<bool> &valid);
 
   template <typename T>
   void thresholdData(std::vector<T> &z, std::vector<bool> &v);
 
-  std::vector<double> calculateDirectionalWindFromRaster(Point &p);
-  std::vector<double> calculateDirectionalWindFromLookup(Point &p);
+  std::vector<double> calculateDirectionalWindFromRaster(
+      Point &p, std::vector<double> &buffer_x, std::vector<double> &buffer_y,
+      std::vector<double> &buffer_z, std::vector<bool> &buffer_v);
+
+  std::vector<double> calculateDirectionalWindFromLookup(
+      Point &p, std::vector<double> &buffer_x, std::vector<double> &buffer_y,
+      std::vector<double> &buffer_z, std::vector<bool> &buffer_v);
 
   bool computeWindDirectionAndWeight(Point &p, double x, double y, double &w,
                                      int &dir);

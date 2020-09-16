@@ -20,8 +20,8 @@ namespace ModelParameters {
 /**
  * @class NodalAttributes
  * @author Zachary Cobell
- * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
- * is released under the terms of the GNU General Public License v3
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
  * @brief The NodalAttributes class handles the reading and writing of Nodal
  * Attributes (i.e. fort.13) files
  *
@@ -72,8 +72,10 @@ class NodalAttributes {
   addAttribute(Adcirc::ModelParameters::AttributeMetadata &metadata,
                std::vector<Adcirc::ModelParameters::Attribute> &data);
 
-  void ADCIRCMODULES_EXPORT setAttributeData(size_t parameter, const std::vector<double> &values);
-  void ADCIRCMODULES_EXPORT setAttributeData(size_t parameter, const std::vector<std::vector<double>> &values);
+  void ADCIRCMODULES_EXPORT setAttributeData(size_t parameter,
+                                             const std::vector<double> &values);
+  void ADCIRCMODULES_EXPORT setAttributeData(
+      size_t parameter, const std::vector<std::vector<double>> &values);
 
  private:
   std::unique_ptr<Adcirc::Private::NodalAttributesPrivate> m_impl;

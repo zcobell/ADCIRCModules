@@ -39,7 +39,7 @@ NodalAttributesPrivate::NodalAttributesPrivate()
     : m_filename(std::string()),
       m_numParameters(0),
       m_numNodes(0),
-      m_mesh(nullptr){}
+      m_mesh(nullptr) {}
 
 NodalAttributesPrivate::NodalAttributesPrivate(const std::string &filename,
                                                Adcirc::Geometry::Mesh *mesh)
@@ -368,8 +368,8 @@ void NodalAttributesPrivate::_writeFort13Body(std::ofstream &fid) {
   return;
 }
 
-size_t NodalAttributesPrivate::_countDefault(const AttributeMetadata &metadata,
-                                             const std::vector<Attribute> &values) {
+size_t NodalAttributesPrivate::_countDefault(
+    const AttributeMetadata &metadata, const std::vector<Attribute> &values) {
   size_t n = 0;
   for (auto &v : values) {
     if (!metadata.checkIfDefaultValue(v)) {
@@ -404,18 +404,21 @@ void NodalAttributesPrivate::addAttribute(AttributeMetadata &metadata,
   this->m_numParameters = this->m_nodalParameters.size();
 }
 
-void NodalAttributesPrivate::setAttributeData(size_t parameter, const std::vector<double> &values){
-    assert(values.size()==this->numNodes());
-    assert(values[0].size()==this->m_nodalParameters[parameter].numberOfValues());
-    for(size_t i=0;i<this->numNodes();++i){
-        this->m_nodalData[parameter][i].setValue(values[i]);
-    }
+void NodalAttributesPrivate::setAttributeData(
+    size_t parameter, const std::vector<double> &values) {
+  assert(values.size() == this->numNodes());
+  assert(this->m_nodalParameters[parameter].numberOfValues() == 1);
+  for (size_t i = 0; i < this->numNodes(); ++i) {
+    this->m_nodalData[parameter][i].setValue(values[i]);
+  }
 }
 
-void NodalAttributesPrivate::setAttributeData(size_t parameter, const std::vector<std::vector<double>> &values){
-    assert(values.size()==this->numNodes());
-    assert(values[0].size()==this->m_nodalParameters[parameter].numberOfValues());
-    for(size_t i=0;i<this->numNodes();++i){
-        this->m_nodalData[parameter][i].setValue(values[i]);
-    }
+void NodalAttributesPrivate::setAttributeData(
+    size_t parameter, const std::vector<std::vector<double>> &values) {
+  assert(values.size() == this->numNodes());
+  assert(values[0].size() ==
+         this->m_nodalParameters[parameter].numberOfValues());
+  for (size_t i = 0; i < this->numNodes(); ++i) {
+    this->m_nodalData[parameter][i].setValue(values[i]);
+  }
 }
