@@ -306,7 +306,7 @@ T Rasterdata::pixelValue(Pixel &p) {
     T *buf = static_cast<T *>(CPLMalloc(sizeof(T) * 1));
 
 #pragma omp critical
-    this->m_band->RasterIO(GF_Read, p.i(), p.j(), 1, 1, buf, 1, 1,
+    auto err = this->m_band->RasterIO(GF_Read, p.i(), p.j(), 1, 1, buf, 1, 1,
                            static_cast<GDALDataType>(this->m_readType), 0, 0);
 
     double v = buf[0];
