@@ -13,6 +13,7 @@ addons:
       - libgdal-dev
       - libboost-all-dev
       - libssl-dev
+      - libproj-dev
 
 after_success:
   # Creating report
