@@ -644,7 +644,8 @@ double GriddataPrivate::calculateOutsideStandardDeviationFromLookup(Point &p,
         np++;
       }
     }
-    return np > 0 ? a / static_cast<double>(np) : this->calculateAverageFromLookup(p, w);
+    return np > 0 ? a / static_cast<double>(np)
+                  : this->calculateAverageFromLookup(p, w);
   }
   return this->defaultValue();
 }
@@ -885,7 +886,8 @@ std::vector<double> GriddataPrivate::computeValuesFromRaster(
         new boost::progress_display(this->m_mesh->numNodes()));
   }
 
-#pragma omp parallel for schedule(dynamic) shared(progress)
+#pragma omp parallel for schedule(dynamic) default(none) \
+    shared(progress, result, gridsize)
   for (signed long long i = 0;
        i < static_cast<signed long long>(this->m_mesh->numNodes()); ++i) {
     if (this->m_showProgressBar) {
@@ -953,7 +955,8 @@ GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
         new boost::progress_display(this->m_mesh->numNodes()));
   }
 
-#pragma omp parallel for schedule(dynamic) shared(progress)
+#pragma omp parallel for schedule(dynamic) default(none) \
+    shared(progress, result)
   for (signed long long i = 0;
        i < static_cast<signed long long>(this->m_mesh->numNodes()); ++i) {
     if (this->m_showProgressBar) {
