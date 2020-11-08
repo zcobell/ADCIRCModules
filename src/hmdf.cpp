@@ -402,8 +402,17 @@ int Hmdf::writeNetcdf(const std::string &filename) {
   std::string host = "unknown";
 #endif
 
-  std::string name = std::string(std::getenv("USER"));
-  if (name == std::string()) name = std::string(std::getenv("USERNAME"));
+  char * usr1 = std::getenv("USER");
+  char * usr2 = std::getenv("USERNAME");
+  std::string name;
+  if(usr1 != NULL){
+    name = std::string(usr1);
+  } else if(usr2 != NULL){
+    name = std::string(usr2);
+  } else{
+    name = "none";
+  }
+
   std::string createTime = Adcirc::CDate::now().toString();
   std::string source = "ADCIRCModules";
   std::string ncVersion = std::string(nc_inq_libvers());
@@ -426,7 +435,7 @@ int Hmdf::writeNetcdf(const std::string &filename) {
   for (size_t i = 0; i < this->nstations(); i++) {
     size_t index[] = {i, 0};
     size_t stindex[] = {i};
-    size_t count[] = {1, 200};
+    size_t count[] = {1, this->station(i)->name().size()};
     double lat[] = {this->station(i)->latitude()};
     double lon[] = {this->station(i)->longitude()};
 

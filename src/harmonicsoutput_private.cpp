@@ -369,7 +369,7 @@ void HarmonicsOutputPrivate::writeNetcdfHeader(const int& ncid) {
     double n[] = {ptr->nodalFactor()};
     size_t start1[] = {i};
     size_t start2[] = {i, 0};
-    size_t count2[] = {1, 10};
+    size_t count2[] = {1, ptr->name().size()};
 
     nc_put_vara_text(ncid, varid_constnames, start2, count2, &ptr->name()[0]);
     nc_put_var1_double(ncid, varid_freq, start1, f);
