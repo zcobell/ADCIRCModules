@@ -303,15 +303,11 @@ T Rasterdata::pixelValue(size_t i, size_t j) {
 template <typename T>
 T Rasterdata::pixelValue(Pixel &p) {
   if (p.i() > 0 && p.j() > 0 && p.i() < this->nx() && p.j() < this->ny()) {
-    T *buf = static_cast<T *>(CPLMalloc(sizeof(T) * 1));
-
-#pragma omp critical
-    auto err = this->m_band->RasterIO(GF_Read, p.i(), p.j(), 1, 1, buf, 1, 1,
-                           static_cast<GDALDataType>(this->m_readType), 0, 0);
-
-    double v = buf[0];
-    CPLFree(buf);
-    return v;
+    T buf;
+    CPLErr err = this->m_band->RasterIO(
+        GF_Read, p.i(), p.j(), 1, 1, &buf, 1, 1,
+        static_cast<GDALDataType>(this->m_readType), 0, 0);
+    return buf;
   } else {
     return this->nodata<T>();
   }
@@ -355,24 +351,11 @@ int Rasterdata::searchBoxAroundPoint(double x, double y, double halfSide,
  * Not always the fastest method, but in some cases it is worthwhile
  */
 void Rasterdata::readDoubleRasterToMemory() {
-  size_t n = this->nx() * this->ny();
-  double *buf = (double *)CPLMalloc(sizeof(double) * n);
-
+  this->m_doubleOnDisk.resize(boost::extents[this->ny()][this->nx()]);
   CPLErr e = this->m_band->RasterIO(
-      GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
-      static_cast<GDALDataType>(this->m_readType), 0, 0);
-
-  this->m_doubleOnDisk.resize(boost::extents[this->m_nx][this->m_ny]);
-
-  size_t k = 0;
-  for (size_t j = 0; j < this->ny(); ++j) {
-    for (size_t i = 0; i < this->nx(); ++i) {
-      this->m_doubleOnDisk[i][j] = buf[k];
-      k++;
-    }
-  }
-
-  CPLFree(buf);
+      GF_Read, 0, 0, this->nx(), this->ny(), this->m_doubleOnDisk.data(),
+      this->nx(), this->ny(), static_cast<GDALDataType>(this->m_readType), 0,
+      0);
 }
 
 /**
@@ -381,23 +364,11 @@ void Rasterdata::readDoubleRasterToMemory() {
  * Not always the fastest method, but in some cases it is worthwhile
  */
 void Rasterdata::readIntegerRasterToMemory() {
-  size_t n = this->nx() * this->ny();
-  int *buf = static_cast<int *>(CPLMalloc(sizeof(int) * n));
-
-  CPLErr e = this->m_band->RasterIO(
-      GF_Read, 0, 0, this->nx(), this->ny(), buf, this->nx(), this->ny(),
-      static_cast<GDALDataType>(this->m_readType), 0, 0);
-
-  this->m_intOnDisk.resize(boost::extents[this->m_nx][this->m_ny]);
-
-  size_t k = 0;
-  for (size_t j = 0; j < this->ny(); ++j) {
-    for (size_t i = 0; i < this->nx(); ++i) {
-      this->m_intOnDisk[i][j] = buf[k];
-      k++;
-    }
-  }
-  CPLFree(buf);
+  this->m_intOnDisk.resize(boost::extents[this->ny()][this->nx()]);
+  CPLErr e =
+      this->m_band->RasterIO(GF_Read, 0, 0, this->nx(), this->ny(),
+                             this->m_intOnDisk.data(), this->nx(), this->ny(),
+                             static_cast<GDALDataType>(this->m_readType), 0, 0);
 }
 
 /**
@@ -406,16 +377,13 @@ void Rasterdata::readIntegerRasterToMemory() {
  * Not always the fastest method, but in some cases it is worthwhile
  */
 void Rasterdata::read() {
-#pragma omp critical
-  {
-    if (!this->m_isRead) {
-      if (this->m_rasterType == RasterTypes::Double) {
-        this->readDoubleRasterToMemory();
-      } else {
-        this->readIntegerRasterToMemory();
-      }
-      this->m_isRead = true;
+  if (!this->m_isRead) {
+    if (this->m_rasterType == RasterTypes::Double) {
+      this->readDoubleRasterToMemory();
+    } else {
+      this->readIntegerRasterToMemory();
     }
+    this->m_isRead = true;
   }
   return;
 }
@@ -471,13 +439,11 @@ int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
   size_t k = 0;
   for (size_t j = jbegin; j <= jend; ++j) {
     for (size_t i = ibegin; i <= iend; ++i) {
-      Point p = this->pixelToCoordinate(i, j);
-      x[k] = p.first;
-      y[k] = p.second;
+      std::tie(x[k], y[k]) = this->pixelToCoordinate(i, j);
       if (std::is_same<T, int>::value) {
-        z[k] = this->m_intOnDisk[i][j];
+        z[k] = this->m_intOnDisk[j][i];
       } else if (std::is_same<T, double>::value) {
-        z[k] = this->m_doubleOnDisk[i][j];
+        z[k] = this->m_doubleOnDisk[j][i];
       } else {
         adcircmodules_throw_exception("Rasterdata: Invalid pixel type");
       }
@@ -505,13 +471,6 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
   size_t nx = iend - ibegin + 1;
   size_t ny = jend - jbegin + 1;
   size_t n = nx * ny;
-  T *buf = static_cast<T *>(CPLMalloc(sizeof(T) * n));
-
-  CPLErr e = CPLErr();
-
-#pragma omp critical
-  e = this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, buf, nx, ny,
-                             static_cast<GDALDataType>(this->m_readType), 0, 0);
 
   if (x.size() != n) {
     x.resize(n);
@@ -519,17 +478,18 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
     z.resize(n);
   }
 
+  CPLErr e = CPLErr();
+
+  e = this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, z.data(), nx, ny,
+                             static_cast<GDALDataType>(this->m_readType), 0, 0);
+
   size_t k = 0;
   for (size_t j = jbegin; j <= jend; ++j) {
     for (size_t i = ibegin; i <= iend; ++i) {
-      Point p = this->pixelToCoordinate(i, j);
-      x[k] = p.first;
-      y[k] = p.second;
-      z[k] = buf[k];
+      std::tie(x[k], y[k]) = this->pixelToCoordinate(i, j);
       k++;
     }
   }
-  CPLFree(buf);
   return static_cast<int>(e);
 }
 

@@ -957,22 +957,18 @@ GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
 
 #pragma omp parallel for schedule(dynamic) default(none) \
     shared(progress, result)
-  for (signed long long i = 0;
-       i < static_cast<signed long long>(this->m_mesh->numNodes()); ++i) {
+  for (unsigned long long i = 0;
+       i < static_cast<unsigned long long>(this->m_mesh->numNodes()); ++i) {
     if (this->m_showProgressBar) {
 #pragma omp critical
       ++(*progress);
     }
 
-    if (this->m_interpolationFlags[i] != NoThreshold) {
+    if (this->m_interpolationFlags[i] != NoMethod) {
       Point p(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
       result[i] = (this->*m_calculateDwindPtr)(p);
-      for (auto &r : result[i]) {
-        r += this->m_datumShift;
-      }
     } else {
-      result[i] = std::vector<double>(12);
-      std::fill(result[i].begin(), result[i].end(), this->defaultValue());
+      result[i] = std::vector<double>(12, this->defaultValue());
     }
   }
 
