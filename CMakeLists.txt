@@ -227,7 +227,7 @@ else(
   AND PythonLibs_FOUND
   AND PythonInterp_FOUND)
   message(
-    WARNING "SWIG/Python libraries could not be found. PyAdcirc disabled.")
+    WARNING "SWIG/Python libraries could not be found. Python ADCIRCModules disabled.")
 endif(
   SWIG_FOUND
   AND PythonLibs_FOUND
@@ -580,7 +580,7 @@ endif(HDF5_FOUND)
 # ##############################################################################
 
 # ##############################################################################
-# PyAdcirc Library
+# Python ADCIRCModules Library
 # ##############################################################################
 if(SWIG_FOUND
    AND PythonLibs_FOUND
@@ -641,63 +641,64 @@ if(SWIG_FOUND
       COMMENT "Generating SWIG interface to Python...")
   endif(WIN32)
 
-  add_library(PyAdcirc SHARED
+  add_library(pyadcircmodules SHARED
               ${CMAKE_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx)
   target_include_directories(
-    PyAdcirc PRIVATE ${PYTHON_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src
+    pyadcircmodules PRIVATE ${PYTHON_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src
                      ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src)
-  #target_link_libraries(PyAdcirc adcircmodules_static ${PYTHON_LIBRARY})
-  target_link_libraries(PyAdcirc adcircmodules_static )
+  #target_link_libraries(pyadcircmodules adcircmodules_static ${PYTHON_LIBRARY})
+  target_link_libraries(pyadcircmodules adcircmodules_static )
   if(OpenSSL_FOUND)
-    target_include_directories(PyAdcirc PRIVATE ${OPENSSL_INCLUDE_DIR})
-    target_link_libraries(PyAdcirc ${OPENSSL_CRYPTO_LIBRARY}
+    target_include_directories(pyadcircmodules PRIVATE ${OPENSSL_INCLUDE_DIR})
+    target_link_libraries(pyadcircmodules ${OPENSSL_CRYPTO_LIBRARY}
                           ${OPENSSL_SSL_LIBRARY})
   endif(OpenSSL_FOUND)
-  set_target_properties(PyAdcirc PROPERTIES PREFIX "_")
-  set_target_properties(PyAdcirc PROPERTIES INSTALL_NAME_DIR "PyAdcirc")
+  set_target_properties(pyadcircmodules PROPERTIES PREFIX "_")
+  set_target_properties(pyadcircmodules PROPERTIES LIBRARY_OUTPUT_NAME "adcircmodules")
+  set_target_properties(pyadcircmodules PROPERTIES INSTALL_NAME_DIR "adcircmodules")
   set_property(
     DIRECTORY
     APPEND
-    PROPERTY ADDITIONAL_MAKE_CLEAN_FILES PyAdcirc.py
+    PROPERTY ADDITIONAL_MAKE_CLEAN_FILES adcircmodules.py
              CMakeFiles/python_adcirc_wrap.cxx)
 
-  add_dependencies(PyAdcirc adcircmodules)
+  add_dependencies(pyadcircmodules adcircmodules_static)
 
   if(WIN32)
     set_target_properties(
-      PyAdcirc PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+      pyadcircmodules PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
                           RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
     install(
-      TARGETS PyAdcirc
+      TARGETS pyadcircmodules
       LIBRARY DESTINATION bin
       RUNTIME DESTINATION ${PYTHON_INSTALL_DIRECTORY})
   elseif(CYGWIN)
-    set_target_properties(PyAdcirc PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+    set_target_properties(pyadcircmodules PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                                               ${CMAKE_BINARY_DIR})
     install(
-      TARGETS PyAdcirc
+      TARGETS pyadcircmodules
       LIBRARY DESTINATION lib
       RUNTIME DESTINATION ${PYTHON_INSTALL_DIRECTORY})
   else(WIN32)
-    set_target_properties(PyAdcirc PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+    set_target_properties(pyadcircmodules PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                                               ${CMAKE_BINARY_DIR})
-    install(TARGETS PyAdcirc LIBRARY DESTINATION ${PYTHON_INSTALL_DIRECTORY})
+    install(TARGETS pyadcircmodules LIBRARY DESTINATION ${PYTHON_INSTALL_DIRECTORY})
   endif(WIN32)
 
-  install(FILES ${CMAKE_BINARY_DIR}/PyAdcirc.py
+  install(FILES ${CMAKE_BINARY_DIR}/adcircmodules.py
           DESTINATION ${PYTHON_INSTALL_DIRECTORY})
 
   if(WIN32)
-    set_target_properties(PyAdcirc PROPERTIES SUFFIX ".pyd")
+    set_target_properties(pyadcircmodules PROPERTIES SUFFIX ".pyd")
     if(CMAKE_SIZEOF_VOID_P EQUAL 8)
       # 64 bits
-      target_compile_definitions(PyAdcirc PRIVATE "MS_WIN64")
+      target_compile_definitions(pyadcircmodules PRIVATE "MS_WIN64")
     elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
       # 32 bits
-      target_compile_definitions(PyAdcirc PRIVATE "MS_WIN32")
+      target_compile_definitions(pyadcircmodules PRIVATE "MS_WIN32")
     endif()
   elseif(APPLE)
-    set_target_properties(PyAdcirc PROPERTIES SUFFIX ".so")
+    set_target_properties(pyadcircmodules PROPERTIES SUFFIX ".so")
   endif(WIN32)
 endif(
   SWIG_FOUND
@@ -783,7 +784,7 @@ if(UNIX OR CYGWIN)
     # ...Python Test
     if(PYTHON_TESTING)
       if(PYTHONTYPE EQUAL 2)
-        set(PYTHON_TESTNAME TEST_python2_PyAdcirc)
+        set(PYTHON_TESTNAME TEST_python2_adcircmodules)
         add_test(
           NAME ${PYTHON_TESTNAME}
           COMMAND
@@ -791,7 +792,7 @@ if(UNIX OR CYGWIN)
             ${CMAKE_SOURCE_DIR}/testing/python_tests/pyadcirc_python2_testcase.py
           WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
       else()
-        set(PYTHON_TESTNAME TEST_python3_PyAdcirc)
+        set(PYTHON_TESTNAME TEST_python3_adcircmodules)
         add_test(
           NAME ${PYTHON_TESTNAME}
           COMMAND

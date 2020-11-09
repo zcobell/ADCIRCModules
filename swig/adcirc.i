@@ -19,11 +19,11 @@
 
 /* Adcirc Interface File */
 #if defined(SWIGPYTHON)
-%module PyAdcirc
+%module adcircmodules
 #endif
 
 #if defined(SWIGPERL)
-%module perladcirc
+%module adcircmodules
 #endif
 
 %insert("python") %{
