@@ -427,7 +427,19 @@ if(GDAL_FOUND)
       ${CMAKE_SOURCE_DIR}/src/pixel.cpp ${CMAKE_SOURCE_DIR}/src/rasterdata.cpp)
 endif(GDAL_FOUND)
 
-add_library(adcircmodules SHARED ${ADCIRCMODULES_SOURCES})
+# Set up an interface library
+add_library(adcircmodules_interface INTERFACE )
+
+# Configure an object library and a shared/static target
+add_library(adcircmodules_objectlib OBJECT ${ADCIRCMODULES_SOURCES})
+add_library(adcircmodules_static STATIC $<TARGET_OBJECTS:adcircmodules_objectlib>)
+add_library(adcircmodules SHARED $<TARGET_OBJECTS:adcircmodules_objectlib>)
+
+set_property( TARGET adcircmodules_objectlib PROPERTY POSITION_INDEPENDENT_CODE 1)
+
+target_link_libraries(adcircmodules_objectlib adcircmodules_interface)
+target_link_libraries(adcircmodules_static adcircmodules_interface)
+target_link_libraries(adcircmodules adcircmodules_interface)
 
 set(HEADER_LIST
     ${CMAKE_SOURCE_DIR}/src/adcircmodules.h
@@ -466,30 +478,29 @@ set(HEADER_LIST
     ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src/ezproj.h)
 
 if(GDAL_FOUND)
-  target_compile_definitions(adcircmodules PRIVATE "USE_GDAL")
-  target_include_directories(adcircmodules PRIVATE ${GDAL_INCLUDE_DIR})
+  target_compile_definitions(adcircmodules_objectlib PRIVATE "USE_GDAL")
+  target_include_directories(adcircmodules_objectlib PRIVATE ${GDAL_INCLUDE_DIR})
   link_directories(${GDAL_LIBPATH})
-  target_link_libraries(adcircmodules ${GDAL_LIBRARY})
+  target_link_libraries(adcircmodules_interface INTERFACE ${GDAL_LIBRARY})
   set(HEADER_LIST ${HEADER_LIST} ${CMAKE_SOURCE_DIR}/src/rasterdata.h
                   ${CMAKE_SOURCE_DIR}/src/griddata.h)
 endif(GDAL_FOUND)
 target_include_directories(
-  adcircmodules
-  PRIVATE ${CMAKE_SOURCE_DIR}/src
-          ${CMAKE_SOURCE_DIR}/src/pimpl
-          ${CMAKE_SOURCE_DIR}/src
-          ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src
-          ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
-          ${CMAKE_SOURCE_DIR}/thirdparty/abseil
-          ${CMAKE_SOURCE_DIR}/thirdparty/date/include/date
-          ${CMAKE_SOURCE_DIR}/thirdparty/nanoflann/include
-          ${Boost_INCLUDE_DIRS}
-          ${NETCDF_INCLUDE_DIR})
+  adcircmodules_interface
+  INTERFACE ${CMAKE_SOURCE_DIR}/src
+            ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src
+            ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
+            ${CMAKE_SOURCE_DIR}/thirdparty/abseil
+            ${CMAKE_SOURCE_DIR}/thirdparty/date/include/date
+            ${CMAKE_SOURCE_DIR}/thirdparty/nanoflann/include
+            ${CMAKE_SOURCE_DIR}/thirdparty/cxxopts
+            ${Boost_INCLUDE_DIRS}
+            ${NETCDF_INCLUDE_DIR})
 
-add_dependencies(adcircmodules ezproj shapelib)
+add_dependencies(adcircmodules_interface ezproj shapelib)
 
-target_compile_definitions(adcircmodules PRIVATE GIT_VERSION="${GIT_VERSION}")
-target_compile_definitions(adcircmodules PRIVATE ADCIRCMODULES_LIBRARY)
+target_compile_definitions(adcircmodules_objectlib PRIVATE GIT_VERSION="${GIT_VERSION}")
+target_compile_definitions(adcircmodules_objectlib PRIVATE ADCIRCMODULES_LIBRARY)
 
 set_target_properties(
   adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING}
@@ -520,23 +531,23 @@ install(
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/adcircmodulesConfigVersion.cmake
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
 
-set_target_properties(adcircmodules PROPERTIES CMAKE_CXX_VISIBILITY_PRESET
+set_target_properties(adcircmodules_objectlib PROPERTIES CMAKE_CXX_VISIBILITY_PRESET
                                                hidden)
-set_target_properties(adcircmodules PROPERTIES CMAKE_CXX_INLINES_HIDDEN YES)
+set_target_properties(adcircmodules_objectlib PROPERTIES CMAKE_CXX_INLINES_HIDDEN YES)
 
-target_link_libraries(adcircmodules ezproj shapelib)
+target_link_libraries(adcircmodules_interface INTERFACE ezproj shapelib)
 
 if(WIN32)
   link_directories(${CMAKE_SOURCE_DIR}/thirdparty/netcdf/libs_vc64)
-  target_link_libraries(adcircmodules netcdf hdf5 hdf5_hl)
+  target_link_libraries(adcircmodules_interface INTERFACE netcdf hdf5 hdf5_hl)
 else(WIN32)
-  target_link_libraries(adcircmodules ${NETCDF_LIBRARIES})
+  target_link_libraries(adcircmodules_interface INTERFACE ${NETCDF_LIBRARIES})
 endif(WIN32)
 
 if(OpenSSL_FOUND)
-  target_compile_definitions(adcircmodules PRIVATE ADCMOD_HAVE_OPENSSL)
-  target_include_directories(adcircmodules PRIVATE ${OPENSSL_INCLUDE_DIR})
-  target_link_libraries(adcircmodules ${OPENSSL_CRYPTO_LIBRARY}
+  target_compile_definitions(adcircmodules_objectlib PRIVATE ADCMOD_HAVE_OPENSSL)
+  target_include_directories(adcircmodules_objectlib PRIVATE ${OPENSSL_INCLUDE_DIR})
+  target_link_libraries(adcircmodules_interface INTERFACE ${OPENSSL_CRYPTO_LIBRARY}
                         ${OPENSSL_SSL_LIBRARY})
 endif(OpenSSL_FOUND)
 
@@ -548,29 +559,24 @@ if(APPLE)
 endif(APPLE)
 
 if(USE_GOOGLE_FLAT_MAP)
-  target_link_libraries(adcircmodules absl::flat_hash_map)
-  add_dependencies(adcircmodules absl::flat_hash_map)
-  target_compile_definitions(adcircmodules PRIVATE USE_GOOGLE_FLAT_MAP)
+  target_link_libraries(adcircmodules_interface INTERFACE absl::flat_hash_map)
+  add_dependencies(adcircmodules_interface INTERFACE absl::flat_hash_map)
+  target_compile_definitions(adcircmodules_objectlib PRIVATE USE_GOOGLE_FLAT_MAP)
 endif(USE_GOOGLE_FLAT_MAP)
 
 if(OPENMP_FOUND)
-  target_compile_options(adcircmodules PRIVATE ${OpenMP_CXX_FLAGS})
-  target_link_libraries(adcircmodules ${OpenMP_CXX_LIB_NAMES}
+  target_compile_options(adcircmodules_objectlib PRIVATE ${OpenMP_CXX_FLAGS})
+  target_link_libraries(adcircmodules_interface INTERFACE ${OpenMP_CXX_LIB_NAMES}
                         ${OpenMP_CXX_FLAGS})
 endif(OPENMP_FOUND)
 
 if(HDF5_FOUND)
-  target_compile_definitions(adcircmodules PRIVATE HAVE_HDF5
+  target_compile_definitions(adcircmodules_objectlib PRIVATE HAVE_HDF5
                                                    ${HDF5_DEFINITIONS})
-  target_include_directories(adcircmodules PRIVATE ${HDF5_INCLUDE_DIRS})
-  target_link_libraries(adcircmodules ${HDF5_LIBRARIES})
+  target_include_directories(adcircmodules_objectlib PRIVATE ${HDF5_INCLUDE_DIRS})
+  target_link_libraries(adcircmodules_interface INTERFACE ${HDF5_LIBRARIES})
 endif(HDF5_FOUND)
 
-# ##############################################################################
-
-# ##############################################################################
-# Test case
-# ##############################################################################
 # ##############################################################################
 
 # ##############################################################################
@@ -640,7 +646,8 @@ if(SWIG_FOUND
   target_include_directories(
     PyAdcirc PRIVATE ${PYTHON_INCLUDE_PATH} ${CMAKE_SOURCE_DIR}/src
                      ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src)
-  target_link_libraries(PyAdcirc adcircmodules ${PYTHON_LIBRARY})
+  #target_link_libraries(PyAdcirc adcircmodules_static ${PYTHON_LIBRARY})
+  target_link_libraries(PyAdcirc adcircmodules_static )
   if(OpenSSL_FOUND)
     target_include_directories(PyAdcirc PRIVATE ${OPENSSL_INCLUDE_DIR})
     target_link_libraries(PyAdcirc ${OPENSSL_CRYPTO_LIBRARY}
@@ -696,56 +703,6 @@ endif(
   SWIG_FOUND
   AND PythonLibs_FOUND
   AND PythonInterp_FOUND)
-# ##############################################################################
-
-# ##############################################################################
-# PerlAdcirc Library
-# ##############################################################################
-# IF(TEST_PERL) IF(Perl_FOUND AND SWIG_FOUND) IF(WIN32)
-#
-# #...Builds a dummy cmake project #   Which will add some windows specific
-# include #   files not required by Unix/Cygwin [mingw64] #   Further testing
-# required to see if this is #   required by MSVC compilers FILE(WRITE
-# ${CMAKE_BINARY_DIR}/CMakeFiles/perlwrapper.cmake " FILE(READ \${SRC} DATA)
-# FILE(WRITE \${DST} \"#include <math.h>\") FILE(APPEND \${DST} \"\\n\\n\")
-# FILE(APPEND \${DST} \"\${DATA}\") ")
-#
-# ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
-# COMMAND ${SWIG_EXECUTABLE} -outdir ${CMAKE_BINARY_DIR} -c++ -perl
-# -I${CMAKE_SOURCE_DIR}/src -I${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src
-# -I${PERL_INCLUDE_PATH} -o
-# ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx.1
-# ${CMAKE_SOURCE_DIR}/swig/adcirc.i COMMAND ${CMAKE_COMMAND}
-# -DSRC=${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx.1
-# -DDST=${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx -P
-# ${CMAKE_BINARY_DIR}/CMakeFiles/perl_wrapper.cmake WORKING_DIRECTORY
-# ${CMAKE_BINARY_DIR} COMMENT "Generating SWIG interface to Perl..." )
-#
-# ELSE(WIN32) ADD_CUSTOM_COMMAND( OUTPUT
-# ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx COMMAND ${SWIG_EXECUTABLE}
-# -outdir ${CMAKE_BINARY_DIR} -c++ -perl -I${CMAKE_SOURCE_DIR}/src
-# -I${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src -I${PERL_INCLUDE_PATH} -o
-# ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx
-# ${CMAKE_SOURCE_DIR}/swig/adcirc.i WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-# COMMENT "Generating SWIG interface to Perl..." ) ENDIF(WIN32)
-#
-# ADD_LIBRARY( perladcirc SHARED
-# ${CMAKE_BINARY_DIR}/CMakeFiles/perl_adcirc_wrap.cxx )
-# TARGET_INCLUDE_DIRECTORIES( perladcirc PRIVATE ${PERL_INCLUDE_PATH}
-# ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src
-# ${CMAKE_SOURCE_DIR}/libraries/rasterdata ) TARGET_LINK_LIBRARIES( perladcirc
-# PRIVATE adcircmodules ${PERL_LIBRARY} ) SET_TARGET_PROPERTIES( perladcirc
-# PROPERTIES PREFIX "") SET_PROPERTY( DIRECTORY APPEND PROPERTY
-# ADDITIONAL_MAKE_CLEAN_FILES perladcirc.pm CMakeFiles/perl_adcirc_wrap.cxx )
-# ADD_DEPENDENCIES( perladcirc adcircmodules )
-#
-# TARGET_COMPILE_DEFINITIONS(perladcirc PRIVATE HAS_BOOL)
-#
-# IF(WIN32) IF(CMAKE_SIZEOF_VOID_P EQUAL 8) # 64 bits
-# TARGET_COMPILE_DEFINITIONS(perladcirc PRIVATE "MS_WIN64")
-# ELSEIF(CMAKE_SIZEOF_VOID_P EQUAL 4) # 32 bits
-# TARGET_COMPILE_DEFINITIONS(perladcirc PRIVATE "MS_WIN32") ENDIF() ENDIF(WIN32)
-# ENDIF(Perl_FOUND AND SWIG_FOUND) ENDIF(TEST_PERL)
 # ##############################################################################
 
 # ##############################################################################
@@ -805,11 +762,8 @@ if(UNIX OR CYGWIN)
       get_filename_component(TESTNAME ${TESTFILE} NAME_WE)
       add_executable(${TESTNAME}
                      ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE})
-      add_dependencies(${TESTNAME} adcircmodules)
-      target_include_directories(
-        ${TESTNAME} PRIVATE ${CMAKE_SOURCE_DIR}/src
-                            ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src)
-      target_link_libraries(${TESTNAME} adcircmodules)
+      add_dependencies(${TESTNAME} adcircmodules_static)
+      target_link_libraries(${TESTNAME} adcircmodules_static adcircmodules_interface)
       set_target_properties(
         ${TESTNAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
                                ${CMAKE_BINARY_DIR}/cxx_testcases)
@@ -818,17 +772,6 @@ if(UNIX OR CYGWIN)
         NAME TEST_${TESTNAME}
         COMMAND ${CMAKE_BINARY_DIR}/cxx_testcases/${TESTNAME}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/testing)
-      if(CYGWIN)
-        set_tests_properties(
-          TEST_${TESTNAME} PROPERTIES ENVIRONMENT
-                                      "PATH=$ENV{PATH}:${CMAKE_BINARY_DIR}")
-      else(CYGWIN)
-        set_tests_properties(
-          TEST_${TESTNAME}
-          PROPERTIES ENVIRONMENT
-                     "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}"
-        )
-      endif(CYGWIN)
     endforeach()
 
     # ...Script base testing
@@ -836,10 +779,6 @@ if(UNIX OR CYGWIN)
       NAME sh_interpStations
       COMMAND bash interpolate.sh
       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/testing/test_scripts)
-    set_property(
-      TEST sh_interpStations
-      PROPERTY ENVIRONMENT
-               "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
 
     # ...Python Test
     if(PYTHON_TESTING)
@@ -862,10 +801,6 @@ if(UNIX OR CYGWIN)
       endif()
       set_property(
         TEST ${PYTHON_TESTNAME}
-        PROPERTY ENVIRONMENT
-                 "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_BINARY_DIR}")
-      set_property(
-        TEST ${PYTHON_TESTNAME}
         APPEND
         PROPERTY ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}")
     endif(PYTHON_TESTING)
@@ -878,39 +813,19 @@ endif(UNIX OR CYGWIN)
 # ##############################################################################
 add_executable(interpolateAdcircStations
                ${CMAKE_SOURCE_DIR}/utilities/interpolateAdcircStations/main.cpp)
-target_include_directories(
-  interpolateAdcircStations
-  PRIVATE ${CMAKE_SOURCE_DIR}/utilities/interpolateAdcircStations
-          ${Boost_INCLUDE_DIRS}
-          ${CMAKE_SOURCE_DIR}/src
-          ${CMAKE_SOURCE_DIR}/thirdparty/cxxopts
-          ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src)
-add_dependencies(interpolateAdcircStations adcircmodules ezproj)
-target_link_libraries(interpolateAdcircStations PRIVATE adcircmodules ezproj
-                                                        ${Boost_LIBRARIES})
+add_dependencies(interpolateAdcircStations adcircmodules_static)
+target_link_libraries(interpolateAdcircStations PRIVATE adcircmodules_static adcircmodules_interface)
 install(TARGETS interpolateAdcircStations RUNTIME DESTINATION bin)
 
 add_executable(
   generateAdcircSimulationDates
   ${CMAKE_SOURCE_DIR}/utilities/generateAdcircSimulationDates/main.cpp)
-target_include_directories(
-  generateAdcircSimulationDates
-  PRIVATE ${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src
-          ${CMAKE_SOURCE_DIR}/thirdparty/cxxopts
-          ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src)
-add_dependencies(generateAdcircSimulationDates adcircmodules ezproj)
-target_link_libraries(generateAdcircSimulationDates
-                      PRIVATE adcircmodules ezproj ${Boost_LIBRARIES})
+add_dependencies(generateAdcircSimulationDates adcircmodules_static)
+target_link_libraries(generateAdcircSimulationDates PRIVATE adcircmodules_static adcircmodules_interface)
 install(TARGETS generateAdcircSimulationDates RUNTIME DESTINATION bin)
 
 add_executable(resultsScope ${CMAKE_SOURCE_DIR}/utilities/resultsScope/main.cpp)
-target_include_directories(
-  resultsScope
-  PRIVATE ${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src
-          ${CMAKE_SOURCE_DIR}/thirdparty/cxxopts
-          ${CMAKE_SOURCE_DIR}/thirdparty/ezproj/src)
-add_dependencies(resultsScope adcircmodules ezproj)
-target_link_libraries(resultsScope PRIVATE adcircmodules ezproj
-                                           ${Boost_LIBRARIES})
+add_dependencies(resultsScope adcircmodules_static)
+target_link_libraries(resultsScope PRIVATE adcircmodules_static adcircmodules_interface )
 install(TARGETS resultsScope RUNTIME DESTINATION bin)
 # ##############################################################################
