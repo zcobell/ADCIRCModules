@@ -304,6 +304,9 @@ template <typename T>
 T Rasterdata::pixelValue(Pixel &p) {
   if (p.i() > 0 && p.j() > 0 && p.i() < this->nx() && p.j() < this->ny()) {
     T buf;
+#ifndef GDAL_IS_THREADSAFE
+#pragma omp critical
+#endif
     CPLErr err = this->m_band->RasterIO(
         GF_Read, p.i(), p.j(), 1, 1, &buf, 1, 1,
         static_cast<GDALDataType>(this->m_readType), 0, 0);
@@ -352,6 +355,9 @@ int Rasterdata::searchBoxAroundPoint(double x, double y, double halfSide,
  */
 void Rasterdata::readDoubleRasterToMemory() {
   this->m_doubleOnDisk.resize(boost::extents[this->ny()][this->nx()]);
+#ifndef GDAL_IS_THREADSAFE
+#pragma omp critical
+#endif
   CPLErr e = this->m_band->RasterIO(
       GF_Read, 0, 0, this->nx(), this->ny(), this->m_doubleOnDisk.data(),
       this->nx(), this->ny(), static_cast<GDALDataType>(this->m_readType), 0,
@@ -365,6 +371,9 @@ void Rasterdata::readDoubleRasterToMemory() {
  */
 void Rasterdata::readIntegerRasterToMemory() {
   this->m_intOnDisk.resize(boost::extents[this->ny()][this->nx()]);
+#ifndef GDAL_IS_THREADSAFE
+#pragma omp critical
+#endif
   CPLErr e =
       this->m_band->RasterIO(GF_Read, 0, 0, this->nx(), this->ny(),
                              this->m_intOnDisk.data(), this->nx(), this->ny(),
@@ -480,6 +489,9 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
 
   CPLErr e = CPLErr();
 
+#ifndef GDAL_IS_THREADSAFE
+#pragma omp critical
+#endif
   e = this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, z.data(), nx, ny,
                              static_cast<GDALDataType>(this->m_readType), 0, 0);
 

@@ -343,6 +343,7 @@ if(ENABLE_GDAL)
   if(NOT GDAL_FOUND)
     message(WARNING "GDAL Library not found. These functions will be disabled.")
   endif(NOT GDAL_FOUND)
+  OPTION(GDAL_IS_THREADSAFE "Assume that GDAL is threadsafe" OFF)
 else(ENABLE_GDAL)
   message(
     WARNING
@@ -472,6 +473,9 @@ if(GDAL_FOUND)
   target_link_libraries(adcircmodules ${GDAL_LIBRARY})
   set(HEADER_LIST ${HEADER_LIST} ${CMAKE_SOURCE_DIR}/src/rasterdata.h
                   ${CMAKE_SOURCE_DIR}/src/griddata.h)
+  IF(GDAL_IS_THREADSAFE)
+    target_compile_definitions( adcircmodules PRIVATE "GDAL_IS_THREADSAFE" )
+  ENDIF()
 endif(GDAL_FOUND)
 target_include_directories(
   adcircmodules
