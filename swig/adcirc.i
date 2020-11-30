@@ -18,13 +18,7 @@
 //------------------------------------------------------------------------*/
 
 /* Adcirc Interface File */
-#if defined(SWIGPYTHON)
-%module PyAdcirc
-#endif
-
-#if defined(SWIGPERL)
-%module perladcirc
-#endif
+%module adcircmodules
 
 %insert("python") %{
     import signal
