@@ -1,9 +1,7 @@
 #ifndef ADCMOD_FACETABLE_H
 #define ADCMOD_FACETABLE_H
 
-#include <tuple>
 #include "adcircmodules_global.h"
-#include "adcmap.h"
 #include "face.h"
 
 namespace Adcirc {
@@ -56,7 +54,7 @@ class FaceTable {
   std::vector<Face> m_table;
   std::vector<std::vector<Element *>> m_elementNeighbors;
   std::vector<std::vector<Face *>> m_sharedFaces;
-  Private::MeshPrivate *m_mesh;
+  Adcirc::Private::MeshPrivate *m_mesh;
 };
 }  // namespace Geometry
 }  // namespace Adcirc
