@@ -30,6 +30,7 @@
 #include "filetypes.h"
 #include "kdtree.h"
 #include "node.h"
+#include "topology.h"
 
 using Point = std::pair<double, double>;
 
@@ -89,6 +90,7 @@ class Mesh {
   Mesh &operator=(const Mesh &m);
 
   friend class ElementTable;
+  friend class FaceTable;
 
   std::vector<double> ADCIRCMODULES_EXPORT x();
   std::vector<double> ADCIRCMODULES_EXPORT y();
@@ -209,17 +211,6 @@ class Mesh {
 
   std::vector<double> ADCIRCMODULES_EXPORT computeMeshSize();
 
-  void ADCIRCMODULES_EXPORT buildElementTable();
-
-  size_t ADCIRCMODULES_EXPORT numElementsAroundNode(Adcirc::Geometry::Node *n);
-  size_t ADCIRCMODULES_EXPORT numElementsAroundNode(size_t nodeIndex);
-  Adcirc::Geometry::Element ADCIRCMODULES_EXPORT *elementTable(
-      Adcirc::Geometry::Node *n, size_t listIndex);
-  Adcirc::Geometry::Element ADCIRCMODULES_EXPORT *elementTable(
-      size_t nodeIndex, size_t listIndex);
-  std::vector<Adcirc::Geometry::Element *> ADCIRCMODULES_EXPORT
-  elementsAroundNode(Adcirc::Geometry::Node *n);
-
   std::vector<Adcirc::Geometry::Node *> ADCIRCMODULES_EXPORT boundaryNodes();
 
   std::string ADCIRCMODULES_EXPORT hash(bool force = false);
@@ -254,6 +245,8 @@ class Mesh {
                                      const std::string &description = "none",
                                      const std::string &units = "none",
                                      const bool partialWetting = true) const;
+
+  Adcirc::Geometry::Topology ADCIRCMODULES_EXPORT *topology();
 
  private:
   std::unique_ptr<Adcirc::Private::MeshPrivate> m_impl;

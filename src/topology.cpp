@@ -1,7 +1,7 @@
 /*------------------------------GPL---------------------------------------//
 // This file is part of ADCIRCModules.
 //
-// (c) 2015-2019 Zachary Cobell
+// (c) 2015-2020 Zachary Cobell
 //
 // ADCIRCModules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,29 +16,34 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#ifndef ADCMOD_ADCIRCMODULES_H
-#define ADCMOD_ADCIRCMODULES_H
-
-#include "config.h"
-#include "constants.h"
-#include "default_values.h"
-#include "ezproj.h"
-#include "fileio.h"
-#include "filetypes.h"
-#include "griddata.h"
-#include "harmonicsoutput.h"
-#include "hash.h"
-#include "hashtype.h"
-#include "hmdf.h"
-#include "interpolationmethods.h"
-#include "kdtree.h"
-#include "logging.h"
-#include "mesh.h"
-#include "meshchecker.h"
-#include "multithreading.h"
-#include "nodalattributes.h"
-#include "readoutput.h"
 #include "topology.h"
-#include "writeoutput.h"
 
-#endif  // ADCMOD_ADCIRCMODULES_H
+using namespace Adcirc::Geometry;
+
+/**
+ * @brief Constructor
+ * @param mesh pointer to MeshPrivate object
+ */
+Topology::Topology(Adcirc::Private::MeshPrivate *mesh)
+    : m_mesh(mesh),
+      m_nodeTable(std::make_unique<NodeTable>(m_mesh)),
+      m_elementTable(std::make_unique<ElementTable>(m_mesh)),
+      m_faceTable(std::make_unique<FaceTable>(m_mesh)) {}
+
+/**
+ * @brief Returns pointer to the node table
+ * @return node table pointer
+ */
+NodeTable *Topology::nodeTable() { return m_nodeTable.get(); }
+
+/**
+ * @brief Returns pointer to the element table
+ * @return element table pointer
+ */
+ElementTable *Topology::elementTable() { return m_elementTable.get(); }
+
+/**
+ * @brief Returns pointer to the face table
+ * @return face table pointer
+ */
+FaceTable *Topology::faceTable() { return m_faceTable.get(); }

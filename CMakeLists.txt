@@ -411,12 +411,15 @@ set(ADCIRCMODULES_SOURCES
     ${CMAKE_SOURCE_DIR}/src/harmonicsrecord.cpp
     ${CMAKE_SOURCE_DIR}/src/harmonicsoutput.cpp
     ${CMAKE_SOURCE_DIR}/src/elementtable.cpp
+    ${CMAKE_SOURCE_DIR}/src/nodetable.cpp
     ${CMAKE_SOURCE_DIR}/src/meshchecker.cpp
     ${CMAKE_SOURCE_DIR}/src/multithreading.cpp
     ${CMAKE_SOURCE_DIR}/src/constants.cpp
     ${CMAKE_SOURCE_DIR}/src/mesh_private.cpp
     ${CMAKE_SOURCE_DIR}/src/kdtree.cpp
     ${CMAKE_SOURCE_DIR}/src/kdtree_private.cpp
+    ${CMAKE_SOURCE_DIR}/src/topology.cpp
+    ${CMAKE_SOURCE_DIR}/src/facetable.cpp
     ${CMAKE_SOURCE_DIR}/src/harmonicsoutput_private.cpp
     ${CMAKE_SOURCE_DIR}/src/harmonicsrecord_private.cpp
     ${CMAKE_SOURCE_DIR}/src/nodalattributes_private.cpp)

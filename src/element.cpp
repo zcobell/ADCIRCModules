@@ -404,6 +404,28 @@ std::string Element::hash(Adcirc::Cryptography::HashType h, bool force) {
 }
 
 /**
+ * @brief Returns a list of the faces in the element as a vector of node pairs
+ * @return vector of node pairs making up faces
+ */
+std::vector<std::pair<Node *, Node *>> Element::faces() const {
+  std::vector<std::pair<Node *, Node *>> face_list;
+  face_list.reserve(this->n());
+  for (size_t i = 0; i < this->n() - 1; ++i) {
+    face_list.emplace_back(m_nodes[i], m_nodes[i + 1]);
+  }
+  face_list.emplace_back(m_nodes[n() - 1], m_nodes[0]);
+  return face_list;
+}
+
+/**
+ * @brief Returns a pointer to the internal array of node pointers
+ * @return pointer to vector of nodes
+ */
+std::vector<Adcirc::Geometry::Node *> *Adcirc::Geometry::Element::nodes() {
+  return &m_nodes;
+}
+
+/**
  * @brief Generates the hash for this element
  * @param[in] h type of cryptographic hash to generate
  */

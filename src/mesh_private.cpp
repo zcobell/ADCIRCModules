@@ -59,9 +59,10 @@ Adcirc::Geometry::Mesh::~Mesh() = default;
  * @brief Default Constructor
  */
 MeshPrivate::MeshPrivate()
-    : m_filename("none"),
+    : m_hashType(Adcirc::Cryptography::AdcircDefaultHash),
+      m_filename("none"),
       m_epsg(-1),
-      m_hashType(Adcirc::Cryptography::AdcircDefaultHash) {
+      m_topology(std::make_unique<Adcirc::Geometry::Topology>(this)) {
   this->_init();
 }
 
@@ -70,9 +71,10 @@ MeshPrivate::MeshPrivate()
  * @param filename name of the mesh to read
  */
 MeshPrivate::MeshPrivate(const std::string &filename)
-    : m_filename(filename),
+    : m_hashType(Adcirc::Cryptography::AdcircDefaultHash),
+      m_filename(filename),
       m_epsg(-1),
-      m_hashType(Adcirc::Cryptography::AdcircDefaultHash) {
+      m_topology(std::make_unique<Adcirc::Geometry::Topology>(this)) {
   this->_init();
 }
 
@@ -2257,7 +2259,7 @@ size_t MeshPrivate::nodeIndexById(size_t id) {
  */
 size_t MeshPrivate::elementIndexById(size_t id) {
   if (this->m_elementOrderingLogical) {
-    return id;
+    return id - 1;
   } else {
     return this->m_elementLookup[id];
   }
@@ -2335,7 +2337,7 @@ std::vector<std::vector<size_t>> MeshPrivate::connectivity() {
   for (auto &e : this->m_elements) {
     std::vector<size_t> v;
     v.resize(e.n());
-    for (int i = 0; i < e.n(); ++i) {
+    for (size_t i = 0; i < e.n(); ++i) {
       v[i] = e.node(i)->id();
     }
     conn.push_back(v);
@@ -2475,15 +2477,15 @@ size_t MeshPrivate::findElement(Point &location) {
  * @return vector containing size at each node
  */
 std::vector<double> MeshPrivate::computeMeshSize() {
-  if (!this->m_elementTable.initialized()) {
-    this->m_elementTable.setMesh(this);
-    this->m_elementTable.build();
+  if (!this->topology()->elementTable()->initialized()) {
+    this->topology()->elementTable()->build();
   }
 
   std::vector<double> meshsize(this->numNodes());
 
   for (size_t i = 0; i < this->numNodes(); ++i) {
-    std::vector<Element *> l = this->m_elementTable.elementList(this->node(i));
+    std::vector<Element *> l =
+        this->topology()->elementTable()->elementList(this->node(i));
     double a = 0.0;
     for (size_t j = 0; j < l.size(); ++j) {
       a += l[j]->elementSize(false);
@@ -2597,65 +2599,6 @@ std::vector<std::vector<double>> MeshPrivate::orthogonality() {
   }
 
   return o;
-}
-
-/**
- * @brief Builds a list of elements connected to each node
- */
-void MeshPrivate::buildElementTable() {
-  this->m_elementTable.setMesh(this);
-  this->m_elementTable.build();
-  return;
-}
-
-/**
- * @brief Returns the number of elements surrounding a specified node
- * @param n address of node
- * @return number of elements
- */
-size_t MeshPrivate::numElementsAroundNode(Adcirc::Geometry::Node *n) {
-  return this->m_elementTable.numElementsAroundNode(n);
-}
-
-/**
- * @brief Returns the number of elements surrounding a specified node
- * @param n index of node
- * @return number of elements
- */
-size_t MeshPrivate::numElementsAroundNode(size_t nodeIndex) {
-  return this->m_elementTable.numElementsAroundNode(nodeIndex);
-}
-
-/**
- * @brief Returns the nth element in the list of elements surrounding a node
- * @param n node pointer
- * @param listIndex index of the element to return
- * @return element pointer
- */
-Adcirc::Geometry::Element *MeshPrivate::elementTable(Adcirc::Geometry::Node *n,
-                                                     size_t listIndex) {
-  return this->m_elementTable.elementTable(n, listIndex);
-}
-
-/**
- * @brief Returns the nth element in the list of elements surrounding a node
- * @param n node index
- * @param listIndex index of the element to return
- * @return element pointer
- */
-Adcirc::Geometry::Element *MeshPrivate::elementTable(size_t nodeIndex,
-                                                     size_t listIndex) {
-  return this->m_elementTable.elementTable(nodeIndex, listIndex);
-}
-
-/**
- * @brief Returns a vector of pointers to the elements surrouding a node
- * @param n node pointer
- * @return vector of element references
- */
-std::vector<Adcirc::Geometry::Element *> MeshPrivate::elementsAroundNode(
-    Adcirc::Geometry::Node *n) {
-  return this->m_elementTable.elementList(n);
 }
 
 std::vector<Adcirc::Geometry::Node *> MeshPrivate::boundaryNodes() {
@@ -2958,7 +2901,7 @@ MeshPrivate::computeRasterInterpolationWeights(
     this->buildElementalSearchTree();
   }
 
-#pragma omp parallel for shared(weight, elements, resolution, xmin, ymax)   \
+#pragma omp parallel for shared(weight, elements, resolution, xmin, ymax) \
     schedule(dynamic)
   for (size_t j = 0; j < ny; ++j) {
     for (size_t i = 0; i < nx; ++i) {
@@ -3021,3 +2964,5 @@ float MeshPrivate::calculateValueWithPartialWetting(
   }
   return std::numeric_limits<float>::max();
 }
+
+Adcirc::Geometry::Topology *MeshPrivate::topology() { return m_topology.get(); }
