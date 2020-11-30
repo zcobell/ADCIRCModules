@@ -26,7 +26,7 @@
 #include "filetypes.h"
 #include "griddata.h"
 #include "harmonicsoutput.h"
-#include "hash.h"
+#include "adchash.h"
 #include "hashtype.h"
 #include "hmdf.h"
 #include "interpolationmethods.h"

@@ -23,7 +23,7 @@
 #include "boost/format.hpp"
 #include "boost/geometry.hpp"
 #include "default_values.h"
-#include "hash.h"
+#include "adchash.h"
 #include "logging.h"
 
 using namespace Adcirc::Geometry;

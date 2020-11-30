@@ -30,7 +30,7 @@
 #include "fileio.h"
 #include "filetypes.h"
 #include "fpcompare.h"
-#include "hash.h"
+#include "adchash.h"
 #include "kdtree.h"
 #include "logging.h"
 #include "mesh.h"
