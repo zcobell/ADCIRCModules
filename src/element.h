@@ -24,7 +24,6 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include "adcircmodules_global.h"
 #include "node.h"
 
 using Point = std::pair<double, double>;
@@ -98,6 +97,11 @@ class Element {
   hash(Adcirc::Cryptography::HashType h =
            Adcirc::Cryptography::AdcircDefaultHash,
        bool force = false);
+
+  std::vector<std::pair<Adcirc::Geometry::Node *, Adcirc::Geometry::Node *>>
+  faces() const;
+
+  std::vector<Adcirc::Geometry::Node *> *nodes();
 
  private:
   size_t m_id;

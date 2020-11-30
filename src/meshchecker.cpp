@@ -181,7 +181,7 @@ void MeshChecker::printFailedLeveeStatus(
 
 bool MeshChecker::checkOverlappingElements(Mesh *mesh) {
   std::vector<Element *> overlappingList;
-  mesh->buildElementTable();
+  mesh->topology()->elementTable()->build();
 
   for (size_t i = 0; i < mesh->numElements(); ++i) {
     for (size_t j = 0; j < mesh->element(i)->n(); ++j) {
@@ -191,10 +191,13 @@ bool MeshChecker::checkOverlappingElements(Mesh *mesh) {
       Node *n1 = p.first;
       Node *n2 = p.second;
 
-      for (size_t i1 = 0; i1 < mesh->elementsAroundNode(n1).size(); ++i1) {
-        Element *m1 = mesh->elementsAroundNode(n1).at(i1);
-        for (size_t i2 = 0; i2 < mesh->elementsAroundNode(n2).size(); ++i2) {
-          Element *m2 = mesh->elementsAroundNode(n2).at(i2);
+      auto list = mesh->topology()->elementTable()->elementList(n1);
+
+      for (size_t i1 = 0; i1 < list.size(); ++i1) {
+        Element *m1 = list.at(i1);
+        auto list2 = mesh->topology()->elementTable()->elementList(n2);
+        for (size_t i2 = 0; i2 < list2.size(); ++i2) {
+          Element *m2 = list2.at(i2);
           if (m1->id() == m2->id()) {
             count++;
             break;

@@ -117,6 +117,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 SOURCES += \
     cdate.cpp \
+    facetable.cpp \
     formatting.cpp \
     griddata_private.cpp \
     harmonicsoutput_private.cpp \
@@ -126,6 +127,7 @@ SOURCES += \
     kdtree_private.cpp \
     mesh_private.cpp \
     nodalattributes_private.cpp \
+    nodetable.cpp \
     outputmetadata.cpp \
     readoutput.cpp \
     stationinterpolation.cpp \
@@ -153,6 +155,7 @@ SOURCES += \
     constants.cpp \
     kdtree.cpp \
     logging.cpp \
+    topology.cpp \
     writeoutput.cpp \
     hmdf.cpp \
     hmdfstation.cpp \
@@ -163,6 +166,8 @@ HEADERS += \
     adcircmodules_global.h \
     adcmap.h \
     cdate.h \
+    face.h \
+    facetable.h \
     formatting.h \
     fpcompare.h \
     griddata_private.h \
@@ -174,6 +179,7 @@ HEADERS += \
     kdtree_private.h \
     mesh_private.h \
     nodalattributes_private.h \
+    nodetable.h \
     outputfile.h \
     outputmetadata.h \
     readoutput.h \
@@ -206,6 +212,7 @@ HEADERS += \
     kdtree.h \
     logging.h \
     default_values.h \
+    topology.h \
     writeoutput.h \
     hmdf.h \
     hmdfstation.h \

@@ -28,10 +28,11 @@
 #include "adcmap.h"
 #include "boundary.h"
 #include "element.h"
-#include "elementtable.h"
+#include "facetable.h"
 #include "filetypes.h"
 #include "kdtree.h"
 #include "node.h"
+#include "topology.h"
 
 using Point = std::pair<double, double>;
 
@@ -165,16 +166,6 @@ class MeshPrivate {
 
   std::vector<double> computeMeshSize();
 
-  void buildElementTable();
-
-  size_t numElementsAroundNode(Adcirc::Geometry::Node *n);
-  size_t numElementsAroundNode(size_t nodeIndex);
-  Adcirc::Geometry::Element *elementTable(Adcirc::Geometry::Node *n,
-                                          size_t listIndex);
-  Adcirc::Geometry::Element *elementTable(size_t nodeIndex, size_t listIndex);
-  std::vector<Adcirc::Geometry::Element *> elementsAroundNode(
-      Adcirc::Geometry::Node *n);
-
   std::string hash(bool force = false);
 
   Adcirc::Cryptography::HashType hashType() const;
@@ -196,6 +187,8 @@ class MeshPrivate {
                 const std::vector<double> &extent, const double resolution,
                 const float nullvalue, const std::string &description,
                 const std::string &units, const bool partialWetting = true);
+
+  Adcirc::Geometry::Topology *topology();
 
  private:
   static void meshCopier(MeshPrivate *a, const MeshPrivate *b);
@@ -251,8 +244,7 @@ class MeshPrivate {
   bool m_nodeOrderingLogical;
   bool m_elementOrderingLogical;
 
-  Adcirc::Geometry::ElementTable m_elementTable;
-
+  std::unique_ptr<Adcirc::Geometry::Topology> m_topology;
   std::unique_ptr<Kdtree> m_nodalSearchTree;
   std::unique_ptr<Kdtree> m_elementalSearchTree;
 

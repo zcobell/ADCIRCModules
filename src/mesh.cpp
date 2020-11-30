@@ -635,61 +635,6 @@ std::vector<double> Mesh::computeMeshSize() {
 }
 
 /**
- * @brief Builds a list of elements connected to each node
- */
-void Mesh::buildElementTable() { this->m_impl->buildElementTable(); }
-
-/**
- * @brief Returns the number of elements surrounding a specified node
- * @param[in] n address of node
- * @return number of elements
- */
-size_t Mesh::numElementsAroundNode(Adcirc::Geometry::Node *n) {
-  return this->m_impl->numElementsAroundNode(n);
-}
-
-/**
- * @brief Returns the number of elements surrounding a specified node
- * @param[in] n index of node
- * @return number of elements
- */
-size_t Mesh::numElementsAroundNode(size_t nodeIndex) {
-  return this->m_impl->numElementsAroundNode(nodeIndex);
-}
-
-/**
- * @brief Returns the nth element in the list of elements surrounding a node
- * @param[in] n node pointer
- * @param[in] listIndex index of the element to return
- * @return element pointer
- */
-Adcirc::Geometry::Element *Mesh::elementTable(Adcirc::Geometry::Node *n,
-                                              size_t listIndex) {
-  return this->m_impl->elementTable(n, listIndex);
-}
-
-/**
- * @brief Returns the nth element in the list of elements surrounding a node
- * @param[in] n node index
- * @param[in] listIndex index of the element to return
- * @return element pointer
- */
-Adcirc::Geometry::Element *Mesh::elementTable(size_t nodeIndex,
-                                              size_t listIndex) {
-  return this->m_impl->elementTable(nodeIndex, listIndex);
-}
-
-/**
- * @brief Returns a vector of pointers to the elements surrouding a node
- * @param[in] n node pointer
- * @return vector of element references
- */
-std::vector<Adcirc::Geometry::Element *> Mesh::elementsAroundNode(
-    Adcirc::Geometry::Node *n) {
-  return this->m_impl->elementsAroundNode(n);
-}
-
-/**
  * @brief Return a vector containing all nodes on the mesh boundary
  *
  * Note that the nodes returned are not nodes with boundary conditions, but
@@ -796,3 +741,5 @@ void Mesh::toRaster(const std::string &filename, const std::vector<double> &z,
   this->m_impl->toRaster(filename, z, extent, resolution, nullvalue,
                          description, units, partialWetting);
 }
+
+Adcirc::Geometry::Topology *Mesh::topology() { return m_impl->topology(); }
