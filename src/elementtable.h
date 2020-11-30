@@ -22,7 +22,6 @@
 #include <memory>
 #include <vector>
 #include "adcircmodules_global.h"
-#include "adcmap.h"
 #include "element.h"
 
 namespace Adcirc {
@@ -66,10 +65,7 @@ class ElementTable {
   void ADCIRCMODULES_EXPORT setMesh(Adcirc::Private::MeshPrivate *mesh);
 
  private:
-  Adcirc::adcmap<Adcirc::Geometry::Node *,
-                 std::vector<Adcirc::Geometry::Element *>>
-      m_elementTable;
-
+  std::vector<std::vector<Adcirc::Geometry::Element *>> m_elementTable;
   Adcirc::Private::MeshPrivate *m_mesh;
 
   bool m_initialized;

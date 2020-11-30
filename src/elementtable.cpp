@@ -53,10 +53,11 @@ void ElementTable::build() {
   if (this->m_mesh == nullptr) {
     return;
   }
-  this->m_elementTable.reserve(this->m_mesh->numNodes());
+  this->m_elementTable.resize(this->m_mesh->numNodes());
   for (size_t i = 0; i < this->m_mesh->numElements(); ++i) {
     for (size_t j = 0; j < this->m_mesh->element(i)->n(); ++j) {
-      Node *n = this->m_mesh->element(i)->node(j);
+      size_t n =
+          this->m_mesh->nodeIndexById(this->m_mesh->element(i)->node(j)->id());
       this->m_elementTable[n].push_back(this->m_mesh->element(i));
     }
   }
@@ -70,8 +71,9 @@ void ElementTable::build() {
  * @return vector of element pointers around the node
  */
 std::vector<Element *> ElementTable::elementList(Node *n) {
-  if (this->m_elementTable.find(n) != this->m_elementTable.end())
-    return this->m_elementTable[n];
+  size_t index = m_mesh->nodeIndexById(n->id());
+  if (index < m_mesh->numNodes())
+    return this->m_elementTable[index];
   else
     adcircmodules_throw_exception("Node " + std::to_string(n->id()) +
                                   " not part of mesh");
@@ -84,8 +86,9 @@ std::vector<Element *> ElementTable::elementList(Node *n) {
  * @return number of elements around a specified node
  */
 size_t ElementTable::numElementsAroundNode(Adcirc::Geometry::Node *n) {
-  if (this->m_elementTable.find(n) != this->m_elementTable.end())
-    return this->m_elementTable[n].size();
+  size_t index = m_mesh->nodeIndexById(n->id());
+  if (index < m_mesh->numNodes())
+    return this->m_elementTable[index].size();
   else
     return adcircmodules_default_value<size_t>();
 }
@@ -97,7 +100,7 @@ size_t ElementTable::numElementsAroundNode(Adcirc::Geometry::Node *n) {
  */
 size_t ElementTable::numElementsAroundNode(size_t nodeIndex) {
   if (nodeIndex < this->mesh()->numNodes()) {
-    return this->m_elementTable[this->mesh()->node(nodeIndex)].size();
+    return this->m_elementTable[nodeIndex].size();
   } else {
     adcircmodules_throw_exception("Out of bounds node request");
   }
@@ -113,9 +116,10 @@ size_t ElementTable::numElementsAroundNode(size_t nodeIndex) {
  */
 Adcirc::Geometry::Element *ElementTable::elementTable(Adcirc::Geometry::Node *n,
                                                       size_t listIndex) {
-  if (this->m_elementTable.find(n) != this->m_elementTable.end()) {
-    if (listIndex < this->m_elementTable[n].size()) {
-      return this->m_elementTable[n].at(listIndex);
+  size_t index = m_mesh->nodeIndexById(n->id());
+  if (index < m_mesh->numNodes()) {
+    if (listIndex < this->m_elementTable[index].size()) {
+      return this->m_elementTable[index].at(listIndex);
     } else {
       adcircmodules_throw_exception("Out of element table request");
     }
@@ -132,9 +136,8 @@ Adcirc::Geometry::Element *ElementTable::elementTable(Adcirc::Geometry::Node *n,
 Adcirc::Geometry::Element *ElementTable::elementTable(size_t nodeIndex,
                                                       size_t listIndex) {
   if (nodeIndex < this->mesh()->numNodes()) {
-    if (listIndex <
-        this->m_elementTable[this->mesh()->node(nodeIndex)].size()) {
-      return this->m_elementTable[this->mesh()->node(nodeIndex)].at(listIndex);
+    if (listIndex < this->m_elementTable[nodeIndex].size()) {
+      return this->m_elementTable[nodeIndex].at(listIndex);
     } else {
       adcircmodules_throw_exception("Out of element table request");
     }
