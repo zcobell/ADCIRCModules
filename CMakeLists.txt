@@ -431,13 +431,13 @@ set(ADCIRCMODULES_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/mesh.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/node.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/element.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/hash.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/adchash.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/hmdf.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/hmdfstation.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stationinterpolationoptions.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stationinterpolation.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/netcdftimeseries.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/hash_private.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/adchash_private.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/cdate.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/boundary.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/fileio.cpp
@@ -483,7 +483,7 @@ set(HEADER_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/boundary.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/config.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/element.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/hash.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/adchash.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/hashtype.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/hmdf.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/hmdfstation.h
@@ -532,6 +532,7 @@ target_include_directories(
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/date/include/date
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/nanoflann/include
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/proj-7.2.0/src
+          ${SQLITE3_INCLUDE_DIR}
           ${Boost_INCLUDE_DIRS}
           ${NETCDF_INCLUDE_DIR})
 
@@ -573,7 +574,7 @@ set_target_properties(adcircmodules PROPERTIES CMAKE_CXX_VISIBILITY_PRESET
                                                hidden)
 set_target_properties(adcircmodules PROPERTIES CMAKE_CXX_INLINES_HIDDEN YES)
 
-target_link_libraries(adcircmodules proj shapelib)
+target_link_libraries(adcircmodules proj shapelib ${SQLITE3_LIBRARY})
 
 if(WIN32)
   link_directories(${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/netcdf/libs_vc64)

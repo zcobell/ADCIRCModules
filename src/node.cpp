@@ -21,7 +21,7 @@
 #include "boost/format.hpp"
 #include "default_values.h"
 #include "fpcompare.h"
-#include "hash.h"
+#include "adchash.h"
 
 using namespace Adcirc::Geometry;
 

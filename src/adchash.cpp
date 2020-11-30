@@ -16,9 +16,9 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#include "hash.h"
+#include "adchash.h"
 #include <string>
-#include "hash_private.h"
+#include "adchash_private.h"
 
 using namespace Adcirc::Cryptography;
 

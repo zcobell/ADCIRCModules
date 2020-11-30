@@ -122,8 +122,8 @@ SOURCES += \
     griddata_private.cpp \
     harmonicsoutput_private.cpp \
     harmonicsrecord_private.cpp \
-    hash.cpp \
-    hash_private.cpp \
+    adchash.cpp \
+    adchash_private.cpp \
     kdtree_private.cpp \
     mesh_private.cpp \
     nodalattributes_private.cpp \
@@ -174,8 +174,8 @@ HEADERS += \
     griddata_private.h \
     harmonicsoutput_private.h \
     harmonicsrecord_private.h \
-    hash.h \
-    hash_private.h \
+    adchash.h \
+    adchash_private.h \
     hashtype.h \
     kdtree_private.h \
     mesh_private.h \
