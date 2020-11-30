@@ -159,7 +159,8 @@ SOURCES += \
     writeoutput.cpp \
     hmdf.cpp \
     hmdfstation.cpp \
-    netcdftimeseries.cpp
+    netcdftimeseries.cpp \
+    projection.cpp
 
 HEADERS += \
     adcirc_outputfiles.h \
@@ -216,10 +217,12 @@ HEADERS += \
     writeoutput.h \
     hmdf.h \
     hmdfstation.h \
-    netcdftimeseries.h
+    netcdftimeseries.h \
+    projection.h
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH $$DATEPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib
+INCLUDEPATH += $$PWD/../thirdparty/proj-7.2.0/src
 
 unix {
     INCLUDEPATH += /usr/include/hdf5/serial
@@ -251,19 +254,6 @@ unix{
 #...Ensure that git is in the system path. If not using GIT comment these two lines
 GIT_VERSION = $$system(git --git-dir $$PWD/../.git --work-tree $$PWD/.. describe --always --tags)
 DEFINES += GIT_VERSION=\\\"$$GIT_VERSION\\\"
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../thirdparty/EzProj/src/release/ -lezproj
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../thirdparty/EzProj/src/debug/ -lezproj
-else:unix: LIBS += -L$$OUT_PWD/../thirdparty/EzProj/src/ -lezproj
-
-INCLUDEPATH += $$PWD/../thirdparty/EzProj/src
-DEPENDPATH += $$PWD/../thirdparty/EzProj/src
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../thirdparty/EzProj/src/release/libezproj.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../thirdparty/EzProj/src/debug/libezproj.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../thirdparty/EzProj/src/release/ezproj.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../thirdparty/EzProj/src/debug/ezproj.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../thirdparty/EzProj/src/libezproj.a
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libraries/shapelib/release/ -lshapelib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libraries/shapelib/debug/ -lshapelib

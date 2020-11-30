@@ -18,7 +18,6 @@
 //------------------------------------------------------------------------*/
 #include "facetable.h"
 #include <algorithm>
-#include <tuple>
 #include "logging.h"
 #include "mesh.h"
 #include "mesh_private.h"

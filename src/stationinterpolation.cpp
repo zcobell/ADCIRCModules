@@ -21,10 +21,10 @@
 #include "boost/format.hpp"
 #include "boost/progress.hpp"
 #include "constants.h"
-#include "ezproj.h"
 #include "fileio.h"
 #include "fpcompare.h"
 #include "logging.h"
+#include "projection.h"
 
 using namespace Adcirc::Output;
 
@@ -92,7 +92,6 @@ void StationInterpolation::generateInterpolationWeights(
     Adcirc::Geometry::Mesh &m) {
   m.buildElementalSearchTree();
   size_t nFound = 0;
-  Ezproj e;
   Hmdf *stn = this->m_options.stations();
 
   this->m_weights.resize(stn->nstations());
@@ -105,9 +104,10 @@ void StationInterpolation::generateInterpolationWeights(
     double y2 = 0;
 
     if (this->m_options.epsgStation() != this->m_options.epsgGlobal()) {
-      bool latlon = false;
-      e.transform(this->m_options.epsgStation(), this->m_options.epsgGlobal(),
-                  x1, y1, x2, y2, latlon);
+      bool isLatLon;
+      Adcirc::Projection::transform(this->m_options.epsgStation(),
+                                    this->m_options.epsgGlobal(), x1, y1, x2,
+                                    y2, isLatLon);
     } else {
       x2 = x1;
       y2 = y1;
@@ -149,16 +149,16 @@ void StationInterpolation::allocateStationArrays() {
 
 void StationInterpolation::reprojectStationOutput() {
   if (this->m_options.epsgStation() != this->m_options.epsgOutput()) {
-    Ezproj e;
     Hmdf *output = this->m_options.stations();
     for (size_t i = 0; i < output->nstations(); ++i) {
       double x1 = output->station(i)->longitude();
       double y1 = output->station(i)->latitude();
       double x2 = 0;
       double y2 = 0;
-      bool latlon = false;
-      e.transform(this->m_options.epsgStation(), this->m_options.epsgOutput(),
-                  x1, y1, x2, y2, latlon);
+      bool isLatLon;
+      Adcirc::Projection::transform(this->m_options.epsgStation(),
+                                    this->m_options.epsgOutput(), x1, y1, x2,
+                                    y2, isLatLon);
       output->station(i)->setLongitude(x2);
       output->station(i)->setLatitude(y2);
     }
@@ -378,7 +378,8 @@ double StationInterpolation::interpolateDryValues(double v1, double w1,
   return v1 * w1 + v2 * w2 + v3 * w3;
 }
 
-Adcirc::CDate StationInterpolation::dateFromString(const std::string &dateString) {
+Adcirc::CDate StationInterpolation::dateFromString(
+    const std::string &dateString) {
   int year = stoi(dateString.substr(0, 4));
   int month = stoi(dateString.substr(4, 2));
   int day = stoi(dateString.substr(6, 2));

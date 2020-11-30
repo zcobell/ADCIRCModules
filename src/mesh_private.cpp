@@ -27,7 +27,6 @@
 #include "boost/format.hpp"
 #include "default_values.h"
 #include "elementtable.h"
-#include "ezproj.h"
 #include "fileio.h"
 #include "filetypes.h"
 #include "fpcompare.h"
@@ -36,6 +35,7 @@
 #include "logging.h"
 #include "mesh.h"
 #include "netcdf.h"
+#include "projection.h"
 #include "shapefil.h"
 #include "stringconversion.h"
 
@@ -1162,26 +1162,26 @@ bool MeshPrivate::isLatLon() { return this->m_isLatLon; }
  * @param epsg EPSG coordinate system to convert the mesh into
  */
 void MeshPrivate::reproject(int epsg) {
-  Ezproj proj;
-  bool isLatLon;
-  std::vector<Point> inPoint, outPoint;
-  inPoint.reserve(this->numNodes());
-  outPoint.resize(this->numNodes());
+  std::vector<double> xin, xout, yin, yout;
+  xin.reserve(this->numNodes());
+  yin.reserve(this->numNodes());
 
   for (const auto &n : this->m_nodes) {
-    inPoint.push_back(Point(n.x(), n.y()));
+    xin.push_back(n.x());
+    yin.push_back(n.y());
   }
 
-  int ierr =
-      proj.transform(this->projection(), epsg, inPoint, outPoint, isLatLon);
+  bool isLatLon = false;
+  int ierr = Adcirc::Projection::transform(this->projection(), epsg, xin, yin,
+                                           xout, yout, isLatLon);
 
-  if (ierr != Ezproj::NoError) {
-    adcircmodules_throw_exception("Mesh: Proj4 library error");
+  if (ierr != 0) {
+    adcircmodules_throw_exception("Mesh: Proj library error");
   }
 
   for (size_t i = 0; i < this->numNodes(); ++i) {
-    this->node(i)->setX(outPoint[i].first);
-    this->node(i)->setY(outPoint[i].second);
+    this->node(i)->setX(xout[i]);
+    this->node(i)->setY(yout[i]);
   }
 
   this->defineProjection(epsg, isLatLon);
@@ -2352,11 +2352,10 @@ std::vector<std::vector<size_t>> MeshPrivate::connectivity() {
  */
 void MeshPrivate::cpp(double lambda, double phi) {
   for (auto &n : this->m_nodes) {
-    Point i(n.x(), n.y());
-    Point o;
-    Ezproj::cpp(lambda, phi, i, o);
-    n.setX(o.first);
-    n.setY(o.second);
+    double xout, yout;
+    Adcirc::Projection::cpp(lambda, phi, n.x(), n.y(), xout, yout);
+    n.setX(xout);
+    n.setY(yout);
   }
   return;
 }
@@ -2366,11 +2365,10 @@ void MeshPrivate::cpp(double lambda, double phi) {
  */
 void MeshPrivate::inverseCpp(double lambda, double phi) {
   for (auto &n : this->m_nodes) {
-    Point i(n.x(), n.y());
-    Point o;
-    Ezproj::inverseCpp(lambda, phi, i, o);
-    n.setX(o.first);
-    n.setY(o.second);
+    double xout, yout;
+    Adcirc::Projection::inverseCpp(lambda, phi, n.x(), n.y(), xout, yout);
+    n.setX(xout);
+    n.setY(yout);
   }
   return;
 }

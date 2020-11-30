@@ -31,12 +31,12 @@
 #include "boost/algorithm/string/replace.hpp"
 #include "boost/format.hpp"
 #include "cdate.h"
-#include "ezproj.h"
 #include "fileio.h"
 #include "formatting.h"
 #include "logging.h"
 #include "netcdf.h"
 #include "netcdftimeseries.h"
+#include "projection.h"
 
 using namespace Adcirc::Output;
 
@@ -70,14 +70,13 @@ void Hmdf::reproject(int epsg) {
         "Error: Must define projection before reprojecting");
   }
 
-  Ezproj p;
-
   for (auto &m : this->m_station) {
     double x = m.longitude();
     double y = m.latitude();
     double outx, outy;
     bool islatlon;
-    p.transform(this->m_epsg, epsg, x, y, outx, outy, islatlon);
+    Adcirc::Projection::transform(this->m_epsg, epsg, x, y, outx, outy,
+                                  islatlon);
     m.setLongitude(outx);
     m.setLatitude(outy);
   }
@@ -402,14 +401,14 @@ int Hmdf::writeNetcdf(const std::string &filename) {
   std::string host = "unknown";
 #endif
 
-  char * usr1 = std::getenv("USER");
-  char * usr2 = std::getenv("USERNAME");
+  char *usr1 = std::getenv("USER");
+  char *usr2 = std::getenv("USERNAME");
   std::string name;
-  if(usr1 != NULL){
+  if (usr1 != NULL) {
     name = std::string(usr1);
-  } else if(usr2 != NULL){
+  } else if (usr2 != NULL) {
     name = std::string(usr2);
-  } else{
+  } else {
     name = "none";
   }
 
