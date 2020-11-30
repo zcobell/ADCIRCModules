@@ -1,6 +1,3 @@
-[submodule "thirdparty/EzProj"]
-	path = thirdparty/ezproj
-	url = https://github.com/zcobell/EzProj
 [submodule "thirdparty/nanoflann"]
 	path = thirdparty/nanoflann
 	url = https://github.com/jlblancoc/nanoflann.git
