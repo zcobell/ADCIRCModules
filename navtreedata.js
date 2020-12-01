@@ -19,6 +19,7 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
+        [ "Typedefs", "functions_type.html", null ],
         [ "Enumerations", "functions_enum.html", null ],
         [ "Enumerator", "functions_eval.html", null ],
         [ "Related Functions", "functions_rela.html", null ]
@@ -39,11 +40,12 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"adcirc__outputfiles_8h.html",
-"classAdcirc_1_1Harmonics_1_1HarmonicsRecord.html#a3a3a21cb65246a69e33472d9385caa04",
-"classAdcirc_1_1Private_1_1GriddataPrivate.html#acb8d2e3026ba65b02af212c74ca39ed7",
-"fileio_8h.html#a787bbdf9f55a70814131f846634ec9e3",
-"outputrecord_8h.html#a9fe832259f5fac304addc48ec1b70563"
+"adchash_8cpp.html",
+"classAdcirc_1_1Geometry_1_1Face.html#aac5711b3d5521d64cba4a892acc1e3b4",
+"classAdcirc_1_1ModelParameters_1_1Attribute.html#ae83f8bf0246a70095cce1ba86523a6fe",
+"classAdcirc_1_1Output_1_1ReadOutput.html#ae8487e719ad1109f6db746e96a37c498",
+"classAdcirc_1_1Private_1_1NodalAttributesPrivate.html#a3fe0b4793bf5d9716babb91276f5ee5a",
+"functions_t.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

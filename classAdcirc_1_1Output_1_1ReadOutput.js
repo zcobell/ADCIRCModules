@@ -2,9 +2,11 @@ var classAdcirc_1_1Output_1_1ReadOutput =
 [
     [ "ReadOutput", "classAdcirc_1_1Output_1_1ReadOutput.html#a9f1f66552aae8f042d027ff8ae3cc91b", null ],
     [ "~ReadOutput", "classAdcirc_1_1Output_1_1ReadOutput.html#ad465044f0272708e21acb9089228e878", null ],
+    [ "addRecord", "classAdcirc_1_1Output_1_1ReadOutput.html#a89cb64732551c0a8dcc8a5652e9e8756", null ],
     [ "clear", "classAdcirc_1_1Output_1_1ReadOutput.html#ac8bb3912a3ce86b15842e79d0b421204", null ],
     [ "clearAt", "classAdcirc_1_1Output_1_1ReadOutput.html#a45205a80f019adec3501b55a3ceff978", null ],
     [ "close", "classAdcirc_1_1Output_1_1ReadOutput.html#a5ae591df94fc66ccb85cbb6565368bca", null ],
+    [ "coldstart", "classAdcirc_1_1Output_1_1ReadOutput.html#a2f8d886338cff00fc343b25571635d0d", null ],
     [ "currentSnap", "classAdcirc_1_1Output_1_1ReadOutput.html#a4044653a73e895cd749614f3747c330f", null ],
     [ "data", "classAdcirc_1_1Output_1_1ReadOutput.html#ad2c0d2a9bd8fb7f716662499dc14e417", null ],
     [ "data", "classAdcirc_1_1Output_1_1ReadOutput.html#a24cc32619ee8499e86ae8d923f8f21ab", null ],
@@ -24,6 +26,7 @@ var classAdcirc_1_1Output_1_1ReadOutput =
     [ "numSnaps", "classAdcirc_1_1Output_1_1ReadOutput.html#a6722c077a3a1da05711df1ae777ecd5d", null ],
     [ "open", "classAdcirc_1_1Output_1_1ReadOutput.html#a9e8555112049fc2b4945120b3c45f8ab", null ],
     [ "read", "classAdcirc_1_1Output_1_1ReadOutput.html#a03178f1cd03b9e467b77562f0b89699a", null ],
+    [ "setColdstart", "classAdcirc_1_1Output_1_1ReadOutput.html#ace4721cf48b8c58f0760bc1274d5816a", null ],
     [ "setCurrentSnap", "classAdcirc_1_1Output_1_1ReadOutput.html#a82bc9df43381b4dac90bab886a46104f", null ],
     [ "setDefaultValue", "classAdcirc_1_1Output_1_1ReadOutput.html#a4505afa16445ac8fbab372a523b794f7", null ],
     [ "setDiteration", "classAdcirc_1_1Output_1_1ReadOutput.html#aa5f418121840b47156c2a5843e62416e", null ],
@@ -34,5 +37,7 @@ var classAdcirc_1_1Output_1_1ReadOutput =
     [ "setMetadata", "classAdcirc_1_1Output_1_1ReadOutput.html#aa95466dbd4945dfc3b288f9ca07fbfe6", null ],
     [ "setModelDt", "classAdcirc_1_1Output_1_1ReadOutput.html#add6f62f92e66720ba10406fb476cacb6", null ],
     [ "setNumNodes", "classAdcirc_1_1Output_1_1ReadOutput.html#adc173e9926bed8f4bbc13ee2cc5c5378", null ],
-    [ "setNumSnaps", "classAdcirc_1_1Output_1_1ReadOutput.html#af1b6b60930b121ed13909fd7fd425b79", null ]
+    [ "setNumSnaps", "classAdcirc_1_1Output_1_1ReadOutput.html#af1b6b60930b121ed13909fd7fd425b79", null ],
+    [ "setVerbose", "classAdcirc_1_1Output_1_1ReadOutput.html#aba884fb1db570d09eb1908c2b7d9c481", null ],
+    [ "verbose", "classAdcirc_1_1Output_1_1ReadOutput.html#ae74762f360c62a60cf27cd0f66e7f017", null ]
 ];

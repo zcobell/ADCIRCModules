@@ -1,5 +1,6 @@
 <map id="setNumElements" name="setNumElements">
 <area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a730dc8fcf0da2d9a4ff0f7ac3c614d00" title="Reads a specified mesh format. " alt="" coords="205,5,252,32"/>
 <area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="184,56,273,83"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a16a30ccab02802c1bf373907dfda2c05" title="Deletes an Element object at the specified index and shifts the remaining elements forward in the vec..." alt="" coords="176,107,281,133"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a16a30ccab02802c1bf373907dfda2c05" title="Deletes an Element object at the specified index and shifts the remaining elements forward in the vec..." alt="" coords="176,107,281,133"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a63b8018bbc6c1bbd42b8495c4dc55a85" title="MeshPrivate" alt="" coords="329,56,424,83"/>
 </map>

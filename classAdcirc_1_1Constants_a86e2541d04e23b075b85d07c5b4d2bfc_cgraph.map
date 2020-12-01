@@ -1,0 +1,8 @@
+<map id="distance" name="distance">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Constants.html#a8e8b5d1633dfb57d0d6056850bdd710c" title="Converts a value from degrees to radians. " alt="" coords="275,5,357,32"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Constants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude. " alt="" coords="124,56,212,83"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Constants.html#ae43063ac7bf556cb933a0206301b9748" title="Returns the factor to convert degrees to radians. " alt="" coords="420,5,488,32"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Constants.html#a8916e00cc71692658a0a355b2f142274" title="Returns the constant pi. " alt="" coords="536,5,575,32"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Constants.html#ac4170b1989bcda498ea9ea95bf25d583" title="Returns the equitorial radius of earth in meters. " alt="" coords="260,56,372,83"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Constants.html#a1b684ff37a85f7e328c6b027ee95bc10" title="Returns the polar radius of earth in meters. " alt="" coords="271,107,361,133"/>
+</map>

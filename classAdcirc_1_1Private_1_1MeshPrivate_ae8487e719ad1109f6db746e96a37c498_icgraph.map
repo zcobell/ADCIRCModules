@@ -1,25 +1,32 @@
 <map id="numNodes" name="numNodes">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#a7740c7ab195c03ac140f1f75f633470f" title="Begin building the table. " alt="" coords="139,49,319,90"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#aeb87845ce7689f495e96a156caa41631" title="Computes average size of the element edges connected to each node. " alt="" coords="409,56,539,83"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a730dc8fcf0da2d9a4ff0f7ac3c614d00" title="Reads a specified mesh format. " alt="" coords="451,441,497,468"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a347bddbca192cb60715d5f6633da37c0" title="Sets the z&#45;values of the mesh to the values found within a vector. " alt="" coords="205,644,253,671"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a83611a572514d6b2f73e9ee6431744c8" title="Returns a pointer to the requested node in the internal node vector. " alt="" coords="203,188,254,215"/>
-<area shape="rect" id="node10" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#abaa0c62f37f1b32f8524ddc12f2f1a64" title="Reprojects a mesh into the specified projection. " alt="" coords="438,239,510,265"/>
-<area shape="rect" id="node11" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a059241e253157b135c2ca32c1cf6f5dc" title="Adds a node at the specified index in the node vector. " alt="" coords="437,289,511,316"/>
-<area shape="rect" id="node12" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a40e8e6dfd5b76435fd5bbcac818105e7" title="Writes an Mesh object to disk in ASCII format. " alt="" coords="449,340,499,367"/>
-<area shape="rect" id="node13" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#abd3331e78f95f4c6e0535aa99a6523f5" title="Returns a pointer to the requested node by its ID. " alt="" coords="190,695,267,721"/>
-<area shape="rect" id="node14" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ab1710b55657f368bbebe1c9ad7c36f08" title="Builds a kd&#45;tree object with the mesh nodes as the search locations. " alt="" coords="399,593,549,620"/>
-<area shape="rect" id="node16" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="184,745,273,772"/>
-<area shape="rect" id="node17" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a684cf2720fb4efb8e72184f52ad151cb" title="Deletes an Node object at the specified index and shifts the remaining nodes forward in the vector..." alt="" coords="185,796,273,823"/>
-<area shape="rect" id="node18" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#afdeef43f911a631b40c7bd6de3c8ce6f" title="Returns a vector of the x&#45;coordinates. " alt="" coords="209,543,248,569"/>
-<area shape="rect" id="node23" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ac226a4441605d69e0cc5564e7f0805ad" title="Returns a vector of the y&#45;coordinates. " alt="" coords="209,492,248,519"/>
-<area shape="rect" id="node24" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ab93aa60ac4b272c586a0681478416aee" title="Returns a vector of the z&#45;coordinates. " alt="" coords="209,441,248,468"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a612375ca3799e85137b9d315491f1484" title="Builds a list of elements connected to each node. " alt="" coords="409,5,539,32"/>
-<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#ac0775565a8826077707a94a3611bbf3f" title="Adcirc::Geometry::Element\lTable::numElementsAroundNode" alt="" coords="367,107,581,149"/>
-<area shape="rect" id="node9" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#a477aeec054b51540ab70382872bd56ee" title="Adcirc::Geometry::Element\lTable::elementTable" alt="" coords="384,173,564,214"/>
-<area shape="rect" id="node15" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a4504d27718bd1f3e2a3ce8457d9b01e9" title="Finds the nearest mesh node to the provided x,y. " alt="" coords="638,593,758,620"/>
-<area shape="rect" id="node19" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a76e76634991fe2ec7d6504760f7a6082" title="Builds a kd&#45;tree object with the element centers as the search locations. " alt="" coords="387,543,561,569"/>
-<area shape="rect" id="node22" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a94d25c891983ee909aafdecf34bcbfec" title="Returns a 2d&#45;vector of the xyz&#45;coordinates. " alt="" coords="453,492,495,519"/>
-<area shape="rect" id="node20" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a81c61aafd5fb5a9fcda48fbd503764ca" title="Finds the nearest mesh element to the provided x,y. " alt="" coords="629,543,767,569"/>
-<area shape="rect" id="node21" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a039597d13fb3ef6dc00a932f4cb531ed" title="Finds the mesh element that a given location lies within. " alt="" coords="653,492,743,519"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#a7740c7ab195c03ac140f1f75f633470f" title="Begin building the table. " alt="" coords="146,5,326,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#aeb87845ce7689f495e96a156caa41631" title="Computes average size of the element edges connected to each node. " alt="" coords="411,71,542,98"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a63b8018bbc6c1bbd42b8495c4dc55a85" title="MeshPrivate" alt="" coords="668,299,763,326"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a730dc8fcf0da2d9a4ff0f7ac3c614d00" title="Reads a specified mesh format. " alt="" coords="453,882,500,909"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a347bddbca192cb60715d5f6633da37c0" title="Sets the z&#45;values of the mesh to the values found within a vector. " alt="" coords="212,781,260,807"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a83611a572514d6b2f73e9ee6431744c8" title="Returns a pointer to the requested node in the internal node vector. " alt="" coords="211,173,261,199"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#abaa0c62f37f1b32f8524ddc12f2f1a64" title="Reprojects a mesh into the specified projection. " alt="" coords="441,173,513,199"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a059241e253157b135c2ca32c1cf6f5dc" title="Adds a node at the specified index in the node vector. " alt="" coords="439,122,514,149"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a40e8e6dfd5b76435fd5bbcac818105e7" title="Writes an Mesh object to disk in ASCII format. " alt="" coords="451,223,502,250"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a799679c9337cc0b9adf344f5bc25db57" title="Returns the requested node from the internal node vector. " alt="" coords="206,426,266,453"/>
+<area shape="rect" id="node14" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#abd3331e78f95f4c6e0535aa99a6523f5" title="Returns a pointer to the requested node by its ID. " alt="" coords="197,831,275,858"/>
+<area shape="rect" id="node15" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ab1710b55657f368bbebe1c9ad7c36f08" title="Builds a kd&#45;tree object with the mesh nodes as the search locations. " alt="" coords="401,426,552,453"/>
+<area shape="rect" id="node17" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="191,325,281,351"/>
+<area shape="rect" id="node18" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a684cf2720fb4efb8e72184f52ad151cb" title="Deletes an Node object at the specified index and shifts the remaining nodes forward in the vector..." alt="" coords="192,882,280,909"/>
+<area shape="rect" id="node19" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#afdeef43f911a631b40c7bd6de3c8ce6f" title="Returns a vector of the x&#45;coordinates. " alt="" coords="217,629,255,655"/>
+<area shape="rect" id="node29" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ac226a4441605d69e0cc5564e7f0805ad" title="Returns a vector of the y&#45;coordinates. " alt="" coords="217,578,255,605"/>
+<area shape="rect" id="node30" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ab93aa60ac4b272c586a0681478416aee" title="Returns a vector of the z&#45;coordinates. " alt="" coords="217,679,255,706"/>
+<area shape="rect" id="node31" href="$classAdcirc_1_1Geometry_1_1NodeTable.html#a7740c7ab195c03ac140f1f75f633470f" title="Adcirc::Geometry::NodeTable\l::build" alt="" coords="139,933,333,975"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="381,5,572,47"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="620,5,811,47"/>
+<area shape="rect" id="node16" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a4504d27718bd1f3e2a3ce8457d9b01e9" title="Finds the nearest mesh node to the provided x,y. " alt="" coords="655,426,775,453"/>
+<area shape="rect" id="node20" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#acecfbe4b5dbfac4b1c4d2f988500555e" title="toBoundaryShapefile" alt="" coords="405,730,548,757"/>
+<area shape="rect" id="node21" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ab714c556df3dbac59594f85748f56d72" title="toBoundaryLineShapefile" alt="" coords="393,629,560,655"/>
+<area shape="rect" id="node22" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a58653d7d73344cfab6282c028e954a49" title="toWeirPolygonShapefile" alt="" coords="396,578,557,605"/>
+<area shape="rect" id="node23" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a76e76634991fe2ec7d6504760f7a6082" title="Builds a kd&#45;tree object with the element centers as the search locations. " alt="" coords="389,477,564,503"/>
+<area shape="rect" id="node26" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a011cbec6e6c3c231d02f0ff2b207779c" title="toRaster" alt="" coords="679,781,751,807"/>
+<area shape="rect" id="node27" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a94d25c891983ee909aafdecf34bcbfec" title="Returns a 2d&#45;vector of the xyz&#45;coordinates. " alt="" coords="455,679,498,706"/>
+<area shape="rect" id="node28" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a392f7ce9e7e08ea8584833312a06c0c4" title="extent" alt="" coords="447,831,506,858"/>
+<area shape="rect" id="node24" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a81c61aafd5fb5a9fcda48fbd503764ca" title="Finds the nearest mesh element to the provided x,y. " alt="" coords="647,477,784,503"/>
+<area shape="rect" id="node25" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a039597d13fb3ef6dc00a932f4cb531ed" title="Finds the mesh element that a given location lies within. " alt="" coords="670,527,761,554"/>
 </map>

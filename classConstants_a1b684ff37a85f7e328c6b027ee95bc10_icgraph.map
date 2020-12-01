@@ -1,5 +1,0 @@
-<map id="polarRadius" name="polarRadius">
-<area shape="rect" id="node2" href="$classConstants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude. " alt="" coords="144,31,232,57"/>
-<area shape="rect" id="node3" href="$classConstants.html#a86e2541d04e23b075b85d07c5b4d2bfc" title="Calculates the distance between two points. " alt="" coords="280,5,351,32"/>
-<area shape="rect" id="node4" href="$classConstants.html#a62d050d6a06ff0262d04bd705e45c517" title="Returns the square root of 3. " alt="" coords="290,56,341,83"/>
-</map>

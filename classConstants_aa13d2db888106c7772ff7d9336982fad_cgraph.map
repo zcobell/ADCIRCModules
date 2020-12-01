@@ -1,7 +1,0 @@
-<map id="radiusEarth" name="radiusEarth">
-<area shape="rect" id="node2" href="$classConstants.html#a8e8b5d1633dfb57d0d6056850bdd710c" title="Converts a value from degrees to radians. " alt="" coords="157,5,238,32"/>
-<area shape="rect" id="node5" href="$classConstants.html#ac4170b1989bcda498ea9ea95bf25d583" title="Returns the equitorial radius of earth in meters. " alt="" coords="141,56,253,83"/>
-<area shape="rect" id="node6" href="$classConstants.html#a1b684ff37a85f7e328c6b027ee95bc10" title="Returns the polar radius of earth in meters. " alt="" coords="152,107,243,133"/>
-<area shape="rect" id="node3" href="$classConstants.html#ae43063ac7bf556cb933a0206301b9748" title="Returns the factor to convert degrees to radians. " alt="" coords="301,5,369,32"/>
-<area shape="rect" id="node4" href="$classConstants.html#a8916e00cc71692658a0a355b2f142274" title="Returns the constant pi. " alt="" coords="417,5,456,32"/>
-</map>

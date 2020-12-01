@@ -1,3 +1,4 @@
 <map id="readLookupTable" name="readLookupTable">
-<area shape="rect" id="node2" href="$namespaceAdcirc_1_1FileIO_1_1Generic.html#a467cf6f34400b5d07c81e65512e50f8d" title="Splits a string using spaces. Consecutive spaces are treated as one delimiter. " alt="" coords="175,5,329,47"/>
+<area shape="rect" id="node2" href="$namespaceAdcirc_1_1FileIO_1_1Generic.html#a9017cc53202796d03cc9227c2cb54ca1" title="Adcirc::FileIO::Generic\l::sanitizeString" alt="" coords="175,5,329,47"/>
+<area shape="rect" id="node3" href="$namespaceAdcirc_1_1FileIO_1_1Generic.html#a467cf6f34400b5d07c81e65512e50f8d" title="Splits a string using spaces. Consecutive spaces are treated as one delimiter. " alt="" coords="175,71,329,112"/>
 </map>

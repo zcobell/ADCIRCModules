@@ -1,0 +1,16 @@
+<map id="copyStationList" name="copyStationList">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1Hmdf.html#ab0c34262fa429c589ade866f2bed7b6d" title="nstations" alt="" coords="231,5,305,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1HmdfStation.html#a62935d805b0b36b241d1c59574caef78" title="Adcirc::Output::HmdfStation\l::setLatitude" alt="" coords="175,57,361,98"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1Hmdf.html#aea677a35e80a7ca64134cd30224e6cd8" title="station" alt="" coords="237,123,299,149"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1HmdfStation.html#a3f99e460a793739de2ef6976b2a034d4" title="Adcirc::Output::HmdfStation\l::latitude" alt="" coords="175,174,361,215"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Output_1_1HmdfStation.html#a8934d6a558eae2b8ba143e562766db38" title="Adcirc::Output::HmdfStation\l::setLongitude" alt="" coords="175,239,361,281"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Output_1_1HmdfStation.html#a00f3340e5829cf7e97f73d9e174d0a57" title="Adcirc::Output::HmdfStation\l::longitude" alt="" coords="175,305,361,346"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Output_1_1HmdfStation.html#acc4acb10a31542472ee722705bd27016" title="Adcirc::Output::HmdfStation\l::setStationIndex" alt="" coords="175,370,361,411"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Output_1_1HmdfStation.html#ac2c27ac2afe89aa9f2fac143a005a736" title="Adcirc::Output::HmdfStation\l::stationIndex" alt="" coords="175,435,361,477"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Output_1_1HmdfStation.html#a9d3a2685df23b5e7cbf59c19c4a1f9b5" title="Adcirc::Output::HmdfStation\l::setName" alt="" coords="175,501,361,542"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Output_1_1HmdfStation.html#a1d89c28bd42ba9a52da008bb69367171" title="Adcirc::Output::HmdfStation\l::name" alt="" coords="175,566,361,607"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Output_1_1HmdfStation.html#a27ace557824fd670c67909e196f106bc" title="Adcirc::Output::HmdfStation\l::setId" alt="" coords="175,631,361,673"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Output_1_1HmdfStation.html#a4c5cdd8165762b000c6518db56830677" title="Adcirc::Output::HmdfStation::id" alt="" coords="165,697,371,724"/>
+<area shape="rect" id="node14" href="$classAdcirc_1_1Output_1_1Hmdf.html#a8e954c10252aafbf255e67b36f0690ac" title="addStation" alt="" coords="226,748,310,775"/>
+<area shape="rect" id="node15" href="$classAdcirc_1_1Output_1_1HmdfStation.html#a434d8fdd91756a54ea935ba21de4f4f6" title="Adcirc::Output::HmdfStation\l::isVector" alt="" coords="419,741,605,782"/>
+</map>

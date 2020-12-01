@@ -1,8 +1,10 @@
 <map id="numOpenBoundaries" name="numOpenBoundaries">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a730dc8fcf0da2d9a4ff0f7ac3c614d00" title="Reads a specified mesh format. " alt="" coords="244,5,291,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a990e0e045ec74d72a2c48910a15f55f2" title="Returns a pointer to an open boundary by index. " alt="" coords="215,56,320,83"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="223,107,312,133"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ae676cf0a8cf1d27a553044f1e5784b64" title="addOpenBoundary" alt="" coords="203,157,332,184"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a89d731dbde749752c2aefa9dc3d68954" title="deleteOpenBoundary" alt="" coords="196,208,339,235"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a40e8e6dfd5b76435fd5bbcac818105e7" title="Writes an Mesh object to disk in ASCII format. " alt="" coords="242,259,293,285"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a63b8018bbc6c1bbd42b8495c4dc55a85" title="MeshPrivate" alt="" coords="387,166,481,193"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a730dc8fcf0da2d9a4ff0f7ac3c614d00" title="Reads a specified mesh format. " alt="" coords="244,39,291,66"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a990e0e045ec74d72a2c48910a15f55f2" title="Returns a pointer to an open boundary by index. " alt="" coords="215,90,320,117"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a6c65c83bbfac9960a1b92c4a3a8730a1" title="Returns the open boundary by index. " alt="" coords="210,141,325,167"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="223,191,312,218"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ae676cf0a8cf1d27a553044f1e5784b64" title="addOpenBoundary" alt="" coords="203,242,332,269"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a89d731dbde749752c2aefa9dc3d68954" title="deleteOpenBoundary" alt="" coords="196,293,339,319"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a40e8e6dfd5b76435fd5bbcac818105e7" title="Writes an Mesh object to disk in ASCII format. " alt="" coords="242,343,293,370"/>
 </map>

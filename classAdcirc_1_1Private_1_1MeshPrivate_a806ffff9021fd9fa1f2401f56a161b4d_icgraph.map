@@ -1,0 +1,7 @@
+<map id="elementIndexById" name="elementIndexById">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1FaceTable.html#a9f121339b0e206434ed430d52a314a45" title="Adcirc::Geometry::FaceTable\l::numSharedFaces" alt="" coords="180,5,373,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1FaceTable.html#add822a8614cf4dc4102db4cb20a4eaf3" title="Returns the ith neighbor element. " alt="" coords="180,71,373,112"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1FaceTable.html#aa2f53023141fa4018fdd6a4bf8443562" title="Returns all face sharing neighbors of an element. " alt="" coords="180,136,373,177"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1FaceTable.html#a328582161335bc7b01914000ea08526c" title="Returns a shared face (two connected nodes) " alt="" coords="180,201,373,243"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1FaceTable.html#a7740c7ab195c03ac140f1f75f633470f" title="Constructs the internal table of element faces. " alt="" coords="180,267,373,308"/>
+</map>

@@ -1,8 +1,10 @@
 var classAdcirc_1_1Output_1_1OutputRecord =
 [
     [ "OutputRecord", "classAdcirc_1_1Output_1_1OutputRecord.html#afb2034c5c4d2ebc8eae7582daed105a8", null ],
-    [ "OutputRecord", "classAdcirc_1_1Output_1_1OutputRecord.html#a5f6b11e39fc4e2f1ef3c68fe95fcb9e5", null ],
-    [ "OutputRecord", "classAdcirc_1_1Output_1_1OutputRecord.html#a13262430da826bd8b0392773aa0511e0", null ],
+    [ "OutputRecord", "classAdcirc_1_1Output_1_1OutputRecord.html#aea3eb58a4f59937ab3642690ab4940ab", null ],
+    [ "OutputRecord", "classAdcirc_1_1Output_1_1OutputRecord.html#a5fd250e0531887253ced0e0484d86575", null ],
+    [ "coldstart", "classAdcirc_1_1Output_1_1OutputRecord.html#a7c95cbbde96a7fa5358f4c14c068999d", null ],
+    [ "date", "classAdcirc_1_1Output_1_1OutputRecord.html#a1d74eb8d1d0cec3bab56794585fd91ec", null ],
     [ "defaultValue", "classAdcirc_1_1Output_1_1OutputRecord.html#af3c6e7460235c8bda8126219d3bcfef4", null ],
     [ "direction", "classAdcirc_1_1Output_1_1OutputRecord.html#a2751027834d9fad6448896c35f828ab9", null ],
     [ "directions", "classAdcirc_1_1Output_1_1OutputRecord.html#a2ff38e09941218dd1cb2a04ee60109f9", null ],
@@ -27,6 +29,7 @@ var classAdcirc_1_1Output_1_1OutputRecord =
     [ "setAllU", "classAdcirc_1_1Output_1_1OutputRecord.html#adc4c7d0ff2ce0f8a8acbeb9a50fce10c", null ],
     [ "setAllV", "classAdcirc_1_1Output_1_1OutputRecord.html#a1d43581ccced067c3c4b26d4101e2ce1", null ],
     [ "setAllW", "classAdcirc_1_1Output_1_1OutputRecord.html#a8b1bb70e6d49b9ad962bb58ebbbf7ec2", null ],
+    [ "setColdstart", "classAdcirc_1_1Output_1_1OutputRecord.html#a47821c1053d60109d00229e25153ffe0", null ],
     [ "setDefaultValue", "classAdcirc_1_1Output_1_1OutputRecord.html#a4505afa16445ac8fbab372a523b794f7", null ],
     [ "setIteration", "classAdcirc_1_1Output_1_1OutputRecord.html#a38ed2850ced5940b6dd699cbed1784a0", null ],
     [ "setMetadata", "classAdcirc_1_1Output_1_1OutputRecord.html#aa95466dbd4945dfc3b288f9ca07fbfe6", null ],
@@ -41,5 +44,7 @@ var classAdcirc_1_1Output_1_1OutputRecord =
     [ "v", "classAdcirc_1_1Output_1_1OutputRecord.html#a85ef59d49f7f85dc10cb333cd6651e83", null ],
     [ "values", "classAdcirc_1_1Output_1_1OutputRecord.html#ad54d470fa60c15aef915ffc8201783d3", null ],
     [ "w", "classAdcirc_1_1Output_1_1OutputRecord.html#a08c9072fdbfbe09704841c078be53df4", null ],
-    [ "z", "classAdcirc_1_1Output_1_1OutputRecord.html#a461f2fc1e767f810518f79f1e08f1a39", null ]
+    [ "z", "classAdcirc_1_1Output_1_1OutputRecord.html#a461f2fc1e767f810518f79f1e08f1a39", null ],
+    [ "ReadOutput", "classAdcirc_1_1Output_1_1OutputRecord.html#ac2b2a01e748c309afe507d5f8e9fffc2", null ],
+    [ "WriteOutput", "classAdcirc_1_1Output_1_1OutputRecord.html#a203f4c866d6c73e6d32919874275aa9f", null ]
 ];

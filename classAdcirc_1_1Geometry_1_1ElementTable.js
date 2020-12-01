@@ -1,9 +1,6 @@
 var classAdcirc_1_1Geometry_1_1ElementTable =
 [
-    [ "ElementTable", "classAdcirc_1_1Geometry_1_1ElementTable.html#a383b2a6c1b7afe61dbbba8e55a5c3458", null ],
     [ "ElementTable", "classAdcirc_1_1Geometry_1_1ElementTable.html#a2a143916e1df50e95a43995dfbe1c679", null ],
-    [ "ElementTable", "classAdcirc_1_1Geometry_1_1ElementTable.html#a22be098001f33729332d666d2c18d7b0", null ],
-    [ "ElementTable", "classAdcirc_1_1Geometry_1_1ElementTable.html#ac397384abf6311a46e8981b2e6f577a3", null ],
     [ "build", "classAdcirc_1_1Geometry_1_1ElementTable.html#a7740c7ab195c03ac140f1f75f633470f", null ],
     [ "elementList", "classAdcirc_1_1Geometry_1_1ElementTable.html#a6c53ee0098af426c62c1af0694320ce0", null ],
     [ "elementTable", "classAdcirc_1_1Geometry_1_1ElementTable.html#ae453d6762b580f82f13b3343b394a189", null ],

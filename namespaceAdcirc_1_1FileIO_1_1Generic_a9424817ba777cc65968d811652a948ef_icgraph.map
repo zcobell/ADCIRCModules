@@ -1,4 +1,9 @@
 <map id="getFileExtension" name="getFileExtension">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1HarmonicsOutputPrivate.html#aab00b52f4876ee13f021287e44b548b4" title="Adcirc::Private::Harmonics\lOutputPrivate::write" alt="" coords="177,5,356,47"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a730dc8fcf0da2d9a4ff0f7ac3c614d00" title="Reads a specified mesh format. " alt="" coords="172,71,361,112"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1HarmonicsOutputPrivate.html#aab00b52f4876ee13f021287e44b548b4" title="Adcirc::Private::Harmonics\lOutputPrivate::write" alt="" coords="196,5,375,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1Hmdf.html#aafb0f16a8cd874948ae1fd97437f0451" title="Adcirc::Output::Hmdf\l::getFiletype" alt="" coords="212,71,359,112"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a730dc8fcf0da2d9a4ff0f7ac3c614d00" title="Reads a specified mesh format. " alt="" coords="191,136,380,177"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a011cbec6e6c3c231d02f0ff2b207779c" title="Adcirc::Private::MeshPrivate\l::toRaster" alt="" coords="191,201,380,243"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Output_1_1StationInterpolationOptions.html#a7c08a0502849e17ff1bdf05d3ffe0cc7" title="Adcirc::Output::StationInterpolation\lOptions::readStations" alt="" coords="172,267,399,308"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1Hmdf.html#afc060193c4bb334f102daa56a671cc14" title="Adcirc::Output::Hmdf\l::write" alt="" coords="499,41,646,83"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="447,107,699,134"/>
 </map>

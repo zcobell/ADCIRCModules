@@ -1,4 +1,5 @@
 <map id="setNumOpenBoundaries" name="setNumOpenBoundaries">
 <area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a730dc8fcf0da2d9a4ff0f7ac3c614d00" title="Reads a specified mesh format. " alt="" coords="239,5,285,32"/>
 <area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="217,56,307,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a63b8018bbc6c1bbd42b8495c4dc55a85" title="MeshPrivate" alt="" coords="355,56,449,83"/>
 </map>

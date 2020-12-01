@@ -87,7 +87,10 @@ $(document).ready(function(){initNavTree('classAdcirc_1_1Cryptography_1_1Hash.ht
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="hash_8h_source.html">hash.h</a>&gt;</code></p>
+<p>Class that handles generation of OpenSSL based cryptographic hashes.  
+ <a href="classAdcirc_1_1Cryptography_1_1Hash.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="adchash_8h_source.html">adchash.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -110,7 +113,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ada1164a4bd0e785a24f446d052edc112"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the hash type to use.  <a href="#ada1164a4bd0e785a24f446d052edc112">More...</a><br /></td></tr>
 <tr class="separator:ada1164a4bd0e785a24f446d052edc112"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Class that handles generation of OpenSSL based cryptographic hashes. </p>
+<dl class="section author"><dt>Author</dt><dd>Zachary Cobell </dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project is released under the terms of the GNU General Public License v3</dd></dl>
+<p>The <a class="el" href="classAdcirc_1_1Cryptography_1_1Hash.html" title="Class that handles generation of OpenSSL based cryptographic hashes. ">Hash</a> class generates cryptographic hashes using the OpenSSL library. The class can generate md5, sha1, and sha256 based hashes. The default hash is Sha1. The use for this class is to generate unique indentifiers for <a class="el" href="namespaceAdcirc.html">Adcirc</a> objects </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a622e6f4e67aa95a24d40c66940870dfd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a622e6f4e67aa95a24d40c66940870dfd">&#9670;&nbsp;</a></span>Hash()</h2>
 
@@ -186,9 +194,9 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classAdcirc_1_1Cryptography_1_1Hash_adfbaf2a88c10e6f54ecb70a8f6edba8e_icgraph.png" border="0" usemap="#classAdcirc_1_1Cryptography_1_1Hash_adfbaf2a88c10e6f54ecb70a8f6edba8e_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1Cryptography_1_1Hash_adfbaf2a88c10e6f54ecb70a8f6edba8e_icgraph" id="classAdcirc_1_1Cryptography_1_1Hash_adfbaf2a88c10e6f54ecb70a8f6edba8e_icgraph">
 <area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Boundary.html#a224129399ea9da4f8f229517e6432ef5" title="Returns the hash of the boundary based upon boundary type nodes, heights, and coefficients. " alt="" coords="125,5,312,47"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#a224129399ea9da4f8f229517e6432ef5" title="Gets the hash of the element. " alt="" coords="129,71,309,112"/>
-<area shape="rect" id="node4" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a4f2f826711deb6936af9f6175554a183" title="Adcirc::Private::MeshPrivate\l::hash" alt="" coords="124,136,313,177"/>
-<area shape="rect" id="node5" href="classAdcirc_1_1Geometry_1_1Node.html#aebe3ef8b25a51c3dea486c2be65c9da8" title="Returns the hash of this node based upon it&#39;s position. " alt="" coords="137,201,300,243"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#ab3b7fe527ab8c2138d5ad7a1585cd256" title="Returns a pointer to the internal array of node pointers. " alt="" coords="129,71,309,112"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a4f2f826711deb6936af9f6175554a183" title="Adcirc::Private::MeshPrivate\l::hash" alt="" coords="124,160,313,201"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Geometry_1_1Node.html#aebe3ef8b25a51c3dea486c2be65c9da8" title="Returns the hash of this node based upon it&#39;s position. " alt="" coords="137,225,300,267"/>
 </map>
 </div>
 
@@ -217,9 +225,9 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classAdcirc_1_1Cryptography_1_1Hash_a9edcdf576d658a1a97d6efbaf06cc008_icgraph.png" border="0" usemap="#classAdcirc_1_1Cryptography_1_1Hash_a9edcdf576d658a1a97d6efbaf06cc008_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1Cryptography_1_1Hash_a9edcdf576d658a1a97d6efbaf06cc008_icgraph" id="classAdcirc_1_1Cryptography_1_1Hash_a9edcdf576d658a1a97d6efbaf06cc008_icgraph">
 <area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Boundary.html#a224129399ea9da4f8f229517e6432ef5" title="Returns the hash of the boundary based upon boundary type nodes, heights, and coefficients. " alt="" coords="125,5,312,47"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#a224129399ea9da4f8f229517e6432ef5" title="Gets the hash of the element. " alt="" coords="129,71,309,112"/>
-<area shape="rect" id="node4" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a4f2f826711deb6936af9f6175554a183" title="Adcirc::Private::MeshPrivate\l::hash" alt="" coords="124,136,313,177"/>
-<area shape="rect" id="node5" href="classAdcirc_1_1Geometry_1_1Node.html#aebe3ef8b25a51c3dea486c2be65c9da8" title="Returns the hash of this node based upon it&#39;s position. " alt="" coords="137,201,300,243"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#ab3b7fe527ab8c2138d5ad7a1585cd256" title="Returns a pointer to the internal array of node pointers. " alt="" coords="129,71,309,112"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a4f2f826711deb6936af9f6175554a183" title="Adcirc::Private::MeshPrivate\l::hash" alt="" coords="124,160,313,201"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Geometry_1_1Node.html#aebe3ef8b25a51c3dea486c2be65c9da8" title="Returns the hash of this node based upon it&#39;s position. " alt="" coords="137,225,300,267"/>
 </map>
 </div>
 
@@ -272,8 +280,8 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li><a class="el" href="hash_8h_source.html">hash.h</a></li>
-<li><a class="el" href="hash_8cpp.html">hash.cpp</a></li>
+<li><a class="el" href="adchash_8h_source.html">adchash.h</a></li>
+<li><a class="el" href="adchash_8cpp.html">adchash.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

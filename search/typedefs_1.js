@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['point',['Point',['../constants_8h.html#abd1dca17737b73180df12a2aacb067fb',1,'Point():&#160;constants.h'],['../element_8h.html#abd1dca17737b73180df12a2aacb067fb',1,'Point():&#160;element.h'],['../griddata__private_8cpp.html#abd1dca17737b73180df12a2aacb067fb',1,'Point():&#160;griddata_private.cpp'],['../namespaceAdcirc_1_1Private.html#abd1dca17737b73180df12a2aacb067fb',1,'Adcirc::Private::Point()'],['../mesh_8cpp.html#abd1dca17737b73180df12a2aacb067fb',1,'Point():&#160;mesh.cpp'],['../mesh_8h.html#abd1dca17737b73180df12a2aacb067fb',1,'Point():&#160;mesh.h'],['../mesh__private_8h.html#abd1dca17737b73180df12a2aacb067fb',1,'Point():&#160;mesh_private.h'],['../node_8h.html#abd1dca17737b73180df12a2aacb067fb',1,'Point():&#160;node.h'],['../rasterdata_8h.html#abd1dca17737b73180df12a2aacb067fb',1,'Point():&#160;rasterdata.h']]],
-  ['point_5ft',['point_t',['../element_8cpp.html#a63596aa2b4ee6baed8729e369d47c1c1',1,'element.cpp']]],
-  ['polygon_5ft',['polygon_t',['../element_8cpp.html#a90ee99f8574a04239960e4065be1a3da',1,'element.cpp']]]
+  ['days',['days',['../classAdcirc_1_1CDate.html#a13d009e7dff615666a4454f34caf6b16',1,'Adcirc::CDate']]]
 ];

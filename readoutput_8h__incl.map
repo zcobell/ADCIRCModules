@@ -1,8 +1,10 @@
 <map id="readoutput.h" name="readoutput.h">
-<area shape="rect" id="node7" href="$filetypes_8h.html" title="filetypes.h" alt="" coords="412,155,495,181"/>
-<area shape="rect" id="node9" href="$node_8h.html" title="node.h" alt="" coords="569,155,631,181"/>
-<area shape="rect" id="node12" href="$outputmetadata_8h.html" title="outputmetadata.h" alt="" coords="265,155,388,181"/>
-<area shape="rect" id="node13" href="$outputrecord_8h.html" title="outputrecord.h" alt="" coords="597,80,702,107"/>
-<area shape="rect" id="node11" href="$hashtype_8h.html" title="hashtype.h" alt="" coords="463,229,550,256"/>
-<area shape="rect" id="node16" href="$default__values_8h.html" title="default_values.h" alt="" coords="807,155,924,181"/>
+<area shape="rect" id="node6" href="$cdate_8h.html" title="cdate.h" alt="" coords="350,155,415,181"/>
+<area shape="rect" id="node14" href="$filetypes_8h.html" title="filetypes.h" alt="" coords="615,80,697,107"/>
+<area shape="rect" id="node15" href="$node_8h.html" title="node.h" alt="" coords="1085,155,1147,181"/>
+<area shape="rect" id="node20" href="$outputmetadata_8h.html" title="outputmetadata.h" alt="" coords="515,155,637,181"/>
+<area shape="rect" id="node21" href="$outputrecord_8h.html" title="outputrecord.h" alt="" coords="723,80,829,107"/>
+<area shape="rect" id="node13" href="$logging_8h.html" title="logging.h" alt="" coords="41,229,116,256"/>
+<area shape="rect" id="node19" href="$hashtype_8h.html" title="hashtype.h" alt="" coords="1195,229,1282,256"/>
+<area shape="rect" id="node24" href="$default__values_8h.html" title="default_values.h" alt="" coords="813,155,931,181"/>
 </map>

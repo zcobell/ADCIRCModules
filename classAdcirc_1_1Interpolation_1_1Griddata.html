@@ -97,9 +97,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af94a9cc41bb85a7ea3c896dd796090a4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#af94a9cc41bb85a7ea3c896dd796090a4">Griddata</a> ()</td></tr>
 <tr class="memdesc:af94a9cc41bb85a7ea3c896dd796090a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#af94a9cc41bb85a7ea3c896dd796090a4">More...</a><br /></td></tr>
 <tr class="separator:af94a9cc41bb85a7ea3c896dd796090a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6afc5a30b71dde8c47bb8159ee8b3549"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a6afc5a30b71dde8c47bb8159ee8b3549">Griddata</a> (<a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html">Adcirc::Geometry::Mesh</a> *mesh, const std::string <a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#acb8d2e3026ba65b02af212c74ca39ed7">rasterFile</a>)</td></tr>
-<tr class="memdesc:a6afc5a30b71dde8c47bb8159ee8b3549"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that takes mesh and raster file.  <a href="#a6afc5a30b71dde8c47bb8159ee8b3549">More...</a><br /></td></tr>
-<tr class="separator:a6afc5a30b71dde8c47bb8159ee8b3549"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81372f8bd8cb66236bf33d27692fa576"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a81372f8bd8cb66236bf33d27692fa576">Griddata</a> (<a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html">Adcirc::Geometry::Mesh</a> *mesh, const std::string &amp;<a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#acb8d2e3026ba65b02af212c74ca39ed7">rasterFile</a>)</td></tr>
+<tr class="memdesc:a81372f8bd8cb66236bf33d27692fa576"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that takes mesh and raster file.  <a href="#a81372f8bd8cb66236bf33d27692fa576">More...</a><br /></td></tr>
+<tr class="separator:a81372f8bd8cb66236bf33d27692fa576"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5444eb584eb8d73970123b69f8954bc3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a5444eb584eb8d73970123b69f8954bc3">~Griddata</a> ()</td></tr>
 <tr class="separator:a5444eb584eb8d73970123b69f8954bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb8d2e3026ba65b02af212c74ca39ed7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#acb8d2e3026ba65b02af212c74ca39ed7">rasterFile</a> () const</td></tr>
@@ -194,6 +194,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a821c55b40763bf8330771826339722bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a821c55b40763bf8330771826339722bc">setThresholdValue</a> (const double &amp;value)</td></tr>
 <tr class="memdesc:a821c55b40763bf8330771826339722bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the value to use in conjunction with thresholdMethod.  <a href="#a821c55b40763bf8330771826339722bc">More...</a><br /></td></tr>
 <tr class="separator:a821c55b40763bf8330771826339722bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abad38989601bc4adeeb7faff3989b190"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#abad38989601bc4adeeb7faff3989b190">extents</a> () const</td></tr>
+<tr class="memdesc:abad38989601bc4adeeb7faff3989b190"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the extents of the current raster as xmin,ymin,xmax,ymax.  <a href="#abad38989601bc4adeeb7faff3989b190">More...</a><br /></td></tr>
+<tr class="separator:abad38989601bc4adeeb7faff3989b190"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that handles interpolation on unstructured meshes. </p>
@@ -222,8 +225,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6afc5a30b71dde8c47bb8159ee8b3549"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6afc5a30b71dde8c47bb8159ee8b3549">&#9670;&nbsp;</a></span>Griddata() <span class="overload">[2/2]</span></h2>
+<a id="a81372f8bd8cb66236bf33d27692fa576"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81372f8bd8cb66236bf33d27692fa576">&#9670;&nbsp;</a></span>Griddata() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -237,7 +240,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>rasterFile</em>&#160;</td>
         </tr>
         <tr>
@@ -398,6 +401,26 @@ Public Member Functions</h2></td></tr>
 
 <p>Returns the epsg code used for the current raster. Note that this MUST match the mesh's epsg code. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="abad38989601bc4adeeb7faff3989b190"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abad38989601bc4adeeb7faff3989b190">&#9670;&nbsp;</a></span>extents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; extents </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the extents of the current raster as xmin,ymin,xmax,ymax. </p>
+<dl class="section return"><dt>Returns</dt><dd>vector of raster extents </dd></dl>
 
 </div>
 </div>

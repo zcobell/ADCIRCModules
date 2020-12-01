@@ -1,4 +1,4 @@
 <map id="interpolationWeights" name="interpolationWeights">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#a224129399ea9da4f8f229517e6432ef5" title="Gets the hash of the element. " alt="" coords="263,5,313,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#ab3b7fe527ab8c2138d5ad7a1585cd256" title="Returns a pointer to the internal array of node pointers. " alt="" coords="259,5,317,32"/>
 <area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a039597d13fb3ef6dc00a932f4cb531ed" title="Finds the mesh element that a given location lies within. " alt="" coords="193,57,383,98"/>
 </map>

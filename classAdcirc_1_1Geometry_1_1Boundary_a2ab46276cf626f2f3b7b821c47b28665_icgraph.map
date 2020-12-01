@@ -1,4 +1,5 @@
 <map id="isSingleNodeBoundary" name="isSingleNodeBoundary">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ae069403fe7251a17d7132c55b82b22a2" title="Destructor. " alt="" coords="209,5,295,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa73482a93e9453f307b44dd1bffd0230" title="Initializes the boundary with user specified boundary type and length. " alt="" coords="213,5,291,32"/>
 <area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="208,56,296,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa6a2f037e71c6a3846a0a4bc8c656ed3" title="Adds a single node type boundary node to the boundary string. " alt="" coords="215,107,289,133"/>
 </map>

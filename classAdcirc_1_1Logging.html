@@ -106,12 +106,15 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a8f67ffb5e7fa2c85e6cfbc52d176d1dd"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Logging.html#a8f67ffb5e7fa2c85e6cfbc52d176d1dd">throwError</a> (const std::string &amp;s, const char *file, int line)</td></tr>
 <tr class="memdesc:a8f67ffb5e7fa2c85e6cfbc52d176d1dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Throws an error with file name and line number.  <a href="#a8f67ffb5e7fa2c85e6cfbc52d176d1dd">More...</a><br /></td></tr>
 <tr class="separator:a8f67ffb5e7fa2c85e6cfbc52d176d1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a7448425c64d0913430c8dd9d6c82c9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Logging.html#a7a7448425c64d0913430c8dd9d6c82c9">warning</a> (const std::string &amp;s)</td></tr>
-<tr class="memdesc:a7a7448425c64d0913430c8dd9d6c82c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a warning message.  <a href="#a7a7448425c64d0913430c8dd9d6c82c9">More...</a><br /></td></tr>
-<tr class="separator:a7a7448425c64d0913430c8dd9d6c82c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a573fcde412045dabd8721bffbed59b5f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Logging.html#a573fcde412045dabd8721bffbed59b5f">log</a> (const std::string &amp;s)</td></tr>
-<tr class="memdesc:a573fcde412045dabd8721bffbed59b5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informational log message.  <a href="#a573fcde412045dabd8721bffbed59b5f">More...</a><br /></td></tr>
-<tr class="separator:a573fcde412045dabd8721bffbed59b5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3db8b5fbd105a1b5057ea3c77c906cee"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Logging.html#a3db8b5fbd105a1b5057ea3c77c906cee">logError</a> (const std::string &amp;s, const std::string &amp;heading=std::string())</td></tr>
+<tr class="memdesc:a3db8b5fbd105a1b5057ea3c77c906cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs an error message to the screen.  <a href="#a3db8b5fbd105a1b5057ea3c77c906cee">More...</a><br /></td></tr>
+<tr class="separator:a3db8b5fbd105a1b5057ea3c77c906cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa991e722150df4187e473be0044f21ea"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Logging.html#aa991e722150df4187e473be0044f21ea">warning</a> (const std::string &amp;s, const std::string &amp;heading=std::string())</td></tr>
+<tr class="memdesc:aa991e722150df4187e473be0044f21ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a warning message.  <a href="#aa991e722150df4187e473be0044f21ea">More...</a><br /></td></tr>
+<tr class="separator:aa991e722150df4187e473be0044f21ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97ea357cd10f25fa95e27c63725be4f4"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Logging.html#a97ea357cd10f25fa95e27c63725be4f4">log</a> (const std::string &amp;s, const std::string &amp;heading=std::string())</td></tr>
+<tr class="memdesc:a97ea357cd10f25fa95e27c63725be4f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informational log message.  <a href="#a97ea357cd10f25fa95e27c63725be4f4">More...</a><br /></td></tr>
+<tr class="separator:a97ea357cd10f25fa95e27c63725be4f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classAdcirc_1_1Logging.html" title="The Logging class is used to throw errors and log messages to standard output. ">Logging</a> class is used to throw errors and log messages to standard output. </p>
@@ -144,8 +147,8 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a573fcde412045dabd8721bffbed59b5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a573fcde412045dabd8721bffbed59b5f">&#9670;&nbsp;</a></span>log()</h2>
+<a id="a97ea357cd10f25fa95e27c63725be4f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97ea357cd10f25fa95e27c63725be4f4">&#9670;&nbsp;</a></span>log()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -157,8 +160,18 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">void log </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>s</em></td><td>)</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>heading</em> = <code>std::string()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -175,6 +188,68 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Logging_a97ea357cd10f25fa95e27c63725be4f4_icgraph.png" border="0" usemap="#classAdcirc_1_1Logging_a97ea357cd10f25fa95e27c63725be4f4_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Logging_a97ea357cd10f25fa95e27c63725be4f4_icgraph" id="classAdcirc_1_1Logging_a97ea357cd10f25fa95e27c63725be4f4_icgraph">
+<area shape="rect" id="node2" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a011cbec6e6c3c231d02f0ff2b207779c" title="Adcirc::Private::MeshPrivate\l::toRaster" alt="" coords="123,5,313,47"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="92,71,344,98"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a3db8b5fbd105a1b5057ea3c77c906cee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3db8b5fbd105a1b5057ea3c77c906cee">&#9670;&nbsp;</a></span>logError()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void logError </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>heading</em> = <code>std::string()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Logs an error message to the screen. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>error message </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Logging_a3db8b5fbd105a1b5057ea3c77c906cee_icgraph.png" border="0" usemap="#classAdcirc_1_1Logging_a3db8b5fbd105a1b5057ea3c77c906cee_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Logging_a3db8b5fbd105a1b5057ea3c77c906cee_icgraph" id="classAdcirc_1_1Logging_a3db8b5fbd105a1b5057ea3c77c906cee_icgraph">
+<area shape="rect" id="node2" href="classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="120,5,372,32"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Output_1_1StationInterpolationOptions.html#a87c0c0cb55b56f0fe3a85d587d97d17f" title="Adcirc::Output::StationInterpolation\lOptions::readPositiveDirection" alt="" coords="133,57,359,98"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -264,8 +339,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a7a7448425c64d0913430c8dd9d6c82c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a7448425c64d0913430c8dd9d6c82c9">&#9670;&nbsp;</a></span>warning()</h2>
+<a id="aa991e722150df4187e473be0044f21ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa991e722150df4187e473be0044f21ea">&#9670;&nbsp;</a></span>warning()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -277,8 +352,18 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">void warning </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>s</em></td><td>)</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>heading</em> = <code>std::string()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -291,25 +376,27 @@ Static Public Member Functions</h2></td></tr>
 <p>Logs a warning message. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>warning message </td></tr>
   </table>
   </dd>
 </dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classAdcirc_1_1Logging_a7a7448425c64d0913430c8dd9d6c82c9_icgraph.png" border="0" usemap="#classAdcirc_1_1Logging_a7a7448425c64d0913430c8dd9d6c82c9_icgraph" alt=""/></div>
-<map name="classAdcirc_1_1Logging_a7a7448425c64d0913430c8dd9d6c82c9_icgraph" id="classAdcirc_1_1Logging_a7a7448425c64d0913430c8dd9d6c82c9_icgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Private_1_1HarmonicsOutputPrivate.html#aab00b52f4876ee13f021287e44b548b4" title="Adcirc::Private::Harmonics\lOutputPrivate::write" alt="" coords="125,5,303,47"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Private_1_1HashPrivate.html#ada1164a4bd0e785a24f446d052edc112" title="Adcirc::Private::HashPrivate\l::setHashType" alt="" coords="120,71,308,112"/>
-<area shape="rect" id="node4" href="classAdcirc_1_1Multithreading.html#aeb9055b99786c313f96feaf00419a6ce" title="Adcirc::Multithreading\l::maxThreads" alt="" coords="140,136,288,177"/>
-<area shape="rect" id="node5" href="classAdcirc_1_1Multithreading.html#ad64781b97d58fae03edb4d05f12ac6e1" title="Adcirc::Multithreading\l::numThreads" alt="" coords="140,201,288,243"/>
-<area shape="rect" id="node6" href="classAdcirc_1_1Multithreading.html#a300cfdaed1b570a13feb6a4bf390aca3" title="Adcirc::Multithreading\l::setNumThreads" alt="" coords="140,332,288,373"/>
-<area shape="rect" id="node9" href="classAdcirc_1_1Multithreading.html#a054c860ca5d5f11e534180e4086655ec" title="Adcirc::Multithreading\l::setMaximumThreads" alt="" coords="138,267,290,308"/>
-<area shape="rect" id="node10" href="classAdcirc_1_1Output_1_1ReadOutput.html#a03178f1cd03b9e467b77562f0b89699a" title="Adcirc::Output::ReadOutput\l::read" alt="" coords="122,397,306,439"/>
-<area shape="rect" id="node11" href="classAdcirc_1_1Output_1_1ReadOutput.html#a0fb6a8a6a59488c7c267eeae2afc3ed6" title="Adcirc::Output::ReadOutput\l::dataAt" alt="" coords="122,463,306,504"/>
-<area shape="rect" id="node7" href="classAdcirc_1_1Multithreading.html#ad2e31e4bf0252120defc78f9db995896" title="Adcirc::Multithreading\l::enable" alt="" coords="356,267,504,308"/>
-<area shape="rect" id="node8" href="classAdcirc_1_1Multithreading.html#a8cfbbe53c1cf6e3054736daea3044c0f" title="Adcirc::Multithreading\l::disable" alt="" coords="356,332,504,373"/>
+<div class="center"><img src="classAdcirc_1_1Logging_aa991e722150df4187e473be0044f21ea_icgraph.png" border="0" usemap="#classAdcirc_1_1Logging_aa991e722150df4187e473be0044f21ea_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Logging_aa991e722150df4187e473be0044f21ea_icgraph" id="classAdcirc_1_1Logging_aa991e722150df4187e473be0044f21ea_icgraph">
+<area shape="rect" id="node2" href="classAdcirc_1_1Private_1_1HashPrivate.html#ada1164a4bd0e785a24f446d052edc112" title="Adcirc::Private::HashPrivate\l::setHashType" alt="" coords="121,5,309,47"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Private_1_1HarmonicsOutputPrivate.html#aab00b52f4876ee13f021287e44b548b4" title="Adcirc::Private::Harmonics\lOutputPrivate::write" alt="" coords="125,71,304,112"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a0a442be3a53f0b8998b80f1c953f9f56" title="Writes the mesh nodes into ESRI shapefile format. " alt="" coords="120,136,309,177"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Multithreading.html#aeb9055b99786c313f96feaf00419a6ce" title="Adcirc::Multithreading\l::maxThreads" alt="" coords="141,201,289,243"/>
+<area shape="rect" id="node6" href="classAdcirc_1_1Multithreading.html#ad64781b97d58fae03edb4d05f12ac6e1" title="Adcirc::Multithreading\l::numThreads" alt="" coords="141,267,289,308"/>
+<area shape="rect" id="node7" href="classAdcirc_1_1Multithreading.html#a300cfdaed1b570a13feb6a4bf390aca3" title="Adcirc::Multithreading\l::setNumThreads" alt="" coords="141,397,289,439"/>
+<area shape="rect" id="node10" href="classAdcirc_1_1Multithreading.html#a054c860ca5d5f11e534180e4086655ec" title="Adcirc::Multithreading\l::setMaximumThreads" alt="" coords="139,332,291,373"/>
+<area shape="rect" id="node11" href="classAdcirc_1_1Output_1_1ReadOutput.html#a03178f1cd03b9e467b77562f0b89699a" title="Adcirc::Output::ReadOutput\l::read" alt="" coords="123,463,307,504"/>
+<area shape="rect" id="node12" href="classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="357,499,609,526"/>
+<area shape="rect" id="node13" href="classAdcirc_1_1Output_1_1ReadOutput.html#a0fb6a8a6a59488c7c267eeae2afc3ed6" title="Adcirc::Output::ReadOutput\l::dataAt" alt="" coords="123,580,307,621"/>
+<area shape="rect" id="node8" href="classAdcirc_1_1Multithreading.html#ad2e31e4bf0252120defc78f9db995896" title="Adcirc::Multithreading\l::enable" alt="" coords="409,332,557,373"/>
+<area shape="rect" id="node9" href="classAdcirc_1_1Multithreading.html#a8cfbbe53c1cf6e3054736daea3044c0f" title="Adcirc::Multithreading\l::disable" alt="" coords="409,397,557,439"/>
 </map>
 </div>
 

@@ -1,5 +1,0 @@
-<map id="~Element" name="~Element">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Element.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the element id/flag. " alt="" coords="138,5,177,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Element.html#ac88f0961aa7ed7c7415550ab2cad49c8" title="Number of verticies in this element. " alt="" coords="231,81,269,108"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Element.html#ab4269a9b2524d2180c5340bd2de2207c" title="returns a pointer to the node at the specified position " alt="" coords="132,107,183,133"/>
-</map>

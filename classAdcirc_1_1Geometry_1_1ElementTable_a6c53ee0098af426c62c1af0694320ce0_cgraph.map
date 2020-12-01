@@ -1,3 +1,4 @@
 <map id="elementList" name="elementList">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the nodal id/label. " alt="" coords="143,5,324,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#aeac6d5abd113c708a752ffd4a6735f1a" title="Returns the position in the array by node id. " alt="" coords="143,5,332,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the nodal id/label. " alt="" coords="147,71,328,98"/>
 </map>

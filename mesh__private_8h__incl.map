@@ -1,10 +1,15 @@
 <map id="mesh_private.h" name="mesh_private.h">
-<area shape="rect" id="node8" href="$adcmap_8h.html" title="adcmap.h" alt="" coords="995,155,1074,181"/>
-<area shape="rect" id="node10" href="$boundary_8h.html" title="boundary.h" alt="" coords="451,155,538,181"/>
-<area shape="rect" id="node11" href="$node_8h.html" title="node.h" alt="" coords="389,229,451,256"/>
-<area shape="rect" id="node13" href="$element_8h.html" title="element.h" alt="" coords="665,155,743,181"/>
-<area shape="rect" id="node15" href="$elementtable_8h.html" title="elementtable.h" alt="" coords="703,80,809,107"/>
-<area shape="rect" id="node16" href="$filetypes_8h.html" title="filetypes.h" alt="" coords="1153,80,1236,107"/>
-<area shape="rect" id="node17" href="$kdtree_8h.html" title="kdtree.h" alt="" coords="247,155,316,181"/>
-<area shape="rect" id="node12" href="$hashtype_8h.html" title="hashtype.h" alt="" coords="415,304,502,331"/>
+<area shape="rect" id="node8" href="$adcmap_8h.html" title="adcmap.h" alt="" coords="1535,80,1614,107"/>
+<area shape="rect" id="node11" href="$boundary_8h.html" title="boundary.h" alt="" coords="338,304,425,331"/>
+<area shape="rect" id="node12" href="$node_8h.html" title="node.h" alt="" coords="392,379,453,405"/>
+<area shape="rect" id="node15" href="$element_8h.html" title="element.h" alt="" coords="551,304,630,331"/>
+<area shape="rect" id="node17" href="$facetable_8h.html" title="facetable.h" alt="" coords="665,155,751,181"/>
+<area shape="rect" id="node20" href="$filetypes_8h.html" title="filetypes.h" alt="" coords="40,229,123,256"/>
+<area shape="rect" id="node21" href="$kdtree_8h.html" title="kdtree.h" alt="" coords="1276,304,1345,331"/>
+<area shape="rect" id="node23" href="$topology_8h.html" title="topology.h" alt="" coords="924,80,1007,107"/>
+<area shape="rect" id="node14" href="$hashtype_8h.html" title="hashtype.h" alt="" coords="286,453,373,480"/>
+<area shape="rect" id="node18" href="$face_8h.html" title="face.h" alt="" coords="639,229,697,256"/>
+<area shape="rect" id="node19" href="$constants_8h.html" title="constants.h" alt="" coords="661,379,752,405"/>
+<area shape="rect" id="node24" href="$elementtable_8h.html" title="elementtable.h" alt="" coords="857,229,964,256"/>
+<area shape="rect" id="node25" href="$nodetable_8h.html" title="nodetable.h" alt="" coords="909,304,998,331"/>
 </map>

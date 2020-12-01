@@ -1,0 +1,5 @@
+<map id="read" name="read">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1NetcdfTimeseries.html#a2fe36ee88237850f56d26023ac57e261" title="epsg" alt="" coords="321,5,372,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1NetcdfTimeseries.html#a25fd6d02dfa33660a5d4580cac12514f" title="setEpsg" alt="" coords="151,31,222,57"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1CDate.html#a00887ae15808141cc1ae779a9613d8ca" title="Adcirc::CDate::fromString" alt="" coords="100,81,273,108"/>
+</map>

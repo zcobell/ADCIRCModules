@@ -1,0 +1,10 @@
+<map id="centroid" name="centroid">
+<area shape="rect" id="node2" href="$boundary_8cpp.html#a821a7afb9f9118ed548755306943c934" title="boundary2polygon" alt="" coords="121,132,248,159"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a259cb5a711406a8c3e5d937eb9350cca" title="Returns the length of the boundary. Same as Boundary::bonudaryLength. " alt="" coords="362,5,409,32"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa376d7c06630994e705df523b2c59302" title="Returns true if boundary condition is an internal weir. " alt="" coords="529,259,631,285"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa7799ac01d283677f63d2d42fd1f0336" title="Returns a pointer to the node on the boundary. " alt="" coords="357,56,414,83"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="296,107,475,133"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="296,157,475,184"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a33b7b2f946d35b2e28d367631606bb61" title="Returns a pointer to the paired node for type 4, 24, 5, and 25 boundaries. " alt="" coords="357,208,414,235"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary. " alt="" coords="523,56,637,83"/>
+</map>

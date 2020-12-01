@@ -1,3 +1,4 @@
 <map id="isInternalWeirWithoutPipes" name="isInternalWeirWithoutPipes">
 <area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="233,5,321,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ae6bf98799bccf4a868344bf02e45b337" title="Adds an internal weir type boundary node to the boundary string. " alt="" coords="240,56,315,83"/>
 </map>

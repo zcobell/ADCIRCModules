@@ -1,6 +1,7 @@
 <map id="numSnaps" name="numSnaps">
 <area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1ReadOutput.html#af1b6b60930b121ed13909fd7fd425b79" title="setNumSnaps" alt="" coords="177,5,282,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a0fb6a8a6a59488c7c267eeae2afc3ed6" title="dataAt" alt="" coords="369,31,429,57"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a0fb6a8a6a59488c7c267eeae2afc3ed6" title="dataAt" alt="" coords="465,31,525,57"/>
 <area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a03178f1cd03b9e467b77562f0b89699a" title="read" alt="" coords="206,107,253,133"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a1a79940e14d93b265d1c0ad6da79c4b6" title="Adcirc::Output::WriteOutput\l::write" alt="" coords="137,158,321,199"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a1a79940e14d93b265d1c0ad6da79c4b6" title="Adcirc::Output::WriteOutput\l::write" alt="" coords="137,158,321,199"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="369,107,621,133"/>
 </map>

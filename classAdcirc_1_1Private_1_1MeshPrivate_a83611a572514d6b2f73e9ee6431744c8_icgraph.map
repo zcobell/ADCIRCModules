@@ -1,8 +1,7 @@
 <map id="node" name="node">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#ac0775565a8826077707a94a3611bbf3f" title="Adcirc::Geometry::Element\lTable::numElementsAroundNode" alt="" coords="104,5,319,47"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#a477aeec054b51540ab70382872bd56ee" title="Adcirc::Geometry::Element\lTable::elementTable" alt="" coords="121,71,301,112"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#abaa0c62f37f1b32f8524ddc12f2f1a64" title="Reprojects a mesh into the specified projection. " alt="" coords="175,137,247,163"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a059241e253157b135c2ca32c1cf6f5dc" title="Adds a node at the specified index in the node vector. " alt="" coords="174,187,249,214"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a40e8e6dfd5b76435fd5bbcac818105e7" title="Writes an Mesh object to disk in ASCII format. " alt="" coords="186,238,237,265"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#aeb87845ce7689f495e96a156caa41631" title="Computes average size of the element edges connected to each node. " alt="" coords="146,289,277,315"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#abaa0c62f37f1b32f8524ddc12f2f1a64" title="Reprojects a mesh into the specified projection. " alt="" coords="133,5,205,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a059241e253157b135c2ca32c1cf6f5dc" title="Adds a node at the specified index in the node vector. " alt="" coords="132,56,207,83"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a40e8e6dfd5b76435fd5bbcac818105e7" title="Writes an Mesh object to disk in ASCII format. " alt="" coords="144,107,195,133"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#aeb87845ce7689f495e96a156caa41631" title="Computes average size of the element edges connected to each node. " alt="" coords="104,157,235,184"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a63b8018bbc6c1bbd42b8495c4dc55a85" title="MeshPrivate" alt="" coords="283,56,377,83"/>
 </map>

@@ -1,44 +1,50 @@
 <map id="checkMesh" name="checkMesh">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6e648568e6a73879a9da4bed2d8419d6" title="checkNodeNumbering" alt="" coords="177,133,327,159"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6cc4b5e332f1a761d93ce7a616dc4bdd" title="checkElementNumbering" alt="" coords="168,619,336,646"/>
-<area shape="rect" id="node10" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab1b91509c7fc8ca25704765f687aeb00" title="checkNodalElevations" alt="" coords="176,263,328,290"/>
-<area shape="rect" id="node12" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a7903c655caf176412d92e4719559bd02" title="checkDisjointNodes" alt="" coords="183,314,321,341"/>
-<area shape="rect" id="node18" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="checkOverlappingElements" alt="" coords="161,703,343,730"/>
-<area shape="rect" id="node22" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="checkLeveeHeights" alt="" coords="183,1113,321,1139"/>
-<area shape="rect" id="node33" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="checkPipeHeights" alt="" coords="188,1277,316,1303"/>
-<area shape="rect" id="node37" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="checkElementSizes" alt="" coords="183,569,321,595"/>
-<area shape="rect" id="node40" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ad873c200f2f8160c206511d083f4ffd7" title="checkMissingBoundaryConditions" alt="" coords="143,1406,361,1433"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh. " alt="" coords="427,5,591,47"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a96bbda0a22e51f4ca5cf2364126956b9" title="Returns a pointer to the requested node in the internal node vector. " alt="" coords="427,71,591,112"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the nodal id/label. " alt="" coords="418,339,599,366"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Mesh.html#afdfd28c4c1db0086eee0969cdc0409db" title="Returns the number of elements in the mesh. " alt="" coords="427,521,591,563"/>
-<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a3543bba752ce5bb6f2a4ce69c0f09c3d" title="Returns a pointer to the requested element in the internal element vector. " alt="" coords="427,587,591,628"/>
-<area shape="rect" id="node9" href="$classAdcirc_1_1Geometry_1_1Element.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the element id/flag. " alt="" coords="409,653,608,679"/>
-<area shape="rect" id="node11" href="$classAdcirc_1_1Geometry_1_1Node.html#ae7bc7213001e326be4d4eb2d8a035c34" title="Returns the z&#45;elevation of the node. " alt="" coords="419,1003,598,1030"/>
-<area shape="rect" id="node13" href="$classAdcirc_1_1Geometry_1_1Element.html#ac88f0961aa7ed7c7415550ab2cad49c8" title="Number of verticies in this element. " alt="" coords="1119,463,1313,490"/>
-<area shape="rect" id="node14" href="$classAdcirc_1_1Geometry_1_1Mesh.html#aeac6d5abd113c708a752ffd4a6735f1a" title="Returns the position in the array by node id. " alt="" coords="427,391,591,432"/>
-<area shape="rect" id="node15" href="$classAdcirc_1_1Geometry_1_1Element.html#ab4269a9b2524d2180c5340bd2de2207c" title="returns a pointer to the node at the specified position " alt="" coords="891,397,1071,439"/>
-<area shape="rect" id="node16" href="$classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="660,325,839,351"/>
-<area shape="rect" id="node17" href="$classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="660,255,839,282"/>
-<area shape="rect" id="node19" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a612375ca3799e85137b9d315491f1484" title="Builds a list of elements connected to each node. " alt="" coords="427,769,591,811"/>
-<area shape="rect" id="node20" href="$classAdcirc_1_1Geometry_1_1Element.html#afc577e95913f9e4e80a2ed71824be06c" title="Returns a pair of nodes representing the leg of an element. " alt="" coords="659,515,839,556"/>
-<area shape="rect" id="node21" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a386079f1610441ec3a150b6eb1378f5c" title="Returns a vector of pointers to the elements surrouding a node. " alt="" coords="427,704,591,745"/>
-<area shape="rect" id="node23" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ad5e2ed78e83daf7899f55c684005336f" title="Returns the number of land boundaries in the model. " alt="" coords="427,1367,591,1408"/>
-<area shape="rect" id="node24" href="$classAdcirc_1_1Geometry_1_1Mesh.html#abe78dff66c8837bdd05af8b5504e07e1" title="Returns a pointer to a land boundary by index. " alt="" coords="427,1171,591,1212"/>
-<area shape="rect" id="node25" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa376d7c06630994e705df523b2c59302" title="Returns true if boundary condition is an internal weir. " alt="" coords="656,1236,843,1277"/>
-<area shape="rect" id="node26" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a71beef478599935add531a7866ad9908" title="Returns the length of the boundary. Same as Boundary::bonudaryLength. " alt="" coords="415,1301,602,1343"/>
-<area shape="rect" id="node28" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa7799ac01d283677f63d2d42fd1f0336" title="Returns a pointer to the node on the boundary. " alt="" coords="415,1432,602,1473"/>
-<area shape="rect" id="node29" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a59f7cc988b82bf993592aa4f84d36561" title="Returns the crest elevation for boundary types 3, 13, 23, 4, 24, 5, and 25. " alt="" coords="415,1105,602,1147"/>
-<area shape="rect" id="node31" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a33b7b2f946d35b2e28d367631606bb61" title="Returns a pointer to the paired node for type 4, 24, 5, and 25 boundaries. " alt="" coords="415,1236,602,1277"/>
-<area shape="rect" id="node32" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a8ee17f0a94899dce2ba7b5d79e39495f" title="Returns true if boundary condition is an external weir. " alt="" coords="415,937,602,979"/>
-<area shape="rect" id="node27" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary. " alt="" coords="656,1367,843,1408"/>
-<area shape="rect" id="node30" href="$classAdcirc_1_1Geometry_1_1Boundary.html#af2dbbc7f5b60b931ebb6a47d891b8eb1" title="Returns true if boundary condition is some type of weir&#45;type boundary. " alt="" coords="656,1105,843,1147"/>
-<area shape="rect" id="node34" href="$classAdcirc_1_1Geometry_1_1Boundary.html#adee39f37571e564f0459d42b8d2449e4" title="Returns true if boundary condition is an internal weir with cross barrier pipes. " alt="" coords="656,1615,843,1656"/>
-<area shape="rect" id="node35" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ab9ca75c0810e19275649635a2ac5934d" title="Returns the elevation of the pipe above datum for type 5 and 25 boundaries. " alt="" coords="415,1615,602,1656"/>
-<area shape="rect" id="node36" href="$classAdcirc_1_1Geometry_1_1Boundary.html#af1dc9caf2049168de2d6106807d3a905" title="Returns the diameter of the pipe. " alt="" coords="415,1549,602,1591"/>
-<area shape="rect" id="node38" href="$classAdcirc_1_1Geometry_1_1Element.html#a77732c8f794e269e491c11d233bad7d7" title="Calculates the average size of the legs of an element. " alt="" coords="419,456,599,497"/>
-<area shape="rect" id="node39" href="$classConstants.html#a67bb34165d68f1fe958b93511d5ede05" title="Calculates the distance between two points. " alt="" coords="680,413,819,439"/>
-<area shape="rect" id="node41" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a66bdb1c415d453783e755a31fd572f1e" title="Return a vector containing all nodes on the mesh boundary. " alt="" coords="427,1797,591,1839"/>
-<area shape="rect" id="node42" href="$classAdcirc_1_1Geometry_1_1Mesh.html#af443f5205734c64e021aa1b96d254991" title="Returns the number of open boundaries in the model. " alt="" coords="427,1863,591,1904"/>
-<area shape="rect" id="node43" href="$classAdcirc_1_1Geometry_1_1Mesh.html#abb00d35a302cdae528db75c07bfffb98" title="Returns a pointer to an open boundary by index. " alt="" coords="427,1732,591,1773"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6e648568e6a73879a9da4bed2d8419d6" title="checkNodeNumbering" alt="" coords="177,995,327,1021"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a6cc4b5e332f1a761d93ce7a616dc4bdd" title="checkElementNumbering" alt="" coords="168,516,336,543"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ab1b91509c7fc8ca25704765f687aeb00" title="checkNodalElevations" alt="" coords="176,1060,328,1087"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a7903c655caf176412d92e4719559bd02" title="checkDisjointNodes" alt="" coords="183,337,321,364"/>
+<area shape="rect" id="node18" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="checkOverlappingElements" alt="" coords="161,663,343,689"/>
+<area shape="rect" id="node28" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#aef27cf26c6f9496ef6cc0981923661cc" title="checkLeveeHeights" alt="" coords="183,1641,321,1668"/>
+<area shape="rect" id="node39" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" title="checkPipeHeights" alt="" coords="188,1479,316,1505"/>
+<area shape="rect" id="node43" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="checkElementSizes" alt="" coords="183,461,321,488"/>
+<area shape="rect" id="node46" href="$classAdcirc_1_1Utility_1_1MeshChecker.html#ad873c200f2f8160c206511d083f4ffd7" title="checkMissingBoundaryConditions" alt="" coords="143,1869,361,1896"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh. " alt="" coords="427,1053,591,1094"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a96bbda0a22e51f4ca5cf2364126956b9" title="Returns a pointer to the requested node in the internal node vector. " alt="" coords="427,987,591,1029"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the nodal id/label. " alt="" coords="660,936,841,963"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Mesh.html#afdfd28c4c1db0086eee0969cdc0409db" title="Returns the number of elements in the mesh. " alt="" coords="427,454,591,495"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a3543bba752ce5bb6f2a4ce69c0f09c3d" title="Returns a pointer to the requested element in the internal element vector. " alt="" coords="427,389,591,430"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Geometry_1_1Element.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the element id/flag. " alt="" coords="409,520,608,547"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Geometry_1_1Node.html#ae7bc7213001e326be4d4eb2d8a035c34" title="Returns the z&#45;elevation of the node. " alt="" coords="419,1271,598,1297"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Geometry_1_1Element.html#ac88f0961aa7ed7c7415550ab2cad49c8" title="Number of verticies in this element. " alt="" coords="1131,340,1325,367"/>
+<area shape="rect" id="node14" href="$classAdcirc_1_1Geometry_1_1Mesh.html#aeac6d5abd113c708a752ffd4a6735f1a" title="Returns the position in the array by node id. " alt="" coords="427,206,591,247"/>
+<area shape="rect" id="node15" href="$classAdcirc_1_1Geometry_1_1Element.html#ab4269a9b2524d2180c5340bd2de2207c" title="returns a pointer to the node at the specified position " alt="" coords="898,362,1078,403"/>
+<area shape="rect" id="node16" href="$classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="661,161,840,188"/>
+<area shape="rect" id="node17" href="$classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="661,104,840,131"/>
+<area shape="rect" id="node19" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a144d52d816558c4ae51e64a87607a6bd" title="Adcirc::Geometry::Mesh\l::topology" alt="" coords="427,805,591,846"/>
+<area shape="rect" id="node20" href="$classAdcirc_1_1Geometry_1_1Topology.html#a6b9e517f1d409f5c23ad3c85e295ceea" title="Returns pointer to the element table. " alt="" coords="416,870,601,911"/>
+<area shape="rect" id="node21" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#a7740c7ab195c03ac140f1f75f633470f" title="Begin building the table. " alt="" coords="419,622,599,663"/>
+<area shape="rect" id="node26" href="$classAdcirc_1_1Geometry_1_1Element.html#afc577e95913f9e4e80a2ed71824be06c" title="Returns a pair of nodes representing the leg of an element. " alt="" coords="661,337,841,378"/>
+<area shape="rect" id="node27" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#a6c53ee0098af426c62c1af0694320ce0" title="Returns the list of elements around a specified node. " alt="" coords="419,687,599,729"/>
+<area shape="rect" id="node22" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh. " alt="" coords="656,622,845,663"/>
+<area shape="rect" id="node23" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#afdfd28c4c1db0086eee0969cdc0409db" title="Returns the number of elements in the mesh. " alt="" coords="893,534,1083,575"/>
+<area shape="rect" id="node24" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a14aa75a7dd91534b6b886769e21e2c89" title="Returns a pointer to the requested element in the internal element vector. " alt="" coords="656,505,845,546"/>
+<area shape="rect" id="node25" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#aeac6d5abd113c708a752ffd4a6735f1a" title="Returns the position in the array by node id. " alt="" coords="656,687,845,729"/>
+<area shape="rect" id="node29" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ad5e2ed78e83daf7899f55c684005336f" title="Returns the number of land boundaries in the model. " alt="" coords="427,1765,591,1806"/>
+<area shape="rect" id="node30" href="$classAdcirc_1_1Geometry_1_1Mesh.html#abe78dff66c8837bdd05af8b5504e07e1" title="Returns a pointer to a land boundary by index. " alt="" coords="427,1830,591,1871"/>
+<area shape="rect" id="node31" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa376d7c06630994e705df523b2c59302" title="Returns true if boundary condition is an internal weir. " alt="" coords="657,1954,844,1995"/>
+<area shape="rect" id="node32" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a71beef478599935add531a7866ad9908" title="Returns the length of the boundary. Same as Boundary::bonudaryLength. " alt="" coords="415,1634,602,1675"/>
+<area shape="rect" id="node34" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa7799ac01d283677f63d2d42fd1f0336" title="Returns a pointer to the node on the boundary. " alt="" coords="415,1699,602,1741"/>
+<area shape="rect" id="node35" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a59f7cc988b82bf993592aa4f84d36561" title="Returns the crest elevation for boundary types 3, 13, 23, 4, 24, 5, and 25. " alt="" coords="415,1503,602,1545"/>
+<area shape="rect" id="node37" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a33b7b2f946d35b2e28d367631606bb61" title="Returns a pointer to the paired node for type 4, 24, 5, and 25 boundaries. " alt="" coords="415,1895,602,1937"/>
+<area shape="rect" id="node38" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a8ee17f0a94899dce2ba7b5d79e39495f" title="Returns true if boundary condition is an external weir. " alt="" coords="415,1569,602,1610"/>
+<area shape="rect" id="node33" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary. " alt="" coords="657,1602,844,1643"/>
+<area shape="rect" id="node36" href="$classAdcirc_1_1Geometry_1_1Boundary.html#af2dbbc7f5b60b931ebb6a47d891b8eb1" title="Returns true if boundary condition is some type of weir&#45;type boundary. " alt="" coords="657,1503,844,1545"/>
+<area shape="rect" id="node40" href="$classAdcirc_1_1Geometry_1_1Boundary.html#adee39f37571e564f0459d42b8d2449e4" title="Returns true if boundary condition is an internal weir with cross barrier pipes. " alt="" coords="657,1373,844,1414"/>
+<area shape="rect" id="node41" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ab9ca75c0810e19275649635a2ac5934d" title="Returns the elevation of the pipe above datum for type 5 and 25 boundaries. " alt="" coords="415,1373,602,1414"/>
+<area shape="rect" id="node42" href="$classAdcirc_1_1Geometry_1_1Boundary.html#af1dc9caf2049168de2d6106807d3a905" title="Returns the diameter of the pipe. " alt="" coords="415,1438,602,1479"/>
+<area shape="rect" id="node44" href="$classAdcirc_1_1Geometry_1_1Element.html#a77732c8f794e269e491c11d233bad7d7" title="Calculates the average size of the legs of an element. " alt="" coords="419,271,599,313"/>
+<area shape="rect" id="node45" href="$classAdcirc_1_1Constants.html#a67bb34165d68f1fe958b93511d5ede05" title="Calculates the distance between two points. " alt="" coords="683,271,818,313"/>
+<area shape="rect" id="node47" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a66bdb1c415d453783e755a31fd572f1e" title="Return a vector containing all nodes on the mesh boundary. " alt="" coords="427,2194,591,2235"/>
+<area shape="rect" id="node48" href="$classAdcirc_1_1Geometry_1_1Mesh.html#af443f5205734c64e021aa1b96d254991" title="Returns the number of open boundaries in the model. " alt="" coords="427,2063,591,2105"/>
+<area shape="rect" id="node49" href="$classAdcirc_1_1Geometry_1_1Mesh.html#abb00d35a302cdae528db75c07bfffb98" title="Returns a pointer to an open boundary by index. " alt="" coords="427,2129,591,2170"/>
 </map>

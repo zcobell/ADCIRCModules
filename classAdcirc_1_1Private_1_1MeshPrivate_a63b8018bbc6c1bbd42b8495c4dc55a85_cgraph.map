@@ -1,0 +1,27 @@
+<map id="MeshPrivate" name="MeshPrivate">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a7f038b98c946461f583f61e0d4921a5d" title="Sets the header for the mesh. " alt="" coords="148,5,296,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#adc2bf9b67aabc0b183e50a5bb34bea32" title="Returns the mesh header from the processed mesh. " alt="" coords="361,31,491,57"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a8f23e4e9fe3feb443c4fba061eda9450" title="Resizes the vectors within the mesh. " alt="" coords="177,397,267,424"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh. " alt="" coords="565,208,650,235"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#afdfd28c4c1db0086eee0969cdc0409db" title="Returns the number of elements in the mesh. " alt="" coords="556,955,659,981"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#af443f5205734c64e021aa1b96d254991" title="Returns the number of open boundaries in the model. " alt="" coords="355,563,497,589"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ad5e2ed78e83daf7899f55c684005336f" title="Returns the number of land boundaries in the model. " alt="" coords="356,676,496,703"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ada1164a4bd0e785a24f446d052edc112" title="setHashType" alt="" coords="172,803,272,829"/>
+<area shape="rect" id="node14" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a09752c7cc84a49c82752b3020a3fef0c" title="hashType" alt="" coords="387,828,465,855"/>
+<area shape="rect" id="node15" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a059241e253157b135c2ca32c1cf6f5dc" title="Adds a node at the specified index in the node vector. " alt="" coords="185,208,259,235"/>
+<area shape="rect" id="node17" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a799679c9337cc0b9adf344f5bc25db57" title="Returns the requested node from the internal node vector. " alt="" coords="396,613,456,640"/>
+<area shape="rect" id="node18" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a5e87abc349c9a9d267d46a3c667ea602" title="Adds an Element at the specified position in the element vector. " alt="" coords="177,1005,267,1032"/>
+<area shape="rect" id="node20" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a0071a86289b311826c4842f9bbde95d7" title="Returns the requested element in the internal element vector. " alt="" coords="183,904,261,931"/>
+<area shape="rect" id="node21" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ae676cf0a8cf1d27a553044f1e5784b64" title="addOpenBoundary" alt="" coords="157,549,287,576"/>
+<area shape="rect" id="node22" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a6c65c83bbfac9960a1b92c4a3a8730a1" title="Returns the open boundary by index. " alt="" coords="165,448,279,475"/>
+<area shape="rect" id="node23" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a636b9ae6106386d6ed313dc741693451" title="addLandBoundary" alt="" coords="159,752,285,779"/>
+<area shape="rect" id="node24" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#aba63a89a284613ceb47ba7cc17c3f383" title="Returns and boundary by index. " alt="" coords="167,651,277,677"/>
+<area shape="rect" id="node25" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a81fff47915e2a197506df1ed4bae2492" title="Sets the mesh projection using an EPSG code. Note this does not reproject the mesh. " alt="" coords="165,1081,279,1108"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ac8def9085449a17f9a36e41a4e501b88" title="Sets the number of nodes in the mesh. " alt="" coords="373,309,479,336"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#af2fafa20dc6c1d5547a1ed36352e534a" title="Sets the number of elements in the mesh. " alt="" coords="365,360,487,387"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a8a3aca77e7318e0594bda6395881f529" title="Sets the number of open boundaries in the model. " alt="" coords="344,411,508,437"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a5d57ff3a0140fbe3022b7be8cce7f540" title="Sets the number of land boundaries in the model. " alt="" coords="345,259,507,285"/>
+<area shape="rect" id="node16" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a83611a572514d6b2f73e9ee6431744c8" title="Returns a pointer to the requested node in the internal node vector. " alt="" coords="401,157,451,184"/>
+<area shape="rect" id="node19" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a14aa75a7dd91534b6b886769e21e2c89" title="Returns a pointer to the requested element in the internal element vector. " alt="" coords="392,1005,460,1032"/>
+<area shape="rect" id="node26" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ac6a3ad791b160ae157182192807bb6f3" title="Returns true if the mesh is in a geographic projection. " alt="" coords="391,1107,461,1133"/>
+</map>

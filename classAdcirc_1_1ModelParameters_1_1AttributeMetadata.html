@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('classAdcirc_1_1ModelParameters_1_1Attr
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:afb2d0bd0856b0ab4c8dfd78ddcad9e57"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#afb2d0bd0856b0ab4c8dfd78ddcad9e57">AttributeMetadata</a> (const std::string &amp;<a class="el" href="classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#a1d89c28bd42ba9a52da008bb69367171">name</a>=&quot;defaultName&quot;, const std::string &amp;<a class="el" href="classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#ae7cad0f355e15a1aa1768962f629e292">units</a>=&quot;none&quot;, size_t numValues=1)</td></tr>
-<tr class="memdesc:afb2d0bd0856b0ab4c8dfd78ddcad9e57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor Defines the name, units and number of values within the specific nodal attribute. Also, resizes the internal vector used to store default values.  <a href="#afb2d0bd0856b0ab4c8dfd78ddcad9e57">More...</a><br /></td></tr>
+<tr class="memdesc:afb2d0bd0856b0ab4c8dfd78ddcad9e57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#afb2d0bd0856b0ab4c8dfd78ddcad9e57">More...</a><br /></td></tr>
 <tr class="separator:afb2d0bd0856b0ab4c8dfd78ddcad9e57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d89c28bd42ba9a52da008bb69367171"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#a1d89c28bd42ba9a52da008bb69367171">name</a> () const</td></tr>
 <tr class="memdesc:a1d89c28bd42ba9a52da008bb69367171"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the name of the nodal attribute.  <a href="#a1d89c28bd42ba9a52da008bb69367171">More...</a><br /></td></tr>
@@ -179,12 +179,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Constructor Defines the name, units and number of values within the specific nodal attribute. Also, resizes the internal vector used to store default values. </p>
+<p>Constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>name of the nodal attribute </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">units</td><td>units for the nodal attribute </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">numValues</td><td>number of values represented by this nodal attribute </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>name of nodal attribute </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">units</td><td>units for nodal attribute </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">numValues</td><td>number of values per node </td></tr>
   </table>
   </dd>
 </dl>
@@ -229,7 +229,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_a862969c6a30ce3173fe4b43731c2571a_cgraph.png" border="0" usemap="#classAdcirc_1_1ModelParameters_1_1AttributeMetadata_a862969c6a30ce3173fe4b43731c2571a_cgraph" alt=""/></div>
 <map name="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_a862969c6a30ce3173fe4b43731c2571a_cgraph" id="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_a862969c6a30ce3173fe4b43731c2571a_cgraph">
-<area shape="rect" id="node2" href="attributemetadata_8cpp.html#af6563cdd7770cb4292e5103897d6d49a" title="equalTo" alt="" coords="193,5,261,32"/>
+<area shape="rect" id="node2" href="namespaceAdcirc_1_1FpCompare.html#ab97a79176601debc2265e3287f919116" title="Adcirc::FpCompare::\lequalTo" alt="" coords="193,5,336,47"/>
 </map>
 </div>
 <div class="dynheader">
@@ -273,7 +273,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_a64484c4a95440c67cd1ec2b199b6aa2d_cgraph.png" border="0" usemap="#classAdcirc_1_1ModelParameters_1_1AttributeMetadata_a64484c4a95440c67cd1ec2b199b6aa2d_cgraph" alt=""/></div>
 <map name="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_a64484c4a95440c67cd1ec2b199b6aa2d_cgraph" id="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_a64484c4a95440c67cd1ec2b199b6aa2d_cgraph">
-<area shape="rect" id="node2" href="attributemetadata_8cpp.html#af6563cdd7770cb4292e5103897d6d49a" title="equalTo" alt="" coords="193,5,261,32"/>
+<area shape="rect" id="node2" href="namespaceAdcirc_1_1FpCompare.html#ab97a79176601debc2265e3287f919116" title="Adcirc::FpCompare::\lequalTo" alt="" coords="193,5,336,47"/>
 </map>
 </div>
 
@@ -307,9 +307,8 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_a70c1c7b973c421915fdcb2c6c40609e6_cgraph.png" border="0" usemap="#classAdcirc_1_1ModelParameters_1_1AttributeMetadata_a70c1c7b973c421915fdcb2c6c40609e6_cgraph" alt=""/></div>
 <map name="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_a70c1c7b973c421915fdcb2c6c40609e6_cgraph" id="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_a70c1c7b973c421915fdcb2c6c40609e6_cgraph">
-<area shape="rect" id="node2" href="attributemetadata_8cpp.html#af6563cdd7770cb4292e5103897d6d49a" title="equalTo" alt="" coords="244,5,312,32"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1ModelParameters_1_1Attribute.html#af918796d8769eac0ca2c3258833fd31e" title="Returns the value of the nodal attribute at the specified index. " alt="" coords="193,57,363,98"/>
-<area shape="rect" id="node4" href="classAdcirc_1_1ModelParameters_1_1Attribute.html#a259cb5a711406a8c3e5d937eb9350cca" title="Returns the current size of this nodal attribute. " alt="" coords="411,57,580,98"/>
+<area shape="rect" id="node2" href="namespaceAdcirc_1_1FpCompare.html#ab97a79176601debc2265e3287f919116" title="Adcirc::FpCompare::\lequalTo" alt="" coords="207,5,349,47"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1ModelParameters_1_1Attribute.html#aeb2566c044b878338cbbfbc96acb7a62" title="Returns a vector of all values for this nodal parameter. " alt="" coords="193,71,363,112"/>
 </map>
 </div>
 
@@ -434,7 +433,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_ace87c1ad75b9f08770789cc74b864342_icgraph.png" border="0" usemap="#classAdcirc_1_1ModelParameters_1_1AttributeMetadata_ace87c1ad75b9f08770789cc74b864342_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_ace87c1ad75b9f08770789cc74b864342_icgraph" id="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_ace87c1ad75b9f08770789cc74b864342_icgraph">
 <area shape="rect" id="node2" href="classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#ac2708b5a5b94a013aba4ee3339e59eb3" title="Sets the number of values for the nodal attribute. " alt="" coords="172,5,312,32"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#afb2d0bd0856b0ab4c8dfd78ddcad9e57" title="Constructor Defines the name, units and number of values within the specific nodal attribute..." alt="" coords="360,5,485,32"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#afb2d0bd0856b0ab4c8dfd78ddcad9e57" title="Constructor. " alt="" coords="360,5,485,32"/>
 </map>
 </div>
 
@@ -600,7 +599,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_ac2708b5a5b94a013aba4ee3339e59eb3_icgraph.png" border="0" usemap="#classAdcirc_1_1ModelParameters_1_1AttributeMetadata_ac2708b5a5b94a013aba4ee3339e59eb3_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_ac2708b5a5b94a013aba4ee3339e59eb3_icgraph" id="classAdcirc_1_1ModelParameters_1_1AttributeMetadata_ac2708b5a5b94a013aba4ee3339e59eb3_icgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#afb2d0bd0856b0ab4c8dfd78ddcad9e57" title="Constructor Defines the name, units and number of values within the specific nodal attribute..." alt="" coords="193,5,319,32"/>
+<area shape="rect" id="node2" href="classAdcirc_1_1ModelParameters_1_1AttributeMetadata.html#afb2d0bd0856b0ab4c8dfd78ddcad9e57" title="Constructor. " alt="" coords="193,5,319,32"/>
 </map>
 </div>
 

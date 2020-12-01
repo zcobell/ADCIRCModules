@@ -3,10 +3,10 @@
 <area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a3543bba752ce5bb6f2a4ce69c0f09c3d" title="Returns a pointer to the requested element in the internal element vector. " alt="" coords="209,71,373,112"/>
 <area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Element.html#a77732c8f794e269e491c11d233bad7d7" title="Calculates the average size of the legs of an element. " alt="" coords="201,136,381,177"/>
 <area shape="rect" id="node11" href="$classAdcirc_1_1Geometry_1_1Element.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the element id/flag. " alt="" coords="192,202,391,229"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Element.html#ac88f0961aa7ed7c7415550ab2cad49c8" title="Number of verticies in this element. " alt="" coords="895,77,1089,103"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Element.html#afc577e95913f9e4e80a2ed71824be06c" title="Returns a pair of nodes representing the leg of an element. " alt="" coords="439,77,619,119"/>
-<area shape="rect" id="node8" href="$classConstants.html#a67bb34165d68f1fe958b93511d5ede05" title="Calculates the distance between two points. " alt="" coords="459,143,598,170"/>
-<area shape="rect" id="node9" href="$classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="439,194,618,221"/>
-<area shape="rect" id="node10" href="$classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="439,245,618,271"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Element.html#ab4269a9b2524d2180c5340bd2de2207c" title="returns a pointer to the node at the specified position " alt="" coords="667,128,847,169"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Element.html#ac88f0961aa7ed7c7415550ab2cad49c8" title="Number of verticies in this element. " alt="" coords="895,70,1089,97"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Element.html#afc577e95913f9e4e80a2ed71824be06c" title="Returns a pair of nodes representing the leg of an element. " alt="" coords="439,71,619,112"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Constants.html#a67bb34165d68f1fe958b93511d5ede05" title="Calculates the distance between two points. " alt="" coords="461,136,596,177"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="439,202,618,229"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="439,253,618,279"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Geometry_1_1Element.html#ab4269a9b2524d2180c5340bd2de2207c" title="returns a pointer to the node at the specified position " alt="" coords="667,121,847,163"/>
 </map>

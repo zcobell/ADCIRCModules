@@ -1,4 +1,5 @@
 <map id="size" name="size">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="118,5,206,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a5285e04bd89445fcea660a4d41ab7068" title="Returns the average longitude of the boundary. " alt="" coords="100,56,224,83"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a67081f035fcd891f76ba98804adc3ea6" title="Writes the boundary into Adcirc ASCII mesh format and stores into a string vector. " alt="" coords="119,5,207,32"/>
+<area shape="rect" id="node3" href="$boundary_8cpp.html#a821a7afb9f9118ed548755306943c934" title="boundary2polygon" alt="" coords="100,56,227,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a016421c661c936a963720f6ed54c9b56" title="Returns the centroid of the boundary. " alt="" coords="275,81,343,108"/>
 </map>

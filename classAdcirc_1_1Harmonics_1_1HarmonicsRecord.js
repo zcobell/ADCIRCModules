@@ -2,6 +2,7 @@ var classAdcirc_1_1Harmonics_1_1HarmonicsRecord =
 [
     [ "HarmonicsRecord", "classAdcirc_1_1Harmonics_1_1HarmonicsRecord.html#a34f76ab61a856b402a3fb86786eb8c98", null ],
     [ "~HarmonicsRecord", "classAdcirc_1_1Harmonics_1_1HarmonicsRecord.html#a2c92dbea03fa69e87ba191f09b3529ed", null ],
+    [ "HarmonicsRecord", "classAdcirc_1_1Harmonics_1_1HarmonicsRecord.html#a9a5c16baed1efae031f4d1fa6f58f7cd", null ],
     [ "equilibriumArg", "classAdcirc_1_1Harmonics_1_1HarmonicsRecord.html#a37329eb348be32fb197dbda4a7442612", null ],
     [ "frequency", "classAdcirc_1_1Harmonics_1_1HarmonicsRecord.html#a336f3985dc2b20a76458d0450d5df661", null ],
     [ "name", "classAdcirc_1_1Harmonics_1_1HarmonicsRecord.html#a1d89c28bd42ba9a52da008bb69367171", null ],

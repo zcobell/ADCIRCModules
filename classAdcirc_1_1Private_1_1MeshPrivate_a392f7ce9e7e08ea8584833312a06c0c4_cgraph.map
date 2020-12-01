@@ -1,0 +1,6 @@
+<map id="extent" name="extent">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#afdeef43f911a631b40c7bd6de3c8ce6f" title="Returns a vector of the x&#45;coordinates. " alt="" coords="112,5,151,32"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ac226a4441605d69e0cc5564e7f0805ad" title="Returns a vector of the y&#45;coordinates. " alt="" coords="112,56,151,83"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ab93aa60ac4b272c586a0681478416aee" title="Returns a vector of the z&#45;coordinates. " alt="" coords="112,107,151,133"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh. " alt="" coords="199,56,284,83"/>
+</map>

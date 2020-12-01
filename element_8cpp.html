@@ -92,19 +92,19 @@ $(document).ready(function(){initNavTree('element_8cpp.html','');});
 <code>#include &quot;boost/format.hpp&quot;</code><br />
 <code>#include &quot;boost/geometry.hpp&quot;</code><br />
 <code>#include &quot;<a class="el" href="constants_8h_source.html">constants.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="hash_8h_source.html">hash.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="adchash_8h_source.html">adchash.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="logging_8h_source.html">logging.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for element.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="element_8cpp__incl.png" border="0" usemap="#element_8cpp" alt=""/></div>
 <map name="element_8cpp" id="element_8cpp">
-<area shape="rect" id="node2" href="element_8h.html" title="element.h" alt="" coords="523,80,602,107"/>
-<area shape="rect" id="node14" href="constants_8h.html" title="constants.h" alt="" coords="5,155,96,181"/>
-<area shape="rect" id="node15" href="hash_8h.html" title="hash.h" alt="" coords="616,155,677,181"/>
-<area shape="rect" id="node16" href="logging_8h.html" title="logging.h" alt="" coords="728,80,803,107"/>
-<area shape="rect" id="node9" href="node_8h.html" title="node.h" alt="" coords="397,155,459,181"/>
-<area shape="rect" id="node10" href="hashtype_8h.html" title="hashtype.h" alt="" coords="570,229,657,256"/>
+<area shape="rect" id="node2" href="element_8h.html" title="element.h" alt="" coords="570,80,649,107"/>
+<area shape="rect" id="node15" href="constants_8h.html" title="constants.h" alt="" coords="5,80,96,107"/>
+<area shape="rect" id="node16" href="adchash_8h.html" title="adchash.h" alt="" coords="657,155,740,181"/>
+<area shape="rect" id="node17" href="logging_8h.html" title="logging.h" alt="" coords="815,155,889,181"/>
+<area shape="rect" id="node8" href="node_8h.html" title="node.h" alt="" coords="489,155,551,181"/>
+<area shape="rect" id="node11" href="hashtype_8h.html" title="hashtype.h" alt="" coords="583,229,670,256"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -112,12 +112,12 @@ Include dependency graph for element.cpp:</div>
 Typedefs</h2></td></tr>
 <tr class="memitem:a63596aa2b4ee6baed8729e369d47c1c1"><td class="memItemLeft" align="right" valign="top">typedef bg::model::point&lt; double, 2, bg::cs::cartesian &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8cpp.html#a63596aa2b4ee6baed8729e369d47c1c1">point_t</a></td></tr>
 <tr class="separator:a63596aa2b4ee6baed8729e369d47c1c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90ee99f8574a04239960e4065be1a3da"><td class="memItemLeft" align="right" valign="top">typedef bg::model::polygon&lt; <a class="el" href="element_8cpp.html#a63596aa2b4ee6baed8729e369d47c1c1">point_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8cpp.html#a90ee99f8574a04239960e4065be1a3da">polygon_t</a></td></tr>
+<tr class="memitem:a90ee99f8574a04239960e4065be1a3da"><td class="memItemLeft" align="right" valign="top">typedef bg::model::polygon&lt; <a class="el" href="boundary_8cpp.html#a63596aa2b4ee6baed8729e369d47c1c1">point_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8cpp.html#a90ee99f8574a04239960e4065be1a3da">polygon_t</a></td></tr>
 <tr class="separator:a90ee99f8574a04239960e4065be1a3da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4ae1e9eaa73978e19f9b5b2f49371dc4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="element_8cpp.html#a90ee99f8574a04239960e4065be1a3da">polygon_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8cpp.html#a4ae1e9eaa73978e19f9b5b2f49371dc4">element2polygon</a> (std::vector&lt; <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Node</a> *&gt; n)</td></tr>
+<tr class="memitem:a4ae1e9eaa73978e19f9b5b2f49371dc4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="boundary_8cpp.html#a90ee99f8574a04239960e4065be1a3da">polygon_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8cpp.html#a4ae1e9eaa73978e19f9b5b2f49371dc4">element2polygon</a> (std::vector&lt; <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Node</a> *&gt; n)</td></tr>
 <tr class="memdesc:a4ae1e9eaa73978e19f9b5b2f49371dc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a boost::geometry element from the element.  <a href="#a4ae1e9eaa73978e19f9b5b2f49371dc4">More...</a><br /></td></tr>
 <tr class="separator:a4ae1e9eaa73978e19f9b5b2f49371dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -129,7 +129,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef bg::model::point&lt;double, 2, bg::cs::cartesian&gt; <a class="el" href="element_8cpp.html#a63596aa2b4ee6baed8729e369d47c1c1">point_t</a></td>
+          <td class="memname">typedef bg::model::point&lt;double, 2, bg::cs::cartesian&gt; <a class="el" href="boundary_8cpp.html#a63596aa2b4ee6baed8729e369d47c1c1">point_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -143,7 +143,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef bg::model::polygon&lt;<a class="el" href="element_8cpp.html#a63596aa2b4ee6baed8729e369d47c1c1">point_t</a>&gt; <a class="el" href="element_8cpp.html#a90ee99f8574a04239960e4065be1a3da">polygon_t</a></td>
+          <td class="memname">typedef bg::model::polygon&lt;<a class="el" href="boundary_8cpp.html#a63596aa2b4ee6baed8729e369d47c1c1">point_t</a>&gt; <a class="el" href="boundary_8cpp.html#a90ee99f8574a04239960e4065be1a3da">polygon_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -158,7 +158,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="element_8cpp.html#a90ee99f8574a04239960e4065be1a3da">polygon_t</a> element2polygon </td>
+          <td class="memname"><a class="el" href="boundary_8cpp.html#a90ee99f8574a04239960e4065be1a3da">polygon_t</a> element2polygon </td>
           <td>(</td>
           <td class="paramtype">std::vector&lt; <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Node</a> *&gt;&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -183,9 +183,9 @@ Here is the caller graph for this function:</div>
 <area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Element.html#a91fb7882f282510bc5f1cbd1f4d6e608" title="Computes the center position of the element. " alt="" coords="173,69,353,111"/>
 <area shape="rect" id="node7" href="classAdcirc_1_1Geometry_1_1Element.html#a26f0bb964a0ade10f21f7b392e98a238" title="Calculates the area of the element. " alt="" coords="173,135,353,176"/>
 <area shape="rect" id="node8" href="classAdcirc_1_1Geometry_1_1Element.html#a21e4878a88c612218f4cd6a44a0032c8" title="Determine if a point lies within an element. " alt="" coords="173,200,353,241"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#a9e42cda1d41194ce3b1d434ae5a6dac1" title="Sorts the verticies in clockwise order around the element center. " alt="" coords="406,37,586,79"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Element.html#aedd19bdd665c0f11cee4ad33e1a5848f" title="Sorts the verticies in clockwise order around the element center. " alt="" coords="406,37,586,79"/>
 <area shape="rect" id="node6" href="classAdcirc_1_1Private_1_1MeshPrivate.html#aa4c1eb531285e29ff29c8923ef1e581f" title="Calculates the element orthogonality. " alt="" coords="401,103,591,144"/>
-<area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Element.html#a224129399ea9da4f8f229517e6432ef5" title="Gets the hash of the element. " alt="" coords="643,5,823,47"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Element.html#ab3b7fe527ab8c2138d5ad7a1585cd256" title="Returns a pointer to the internal array of node pointers. " alt="" coords="643,5,823,47"/>
 <area shape="rect" id="node5" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a0a442be3a53f0b8998b80f1c953f9f56" title="Writes the mesh nodes into ESRI shapefile format. " alt="" coords="639,71,828,112"/>
 </map>
 </div>

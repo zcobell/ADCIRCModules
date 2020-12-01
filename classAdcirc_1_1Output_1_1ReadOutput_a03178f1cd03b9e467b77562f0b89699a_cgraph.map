@@ -1,7 +1,7 @@
 <map id="read" name="read">
 <area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1ReadOutput.html#aed025721c159b7354eeaabf60080f103" title="filetype" alt="" coords="172,5,236,32"/>
 <area shape="rect" id="node3" href="$namespaceAdcirc_1_1Output.html#a0387699bf2045bc5151df458618cebac" title="Adcirc::Output::nextOutputSnap" alt="" coords="100,56,308,83"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Logging.html#a7a7448425c64d0913430c8dd9d6c82c9" title="Logs a warning message. " alt="" coords="121,107,287,133"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Logging.html#aa991e722150df4187e473be0044f21ea" title="Logs a warning message. " alt="" coords="121,107,287,133"/>
 <area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a4044653a73e895cd749614f3747c330f" title="currentSnap" alt="" coords="158,157,250,184"/>
 <area shape="rect" id="node6" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a6722c077a3a1da05711df1ae777ecd5d" title="numSnaps" alt="" coords="162,208,246,235"/>
 <area shape="rect" id="node7" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a3a9ba7594ee74425dd345ecc263a5564" title="isOpen" alt="" coords="173,259,235,285"/>

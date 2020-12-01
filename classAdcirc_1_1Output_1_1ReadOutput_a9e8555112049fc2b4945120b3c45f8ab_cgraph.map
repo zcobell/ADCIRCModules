@@ -1,6 +1,7 @@
 <map id="open" name="open">
 <area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a3a9ba7594ee74425dd345ecc263a5564" title="isOpen" alt="" coords="116,5,179,32"/>
 <area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1ReadOutput.html#aa9100e4c626877b706ca9fc67a35c562" title="exists" alt="" coords="119,56,176,83"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1ReadOutput.html#ae6b1f09075f62716afd1b68660c93a6c" title="setFiletype" alt="" coords="104,107,191,133"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1ReadOutput.html#aed025721c159b7354eeaabf60080f103" title="filetype" alt="" coords="239,132,303,159"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1ReadOutput.html#ae6b1f09075f62716afd1b68660c93a6c" title="setFiletype" alt="" coords="104,107,191,133"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Output_1_1ReadOutput.html#aed025721c159b7354eeaabf60080f103" title="filetype" alt="" coords="284,136,348,163"/>
+<area shape="rect" id="node4" href="$namespaceAdcirc_1_1FileIO_1_1Generic.html#afdd89841220a8b18e39e0844a833a18b" title="Checks if a file exists. " alt="" coords="239,49,393,90"/>
 </map>

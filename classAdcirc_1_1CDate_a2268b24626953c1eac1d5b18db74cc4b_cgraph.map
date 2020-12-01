@@ -1,0 +1,7 @@
+<map id="setYear" name="setYear">
+<area shape="rect" id="node2" href="$structs__datetime.html#a1d85d7b09eedec3fb734532c164f2f27" title="s_datetime::month" alt="" coords="123,5,253,32"/>
+<area shape="rect" id="node3" href="$structs__datetime.html#a5a496ea2e6017fd4b43081f4317f96ce" title="s_datetime::day" alt="" coords="131,56,245,83"/>
+<area shape="rect" id="node4" href="$structs__datetime.html#a110d566ff7f9edf7cbfe15355f8c637c" title="s_datetime::hour" alt="" coords="129,107,247,133"/>
+<area shape="rect" id="node5" href="$structs__datetime.html#ae91256ab81b246d3f40eddbd4c016f5f" title="s_datetime::minute" alt="" coords="121,157,255,184"/>
+<area shape="rect" id="node6" href="$structs__datetime.html#aa0cba22e21d8081f564e6a68edab1ae0" title="s_datetime::second" alt="" coords="120,208,256,235"/>
+</map>

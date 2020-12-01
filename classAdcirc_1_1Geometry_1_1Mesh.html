@@ -102,6 +102,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa3779779541213fc635ffb1afe6c7ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e26384cfb03023e7dc2e5419baf813f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a6e26384cfb03023e7dc2e5419baf813f">~Mesh</a> ()</td></tr>
 <tr class="separator:a6e26384cfb03023e7dc2e5419baf813f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad483079d53225077eddf0ee4136faa8c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#ad483079d53225077eddf0ee4136faa8c">Mesh</a> (const <a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html">Mesh</a> &amp;m)</td></tr>
+<tr class="separator:ad483079d53225077eddf0ee4136faa8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2ee0ab3345629edac032b6746f0f663"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html">Mesh</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#ae2ee0ab3345629edac032b6746f0f663">operator=</a> (const <a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html">Mesh</a> &amp;m)</td></tr>
+<tr class="separator:ae2ee0ab3345629edac032b6746f0f663"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdeef43f911a631b40c7bd6de3c8ce6f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#afdeef43f911a631b40c7bd6de3c8ce6f">x</a> ()</td></tr>
 <tr class="memdesc:afdeef43f911a631b40c7bd6de3c8ce6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a vector of the x-coordinates.  <a href="#afdeef43f911a631b40c7bd6de3c8ce6f">More...</a><br /></td></tr>
 <tr class="separator:afdeef43f911a631b40c7bd6de3c8ce6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -201,6 +205,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acecfbe4b5dbfac4b1c4d2f988500555e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#acecfbe4b5dbfac4b1c4d2f988500555e">toBoundaryShapefile</a> (const std::string &amp;outputFile)</td></tr>
 <tr class="memdesc:acecfbe4b5dbfac4b1c4d2f988500555e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the boundary conditions of the mesh to ESRI shapefile format as points.  <a href="#acecfbe4b5dbfac4b1c4d2f988500555e">More...</a><br /></td></tr>
 <tr class="separator:acecfbe4b5dbfac4b1c4d2f988500555e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab714c556df3dbac59594f85748f56d72"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#ab714c556df3dbac59594f85748f56d72">toBoundaryLineShapefile</a> (const std::string &amp;outputFile, const bool bothSides=false)</td></tr>
+<tr class="memdesc:ab714c556df3dbac59594f85748f56d72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the boundary conditions of the mesh to ESRI shapefile format as lines.  <a href="#ab714c556df3dbac59594f85748f56d72">More...</a><br /></td></tr>
+<tr class="separator:ab714c556df3dbac59594f85748f56d72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58653d7d73344cfab6282c028e954a49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a58653d7d73344cfab6282c028e954a49">toWeirPolygonShapefile</a> (const std::string &amp;outputFile)</td></tr>
+<tr class="memdesc:a58653d7d73344cfab6282c028e954a49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the weirs as closed polygons to a shapefile.  <a href="#a58653d7d73344cfab6282c028e954a49">More...</a><br /></td></tr>
+<tr class="separator:a58653d7d73344cfab6282c028e954a49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1710b55657f368bbebe1c9ad7c36f08"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#ab1710b55657f368bbebe1c9ad7c36f08">buildNodalSearchTree</a> ()</td></tr>
 <tr class="memdesc:ab1710b55657f368bbebe1c9ad7c36f08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a kd-tree object with the mesh nodes as the search locations.  <a href="#ab1710b55657f368bbebe1c9ad7c36f08">More...</a><br /></td></tr>
 <tr class="separator:ab1710b55657f368bbebe1c9ad7c36f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -274,6 +284,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a059241e253157b135c2ca32c1cf6f5dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a059241e253157b135c2ca32c1cf6f5dc">addNode</a> (size_t index, const <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> &amp;<a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a96bbda0a22e51f4ca5cf2364126956b9">node</a>)</td></tr>
 <tr class="memdesc:a059241e253157b135c2ca32c1cf6f5dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a node at the specified index in the node vector.  <a href="#a059241e253157b135c2ca32c1cf6f5dc">More...</a><br /></td></tr>
 <tr class="separator:a059241e253157b135c2ca32c1cf6f5dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a182da7d48bbb6738076aad026a55cb44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a182da7d48bbb6738076aad026a55cb44">addNode</a> (size_t index, const <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> *<a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a96bbda0a22e51f4ca5cf2364126956b9">node</a>)</td></tr>
+<tr class="separator:a182da7d48bbb6738076aad026a55cb44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a684cf2720fb4efb8e72184f52ad151cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a684cf2720fb4efb8e72184f52ad151cb">deleteNode</a> (size_t index)</td></tr>
 <tr class="memdesc:a684cf2720fb4efb8e72184f52ad151cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes an <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html" title="The Node class describes the x, y, z position of a single mesh node. ">Node</a> object at the specified index and shifts the remaining nodes forward in the vector.  <a href="#a684cf2720fb4efb8e72184f52ad151cb">More...</a><br /></td></tr>
 <tr class="separator:a684cf2720fb4efb8e72184f52ad151cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -304,24 +316,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aeb87845ce7689f495e96a156caa41631"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#aeb87845ce7689f495e96a156caa41631">computeMeshSize</a> ()</td></tr>
 <tr class="memdesc:aeb87845ce7689f495e96a156caa41631"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes average size of the element edges connected to each node.  <a href="#aeb87845ce7689f495e96a156caa41631">More...</a><br /></td></tr>
 <tr class="separator:aeb87845ce7689f495e96a156caa41631"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a612375ca3799e85137b9d315491f1484"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a612375ca3799e85137b9d315491f1484">buildElementTable</a> ()</td></tr>
-<tr class="memdesc:a612375ca3799e85137b9d315491f1484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a list of elements connected to each node.  <a href="#a612375ca3799e85137b9d315491f1484">More...</a><br /></td></tr>
-<tr class="separator:a612375ca3799e85137b9d315491f1484"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af579cb2cff98dcc9d3f508453749d539"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#af579cb2cff98dcc9d3f508453749d539">numElementsAroundNode</a> (<a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> *n)</td></tr>
-<tr class="memdesc:af579cb2cff98dcc9d3f508453749d539"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of elements surrounding a specified node.  <a href="#af579cb2cff98dcc9d3f508453749d539">More...</a><br /></td></tr>
-<tr class="separator:af579cb2cff98dcc9d3f508453749d539"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0775565a8826077707a94a3611bbf3f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#ac0775565a8826077707a94a3611bbf3f">numElementsAroundNode</a> (size_t nodeIndex)</td></tr>
-<tr class="memdesc:ac0775565a8826077707a94a3611bbf3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of elements surrounding a specified node.  <a href="#ac0775565a8826077707a94a3611bbf3f">More...</a><br /></td></tr>
-<tr class="separator:ac0775565a8826077707a94a3611bbf3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae453d6762b580f82f13b3343b394a189"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Adcirc::Geometry::Element</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#ae453d6762b580f82f13b3343b394a189">elementTable</a> (<a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> *n, size_t listIndex)</td></tr>
-<tr class="memdesc:ae453d6762b580f82f13b3343b394a189"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the nth element in the list of elements surrounding a node.  <a href="#ae453d6762b580f82f13b3343b394a189">More...</a><br /></td></tr>
-<tr class="separator:ae453d6762b580f82f13b3343b394a189"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a477aeec054b51540ab70382872bd56ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Adcirc::Geometry::Element</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a477aeec054b51540ab70382872bd56ee">elementTable</a> (size_t nodeIndex, size_t listIndex)</td></tr>
-<tr class="memdesc:a477aeec054b51540ab70382872bd56ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the nth element in the list of elements surrounding a node.  <a href="#a477aeec054b51540ab70382872bd56ee">More...</a><br /></td></tr>
-<tr class="separator:a477aeec054b51540ab70382872bd56ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a386079f1610441ec3a150b6eb1378f5c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Adcirc::Geometry::Element</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a386079f1610441ec3a150b6eb1378f5c">elementsAroundNode</a> (<a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> *n)</td></tr>
-<tr class="memdesc:a386079f1610441ec3a150b6eb1378f5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a vector of pointers to the elements surrouding a node.  <a href="#a386079f1610441ec3a150b6eb1378f5c">More...</a><br /></td></tr>
-<tr class="separator:a386079f1610441ec3a150b6eb1378f5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66bdb1c415d453783e755a31fd572f1e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a66bdb1c415d453783e755a31fd572f1e">boundaryNodes</a> ()</td></tr>
 <tr class="memdesc:a66bdb1c415d453783e755a31fd572f1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a vector containing all nodes on the mesh boundary.  <a href="#a66bdb1c415d453783e755a31fd572f1e">More...</a><br /></td></tr>
 <tr class="separator:a66bdb1c415d453783e755a31fd572f1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -334,6 +328,34 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ada1164a4bd0e785a24f446d052edc112"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#ada1164a4bd0e785a24f446d052edc112">setHashType</a> (const <a class="el" href="namespaceAdcirc_1_1Cryptography.html#a2205332cc19e7e15a2610115ff39aeb9">Adcirc::Cryptography::HashType</a> &amp;<a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a09752c7cc84a49c82752b3020a3fef0c">hashType</a>)</td></tr>
 <tr class="memdesc:ada1164a4bd0e785a24f446d052edc112"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the hash type to be used.  <a href="#ada1164a4bd0e785a24f446d052edc112">More...</a><br /></td></tr>
 <tr class="separator:ada1164a4bd0e785a24f446d052edc112"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a707759da09d283184555c26840aedddd"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a707759da09d283184555c26840aedddd">nodes</a> ()</td></tr>
+<tr class="memdesc:a707759da09d283184555c26840aedddd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the vector of nodes in the mesh.  <a href="#a707759da09d283184555c26840aedddd">More...</a><br /></td></tr>
+<tr class="separator:a707759da09d283184555c26840aedddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa524ecd3933c03b2e02273035ed97e9b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Adcirc::Geometry::Element</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#aa524ecd3933c03b2e02273035ed97e9b">elements</a> ()</td></tr>
+<tr class="memdesc:aa524ecd3933c03b2e02273035ed97e9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the vector of elements in the mesh.  <a href="#aa524ecd3933c03b2e02273035ed97e9b">More...</a><br /></td></tr>
+<tr class="separator:aa524ecd3933c03b2e02273035ed97e9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6576a447350a53e3e0c7924b309716bc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classAdcirc_1_1Geometry_1_1Boundary.html">Adcirc::Geometry::Boundary</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a6576a447350a53e3e0c7924b309716bc">openBoundaries</a> ()</td></tr>
+<tr class="memdesc:a6576a447350a53e3e0c7924b309716bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the vector of open boundaries in the mesh.  <a href="#a6576a447350a53e3e0c7924b309716bc">More...</a><br /></td></tr>
+<tr class="separator:a6576a447350a53e3e0c7924b309716bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e07e45dfd30999ca14bb57af25c751d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classAdcirc_1_1Geometry_1_1Boundary.html">Adcirc::Geometry::Boundary</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a5e07e45dfd30999ca14bb57af25c751d">landBoundaries</a> ()</td></tr>
+<tr class="memdesc:a5e07e45dfd30999ca14bb57af25c751d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the vector of land boundaries in the mesh.  <a href="#a5e07e45dfd30999ca14bb57af25c751d">More...</a><br /></td></tr>
+<tr class="separator:a5e07e45dfd30999ca14bb57af25c751d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09fc7a1027d0eb1bdd60361c202e5469"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a09fc7a1027d0eb1bdd60361c202e5469">containsNode</a> (<a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> &amp;n, size_t &amp;index)</td></tr>
+<tr class="separator:a09fc7a1027d0eb1bdd60361c202e5469"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b6181fbbd7d3ede27c76977acec612d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a6b6181fbbd7d3ede27c76977acec612d">containsNode</a> (<a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> *n, size_t &amp;index)</td></tr>
+<tr class="separator:a6b6181fbbd7d3ede27c76977acec612d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9ab988af39078ff76a82f4f03910b47"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#aa9ab988af39078ff76a82f4f03910b47">containsElement</a> (<a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Adcirc::Geometry::Element</a> &amp;e, size_t &amp;index)</td></tr>
+<tr class="separator:aa9ab988af39078ff76a82f4f03910b47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8724d56cfd9c89ab9a3230994483688"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#ab8724d56cfd9c89ab9a3230994483688">containsElement</a> (<a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Adcirc::Geometry::Element</a> *e, size_t &amp;index)</td></tr>
+<tr class="separator:ab8724d56cfd9c89ab9a3230994483688"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a392f7ce9e7e08ea8584833312a06c0c4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a392f7ce9e7e08ea8584833312a06c0c4">extent</a> () const</td></tr>
+<tr class="memdesc:a392f7ce9e7e08ea8584833312a06c0c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the extents of the current raster as xmin,ymin,xmax,ymax,zmin,zmax.  <a href="#a392f7ce9e7e08ea8584833312a06c0c4">More...</a><br /></td></tr>
+<tr class="separator:a392f7ce9e7e08ea8584833312a06c0c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c174d528c7673246301fb5727b05b78"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a0c174d528c7673246301fb5727b05b78">toRaster</a> (const std::string &amp;<a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a94c732bb0f167eab349228237a8fbe3c">filename</a>, const std::vector&lt; double &gt; &amp;<a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#ab93aa60ac4b272c586a0681478416aee">z</a>, const std::vector&lt; double &gt; &amp;<a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a392f7ce9e7e08ea8584833312a06c0c4">extent</a>, const double resolution, const double nullvalue=-99999.0, const std::string &amp;description=&quot;none&quot;, const std::string &amp;units=&quot;none&quot;, const bool partialWetting=true) const</td></tr>
+<tr class="memdesc:a0c174d528c7673246301fb5727b05b78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a mesh to a raster using gdal.  <a href="#a0c174d528c7673246301fb5727b05b78">More...</a><br /></td></tr>
+<tr class="separator:a0c174d528c7673246301fb5727b05b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a144d52d816558c4ae51e64a87607a6bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classAdcirc_1_1Geometry_1_1Topology.html">Adcirc::Geometry::Topology</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#a144d52d816558c4ae51e64a87607a6bd">topology</a> ()</td></tr>
+<tr class="separator:a144d52d816558c4ae51e64a87607a6bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -344,6 +366,8 @@ Static Public Attributes</h2></td></tr>
 Friends</h2></td></tr>
 <tr class="memitem:ac9c39ab92b558676338061faae090768"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#ac9c39ab92b558676338061faae090768">ElementTable</a></td></tr>
 <tr class="separator:ac9c39ab92b558676338061faae090768"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa453f78d28042b9b0fb4329e95fe2802"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html#aa453f78d28042b9b0fb4329e95fe2802">FaceTable</a></td></tr>
+<tr class="separator:aa453f78d28042b9b0fb4329e95fe2802"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that handles operations using <a class="el" href="namespaceAdcirc.html">Adcirc</a> mesh files. </p>
@@ -356,7 +380,7 @@ Friends</h2></td></tr>
 <p>This class uses the PIMPL idiom and the implementation of the class is contained in the MeshImpl class. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2a23c7c0c4e0da252b7bc0e13b6f81d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a23c7c0c4e0da252b7bc0e13b6f81d8">&#9670;&nbsp;</a></span>Mesh() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a23c7c0c4e0da252b7bc0e13b6f81d8">&#9670;&nbsp;</a></span>Mesh() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -373,7 +397,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="aa3779779541213fc635ffb1afe6c7ac8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3779779541213fc635ffb1afe6c7ac8">&#9670;&nbsp;</a></span>Mesh() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3779779541213fc635ffb1afe6c7ac8">&#9670;&nbsp;</a></span>Mesh() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -411,6 +435,24 @@ Friends</h2></td></tr>
 <span class="mlabels"><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad483079d53225077eddf0ee4136faa8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad483079d53225077eddf0ee4136faa8c">&#9670;&nbsp;</a></span>Mesh() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html">Mesh</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html">Mesh</a> &amp;&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>
@@ -491,7 +533,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="a059241e253157b135c2ca32c1cf6f5dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a059241e253157b135c2ca32c1cf6f5dc">&#9670;&nbsp;</a></span>addNode()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a059241e253157b135c2ca32c1cf6f5dc">&#9670;&nbsp;</a></span>addNode() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -524,6 +566,34 @@ Friends</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a182da7d48bbb6738076aad026a55cb44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a182da7d48bbb6738076aad026a55cb44">&#9670;&nbsp;</a></span>addNode() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void addNode </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> *&#160;</td>
+          <td class="paramname"><em>node</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -610,32 +680,12 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Builds a kd-tree object with the element centers as the search locations. </p>
-
-</div>
-</div>
-<a id="a612375ca3799e85137b9d315491f1484"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a612375ca3799e85137b9d315491f1484">&#9670;&nbsp;</a></span>buildElementTable()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void buildElementTable </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Builds a list of elements connected to each node. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classAdcirc_1_1Geometry_1_1Mesh_a612375ca3799e85137b9d315491f1484_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Mesh_a612375ca3799e85137b9d315491f1484_icgraph" alt=""/></div>
-<map name="classAdcirc_1_1Geometry_1_1Mesh_a612375ca3799e85137b9d315491f1484_icgraph" id="classAdcirc_1_1Geometry_1_1Mesh_a612375ca3799e85137b9d315491f1484_icgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="183,5,373,47"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="421,5,612,47"/>
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Mesh_a76e76634991fe2ec7d6504760f7a6082_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Mesh_a76e76634991fe2ec7d6504760f7a6082_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Mesh_a76e76634991fe2ec7d6504760f7a6082_icgraph" id="classAdcirc_1_1Geometry_1_1Mesh_a76e76634991fe2ec7d6504760f7a6082_icgraph">
+<area shape="rect" id="node2" href="classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="228,5,480,32"/>
 </map>
 </div>
 
@@ -706,6 +756,118 @@ Here is the caller graph for this function:</div>
 <p>Returns a 2d-vector of the mesh connectivity. </p>
 <dl class="section return"><dt>Returns</dt><dd>2d-vector of mesh connectivity</dd></dl>
 <p>Implemented mostly for the python interface </p>
+
+</div>
+</div>
+<a id="aa9ab988af39078ff76a82f4f03910b47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9ab988af39078ff76a82f4f03910b47">&#9670;&nbsp;</a></span>containsElement() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool containsElement </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Adcirc::Geometry::Element</a> &amp;&#160;</td>
+          <td class="paramname"><em>e</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab8724d56cfd9c89ab9a3230994483688"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8724d56cfd9c89ab9a3230994483688">&#9670;&nbsp;</a></span>containsElement() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool containsElement </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Adcirc::Geometry::Element</a> *&#160;</td>
+          <td class="paramname"><em>e</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a09fc7a1027d0eb1bdd60361c202e5469"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09fc7a1027d0eb1bdd60361c202e5469">&#9670;&nbsp;</a></span>containsNode() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool containsNode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> &amp;&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6b6181fbbd7d3ede27c76977acec612d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b6181fbbd7d3ede27c76977acec612d">&#9670;&nbsp;</a></span>containsNode() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool containsNode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> *&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -955,11 +1117,12 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Mesh_a3543bba752ce5bb6f2a4ce69c0f09c3d_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Mesh_a3543bba752ce5bb6f2a4ce69c0f09c3d_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Mesh_a3543bba752ce5bb6f2a4ce69c0f09c3d_icgraph" id="classAdcirc_1_1Geometry_1_1Mesh_a3543bba752ce5bb6f2a4ce69c0f09c3d_icgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a6cc4b5e332f1a761d93ce7a616dc4bdd" title="Adcirc::Utility::MeshChecker\l::checkElementNumbering" alt="" coords="121,5,312,47"/>
-<area shape="rect" id="node4" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="121,71,312,112"/>
-<area shape="rect" id="node5" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a7903c655caf176412d92e4719559bd02" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="121,136,312,177"/>
-<area shape="rect" id="node6" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="121,201,312,243"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="360,104,551,145"/>
+<area shape="rect" id="node2" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a6cc4b5e332f1a761d93ce7a616dc4bdd" title="Adcirc::Utility::MeshChecker\l::checkElementNumbering" alt="" coords="152,5,343,47"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="152,71,343,112"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a7903c655caf176412d92e4719559bd02" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="152,136,343,177"/>
+<area shape="rect" id="node6" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="152,201,343,243"/>
+<area shape="rect" id="node7" href="classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="121,267,373,294"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="421,104,612,145"/>
 </map>
 </div>
 
@@ -1079,115 +1242,43 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a386079f1610441ec3a150b6eb1378f5c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a386079f1610441ec3a150b6eb1378f5c">&#9670;&nbsp;</a></span>elementsAroundNode()</h2>
+<a id="aa524ecd3933c03b2e02273035ed97e9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa524ecd3933c03b2e02273035ed97e9b">&#9670;&nbsp;</a></span>elements()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Adcirc::Geometry::Element</a> * &gt; elementsAroundNode </td>
+          <td class="memname">std::vector&lt; <a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Adcirc::Geometry::Element</a> &gt; * elements </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> *&#160;</td>
-          <td class="paramname"><em>n</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns a vector of pointers to the elements surrouding a node. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>node pointer </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>vector of element references </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classAdcirc_1_1Geometry_1_1Mesh_a386079f1610441ec3a150b6eb1378f5c_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Mesh_a386079f1610441ec3a150b6eb1378f5c_icgraph" alt=""/></div>
-<map name="classAdcirc_1_1Geometry_1_1Mesh_a386079f1610441ec3a150b6eb1378f5c_icgraph" id="classAdcirc_1_1Geometry_1_1Mesh_a386079f1610441ec3a150b6eb1378f5c_icgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="200,5,391,47"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="439,5,629,47"/>
-</map>
-</div>
+<p>Returns the vector of elements in the mesh. </p>
+<dl class="section return"><dt>Returns</dt><dd>pointer to vector of elements </dd></dl>
 
 </div>
 </div>
-<a id="ae453d6762b580f82f13b3343b394a189"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae453d6762b580f82f13b3343b394a189">&#9670;&nbsp;</a></span>elementTable() <span class="overload">[1/2]</span></h2>
+<a id="a392f7ce9e7e08ea8584833312a06c0c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a392f7ce9e7e08ea8584833312a06c0c4">&#9670;&nbsp;</a></span>extent()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Adcirc::Geometry::Element</a> * elementTable </td>
+          <td class="memname">std::vector&lt; double &gt; extent </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> *&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>listIndex</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the nth element in the list of elements surrounding a node. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>node pointer </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">listIndex</td><td>index of the element to return </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>element pointer </dd></dl>
-
-</div>
-</div>
-<a id="a477aeec054b51540ab70382872bd56ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a477aeec054b51540ab70382872bd56ee">&#9670;&nbsp;</a></span>elementTable() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classAdcirc_1_1Geometry_1_1Element.html">Adcirc::Geometry::Element</a> * elementTable </td>
-          <td>(</td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>nodeIndex</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>listIndex</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the nth element in the list of elements surrounding a node. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>node index </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">listIndex</td><td>index of the element to return </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>element pointer </dd></dl>
+<p>Gets the extents of the current raster as xmin,ymin,xmax,ymax,zmin,zmax. </p>
+<dl class="section return"><dt>Returns</dt><dd>vector of raster extents </dd></dl>
 
 </div>
 </div>
@@ -1236,6 +1327,14 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>index of nearest element, large integer if not found </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Mesh_afc8a7071a350f0e47178c77e10323dcc_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Mesh_afc8a7071a350f0e47178c77e10323dcc_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Mesh_afc8a7071a350f0e47178c77e10323dcc_icgraph" id="classAdcirc_1_1Geometry_1_1Mesh_afc8a7071a350f0e47178c77e10323dcc_icgraph">
+<area shape="rect" id="node2" href="classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="144,5,396,32"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -1545,6 +1644,26 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a5e07e45dfd30999ca14bb57af25c751d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e07e45dfd30999ca14bb57af25c751d">&#9670;&nbsp;</a></span>landBoundaries()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classAdcirc_1_1Geometry_1_1Boundary.html">Adcirc::Geometry::Boundary</a> &gt; * landBoundaries </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the vector of land boundaries in the mesh. </p>
+<dl class="section return"><dt>Returns</dt><dd>pointer to vector of land boundaries </dd></dl>
+
+</div>
+</div>
 <a id="abe78dff66c8837bdd05af8b5504e07e1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abe78dff66c8837bdd05af8b5504e07e1">&#9670;&nbsp;</a></span>landBoundary()</h2>
 
@@ -1739,9 +1858,10 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Mesh_aeac6d5abd113c708a752ffd4a6735f1a_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Mesh_aeac6d5abd113c708a752ffd4a6735f1a_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Mesh_aeac6d5abd113c708a752ffd4a6735f1a_icgraph" id="classAdcirc_1_1Geometry_1_1Mesh_aeac6d5abd113c708a752ffd4a6735f1a_icgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a7903c655caf176412d92e4719559bd02" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="171,5,361,47"/>
-<area shape="rect" id="node4" href="classAdcirc_1_1Private_1_1NodalAttributesPrivate.html#aaa936da334e29618ece019bd8a9aa06f" title="Adcirc::Private::NodalAttributes\lPrivate::read" alt="" coords="163,71,369,112"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="417,5,608,47"/>
+<area shape="rect" id="node2" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a7903c655caf176412d92e4719559bd02" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="193,5,384,47"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Private_1_1NodalAttributesPrivate.html#aaa936da334e29618ece019bd8a9aa06f" title="Adcirc::Private::NodalAttributes\lPrivate::read" alt="" coords="185,71,392,112"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="163,137,415,163"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="463,5,653,47"/>
 </map>
 </div>
 
@@ -1764,6 +1884,26 @@ Here is the caller graph for this function:</div>
 
 <p>Allows the user to know if the code has determined that the node ordering is logcical (i.e. sequential) or not. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if node ordering is sequential </dd></dl>
+
+</div>
+</div>
+<a id="a707759da09d283184555c26840aedddd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a707759da09d283184555c26840aedddd">&#9670;&nbsp;</a></span>nodes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> &gt; * nodes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the vector of nodes in the mesh. </p>
+<dl class="section return"><dt>Returns</dt><dd>pointer to vector of nodes </dd></dl>
 
 </div>
 </div>
@@ -1797,60 +1937,6 @@ Here is the caller graph for this function:</div>
 <area shape="rect" id="node3" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="395,104,585,145"/>
 </map>
 </div>
-
-</div>
-</div>
-<a id="af579cb2cff98dcc9d3f508453749d539"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af579cb2cff98dcc9d3f508453749d539">&#9670;&nbsp;</a></span>numElementsAroundNode() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t numElementsAroundNode </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classAdcirc_1_1Geometry_1_1Node.html">Adcirc::Geometry::Node</a> *&#160;</td>
-          <td class="paramname"><em>n</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the number of elements surrounding a specified node. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>address of node </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>number of elements </dd></dl>
-
-</div>
-</div>
-<a id="ac0775565a8826077707a94a3611bbf3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0775565a8826077707a94a3611bbf3f">&#9670;&nbsp;</a></span>numElementsAroundNode() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t numElementsAroundNode </td>
-          <td>(</td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>nodeIndex</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the number of elements surrounding a specified node. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>index of node </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>number of elements </dd></dl>
 
 </div>
 </div>
@@ -1907,7 +1993,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Mesh_ae8487e719ad1109f6db746e96a37c498_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Mesh_ae8487e719ad1109f6db746e96a37c498_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Mesh_ae8487e719ad1109f6db746e96a37c498_icgraph" id="classAdcirc_1_1Geometry_1_1Mesh_ae8487e719ad1109f6db746e96a37c498_icgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#a8bc1eb2cfd2b501ee125ce21038429b3" title="Adcirc::Private::Griddata\lPrivate::GriddataPrivate" alt="" coords="171,5,337,47"/>
+<area shape="rect" id="node2" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#ac02030dae3ceac8994a5d0e23b4580f1" title="Adcirc::Private::Griddata\lPrivate::GriddataPrivate" alt="" coords="171,5,337,47"/>
 <area shape="rect" id="node3" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#aa3df24eb71ae599907c0b36b6ba88ffe" title="Adcirc::Private::Griddata\lPrivate::computeValuesFromRaster" alt="" coords="139,71,369,112"/>
 <area shape="rect" id="node4" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#a00f335f6098ab32130e41f51eea50813" title="Adcirc::Private::Griddata\lPrivate::computeDirectionalWind\lReduction" alt="" coords="147,137,361,193"/>
 <area shape="rect" id="node5" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a6e648568e6a73879a9da4bed2d8419d6" title="Adcirc::Utility::MeshChecker\l::checkNodeNumbering" alt="" coords="159,217,349,259"/>
@@ -1951,6 +2037,26 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a6576a447350a53e3e0c7924b309716bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6576a447350a53e3e0c7924b309716bc">&#9670;&nbsp;</a></span>openBoundaries()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classAdcirc_1_1Geometry_1_1Boundary.html">Adcirc::Geometry::Boundary</a> &gt; * openBoundaries </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the vector of open boundaries in the mesh. </p>
+<dl class="section return"><dt>Returns</dt><dd>pointer to vector of open boundaries </dd></dl>
+
+</div>
+</div>
 <a id="abb00d35a302cdae528db75c07bfffb98"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abb00d35a302cdae528db75c07bfffb98">&#9670;&nbsp;</a></span>openBoundary()</h2>
 
@@ -1984,6 +2090,24 @@ Here is the caller graph for this function:</div>
 <area shape="rect" id="node3" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="433,5,624,47"/>
 </map>
 </div>
+
+</div>
+</div>
+<a id="ae2ee0ab3345629edac032b6746f0f663"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2ee0ab3345629edac032b6746f0f663">&#9670;&nbsp;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html">Mesh</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html">Mesh</a> &amp;&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -2060,6 +2184,14 @@ Here is the caller graph for this function:</div>
   </table>
   </dd>
 </dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Mesh_a9bbc79b1ab68f5457e62a9d996bb61cc_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Mesh_a9bbc79b1ab68f5457e62a9d996bb61cc_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Mesh_a9bbc79b1ab68f5457e62a9d996bb61cc_icgraph" id="classAdcirc_1_1Geometry_1_1Mesh_a9bbc79b1ab68f5457e62a9d996bb61cc_icgraph">
+<area shape="rect" id="node2" href="classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="100,5,352,32"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -2163,6 +2295,14 @@ Here is the caller graph for this function:</div>
   </table>
   </dd>
 </dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Mesh_a56171296cefcc0d92118f33a5b41e01e_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Mesh_a56171296cefcc0d92118f33a5b41e01e_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Mesh_a56171296cefcc0d92118f33a5b41e01e_icgraph" id="classAdcirc_1_1Geometry_1_1Mesh_a56171296cefcc0d92118f33a5b41e01e_icgraph">
+<area shape="rect" id="node2" href="classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="147,5,399,32"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -2348,6 +2488,42 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="ab714c556df3dbac59594f85748f56d72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab714c556df3dbac59594f85748f56d72">&#9670;&nbsp;</a></span>toBoundaryLineShapefile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void toBoundaryLineShapefile </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>outputFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>bothSides</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes the boundary conditions of the mesh to ESRI shapefile format as lines. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">outputFile</td><td>output file with .shp extension </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="acecfbe4b5dbfac4b1c4d2f988500555e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acecfbe4b5dbfac4b1c4d2f988500555e">&#9670;&nbsp;</a></span>toBoundaryShapefile()</h2>
 
@@ -2452,6 +2628,111 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a144d52d816558c4ae51e64a87607a6bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a144d52d816558c4ae51e64a87607a6bd">&#9670;&nbsp;</a></span>topology()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classAdcirc_1_1Geometry_1_1Topology.html">Adcirc::Geometry::Topology</a> * topology </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Mesh_a144d52d816558c4ae51e64a87607a6bd_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Mesh_a144d52d816558c4ae51e64a87607a6bd_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Mesh_a144d52d816558c4ae51e64a87607a6bd_icgraph" id="classAdcirc_1_1Geometry_1_1Mesh_a144d52d816558c4ae51e64a87607a6bd_icgraph">
+<area shape="rect" id="node2" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="124,5,315,47"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="363,5,553,47"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a0c174d528c7673246301fb5727b05b78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c174d528c7673246301fb5727b05b78">&#9670;&nbsp;</a></span>toRaster()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void toRaster </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>extent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>resolution</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>nullvalue</em> = <code>-99999.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>description</em> = <code>&quot;none&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>units</em> = <code>&quot;none&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>partialWetting</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convert a mesh to a raster using gdal. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>name of the output raster to write </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">z</td><td>vector containing the nodal z values </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">extent</td><td>x1,y1,x2,y2 to use </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">resolution</td><td>horizontal resolution in the raster </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nullvalue</td><td>value to use for dry areas </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">description</td><td>description of the data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">units</td><td>data units </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">partialWetting</td><td>compute values for partially wet elements </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aceb214ced9bb33872085db06cc308b2a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aceb214ced9bb33872085db06cc308b2a">&#9670;&nbsp;</a></span>totalLandBoundaryNodes()</h2>
 
@@ -2489,6 +2770,32 @@ Here is the caller graph for this function:</div>
 
 <p>Returns the number of open boundary nodes in the mesh. </p>
 <dl class="section return"><dt>Returns</dt><dd>Number of open boundary nodes </dd></dl>
+
+</div>
+</div>
+<a id="a58653d7d73344cfab6282c028e954a49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58653d7d73344cfab6282c028e954a49">&#9670;&nbsp;</a></span>toWeirPolygonShapefile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void toWeirPolygonShapefile </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>outputFile</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes the weirs as closed polygons to a shapefile. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">outputFile</td><td>output file with .shp extension </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -2626,6 +2933,28 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">friend class <a class="el" href="classAdcirc_1_1Geometry_1_1ElementTable.html">ElementTable</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa453f78d28042b9b0fb4329e95fe2802"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa453f78d28042b9b0fb4329e95fe2802">&#9670;&nbsp;</a></span>FaceTable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classAdcirc_1_1Geometry_1_1FaceTable.html">FaceTable</a></td>
         </tr>
       </table>
   </td>

@@ -1,0 +1,16 @@
+<map id="pi" name="pi">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Constants.html#ace2ba48ef6d244fa44705aff5ba24974" title="Returns two times the constant pi. " alt="" coords="99,31,153,58"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputRecord.html#abb12b201a4b60270facd9b7f084016c2" title="Adcirc::Output::OutputRecord\l::magnitude" alt="" coords="208,35,403,76"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Constants.html#a95a4ba06d4c9d035e3323436c9753b0d" title="Returns 0.5 times the constant pi. " alt="" coords="99,234,153,261"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Constants.html#ae43063ac7bf556cb933a0206301b9748" title="Returns the factor to convert degrees to radians. " alt="" coords="92,183,160,210"/>
+<area shape="rect" id="node14" href="$classAdcirc_1_1Constants.html#aa8f2ca4ad36dc6b5f53e25e9e746d008" title="Returns the factor to convert radians to degrees. " alt="" coords="271,122,339,149"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1OutputRecord.html#aa58626ebb99011ee8e4e6ee4fbed9f69" title="Adcirc::Output::OutputRecord\l::magnitudes" alt="" coords="479,5,674,47"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="451,71,703,98"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Constants.html#a8e8b5d1633dfb57d0d6056850bdd710c" title="Converts a value from degrees to radians. " alt="" coords="265,249,346,275"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Constants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude. " alt="" coords="533,274,621,301"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Constants.html#a86e2541d04e23b075b85d07c5b4d2bfc" title="Calculates the distance between two points. " alt="" coords="793,294,863,321"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Constants.html#a62d050d6a06ff0262d04bd705e45c517" title="Returns the square root of 3. " alt="" coords="803,169,853,195"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Projection.html#a910a22eb30d4d79dc0cf6d16ed729168" title="Adcirc::Projection::cpp" alt="" coords="751,362,905,389"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Projection.html#adec99b516192b367b670f9d5da73fc64" title="Adcirc::Projection\l::inverseCpp" alt="" coords="765,220,891,261"/>
+<area shape="rect" id="node15" href="$classAdcirc_1_1Constants.html#a743ea7ec7653fe3ee75df86682edbb04" title="Converts a value from radians to degrees. " alt="" coords="535,122,618,149"/>
+</map>

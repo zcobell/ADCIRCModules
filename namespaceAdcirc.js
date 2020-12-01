@@ -10,7 +10,10 @@ var namespaceAdcirc =
     [ "Private", "namespaceAdcirc_1_1Private.html", "namespaceAdcirc_1_1Private" ],
     [ "Raster", "namespaceAdcirc_1_1Raster.html", "namespaceAdcirc_1_1Raster" ],
     [ "Utility", "namespaceAdcirc_1_1Utility.html", "namespaceAdcirc_1_1Utility" ],
+    [ "CDate", "classAdcirc_1_1CDate.html", "classAdcirc_1_1CDate" ],
+    [ "Constants", "classAdcirc_1_1Constants.html", "classAdcirc_1_1Constants" ],
     [ "Kdtree", "classAdcirc_1_1Kdtree.html", "classAdcirc_1_1Kdtree" ],
     [ "Logging", "classAdcirc_1_1Logging.html", "classAdcirc_1_1Logging" ],
-    [ "Multithreading", "classAdcirc_1_1Multithreading.html", "classAdcirc_1_1Multithreading" ]
+    [ "Multithreading", "classAdcirc_1_1Multithreading.html", "classAdcirc_1_1Multithreading" ],
+    [ "Projection", "classAdcirc_1_1Projection.html", "classAdcirc_1_1Projection" ]
 ];

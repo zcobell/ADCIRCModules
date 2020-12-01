@@ -1,12 +1,13 @@
 var classAdcirc_1_1Private_1_1GriddataPrivate =
 [
     [ "GriddataPrivate", "classAdcirc_1_1Private_1_1GriddataPrivate.html#a795a30c2cc91f014c7c5eb3b48b50545", null ],
-    [ "GriddataPrivate", "classAdcirc_1_1Private_1_1GriddataPrivate.html#a8bc1eb2cfd2b501ee125ce21038429b3", null ],
+    [ "GriddataPrivate", "classAdcirc_1_1Private_1_1GriddataPrivate.html#ac02030dae3ceac8994a5d0e23b4580f1", null ],
     [ "computeDirectionalWindReduction", "classAdcirc_1_1Private_1_1GriddataPrivate.html#a00f335f6098ab32130e41f51eea50813", null ],
     [ "computeValuesFromRaster", "classAdcirc_1_1Private_1_1GriddataPrivate.html#aa3df24eb71ae599907c0b36b6ba88ffe", null ],
     [ "datumShift", "classAdcirc_1_1Private_1_1GriddataPrivate.html#a40504fb5f09ccc665f9cf82b327f0349", null ],
     [ "defaultValue", "classAdcirc_1_1Private_1_1GriddataPrivate.html#af3c6e7460235c8bda8126219d3bcfef4", null ],
     [ "epsg", "classAdcirc_1_1Private_1_1GriddataPrivate.html#a2fe36ee88237850f56d26023ac57e261", null ],
+    [ "extents", "classAdcirc_1_1Private_1_1GriddataPrivate.html#abad38989601bc4adeeb7faff3989b190", null ],
     [ "filterSize", "classAdcirc_1_1Private_1_1GriddataPrivate.html#a354a3b83056231148e3a2a5e2fe0c04f", null ],
     [ "filterSizes", "classAdcirc_1_1Private_1_1GriddataPrivate.html#a4b2aa4a06be32df13dd51bb299c97698", null ],
     [ "interpolationFlag", "classAdcirc_1_1Private_1_1GriddataPrivate.html#a47deb90b609751c911992bd4f8893399", null ],

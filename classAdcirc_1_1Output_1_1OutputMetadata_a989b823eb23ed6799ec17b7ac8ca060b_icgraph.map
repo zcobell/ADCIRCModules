@@ -1,8 +1,15 @@
 <map id="isMax" name="isMax">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a883ee2fafc84aeae8d936bb71a5a1125" title="Sets the object to represent a maximum (if true) " alt="" coords="170,5,246,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a4e4a032a952cf299fb95d22b8a3a4c87" title="defaultConvention" alt="" coords="387,49,514,76"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a1a79940e14d93b265d1c0ad6da79c4b6" title="Adcirc::Output::WriteOutput\l::write" alt="" coords="601,99,785,141"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a0c226f7d9faa8d67f90e890c05cae088" title="Adcirc::Output::OutputRecord\l::isDefault" alt="" coords="111,158,305,199"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a13262430da826bd8b0392773aa0511e0" title="Adcirc::Output::OutputRecord\l::OutputRecord" alt="" coords="596,34,791,75"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Output_1_1OutputRecord.html#ab8ff3563cb1a7a290e68e2e31ab10458" title="Adcirc::Output::OutputRecord\l::numNonDefault" alt="" coords="353,158,548,199"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a883ee2fafc84aeae8d936bb71a5a1125" title="Sets the object to represent a maximum (if true) " alt="" coords="170,21,246,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a4e4a032a952cf299fb95d22b8a3a4c87" title="defaultConvention" alt="" coords="387,46,514,73"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a1a79940e14d93b265d1c0ad6da79c4b6" title="Adcirc::Output::WriteOutput\l::write" alt="" coords="896,115,1080,156"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a0c226f7d9faa8d67f90e890c05cae088" title="Adcirc::Output::OutputRecord\l::isDefault" alt="" coords="111,239,305,280"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a94c732bb0f167eab349228237a8fbe3c" title="Adcirc::Output::WriteOutput\l::filename" alt="" coords="630,359,814,400"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a5fd250e0531887253ced0e0484d86575" title="Adcirc::Output::OutputRecord\l::OutputRecord" alt="" coords="625,5,819,47"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Output_1_1OutputRecord.html#abb12b201a4b60270facd9b7f084016c2" title="Adcirc::Output::OutputRecord\l::magnitude" alt="" coords="353,173,548,215"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a2751027834d9fad6448896c35f828ab9" title="Adcirc::Output::OutputRecord\l::direction" alt="" coords="353,239,548,280"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Output_1_1OutputRecord.html#ab8ff3563cb1a7a290e68e2e31ab10458" title="Adcirc::Output::OutputRecord\l::numNonDefault" alt="" coords="353,304,548,345"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Output_1_1OutputRecord.html#aa58626ebb99011ee8e4e6ee4fbed9f69" title="Adcirc::Output::OutputRecord\l::magnitudes" alt="" coords="625,173,819,215"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="596,239,848,266"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a2ff38e09941218dd1cb2a04ee60109f9" title="Adcirc::Output::OutputRecord\l::directions" alt="" coords="625,291,819,332"/>
+<area shape="rect" id="node14" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a56171296cefcc0d92118f33a5b41e01e" title="Adcirc::Output::WriteOutput\l::setFilename" alt="" coords="896,359,1080,400"/>
 </map>

@@ -1,4 +1,0 @@
-<map id="MeshPrivate" name="MeshPrivate">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a81fff47915e2a197506df1ed4bae2492" title="Sets the mesh projection using an EPSG code. Note this does not reproject the mesh. " alt="" coords="148,5,263,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ac6a3ad791b160ae157182192807bb6f3" title="Returns true if the mesh is in a geographic projection. " alt="" coords="311,5,381,32"/>
-</map>

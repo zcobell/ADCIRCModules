@@ -89,6 +89,7 @@ $(document).ready(function(){initNavTree('logging_8h.html','');});
 <div class="contents">
 <div class="textblock"><code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
+<code>#include &quot;adcircmodules_global.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for logging.h:</div>
 <div class="dyncontent">
@@ -101,26 +102,42 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="logging_8h__dep__incl.png" border="0" usemap="#logging_8hdep" alt=""/></div>
 <map name="logging_8hdep" id="logging_8hdep">
-<area shape="rect" id="node2" href="adcircmodules_8h.html" title="adcircmodules.h" alt="" coords="5,80,123,107"/>
-<area shape="rect" id="node3" href="attribute_8cpp.html" title="attribute.cpp" alt="" coords="147,80,242,107"/>
-<area shape="rect" id="node4" href="boundary_8cpp.html" title="boundary.cpp" alt="" coords="266,80,366,107"/>
-<area shape="rect" id="node5" href="element_8cpp.html" title="element.cpp" alt="" coords="391,80,484,107"/>
-<area shape="rect" id="node6" href="elementtable_8cpp.html" title="elementtable.cpp" alt="" coords="509,80,630,107"/>
-<area shape="rect" id="node7" href="fileio_8cpp.html" title="fileio.cpp" alt="" coords="655,80,729,107"/>
-<area shape="rect" id="node8" href="filetypes_8cpp.html" title="filetypes.cpp" alt="" coords="753,80,849,107"/>
-<area shape="rect" id="node9" href="griddata__private_8cpp.html" title="griddata_private.cpp" alt="" coords="873,80,1012,107"/>
-<area shape="rect" id="node10" href="harmonicsoutput__private_8cpp.html" title="harmonicsoutput_private.cpp" alt="" coords="1036,80,1225,107"/>
-<area shape="rect" id="node11" href="harmonicsrecord__private_8cpp.html" title="harmonicsrecord_private.cpp" alt="" coords="1249,80,1439,107"/>
-<area shape="rect" id="node12" href="hash__private_8cpp.html" title="hash_private.cpp" alt="" coords="1463,80,1585,107"/>
-<area shape="rect" id="node13" href="logging_8cpp.html" title="logging.cpp" alt="" coords="1609,80,1697,107"/>
-<area shape="rect" id="node14" href="mesh__private_8cpp.html" title="mesh_private.cpp" alt="" coords="1721,80,1847,107"/>
-<area shape="rect" id="node15" href="multithreading_8cpp.html" title="multithreading.cpp" alt="" coords="1871,80,1999,107"/>
-<area shape="rect" id="node16" href="nodalattributes__private_8cpp.html" title="nodalattributes_private.cpp" alt="" coords="2023,80,2201,107"/>
-<area shape="rect" id="node17" href="outputmetadata_8cpp.html" title="outputmetadata.cpp" alt="" coords="2226,80,2363,107"/>
-<area shape="rect" id="node18" href="outputrecord_8cpp.html" title="outputrecord.cpp" alt="" coords="2387,80,2506,107"/>
-<area shape="rect" id="node19" href="rasterdata_8cpp.html" title="rasterdata.cpp" alt="" coords="2530,80,2635,107"/>
-<area shape="rect" id="node20" href="readoutput_8cpp.html" title="readoutput.cpp" alt="" coords="2659,80,2767,107"/>
-<area shape="rect" id="node21" href="writeoutput_8cpp.html" title="writeoutput.cpp" alt="" coords="2791,80,2902,107"/>
+<area shape="rect" id="node2" href="adchash__private_8cpp.html" title="adchash_private.cpp" alt="" coords="5,80,148,107"/>
+<area shape="rect" id="node3" href="cdate_8h.html" title="cdate.h" alt="" coords="512,80,577,107"/>
+<area shape="rect" id="node6" href="adcircmodules_8h.html" title="adcircmodules.h" alt="" coords="823,379,941,405"/>
+<area shape="rect" id="node7" href="hmdf_8cpp.html" title="hmdf.cpp" alt="" coords="301,379,377,405"/>
+<area shape="rect" id="node11" href="stationinterpolation_8cpp.html" title="stationinterpolation.cpp" alt="" coords="964,453,1120,480"/>
+<area shape="rect" id="node13" href="stationinterpolationoptions_8cpp.html" title="stationinterpolationoptions.cpp" alt="" coords="979,379,1177,405"/>
+<area shape="rect" id="node14" href="hmdfstation_8cpp.html" title="hmdfstation.cpp" alt="" coords="646,229,761,256"/>
+<area shape="rect" id="node17" href="writeoutput_8cpp.html" title="writeoutput.cpp" alt="" coords="1208,379,1319,405"/>
+<area shape="rect" id="node18" href="readoutput_8cpp.html" title="readoutput.cpp" alt="" coords="1113,304,1221,331"/>
+<area shape="rect" id="node20" href="outputrecord_8cpp.html" title="outputrecord.cpp" alt="" coords="1052,229,1171,256"/>
+<area shape="rect" id="node21" href="cdate_8cpp.html" title="cdate.cpp" alt="" coords="675,155,753,181"/>
+<area shape="rect" id="node22" href="attribute_8cpp.html" title="attribute.cpp" alt="" coords="1399,80,1493,107"/>
+<area shape="rect" id="node23" href="boundary_8cpp.html" title="boundary.cpp" alt="" coords="1517,80,1617,107"/>
+<area shape="rect" id="node24" href="element_8cpp.html" title="element.cpp" alt="" coords="1642,80,1735,107"/>
+<area shape="rect" id="node25" href="elementtable_8cpp.html" title="elementtable.cpp" alt="" coords="1760,80,1881,107"/>
+<area shape="rect" id="node26" href="facetable_8cpp.html" title="facetable.cpp" alt="" coords="1905,80,2005,107"/>
+<area shape="rect" id="node27" href="fileio_8cpp.html" title="fileio.cpp" alt="" coords="2029,80,2103,107"/>
+<area shape="rect" id="node28" href="filetypes_8cpp.html" title="filetypes.cpp" alt="" coords="2127,80,2223,107"/>
+<area shape="rect" id="node29" href="griddata__private_8cpp.html" title="griddata_private.cpp" alt="" coords="2247,80,2386,107"/>
+<area shape="rect" id="node30" href="harmonicsoutput__private_8cpp.html" title="harmonicsoutput_private.cpp" alt="" coords="2410,80,2599,107"/>
+<area shape="rect" id="node31" href="harmonicsrecord__private_8cpp.html" title="harmonicsrecord_private.cpp" alt="" coords="2623,80,2813,107"/>
+<area shape="rect" id="node32" href="logging_8cpp.html" title="logging.cpp" alt="" coords="2837,80,2925,107"/>
+<area shape="rect" id="node33" href="mesh__private_8cpp.html" title="mesh_private.cpp" alt="" coords="2949,80,3074,107"/>
+<area shape="rect" id="node34" href="multithreading_8cpp.html" title="multithreading.cpp" alt="" coords="3098,80,3226,107"/>
+<area shape="rect" id="node35" href="nodalattributes__private_8cpp.html" title="nodalattributes_private.cpp" alt="" coords="3250,80,3429,107"/>
+<area shape="rect" id="node36" href="outputmetadata_8cpp.html" title="outputmetadata.cpp" alt="" coords="3453,80,3591,107"/>
+<area shape="rect" id="node37" href="rasterdata_8cpp.html" title="rasterdata.cpp" alt="" coords="3615,80,3720,107"/>
+<area shape="rect" id="node4" href="hmdfstation_8h.html" title="hmdfstation.h" alt="" coords="494,155,595,181"/>
+<area shape="rect" id="node8" href="netcdftimeseries_8h.html" title="netcdftimeseries.h" alt="" coords="224,304,353,331"/>
+<area shape="rect" id="node9" href="netcdftimeseries_8cpp.html" title="netcdftimeseries.cpp" alt="" coords="125,379,268,405"/>
+<area shape="rect" id="node10" href="stationinterpolation_8h.html" title="stationinterpolation.h" alt="" coords="652,379,795,405"/>
+<area shape="rect" id="node15" href="readoutput_8h.html" title="readoutput.h" alt="" coords="881,229,976,256"/>
+<area shape="rect" id="node19" href="outputrecord_8h.html" title="outputrecord.h" alt="" coords="921,155,1027,181"/>
+<area shape="rect" id="node5" href="hmdf_8h.html" title="hmdf.h" alt="" coords="512,229,575,256"/>
+<area shape="rect" id="node12" href="stationinterpolationoptions_8h.html" title="stationinterpolationoptions.h" alt="" coords="631,304,815,331"/>
+<area shape="rect" id="node16" href="writeoutput_8h.html" title="writeoutput.h" alt="" coords="992,304,1089,331"/>
 </map>
 </div>
 </div>

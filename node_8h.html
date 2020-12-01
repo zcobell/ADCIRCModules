@@ -87,7 +87,8 @@ $(document).ready(function(){initNavTree('node_8h.html','');});
 <div class="title">node.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;memory&gt;</code><br />
+<div class="textblock"><code>#include &lt;array&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 <code>#include &quot;adcircmodules_global.h&quot;</code><br />
@@ -97,7 +98,7 @@ Include dependency graph for node.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="node_8h__incl.png" border="0" usemap="#node_8h" alt=""/></div>
 <map name="node_8h" id="node_8h">
-<area shape="rect" id="node6" href="hashtype_8h.html" title="hashtype.h" alt="" coords="439,80,526,107"/>
+<area shape="rect" id="node7" href="hashtype_8h.html" title="hashtype.h" alt="" coords="514,80,601,107"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -105,38 +106,47 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="node_8h__dep__incl.png" border="0" usemap="#node_8hdep" alt=""/></div>
 <map name="node_8hdep" id="node_8hdep">
-<area shape="rect" id="node2" href="boundary_8h.html" title="boundary.h" alt="" coords="353,80,440,107"/>
-<area shape="rect" id="node3" href="mesh_8h.html" title="mesh.h" alt="" coords="601,155,667,181"/>
-<area shape="rect" id="node21" href="mesh__private_8h.html" title="mesh_private.h" alt="" coords="5,229,116,256"/>
-<area shape="rect" id="node22" href="element_8h.html" title="element.h" alt="" coords="595,80,673,107"/>
-<area shape="rect" id="node25" href="attribute_8h.html" title="attribute.h" alt="" coords="1225,80,1305,107"/>
-<area shape="rect" id="node29" href="readoutput_8h.html" title="readoutput.h" alt="" coords="851,155,945,181"/>
-<area shape="rect" id="node31" href="outputrecord_8h.html" title="outputrecord.h" alt="" coords="888,80,993,107"/>
-<area shape="rect" id="node33" href="node_8cpp.html" title="node.cpp" alt="" coords="1329,80,1403,107"/>
-<area shape="rect" id="node20" href="boundary_8cpp.html" title="boundary.cpp" alt="" coords="121,155,221,181"/>
-<area shape="rect" id="node4" href="griddata_8h.html" title="griddata.h" alt="" coords="595,229,673,256"/>
-<area shape="rect" id="node5" href="adcircmodules_8h.html" title="adcircmodules.h" alt="" coords="839,304,957,331"/>
-<area shape="rect" id="node8" href="meshchecker_8h.html" title="meshchecker.h" alt="" coords="697,229,808,256"/>
-<area shape="rect" id="node10" href="nodalattributes_8h.html" title="nodalattributes.h" alt="" coords="1056,229,1175,256"/>
-<area shape="rect" id="node13" href="writeoutput_8h.html" title="writeoutput.h" alt="" coords="935,229,1032,256"/>
-<area shape="rect" id="node15" href="elementtable_8cpp.html" title="elementtable.cpp" alt="" coords="115,304,236,331"/>
-<area shape="rect" id="node16" href="griddata__private_8h.html" title="griddata_private.h" alt="" coords="445,229,570,256"/>
-<area shape="rect" id="node17" href="mesh_8cpp.html" title="mesh.cpp" alt="" coords="12,304,91,331"/>
-<area shape="rect" id="node18" href="mesh__private_8cpp.html" title="mesh_private.cpp" alt="" coords="261,304,386,331"/>
-<area shape="rect" id="node19" href="nodalattributes__private_8h.html" title="nodalattributes_private.h" alt="" coords="1331,229,1495,256"/>
-<area shape="rect" id="node6" href="griddata_8cpp.html" title="griddata.cpp" alt="" coords="573,304,666,331"/>
-<area shape="rect" id="node7" href="griddata__private_8cpp.html" title="griddata_private.cpp" alt="" coords="410,304,549,331"/>
-<area shape="rect" id="node9" href="meshchecker_8cpp.html" title="meshchecker.cpp" alt="" coords="690,304,815,331"/>
-<area shape="rect" id="node11" href="nodalattributes_8cpp.html" title="nodalattributes.cpp" alt="" coords="1141,304,1273,331"/>
-<area shape="rect" id="node12" href="nodalattributes__private_8cpp.html" title="nodalattributes_private.cpp" alt="" coords="1323,304,1502,331"/>
-<area shape="rect" id="node14" href="writeoutput_8cpp.html" title="writeoutput.cpp" alt="" coords="981,304,1092,331"/>
-<area shape="rect" id="node23" href="element_8cpp.html" title="element.cpp" alt="" coords="691,155,785,181"/>
-<area shape="rect" id="node24" href="elementtable_8h.html" title="elementtable.h" alt="" coords="347,155,454,181"/>
-<area shape="rect" id="node26" href="attributemetadata_8h.html" title="attributemetadata.h" alt="" coords="1345,155,1480,181"/>
-<area shape="rect" id="node28" href="attribute_8cpp.html" title="attribute.cpp" alt="" coords="1175,155,1269,181"/>
-<area shape="rect" id="node27" href="attributemetadata_8cpp.html" title="attributemetadata.cpp" alt="" coords="1519,229,1667,256"/>
-<area shape="rect" id="node30" href="readoutput_8cpp.html" title="readoutput.cpp" alt="" coords="1199,229,1307,256"/>
-<area shape="rect" id="node32" href="outputrecord_8cpp.html" title="outputrecord.cpp" alt="" coords="1021,155,1140,181"/>
+<area shape="rect" id="node2" href="boundary_8h.html" title="boundary.h" alt="" coords="514,304,600,331"/>
+<area shape="rect" id="node3" href="mesh_8h.html" title="mesh.h" alt="" coords="820,379,886,405"/>
+<area shape="rect" id="node23" href="mesh__private_8h.html" title="mesh_private.h" alt="" coords="662,379,772,405"/>
+<area shape="rect" id="node26" href="element_8h.html" title="element.h" alt="" coords="807,80,886,107"/>
+<area shape="rect" id="node30" href="face_8h.html" title="face.h" alt="" coords="988,155,1046,181"/>
+<area shape="rect" id="node33" href="nodetable_8h.html" title="nodetable.h" alt="" coords="1084,229,1174,256"/>
+<area shape="rect" id="node34" href="attribute_8h.html" title="attribute.h" alt="" coords="1858,304,1938,331"/>
+<area shape="rect" id="node38" href="readoutput_8h.html" title="readoutput.h" alt="" coords="1183,379,1278,405"/>
+<area shape="rect" id="node40" href="outputrecord_8h.html" title="outputrecord.h" alt="" coords="1287,304,1392,331"/>
+<area shape="rect" id="node42" href="node_8cpp.html" title="node.cpp" alt="" coords="1350,80,1425,107"/>
+<area shape="rect" id="node22" href="boundary_8cpp.html" title="boundary.cpp" alt="" coords="507,379,607,405"/>
+<area shape="rect" id="node4" href="griddata_8h.html" title="griddata.h" alt="" coords="710,453,788,480"/>
+<area shape="rect" id="node5" href="adcircmodules_8h.html" title="adcircmodules.h" alt="" coords="1246,528,1364,555"/>
+<area shape="rect" id="node8" href="meshchecker_8h.html" title="meshchecker.h" alt="" coords="812,453,923,480"/>
+<area shape="rect" id="node10" href="nodalattributes_8h.html" title="nodalattributes.h" alt="" coords="1515,453,1634,480"/>
+<area shape="rect" id="node13" href="writeoutput_8h.html" title="writeoutput.h" alt="" coords="1394,453,1491,480"/>
+<area shape="rect" id="node15" href="facetable_8cpp.html" title="facetable.cpp" alt="" coords="435,453,535,480"/>
+<area shape="rect" id="node16" href="griddata__private_8h.html" title="griddata_private.h" alt="" coords="560,453,685,480"/>
+<area shape="rect" id="node17" href="mesh_8cpp.html" title="mesh.cpp" alt="" coords="332,453,411,480"/>
+<area shape="rect" id="node18" href="mesh__private_8cpp.html" title="mesh_private.cpp" alt="" coords="182,453,308,480"/>
+<area shape="rect" id="node19" href="nodalattributes__private_8h.html" title="nodalattributes_private.h" alt="" coords="1790,453,1954,480"/>
+<area shape="rect" id="node20" href="stationinterpolation_8h.html" title="stationinterpolation.h" alt="" coords="1074,453,1216,480"/>
+<area shape="rect" id="node6" href="griddata_8cpp.html" title="griddata.cpp" alt="" coords="694,528,788,555"/>
+<area shape="rect" id="node7" href="griddata__private_8cpp.html" title="griddata_private.cpp" alt="" coords="532,528,670,555"/>
+<area shape="rect" id="node9" href="meshchecker_8cpp.html" title="meshchecker.cpp" alt="" coords="812,528,937,555"/>
+<area shape="rect" id="node11" href="nodalattributes_8cpp.html" title="nodalattributes.cpp" alt="" coords="1575,528,1707,555"/>
+<area shape="rect" id="node12" href="nodalattributes__private_8cpp.html" title="nodalattributes_private.cpp" alt="" coords="1782,528,1961,555"/>
+<area shape="rect" id="node14" href="writeoutput_8cpp.html" title="writeoutput.cpp" alt="" coords="1388,528,1499,555"/>
+<area shape="rect" id="node21" href="stationinterpolation_8cpp.html" title="stationinterpolation.cpp" alt="" coords="1066,528,1222,555"/>
+<area shape="rect" id="node24" href="elementtable_8cpp.html" title="elementtable.cpp" alt="" coords="36,453,158,480"/>
+<area shape="rect" id="node25" href="nodetable_8cpp.html" title="nodetable.cpp" alt="" coords="947,453,1050,480"/>
+<area shape="rect" id="node27" href="elementtable_8h.html" title="elementtable.h" alt="" coords="192,229,298,256"/>
+<area shape="rect" id="node32" href="element_8cpp.html" title="element.cpp" alt="" coords="704,155,797,181"/>
+<area shape="rect" id="node28" href="topology_8h.html" title="topology.h" alt="" coords="957,304,1040,331"/>
+<area shape="rect" id="node29" href="topology_8cpp.html" title="topology.cpp" alt="" coords="910,379,1006,405"/>
+<area shape="rect" id="node31" href="facetable_8h.html" title="facetable.h" alt="" coords="974,229,1060,256"/>
+<area shape="rect" id="node35" href="attributemetadata_8h.html" title="attributemetadata.h" alt="" coords="1692,379,1827,405"/>
+<area shape="rect" id="node37" href="attribute_8cpp.html" title="attribute.cpp" alt="" coords="1851,379,1946,405"/>
+<area shape="rect" id="node36" href="attributemetadata_8cpp.html" title="attributemetadata.cpp" alt="" coords="1978,453,2126,480"/>
+<area shape="rect" id="node39" href="readoutput_8cpp.html" title="readoutput.cpp" alt="" coords="1658,453,1766,480"/>
+<area shape="rect" id="node41" href="outputrecord_8cpp.html" title="outputrecord.cpp" alt="" coords="1302,379,1420,405"/>
 </map>
 </div>
 </div>
