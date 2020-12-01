@@ -363,48 +363,60 @@ endif(ENABLE_GDAL)
 # ##############################################################################
 # PROJ Library
 # ##############################################################################
-set(BUILD_TESTING
-    OFF
-    CACHE BOOL "Build PROJ tests")
-set(ENABLE_CURL
-    OFF
-    CACHE BOOL "Enable CURL for use with PROJ")
-set(BUILD_PROJSYNC
-    OFF
-    CACHE BOOL "Build PROJSYNC")
-set(BUILD_SHARED_LIBS
-    OFF
-    CACHE BOOL "Build shared PROJ libs")
-set(BUILD_CCT
-    OFF
-    CACHE BOOL "Build PROJ CCT")
-set(BUILD_CS2CS
-    OFF
-    CACHE BOOL "Build PROJ CS2CS")
-set(BUILD_GEOD
-    OFF
-    CACHE BOOL "Build PROJ GEOD")
-set(BUILD_PROJINFO
-    OFF
-    CACHE BOOL "Build PROJ PROJINFO")
-set(BUILD_GIE
-    OFF
-    CACHE BOOL "Build PROJ GIE")
-set(BUILD_PROJ
-    OFF
-    CACHE BOOL "Build PROJ binary")
-mark_as_advanced(
-  BUILD_TESTING
-  ENABLE_CURL
-  BUILD_PROJSYNC
-  BUILD_SHARED_LIBS
-  BUILD_CCT
-  BUILD_CS2CS
-  BUILD_GEOD
-  BUILD_PROJINFO
-  BUILD_GIE
-  BUILD_PROJ)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/proj-7.2.0)
+find_package(SQLite3 REQUIRED)
+find_package(PROJ)
+IF(${PROJ_VERSION} VERSION_LESS 9.0)
+	message(WARNING "System PROJ version not compatible. Attempting to use internal proj.")
+	set(PROJ_FOUND FALSE)
+	set(PROJ_INCLUDE_DIR "")
+	set(PROJ_LIBRARY "")
+ENDIF()
+if(NOT PROJ_FOUND)
+	set(BUILD_TESTING
+	    OFF
+	    CACHE BOOL "Build PROJ tests")
+	set(ENABLE_CURL
+	    OFF
+	    CACHE BOOL "Enable CURL for use with PROJ")
+	set(BUILD_PROJSYNC
+	    OFF
+	    CACHE BOOL "Build PROJSYNC")
+	set(BUILD_SHARED_LIBS
+	    OFF
+	    CACHE BOOL "Build shared PROJ libs")
+	set(BUILD_CCT
+	    OFF
+	    CACHE BOOL "Build PROJ CCT")
+	set(BUILD_CS2CS
+	    OFF
+	    CACHE BOOL "Build PROJ CS2CS")
+	set(BUILD_GEOD
+	    OFF
+	    CACHE BOOL "Build PROJ GEOD")
+	set(BUILD_PROJINFO
+	    OFF
+	    CACHE BOOL "Build PROJ PROJINFO")
+	set(BUILD_GIE
+	    OFF
+	    CACHE BOOL "Build PROJ GIE")
+	set(BUILD_PROJ
+	    OFF
+	    CACHE BOOL "Build PROJ binary")
+	mark_as_advanced(
+	  BUILD_TESTING
+	  ENABLE_CURL
+	  BUILD_PROJSYNC
+	  BUILD_SHARED_LIBS
+	  BUILD_CCT
+	  BUILD_CS2CS
+	  BUILD_GEOD
+	  BUILD_PROJINFO
+	  BUILD_GIE
+	  BUILD_PROJ)
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/proj-7.2.0)
+    set(PROJ_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/proj-7.2.0/src)
+	set(PROJ_LIBRARY adcmod_proj )
+endif()
 # ##############################################################################
 
 # ##############################################################################
@@ -525,18 +537,22 @@ endif(GDAL_FOUND)
 target_include_directories(
   adcircmodules
   PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
-          ${CMAKE_CURRENT_SOURCE_DIR}/src/pimpl
           ${CMAKE_CURRENT_SOURCE_DIR}/src
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/shapelib
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/abseil
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/date/include/date
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/nanoflann/include
-          ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/proj-7.2.0/src
-          ${SQLITE3_INCLUDE_DIR}
+		  ${PROJ_INCLUDE_DIR}
+		  ${SQLite3_INCLUDE_DIR}
           ${Boost_INCLUDE_DIRS}
           ${NETCDF_INCLUDE_DIR})
 
-add_dependencies(adcircmodules shapelib proj generate_proj_db)
+if(NOT PROJ_FOUND)
+	add_dependencies(adcircmodules shapelib adcmod_proj generate_proj_db)
+	target_compile_definitions(adcircmodules PRIVATE USE_INTERNAL_PROJ)
+else()
+	add_dependencies(adcircmodules shapelib)
+endif()
 
 target_compile_definitions(adcircmodules PRIVATE GIT_VERSION="${GIT_VERSION}")
 target_compile_definitions(adcircmodules PRIVATE ADCIRCMODULES_LIBRARY)
@@ -574,7 +590,7 @@ set_target_properties(adcircmodules PROPERTIES CMAKE_CXX_VISIBILITY_PRESET
                                                hidden)
 set_target_properties(adcircmodules PROPERTIES CMAKE_CXX_INLINES_HIDDEN YES)
 
-target_link_libraries(adcircmodules proj shapelib ${SQLITE3_LIBRARY})
+target_link_libraries(adcircmodules ${PROJ_LIBRARY} shapelib ${SQLite3_LIBRARY})
 
 if(WIN32)
   link_directories(${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/netcdf/libs_vc64)
@@ -689,7 +705,7 @@ if(SWIG_FOUND
               ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx)
   target_include_directories(
     Python_adcircmodules PRIVATE ${PYTHON_INCLUDE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/src)
-  target_link_libraries(Python_adcircmodules adcircmodules ${PYTHON_LIBRARY})
+  target_link_libraries(Python_adcircmodules adcircmodules )
   if(OpenSSL_FOUND)
     target_include_directories(Python_adcircmodules PRIVATE ${OPENSSL_INCLUDE_DIR})
     target_link_libraries(Python_adcircmodules ${OPENSSL_CRYPTO_LIBRARY}
@@ -805,7 +821,7 @@ if(UNIX OR CYGWIN)
       get_filename_component(TESTNAME ${TESTFILE} NAME_WE)
       add_executable(${TESTNAME}
                      ${CMAKE_CURRENT_SOURCE_DIR}/testing/cxx_tests/${TESTFILE})
-      add_dependencies(${TESTNAME} adcircmodules proj)
+	  add_dependencies(${TESTNAME} adcircmodules )
       target_include_directories(
         ${TESTNAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
       target_link_libraries(${TESTNAME} adcircmodules)
@@ -883,8 +899,8 @@ target_include_directories(
           ${Boost_INCLUDE_DIRS}
           ${CMAKE_CURRENT_SOURCE_DIR}/src
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/cxxopts)
-add_dependencies(interpolateAdcircStations adcircmodules proj)
-target_link_libraries(interpolateAdcircStations PRIVATE adcircmodules proj
+add_dependencies(interpolateAdcircStations adcircmodules )
+target_link_libraries(interpolateAdcircStations PRIVATE adcircmodules ${PROJ_LIBRARY}
                                                         ${Boost_LIBRARIES})
 install(TARGETS interpolateAdcircStations RUNTIME DESTINATION bin)
 
@@ -895,9 +911,9 @@ target_include_directories(
   generateAdcircSimulationDates
   PRIVATE ${Boost_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/src
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/cxxopts)
-add_dependencies(generateAdcircSimulationDates adcircmodules proj)
+add_dependencies(generateAdcircSimulationDates adcircmodules )
 target_link_libraries(generateAdcircSimulationDates
-                      PRIVATE adcircmodules proj ${Boost_LIBRARIES})
+	PRIVATE adcircmodules ${PROJ_LIBRARY} ${Boost_LIBRARIES})
 install(TARGETS generateAdcircSimulationDates RUNTIME DESTINATION bin)
 
 add_executable(resultsScope ${CMAKE_CURRENT_SOURCE_DIR}/utilities/resultsScope/main.cpp)
@@ -905,7 +921,7 @@ target_include_directories(
   resultsScope
   PRIVATE ${Boost_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/src
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/cxxopts)
-add_dependencies(resultsScope adcircmodules proj)
+add_dependencies(resultsScope adcircmodules )
 target_link_libraries(resultsScope PRIVATE adcircmodules ${Boost_LIBRARIES})
 install(TARGETS resultsScope RUNTIME DESTINATION bin)
 # ##############################################################################
