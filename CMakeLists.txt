@@ -36,7 +36,7 @@ endif()
 # ##############################################################################
 # GENERAL OPTIONS
 # ##############################################################################
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.0.0)
 project(ADCIRCModules)
 enable_language(C)
 enable_language(CXX)
@@ -365,11 +365,13 @@ endif(ENABLE_GDAL)
 # ##############################################################################
 find_package(SQLite3 REQUIRED)
 find_package(PROJ)
-IF(${PROJ_VERSION} VERSION_LESS 9.0)
-	message(WARNING "System PROJ version not compatible. Attempting to use internal proj.")
-	set(PROJ_FOUND FALSE)
-	set(PROJ_INCLUDE_DIR "")
-	set(PROJ_LIBRARY "")
+IF(PROJ_FOUND)
+	IF(${PROJ_VERSION} VERSION_LESS 6.0)
+		message(WARNING "System PROJ version not compatible. Attempting to use internal proj.")
+		set(PROJ_FOUND FALSE)
+		set(PROJ_INCLUDE_DIR "")
+		set(PROJ_LIBRARY "")
+	ENDIF()
 ENDIF()
 if(NOT PROJ_FOUND)
 	set(BUILD_TESTING
