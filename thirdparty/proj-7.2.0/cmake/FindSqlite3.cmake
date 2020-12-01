@@ -43,11 +43,13 @@ find_path(SQLITE3_INCLUDE_DIR sqlite3.h
   "$ENV{LIB_DIR}/include"
   "$ENV{LIB_DIR}/include/sqlite"
   "$ENV{INCLUDE}"
+  "${SQLITE3_DIR}/include"
 )
 
 find_library(SQLITE3_LIBRARY NAMES sqlite3_i sqlite3 PATHS
   "$ENV{LIB_DIR}/lib"
   "$ENV{LIB}/lib"
+  "${SQLITE3_DIR}/lib"
 )
 
 if(SQLITE3_INCLUDE_DIR AND SQLITE3_LIBRARY)

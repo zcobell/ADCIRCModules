@@ -319,7 +319,7 @@ set(ALL_LIBPROJ_HEADERS ${HEADERS_LIBPROJ})
 
 # Core targets configuration
 string(TOLOWER "${PROJECT_NAME}" PROJECTNAMEL)
-set(PROJ_CORE_TARGET ${PROJECTNAMEL})
+set(PROJ_CORE_TARGET adcmod_${PROJECTNAMEL})
 proj_target_output_name(${PROJ_CORE_TARGET} PROJ_CORE_TARGET_OUTPUT_NAME)
 
 add_library(

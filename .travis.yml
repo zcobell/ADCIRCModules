@@ -28,5 +28,5 @@ script:
   - git submodule init
   - git pull --recurse-submodules
   - mkdir build; cd build; cmake -DCOVERAGE=ON -DBUILD_TESTS=ON -DPYTHON_TESTING=ON ..
-  - cd build; make -j 2
+  - cd build; make -j 2; sudo make install
   - cd build; CTEST_OUTPUT_ON_FAILURE=1 make test

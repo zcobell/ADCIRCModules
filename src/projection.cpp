@@ -24,8 +24,13 @@
 #include "constants.h"
 #include "sqlite3.h"
 
+
+#ifdef USE_INTERNAL_PROJ
 #define PROJ_RENAME_SYMBOLS
-#include "adcircmodules_proj.h"
+#endif
+#include "proj.h"
+
+#include "adcmod_proj_rename.h"
 
 using namespace Adcirc;
 
@@ -60,7 +65,7 @@ static int projection_sqlite_callback(void *data, int argc, char **argv,
 
 int Projection::queryProjDatabase(int epsg, projection_epsg_result &result) {
   sqlite3 *db;
-  sqlite3_open(internal_proj_context_get_database_path(PJ_DEFAULT_CTX), &db);
+  sqlite3_open(adcmod_proj_context_get_database_path(PJ_DEFAULT_CTX), &db);
   std::string queryString =
       "select distinct auth_name,code,name from crs_view where auth_name == "
       "'EPSG' and code == " +
@@ -101,12 +106,12 @@ int Projection::transform(int epsgInput, int epsgOutput,
 
   std::string p1 = "EPSG:" + std::to_string(epsgInput);
   std::string p2 = "EPSG:" + std::to_string(epsgOutput);
-  PJ *pj1 = internal_proj_create_crs_to_crs(PJ_DEFAULT_CTX, p1.c_str(),
+  PJ *pj1 = adcmod_proj_create_crs_to_crs(PJ_DEFAULT_CTX, p1.c_str(),
                                             p2.c_str(), NULL);
   if (pj1 == nullptr) return 1;
-  PJ *pj2 = internal_proj_normalize_for_visualization(PJ_DEFAULT_CTX, pj1);
+  PJ *pj2 = adcmod_proj_normalize_for_visualization(PJ_DEFAULT_CTX, pj1);
   if (pj2 == nullptr) return 1;
-  internal_proj_destroy(pj1);
+  adcmod_proj_destroy(pj1);
 
   outx.clear();
   outy.clear();
@@ -115,19 +120,19 @@ int Projection::transform(int epsgInput, int epsgOutput,
 
   for (size_t i = 0; i < x.size(); ++i) {
     PJ_COORD cin;
-    if (internal_proj_angular_input(pj2, PJ_INV)) {
-      cin.lp.lam = internal_proj_torad(x[i]);
-      cin.lp.phi = internal_proj_torad(y[i]);
+    if (adcmod_proj_angular_input(pj2, PJ_INV)) {
+      cin.lp.lam = adcmod_proj_torad(x[i]);
+      cin.lp.phi = adcmod_proj_torad(y[i]);
     } else {
       cin.xy.x = x[i];
       cin.xy.y = y[i];
     }
 
-    PJ_COORD cout = internal_proj_trans(pj2, PJ_FWD, cin);
+    PJ_COORD cout = adcmod_proj_trans(pj2, PJ_FWD, cin);
 
-    if (internal_proj_angular_output(pj2, PJ_FWD)) {
-      outx.push_back(internal_proj_todeg(cout.lp.lam));
-      outy.push_back(internal_proj_todeg(cout.lp.phi));
+    if (adcmod_proj_angular_output(pj2, PJ_FWD)) {
+      outx.push_back(adcmod_proj_todeg(cout.lp.lam));
+      outy.push_back(adcmod_proj_todeg(cout.lp.phi));
       isLatLon = true;
     } else {
       outx.push_back(cout.xy.x);
@@ -135,7 +140,7 @@ int Projection::transform(int epsgInput, int epsgOutput,
       isLatLon = false;
     }
   }
-  internal_proj_destroy(pj2);
+  adcmod_proj_destroy(pj2);
   return 0;
 }
 
@@ -218,9 +223,9 @@ int Projection::inverseCpp(double lambda0, double phi0,
 }
 
 void Projection::setProjDatabaseLocation(const std::string &dblocation) {
-  internal_proj_context_set_database_path(PJ_DEFAULT_CTX, dblocation.c_str(),
+  adcmod_proj_context_set_database_path(PJ_DEFAULT_CTX, dblocation.c_str(),
                                           nullptr, nullptr);
 }
 std::string Projection::projDatabaseLocation() {
-  return internal_proj_context_get_database_path(PJ_DEFAULT_CTX);
+  return adcmod_proj_context_get_database_path(PJ_DEFAULT_CTX);
 }
