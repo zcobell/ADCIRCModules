@@ -37,7 +37,13 @@ using Point = std::pair<double, double>;
 class GriddataPrivate {
  public:
   GriddataPrivate();
-  GriddataPrivate(Adcirc::Geometry::Mesh *mesh, const std::string &rasterFile);
+
+  GriddataPrivate(const std::vector<double> &x, const std::vector<double> &y,
+                  std::vector<double> resolution, const std::string &rasterFile,
+                  int epsgQuery, int epsgRaster);
+
+  GriddataPrivate(Adcirc::Geometry::Mesh *mesh, const std::string &rasterFile,
+                  int epsgRaster);
 
   std::string rasterFile() const;
   void setRasterFile(const std::string &rasterFile);
@@ -150,19 +156,28 @@ class GriddataPrivate {
   void assignInterpolationFunctionPointer(bool useLookupTable);
   double calculateExpansionLevelForPoints(size_t n);
 
-  std::vector<double> m_filterSize;
-  double m_defaultValue;
-  Adcirc::Geometry::Mesh *m_mesh;
-  std::unique_ptr<Adcirc::Raster::Rasterdata> m_raster;
-  std::string m_rasterFile;
-  std::vector<int> m_interpolationFlags;
-  int m_epsg;
-  Adcirc::adcmap<unsigned short, double> m_lookup;
+  std::vector<Point> meshToQueryPoints(Adcirc::Geometry::Mesh *m);
 
+  Adcirc::adcmap<unsigned short, double> m_lookup;
   Interpolation::Threshold m_thresholdMethod;
+
+  std::unique_ptr<Adcirc::Raster::Rasterdata> m_raster;
+
+  std::vector<Point> m_queryLocations;
+  std::vector<double> m_filterSize;
+  std::vector<double> m_queryResolution;
+  std::vector<int> m_interpolationFlags;
+
+  std::string m_rasterFile;
+
+  int m_inputEpsg;
+  int m_epsg;
+
+  double m_defaultValue;
   double m_rasterMultiplier;
   double m_datumShift;
   double m_thresholdValue;
+
   bool m_showProgressBar;
   bool m_rasterInMemory;
 };

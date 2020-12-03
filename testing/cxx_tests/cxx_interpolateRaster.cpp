@@ -44,13 +44,11 @@ int main() {
   Adcirc::Multithreading::disable();
 
   std::unique_ptr<Griddata> g(
-      new Griddata(m.get(), "test_files/bathy_sampleraster.tif"));
+      new Griddata(m.get(), "test_files/bathy_sampleraster.tif",26915));
   std::unique_ptr<Griddata> gm(
-      new Griddata(m.get(), "test_files/bathy_sampleraster.tif"));
+      new Griddata(m.get(), "test_files/bathy_sampleraster.tif",26915));
   g->setShowProgressBar(true);
   gm->setShowProgressBar(true);
-  g->setEpsg(26915);
-  gm->setEpsg(26915);
 
   for (size_t i = 0; i < m->numNodes(); ++i) {
     g->setInterpolationFlag(i, i % 9);

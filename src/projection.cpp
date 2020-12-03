@@ -24,7 +24,6 @@
 #include "constants.h"
 #include "sqlite3.h"
 
-
 #ifdef USE_INTERNAL_PROJ
 #define PROJ_RENAME_SYMBOLS
 #endif
@@ -107,7 +106,7 @@ int Projection::transform(int epsgInput, int epsgOutput,
   std::string p1 = "EPSG:" + std::to_string(epsgInput);
   std::string p2 = "EPSG:" + std::to_string(epsgOutput);
   PJ *pj1 = adcmod_proj_create_crs_to_crs(PJ_DEFAULT_CTX, p1.c_str(),
-                                            p2.c_str(), NULL);
+                                          p2.c_str(), NULL);
   if (pj1 == nullptr) return 1;
   PJ *pj2 = adcmod_proj_normalize_for_visualization(PJ_DEFAULT_CTX, pj1);
   if (pj2 == nullptr) return 1;
@@ -224,7 +223,7 @@ int Projection::inverseCpp(double lambda0, double phi0,
 
 void Projection::setProjDatabaseLocation(const std::string &dblocation) {
   adcmod_proj_context_set_database_path(PJ_DEFAULT_CTX, dblocation.c_str(),
-                                          nullptr, nullptr);
+                                        nullptr, nullptr);
 }
 std::string Projection::projDatabaseLocation() {
   return adcmod_proj_context_get_database_path(PJ_DEFAULT_CTX);

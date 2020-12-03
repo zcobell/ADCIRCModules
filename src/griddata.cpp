@@ -23,17 +23,31 @@
 using namespace Adcirc::Interpolation;
 
 /**
- * @brief Default constructor
+ * @brief Constructor which uses discrete point locations
+ * @param[in] x vector of query x locations
+ * @param[in] y vector of query y locations
+ * @param[in] resolution vector of representitive sizes near these points. Used
+ * for various sizing functions
+ * @param[in] rasterFile gdal compatible raster file name
+ * @param[in] epsgQuery coordinate system for the input point data
+ * @param[in] epsgRaster coordinate system for the raster data
  */
-Griddata::Griddata() : m_impl(new Adcirc::Private::GriddataPrivate()) {}
+Griddata::Griddata(const std::vector<double> &x, const std::vector<double> &y,
+                   std::vector<double> resolution,
+                   const std::string &rasterFile, int epsgQuery, int epsgRaster)
+    : m_impl(std::make_unique<Adcirc::Private::GriddataPrivate>(
+          x, y, std::move(resolution), rasterFile, epsgQuery, epsgRaster)) {}
 
 /**
  * @brief Constructor that takes mesh and raster file
  * @param[in] mesh pointer to mesh object
  * @param[in] rasterFile gdal compatible raster file name
+ * @param[in] epsgRaster coordinate system for the raster data
  */
-Griddata::Griddata(Adcirc::Geometry::Mesh *mesh, const std::string &rasterFile)
-    : m_impl(new Adcirc::Private::GriddataPrivate(mesh, rasterFile)) {}
+Griddata::Griddata(Adcirc::Geometry::Mesh *mesh, const std::string &rasterFile,
+                   int epsgRaster)
+    : m_impl(std::make_unique<Adcirc::Private::GriddataPrivate>(
+          mesh, rasterFile, epsgRaster)) {}
 
 /**
  * @brief Retrieves the filename of the raster currently being used for

@@ -44,10 +44,9 @@ int main() {
   Adcirc::Multithreading::disable();
 
   std::unique_ptr<Griddata> g(
-      new Griddata(m.get(), "test_files/lulc_samplelulcraster.tif"));
+      new Griddata(m.get(), "test_files/lulc_samplelulcraster.tif",26915));
   g->setShowProgressBar(true);
   g->readLookupTable("test_files/sample_lookup.table");
-  g->setEpsg(26915);
   g->setRasterInMemory(true);
   for (size_t i = 0; i < m->numNodes(); ++i) {
     g->setInterpolationFlag(i, i % 9);
