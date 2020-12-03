@@ -80,16 +80,10 @@ if(COMPILER_SUPPORTS_CXX14)
   set(CMAKE_CXX_STANDARD 14)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
 else(COMPILER_SUPPORTS_CXX14)
-  check_cxx_compiler_flag("-std=c++11" COMPILER_SUPPORTS_CXX11)
-  if(COMPILER_SUPPORTS_CXX11)
-    set(CMAKE_CXX_STANDARD 11)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-  else(COMPILER_SUPPORTS_CXX11)
-    message(
-      FATAL_ERROR
-        "The compiler ${CMAKE_CXX_COMPILER} has no C++11/14 support. Please use a different C++ compiler."
-    )
-  endif(COMPILER_SUPPORTS_CXX11)
+  message(
+    FATAL_ERROR
+      "The compiler ${CMAKE_CXX_COMPILER} has no C++14 support. Please use a different C++ compiler."
+  )
 endif(COMPILER_SUPPORTS_CXX14)
 # ##############################################################################
 
