@@ -37,7 +37,7 @@ int generateSubdomainOutput(Adcirc::Geometry::Mesh &subdomainMesh,
                             const std::string &globalOutputFile,
                             const std::string &subdomainOutputFile);
 
-Adcirc::Output::OutputRecord *subsetRecord(
+std::unique_ptr<Adcirc::Output::OutputRecord> subsetRecord(
     std::vector<size_t> table, Adcirc::Output::OutputRecord *global);
 
 int main(int argc, char *argv[]) {
@@ -253,14 +253,12 @@ int generateSubdomainOutput(Adcirc::Geometry::Mesh &subdomainMesh,
   Adcirc::Output::WriteOutput out(subdomainOutputFile, &global, &subdomainMesh);
   out.open();
 
-  std::unique_ptr<boost::progress_display> progress(
-      new boost::progress_display(global.numSnaps()));
+  auto progress = std::make_unique<boost::progress_display>(global.numSnaps());
 
   for (size_t i = 0; i < global.numSnaps(); ++i) {
     ++(*progress.get());
     global.read(i);
-    std::unique_ptr<Adcirc::Output::OutputRecord> r(
-        subsetRecord(translation_table, global.dataAt(0)));
+    auto r = subsetRecord(translation_table, global.dataAt(0));
     out.write(r.get());
     global.clearAt(0);
   }
@@ -271,11 +269,12 @@ int generateSubdomainOutput(Adcirc::Geometry::Mesh &subdomainMesh,
   return 0;
 }
 
-Adcirc::Output::OutputRecord *subsetRecord(
+std::unique_ptr<Adcirc::Output::OutputRecord> subsetRecord(
     std::vector<size_t> table, Adcirc::Output::OutputRecord *global) {
   size_t nn = table.size();
-  Adcirc::Output::OutputRecord *r = new Adcirc::Output::OutputRecord(
-      global->record(), nn, *global->metadata());
+  std::unique_ptr<Adcirc::Output::OutputRecord> r =
+      std::make_unique<Adcirc::Output::OutputRecord>(global->record(), nn,
+                                                     *global->metadata());
   r->setTime(global->time());
   for (size_t i = 0; i < nn; ++i) {
     if (r->metadata()->isVector()) {

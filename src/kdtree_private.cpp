@@ -37,8 +37,8 @@ int KdtreePrivate::build(std::vector<double> &x, std::vector<double> &y) {
     this->m_cloud.pts[i].x = x[i];
     this->m_cloud.pts[i].y = y[i];
   }
-  this->m_tree.reset(new kd_tree_t(
-      2, this->m_cloud, nanoflann::KDTreeSingleIndexAdaptorParams(10)));
+  this->m_tree = std::make_unique<kd_tree_t>(
+      2, this->m_cloud, nanoflann::KDTreeSingleIndexAdaptorParams(10));
   this->m_tree->buildIndex();
   this->m_initialized = true;
   return 0;
