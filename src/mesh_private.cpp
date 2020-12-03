@@ -24,13 +24,13 @@
 #include <tuple>
 #include <utility>
 
+#include "adchash.h"
 #include "boost/format.hpp"
 #include "default_values.h"
 #include "elementtable.h"
 #include "fileio.h"
 #include "filetypes.h"
 #include "fpcompare.h"
-#include "adchash.h"
 #include "kdtree.h"
 #include "logging.h"
 #include "mesh.h"
@@ -124,8 +124,8 @@ void MeshPrivate::_init() {
   this->m_nodeOrderingLogical = true;
   this->m_elementOrderingLogical = true;
   this->m_hash.reset(nullptr);
-  this->m_elementalSearchTree = std::unique_ptr<Kdtree>(new Kdtree());
-  this->m_nodalSearchTree = std::unique_ptr<Kdtree>(new Kdtree());
+  this->m_elementalSearchTree = std::make_unique<Kdtree>();
+  this->m_nodalSearchTree = std::make_unique<Kdtree>();
 }
 
 /**

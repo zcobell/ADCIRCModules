@@ -906,8 +906,8 @@ std::vector<double> GriddataPrivate::computeValuesFromRaster(
   result.resize(this->m_queryLocations.size());
 
   if (this->showProgressBar()) {
-    progress = std::unique_ptr<boost::progress_display>(
-        new boost::progress_display(m_queryLocations.size()));
+    progress =
+        std::make_unique<boost::progress_display>((m_queryLocations.size()));
   }
 
 #pragma omp parallel for schedule(dynamic) default(none) \
@@ -975,8 +975,8 @@ GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
   result.resize(m_queryLocations.size());
 
   if (this->showProgressBar()) {
-    progress = std::unique_ptr<boost::progress_display>(
-        new boost::progress_display(m_queryLocations.size()));
+    progress =
+        std::make_unique<boost::progress_display>((m_queryLocations.size()));
   }
 
 #pragma omp parallel for schedule(dynamic) default(none) \

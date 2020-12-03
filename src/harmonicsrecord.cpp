@@ -24,13 +24,13 @@ namespace Adcirc {
 namespace Harmonics {
 
 HarmonicsRecord::HarmonicsRecord()
-    : m_impl(new Adcirc::Private::HarmonicsRecordPrivate()) {}
+    : m_impl(std::make_unique<Adcirc::Private::HarmonicsRecordPrivate>()) {}
 
 HarmonicsRecord::~HarmonicsRecord() {}
 
 HarmonicsRecord::HarmonicsRecord(const HarmonicsRecord& h) {
-  this->m_impl.reset(
-      new Adcirc::Private::HarmonicsRecordPrivate(*(h.m_impl.get())));
+  this->m_impl = std::make_unique<Adcirc::Private::HarmonicsRecordPrivate>(
+      *(h.m_impl.get()));
 }
 
 /**

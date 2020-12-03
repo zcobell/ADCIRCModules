@@ -24,10 +24,10 @@ using namespace Adcirc::Geometry;
 
 using Point = std::pair<double, double>;
 
-Mesh::Mesh() : m_impl(new Adcirc::Private::MeshPrivate()) {}
+Mesh::Mesh() : m_impl(std::make_unique<Adcirc::Private::MeshPrivate>()) {}
 
 Mesh::Mesh(const std::string &filename)
-    : m_impl(new Adcirc::Private::MeshPrivate(filename)) {}
+    : m_impl(std::make_unique<Adcirc::Private::MeshPrivate>(filename)) {}
 
 Mesh &Mesh::operator=(const Mesh &m) {
   this->m_impl = m.m_impl->clone();
