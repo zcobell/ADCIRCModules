@@ -45,7 +45,7 @@ int main() {
   m->reproject(26915);
 
   std::unique_ptr<Griddata> g(
-      new Griddata(m.get(), "test_files/lulc_samplelulcraster.tif"));
+      new Griddata(m.get(), "test_files/lulc_samplelulcraster.tif",12345));
   // Multithreading::disable();
 
 #if 1

@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <array>
 #include <fstream>
+#include <memory>
 #include <numeric>
 #include <utility>
 
@@ -70,42 +71,66 @@ bool GriddataPrivate::getKeyValue(unsigned short key, double &value) {
 
 Griddata::~Griddata() = default;
 
-GriddataPrivate::GriddataPrivate()
-    : m_mesh(nullptr),
-      m_raster(nullptr),
-      m_rasterFile(std::string()),
-      m_interpolationFlags(std::vector<int>()),
-      m_filterSize(std::vector<double>()),
-      m_defaultValue(-9999.0),
-      m_epsg(4326),
-      m_datumShift(0.0),
-      m_showProgressBar(false),
-      m_rasterMultiplier(1.0),
-      m_calculateDwindPtr(nullptr),
-      m_calculatePointPtr(nullptr),
-      m_thresholdValue(0.0),
-      m_thresholdMethod(Interpolation::Threshold::NoThreshold),
-      m_rasterInMemory(false) {}
-
-GriddataPrivate::GriddataPrivate(Mesh *mesh, const std::string &rasterFile)
-    : m_mesh(mesh),
+GriddataPrivate::GriddataPrivate(Mesh *mesh, const std::string &rasterFile,
+                                 int epsgRaster)
+    : m_thresholdMethod(Interpolation::Threshold::NoThreshold),
+      m_raster(std::make_unique<Adcirc::Raster::Rasterdata>(rasterFile)),
       m_rasterFile(rasterFile),
+      m_inputEpsg(mesh->projection()),
+      m_epsg(epsgRaster),
       m_defaultValue(-9999.0),
-      m_epsg(4326),
-      m_datumShift(0.0),
-      m_showProgressBar(false),
       m_rasterMultiplier(1.0),
-      m_calculateDwindPtr(nullptr),
-      m_calculatePointPtr(nullptr),
+      m_datumShift(0.0),
       m_thresholdValue(0.0),
-      m_thresholdMethod(Interpolation::Threshold::NoThreshold),
-      m_rasterInMemory(false),
-      m_raster(new Adcirc::Raster::Rasterdata(rasterFile)) {
-  this->m_interpolationFlags.resize(this->m_mesh->numNodes());
+      m_showProgressBar(false),
+      m_rasterInMemory(false) {
+  this->m_interpolationFlags.resize(mesh->numNodes());
   std::fill(this->m_interpolationFlags.begin(),
             this->m_interpolationFlags.end(), Average);
-  this->m_filterSize.resize(this->m_mesh->numNodes());
+  this->m_filterSize.resize(mesh->numNodes());
   std::fill(this->m_filterSize.begin(), this->m_filterSize.end(), 1.0);
+  m_queryLocations = this->meshToQueryPoints(mesh);
+  m_queryResolution = mesh->computeMeshSize();
+}
+
+GriddataPrivate::GriddataPrivate(const std::vector<double> &x,
+                                 const std::vector<double> &y,
+                                 std::vector<double> resolution,
+                                 const std::string &rasterFile, int epsgQuery,
+                                 int epsgRaster)
+    : m_thresholdMethod(Interpolation::Threshold::NoThreshold),
+      m_raster(std::make_unique<Adcirc::Raster::Rasterdata>(rasterFile)),
+      m_queryResolution(std::move(resolution)),
+      m_rasterFile(rasterFile),
+      m_inputEpsg(epsgQuery),
+      m_epsg(epsgRaster),
+      m_defaultValue(-9999.0),
+      m_rasterMultiplier(1.0),
+      m_datumShift(0.0),
+      m_thresholdValue(0.0),
+      m_showProgressBar(false),
+      m_rasterInMemory(false) {
+  assert(x.size() == y.size());
+  assert(x.size() > 0);
+  this->m_interpolationFlags.resize(x.size());
+  std::fill(this->m_interpolationFlags.begin(),
+            this->m_interpolationFlags.end(), Average);
+  this->m_filterSize.resize(x.size());
+  std::fill(this->m_filterSize.begin(), this->m_filterSize.end(), 1.0);
+  m_queryLocations.reserve(x.size());
+  for (size_t i = 0; i < x.size(); ++i) {
+    m_queryLocations.emplace_back(x[i], y[i]);
+  }
+}
+
+std::vector<Point> GriddataPrivate::meshToQueryPoints(
+    Adcirc::Geometry::Mesh *m) {
+  std::vector<Point> qp;
+  qp.reserve(m->numNodes());
+  for (size_t i = 0; i < m->numNodes(); ++i) {
+    qp.emplace_back(m->node(i)->x(), m->node(i)->y());
+  }
+  return qp;
 }
 
 std::string GriddataPrivate::rasterFile() const { return this->m_rasterFile; }
@@ -840,7 +865,7 @@ void GriddataPrivate::setDatumShift(double datumShift) {
 }
 
 void GriddataPrivate::checkMatchingCoorindateSystems() {
-  if (this->m_epsg != this->m_mesh->projection()) {
+  if (this->m_epsg != m_inputEpsg) {
     adcircmodules_throw_exception(
         "You must use the same coordinate systems for mesh and raster.");
   }
@@ -877,27 +902,26 @@ std::vector<double> GriddataPrivate::computeValuesFromRaster(
     this->m_raster.get()->read();
   }
 
-  std::vector<double> gridsize = this->m_mesh->computeMeshSize();
   std::vector<double> result;
-  result.resize(this->m_mesh->numNodes());
+  result.resize(this->m_queryLocations.size());
 
   if (this->showProgressBar()) {
     progress = std::unique_ptr<boost::progress_display>(
-        new boost::progress_display(this->m_mesh->numNodes()));
+        new boost::progress_display(m_queryLocations.size()));
   }
 
 #pragma omp parallel for schedule(dynamic) default(none) \
-    shared(progress, result, gridsize)
+    shared(progress, result)
   for (signed long long i = 0;
-       i < static_cast<signed long long>(this->m_mesh->numNodes()); ++i) {
+       i < static_cast<signed long long>(m_queryLocations.size()); ++i) {
     if (this->m_showProgressBar) {
 #pragma omp critical
       ++(*progress.get());
     }
 
-    Point p(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
     Method m = static_cast<Method>(this->m_interpolationFlags[i]);
-    double v = (this->*m_calculatePointPtr)(p, gridsize[i] * 0.5,
+    double v = (this->*m_calculatePointPtr)(m_queryLocations[i],
+                                            m_queryResolution[i] * 0.5,
                                             this->m_filterSize[i], m);
     result[i] = v * this->m_rasterMultiplier + this->m_datumShift;
   }
@@ -948,25 +972,24 @@ GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
   }
 
   std::vector<std::vector<double>> result;
-  result.resize(this->m_mesh->numNodes());
+  result.resize(m_queryLocations.size());
 
   if (this->showProgressBar()) {
     progress = std::unique_ptr<boost::progress_display>(
-        new boost::progress_display(this->m_mesh->numNodes()));
+        new boost::progress_display(m_queryLocations.size()));
   }
 
 #pragma omp parallel for schedule(dynamic) default(none) \
     shared(progress, result)
   for (unsigned long long i = 0;
-       i < static_cast<unsigned long long>(this->m_mesh->numNodes()); ++i) {
+       i < static_cast<unsigned long long>(m_queryLocations.size()); ++i) {
     if (this->m_showProgressBar) {
 #pragma omp critical
       ++(*progress);
     }
 
     if (this->m_interpolationFlags[i] != NoMethod) {
-      Point p(this->m_mesh->node(i)->x(), this->m_mesh->node(i)->y());
-      result[i] = (this->*m_calculateDwindPtr)(p);
+      result[i] = (this->*m_calculateDwindPtr)(m_queryLocations[i]);
     } else {
       result[i] = std::vector<double>(12, this->defaultValue());
     }

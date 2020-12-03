@@ -38,8 +38,8 @@ namespace Interpolation {
  * @class Griddata
  * @author Zachary Cobell
  * @brief Class that handles interpolation on unstructured meshes
- * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
- * is released under the terms of the GNU General Public License v3
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
  *
  * The Griddata class is used to interpolate data to unstructured meshes
  * containing either quadrilaterals or triangles. There are a number of schemes
@@ -61,9 +61,14 @@ namespace Interpolation {
  */
 class Griddata {
  public:
-  ADCIRCMODULES_EXPORT Griddata();
+  ADCIRCMODULES_EXPORT Griddata(const std::vector<double> &x,
+                                const std::vector<double> &y,
+                                std::vector<double> resolution,
+                                const std::string &rasterFile, int epsgQuery,
+                                int epsgRaster);
+
   ADCIRCMODULES_EXPORT Griddata(Adcirc::Geometry::Mesh *mesh,
-                                const std::string &rasterFile);
+                                const std::string &rasterFile, int epsgRaster);
   ADCIRCMODULES_EXPORT ~Griddata();
 
   std::string ADCIRCMODULES_EXPORT rasterFile() const;
