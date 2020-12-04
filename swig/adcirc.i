@@ -18,7 +18,7 @@
 //------------------------------------------------------------------------*/
 
 /* Adcirc Interface File */
-%module adcircmodules
+%module pyadcircmodules
 
 %insert("python") %{
     import signal
