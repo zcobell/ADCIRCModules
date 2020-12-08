@@ -100,3 +100,12 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/shapelib.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/libadcircmodules.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/python_adcircmodules.cmake)
 # ##############################################################################
+
+# ##############################################################################
+# UTILITIES
+# ##############################################################################
+include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/generateAdcircSimulationDates.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/interpolateAdcircStations.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/resultsScope.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/highWaterMarks.cmake)
+# ##############################################################################
