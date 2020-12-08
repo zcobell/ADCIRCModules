@@ -363,7 +363,7 @@ void MeshPrivate::readAdcircMeshNetcdf() {
  * Note this will be extended in the future to netCDF formatted meshes
  */
 void MeshPrivate::readAdcircMeshAscii() {
-  std::fstream fid(this->filename());
+  std::ifstream fid(this->filename());
 
   this->readAdcircMeshHeader(fid);
   this->readAdcircNodes(fid);
@@ -498,7 +498,7 @@ void MeshPrivate::readDflowMesh() {
  */
 void MeshPrivate::read2dmData(std::vector<std::string> &nodes,
                               std::vector<std::string> &elements) {
-  std::fstream fid(this->filename());
+  std::ifstream fid(this->filename());
 
   std::string junk;
   std::getline(fid, junk);
@@ -624,9 +624,9 @@ Adcirc::Geometry::MeshFormat MeshPrivate::getMeshFormat(
 
 /**
  * @brief Reads the mesh title line and node/element dimensional data
- * @param fid std::fstream reference for the currently opened mesh
+ * @param fid std::ifstream reference for the currently opened mesh
  */
-void MeshPrivate::readAdcircMeshHeader(std::fstream &fid) {
+void MeshPrivate::readAdcircMeshHeader(std::ifstream &fid) {
   bool ok;
   size_t tempInt;
   std::string tempLine;
@@ -662,9 +662,9 @@ void MeshPrivate::readAdcircMeshHeader(std::fstream &fid) {
 
 /**
  * @brief Reads the node section of the ASCII formatted mesh
- * @param fid std::fstream reference for the currently opened mesh
+ * @param fid std::ifstream reference for the currently opened mesh
  */
-void MeshPrivate::readAdcircNodes(std::fstream &fid) {
+void MeshPrivate::readAdcircNodes(std::ifstream &fid) {
   this->m_nodes.resize(this->numNodes());
 
   size_t i = 0;
@@ -695,9 +695,9 @@ void MeshPrivate::readAdcircNodes(std::fstream &fid) {
 
 /**
  * @brief Reads the elements section of the ASCII mesh
- * @param fid std::fstream reference for the currently opened mesh
+ * @param fid std::ifstream reference for the currently opened mesh
  */
-void MeshPrivate::readAdcircElements(std::fstream &fid) {
+void MeshPrivate::readAdcircElements(std::ifstream &fid) {
   size_t id;
   std::string tempLine;
 
@@ -760,9 +760,9 @@ void MeshPrivate::readAdcircElements(std::fstream &fid) {
 
 /**
  * @brief Reads the open boundaries section of the ASCII formatted mesh file
- * @param fid std::fstream reference for the currently opened mesh
+ * @param fid std::ifstream reference for the currently opened mesh
  */
-void MeshPrivate::readAdcircOpenBoundaries(std::fstream &fid) {
+void MeshPrivate::readAdcircOpenBoundaries(std::ifstream &fid) {
   std::string tempLine;
   std::vector<std::string> tempList;
 
@@ -812,9 +812,9 @@ void MeshPrivate::readAdcircOpenBoundaries(std::fstream &fid) {
 
 /**
  * @brief Reads the land boundaries section of the ASCII formatted mesh file
- * @param fid std::fstream reference for the currently opened mesh
+ * @param fid std::ifstream reference for the currently opened mesh
  */
-void MeshPrivate::readAdcircLandBoundaries(std::fstream &fid) {
+void MeshPrivate::readAdcircLandBoundaries(std::ifstream &fid) {
   std::string tempLine;
   std::vector<std::string> tempList;
 

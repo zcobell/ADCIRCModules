@@ -436,7 +436,7 @@ void HarmonicsOutputPrivate::getFiletype() {
   return;
 }
 
-void HarmonicsOutputPrivate::readAsciiHeader(std::fstream& fid) {
+void HarmonicsOutputPrivate::readAsciiHeader(std::ifstream& fid) {
   std::string line;
   bool ok;
 
@@ -521,7 +521,7 @@ void HarmonicsOutputPrivate::readAsciiHeader(std::fstream& fid) {
   return;
 }
 
-bool HarmonicsOutputPrivate::checkFormatAsciiVelocity(std::fstream& fid) {
+bool HarmonicsOutputPrivate::checkFormatAsciiVelocity(std::ifstream& fid) {
   std::string line;
   std::streampos endHeader = fid.tellg();
   std::getline(fid, line);
@@ -549,7 +549,7 @@ bool HarmonicsOutputPrivate::checkFormatNetcdfVelocity(const int& ncid) {
 }
 
 void HarmonicsOutputPrivate::readAsciiFormat() {
-  std::fstream fid;
+  std::ifstream fid;
   fid.open(this->m_filename);
   if (!fid.is_open()) {
     adcircmodules_throw_exception("File is not open");

@@ -52,7 +52,7 @@ Adcirc::Output::OutputFormat getOutputFormatFromExtension(
 bool checkFiletypeAsciiSparse(const std::string& filename) {
   assert(!filename.empty());
 
-  std::fstream fid(filename);
+  std::ifstream fid(filename);
 
   try {
     std::string line;
@@ -86,7 +86,7 @@ bool checkFiletypeAsciiSparse(const std::string& filename) {
 bool checkFiletypeAsciiFull(const std::string& filename) {
   assert(!filename.empty());
 
-  std::fstream fid(filename);
+  std::ifstream fid(filename);
 
   try {
     std::string line;
@@ -185,7 +185,7 @@ bool checkFiletypeXdmf(const std::string& filename) { return false; }
 
 namespace Harmonics {
 bool checkFiletypeAsciiHarmonics(const std::string& filename) {
-  std::fstream fid;
+  std::ifstream fid;
   fid.open(filename);
   if (!fid.is_open()) {
     return false;

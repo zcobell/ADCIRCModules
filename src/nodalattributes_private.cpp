@@ -74,7 +74,7 @@ size_t NodalAttributesPrivate::locateAttribute(
 }
 
 void NodalAttributesPrivate::read() {
-  std::fstream fid(this->filename(), std::fstream::in);
+  std::ifstream fid(this->filename(), std::ifstream::in);
 
   this->_readFort13Header(fid);
   this->_readFort13Defaults(fid);
@@ -90,7 +90,7 @@ void NodalAttributesPrivate::read() {
   return;
 }
 
-void NodalAttributesPrivate::_readFort13Header(std::fstream &fid) {
+void NodalAttributesPrivate::_readFort13Header(std::ifstream &fid) {
   std::string tempLine;
   bool ok;
 
@@ -139,7 +139,7 @@ void NodalAttributesPrivate::_readFort13Header(std::fstream &fid) {
   return;
 }
 
-void NodalAttributesPrivate::_readFort13Defaults(std::fstream &fid) {
+void NodalAttributesPrivate::_readFort13Defaults(std::ifstream &fid) {
   std::string name, units, tempLine;
   std::vector<std::string> tempList;
   double defaultValue;
@@ -223,7 +223,7 @@ void NodalAttributesPrivate::_mapNodes() {
   return;
 }
 
-void NodalAttributesPrivate::_readFort13Body(std::fstream &fid) {
+void NodalAttributesPrivate::_readFort13Body(std::ifstream &fid) {
   std::string tempLine, name;
   size_t node;
   double value;

@@ -117,7 +117,7 @@ class ReadOutput {
   void setOpen(bool open);
 
   // variables
-  std::fstream m_fid;
+  std::ifstream m_fid;
   std::vector<Adcirc::Output::OutputRecord> m_records;
   std::unordered_map<size_t, size_t> m_recordMap;
   bool m_open;
