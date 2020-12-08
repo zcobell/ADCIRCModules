@@ -99,9 +99,9 @@ class HarmonicsOutputPrivate {
       const std::string& filename);
   void readAsciiFormat();
   void readNetcdfFormat();
-  void readAsciiHeader(std::fstream& fid);
+  void readAsciiHeader(std::ifstream& fid);
 
-  bool checkFormatAsciiVelocity(std::fstream& fid);
+  bool checkFormatAsciiVelocity(std::ifstream& fid);
   bool checkFormatNetcdfVelocity(const int& ncid);
 
   void writeAsciiFormat(const std::string& filename);

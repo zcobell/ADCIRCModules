@@ -196,11 +196,11 @@ class MeshPrivate {
       const std::string &filename);
   void readAdcircMeshAscii();
   void readAdcircMeshNetcdf();
-  void readAdcircMeshHeader(std::fstream &fid);
-  void readAdcircNodes(std::fstream &fid);
-  void readAdcircElements(std::fstream &fid);
-  void readAdcircOpenBoundaries(std::fstream &fid);
-  void readAdcircLandBoundaries(std::fstream &fid);
+  void readAdcircMeshHeader(std::ifstream &fid);
+  void readAdcircNodes(std::ifstream &fid);
+  void readAdcircElements(std::ifstream &fid);
+  void readAdcircOpenBoundaries(std::ifstream &fid);
+  void readAdcircLandBoundaries(std::ifstream &fid);
 
   void read2dmMesh();
   void read2dmData(std::vector<std::string> &nodes,

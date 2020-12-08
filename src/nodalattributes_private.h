@@ -70,9 +70,9 @@ class NodalAttributesPrivate {
                     std::vector<Adcirc::ModelParameters::Attribute> &attribute);
 
  private:
-  void _readFort13Header(std::fstream &fid);
-  void _readFort13Defaults(std::fstream &fid);
-  void _readFort13Body(std::fstream &fid);
+  void _readFort13Header(std::ifstream &fid);
+  void _readFort13Defaults(std::ifstream &fid);
+  void _readFort13Body(std::ifstream &fid);
   void _writeFort13Body(std::ofstream &fid);
   void _writeFort13Header(std::ofstream &fid);
   void _fillDefaultValues();

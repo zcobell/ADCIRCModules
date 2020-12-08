@@ -120,6 +120,7 @@ set( adcircmodules_include_list
             ${CMAKE_SOURCE_DIR}/thirdparty/nanoflann/include
             ${CMAKE_SOURCE_DIR}/thirdparty/cxxopts
 			${PROJ_INCLUDE_DIR}
+            ${SQLite3_INCLUDE_DIR}
             ${Boost_INCLUDE_DIRS}
             ${NETCDF_INCLUDE_DIR})
 
@@ -160,7 +161,7 @@ set_target_properties(adcircmodules_objectlib PROPERTIES CMAKE_CXX_VISIBILITY_PR
                                                hidden)
 set_target_properties(adcircmodules_objectlib PROPERTIES CMAKE_CXX_INLINES_HIDDEN YES)
 
-target_link_libraries(adcircmodules_interface INTERFACE shapelib)
+target_link_libraries(adcircmodules_interface INTERFACE shapelib ${SQLite3_LIBRARY})
 
 if(WIN32)
   link_directories(${CMAKE_SOURCE_DIR}/thirdparty/netcdf/libs_vc64)
