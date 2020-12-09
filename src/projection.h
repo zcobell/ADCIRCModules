@@ -52,6 +52,11 @@ class Projection {
                                             std::vector<double> &outy,
                                             bool &isLatLon);
 
+  static int ADCIRCMODULES_EXPORT
+  transform(int epsgInput, int epsgOutput,
+            const std::vector<std::pair<double, double>> &points,
+            std::vector<std::pair<double, double>> &output, bool &isLatLon);
+
   static int ADCIRCMODULES_EXPORT cpp(double lambda, double phi, double x,
                                       double y, double &outx, double &outy);
   static int ADCIRCMODULES_EXPORT cpp(double lambda, double phi,

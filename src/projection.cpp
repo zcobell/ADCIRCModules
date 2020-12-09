@@ -18,10 +18,11 @@
 //------------------------------------------------------------------------//
 #include "projection.h"
 
+#include <cassert>
 #include <cmath>
 #include <string>
-
 #include "constants.h"
+#include "logging.h"
 #include "sqlite3.h"
 
 #ifdef USE_INTERNAL_PROJ
@@ -98,18 +99,18 @@ int Projection::transform(int epsgInput, int epsgOutput,
                           bool &isLatLon) {
   isLatLon = false;
   if (x.size() != y.size()) return 1;
-  if (x.empty()) return 1;
+  if (x.empty()) return 2;
 
-  if (!Projection::containsEpsg(epsgInput)) return 1;
-  if (!Projection::containsEpsg(epsgOutput)) return 1;
+  if (!Projection::containsEpsg(epsgInput)) return 3;
+  if (!Projection::containsEpsg(epsgOutput)) return 4;
 
   std::string p1 = "EPSG:" + std::to_string(epsgInput);
   std::string p2 = "EPSG:" + std::to_string(epsgOutput);
   PJ *pj1 = adcmod_proj_create_crs_to_crs(PJ_DEFAULT_CTX, p1.c_str(),
                                           p2.c_str(), NULL);
-  if (pj1 == nullptr) return 1;
+  if (pj1 == nullptr) return 5;
   PJ *pj2 = adcmod_proj_normalize_for_visualization(PJ_DEFAULT_CTX, pj1);
-  if (pj2 == nullptr) return 1;
+  if (pj2 == nullptr) return 6;
   adcmod_proj_destroy(pj1);
 
   outx.clear();
@@ -140,6 +141,35 @@ int Projection::transform(int epsgInput, int epsgOutput,
     }
   }
   adcmod_proj_destroy(pj2);
+  return 0;
+}
+
+int Projection::transform(int epsgInput, int epsgOutput,
+                          const std::vector<std::pair<double, double> > &points,
+                          std::vector<std::pair<double, double> > &output,
+                          bool &isLatLon) {
+  assert(points.size() > 0);
+  std::vector<double> x;
+  std::vector<double> y;
+  std::vector<double> xout;
+  std::vector<double> yout;
+  output.reserve(points.size());
+  x.reserve(points.size());
+  y.reserve(points.size());
+  for (size_t i = 0; i < points.size(); ++i) {
+    x.push_back(points[i].first);
+    y.push_back(points[i].second);
+  }
+  int ierr =
+      Projection::transform(epsgInput, epsgOutput, x, y, xout, yout, isLatLon);
+  if (ierr != 0) {
+    adcircmodules_throw_exception(
+        "Error while converting coordinates within proj. Code = " +
+        std::to_string(ierr));
+  }
+  for (size_t i = 0; i < points.size(); ++i) {
+    output.emplace_back(xout[i], yout[i]);
+  }
   return 0;
 }
 

@@ -210,7 +210,7 @@ Pixel Rasterdata::coordinateToPixel(double x, double y) {
  * @param p std::pair<double,double> object with x,y-coordinates
  * @return Pixel object with i,j indicies for given x,y
  */
-Pixel Rasterdata::coordinateToPixel(Point &p) {
+Pixel Rasterdata::coordinateToPixel(const Point &p) {
   return this->coordinateToPixel(p.first, p.second);
 }
 
@@ -304,14 +304,17 @@ template <typename T>
 T Rasterdata::pixelValue(Pixel &p) {
   if (p.i() > 0 && p.j() > 0 && p.i() < this->nx() && p.j() < this->ny()) {
     T buf;
+    auto err = CPLErr();
+
 #ifndef GDAL_IS_THREADSAFE
 #pragma omp critical
 #endif
-	{
-    CPLErr err = this->m_band->RasterIO(
-        GF_Read, p.i(), p.j(), 1, 1, &buf, 1, 1,
-        static_cast<GDALDataType>(this->m_readType), 0, 0);
-	}
+    {
+      err = this->m_band->RasterIO(GF_Read, p.i(), p.j(), 1, 1, &buf, 1, 1,
+                                   static_cast<GDALDataType>(this->m_readType),
+                                   0, 0);
+    }
+    if (err != 0) return this->nodata<T>();
     return buf;
   } else {
     return this->nodata<T>();
@@ -361,10 +364,10 @@ void Rasterdata::readDoubleRasterToMemory() {
 #pragma omp critical
 #endif
   {
-  CPLErr e = this->m_band->RasterIO(
-      GF_Read, 0, 0, this->nx(), this->ny(), this->m_doubleOnDisk.data(),
-      this->nx(), this->ny(), static_cast<GDALDataType>(this->m_readType), 0,
-      0);
+    CPLErr e = this->m_band->RasterIO(
+        GF_Read, 0, 0, this->nx(), this->ny(), this->m_doubleOnDisk.data(),
+        this->nx(), this->ny(), static_cast<GDALDataType>(this->m_readType), 0,
+        0);
   }
 }
 
@@ -379,10 +382,10 @@ void Rasterdata::readIntegerRasterToMemory() {
 #pragma omp critical
 #endif
   {
-  CPLErr e =
-      this->m_band->RasterIO(GF_Read, 0, 0, this->nx(), this->ny(),
-                             this->m_intOnDisk.data(), this->nx(), this->ny(),
-                             static_cast<GDALDataType>(this->m_readType), 0, 0);
+    CPLErr e = this->m_band->RasterIO(
+        GF_Read, 0, 0, this->nx(), this->ny(), this->m_intOnDisk.data(),
+        this->nx(), this->ny(), static_cast<GDALDataType>(this->m_readType), 0,
+        0);
   }
 }
 
@@ -487,7 +490,7 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
   size_t ny = jend - jbegin + 1;
   size_t n = nx * ny;
 
-  if (x.size() != n) {
+  if (z.size() != n) {
     x.resize(n);
     y.resize(n);
     z.resize(n);
@@ -499,8 +502,9 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
 #pragma omp critical
 #endif
   {
-  e = this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, z.data(), nx, ny,
-                             static_cast<GDALDataType>(this->m_readType), 0, 0);
+    e = this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, z.data(), nx,
+                               ny, static_cast<GDALDataType>(this->m_readType),
+                               0, 0);
   }
 
   size_t k = 0;

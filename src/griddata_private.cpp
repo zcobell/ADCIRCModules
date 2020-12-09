@@ -33,6 +33,7 @@
 #include "fileio.h"
 #include "griddata.h"
 #include "logging.h"
+#include "projection.h"
 #include "stringconversion.h"
 
 using namespace Adcirc;
@@ -87,10 +88,15 @@ GriddataPrivate::GriddataPrivate(Mesh *mesh, const std::string &rasterFile,
   this->m_interpolationFlags.resize(mesh->numNodes());
   std::fill(this->m_interpolationFlags.begin(),
             this->m_interpolationFlags.end(), Average);
+
+  this->m_backupFlags.resize(mesh->numNodes());
+  std::fill(this->m_backupFlags.begin(), m_backupFlags.end(), NoMethod);
+
   this->m_filterSize.resize(mesh->numNodes());
   std::fill(this->m_filterSize.begin(), this->m_filterSize.end(), 1.0);
-  m_queryLocations = this->meshToQueryPoints(mesh);
-  m_queryResolution = mesh->computeMeshSize();
+
+  this->m_queryLocations = this->meshToQueryPoints(mesh, epsgRaster);
+  this->m_queryResolution = mesh->computeMeshSize(epsgRaster);
 }
 
 GriddataPrivate::GriddataPrivate(const std::vector<double> &x,
@@ -113,24 +119,49 @@ GriddataPrivate::GriddataPrivate(const std::vector<double> &x,
   assert(x.size() == y.size());
   assert(x.size() > 0);
   this->m_interpolationFlags.resize(x.size());
+
   std::fill(this->m_interpolationFlags.begin(),
             this->m_interpolationFlags.end(), Average);
+
+  this->m_backupFlags.resize(x.size());
+  std::fill(this->m_backupFlags.begin(), m_backupFlags.end(), NoMethod);
+
   this->m_filterSize.resize(x.size());
   std::fill(this->m_filterSize.begin(), this->m_filterSize.end(), 1.0);
+
   m_queryLocations.reserve(x.size());
   for (size_t i = 0; i < x.size(); ++i) {
     m_queryLocations.emplace_back(x[i], y[i]);
   }
+  if (epsgQuery != epsgRaster) {
+    m_queryLocations = GriddataPrivate::convertQueryPointCoordinates(
+        m_queryLocations, epsgQuery, epsgRaster);
+  }
 }
 
-std::vector<Point> GriddataPrivate::meshToQueryPoints(
-    Adcirc::Geometry::Mesh *m) {
+std::vector<Point> GriddataPrivate::meshToQueryPoints(Adcirc::Geometry::Mesh *m,
+                                                      int epsgRaster) {
   std::vector<Point> qp;
   qp.reserve(m->numNodes());
   for (size_t i = 0; i < m->numNodes(); ++i) {
     qp.emplace_back(m->node(i)->x(), m->node(i)->y());
   }
-  return qp;
+
+  if (epsgRaster != m->projection()) {
+    return GriddataPrivate::convertQueryPointCoordinates(qp, m->projection(),
+                                                         epsgRaster);
+  } else {
+    return qp;
+  }
+}
+
+std::vector<std::pair<double, double>>
+GriddataPrivate::convertQueryPointCoordinates(const std::vector<Point> &input,
+                                              int epsgInput, int epsgOutput) {
+  std::vector<std::pair<double, double>> output;
+  bool isLatLon;
+  Projection::transform(epsgInput, epsgOutput, input, output, isLatLon);
+  return output;
 }
 
 std::string GriddataPrivate::rasterFile() const { return this->m_rasterFile; }
@@ -184,32 +215,62 @@ void GriddataPrivate::readLookupTable(const std::string &lookupTableFile) {
   return;
 }
 
-std::vector<int> GriddataPrivate::interpolationFlags() const {
+std::vector<Interpolation::Method> GriddataPrivate::interpolationFlags() const {
   return this->m_interpolationFlags;
 }
 
 void GriddataPrivate::setInterpolationFlags(
-    const std::vector<int> &interpolationFlags) {
+    const std::vector<Interpolation::Method> &interpolationFlags) {
   this->m_interpolationFlags = interpolationFlags;
 }
 
-void GriddataPrivate::setInterpolationFlags(int interpolationFlag) {
+void GriddataPrivate::setInterpolationFlags(Method interpolationFlag) {
   std::fill(this->m_interpolationFlags.begin(),
             this->m_interpolationFlags.end(), interpolationFlag);
 }
 
-void GriddataPrivate::setInterpolationFlag(size_t index, int flag) {
+void GriddataPrivate::setInterpolationFlag(size_t index,
+                                           Interpolation::Method flag) {
   if (index < this->m_interpolationFlags.size()) {
-    this->m_interpolationFlags[index] =
-        static_cast<Interpolation::Method>(flag);
+    this->m_interpolationFlags[index] = flag;
   }
   return;
 }
 
-int GriddataPrivate::interpolationFlag(size_t index) {
+Interpolation::Method GriddataPrivate::interpolationFlag(size_t index) {
   return index < this->m_interpolationFlags.size()
              ? this->m_interpolationFlags[index]
              : Interpolation::Method::NoMethod;
+}
+
+void GriddataPrivate::setBackupInterpolationFlags(
+    const std::vector<Interpolation::Method> &interpolationFlags) {
+  assert(interpolationFlags.size() == m_backupFlags.size());
+  this->m_backupFlags = interpolationFlags;
+}
+
+void GriddataPrivate::setBackupInterpolationFlags(
+    Interpolation::Method interpolationFlag) {
+  std::fill(this->m_backupFlags.begin(), this->m_backupFlags.end(),
+            interpolationFlag);
+}
+
+void GriddataPrivate::setBackupInterpolationFlag(size_t index,
+                                                 Interpolation::Method flag) {
+  if (index < this->m_backupFlags.size()) {
+    this->m_backupFlags[index] = flag;
+  }
+  return;
+}
+
+Interpolation::Method GriddataPrivate::backupInterpolationFlag(size_t index) {
+  return index < this->m_backupFlags.size() ? this->m_backupFlags[index]
+                                            : Interpolation::Method::NoMethod;
+}
+
+std::vector<Interpolation::Method> GriddataPrivate::backupInterpolationFlags()
+    const {
+  return this->m_backupFlags;
 }
 
 std::vector<double> GriddataPrivate::filterSizes() const {
@@ -248,7 +309,7 @@ void GriddataPrivate::setRasterInMemory(bool rasterInMemory) {
 }
 
 template <typename T>
-bool GriddataPrivate::pixelDataInRadius(Point &p, double radius,
+bool GriddataPrivate::pixelDataInRadius(const Point &p, double radius,
                                         std::vector<double> &x,
                                         std::vector<double> &y,
                                         std::vector<T> &z,
@@ -258,8 +319,7 @@ bool GriddataPrivate::pixelDataInRadius(Point &p, double radius,
   bool r = false;
 
   if (ul.isValid() && lr.isValid()) {
-    this->m_raster.get()->pixelValues<T>(ul.i(), ul.j(), lr.i(), lr.j(), x, y,
-                                         z);
+    this->m_raster->pixelValues<T>(ul.i(), ul.j(), lr.i(), lr.j(), x, y, z);
     valid.resize(x.size());
     std::fill(valid.begin(), valid.end(), false);
 
@@ -289,7 +349,7 @@ bool GriddataPrivate::calculateBilskieRadius(double meshSize,
   return radius / rasterCellSize >= 1.0;
 }
 
-double GriddataPrivate::calculatePoint(Point &p, double searchRadius,
+double GriddataPrivate::calculatePoint(const Point &p, double searchRadius,
                                        double gsMultiplier,
                                        Interpolation::Method method) {
   switch (method) {
@@ -316,7 +376,8 @@ double GriddataPrivate::calculatePoint(Point &p, double searchRadius,
   }
 }
 
-double GriddataPrivate::calculatePointFromLookup(Point &p, double searchRadius,
+double GriddataPrivate::calculatePointFromLookup(const Point &p,
+                                                 double searchRadius,
                                                  double gsMultiplier,
                                                  Interpolation::Method method) {
   switch (method) {
@@ -345,7 +406,7 @@ double GriddataPrivate::calculatePointFromLookup(Point &p, double searchRadius,
   }
 }
 
-double GriddataPrivate::calculateAverage(Point &p, double w) {
+double GriddataPrivate::calculateAverage(const Point &p, double w) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
   if (this->pixelDataInRadius(p, w, x, y, z, v)) {
@@ -359,11 +420,11 @@ double GriddataPrivate::calculateAverage(Point &p, double w) {
     }
     return n > 0 ? a / static_cast<double>(n) : this->defaultValue();
   } else {
-    return this->defaultValue();
+    return this->methodErrorValue();
   }
 }
 
-double GriddataPrivate::calculateAverageFromLookup(Point &p, double w) {
+double GriddataPrivate::calculateAverageFromLookup(const Point &p, double w) {
   std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
@@ -379,13 +440,13 @@ double GriddataPrivate::calculateAverageFromLookup(Point &p, double w) {
         }
       }
     }
-    return (n > 0 ? a / static_cast<double>(n) : this->defaultValue());
+    return (n > 0 ? a / static_cast<double>(n) : this->methodErrorValue());
   } else {
     return this->defaultValue();
   }
 }
 
-double GriddataPrivate::calculateBilskieAveraging(Point &p, double w,
+double GriddataPrivate::calculateBilskieAveraging(const Point &p, double w,
                                                   double gsMultiplier) {
   double r;
   if (this->calculateBilskieRadius(w, this->m_raster.get()->dx(), r)) {
@@ -396,7 +457,7 @@ double GriddataPrivate::calculateBilskieAveraging(Point &p, double w,
 }
 
 double GriddataPrivate::calculateBilskieAveragingFromLookup(
-    Point &p, double w, double gsMultiplier) {
+    const Point &p, double w, double gsMultiplier) {
   double r;
   if (this->calculateBilskieRadius(w, this->m_raster.get()->dx(), r)) {
     return this->calculateAverageFromLookup(p, r * gsMultiplier);
@@ -405,7 +466,8 @@ double GriddataPrivate::calculateBilskieAveragingFromLookup(
   }
 }
 
-double GriddataPrivate::calculateInverseDistanceWeighted(Point &p, double w) {
+double GriddataPrivate::calculateInverseDistanceWeighted(const Point &p,
+                                                         double w) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
   if (this->pixelDataInRadius(p, w, x, y, z, v)) {
@@ -420,16 +482,17 @@ double GriddataPrivate::calculateInverseDistanceWeighted(Point &p, double w) {
         num++;
       }
     }
-    return num > 0 ? n / d : this->defaultValue();
+    return num > 0 ? n / d : this->methodErrorValue();
   }
-  return this->defaultValue();
+  return this->methodErrorValue();
 }
 
-double GriddataPrivate::calculateInverseDistanceWeightedNPoints(Point &p,
+double GriddataPrivate::calculateInverseDistanceWeightedNPoints(const Point &p,
                                                                 double n) {
+  assert(n > 0.0);
   std::vector<double> x, y, z;
   std::vector<bool> v;
-  int maxPoints = static_cast<size_t>(n);
+  size_t maxPoints = static_cast<size_t>(n);
 
   double w = this->calculateExpansionLevelForPoints(maxPoints);
 
@@ -446,19 +509,19 @@ double GriddataPrivate::calculateInverseDistanceWeightedNPoints(Point &p,
       }
       if (np >= maxPoints) break;
     }
-    return np > 0 ? val / d : this->defaultValue();
+    return np > 0 ? val / d : this->methodErrorValue();
   }
-  return this->defaultValue();
+  return this->methodErrorValue();
 }
 
-bool sortPointsByIncreasingDistance(Point &a, Point &b) {
+bool sortPointsByIncreasingDistance(const Point &a, const Point &b) {
   return a.first < b.first;
 }
 
-double GriddataPrivate::calculateAverageNearestN(Point &p, double n) {
+double GriddataPrivate::calculateAverageNearestN(const Point &p, double n) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
-  size_t maxPoints = static_cast<size_t>(n);
+  auto maxPoints = static_cast<size_t>(n);
   double w = this->calculateExpansionLevelForPoints(maxPoints);
   std::vector<Point> pts;
 
@@ -470,7 +533,7 @@ double GriddataPrivate::calculateAverageNearestN(Point &p, double n) {
       }
     }
 
-    if (pts.size() == 0) return this->defaultValue();
+    if (pts.size() == 0) return this->methodErrorValue();
 
     size_t np = std::min(pts.size(), maxPoints);
     std::partial_sort(pts.begin(), pts.begin() + np, pts.end(),
@@ -482,14 +545,15 @@ double GriddataPrivate::calculateAverageNearestN(Point &p, double n) {
     }
     return val / static_cast<double>(np);
   }
-  return this->defaultValue();
+  return this->methodErrorValue();
 }
 
-double GriddataPrivate::calculateAverageNearestNFromLookup(Point &p, double n) {
+double GriddataPrivate::calculateAverageNearestNFromLookup(const Point &p,
+                                                           double n) {
   std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
-  size_t maxPoints = static_cast<size_t>(n);
+  auto maxPoints = static_cast<size_t>(n);
   double w = this->calculateExpansionLevelForPoints(maxPoints);
   std::vector<Point> pts;
 
@@ -504,7 +568,7 @@ double GriddataPrivate::calculateAverageNearestNFromLookup(Point &p, double n) {
       }
     }
 
-    if (pts.size() == 0) return this->defaultValue();
+    if (pts.size() == 0) return this->methodErrorValue();
 
     size_t np = std::min(pts.size(), maxPoints);
     std::partial_sort(pts.begin(), pts.begin() + np, pts.end(),
@@ -516,11 +580,11 @@ double GriddataPrivate::calculateAverageNearestNFromLookup(Point &p, double n) {
     }
     return val / static_cast<double>(np);
   }
-  return this->defaultValue();
+  return this->methodErrorValue();
 }
 
-double GriddataPrivate::calculateInverseDistanceWeightedFromLookup(Point &p,
-                                                                   double w) {
+double GriddataPrivate::calculateInverseDistanceWeightedFromLookup(
+    const Point &p, double w) {
   std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
@@ -539,9 +603,9 @@ double GriddataPrivate::calculateInverseDistanceWeightedFromLookup(Point &p,
         }
       }
     }
-    return num > 0 ? n / d : this->defaultValue();
+    return num > 0 ? n / d : this->methodErrorValue();
   }
-  return this->defaultValue();
+  return this->methodErrorValue();
 }
 
 double GriddataPrivate::calculateExpansionLevelForPoints(size_t n) {
@@ -582,11 +646,12 @@ void GriddataPrivate::setThresholdValue(double filterValue) {
 }
 
 double GriddataPrivate::calculateInverseDistanceWeightedNPointsFromLookup(
-    Point &p, double n) {
+    const Point &p, double n) {
+  assert(n > 0.0);
   std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
-  int maxPoints = static_cast<size_t>(n);
+  size_t maxPoints = static_cast<size_t>(n);
 
   double w = calculateExpansionLevelForPoints(n);
 
@@ -606,13 +671,13 @@ double GriddataPrivate::calculateInverseDistanceWeightedNPointsFromLookup(
       }
       if (np >= maxPoints) break;
     }
-    return np > 0 ? val / d : this->defaultValue();
+    return np > 0 ? val / d : this->methodErrorValue();
   }
-  return this->defaultValue();
+  return this->methodErrorValue();
 }
 
-double GriddataPrivate::calculateOutsideStandardDeviation(Point &p, double w,
-                                                          int n) {
+double GriddataPrivate::calculateOutsideStandardDeviation(const Point &p,
+                                                          double w, int n) {
   std::vector<double> x, y, z, z2;
   std::vector<bool> v;
   z2.reserve(z.size());
@@ -635,14 +700,13 @@ double GriddataPrivate::calculateOutsideStandardDeviation(Point &p, double w,
         np++;
       }
     }
-    return np > 0 ? a / static_cast<double>(np) : this->calculateAverage(p, w);
+    return np > 0 ? a / static_cast<double>(np) : this->methodErrorValue();
   }
-  return this->defaultValue();
+  return this->methodErrorValue();
 }
 
-double GriddataPrivate::calculateOutsideStandardDeviationFromLookup(Point &p,
-                                                                    double w,
-                                                                    int n) {
+double GriddataPrivate::calculateOutsideStandardDeviationFromLookup(
+    const Point &p, double w, int n) {
   std::vector<double> x, y, z2;
   std::vector<int> z;
   std::vector<bool> v;
@@ -669,47 +733,47 @@ double GriddataPrivate::calculateOutsideStandardDeviationFromLookup(Point &p,
         np++;
       }
     }
-    return np > 0 ? a / static_cast<double>(np)
-                  : this->calculateAverageFromLookup(p, w);
+    return np > 0 ? a / static_cast<double>(np) : this->methodErrorValue();
   }
-  return this->defaultValue();
+  return this->methodErrorValue();
 }
 
-double GriddataPrivate::calculateNearest(Point &p, double w) {
+double GriddataPrivate::calculateNearest(const Point &p, double w) {
   Adcirc::Raster::Pixel px = this->m_raster.get()->coordinateToPixel(p);
   Point pxloc = this->m_raster.get()->pixelToCoordinate(px);
   double d = Constants::distance(p, pxloc);
   if (d > w) {
-    return this->defaultValue();
+    return this->methodErrorValue();
   } else {
     double z = this->m_raster.get()->pixelValue<double>(px);
-    return z != this->m_raster.get()->nodata<double>() ? z
-                                                       : this->defaultValue();
+    return z != this->m_raster.get()->nodata<double>()
+               ? z
+               : this->methodErrorValue();
   }
 }
 
-double GriddataPrivate::calculateNearestFromLookup(Point &p, double w) {
+double GriddataPrivate::calculateNearestFromLookup(const Point &p, double w) {
   Adcirc::Raster::Pixel px = this->m_raster.get()->coordinateToPixel(p);
   Point pxloc = this->m_raster.get()->pixelToCoordinate(px);
   double d = Constants::distance(p, pxloc);
   if (d > w)
-    return this->defaultValue();
+    return this->methodErrorValue();
   else {
     int z = this->m_raster.get()->pixelValue<int>(px);
     if (z != this->m_raster.get()->nodata<int>()) {
       double zl;
-      return this->getKeyValue(z, zl) ? zl : this->defaultValue();
+      return this->getKeyValue(z, zl) ? zl : this->methodErrorValue();
     } else {
-      return this->defaultValue();
+      return this->methodErrorValue();
     }
   }
 }
 
-double GriddataPrivate::calculateHighest(Point &p, double w) {
+double GriddataPrivate::calculateHighest(const Point &p, double w) {
   std::vector<double> x, y, z;
   std::vector<bool> v;
   if (this->pixelDataInRadius(p, w, x, y, z, v)) {
-    double zm = std::numeric_limits<double>::min();
+    double zm = std::numeric_limits<double>::max();
     for (size_t i = 0; i < x.size(); ++i) {
       if (v[i]) {
         if (z[i] > zm) {
@@ -719,16 +783,16 @@ double GriddataPrivate::calculateHighest(Point &p, double w) {
     }
     return zm;
   } else {
-    return this->defaultValue();
+    return this->methodErrorValue();
   }
 }
 
-double GriddataPrivate::calculateHighestFromLookup(Point &p, double w) {
+double GriddataPrivate::calculateHighestFromLookup(const Point &p, double w) {
   std::vector<double> x, y;
   std::vector<int> z;
   std::vector<bool> v;
   if (this->pixelDataInRadius(p, w, x, y, z, v)) {
-    double zm = std::numeric_limits<double>::min();
+    double zm = -std::numeric_limits<double>::max();
     for (size_t i = 0; i < x.size(); ++i) {
       if (v[i]) {
         double zl;
@@ -739,12 +803,13 @@ double GriddataPrivate::calculateHighestFromLookup(Point &p, double w) {
         }
       }
     }
-    return zm != std::numeric_limits<double>::min() ? zm : this->defaultValue();
+    return zm != -std::numeric_limits<double>::max() ? zm
+                                                     : this->methodErrorValue();
   }
-  return this->defaultValue();
+  return this->methodErrorValue();
 }
 
-bool GriddataPrivate::computeWindDirectionAndWeight(Point &p, double x,
+bool GriddataPrivate::computeWindDirectionAndWeight(const Point &p, double x,
                                                     double y, double &w,
                                                     int &dir) {
   double dx = (x - p.first) * 0.001;
@@ -785,7 +850,7 @@ void GriddataPrivate::computeWeightedDirectionalWindValues(
 }
 
 std::vector<double> GriddataPrivate::calculateDirectionalWindFromRaster(
-    Point &p) {
+    const Point &p) {
   double nearWeight = 0.0;
   std::vector<double> x, y, z, wind, weight;
   std::vector<bool> v;
@@ -816,7 +881,7 @@ std::vector<double> GriddataPrivate::calculateDirectionalWindFromRaster(
 }
 
 std::vector<double> GriddataPrivate::calculateDirectionalWindFromLookup(
-    Point &p) {
+    const Point &p) {
   double nearWeight = 0.0;
   std::vector<double> x, y, wind, weight;
   std::vector<int> z;
@@ -864,13 +929,6 @@ void GriddataPrivate::setDatumShift(double datumShift) {
   this->m_datumShift = datumShift;
 }
 
-void GriddataPrivate::checkMatchingCoorindateSystems() {
-  if (this->m_epsg != m_inputEpsg) {
-    adcircmodules_throw_exception(
-        "You must use the same coordinate systems for mesh and raster.");
-  }
-}
-
 void GriddataPrivate::checkRasterOpen() {
   if (!this->m_raster.get()->isOpen()) {
     bool success = this->m_raster.get()->open();
@@ -894,7 +952,6 @@ void GriddataPrivate::assignDirectionalWindReductionFunctionPointer(
 std::vector<double> GriddataPrivate::computeValuesFromRaster(
     bool useLookupTable) {
   this->checkRasterOpen();
-  this->checkMatchingCoorindateSystems();
   this->assignInterpolationFunctionPointer(useLookupTable);
   std::unique_ptr<boost::progress_display> progress(nullptr);
 
@@ -919,10 +976,15 @@ std::vector<double> GriddataPrivate::computeValuesFromRaster(
       ++(*progress.get());
     }
 
-    Method m = static_cast<Method>(this->m_interpolationFlags[i]);
-    double v = (this->*m_calculatePointPtr)(m_queryLocations[i],
-                                            m_queryResolution[i] * 0.5,
-                                            this->m_filterSize[i], m);
+    double v = (this->*m_calculatePointPtr)(
+        m_queryLocations[i], m_queryResolution[i] * 0.5, this->m_filterSize[i],
+        m_interpolationFlags[i]);
+    if (v == GriddataPrivate::methodErrorValue()) {
+      v = (this->*m_calculatePointPtr)(m_queryLocations[i],
+                                       m_queryResolution[i] * 0.5,
+                                       this->m_filterSize[i], m_backupFlags[i]);
+      if (v == methodErrorValue()) v = this->defaultValue();
+    }
     result[i] = v * this->m_rasterMultiplier + this->m_datumShift;
   }
 
@@ -964,7 +1026,6 @@ std::vector<std::vector<double>>
 GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
   std::unique_ptr<boost::progress_display> progress(nullptr);
   this->checkRasterOpen();
-  this->checkMatchingCoorindateSystems();
   this->assignDirectionalWindReductionFunctionPointer(useLookupTable);
 
   if (this->m_rasterInMemory) {

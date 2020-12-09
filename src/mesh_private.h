@@ -164,7 +164,7 @@ class MeshPrivate {
   Adcirc::Kdtree *nodalSearchTree() const;
   Adcirc::Kdtree *elementalSearchTree() const;
 
-  std::vector<double> computeMeshSize();
+  std::vector<double> computeMeshSize(int epsg = 0);
 
   std::string hash(bool force = false);
 

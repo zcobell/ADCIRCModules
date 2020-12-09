@@ -65,6 +65,9 @@ class Node {
   size_t ADCIRCMODULES_EXPORT id() const;
   void ADCIRCMODULES_EXPORT setId(size_t id);
 
+  bool ADCIRCMODULES_EXPORT isBoundaryNode() const;
+  void ADCIRCMODULES_EXPORT setIsBoundaryNode(bool b);
+
   std::string ADCIRCMODULES_EXPORT toAdcircString(bool geographicCoordinates);
   std::string ADCIRCMODULES_EXPORT to2dmString(bool geographicCoordinates);
 
@@ -85,6 +88,7 @@ class Node {
   std::unique_ptr<char[]> m_hash;          /// hash identifier for the node
   std::unique_ptr<char[]> m_positionHash;  /// hash of only node's position
   std::array<double, 3> m_position;
+  bool m_isBoundaryNode;
 
   static void nodeCopier(Node *a, const Node *b);
 

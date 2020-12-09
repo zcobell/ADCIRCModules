@@ -76,12 +76,26 @@ class Griddata {
 
   void ADCIRCMODULES_EXPORT readLookupTable(const std::string &lookupTableFile);
 
-  std::vector<int> ADCIRCMODULES_EXPORT interpolationFlags() const;
+  std::vector<Adcirc::Interpolation::Method> interpolationFlags() const;
+  void ADCIRCMODULES_EXPORT setInterpolationFlags(
+      const std::vector<Adcirc::Interpolation::Method> &interpolationFlags);
   void ADCIRCMODULES_EXPORT
-  setInterpolationFlags(const std::vector<int> &interpolationFlags);
-  void ADCIRCMODULES_EXPORT setInterpolationFlags(int interpolationFlag);
-  int ADCIRCMODULES_EXPORT interpolationFlag(size_t index);
-  void ADCIRCMODULES_EXPORT setInterpolationFlag(size_t index, int flag);
+  setInterpolationFlags(Adcirc::Interpolation::Method interpolationFlag);
+  Adcirc::Interpolation::Method ADCIRCMODULES_EXPORT
+  interpolationFlag(size_t index);
+  void ADCIRCMODULES_EXPORT
+  setInterpolationFlag(size_t index, Adcirc::Interpolation::Method flag);
+
+  std::vector<Adcirc::Interpolation::Method> ADCIRCMODULES_EXPORT
+  backupInterpolationFlags() const;
+  void ADCIRCMODULES_EXPORT setBackupInterpolationFlags(
+      const std::vector<Adcirc::Interpolation::Method> &interpolationFlags);
+  void ADCIRCMODULES_EXPORT
+  setBackupInterpolationFlags(Adcirc::Interpolation::Method interpolationFlag);
+  Adcirc::Interpolation::Method ADCIRCMODULES_EXPORT
+  backupInterpolationFlag(size_t index);
+  void ADCIRCMODULES_EXPORT
+  setBackupInterpolationFlag(size_t index, Adcirc::Interpolation::Method flag);
 
   std::vector<double> ADCIRCMODULES_EXPORT filterSizes() const;
   void ADCIRCMODULES_EXPORT

@@ -209,7 +209,7 @@ class Mesh {
   Adcirc::Kdtree ADCIRCMODULES_EXPORT *nodalSearchTree() const;
   Adcirc::Kdtree ADCIRCMODULES_EXPORT *elementalSearchTree() const;
 
-  std::vector<double> ADCIRCMODULES_EXPORT computeMeshSize();
+  std::vector<double> ADCIRCMODULES_EXPORT computeMeshSize(int epsg = 0);
 
   std::vector<Adcirc::Geometry::Node *> ADCIRCMODULES_EXPORT boundaryNodes();
 

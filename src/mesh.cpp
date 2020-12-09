@@ -630,8 +630,8 @@ Adcirc::Kdtree *Mesh::elementalSearchTree() const {
  * @brief Computes average size of the element edges connected to each node
  * @return vector containing size at each node
  */
-std::vector<double> Mesh::computeMeshSize() {
-  return this->m_impl->computeMeshSize();
+std::vector<double> Mesh::computeMeshSize(int epsg) {
+  return this->m_impl->computeMeshSize(epsg);
 }
 
 /**

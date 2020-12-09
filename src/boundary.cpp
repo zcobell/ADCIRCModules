@@ -20,10 +20,10 @@
 
 #include <array>
 
+#include "adchash.h"
 #include "boost/format.hpp"
 #include "boost/geometry.hpp"
 #include "default_values.h"
-#include "adchash.h"
 #include "logging.h"
 
 using namespace Adcirc::Geometry;
@@ -489,6 +489,7 @@ Node *Boundary::node1(size_t index) const {
 void Boundary::setNode1(size_t index, Node *node1) {
   if (index < this->boundaryLength()) {
     this->m_node1[index] = node1;
+    node1->setIsBoundaryNode(true);
   } else {
     adcircmodules_throw_exception("Index exceeds bounds");
   }
@@ -520,6 +521,7 @@ void Boundary::setNode2(size_t index, Node *node2) {
   if (this->isInternalWeir()) {
     if (index < this->boundaryLength()) {
       this->m_node2[index] = node2;
+      node2->setIsBoundaryNode(true);
     } else {
       adcircmodules_throw_exception("Index exceeds bounds");
     }
@@ -583,6 +585,7 @@ void Boundary::addNode(Node *node) {
         "Incorrect addNode call for this boundary type");
   }
   this->m_node1.push_back(node);
+  node->setIsBoundaryNode(true);
   return;
 }
 
@@ -600,6 +603,7 @@ void Boundary::addNode(Node *node, double crestElevation,
         "Incorrect addNode call for this boundary type");
   }
   this->m_node1.push_back(node);
+  node->setIsBoundaryNode(true);
   this->m_crestElevation.push_back(crestElevation);
   this->m_supercriticalWeirCoefficient.push_back(supercriticalWeirCoefficient);
 }
@@ -624,6 +628,8 @@ void Boundary::addNode(Node *node1, Node *node2, double crestElevation,
   }
   this->m_node1.push_back(node1);
   this->m_node2.push_back(node2);
+  node1->setIsBoundaryNode(true);
+  node2->setIsBoundaryNode(true);
   this->m_crestElevation.push_back(crestElevation);
   this->m_subcriticalWeirCoefficient.push_back(subcriticalWeirCoefficient);
   this->m_supercriticalWeirCoefficient.push_back(supercriticalWeirCoefficient);
@@ -653,6 +659,8 @@ void Boundary::addNode(Node *node1, Node *node2, double crestElevation,
   }
   this->m_node1.push_back(node1);
   this->m_node2.push_back(node2);
+  node1->setIsBoundaryNode(true);
+  node2->setIsBoundaryNode(true);
   this->m_crestElevation.push_back(crestElevation);
   this->m_subcriticalWeirCoefficient.push_back(subcriticalWeirCoefficient);
   this->m_supercriticalWeirCoefficient.push_back(supercriticalWeirCoefficient);

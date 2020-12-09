@@ -48,8 +48,9 @@ int main() {
   g->setShowProgressBar(true);
   g->readLookupTable("test_files/sample_lookup.table");
   g->setRasterInMemory(true);
-  for (size_t i = 0; i < m->numNodes(); ++i) {
-    g->setInterpolationFlag(i, i % 9);
+  for (int i = 0; i < m->numNodes(); ++i) {
+    auto m = static_cast<Adcirc::Interpolation::Method>(i % 9);
+    g->setInterpolationFlag(i, m);
     if (g->interpolationFlag(i) == 7 || g->interpolationFlag(i) == 8) {
       g->setFilterSize(i, 16.0);
     }

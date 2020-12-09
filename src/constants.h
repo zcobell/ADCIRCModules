@@ -122,8 +122,8 @@ class Constants {
 
   static double distance(double x1, double y1, double x2, double y2,
                          bool geodesic = false);
-  static double distance(Point &p1, Point &p2, bool geodesic = false);
-  static double distance(Point &p1, double x2, double y2,
+  static double distance(const Point &p1, Point &p2, bool geodesic = false);
+  static double distance(const Point &p1, double x2, double y2,
                          bool geodesic = false);
   // static double azimuth(double x1, double y1, double  x2, double y2);
 

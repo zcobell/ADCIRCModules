@@ -88,7 +88,8 @@ void Griddata::readLookupTable(const std::string &lookupTableFile) {
  * Interpolation::Average
  * @return Vector of interpolation flags
  */
-std::vector<int> Griddata::interpolationFlags() const {
+std::vector<Adcirc::Interpolation::Method> Griddata::interpolationFlags()
+    const {
   return this->m_impl->interpolationFlags();
 }
 
@@ -99,7 +100,7 @@ std::vector<int> Griddata::interpolationFlags() const {
  * the mesh
  */
 void Griddata::setInterpolationFlags(
-    const std::vector<int> &interpolationFlags) {
+    const std::vector<Adcirc::Interpolation::Method> &interpolationFlags) {
   this->m_impl->setInterpolationFlags(interpolationFlags);
 }
 
@@ -107,7 +108,8 @@ void Griddata::setInterpolationFlags(
  * @brief Sets the interpolation flags to a uniform value
  * @param[in] interpolationFlag flag that will be set for all nodes
  */
-void Griddata::setInterpolationFlags(int interpolationFlag) {
+void Griddata::setInterpolationFlags(
+    Adcirc::Interpolation::Method interpolationFlag) {
   this->m_impl->setInterpolationFlags(interpolationFlag);
 }
 
@@ -116,7 +118,7 @@ void Griddata::setInterpolationFlags(int interpolationFlag) {
  * @param[in] index position to retrieve flag for
  * @return interpolation flag
  */
-int Griddata::interpolationFlag(size_t index) {
+Adcirc::Interpolation::Method Griddata::interpolationFlag(size_t index) {
   return this->m_impl->interpolationFlag(index);
 }
 
@@ -125,8 +127,41 @@ int Griddata::interpolationFlag(size_t index) {
  * @param[in] index node position to set the flag
  * @param[in] flag interpolation method to use
  */
-void Griddata::setInterpolationFlag(size_t index, int flag) {
+void Griddata::setInterpolationFlag(size_t index,
+                                    Adcirc::Interpolation::Method flag) {
   this->m_impl->setInterpolationFlag(index, flag);
+}
+
+/**
+ * @brief Returns the full set of backup interpolation flags
+ * @return vector of backup interpolation flags
+ */
+std::vector<Adcirc::Interpolation::Method> Griddata::backupInterpolationFlags()
+    const {
+  return this->m_impl->backupInterpolationFlags();
+}
+
+/**
+ * @brief Griddata::setBackupInterpolationFlags
+ * @param interpolationFlags
+ */
+void Griddata::setBackupInterpolationFlags(
+    const std::vector<Adcirc::Interpolation::Method> &interpolationFlags) {
+  this->m_impl->setBackupInterpolationFlags(interpolationFlags);
+}
+
+void Griddata::setBackupInterpolationFlags(
+    Adcirc::Interpolation::Method interpolationFlags) {
+  this->m_impl->setBackupInterpolationFlags(interpolationFlags);
+}
+
+Adcirc::Interpolation::Method Griddata::backupInterpolationFlag(size_t index) {
+  return this->m_impl->backupInterpolationFlag(index);
+}
+
+void Griddata::setBackupInterpolationFlag(size_t index,
+                                          Adcirc::Interpolation::Method flag) {
+  this->m_impl->setBackupInterpolationFlag(index, flag);
 }
 
 /**
