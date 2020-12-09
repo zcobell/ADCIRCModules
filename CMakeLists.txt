@@ -109,3 +109,12 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/interpolateAdcircStations.cmake
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/resultsScope.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/highWaterMarks.cmake)
 # ##############################################################################
+
+
+# ##############################################################################
+# TESTING
+# ##############################################################################
+IF(BUILD_TESTS)
+  include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/test_cases.cmake)
+ENDIF()
+# ##############################################################################

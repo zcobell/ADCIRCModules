@@ -45,7 +45,7 @@ int main() {
   m->reproject(26915);
 
   std::unique_ptr<Griddata> g(
-      new Griddata(m.get(), "test_files/lulc_samplelulcraster.tif",12345));
+      new Griddata(m.get(), "test_files/lulc_samplelulcraster.tif",26915));
   // Multithreading::disable();
 
 #if 1
@@ -60,7 +60,6 @@ int main() {
 
   g->setShowProgressBar(true);
   g->readLookupTable("test_files/sample_lookup.table");
-  g->setEpsg(26915);
   g->setRasterInMemory(true);
   std::vector<std::vector<double>> r = g->computeDirectionalWindReduction(true);
 

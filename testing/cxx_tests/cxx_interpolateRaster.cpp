@@ -28,7 +28,7 @@ int main() {
     -9999.0, 
     -0.117294,    
     -0.142737,   
-    2.22507e-308, 
+    std::numeric_limits<double>::max(),
     -0.370975,    
     -0.477835,    
     -0.475127,    
@@ -50,9 +50,12 @@ int main() {
   g->setShowProgressBar(true);
   gm->setShowProgressBar(true);
 
-  for (size_t i = 0; i < m->numNodes(); ++i) {
-    g->setInterpolationFlag(i, i % 9);
-    gm->setInterpolationFlag(i, i % 9);
+  for (int i = 0; i < m->numNodes(); ++i) {
+    auto m = static_cast<Adcirc::Interpolation::Method>(i % 9);
+    g->setInterpolationFlag(i, m);
+    gm->setInterpolationFlag(i, m);
+    g->setBackupInterpolationFlag(i,Adcirc::Interpolation::Average);
+    gm->setBackupInterpolationFlag(i,Adcirc::Interpolation::Average);
     if (g->interpolationFlag(i) == 7 || g->interpolationFlag(i) == 8) {
       g->setFilterSize(i, 16.0);
       gm->setFilterSize(i, 16.0);

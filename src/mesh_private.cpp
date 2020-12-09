@@ -1016,8 +1016,8 @@ Node MeshPrivate::nodeC(size_t index) const {
  * @return Element pointer
  */
 Element *MeshPrivate::element(size_t index) {
-  //if (index < this->numElements()) {
-    return &this->m_elements[index];
+  // if (index < this->numElements()) {
+  return &this->m_elements[index];
   //} else {
   //  adcircmodules_throw_exception("Mesh: Element index out of bounds");
   //  return nullptr;
@@ -2474,9 +2474,14 @@ size_t MeshPrivate::findElement(Point &location) {
  * @brief Computes average size of the element edges connected to each node
  * @return vector containing size at each node
  */
-std::vector<double> MeshPrivate::computeMeshSize() {
+std::vector<double> MeshPrivate::computeMeshSize(int epsg) {
   if (!this->topology()->elementTable()->initialized()) {
     this->topology()->elementTable()->build();
+  }
+
+  int epsg_original = this->projection();
+  if (epsg != 0 && epsg_original != epsg) {
+    this->reproject(epsg);
   }
 
   std::vector<double> meshsize(this->numNodes());
@@ -2485,9 +2490,11 @@ std::vector<double> MeshPrivate::computeMeshSize() {
     std::vector<Element *> l =
         this->topology()->elementTable()->elementList(this->node(i));
     double a = 0.0;
+
     for (size_t j = 0; j < l.size(); ++j) {
       a += l[j]->elementSize(false);
     }
+
     if (l.size() > 0)
       meshsize[i] = a / l.size();
     else
@@ -2497,6 +2504,11 @@ std::vector<double> MeshPrivate::computeMeshSize() {
       adcircmodules_throw_exception("Error computing mesh size table.");
     }
   }
+
+  if (epsg != 0 && epsg_original != epsg) {
+    this->reproject(epsg_original);
+  }
+
   return meshsize;
 }
 

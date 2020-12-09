@@ -18,10 +18,10 @@
 //------------------------------------------------------------------------*/
 #include "node.h"
 
+#include "adchash.h"
 #include "boost/format.hpp"
 #include "default_values.h"
 #include "fpcompare.h"
-#include "adchash.h"
 
 using namespace Adcirc::Geometry;
 
@@ -34,7 +34,8 @@ Node::Node()
       m_positionHash(nullptr),
       m_position{adcircmodules_default_value<double>(),
                  adcircmodules_default_value<double>(),
-                 adcircmodules_default_value<double>()} {}
+                 adcircmodules_default_value<double>()},
+      m_isBoundaryNode(false) {}
 
 /**
  * @brief Constructor taking the id, x, y, and z for the node
@@ -44,7 +45,11 @@ Node::Node()
  * @param[in] z z elevation
  */
 Node::Node(size_t id, double x, double y, double z)
-    : m_id(id), m_hash(nullptr), m_positionHash(nullptr), m_position{x, y, z} {}
+    : m_id(id),
+      m_hash(nullptr),
+      m_positionHash(nullptr),
+      m_position{x, y, z},
+      m_isBoundaryNode(false) {}
 
 /**
  * @brief Copies a Node object
@@ -56,6 +61,7 @@ void Node::nodeCopier(Node *a, const Node *b) {
   a->m_position = {b->x(), b->y(), b->z()};
   a->m_hash.reset(nullptr);
   a->m_positionHash.reset(nullptr);
+  a->m_isBoundaryNode = b->isBoundaryNode();
 }
 
 /**
@@ -231,3 +237,16 @@ void Node::generatePositionHash(Adcirc::Cryptography::HashType h) {
   this->m_positionHash.reset(hash.getHash());
   return;
 }
+
+/**
+ * @brief Returns true if a node lies on an imposed boundary condition in the
+ * mesh
+ * @return true if boundary node
+ */
+bool Node::isBoundaryNode() const { return m_isBoundaryNode; }
+
+/**
+ * @brief Sets the boundary node status
+ * @param b true if node is on the boundary
+ */
+void Node::setIsBoundaryNode(bool b) { m_isBoundaryNode = b; }

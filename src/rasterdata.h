@@ -88,7 +88,7 @@ class Rasterdata {
   Point pixelToCoordinate(Adcirc::Raster::Pixel &p);
 
   Adcirc::Raster::Pixel coordinateToPixel(double x, double y);
-  Adcirc::Raster::Pixel coordinateToPixel(Point &p);
+  Adcirc::Raster::Pixel coordinateToPixel(const Point &p);
 
   std::string projectionString() const;
 

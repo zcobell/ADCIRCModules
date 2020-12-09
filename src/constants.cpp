@@ -41,8 +41,8 @@ double Constants::radiusEarth(double latitude) {
  * @param[in] y1 y-location 1
  * @param[in] x2 x-location 2
  * @param[in] y2 y-location 2
- * @param[in] geodesic if true, use the Haversine formula to calculate a geodesic
- * distance, otherwise use a simple cartesian distance (default)
+ * @param[in] geodesic if true, use the Haversine formula to calculate a
+ * geodesic distance, otherwise use a simple cartesian distance (default)
  * @return distance between two points
  */
 double Constants::distance(double x1, double y1, double x2, double y2,
@@ -58,11 +58,11 @@ double Constants::distance(double x1, double y1, double x2, double y2,
  * @brief Calculates the distance between two points
  * @param[in] p1 location 1
  * @param[in] p2 location 2
- * @param[in] geodesic if true, use the Haversine formula to calculate a geodesic
- * distance, otherwise use a simple cartesian distance (default)
+ * @param[in] geodesic if true, use the Haversine formula to calculate a
+ * geodesic distance, otherwise use a simple cartesian distance (default)
  * @return distance between two points
  */
-double Constants::distance(Point &p1, Point &p2, bool geodesic) {
+double Constants::distance(const Point &p1, Point &p2, bool geodesic) {
   if (geodesic) {
     return Constants::geodesic_distance(p1.first, p1.second, p2.first,
                                         p2.second);
@@ -77,11 +77,12 @@ double Constants::distance(Point &p1, Point &p2, bool geodesic) {
  * @param[in] p1 location 1
  * @param[in] x2 x-location 2
  * @param[in] y2 y-location 2
- * @param[in] geodesic if true, use the Haversine formula to calculate a geodesic
- * distance, otherwise use a simple cartesian distance (default)
+ * @param[in] geodesic if true, use the Haversine formula to calculate a
+ * geodesic distance, otherwise use a simple cartesian distance (default)
  * @return distance between two points
  */
-double Constants::distance(Point &p1, double x2, double y2, bool geodesic) {
+double Constants::distance(const Point &p1, double x2, double y2,
+                           bool geodesic) {
   if (geodesic) {
     return Constants::geodesic_distance(p1.first, p1.second, x2, y2);
   } else {
