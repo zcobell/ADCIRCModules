@@ -51,6 +51,7 @@ int main() {
   for (int i = 0; i < m->numNodes(); ++i) {
     auto m = static_cast<Adcirc::Interpolation::Method>(i % 9);
     g->setInterpolationFlag(i, m);
+    g->setBackupInterpolationFlags(Adcirc::Interpolation::Average);
     if (g->interpolationFlag(i) == 7 || g->interpolationFlag(i) == 8) {
       g->setFilterSize(i, 16.0);
     }
