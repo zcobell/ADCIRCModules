@@ -157,13 +157,8 @@ void Node::setId(size_t id) { this->m_id = id; }
  * @return formatted string
  */
 std::string Node::toAdcircString(bool geographicCoordinates) {
-  if (geographicCoordinates) {
-    return boost::str(boost::format("%11i   %14.10f   %14.10f  %14.10f") %
-                      this->id() % this->x() % this->y() % this->z());
-  } else {
-    return boost::str(boost::format("%11i   %14.4f   %14.4f  %14.4f") %
-                      this->id() % this->x() % this->y() % this->z());
-  }
+  return boost::str(boost::format("%11i   %16.10f   %16.10f  %16.10f") %
+                    this->id() % this->x() % this->y() % this->z());
 }
 
 /**
@@ -173,7 +168,7 @@ std::string Node::toAdcircString(bool geographicCoordinates) {
  * @return formatted string
  */
 std::string Node::to2dmString(bool geographicCoordinates) {
-  return boost::str(boost::format("%s  %i %14.8e %14.8e %14.8e") % "ND" %
+  return boost::str(boost::format("%s  %i %16.10e %16.10e %16.10e") % "ND" %
                     this->id() % this->x() % this->y() % this->z());
 }
 
