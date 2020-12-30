@@ -19,8 +19,6 @@
 #ifndef PROGRESSBAR_H
 #define PROGRESSBAR_H
 
-#include <atomic>
-#include <chrono>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -47,13 +45,11 @@ class ProgressBar {
  private:
   static bool istty();
 
-  size_t m_display_mode;
+  short m_display_mode;
   size_t m_total_iterations;
   unsigned long long m_current;
-  long long m_updateInterval;
   std::string m_prefix;
   std::mutex m_mutex;
-  std::chrono::time_point<std::chrono::high_resolution_clock> m_lastUpdate;
   std::unique_ptr<indicators::ProgressBar> m_indicators_progress;
   std::unique_ptr<boost::progress_display> m_boost_progress;
 };
