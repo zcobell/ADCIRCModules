@@ -19,15 +19,15 @@
 #ifndef ADCMOD_GRIDDATAPRIVATE_H
 #define ADCMOD_GRIDDATAPRIVATE_H
 
-#include <cmath>
-#include <memory>
-#include <string>
-#include <utility>
 #include "adcmap.h"
 #include "constants.h"
 #include "interpolationmethods.h"
 #include "mesh.h"
 #include "rasterdata.h"
+#include <cmath>
+#include <memory>
+#include <string>
+#include <utility>
 
 namespace Adcirc {
 namespace Private {
@@ -35,7 +35,7 @@ namespace Private {
 using Point = std::pair<double, double>;
 
 class GriddataPrivate {
- public:
+public:
   GriddataPrivate();
 
   GriddataPrivate(const std::vector<double> &x, const std::vector<double> &y,
@@ -74,8 +74,8 @@ class GriddataPrivate {
   void setDefaultValue(double defaultValue);
 
   std::vector<double> computeValuesFromRaster(bool useLookupTable = false);
-  std::vector<std::vector<double>> computeDirectionalWindReduction(
-      bool useLookupTable = false);
+  std::vector<std::vector<double>>
+  computeDirectionalWindReduction(bool useLookupTable = false);
 
   int epsg() const;
   void setEpsg(int epsg);
@@ -103,67 +103,87 @@ class GriddataPrivate {
 
   std::vector<double> extents() const;
 
- private:
+private:
   bool getKeyValue(unsigned key, double &value);
 
   constexpr double methodErrorValue() {
     return -std::numeric_limits<double>::max();
   }
 
-  double calculatePoint(const Point &p, double searchRadius,
-                        double gsMultiplier, Interpolation::Method method);
-  double calculateAverage(const Point &p, double w);
-  double calculateNearest(const Point &p, double w);
-  double calculateHighest(const Point &p, double w);
-  double calculateOutsideStandardDeviation(const Point &p, double w, int n);
-  double calculateBilskieAveraging(const Point &p, double w,
-                                   double gsMultiplier);
-  double calculateInverseDistanceWeighted(const Point &p, double w);
-  double calculateInverseDistanceWeightedNPoints(const Point &p, double n);
-  double calculateAverageNearestN(const Point &p, double n);
+  double calculatePoint(Raster::Rasterdata *raster, const Point &p,
+                        double searchRadius, double gsMultiplier,
+                        Interpolation::Method method);
+  double calculateAverage(Raster::Rasterdata *raster, const Point &p, double w);
+  double calculateNearest(Raster::Rasterdata *raster, const Point &p, double w);
+  double calculateHighest(Raster::Rasterdata *raster, const Point &p, double w);
+  double calculateOutsideStandardDeviation(Raster::Rasterdata *raster,
+                                           const Point &p, double w, int n);
+  double calculateBilskieAveraging(Raster::Rasterdata *raster, const Point &p,
+                                   double w, double gsMultiplier);
+  double calculateInverseDistanceWeighted(Raster::Rasterdata *raster,
+                                          const Point &p, double w);
+  double calculateInverseDistanceWeightedNPoints(Raster::Rasterdata *raster,
+                                                 const Point &p, double n);
+  double calculateAverageNearestN(Raster::Rasterdata *raster, const Point &p,
+                                  double n);
 
-  double calculatePointFromLookup(const Point &p, double w, double gsMultiplier,
+  double calculatePointFromLookup(Raster::Rasterdata *raster, const Point &p,
+                                  double w, double gsMultiplier,
                                   Interpolation::Method method);
-  double calculateAverageFromLookup(const Point &p, double w);
-  double calculateNearestFromLookup(const Point &p, double w);
-  double calculateHighestFromLookup(const Point &p, double w);
-  double calculateOutsideStandardDeviationFromLookup(const Point &p, double w,
+  double calculateAverageFromLookup(Raster::Rasterdata *raster, const Point &p,
+                                    double w);
+  double calculateNearestFromLookup(Raster::Rasterdata *raster, const Point &p,
+                                    double w);
+  double calculateHighestFromLookup(Raster::Rasterdata *raster, const Point &p,
+                                    double w);
+  double calculateOutsideStandardDeviationFromLookup(Raster::Rasterdata *raster,
+                                                     const Point &p, double w,
                                                      int n);
-  double calculateBilskieAveragingFromLookup(const Point &p, double w,
+  double calculateBilskieAveragingFromLookup(Raster::Rasterdata *raster,
+                                             const Point &p, double w,
                                              double gsMultiplier);
-  double calculateInverseDistanceWeightedFromLookup(const Point &p, double w);
-  double calculateInverseDistanceWeightedNPointsFromLookup(const Point &p,
-                                                           double n);
-  double calculateAverageNearestNFromLookup(const Point &p, double n);
+  double calculateInverseDistanceWeightedFromLookup(Raster::Rasterdata *raster,
+                                                    const Point &p, double w);
+  double
+  calculateInverseDistanceWeightedNPointsFromLookup(Raster::Rasterdata *raster,
+                                                    const Point &p, double n);
+  double calculateAverageNearestNFromLookup(Raster::Rasterdata *raster,
+                                            const Point &p, double n);
 
-  double (GriddataPrivate::*m_calculatePointPtr)(const Point &p, double w,
+  double (GriddataPrivate::*m_calculatePointPtr)(Raster::Rasterdata *raster,
+                                                 const Point &p, double w,
                                                  double gsMultiplier,
-                                                 Interpolation::Method method);
+                                                 Interpolation::Method method){};
 
-  std::vector<double> (GriddataPrivate::*m_calculateDwindPtr)(const Point &p);
+  std::vector<double> (GriddataPrivate::*m_calculateDwindPtr)(
+      Raster::Rasterdata *raster, const Point &p){};
 
-  bool calculateBilskieRadius(double meshSize, double rasterCellSize,
+  static bool calculateBilskieRadius(double meshSize, double rasterCellSize,
                               double &radius);
 
   template <typename T>
-  bool pixelDataInRadius(const Point &p, double radius, std::vector<double> &x,
+  bool pixelDataInRadius(Raster::Rasterdata *raster, const Point &p,
+                         double radius, std::vector<double> &x,
                          std::vector<double> &y, std::vector<T> &z,
                          std::vector<bool> &valid);
 
   template <typename T>
   void thresholdData(std::vector<T> &z, std::vector<bool> &v);
 
-  std::vector<double> calculateDirectionalWindFromRaster(const Point &p);
-  std::vector<double> calculateDirectionalWindFromLookup(const Point &p);
+  std::vector<double>
+  calculateDirectionalWindFromRaster(Raster::Rasterdata *raster,
+                                     const Point &p);
 
-  bool computeWindDirectionAndWeight(const Point &p, double x, double y,
+  std::vector<double>
+  calculateDirectionalWindFromLookup(Raster::Rasterdata *raster,
+                                     const Point &p);
+
+  static bool computeWindDirectionAndWeight(const Point &p, double x, double y,
                                      double &w, int &dir);
 
-  void computeWeightedDirectionalWindValues(std::vector<double> &weight,
+  static void computeWeightedDirectionalWindValues(std::vector<double> &weight,
                                             std::vector<double> &wind,
                                             double nearWeight);
-
-  short windDirection(short i, short j);
 
   void checkRasterOpen();
   void assignDirectionalWindReductionFunctionPointer(bool useLookupTable);
@@ -173,8 +193,9 @@ class GriddataPrivate {
   static std::vector<Point> meshToQueryPoints(Adcirc::Geometry::Mesh *m,
                                               int epsgRaster);
 
-  static std::vector<std::pair<double, double>> convertQueryPointCoordinates(
-      const std::vector<Point> &input, int epsgInput, int epsgOutput);
+  static std::vector<std::pair<double, double>>
+  convertQueryPointCoordinates(const std::vector<Point> &input, int epsgInput,
+                               int epsgOutput);
 
   std::vector<double> m_lookup;
   Interpolation::Threshold m_thresholdMethod;
@@ -201,7 +222,7 @@ class GriddataPrivate {
   bool m_rasterInMemory;
 };
 
-}  // namespace Private
-}  // namespace Adcirc
+} // namespace Private
+} // namespace Adcirc
 
-#endif  // ADCMOD_GRIDDATAPRIVATE_H
+#endif // ADCMOD_GRIDDATAPRIVATE_H

@@ -254,7 +254,7 @@ double Rasterdata::dx() const { return this->m_dx; }
  * @brief nodata value used in the raster
  * @return nodata value
  */
-template <typename T>
+template<typename T>
 T Rasterdata::nodata() const {
   if (std::is_same<T, double>::value) {
     return this->m_nodata;
@@ -289,7 +289,7 @@ std::string Rasterdata::projectionString() const {
  * @param j j-index
  * @return pixel value
  */
-template <typename T>
+template<typename T>
 T Rasterdata::pixelValue(size_t i, size_t j) {
   Pixel p = Pixel(i, j);
   return this->pixelValue<T>(p);
@@ -300,20 +300,15 @@ T Rasterdata::pixelValue(size_t i, size_t j) {
  * @param p pixel with indicies
  * @return pixel value
  */
-template <typename T>
+template<typename T>
 T Rasterdata::pixelValue(Pixel &p) {
   if (p.i() > 0 && p.j() > 0 && p.i() < this->nx() && p.j() < this->ny()) {
     T buf;
     auto err = CPLErr();
 
-#ifndef GDAL_IS_THREADSAFE
-#pragma omp critical
-#endif
-    {
-      err = this->m_band->RasterIO(GF_Read, p.i(), p.j(), 1, 1, &buf, 1, 1,
-                                   static_cast<GDALDataType>(this->m_readType),
-                                   0, 0);
-    }
+    err = this->m_band->RasterIO(GF_Read, p.i(), p.j(), 1, 1, &buf, 1, 1,
+                                 static_cast<GDALDataType>(this->m_readType),
+                                 0, 0);
     if (err != 0) return this->nodata<T>();
     return buf;
   } else {
@@ -360,15 +355,10 @@ int Rasterdata::searchBoxAroundPoint(double x, double y, double halfSide,
  */
 void Rasterdata::readDoubleRasterToMemory() {
   this->m_doubleOnDisk.resize(boost::extents[this->ny()][this->nx()]);
-#ifndef GDAL_IS_THREADSAFE
-#pragma omp critical
-#endif
-  {
-    CPLErr e = this->m_band->RasterIO(
-        GF_Read, 0, 0, this->nx(), this->ny(), this->m_doubleOnDisk.data(),
-        this->nx(), this->ny(), static_cast<GDALDataType>(this->m_readType), 0,
-        0);
-  }
+  CPLErr e = this->m_band->RasterIO(
+      GF_Read, 0, 0, this->nx(), this->ny(), this->m_doubleOnDisk.data(),
+      this->nx(), this->ny(), static_cast<GDALDataType>(this->m_readType), 0,
+      0);
 }
 
 /**
@@ -378,15 +368,10 @@ void Rasterdata::readDoubleRasterToMemory() {
  */
 void Rasterdata::readIntegerRasterToMemory() {
   this->m_intOnDisk.resize(boost::extents[this->ny()][this->nx()]);
-#ifndef GDAL_IS_THREADSAFE
-#pragma omp critical
-#endif
-  {
-    CPLErr e = this->m_band->RasterIO(
-        GF_Read, 0, 0, this->nx(), this->ny(), this->m_intOnDisk.data(),
-        this->nx(), this->ny(), static_cast<GDALDataType>(this->m_readType), 0,
-        0);
-  }
+  CPLErr e = this->m_band->RasterIO(
+      GF_Read, 0, 0, this->nx(), this->ny(), this->m_intOnDisk.data(),
+      this->nx(), this->ny(), static_cast<GDALDataType>(this->m_readType), 0,
+      0);
 }
 
 /**
@@ -417,7 +402,7 @@ void Rasterdata::read() {
  * @param z z-values from raster
  * @return status
  */
-template <typename T>
+template<typename T>
 int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
                             size_t jend, std::vector<double> &x,
                             std::vector<double> &y, std::vector<T> &z) {
@@ -439,7 +424,7 @@ int Rasterdata::pixelValues(size_t ibegin, size_t jbegin, size_t iend,
  * @param z z-values from raster
  * @return status
  */
-template <typename T>
+template<typename T>
 int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
                                       size_t jend, std::vector<double> &x,
                                       std::vector<double> &y,
@@ -482,7 +467,7 @@ int Rasterdata::pixelValuesFromMemory(size_t ibegin, size_t jbegin, size_t iend,
  * @param z z-values from raster
  * @return status
  */
-template <typename T>
+template<typename T>
 int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
                                     size_t jend, std::vector<double> &x,
                                     std::vector<double> &y, std::vector<T> &z) {
@@ -498,14 +483,9 @@ int Rasterdata::pixelValuesFromDisk(size_t ibegin, size_t jbegin, size_t iend,
 
   CPLErr e = CPLErr();
 
-#ifndef GDAL_IS_THREADSAFE
-#pragma omp critical
-#endif
-  {
-    e = this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, z.data(), nx,
-                               ny, static_cast<GDALDataType>(this->m_readType),
-                               0, 0);
-  }
+  e = this->m_band->RasterIO(GF_Read, ibegin, jbegin, nx, ny, z.data(), nx,
+                             ny, static_cast<GDALDataType>(this->m_readType),
+                             0, 0);
 
   size_t k = 0;
   for (size_t j = jbegin; j <= jend; ++j) {
