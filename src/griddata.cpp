@@ -293,8 +293,8 @@ bool Griddata::showProgressBar() const {
  * @param[in] showProgressBar set to true if progress bar should be shown, false
  * if not
  */
-void Griddata::setShowProgressBar(bool showProgressBar) {
-  this->m_impl->setShowProgressBar(showProgressBar);
+void Griddata::setShowProgressBar(bool showProgressBar, int displayMode) {
+  this->m_impl->setShowProgressBar(showProgressBar, displayMode);
 }
 
 /**

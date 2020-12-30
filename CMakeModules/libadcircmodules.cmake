@@ -40,6 +40,7 @@ set(ADCIRCMODULES_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/kdtree_private.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/topology.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/facetable.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/progressbar.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/harmonicsoutput_private.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/harmonicsrecord_private.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/nodalattributes_private.cpp)
@@ -84,6 +85,7 @@ set(HEADER_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/constants.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/kdtree.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/default_values.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/progressbar.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/cdate.h)
 # ##############################################################################
 
@@ -119,6 +121,7 @@ set( adcircmodules_include_list
             ${CMAKE_SOURCE_DIR}/thirdparty/date/include/date
             ${CMAKE_SOURCE_DIR}/thirdparty/nanoflann/include
             ${CMAKE_SOURCE_DIR}/thirdparty/cxxopts
+            ${CMAKE_SOURCE_DIR}/thirdparty/indicators
 			${PROJ_INCLUDE_DIR}
             ${SQLite3_INCLUDE_DIR}
             ${Boost_INCLUDE_DIRS}

@@ -40,6 +40,9 @@ NANOFLANNPATH  = $$PWD/../thirdparty/nanoflann/include
 #...Date
 DATEPATH = $$PWD/../thirdparty/date/include/date
 
+#...INDICATOR
+INDICATORPATH = $$PWD/../thirdparty/indicators
+
 #...OpenSSL
 macx{
 OPENSSLPATH = /usr/local/Cellar/openssl/1.0.2s
@@ -129,6 +132,7 @@ SOURCES += \
     nodalattributes_private.cpp \
     nodetable.cpp \
     outputmetadata.cpp \
+    progressbar.cpp \
     readoutput.cpp \
     stationinterpolation.cpp \
     stationinterpolationoptions.cpp \
@@ -183,6 +187,7 @@ HEADERS += \
     nodetable.h \
     outputfile.h \
     outputmetadata.h \
+    progressbar.h \
     readoutput.h \
     stationinterpolation.h \
     stationinterpolationoptions.h \
@@ -220,7 +225,7 @@ HEADERS += \
     netcdftimeseries.h \
     projection.h
 
-INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH $$DATEPATH
+INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH $$DATEPATH $$INDICATORPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib
 INCLUDEPATH += $$PWD/../thirdparty/proj-7.2.0/src
 
