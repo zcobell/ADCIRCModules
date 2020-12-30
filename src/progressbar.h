@@ -35,7 +35,7 @@ class progress_display;
 
 class ProgressBar {
  public:
-  ProgressBar(int display_mode, size_t total_iterations,
+  ProgressBar(size_t total_iterations,
               const std::string &prefix = std::string());
   ~ProgressBar();
 
@@ -45,6 +45,8 @@ class ProgressBar {
   void end();
 
  private:
+  static bool istty();
+
   size_t m_display_mode;
   size_t m_total_iterations;
   unsigned long long m_current;

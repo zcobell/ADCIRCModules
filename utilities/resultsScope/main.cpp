@@ -4,8 +4,8 @@
 #include <set>
 #include "adcircmodules.h"
 #include "boost/format.hpp"
-#include "boost/progress.hpp"
 #include "cxxopts.hpp"
+#include "progressbar.h"
 
 struct _inputOptions {
   std::string mesh;
@@ -253,15 +253,17 @@ int generateSubdomainOutput(Adcirc::Geometry::Mesh &subdomainMesh,
   Adcirc::Output::WriteOutput out(subdomainOutputFile, &global, &subdomainMesh);
   out.open();
 
-  auto progress = std::make_unique<boost::progress_display>(global.numSnaps());
+  ProgressBar progress(global.numSnaps());
+  progress.begin();
 
   for (size_t i = 0; i < global.numSnaps(); ++i) {
-    ++(*progress.get());
+    progress.tick();
     global.read(i);
     auto r = subsetRecord(translation_table, global.dataAt(0));
     out.write(r.get());
     global.clearAt(0);
   }
+  progress.end();
 
   global.close();
   out.close();

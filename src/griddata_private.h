@@ -81,7 +81,7 @@ class GriddataPrivate {
   void setEpsg(int epsg);
 
   bool showProgressBar() const;
-  void setShowProgressBar(bool showProgressBar, int displayMode = 0);
+  void setShowProgressBar(bool showProgressBar);
 
   double rasterMultiplier() const;
   void setRasterMultiplier(double rasterMultiplier);
@@ -191,7 +191,6 @@ class GriddataPrivate {
 
   int m_inputEpsg;
   int m_epsg;
-  int m_progressDisplayMode;
 
   double m_defaultValue;
   double m_rasterMultiplier;

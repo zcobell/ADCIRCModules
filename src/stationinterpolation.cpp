@@ -17,13 +17,12 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "stationinterpolation.h"
-
 #include "boost/format.hpp"
-#include "boost/progress.hpp"
 #include "constants.h"
 #include "fileio.h"
 #include "fpcompare.h"
 #include "logging.h"
+#include "progressbar.h"
 #include "projection.h"
 
 using namespace Adcirc::Output;
@@ -51,14 +50,16 @@ void StationInterpolation::run() {
 
   size_t nsnap = this->m_options.endsnap() - this->m_options.startsnap() + 1;
 
-  boost::progress_display progress_bar(nsnap);
+  ProgressBar progress_bar(nsnap);
+  progress_bar.begin();
 
   for (size_t i = this->m_options.startsnap(); i <= this->m_options.endsnap();
        ++i) {
     this->interpolateTimeSnapToStations(i, writeVector, coldstart, globalFile);
-    ++progress_bar;
+    progress_bar.tick();
     globalFile.clearAt(0);
   }
+  progress_bar.end();
 
   this->reprojectStationOutput();
   this->m_options.stations()->write(this->m_options.outputfile());

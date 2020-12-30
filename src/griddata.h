@@ -117,7 +117,7 @@ class Griddata {
   void ADCIRCMODULES_EXPORT setEpsg(int epsg);
 
   bool ADCIRCMODULES_EXPORT showProgressBar() const;
-  void ADCIRCMODULES_EXPORT setShowProgressBar(bool showProgressBar, int displayMode = 0);
+  void ADCIRCMODULES_EXPORT setShowProgressBar(bool showProgressBar);
 
   double ADCIRCMODULES_EXPORT rasterMultiplier() const;
   void ADCIRCMODULES_EXPORT setRasterMultiplier(double rasterMultiplier);
