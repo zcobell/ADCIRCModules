@@ -26,13 +26,13 @@
 #include <numeric>
 #include <utility>
 
-#include "boost/progress.hpp"
 #include "constants.h"
 #include "default_values.h"
 #include "elementtable.h"
 #include "fileio.h"
 #include "griddata.h"
 #include "logging.h"
+#include "progressbar.h"
 #include "projection.h"
 #include "stringconversion.h"
 
@@ -63,11 +63,11 @@ int sgn(T val) {
   return (T(0) < val) - (val < T(0));
 }
 
-bool GriddataPrivate::getKeyValue(unsigned short key, double &value) {
-  auto t = this->m_lookup.find(key);
-  if (t == this->m_lookup.end()) return false;
-  value = t->second;
-  return true;
+bool GriddataPrivate::getKeyValue(unsigned key, double &value) {
+  assert(key < m_lookup.size());
+  // if (key > m_lookup.size()) return false;
+  value = m_lookup[key];
+  return value != m_defaultValue;
 }
 
 Griddata::~Griddata() = default;
@@ -182,8 +182,10 @@ bool GriddataPrivate::showProgressBar() const {
   return this->m_showProgressBar;
 }
 
-void GriddataPrivate::setShowProgressBar(bool showProgressBar) {
+void GriddataPrivate::setShowProgressBar(bool showProgressBar,
+                                         int displayMode) {
   this->m_showProgressBar = showProgressBar;
+  this->m_progressDisplayMode = displayMode;
 }
 
 int GriddataPrivate::epsg() const { return this->m_epsg; }
@@ -192,6 +194,9 @@ void GriddataPrivate::setEpsg(int epsg) { this->m_epsg = epsg; }
 
 void GriddataPrivate::readLookupTable(const std::string &lookupTableFile) {
   std::fstream fid(lookupTableFile);
+
+  adcmap<unsigned, double> temp_lookup;
+  unsigned c_max = 0;
 
   std::string l;
   while (std::getline(fid, l)) {
@@ -207,11 +212,18 @@ void GriddataPrivate::readLookupTable(const std::string &lookupTableFile) {
       adcircmodules_throw_exception("Could not read the lookup table.");
     }
     bool ok;
-    size_t cls = StringConversion::stringToSizet(ls[0], ok);
+    unsigned cls = StringConversion::stringToSizet(ls[0], ok);
     double v = StringConversion::stringToDouble(ls[1], ok);
-    this->m_lookup[cls] = v;
+    temp_lookup[cls] = v;
+    c_max = std::max(c_max, cls);
   }
   fid.close();
+
+  m_lookup.resize(c_max + 1, m_defaultValue);
+  for (auto c : temp_lookup) {
+    m_lookup[c.first] = c.second;
+  }
+
   return;
 }
 
@@ -953,7 +965,7 @@ std::vector<double> GriddataPrivate::computeValuesFromRaster(
     bool useLookupTable) {
   this->checkRasterOpen();
   this->assignInterpolationFunctionPointer(useLookupTable);
-  std::unique_ptr<boost::progress_display> progress(nullptr);
+  ProgressBar progress(m_progressDisplayMode, m_queryLocations.size());
 
   if (this->m_rasterInMemory) {
     this->m_raster.get()->read();
@@ -962,20 +974,13 @@ std::vector<double> GriddataPrivate::computeValuesFromRaster(
   std::vector<double> result;
   result.resize(this->m_queryLocations.size());
 
-  if (this->showProgressBar()) {
-    progress =
-        std::make_unique<boost::progress_display>((m_queryLocations.size()));
-  }
+  if (this->showProgressBar()) progress.begin();
 
 #pragma omp parallel for schedule(dynamic) default(none) \
-    shared(progress, result)
+    shared(progress, result, std::cout)
   for (signed long long i = 0;
        i < static_cast<signed long long>(m_queryLocations.size()); ++i) {
-    if (this->m_showProgressBar) {
-#pragma omp critical
-      ++(*progress.get());
-    }
-
+    if (this->m_showProgressBar) progress.tick();
     double v = (this->*m_calculatePointPtr)(
         m_queryLocations[i], m_queryResolution[i] * 0.5, this->m_filterSize[i],
         m_interpolationFlags[i]);
@@ -987,6 +992,8 @@ std::vector<double> GriddataPrivate::computeValuesFromRaster(
     }
     result[i] = v * this->m_rasterMultiplier + this->m_datumShift;
   }
+
+  if (this->m_showProgressBar) progress.end();
 
   return result;
 }
@@ -1024,7 +1031,6 @@ void GriddataPrivate::thresholdData(std::vector<T> &z, std::vector<bool> &v) {
 
 std::vector<std::vector<double>>
 GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
-  std::unique_ptr<boost::progress_display> progress(nullptr);
   this->checkRasterOpen();
   this->assignDirectionalWindReductionFunctionPointer(useLookupTable);
 
@@ -1035,26 +1041,22 @@ GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
   std::vector<std::vector<double>> result;
   result.resize(m_queryLocations.size());
 
-  if (this->showProgressBar()) {
-    progress =
-        std::make_unique<boost::progress_display>((m_queryLocations.size()));
-  }
+  ProgressBar progress(m_progressDisplayMode, m_queryLocations.size());
+  if (this->showProgressBar()) progress.begin();
 
 #pragma omp parallel for schedule(dynamic) default(none) \
     shared(progress, result)
   for (unsigned long long i = 0;
        i < static_cast<unsigned long long>(m_queryLocations.size()); ++i) {
-    if (this->m_showProgressBar) {
-#pragma omp critical
-      ++(*progress);
-    }
-
+    if (this->m_showProgressBar) progress.tick();
     if (this->m_interpolationFlags[i] != NoMethod) {
       result[i] = (this->*m_calculateDwindPtr)(m_queryLocations[i]);
     } else {
       result[i] = std::vector<double>(12, this->defaultValue());
     }
   }
+
+  if (this->m_showProgressBar) progress.end();
 
   return result;
 }

@@ -81,7 +81,7 @@ class GriddataPrivate {
   void setEpsg(int epsg);
 
   bool showProgressBar() const;
-  void setShowProgressBar(bool showProgressBar);
+  void setShowProgressBar(bool showProgressBar, int displayMode = 0);
 
   double rasterMultiplier() const;
   void setRasterMultiplier(double rasterMultiplier);
@@ -104,7 +104,7 @@ class GriddataPrivate {
   std::vector<double> extents() const;
 
  private:
-  bool getKeyValue(unsigned short key, double &value);
+  bool getKeyValue(unsigned key, double &value);
 
   constexpr double methodErrorValue() {
     return -std::numeric_limits<double>::max();
@@ -176,7 +176,7 @@ class GriddataPrivate {
   static std::vector<std::pair<double, double>> convertQueryPointCoordinates(
       const std::vector<Point> &input, int epsgInput, int epsgOutput);
 
-  Adcirc::adcmap<unsigned short, double> m_lookup;
+  std::vector<double> m_lookup;
   Interpolation::Threshold m_thresholdMethod;
 
   std::unique_ptr<Adcirc::Raster::Rasterdata> m_raster;
@@ -191,6 +191,7 @@ class GriddataPrivate {
 
   int m_inputEpsg;
   int m_epsg;
+  int m_progressDisplayMode;
 
   double m_defaultValue;
   double m_rasterMultiplier;
