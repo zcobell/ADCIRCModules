@@ -102,15 +102,6 @@ set_property(TARGET adcircmodules_objectlib PROPERTY POSITION_INDEPENDENT_CODE 1
 target_link_libraries(adcircmodules_static adcircmodules_interface)
 target_link_libraries(adcircmodules adcircmodules_interface)
 
-if(GDAL_FOUND)
-  target_compile_definitions(adcircmodules_objectlib PRIVATE "USE_GDAL")
-  target_include_directories(adcircmodules_objectlib PRIVATE ${GDAL_INCLUDE_DIR})
-  link_directories(${GDAL_LIBPATH})
-  target_link_libraries(adcircmodules_interface INTERFACE ${GDAL_LIBRARY})
-  set(HEADER_LIST ${HEADER_LIST} ${CMAKE_SOURCE_DIR}/src/rasterdata.h
-                  ${CMAKE_SOURCE_DIR}/src/griddata.h)
-endif(GDAL_FOUND)
-
 if(NOT PROJ_FOUND)
 	add_dependencies(adcircmodules_interface shapelib adcmod_proj generate_proj_db)
 	target_compile_definitions(adcircmodules_objectlib PRIVATE USE_INTERNAL_PROJ)
@@ -134,6 +125,15 @@ set( adcircmodules_include_list
 target_include_directories(adcircmodules_objectlib PRIVATE ${adcircmodules_include_list})
 target_compile_definitions(adcircmodules_objectlib PRIVATE GIT_VERSION="${GIT_VERSION}")
 target_compile_definitions(adcircmodules_objectlib PRIVATE ADCIRCMODULES_LIBRARY)
+
+if(GDAL_FOUND)
+  target_compile_definitions(adcircmodules_objectlib PRIVATE "USE_GDAL")
+  target_include_directories(adcircmodules_objectlib PRIVATE ${GDAL_INCLUDE_DIR})
+  link_directories(${GDAL_LIBPATH})
+  target_link_libraries(adcircmodules_interface INTERFACE ${GDAL_LIBRARY})
+  set(HEADER_LIST ${HEADER_LIST} ${CMAKE_SOURCE_DIR}/src/rasterdata.h
+                  ${CMAKE_SOURCE_DIR}/src/griddata.h)
+endif(GDAL_FOUND)
 
 set_target_properties(
   adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING}
