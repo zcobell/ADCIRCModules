@@ -56,3 +56,4 @@ Suggested citation:
 | proj     | PROJ is a generic coordinate transformation software that transforms geospatial coordinates from one coordinate reference system (CRS) to another | [Visit Website](https://proj.org/) | yes, but can use external |
 | shapelib | Used to convert meshes to shapefile format | [Visit Website](http://shapelib.maptools.org/) | yes |
 | swig     | Used to generate an interface to Python | [Visit Website](http://www.swig.org/) | no |
+| indicators | Use for pretty progress bars throughout the code | [Visit Website](https://github.com/p-ranav/indicators) | yes |
