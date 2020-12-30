@@ -182,10 +182,8 @@ bool GriddataPrivate::showProgressBar() const {
   return this->m_showProgressBar;
 }
 
-void GriddataPrivate::setShowProgressBar(bool showProgressBar,
-                                         int displayMode) {
+void GriddataPrivate::setShowProgressBar(bool showProgressBar) {
   this->m_showProgressBar = showProgressBar;
-  this->m_progressDisplayMode = displayMode;
 }
 
 int GriddataPrivate::epsg() const { return this->m_epsg; }
@@ -965,7 +963,7 @@ std::vector<double> GriddataPrivate::computeValuesFromRaster(
     bool useLookupTable) {
   this->checkRasterOpen();
   this->assignInterpolationFunctionPointer(useLookupTable);
-  ProgressBar progress(m_progressDisplayMode, m_queryLocations.size());
+  ProgressBar progress(m_queryLocations.size());
 
   if (this->m_rasterInMemory) {
     this->m_raster.get()->read();
@@ -1041,7 +1039,7 @@ GriddataPrivate::computeDirectionalWindReduction(bool useLookupTable) {
   std::vector<std::vector<double>> result;
   result.resize(m_queryLocations.size());
 
-  ProgressBar progress(m_progressDisplayMode, m_queryLocations.size());
+  ProgressBar progress(m_queryLocations.size());
   if (this->showProgressBar()) progress.begin();
 
 #pragma omp parallel for schedule(dynamic) default(none) \

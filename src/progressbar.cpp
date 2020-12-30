@@ -20,15 +20,26 @@
 #include "boost/progress.hpp"
 #include "indicators.hpp"
 
-ProgressBar::ProgressBar(int display_mode, size_t total_iterations,
-                         const std::string &prefix)
-    : m_display_mode(display_mode),
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
+ProgressBar::ProgressBar(size_t total_iterations, const std::string &prefix)
+    : m_display_mode(istty()),
       m_total_iterations(total_iterations),
       m_current(0),
       m_updateInterval(250),
       m_prefix(prefix) {}
 
 ProgressBar::~ProgressBar() = default;
+
+bool ProgressBar::istty() {
+#ifdef WIN32
+  return false;
+#else
+  return isatty(STDOUT_FILENO);
+#endif
+}
 
 void ProgressBar::begin() {
   std::lock_guard<std::mutex> guard(m_mutex);
