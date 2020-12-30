@@ -65,6 +65,9 @@ if(SWIG_FOUND
   target_include_directories(
     pyadcircmodules PRIVATE ${PYTHON_INCLUDE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/src)
   target_link_libraries(pyadcircmodules adcircmodules_static )
+  if(APPLE)
+      target_link_libraries(pyadcircmodules ${PYTHON_LIBRARY})
+  endif(APPLE)
   if(OpenSSL_FOUND)
     target_include_directories(pyadcircmodules PRIVATE ${OPENSSL_INCLUDE_DIR})
     target_link_libraries(pyadcircmodules ${OPENSSL_CRYPTO_LIBRARY}

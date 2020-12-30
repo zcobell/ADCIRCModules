@@ -35,16 +35,16 @@ This module will set the following variables if found:
 
 # Look for the necessary header
 find_path(SQLite3_INCLUDE_DIR sqlite3.h 
+	"${SQLITE3_DIR}/include"  
 	"$ENV{INCLUDE}" 
-	"$ENV{LIB_DIR}/include" 
-	"${SQLITE3_DIR}/include" )
+	"$ENV{LIB_DIR}/include" )
 mark_as_advanced(SQLite3_INCLUDE_DIR)
 
 # Look for the necessary library
 find_library(SQLite3_LIBRARY NAMES sqlite3 sqlite PATHS
+	"${SQLITE3_DIR}/lib"
 	"$ENV{LIB}" 
-	"$ENV{LIB_DIR}/lib" 
-	"${SQLITE3_DIR}/lib" )
+	"$ENV{LIB_DIR}/lib") 
 mark_as_advanced(SQLite3_LIBRARY)
 
 # Extract version information from the header file

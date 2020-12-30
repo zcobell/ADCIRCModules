@@ -81,6 +81,10 @@ set(HEADER_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/outputmetadata.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/meshchecker.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/elementtable.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/nodetable.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/facetable.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/topology.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/face.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/multithreading.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/constants.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/kdtree.h
@@ -134,7 +138,7 @@ target_compile_definitions(adcircmodules_objectlib PRIVATE ADCIRCMODULES_LIBRARY
 set_target_properties(
   adcircmodules PROPERTIES VERSION ${ADCIRCMODULES_VERSION_STRING}
                            SOVERSION ${ADCIRCMODULES_VERSION_MAJOR})
-
+set_target_properties(adcircmodules PROPERTIES PUBLIC_HEADER "${HEADER_LIST}")
 if(${CMAKE_INSTALL_PREFIX} STREQUAL "/usr/local"
    OR ${CMAKE_INSTALL_PREFIX} STREQUAL "/usr/local/"
    OR ${CMAKE_INSTALL_PREFIX} STREQUAL "/usr/"
