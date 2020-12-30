@@ -20,7 +20,10 @@
 #include "boost/progress.hpp"
 #include "indicators.hpp"
 
-#ifndef WIN32
+#ifdef WIN32
+#include <io.h>
+#include <stdio.h>
+#else
 #include <unistd.h>
 #endif
 
@@ -34,7 +37,7 @@ ProgressBar::~ProgressBar() = default;
 
 bool ProgressBar::istty() {
 #ifdef WIN32
-  return false;
+  return _isatty(_fileno(stdout));
 #else
   return isatty(STDOUT_FILENO);
 #endif
