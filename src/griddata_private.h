@@ -19,15 +19,16 @@
 #ifndef ADCMOD_GRIDDATAPRIVATE_H
 #define ADCMOD_GRIDDATAPRIVATE_H
 
-#include <cmath>
-#include <memory>
-#include <string>
-#include <utility>
 #include "adcmap.h"
 #include "constants.h"
 #include "interpolationmethods.h"
 #include "mesh.h"
 #include "rasterdata.h"
+#include <array>
+#include <cmath>
+#include <memory>
+#include <string>
+#include <utility>
 
 namespace Adcirc {
 namespace Private {
@@ -142,28 +143,26 @@ class GriddataPrivate {
 
   std::vector<double> (GriddataPrivate::*m_calculateDwindPtr)(const Point &p);
 
-  bool calculateBilskieRadius(double meshSize, double rasterCellSize,
-                              double &radius);
+  static bool calculateBilskieRadius(double meshSize, double rasterCellSize,
+                                     double &radius);
 
-  template <typename T>
+  template<typename T>
   bool pixelDataInRadius(const Point &p, double radius, std::vector<double> &x,
                          std::vector<double> &y, std::vector<T> &z,
                          std::vector<bool> &valid);
 
-  template <typename T>
+  template<typename T>
   void thresholdData(std::vector<T> &z, std::vector<bool> &v);
 
   std::vector<double> calculateDirectionalWindFromRaster(const Point &p);
   std::vector<double> calculateDirectionalWindFromLookup(const Point &p);
 
-  bool computeWindDirectionAndWeight(const Point &p, double x, double y,
-                                     double &w, int &dir);
+  static bool computeWindDirectionAndWeight(const Point &p, double x, double y,
+                                            double &w, int &dir);
 
-  void computeWeightedDirectionalWindValues(std::vector<double> &weight,
-                                            std::vector<double> &wind,
-                                            double nearWeight);
-
-  short windDirection(short i, short j);
+  static void computeWeightedDirectionalWindValues(std::array<double, 12> &weight,
+                                                   std::vector<double> &wind,
+                                                   double nearWeight);
 
   void checkRasterOpen();
   void assignDirectionalWindReductionFunctionPointer(bool useLookupTable);
@@ -201,7 +200,7 @@ class GriddataPrivate {
   bool m_rasterInMemory;
 };
 
-}  // namespace Private
-}  // namespace Adcirc
+}// namespace Private
+}// namespace Adcirc
 
-#endif  // ADCMOD_GRIDDATAPRIVATE_H
+#endif// ADCMOD_GRIDDATAPRIVATE_H
