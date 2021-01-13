@@ -170,14 +170,10 @@ bool Rasterdata::close() {
  * pixel
  */
 Point Rasterdata::pixelToCoordinate(size_t i, size_t j) {
-  if (i <= this->m_nx && j <= this->m_ny) {
-    return Point(
-        static_cast<double>(i) * this->m_dx + this->m_xmin + 0.50 * this->m_dx,
-        this->m_ymax - (static_cast<double>(j + 1) * this->m_dy) +
-            0.50 * this->m_dy);
-  } else {
-    return Point();
-  }
+  return i <= m_nx && j <= m_ny
+             ? Point(i * this->m_dx + this->m_xmin + 0.50 * this->m_dx,
+                     this->m_ymax - (j + 1) * this->m_dy + 0.50 * this->m_dy)
+             : Point();
 }
 
 /**

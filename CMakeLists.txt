@@ -55,6 +55,13 @@ if(UNIX OR CYGWIN)
   enable_testing()
 endif(UNIX OR CYGWIN)
 # ##############################################################################
+
+# ##############################################################################
+# Fast math option
+# ##############################################################################
+option(ADCIRCMODULES_USE_FAST_MATH "Use approximations to slow math ops where appropriate" OFF)
+# ##############################################################################
+
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/coverage.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/cxxstandard.cmake)

@@ -158,7 +158,7 @@ class GriddataPrivate {
   std::vector<double> calculateDirectionalWindFromLookup(const Point &p);
 
   static bool computeWindDirectionAndWeight(const Point &p, double x, double y,
-                                            double &w, int &dir);
+                                            double &w, char &dir);
 
   static void computeWeightedDirectionalWindValues(std::array<double, 12> &weight,
                                                    std::vector<double> &wind,

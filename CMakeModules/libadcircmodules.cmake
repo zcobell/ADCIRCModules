@@ -102,6 +102,11 @@ set_property(TARGET adcircmodules_objectlib PROPERTY POSITION_INDEPENDENT_CODE 1
 target_link_libraries(adcircmodules_static adcircmodules_interface)
 target_link_libraries(adcircmodules adcircmodules_interface)
 
+if(ADCIRCMODULES_USE_FAST_MATH)
+    message(STATUS "ADCIRCModules will be built with math approximations")
+    target_compile_definitions(adcircmodules_objectlib PRIVATE ADCMOD_USE_FAST_MATH)
+endif()
+
 if(NOT PROJ_FOUND)
 	add_dependencies(adcircmodules_interface shapelib adcmod_proj generate_proj_db)
 	target_compile_definitions(adcircmodules_objectlib PRIVATE USE_INTERNAL_PROJ)
