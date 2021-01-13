@@ -63,9 +63,9 @@ constexpr double c_windSigmaRootTwoPi() {
 }
 
 constexpr std::array<std::array<char, 7>, 3> c_windDirectionLookup = {
-    {{{4, 3, 2, 1, 12, 11, 10}},
-     {{4, 0, 0, 0, 0, 0, 10}},
-     {{4, 5, 6, 7, 8, 9, 10}}}};
+    {{{3, 2, 1, 0, 11, 10, 9}},
+     {{3, -1, -1, -1, -1, -1, 9}},
+     {{3, 4, 5, 6, 7, 8, 9}}}};
 
 template <typename T>
 int sgn(T val) {
@@ -73,8 +73,9 @@ int sgn(T val) {
 }
 
 // This is a very fast approximation to the exp function. But it is only an
-// approximation
-#ifdef USE_FASTEXP
+// approximation. exp is ~15% of the computational time required when computing
+// directional wind reduction, so you can get some gains. The results are
+// different but not substantially
 template <typename T>
 inline __attribute__((always_inline)) T fast_exp(const T x) noexcept {
   if (std::is_same<T, float>()) {
@@ -101,6 +102,10 @@ inline __attribute__((always_inline)) T fast_exp(const T x) noexcept {
     return T(0);
   }
 }
+#ifdef ADCMOD_USE_FAST_MATH
+#define griddata_exp fast_exp
+#else
+#define griddata_exp std::exp
 #endif
 
 bool GriddataPrivate::getKeyValue(unsigned key, double &value) {
@@ -853,39 +858,35 @@ double GriddataPrivate::calculateHighestFromLookup(const Point &p, double w) {
   return this->methodErrorValue();
 }
 
-constexpr double gaussian(const double distance) {
-#ifdef USE_FASTEXP
+double gaussian(const double distance) {
   return (1.0 / (GriddataPrivate::windSigma() * c_rootTwoPi())) *
-         fast_exp(distance / (2.0 * GriddataPrivate::windSigma() *
-                              GriddataPrivate::windSigma()));
-#else
-  return (1.0 / (GriddataPrivate::windSigma() * c_rootTwoPi())) *
-         std::exp(distance / (2.0 * GriddataPrivate::windSigma() *
-                              GriddataPrivate::windSigma()));
-#endif
+         griddata_exp(distance / (2.0 * GriddataPrivate::windSigma() *
+                                  GriddataPrivate::windSigma()));
 }
 
 bool GriddataPrivate::computeWindDirectionAndWeight(const Point &p, double x,
                                                     double y, double &w,
-                                                    int &dir) {
+                                                    char &dir) {
   const double dx = (x - p.first) * 0.001;
   const double dy = (y - p.second) * 0.001;
   const double d = dx * dx + dy * dy;
 
   w = gaussian(d);
   if (d > c_epsilonSquared()) {
-    double tanxy = std::abs(dx) > std::numeric_limits<double>::epsilon()
-                       ? std::abs(dy / dx)
-                       : 10000000.0;
-    int k = std::min(1, static_cast<int>(tanxy * c_oneOver2MinusRoot3())) +
-            std::min(1, static_cast<int>(tanxy)) +
-            std::min(1, static_cast<int>(tanxy * c_oneOver2PlusRoot3()));
-    auto a = static_cast<char>(sgn(dx));
-    auto b = static_cast<char>(k * sgn(dy));
-    dir = c_windDirectionLookup[a + 1][b + 3] - 1;
+    const double tanxy = std::abs(dx) > std::numeric_limits<double>::epsilon()
+                             ? std::abs(dy / dx)
+                             : 10000000.0;
+    const int k =
+        std::min(1, static_cast<int>(tanxy * c_oneOver2MinusRoot3())) +
+        std::min(1, static_cast<int>(tanxy)) +
+        std::min(1, static_cast<int>(tanxy * c_oneOver2PlusRoot3()));
+    const auto a = static_cast<char>(sgn(dx) + 1);
+    const auto b = static_cast<char>(k * sgn(dy) + 3);
+    dir = c_windDirectionLookup[a][b];
     return true;
+  } else {
+    return false;
   }
-  return false;
 }
 
 void GriddataPrivate::computeWeightedDirectionalWindValues(
@@ -916,8 +917,7 @@ std::vector<double> GriddataPrivate::calculateDirectionalWindFromRaster(
   for (size_t i = 0; i < x.size(); ++i) {
     if (v[i]) {
       double w = 0.0;
-      int dir = 0;
-
+      char dir = 0;
       bool found = this->computeWindDirectionAndWeight(p, x[i], y[i], w, dir);
 
       if (found) {
@@ -948,10 +948,10 @@ std::vector<double> GriddataPrivate::calculateDirectionalWindFromLookup(
 
   for (size_t i = 0; i < x.size(); ++i) {
     if (v[i]) {
-      double zl;
+      double zl = 0.0;
       if (this->getKeyValue(z[i], zl)) {
         double w = 0.0;
-        int dir = 0;
+        char dir = 0;
 
         if (this->computeWindDirectionAndWeight(p, x[i], y[i], w, dir)) {
           weight[dir] += w;

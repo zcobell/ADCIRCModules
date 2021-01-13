@@ -18,26 +18,16 @@
 //------------------------------------------------------------------------//
 #include <iostream>
 #include <memory>
+
 #include "adcircmodules.h"
 
 int main() {
   using namespace Adcirc::Geometry;
   using namespace Adcirc::Interpolation;
 
-  std::vector<double> control = {
-    0.111204,  
-    0.104896, 
-    0.0981562, 
-    0.125039,  
-    0.0757044, 
-    0.0572342, 
-    0.0376321, 
-    0.025,     
-    0.025,     
-    0.025,     
-    0.0362991, 
-    0.109136  
-  };
+  std::vector<double> control = {0.108665,  0.0929215, 0.091493,  0.125231,
+                                 0.0909828, 0.0702279, 0.0441836, 0.025,
+                                 0.025,     0.025,     0.0299349, 0.108283};
 
   std::unique_ptr<Mesh> m(new Mesh("test_files/ms-riv.grd"));
   m->read();
@@ -45,7 +35,7 @@ int main() {
   m->reproject(26915);
 
   std::unique_ptr<Griddata> g(
-      new Griddata(m.get(), "test_files/lulc_samplelulcraster.tif",26915));
+      new Griddata(m.get(), "test_files/lulc_samplelulcraster.tif", 26915));
   // Multithreading::disable();
 
 #if 1
@@ -63,9 +53,16 @@ int main() {
   g->setRasterInMemory(true);
   std::vector<std::vector<double>> r = g->computeDirectionalWindReduction(true);
 
-  for(size_t i=0;i<12;++i){
-    std::cout << r[0][i] << " " << control[i] << std::endl;
-    if(std::abs(r[0][i] - control[i]) > 0.00001)return 1;
+  bool fail = false;
+  for (size_t i = 0; i < 12; ++i) {
+    std::cout << r[0][i] << " " << control[i] << " ";
+    if (std::abs(r[0][i] - control[i]) > 0.00001) {
+      fail = true;
+      std::cout << "FAIL" << std::endl;
+    } else {
+      std::cout << "PASS" << std::endl;
+    }
   }
 
+  return fail;
 }
