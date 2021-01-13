@@ -375,6 +375,11 @@ void Griddata::setThresholdValue(const double &value) {
 }
 
 /**
+ * @brief Returns the wind radius used. 10km
+ */
+double Griddata::windRadius() const { return this->m_impl->windRadius(); }
+
+/**
  * @brief Gets the extents of the current raster as xmin,ymin,xmax,ymax
  * @return vector of raster extents
  */
