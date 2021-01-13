@@ -20,9 +20,11 @@
 #define ADCMOD_GRIDDATA_H
 
 #include <mesh.h>
+
 #include <memory>
 #include <string>
 #include <vector>
+
 #include "interpolationmethods.h"
 
 namespace Adcirc {
@@ -134,6 +136,8 @@ class Griddata {
 
   double ADCIRCMODULES_EXPORT thresholdValue() const;
   void ADCIRCMODULES_EXPORT setThresholdValue(const double &value);
+
+  double ADCIRCMODULES_EXPORT windRadius() const;
 
   std::vector<double> extents() const;
 

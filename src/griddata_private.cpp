@@ -860,15 +860,15 @@ double GriddataPrivate::calculateHighestFromLookup(const Point &p, double w) {
 
 double gaussian(const double distance) {
   return (1.0 / (GriddataPrivate::windSigma() * c_rootTwoPi())) *
-         griddata_exp(distance / (2.0 * GriddataPrivate::windSigma() *
-                                  GriddataPrivate::windSigma()));
+         griddata_exp(-distance / (2.0 * GriddataPrivate::windSigma() *
+                                   GriddataPrivate::windSigma()));
 }
 
 bool GriddataPrivate::computeWindDirectionAndWeight(const Point &p, double x,
                                                     double y, double &w,
                                                     char &dir) {
-  const double dx = (x - p.first) * 0.001;
-  const double dy = (y - p.second) * 0.001;
+  const double dx = (x - p.first) * GriddataPrivate::distanceFactor();
+  const double dy = (y - p.second) * GriddataPrivate::distanceFactor();
   const double d = dx * dx + dy * dy;
 
   w = gaussian(d);
@@ -911,8 +911,7 @@ std::vector<double> GriddataPrivate::calculateDirectionalWindFromRaster(
   std::array<double, 12> weight = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 
-  this->pixelDataInRadius(p, Adcirc::Private::GriddataPrivate::windRadius(), x,
-                          y, z, v);
+  this->pixelDataInRadius(p, GriddataPrivate::windRadius(), x, y, z, v);
 
   for (size_t i = 0; i < x.size(); ++i) {
     if (v[i]) {
@@ -943,8 +942,7 @@ std::vector<double> GriddataPrivate::calculateDirectionalWindFromLookup(
   std::array<double, 12> weight = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 
-  this->pixelDataInRadius(p, Adcirc::Private::GriddataPrivate::windRadius(), x,
-                          y, z, v);
+  this->pixelDataInRadius(p, GriddataPrivate::windRadius(), x, y, z, v);
 
   for (size_t i = 0; i < x.size(); ++i) {
     if (v[i]) {
