@@ -237,6 +237,10 @@ int GriddataPrivate::epsg() const { return this->m_epsg; }
 void GriddataPrivate::setEpsg(int epsg) { this->m_epsg = epsg; }
 
 void GriddataPrivate::readLookupTable(const std::string &lookupTableFile) {
+  if (!FileIO::Generic::fileExists(lookupTableFile)) {
+    adcircmodules_throw_exception("Lookup table file does not exist");
+  }
+
   std::fstream fid(lookupTableFile);
 
   adcmap<unsigned, double> temp_lookup;

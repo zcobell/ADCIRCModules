@@ -25,9 +25,9 @@ int main() {
   using namespace Adcirc::Geometry;
   using namespace Adcirc::Interpolation;
 
-  std::vector<double> control = {0.108665,  0.0929215, 0.091493,  0.125231,
-                                 0.0909828, 0.0702279, 0.0441836, 0.025,
-                                 0.025,     0.025,     0.0299349, 0.108283};
+  std::vector<double> control = {0.116457,  0.101185,  0.109955,  0.12411,
+                                 0.0668058, 0.0524045, 0.0368512, 0.025,
+                                 0.025,     0.025,     0.0266311, 0.0906515};
 
   std::unique_ptr<Mesh> m(new Mesh("test_files/ms-riv.grd"));
   m->read();
