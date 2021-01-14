@@ -73,9 +73,9 @@ class Hmdf {
 
   Adcirc::Output::HmdfStation ADCIRCMODULES_EXPORT *station(size_t index);
   void ADCIRCMODULES_EXPORT setStation(size_t index,
-                                      Adcirc::Output::HmdfStation &station);
-  void ADCIRCMODULES_EXPORT addStation(
-      const Adcirc::Output::HmdfStation &station);
+                                       Adcirc::Output::HmdfStation &station);
+  void ADCIRCMODULES_EXPORT
+  addStation(const Adcirc::Output::HmdfStation &station);
 
   bool ADCIRCMODULES_EXPORT success() const;
   void ADCIRCMODULES_EXPORT setSuccess(bool success);

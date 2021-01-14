@@ -64,14 +64,14 @@ HighWaterMarkOptions::HighWaterMarkOptions(const cxxopts::ParseResult &parser) {
     m_searchDepth = parser["sdepth"].as<size_t>();
   }
   if (parser["cadcirc"].count()) {
-      m_adcircMultiplier = parser["cadcirc"].as<double>();
+    m_adcircMultiplier = parser["cadcirc"].as<double>();
   } else {
-      m_adcircMultiplier = 1.0;
+    m_adcircMultiplier = 1.0;
   }
   if (parser["cobs"].count()) {
-      m_dataMultiplier = parser["cobs"].as<double>();
+    m_dataMultiplier = parser["cobs"].as<double>();
   } else {
-      m_dataMultiplier = 1.0;
+    m_dataMultiplier = 1.0;
   }
 }
 
@@ -124,9 +124,9 @@ void HighWaterMarkOptions::setSearchDepth(const size_t &searchDepth) {
 }
 
 double HighWaterMarkOptions::adcircMultiplier() const {
-    return this->m_adcircMultiplier;
+  return this->m_adcircMultiplier;
 }
 
 double HighWaterMarkOptions::dataMultiplier() const {
-    return this->m_dataMultiplier;
+  return this->m_dataMultiplier;
 }

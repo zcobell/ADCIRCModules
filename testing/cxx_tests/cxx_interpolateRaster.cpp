@@ -25,16 +25,9 @@ int main() {
   using namespace Adcirc::Interpolation;
 
   std::vector<double> control = {
-    -9999.0, 
-    -0.117294,    
-    -0.142737,   
-    std::numeric_limits<double>::max(),
-    -0.370975,    
-    -0.477835,    
-    -0.475127,    
-    -0.397994,    
-    -0.607414    
-  };
+      -9999.0,   -0.117294, -0.142737, std::numeric_limits<double>::max(),
+      -0.370975, -0.477835, -0.475127, -0.397994,
+      -0.607414};
 
   std::unique_ptr<Mesh> m(new Mesh("test_files/ms-riv.grd"));
   m->read();
@@ -44,9 +37,9 @@ int main() {
   Adcirc::Multithreading::disable();
 
   std::unique_ptr<Griddata> g(
-      new Griddata(m.get(), "test_files/bathy_sampleraster.tif",26915));
+      new Griddata(m.get(), "test_files/bathy_sampleraster.tif", 26915));
   std::unique_ptr<Griddata> gm(
-      new Griddata(m.get(), "test_files/bathy_sampleraster.tif",26915));
+      new Griddata(m.get(), "test_files/bathy_sampleraster.tif", 26915));
   g->setShowProgressBar(true);
   gm->setShowProgressBar(true);
 
@@ -54,8 +47,8 @@ int main() {
     auto m = static_cast<Adcirc::Interpolation::Method>(i % 9);
     g->setInterpolationFlag(i, m);
     gm->setInterpolationFlag(i, m);
-    g->setBackupInterpolationFlag(i,Adcirc::Interpolation::Average);
-    gm->setBackupInterpolationFlag(i,Adcirc::Interpolation::Average);
+    g->setBackupInterpolationFlag(i, Adcirc::Interpolation::Average);
+    gm->setBackupInterpolationFlag(i, Adcirc::Interpolation::Average);
     if (g->interpolationFlag(i) == 7 || g->interpolationFlag(i) == 8) {
       g->setFilterSize(i, 16.0);
       gm->setFilterSize(i, 16.0);
@@ -71,11 +64,13 @@ int main() {
   std::cout << "Interpolating from memory..." << std::endl;
   std::vector<double> rm = gm->computeValuesFromRaster();
 
-  for(size_t i=0;i<9;++i){
-      std::cout << i << " " << r[i] << " " << rm[i] << " " << control[i] << std::endl;
-      if( std::abs(r[i]-control[i])>0.000001 || std::abs(rm[i]-control[i])>0.000001 ){
-          return 1;
-      }
+  for (size_t i = 0; i < 9; ++i) {
+    std::cout << i << " " << r[i] << " " << rm[i] << " " << control[i]
+              << std::endl;
+    if (std::abs(r[i] - control[i]) > 0.000001 ||
+        std::abs(rm[i] - control[i]) > 0.000001) {
+      return 1;
+    }
   }
 
   return 0;

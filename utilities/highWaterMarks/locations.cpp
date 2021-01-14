@@ -23,7 +23,8 @@
 #include "adcircmodules.h"
 #include "shapefil.h"
 
-Locations::Locations(const std::string &filename, const std::string &fieldname) {
+Locations::Locations(const std::string &filename,
+                     const std::string &fieldname) {
   this->m_filename = filename;
   this->m_fieldname = fieldname;
   this->m_dbfFilename =

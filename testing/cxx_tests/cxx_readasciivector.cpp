@@ -43,9 +43,8 @@ int main() {
   std::cout << "Expected: -0.000333917, Got: " << output->data(2)->v(1220)
             << std::endl;
 
-
   Adcirc::Output::OutputRecord *rec = output->dataAt(1);
-  
+
   output->close();
 
   if (std::abs(output->data(2)->v(1220) - (-0.000333917)) < 0.0000001) return 0;

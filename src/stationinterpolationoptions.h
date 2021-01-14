@@ -59,17 +59,20 @@ class StationInterpolationOptions {
   double ADCIRCMODULES_EXPORT multiplier() const;
   void ADCIRCMODULES_EXPORT setMultiplier(double multiplier);
 
-  void ADCIRCMODULES_EXPORT readStations(const std::string &stationFile = std::string());
+  void ADCIRCMODULES_EXPORT
+  readStations(const std::string &stationFile = std::string());
   Adcirc::Output::HmdfStation ADCIRCMODULES_EXPORT *station(size_t index);
   Adcirc::Output::Hmdf ADCIRCMODULES_EXPORT *stations();
 
   void ADCIRCMODULES_EXPORT usePositiveDirection(bool usePositiveDirection);
   bool ADCIRCMODULES_EXPORT hasPositiveDirection() const;
-  void ADCIRCMODULES_EXPORT readPositiveDirection(const std::string &positiveDirections);
-  void ADCIRCMODULES_EXPORT setPositiveDirection(size_t index, double positiveDirection);
+  void ADCIRCMODULES_EXPORT
+  readPositiveDirection(const std::string &positiveDirections);
+  void ADCIRCMODULES_EXPORT setPositiveDirection(size_t index,
+                                                 double positiveDirection);
   void ADCIRCMODULES_EXPORT setPositiveDirections(double positiveDirection);
 
-private:
+ private:
   Adcirc::Output::Hmdf readStationList(const std::string &station);
 
   std::string m_mesh;

@@ -44,13 +44,13 @@ int main() {
       std::abs(k1_pha_value - 142.954998936488295) > 0.000001) {
     return 1;
   }
-  
+
   std::cout << "Validated initial read.\n";
 
   harm->write("test_files/testwrite.53.nc");
-  
+
   std::cout << "File written.\n";
-  
+
   std::unique_ptr<HarmonicsOutput> harm2(
       new HarmonicsOutput("test_files/testwrite.53.nc"));
   harm2->read();

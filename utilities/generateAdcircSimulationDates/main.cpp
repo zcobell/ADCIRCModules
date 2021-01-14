@@ -85,14 +85,18 @@ int main(int argc, char *argv[]) {
       readOceanweatherDates(owifile);
 
   Adcirc::CDate startSimDate =
-      startWindDate - Adcirc::CDate::days(static_cast<long>(std::floor(spinup_days)));
+      startWindDate -
+      Adcirc::CDate::days(static_cast<long>(std::floor(spinup_days)));
   Adcirc::CDate endSimDate =
-      endWindDate + Adcirc::CDate::days(static_cast<long>(std::floor(spindown_days)));
+      endWindDate +
+      Adcirc::CDate::days(static_cast<long>(std::floor(spindown_days)));
 
   double duration =
-      static_cast<double>((endSimDate.toSeconds() - startSimDate.toSeconds())) / 86400.0;
-  double windDuration =
-      static_cast<double>((endWindDate.toSeconds() - startWindDate.toSeconds())) / 86400.0;
+      static_cast<double>((endSimDate.toSeconds() - startSimDate.toSeconds())) /
+      86400.0;
+  double windDuration = static_cast<double>((endWindDate.toSeconds() -
+                                             startWindDate.toSeconds())) /
+                        86400.0;
 
   if (result["swandt"].count() > 0) {
     unsigned swandt = result["swandt"].as<unsigned>();

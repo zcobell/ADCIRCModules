@@ -161,5 +161,4 @@ class RasterdataPrivate {
 }  // namespace Private
 }  // namespace Adcirc
 
-
 #endif  // ADCMOD_RASTERDATAPRIVATE_H

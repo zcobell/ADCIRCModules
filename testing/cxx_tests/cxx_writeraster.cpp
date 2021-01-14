@@ -18,23 +18,22 @@
 //------------------------------------------------------------------------//
 #include <iostream>
 #include <memory>
-#include "adcircmodules.h"
 #include <vector>
+#include "adcircmodules.h"
 
 int main() {
   using namespace Adcirc::Geometry;
   using namespace Adcirc::Output;
- 
+
   std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));
-  //std::unique_ptr<ReadOutput> output(new ReadOutput("test_files/fort.63"));
+  // std::unique_ptr<ReadOutput> output(new ReadOutput("test_files/fort.63"));
 
   mesh->read();
-  mesh->toRaster("adcirc_depth.img",mesh->z(),mesh->extent(),0.001,-9999.0);
+  mesh->toRaster("adcirc_depth.img", mesh->z(), mesh->extent(), 0.001, -9999.0);
 
-  //output->open();
-  //output->read();
-  //mesh->toRaster("adcirc_wse.img",output->data(0)->values(),mesh->extent(),0.001,-99999.0);
+  // output->open();
+  // output->read();
+  // mesh->toRaster("adcirc_wse.img",output->data(0)->values(),mesh->extent(),0.001,-99999.0);
 
   return 0;
-
 }

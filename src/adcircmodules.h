@@ -19,6 +19,7 @@
 #ifndef ADCMOD_ADCIRCMODULES_H
 #define ADCMOD_ADCIRCMODULES_H
 
+#include "adchash.h"
 #include "config.h"
 #include "constants.h"
 #include "default_values.h"
@@ -26,7 +27,6 @@
 #include "filetypes.h"
 #include "griddata.h"
 #include "harmonicsoutput.h"
-#include "adchash.h"
 #include "hashtype.h"
 #include "hmdf.h"
 #include "interpolationmethods.h"

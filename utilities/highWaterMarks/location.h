@@ -52,7 +52,7 @@ class Location {
   double movedDist() const;
   void setMovedDist(double movedDist);
 
-private:
+ private:
   double m_x;
   double m_y;
   double m_measured;

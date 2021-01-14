@@ -41,7 +41,7 @@ int main() {
     s[i] = s[i] + 10;
   }
 
-  //output->data(0)->setAll(a,s);
+  // output->data(0)->setAll(a,s);
 
   output->close();
 

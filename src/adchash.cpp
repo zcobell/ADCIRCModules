@@ -26,7 +26,8 @@ using namespace Adcirc::Cryptography;
  * @brief Constructor for hash object
  * @param[in] h cryptographic hash type to use
  */
-Hash::Hash(Adcirc::Cryptography::HashType h) : m_impl(new Adcirc::Private::HashPrivate(h)) {}
+Hash::Hash(Adcirc::Cryptography::HashType h)
+    : m_impl(new Adcirc::Private::HashPrivate(h)) {}
 
 /**
  * @brief Destructor
@@ -49,7 +50,9 @@ char *Hash::getHash() { return this->m_impl->getHash(); }
  * @brief Returns the hash type currently being used
  * @return hash type
  */
-Adcirc::Cryptography::HashType Hash::hashType() const { return this->m_impl->hashType(); }
+Adcirc::Cryptography::HashType Hash::hashType() const {
+  return this->m_impl->hashType();
+}
 
 /**
  * @brief Sets the hash type to use

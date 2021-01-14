@@ -46,7 +46,7 @@ int main() {
   std::unique_ptr<HarmonicsOutput> harm2(
       new HarmonicsOutput("test_files/testwrite.53"));
   harm2->read();
-  
+
   std::cout << "Read file written by this code.\n";
   std::cout.flush();
 
@@ -59,7 +59,7 @@ int main() {
       k1_amp_value != 9.36588108E-002 || k1_pha_value != 138.2870) {
     return 1;
   }
-  
+
   std::cout << "Validated full read/write cycle.\n";
   std::cout.flush();
 

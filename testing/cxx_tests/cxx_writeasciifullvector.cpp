@@ -46,7 +46,8 @@ int main() {
   double checkValueU = output->data(1)->u(10);
   double checkValueV = output->data(1)->v(10);
 
-  std::unique_ptr<WriteOutput> writer(new WriteOutput("test_files/fort.write.64",output.get(),mesh.get())); 
+  std::unique_ptr<WriteOutput> writer(
+      new WriteOutput("test_files/fort.write.64", output.get(), mesh.get()));
   writer->open();
   writer->write(output->data(0));
   writer->write(output->data(1));
@@ -65,7 +66,9 @@ int main() {
 
   output->close();
 
-  if(std::abs(checkValueU-checkValueU2)>0.000001 || std::abs(checkValueV-checkValueV2)>0.000001 )return 1;
+  if (std::abs(checkValueU - checkValueU2) > 0.000001 ||
+      std::abs(checkValueV - checkValueV2) > 0.000001)
+    return 1;
 
   return 0;
 }

@@ -27,25 +27,28 @@ namespace Output {
 
 class Formatting {
  public:
-  static std::string adcircFileHeader(const size_t numSnaps, const size_t numNodes,
-                               const double dt, const long long dIter,
-                               const size_t dimension);
+  static std::string adcircFileHeader(const size_t numSnaps,
+                                      const size_t numNodes, const double dt,
+                                      const long long dIter,
+                                      const size_t dimension);
 
   static std::string adcircFullFormatRecordHeader(const double time,
-                                           const long long iteration);
+                                                  const long long iteration);
 
   static std::string adcircSparseFormatRecordHeader(const double time,
-                                             const long long iterations,
-                                             const size_t numNonDefault,
-                                             const double defaultValue);
-  static std::string adcircScalarLineFormat(const size_t id, const double value);
+                                                    const long long iterations,
+                                                    const size_t numNonDefault,
+                                                    const double defaultValue);
+  static std::string adcircScalarLineFormat(const size_t id,
+                                            const double value);
 
-  static std::string adcircVectorLineFormat(const size_t id, const double value1,
-                                     const double value2);
+  static std::string adcircVectorLineFormat(const size_t id,
+                                            const double value1,
+                                            const double value2);
 
   static std::string adcirc3dLineFormat(const size_t id, const double value1,
-                                 const double value2, const double value3);
-
+                                        const double value2,
+                                        const double value3);
 };
 
 }  // namespace Output
