@@ -82,11 +82,11 @@ class Face {
       : m_nodes(n), m_elements(e) {}
 
   std::pair<FaceNode, FaceNode> raw_nodes() const {
-    return {m_nodes.first, m_nodes.second};
+    return std::make_pair(m_nodes.first, m_nodes.second);
   }
 
   std::pair<Adcirc::Geometry::Node *, Adcirc::Geometry::Node *> nodes() const {
-    return {m_nodes.first.node(), m_nodes.second.node()};
+    return std::make_pair(m_nodes.first.node(), m_nodes.second.node());
   }
   void setNodes(const std::pair<Adcirc::Geometry::Node *,
                                 Adcirc::Geometry::Node *> &nodes);
