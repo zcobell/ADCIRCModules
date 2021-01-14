@@ -33,6 +33,9 @@ class NodeTable {
  public:
   ADCIRCMODULES_EXPORT NodeTable(Adcirc::Private::MeshPrivate *mesh);
 
+  size_t ADCIRCMODULES_EXPORT numNodesAroundNode(Adcirc::Geometry::Node *node);
+  size_t ADCIRCMODULES_EXPORT numNodesAroundNode(size_t node);
+
   std::vector<Adcirc::Geometry::Node *> ADCIRCMODULES_EXPORT
   nodeList(Adcirc::Geometry::Node *node);
 

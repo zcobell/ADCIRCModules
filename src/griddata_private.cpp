@@ -77,7 +77,7 @@ int sgn(T val) {
 // directional wind reduction, so you can get some gains. The results are
 // different but not substantially
 template <typename T>
-inline __attribute__((always_inline)) T fast_exp(const T x) noexcept {
+T fast_exp(const T x) noexcept {
   if (std::is_same<T, float>()) {
     constexpr auto v0 = double((1 << 20) / M_LN2);
     constexpr auto v1 = double((1 << 20) * 1023 - 0);
