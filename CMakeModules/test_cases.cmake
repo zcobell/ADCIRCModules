@@ -36,7 +36,9 @@ if(UNIX OR CYGWIN)
         cxx_writenetcdfvector.cpp
         cxx_writehdf5.cpp
         cxx_makemesh.cpp
-        cxx_date.cpp)
+        cxx_date.cpp
+        cxx_topolgy.cpp
+        )
 
     if(ENABLE_GDAL)
       set(TEST_LIST

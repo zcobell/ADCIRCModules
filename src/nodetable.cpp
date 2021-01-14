@@ -24,6 +24,15 @@ using namespace Adcirc::Geometry;
 
 NodeTable::NodeTable(Adcirc::Private::MeshPrivate *mesh) : m_mesh(mesh) {}
 
+size_t NodeTable::numNodesAroundNode(Node *node) {
+  size_t idx = m_mesh->nodeIndexById(node->id());
+  return m_nodeTable[idx].size();
+}
+
+size_t NodeTable::numNodesAroundNode(size_t node) {
+  return m_nodeTable[node].size();
+}
+
 void NodeTable::build() {
   this->m_nodeTable.resize(m_mesh->numNodes());
   for (auto &t : m_nodeTable) {
