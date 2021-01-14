@@ -27,7 +27,8 @@ int main() {
   std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));
   mesh->read();
 
-  std::unique_ptr<ReadOutput> output(new ReadOutput("test_files/sparse_fort.64"));
+  std::unique_ptr<ReadOutput> output(
+      new ReadOutput("test_files/sparse_fort.64"));
 
   //...Open file
   output->open();
@@ -46,7 +47,8 @@ int main() {
   double checkValueU = output->data(1)->u(10);
   double checkValueV = output->data(1)->v(10);
 
-  std::unique_ptr<WriteOutput> writer(new WriteOutput("test_files/fort.writesparse.64",output.get(),mesh.get())); 
+  std::unique_ptr<WriteOutput> writer(new WriteOutput(
+      "test_files/fort.writesparse.64", output.get(), mesh.get()));
   writer->writeSparseAscii(true);
   writer->open();
   writer->write(output->data(0));
@@ -66,7 +68,9 @@ int main() {
 
   output->close();
 
-  if(std::abs(checkValueU-checkValueU2)>0.000001 || std::abs(checkValueV-checkValueV2)>0.000001 )return 1;
+  if (std::abs(checkValueU - checkValueU2) > 0.000001 ||
+      std::abs(checkValueV - checkValueV2) > 0.000001)
+    return 1;
 
   return 0;
 }

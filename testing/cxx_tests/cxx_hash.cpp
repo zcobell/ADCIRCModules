@@ -19,11 +19,13 @@
 #include <iostream>
 #include "adcircmodules.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   using namespace Adcirc::Cryptography;
   std::string hashData = "zach";
-  Hash md5(HashType::AdcmodMD5);;
-  Hash sha1(HashType::AdcmodSHA1);;
+  Hash md5(HashType::AdcmodMD5);
+  ;
+  Hash sha1(HashType::AdcmodSHA1);
+  ;
   Hash sha256(HashType::AdcmodSHA256);
 
   md5.addData(hashData);
@@ -42,9 +44,10 @@ int main(int argc, char *argv[]) {
   delete[] char_hashed_sha1;
   delete[] char_hashed_sha256;
 
-  if(hashed_md5 == "d61616c3e2a6cf59a0cc435a66c091d4" &&
-     hashed_sha1 == "9de8c4480303b5335cd2a33eefe814615ba3612a" &&
-     hashed_sha256 == "cb9b5a0f4a8b09ba490e3acc902f38acf85205797cd59654645e5c1ef8c1ada0" ){
+  if (hashed_md5 == "d61616c3e2a6cf59a0cc435a66c091d4" &&
+      hashed_sha1 == "9de8c4480303b5335cd2a33eefe814615ba3612a" &&
+      hashed_sha256 ==
+          "cb9b5a0f4a8b09ba490e3acc902f38acf85205797cd59654645e5c1ef8c1ada0") {
     return 0;
   } else {
     return 1;

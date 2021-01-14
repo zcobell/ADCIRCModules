@@ -18,30 +18,32 @@
 //------------------------------------------------------------------------//
 #include <iostream>
 #include <memory>
-#include "adcircmodules.h"
 #include <vector>
+#include "adcircmodules.h"
 
 int main() {
   using namespace Adcirc::Geometry;
- 
+
   const double expected_x = -90.3585280494;
   const double expected_y = 30.0580540695;
   const double tol = 0.000001;
-  
+
   std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));
   mesh->read();
-  
-  if(std::abs(mesh->node(4)->x()-expected_x)>tol){
-    std::cout << "Got: " << mesh->node(4)->x() << ", Expected: " << expected_x << std::endl;
+
+  if (std::abs(mesh->node(4)->x() - expected_x) > tol) {
+    std::cout << "Got: " << mesh->node(4)->x() << ", Expected: " << expected_x
+              << std::endl;
     std::cout.flush();
     return 1;
   }
-  if(std::abs(mesh->node(4)->y()-expected_y)>tol){
-    std::cout << "Got: " << mesh->node(4)->y() << ", Expected: " << expected_y << std::endl;
+  if (std::abs(mesh->node(4)->y() - expected_y) > tol) {
+    std::cout << "Got: " << mesh->node(4)->y() << ", Expected: " << expected_y
+              << std::endl;
     std::cout.flush();
     return 1;
   }
-  
+
   std::vector<std::vector<double>> orthog = mesh->orthogonality();
 
   return 0;

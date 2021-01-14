@@ -62,9 +62,9 @@ int main() {
   std::cout << "Validated read of data.\n";
 
   harm->write("test_files/testwrite.54.nc");
-  
+
   std::cout << "Output file written.\n";
-  
+
   std::unique_ptr<HarmonicsOutput> harm2(
       new HarmonicsOutput("test_files/testwrite.54.nc"));
   harm2->read();
@@ -99,7 +99,7 @@ int main() {
       std::abs(k1_v_pha - 219.136772397306800) > 0.000001) {
     return 1;
   }
-  
+
   std::cout << "Validated read/write cycle.\n";
 
   return 0;

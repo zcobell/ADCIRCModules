@@ -85,7 +85,8 @@ int main(int argc, char *argv[]) {
   writeOutput(hwm, option);
 
   if (option.stats()) {
-    HwmStats stat(hwm, option.zero(), option.adcircMultiplier(), option.dataMultiplier());
+    HwmStats stat(hwm, option.zero(), option.adcircMultiplier(),
+                  option.dataMultiplier());
     stat.print();
   }
 
@@ -313,10 +314,10 @@ void writeCsv(Locations &hwm, const HighWaterMarkOptions &options) {
   for (size_t i = 0; i < hwm.size(); ++i) {
     f << boost::str(boost::format("%f,%f,0.0,%f,%f,%f,%f") %
                     hwm.location(i)->x() % hwm.location(i)->y() %
-                    (hwm.location(i)->measured()*options.dataMultiplier()) % 
-                    (hwm.location(i)->modeled()*options.adcircMultiplier()) %
-                    (hwm.location(i)->modeled()*options.adcircMultiplier() - 
-                    hwm.location(i)->measured()*options.dataMultiplier()) %
+                    (hwm.location(i)->measured() * options.dataMultiplier()) %
+                    (hwm.location(i)->modeled() * options.adcircMultiplier()) %
+                    (hwm.location(i)->modeled() * options.adcircMultiplier() -
+                     hwm.location(i)->measured() * options.dataMultiplier()) %
                     hwm.location(i)->movedDist())
       << std::endl;
   }

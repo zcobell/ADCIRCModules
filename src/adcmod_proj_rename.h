@@ -20,25 +20,28 @@
 // This file contains the defines for different proj configurations
 
 #ifdef USE_INTERNAL_PROJ
-  #define adcmod_proj_context_get_database_path internal_proj_context_get_database_path
-  #define adcmod_proj_create_crs_to_crs internal_proj_create_crs_to_crs
-  #define adcmod_proj_normalize_for_visualization internal_proj_normalize_for_visualization
-  #define adcmod_proj_destroy internal_proj_destroy
-  #define adcmod_proj_angular_input internal_proj_angular_input
-  #define adcmod_proj_torad internal_proj_torad 
-  #define adcmod_proj_trans internal_proj_trans
-  #define adcmod_proj_angular_output internal_proj_angular_output
-  #define adcmod_proj_todeg internal_proj_todeg 
-  #define adcmod_proj_context_set_database_path internal_proj_context_set_database_path
+#define adcmod_proj_context_get_database_path \
+  internal_proj_context_get_database_path
+#define adcmod_proj_create_crs_to_crs internal_proj_create_crs_to_crs
+#define adcmod_proj_normalize_for_visualization \
+  internal_proj_normalize_for_visualization
+#define adcmod_proj_destroy internal_proj_destroy
+#define adcmod_proj_angular_input internal_proj_angular_input
+#define adcmod_proj_torad internal_proj_torad
+#define adcmod_proj_trans internal_proj_trans
+#define adcmod_proj_angular_output internal_proj_angular_output
+#define adcmod_proj_todeg internal_proj_todeg
+#define adcmod_proj_context_set_database_path \
+  internal_proj_context_set_database_path
 #else
-  #define adcmod_proj_context_get_database_path proj_context_get_database_path
-  #define adcmod_proj_create_crs_to_crs proj_create_crs_to_crs
-  #define adcmod_proj_normalize_for_visualization proj_normalize_for_visualization
-  #define adcmod_proj_destroy proj_destroy
-  #define adcmod_proj_angular_input proj_angular_input
-  #define adcmod_proj_torad proj_torad 
-  #define adcmod_proj_trans proj_trans
-  #define adcmod_proj_angular_output proj_angular_output
-  #define adcmod_proj_todeg proj_todeg 
-  #define adcmod_proj_context_set_database_path proj_context_set_database_path
+#define adcmod_proj_context_get_database_path proj_context_get_database_path
+#define adcmod_proj_create_crs_to_crs proj_create_crs_to_crs
+#define adcmod_proj_normalize_for_visualization proj_normalize_for_visualization
+#define adcmod_proj_destroy proj_destroy
+#define adcmod_proj_angular_input proj_angular_input
+#define adcmod_proj_torad proj_torad
+#define adcmod_proj_trans proj_trans
+#define adcmod_proj_angular_output proj_angular_output
+#define adcmod_proj_todeg proj_todeg
+#define adcmod_proj_context_set_database_path proj_context_set_database_path
 #endif

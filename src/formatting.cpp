@@ -24,7 +24,8 @@ static boost::format c_adcircAsciiFileHeader(
     "%6i %10i %10.6f %6i %6i FileFmtVersion: %10i\n");
 static boost::format c_adcircAsciiScalar("%8i     %20.10e\n");
 static boost::format c_adcircAsciiVector("%8i     %20.10e     %20.10e\n");
-static boost::format c_adcircAscii3d("%8i     %20.10e     %20.10e     %20.10e\n");
+static boost::format c_adcircAscii3d(
+    "%8i     %20.10e     %20.10e     %20.10e\n");
 static boost::format c_adcircRecordHeaderSparse(
     "%20.10e     %10i  %10i %20.10e\n");
 static boost::format c_adcircRecordHeaderFull("%20.10e     %10i\n");

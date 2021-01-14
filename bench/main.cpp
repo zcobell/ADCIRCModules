@@ -16,14 +16,14 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
-#include "adcircmesh.h"
-#include "benchmark/benchmark.h"
 #include <QCoreApplication>
 #include <QPointer>
+#include "adcircmesh.h"
+#include "benchmark/benchmark.h"
 
 static void bench_readmesh(benchmark::State &state) {
-  AdcircMesh *mesh = new AdcircMesh(
-      std::string("/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.grd"));
+  AdcircMesh *mesh = new AdcircMesh(std::string(
+      "/home/zcobell/Development/QADCModules/testing/test_files/ms-riv.grd"));
   while (state.KeepRunning()) {
     mesh->read();
   }

@@ -16,9 +16,9 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
+#include <cmath>
 #include <iostream>
 #include <memory>
-#include <cmath>
 #include "adcircmodules.h"
 
 int main() {
@@ -30,13 +30,15 @@ int main() {
   std::unique_ptr<Mesh> mesh(new Mesh("test_files/maxele.63.nc"));
   mesh->read();
 
-  if(std::abs(mesh->node(4)->x()-expected_x)>tol){
-    std::cout << "Got: " << mesh->node(4)->x() << ", Expected: " << expected_x << std::endl;
+  if (std::abs(mesh->node(4)->x() - expected_x) > tol) {
+    std::cout << "Got: " << mesh->node(4)->x() << ", Expected: " << expected_x
+              << std::endl;
     std::cout.flush();
     return 1;
   }
-  if(std::abs(mesh->node(4)->y()-expected_y)>tol){
-    std::cout << "Got: " << mesh->node(4)->y() << ", Expected: " << expected_y << std::endl;
+  if (std::abs(mesh->node(4)->y() - expected_y) > tol) {
+    std::cout << "Got: " << mesh->node(4)->y() << ", Expected: " << expected_y
+              << std::endl;
     std::cout.flush();
     return 1;
   }

@@ -30,7 +30,7 @@ class HarmonicsRecord {
   ADCIRCMODULES_EXPORT HarmonicsRecord();
   ADCIRCMODULES_EXPORT ~HarmonicsRecord();
 
-  ADCIRCMODULES_EXPORT HarmonicsRecord(const HarmonicsRecord &h);
+  ADCIRCMODULES_EXPORT HarmonicsRecord(const HarmonicsRecord& h);
 
   std::string ADCIRCMODULES_EXPORT name() const;
   void ADCIRCMODULES_EXPORT setName(const std::string& name);

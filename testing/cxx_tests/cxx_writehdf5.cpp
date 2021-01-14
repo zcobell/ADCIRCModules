@@ -49,25 +49,26 @@ int main() {
   wse->close();
   vel->close();
 
-  std::unique_ptr<WriteOutput> writer(new WriteOutput("test_files/fort.write.63.h5",wse.get(),mesh.get())); 
+  std::unique_ptr<WriteOutput> writer(
+      new WriteOutput("test_files/fort.write.63.h5", wse.get(), mesh.get()));
   writer->open();
-  writer->write(wse->data(0),vel->data(0));
-  writer->write(wse->data(1),vel->data(1));
-  writer->write(wse->data(2),vel->data(2));
+  writer->write(wse->data(0), vel->data(0));
+  writer->write(wse->data(1), vel->data(1));
+  writer->write(wse->data(2), vel->data(2));
   writer->close();
 
-  //output.reset(new ReadOutput("test_files/fort.write.63.nc"));
-  //writer.reset(nullptr);
+  // output.reset(new ReadOutput("test_files/fort.write.63.nc"));
+  // writer.reset(nullptr);
 
-  //output->open();
-  //output->read();
-  //output->read();
+  // output->open();
+  // output->read();
+  // output->read();
 
-  //double checkValue2 = output->data(1)->z(10);
+  // double checkValue2 = output->data(1)->z(10);
 
-  //output->close();
+  // output->close();
 
-  //if(std::abs(checkValue-checkValue2)>0.000001)return 1;
+  // if(std::abs(checkValue-checkValue2)>0.000001)return 1;
 
   return 0;
 }

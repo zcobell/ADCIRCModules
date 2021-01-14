@@ -30,20 +30,20 @@ int main() {
   std::vector<double> y = mesh->y();
 
   Adcirc::Kdtree k;
-  k.build(x,y);
+  k.build(x, y);
 
   const double searchX = -90.766116;
   const double searchY = 30.002113;
-  
+
   const size_t known_nearest = 14493;
-  size_t nearest = k.findNearest(searchX,searchY);
-  if(known_nearest!=nearest)return 1;
+  size_t nearest = k.findNearest(searchX, searchY);
+  if (known_nearest != nearest) return 1;
 
-  std::vector<size_t> nearest5 = k.findXNearest(searchX,searchY,5);
-  if(nearest5[0]!=nearest)return 1;
+  std::vector<size_t> nearest5 = k.findXNearest(searchX, searchY, 5);
+  if (nearest5[0] != nearest) return 1;
 
-  std::vector<size_t> nearest500 = k.findWithinRadius(searchX,searchY,0.005);
-  if(nearest500[0]!=known_nearest)return 1;
+  std::vector<size_t> nearest500 = k.findWithinRadius(searchX, searchY, 0.005);
+  if (nearest500[0] != known_nearest) return 1;
 
   return 0;
 }

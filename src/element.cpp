@@ -19,10 +19,10 @@
 #include "element.h"
 #include <cmath>
 #include <numeric>
+#include "adchash.h"
 #include "boost/format.hpp"
 #include "boost/geometry.hpp"
 #include "constants.h"
-#include "adchash.h"
 #include "logging.h"
 
 using namespace Adcirc::Geometry;

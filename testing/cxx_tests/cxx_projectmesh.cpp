@@ -17,23 +17,25 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 #include <cmath>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <memory>
 #include "adcircmodules.h"
 
 int main() {
   using namespace Adcirc::Geometry;
 
-  std::cout << "PROJ Version: " << Adcirc::Projection::projVersion() << std::endl;
+  std::cout << "PROJ Version: " << Adcirc::Projection::projVersion()
+            << std::endl;
 
   std::unique_ptr<Mesh> mesh(new Mesh("test_files/ms-riv.grd"));
   mesh->read();
   double oldx = mesh->node(0)->x();
   double oldy = mesh->node(0)->y();
-  mesh->defineProjection(4326,true);
-  
-  std::cout << "Transforming to " << Adcirc::Projection::epsgDescription(26915) << "...\n";
+  mesh->defineProjection(4326, true);
+
+  std::cout << "Transforming to " << Adcirc::Projection::epsgDescription(26915)
+            << "...\n";
 
   mesh->reproject(26915);
   double newx = mesh->node(0)->x();
@@ -51,31 +53,29 @@ int main() {
   if (std::abs(newx - 753922.922118) > 0.000001 ||
       std::abs(newy - 3328065.712727) > 0.000001) {
     std::cout << "Expected: 753922.922118, 3328065.712727" << std::endl;
-    std::cout << "Got: " << std::fixed << std::setprecision(6) << newx << ", " << newy << std::endl; 
+    std::cout << "Got: " << std::fixed << std::setprecision(6) << newx << ", "
+              << newy << std::endl;
     return 1;
   }
 
   std::cout << "Reversing transformation...\n";
   mesh->reproject(4326);
-  if(std::abs(oldx-mesh->node(0)->x())>0.00001 ||
-     std::abs(oldy-mesh->node(0)->y())>0.00001){
-      std::cout << "Error returning mesh to 4326\n";
-      return 1;
+  if (std::abs(oldx - mesh->node(0)->x()) > 0.00001 ||
+      std::abs(oldy - mesh->node(0)->y()) > 0.00001) {
+    std::cout << "Error returning mesh to 4326\n";
+    return 1;
   }
 
   std::cout << "Transforming to CPP...\n";
-  mesh->cpp(-90.0,24.0);
-  printf("CPP: %14.2f, %14.2f\n",mesh->node(0)->x(),mesh->node(0)->y());
-  mesh->inverseCpp(-90.0,24.0);
-  printf("INVCPP: %14.2f, %14.2f\n",mesh->node(0)->x(),mesh->node(0)->y());
-  if(std::abs(oldx-mesh->node(0)->x())>0.00001 ||
-     std::abs(oldy-mesh->node(0)->y())>0.00001){
-      std::cout << "Error during CPP round trip\n";
-      return 1;
+  mesh->cpp(-90.0, 24.0);
+  printf("CPP: %14.2f, %14.2f\n", mesh->node(0)->x(), mesh->node(0)->y());
+  mesh->inverseCpp(-90.0, 24.0);
+  printf("INVCPP: %14.2f, %14.2f\n", mesh->node(0)->x(), mesh->node(0)->y());
+  if (std::abs(oldx - mesh->node(0)->x()) > 0.00001 ||
+      std::abs(oldy - mesh->node(0)->y()) > 0.00001) {
+    std::cout << "Error during CPP round trip\n";
+    return 1;
   }
 
-
   return 0;
-
-
 }

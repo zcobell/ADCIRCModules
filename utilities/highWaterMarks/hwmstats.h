@@ -23,7 +23,8 @@
 
 class HwmStats {
  public:
-  HwmStats(const Locations &hwm, bool zero, double adcircMultiplier, double dataMultiplier);
+  HwmStats(const Locations &hwm, bool zero, double adcircMultiplier,
+           double dataMultiplier);
 
   double r2() const;
 

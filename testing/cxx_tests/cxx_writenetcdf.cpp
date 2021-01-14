@@ -45,7 +45,8 @@ int main() {
 
   double checkValue = output->data(1)->z(10);
 
-  std::unique_ptr<WriteOutput> writer(new WriteOutput("test_files/fort.write.63.nc",output.get(),mesh.get())); 
+  std::unique_ptr<WriteOutput> writer(
+      new WriteOutput("test_files/fort.write.63.nc", output.get(), mesh.get()));
   writer->open();
   writer->write(output->data(0));
   writer->write(output->data(1));
@@ -63,7 +64,7 @@ int main() {
 
   output->close();
 
-  if(std::abs(checkValue-checkValue2)>0.000001)return 1;
+  if (std::abs(checkValue - checkValue2) > 0.000001) return 1;
 
   return 0;
 }

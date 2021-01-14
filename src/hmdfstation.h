@@ -120,7 +120,6 @@ class HmdfStation {
                                      const double maxValid);
 
  private:
-
   std::tuple<double, double> getVectorBounds(const std::vector<double> &v);
 
   Coordinate m_coordinate;

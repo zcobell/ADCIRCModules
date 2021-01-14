@@ -113,7 +113,6 @@ class ReadOutput {
   void addRecord(const Adcirc::Output::OutputRecord &record);
 
  private:
-
   void setOpen(bool open);
 
   // variables

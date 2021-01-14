@@ -25,8 +25,8 @@ namespace Adcirc {
  * @class Multithreading
  * @author Zachary Cobell
  * @brief This class controls the behavior of OpenMP based functions
- * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This project
- * is released under the terms of the GNU General Public License v3
+ * @copyright Copyright 2015-2019 Zachary Cobell. All Rights Reserved. This
+ * project is released under the terms of the GNU General Public License v3
  *
  * If OpenMP functions are enabled at compile time, the multithreading class
  * allows the user to turn OpenMP on and off and control the number of threads

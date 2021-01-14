@@ -60,7 +60,7 @@ class HighWaterMarkOptions {
   double dataMultiplier() const;
   void setDataMultiplier(double multiplier);
 
-private:
+ private:
   std::string m_mesh;
   std::string m_maxele;
   std::string m_station;

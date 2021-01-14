@@ -48,11 +48,11 @@ int main() {
   std::cout << "Validated initial read.\n";
 
   harm->write("test_files/testwrite.54");
-  
+
   std::unique_ptr<HarmonicsOutput> harm2(
       new HarmonicsOutput("test_files/testwrite.54"));
   harm2->read();
-  
+
   std::cout << "File written.\n";
 
   m2_u_mag = harm2->u_amplitude("M2")->value(0);
@@ -71,7 +71,7 @@ int main() {
       k1_v_mag != 2.33264108E-001 || k1_v_pha != 310.5501) {
     return 1;
   }
-  
+
   std::cout << "Validated read/write cycle.\n";
 
   return 0;
