@@ -1,28 +1,30 @@
 <map id="dimension" name="dimension">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a53687396790fdc85b1acd2e12ba507ba" title="Checks for equality between OutputMetadata objects. " alt="" coords="203,128,288,154"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a4e4a032a952cf299fb95d22b8a3a4c87" title="defaultConvention" alt="" coords="447,136,574,162"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a5fd250e0531887253ced0e0484d86575" title="Adcirc::Output::OutputRecord\l::OutputRecord" alt="" coords="694,78,889,119"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a1a79940e14d93b265d1c0ad6da79c4b6" title="Adcirc::Output::WriteOutput\l::write" alt="" coords="965,136,1149,178"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a4ef92b2ced9fdeb531a443645f14263a" title="Adcirc::Output::OutputRecord\l::fill" alt="" coords="148,230,343,271"/>
-<area shape="rect" id="node8" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a969716d3c283bd97deb321b9ff6773de" title="Adcirc::Output::OutputRecord\l::setU" alt="" coords="148,295,343,336"/>
-<area shape="rect" id="node9" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a569e6608a8d544da96fe140315909a78" title="Adcirc::Output::OutputRecord\l::setV" alt="" coords="148,360,343,402"/>
-<area shape="rect" id="node10" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a9d2fd773f341364ec300b7349bca6d5f" title="Adcirc::Output::OutputRecord\l::setW" alt="" coords="148,426,343,467"/>
-<area shape="rect" id="node11" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a18d1bfcb85cf34bd346d2339c1a6ab6a" title="Adcirc::Output::OutputRecord::set" alt="" coords="135,492,356,518"/>
-<area shape="rect" id="node12" href="$classAdcirc_1_1Output_1_1OutputRecord.html#abb12b201a4b60270facd9b7f084016c2" title="Adcirc::Output::OutputRecord\l::magnitude" alt="" coords="413,582,608,623"/>
-<area shape="rect" id="node13" href="$classAdcirc_1_1Output_1_1OutputRecord.html#aa58626ebb99011ee8e4e6ee4fbed9f69" title="Adcirc::Output::OutputRecord\l::magnitudes" alt="" coords="694,552,889,594"/>
-<area shape="rect" id="node15" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a5ad19d13fda4c7af32cf2517e940cdc0" title="Adcirc::Output::OutputRecord::u" alt="" coords="405,698,616,725"/>
-<area shape="rect" id="node16" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a94c732bb0f167eab349228237a8fbe3c" title="Adcirc::Output::WriteOutput\l::filename" alt="" coords="699,742,883,783"/>
-<area shape="rect" id="node18" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a85ef59d49f7f85dc10cb333cd6651e83" title="Adcirc::Output::OutputRecord::v" alt="" coords="405,648,616,674"/>
-<area shape="rect" id="node19" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a08c9072fdbfbe09704841c078be53df4" title="Adcirc::Output::OutputRecord::w" alt="" coords="404,800,617,826"/>
-<area shape="rect" id="node20" href="$classAdcirc_1_1Output_1_1OutputRecord.html#adc4c7d0ff2ce0f8a8acbeb9a50fce10c" title="Adcirc::Output::OutputRecord\l::setAllU" alt="" coords="148,847,343,888"/>
-<area shape="rect" id="node21" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a1d43581ccced067c3c4b26d4101e2ce1" title="Adcirc::Output::OutputRecord\l::setAllV" alt="" coords="148,912,343,954"/>
-<area shape="rect" id="node22" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a8b1bb70e6d49b9ad962bb58ebbbf7ec2" title="Adcirc::Output::OutputRecord\l::setAllW" alt="" coords="148,978,343,1019"/>
-<area shape="rect" id="node23" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a174c5cc66e1c417279fe96f4318077af" title="Adcirc::Output::OutputRecord\l::setAll" alt="" coords="148,1043,343,1084"/>
-<area shape="rect" id="node24" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a0c226f7d9faa8d67f90e890c05cae088" title="Adcirc::Output::OutputRecord\l::isDefault" alt="" coords="148,1108,343,1150"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a0fb6a8a6a59488c7c267eeae2afc3ed6" title="Adcirc::Output::ReadOutput\l::dataAt" alt="" coords="419,344,603,386"/>
-<area shape="rect" id="node14" href="$classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="665,648,917,674"/>
-<area shape="rect" id="node17" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a56171296cefcc0d92118f33a5b41e01e" title="Adcirc::Output::WriteOutput\l::setFilename" alt="" coords="965,742,1149,783"/>
-<area shape="rect" id="node25" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a2751027834d9fad6448896c35f828ab9" title="Adcirc::Output::OutputRecord\l::direction" alt="" coords="413,1108,608,1150"/>
-<area shape="rect" id="node27" href="$classAdcirc_1_1Output_1_1OutputRecord.html#ab8ff3563cb1a7a290e68e2e31ab10458" title="Adcirc::Output::OutputRecord\l::numNonDefault" alt="" coords="413,887,608,928"/>
-<area shape="rect" id="node26" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a2ff38e09941218dd1cb2a04ee60109f9" title="Adcirc::Output::OutputRecord\l::directions" alt="" coords="694,1108,889,1150"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a53687396790fdc85b1acd2e12ba507ba" title="Checks for equality between OutputMetadata objects. " alt="" coords="203,183,288,210"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a4e4a032a952cf299fb95d22b8a3a4c87" title="defaultConvention" alt="" coords="447,183,574,210"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a5fd250e0531887253ced0e0484d86575" title="Adcirc::Output::OutputRecord\l::OutputRecord" alt="" coords="681,133,876,174"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a1a79940e14d93b265d1c0ad6da79c4b6" title="Adcirc::Output::WriteOutput\l::write" alt="" coords="974,192,1158,233"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a4ef92b2ced9fdeb531a443645f14263a" title="Adcirc::Output::OutputRecord\l::fill" alt="" coords="148,678,343,720"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a969716d3c283bd97deb321b9ff6773de" title="Adcirc::Output::OutputRecord\l::setU" alt="" coords="148,796,343,837"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a569e6608a8d544da96fe140315909a78" title="Adcirc::Output::OutputRecord\l::setV" alt="" coords="148,861,343,902"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a9d2fd773f341364ec300b7349bca6d5f" title="Adcirc::Output::OutputRecord\l::setW" alt="" coords="148,926,343,968"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a18d1bfcb85cf34bd346d2339c1a6ab6a" title="Adcirc::Output::OutputRecord::set" alt="" coords="135,744,356,771"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Output_1_1OutputRecord.html#abb12b201a4b60270facd9b7f084016c2" title="Adcirc::Output::OutputRecord\l::magnitude" alt="" coords="413,620,608,661"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Output_1_1OutputRecord.html#aa58626ebb99011ee8e4e6ee4fbed9f69" title="Adcirc::Output::OutputRecord\l::magnitudes" alt="" coords="681,649,876,690"/>
+<area shape="rect" id="node17" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a5ad19d13fda4c7af32cf2517e940cdc0" title="Adcirc::Output::OutputRecord::u" alt="" coords="405,335,616,362"/>
+<area shape="rect" id="node18" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a94c732bb0f167eab349228237a8fbe3c" title="Adcirc::Output::WriteOutput\l::filename" alt="" coords="687,328,871,369"/>
+<area shape="rect" id="node20" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a85ef59d49f7f85dc10cb333cd6651e83" title="Adcirc::Output::OutputRecord::v" alt="" coords="405,503,616,530"/>
+<area shape="rect" id="node21" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a08c9072fdbfbe09704841c078be53df4" title="Adcirc::Output::OutputRecord::w" alt="" coords="404,284,617,311"/>
+<area shape="rect" id="node22" href="$classAdcirc_1_1Output_1_1OutputRecord.html#adc4c7d0ff2ce0f8a8acbeb9a50fce10c" title="Adcirc::Output::OutputRecord\l::setAllU" alt="" coords="148,992,343,1033"/>
+<area shape="rect" id="node23" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a1d43581ccced067c3c4b26d4101e2ce1" title="Adcirc::Output::OutputRecord\l::setAllV" alt="" coords="148,1057,343,1098"/>
+<area shape="rect" id="node24" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a8b1bb70e6d49b9ad962bb58ebbbf7ec2" title="Adcirc::Output::OutputRecord\l::setAllW" alt="" coords="148,1122,343,1164"/>
+<area shape="rect" id="node25" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a174c5cc66e1c417279fe96f4318077af" title="Adcirc::Output::OutputRecord\l::setAll" alt="" coords="148,1188,343,1229"/>
+<area shape="rect" id="node26" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a0c226f7d9faa8d67f90e890c05cae088" title="Adcirc::Output::OutputRecord\l::isDefault" alt="" coords="148,510,343,552"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a0fb6a8a6a59488c7c267eeae2afc3ed6" title="Adcirc::Output::ReadOutput\l::dataAt" alt="" coords="419,737,603,778"/>
+<area shape="rect" id="node14" href="$classAdcirc_1_1Output_1_1StationInterpolation.html#a727bc23f5aaff7791f359c7fbcc9199f" title="Adcirc::Output::StationInterpolation\l::interpScalar" alt="" coords="665,493,892,534"/>
+<area shape="rect" id="node15" href="$classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="940,471,1192,498"/>
+<area shape="rect" id="node16" href="$structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#ab1c124e9ea34ad2e49e3091727ff3a3e" title="Adcirc::Output::StationInterpolation\l::Weight::Weight" alt="" coords="953,522,1179,564"/>
+<area shape="rect" id="node19" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a56171296cefcc0d92118f33a5b41e01e" title="Adcirc::Output::WriteOutput\l::setFilename" alt="" coords="974,328,1158,369"/>
+<area shape="rect" id="node27" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a2751027834d9fad6448896c35f828ab9" title="Adcirc::Output::OutputRecord\l::direction" alt="" coords="413,554,608,596"/>
+<area shape="rect" id="node29" href="$classAdcirc_1_1Output_1_1OutputRecord.html#ab8ff3563cb1a7a290e68e2e31ab10458" title="Adcirc::Output::OutputRecord\l::numNonDefault" alt="" coords="413,386,608,428"/>
+<area shape="rect" id="node28" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a2ff38e09941218dd1cb2a04ee60109f9" title="Adcirc::Output::OutputRecord\l::directions" alt="" coords="681,558,876,600"/>
 </map>

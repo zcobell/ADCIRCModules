@@ -26,6 +26,8 @@
               <section title="Raster" ref="namespaceAdcirc_1_1Raster.html" />
               <section title="Utility" ref="namespaceAdcirc_1_1Utility.html" />
             </section>
+            <section title="boost" ref="namespaceboost.html" />
+            <section title="indicators" ref="namespaceindicators.html" />
           </section>
           <section title="Namespace Members" ref="namespacemembers.html">
             <section title="All" ref="namespacemembers.html" />
@@ -184,7 +186,7 @@
                   <section title="boundaryNodes" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a66bdb1c415d453783e755a31fd572f1e" />
                   <section title="buildElementalSearchTree" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a76e76634991fe2ec7d6504760f7a6082" />
                   <section title="buildNodalSearchTree" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ab1710b55657f368bbebe1c9ad7c36f08" />
-                  <section title="computeMeshSize" ref="classAdcirc_1_1Geometry_1_1Mesh.html#aeb87845ce7689f495e96a156caa41631" />
+                  <section title="computeMeshSize" ref="classAdcirc_1_1Geometry_1_1Mesh.html#aa343c3186e3373913f4843f9ebfad8ee" />
                   <section title="connectivity" ref="classAdcirc_1_1Geometry_1_1Mesh.html#af741f0ed2f042d060c73e4e187a58f52" />
                   <section title="containsElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#aa9ab988af39078ff76a82f4f03910b47" />
                   <section title="containsElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ab8724d56cfd9c89ab9a3230994483688" />
@@ -272,11 +274,13 @@
                   <section title="Node" ref="classAdcirc_1_1Geometry_1_1Node.html#ac47bfe3149e37474301a46eacb95c2fa" />
                   <section title="hash" ref="classAdcirc_1_1Geometry_1_1Node.html#a224129399ea9da4f8f229517e6432ef5" />
                   <section title="id" ref="classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" />
+                  <section title="isBoundaryNode" ref="classAdcirc_1_1Geometry_1_1Node.html#ada7698de21e82aa53ff6850a052dca02" />
                   <section title="operator=" ref="classAdcirc_1_1Geometry_1_1Node.html#a51eb21bff35eff0e1b5bb421b90ed846" />
                   <section title="operator==" ref="classAdcirc_1_1Geometry_1_1Node.html#ac1fe571ac56b60de571f0512234e5b81" />
                   <section title="operator==" ref="classAdcirc_1_1Geometry_1_1Node.html#a8de1c9d1baad14b3c4ce7c66919dd2ee" />
                   <section title="positionHash" ref="classAdcirc_1_1Geometry_1_1Node.html#aebe3ef8b25a51c3dea486c2be65c9da8" />
                   <section title="setId" ref="classAdcirc_1_1Geometry_1_1Node.html#ae83f8bf0246a70095cce1ba86523a6fe" />
+                  <section title="setIsBoundaryNode" ref="classAdcirc_1_1Geometry_1_1Node.html#add242ea970834ed3dbe7a3c01ec9380f" />
                   <section title="setNode" ref="classAdcirc_1_1Geometry_1_1Node.html#ae75c04393d9b583587960be477a44168" />
                   <section title="setX" ref="classAdcirc_1_1Geometry_1_1Node.html#a9c18fcc579333bf9653d13ad2b372e39" />
                   <section title="setY" ref="classAdcirc_1_1Geometry_1_1Node.html#a7d57e2a5c35d27feb58fd498a3cf82b9" />
@@ -354,9 +358,11 @@
               </section>
               <section title="Interpolation" ref="namespaceAdcirc_1_1Interpolation.html">
                 <section title="Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html">
-                  <section title="Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#af94a9cc41bb85a7ea3c896dd796090a4" />
-                  <section title="Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a81372f8bd8cb66236bf33d27692fa576" />
+                  <section title="Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#acbcf35f97ac888cf780e7feefee50374" />
+                  <section title="Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a3e42ac98ff0940989c7ca25b388d1eb9" />
                   <section title="~Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a5444eb584eb8d73970123b69f8954bc3" />
+                  <section title="backupInterpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a9e1d6b4cc3ecaa6bf09f2cf39fa3d122" />
+                  <section title="backupInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a60b6be02b1bee9f775c113769271647b" />
                   <section title="computeDirectionalWindReduction" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a00f335f6098ab32130e41f51eea50813" />
                   <section title="computeValuesFromRaster" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#aa3df24eb71ae599907c0b36b6ba88ffe" />
                   <section title="datumShift" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a40504fb5f09ccc665f9cf82b327f0349" />
@@ -365,21 +371,24 @@
                   <section title="extents" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#abad38989601bc4adeeb7faff3989b190" />
                   <section title="filterSize" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f" />
                   <section title="filterSizes" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a4b2aa4a06be32df13dd51bb299c97698" />
-                  <section title="interpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a47deb90b609751c911992bd4f8893399" />
-                  <section title="interpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ad902b277acf919e0551372c5a63fa265" />
+                  <section title="interpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a39660fab1bf011f2d341d00b30d1af7b" />
+                  <section title="interpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a4ed9e9dae2c96be4d70c81c3b2485208" />
                   <section title="rasterFile" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#acb8d2e3026ba65b02af212c74ca39ed7" />
                   <section title="rasterInMemory" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a10a64ad4b6b950d27b05e654495b72e8" />
                   <section title="rasterMultiplier" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a5f8855ed3066516ffff4b19c2ac945ab" />
                   <section title="readLookupTable" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ab5cf3db546cb9a735bd63b082deaf962" />
+                  <section title="setBackupInterpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a2197ba70ea7ae8b239a65bee7955b739" />
+                  <section title="setBackupInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a2d0abee18bdf09b3db4c845a16c52616" />
+                  <section title="setBackupInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ad58cc5156d44034fea8a0e29755951a0" />
                   <section title="setDatumShift" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a21def567ea95299c16f475906aa46d30" />
                   <section title="setDefaultValue" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a4505afa16445ac8fbab372a523b794f7" />
                   <section title="setEpsg" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a25fd6d02dfa33660a5d4580cac12514f" />
                   <section title="setFilterSize" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a823bc5d8642f927068127a62f211f5b8" />
                   <section title="setFilterSizes" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a3557b4e742a74c2ff9a5fb15f3a2b67f" />
                   <section title="setFilterSizes" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a577adf7551b34a91cb85af62ad2defb3" />
-                  <section title="setInterpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#aa24ede62a9cc933a2176a3743611f6f2" />
-                  <section title="setInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a64237f1c5cba2f984a167a8e36896197" />
-                  <section title="setInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#acdbc56979865f9340bca4a03a9387b4e" />
+                  <section title="setInterpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#afd3d6fadb506813b7bcf6417d9f44996" />
+                  <section title="setInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ae5d28c11c8a4aeebd61e33c164210f4a" />
+                  <section title="setInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a4ae77cf4da64738ed717e108d975350d" />
                   <section title="setRasterFile" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ac30f11e17d7aa109823b7b718c630c58" />
                   <section title="setRasterInMemory" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ad1355b376de31a187a949f41a2754dc2" />
                   <section title="setRasterMultiplier" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#af5daf30619549ba12723af89b2d900e5" />
@@ -389,6 +398,7 @@
                   <section title="showProgressBar" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ab1dc87d55edf7471387cbfcb692f1f68" />
                   <section title="thresholdMethod" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ad63a40882c97d86b97a674c96f395e87" />
                   <section title="thresholdValue" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#aca20f3138e27aa2beff28c28f5010cdc" />
+                  <section title="windRadius" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a5389f3ab3bc9aec3cb668eab7699d2ac" />
                 </section>
               </section>
               <section title="ModelParameters" ref="namespaceAdcirc_1_1ModelParameters.html">
@@ -671,7 +681,14 @@
                   <section title="verbose" ref="classAdcirc_1_1Output_1_1ReadOutput.html#ae74762f360c62a60cf27cd0f66e7f017" />
                 </section>
                 <section title="StationInterpolation" ref="classAdcirc_1_1Output_1_1StationInterpolation.html">
+                  <section title="Weight" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html">
+                    <section title="Weight" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#ab1c124e9ea34ad2e49e3091727ff3a3e" />
+                    <section title="found" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#a7141f237b2648c631ce5b73215683565" />
+                    <section title="node_index" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#afcfc60f3ed53d076d40e1664b7bdd37b" />
+                    <section title="weight" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#a69c46283630b535e423aeab3e12b3e82" />
+                  </section>
                   <section title="StationInterpolation" ref="classAdcirc_1_1Output_1_1StationInterpolation.html#a83413f82d298c443dbe2c2e1d9a39ba9" />
+                  <section title="interpScalar" ref="classAdcirc_1_1Output_1_1StationInterpolation.html#a727bc23f5aaff7791f359c7fbcc9199f" />
                   <section title="run" ref="classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" />
                 </section>
                 <section title="StationInterpolationOptions" ref="classAdcirc_1_1Output_1_1StationInterpolationOptions.html">
@@ -729,7 +746,10 @@
               <section title="Private" ref="namespaceAdcirc_1_1Private.html">
                 <section title="GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html">
                   <section title="GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a795a30c2cc91f014c7c5eb3b48b50545" />
-                  <section title="GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ac02030dae3ceac8994a5d0e23b4580f1" />
+                  <section title="GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a6cdc3e282c6e09b853ffa8249bc760f5" />
+                  <section title="GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ac3ad967dc37abe633fa291b638dec8cf" />
+                  <section title="backupInterpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a8ce0869653cd262a13b6a44537e2a006" />
+                  <section title="backupInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a17898922fd05f48af470bc72c2341dce" />
                   <section title="computeDirectionalWindReduction" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a00f335f6098ab32130e41f51eea50813" />
                   <section title="computeValuesFromRaster" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#aa3df24eb71ae599907c0b36b6ba88ffe" />
                   <section title="datumShift" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a40504fb5f09ccc665f9cf82b327f0349" />
@@ -738,21 +758,24 @@
                   <section title="extents" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#abad38989601bc4adeeb7faff3989b190" />
                   <section title="filterSize" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a354a3b83056231148e3a2a5e2fe0c04f" />
                   <section title="filterSizes" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a4b2aa4a06be32df13dd51bb299c97698" />
-                  <section title="interpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a47deb90b609751c911992bd4f8893399" />
-                  <section title="interpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ad902b277acf919e0551372c5a63fa265" />
+                  <section title="interpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ad3037ca2a593b3fef0c10d00884dcf40" />
+                  <section title="interpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a8f2d02d98b42bddb8aff163e1a7ed917" />
                   <section title="rasterFile" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#acb8d2e3026ba65b02af212c74ca39ed7" />
                   <section title="rasterInMemory" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a10a64ad4b6b950d27b05e654495b72e8" />
                   <section title="rasterMultiplier" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a5f8855ed3066516ffff4b19c2ac945ab" />
                   <section title="readLookupTable" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ab5cf3db546cb9a735bd63b082deaf962" />
+                  <section title="setBackupInterpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a90581ebf3310457f4be7068e53e3fd26" />
+                  <section title="setBackupInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a74b6e425fa661547dfc4be3f0c8a9c02" />
+                  <section title="setBackupInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a5ab23eadf74366dc35b805b3deecffca" />
                   <section title="setDatumShift" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a21def567ea95299c16f475906aa46d30" />
                   <section title="setDefaultValue" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a4505afa16445ac8fbab372a523b794f7" />
                   <section title="setEpsg" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a25fd6d02dfa33660a5d4580cac12514f" />
                   <section title="setFilterSize" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a823bc5d8642f927068127a62f211f5b8" />
                   <section title="setFilterSizes" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a3557b4e742a74c2ff9a5fb15f3a2b67f" />
                   <section title="setFilterSizes" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a9a7e01263a295ce6e38ece7c88c3079f" />
-                  <section title="setInterpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#aa24ede62a9cc933a2176a3743611f6f2" />
-                  <section title="setInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a64237f1c5cba2f984a167a8e36896197" />
-                  <section title="setInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#acdbc56979865f9340bca4a03a9387b4e" />
+                  <section title="setInterpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#af45564da2c4e30080fd355559b8d9f66" />
+                  <section title="setInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a3716a3d7c16359a614cb9284a8c7c64c" />
+                  <section title="setInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a499a60945a04cde9987b8f45089c256e" />
                   <section title="setRasterFile" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ac30f11e17d7aa109823b7b718c630c58" />
                   <section title="setRasterInMemory" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ad1355b376de31a187a949f41a2754dc2" />
                   <section title="setRasterMultiplier" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#af5daf30619549ba12723af89b2d900e5" />
@@ -837,7 +860,7 @@
                   <section title="buildElementalSearchTree" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#a76e76634991fe2ec7d6504760f7a6082" />
                   <section title="buildNodalSearchTree" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#ab1710b55657f368bbebe1c9ad7c36f08" />
                   <section title="clone" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#a15579273d06a3b3f8b745ba6b6b5b450" />
-                  <section title="computeMeshSize" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#aeb87845ce7689f495e96a156caa41631" />
+                  <section title="computeMeshSize" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#aa343c3186e3373913f4843f9ebfad8ee" />
                   <section title="connectivity" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#af741f0ed2f042d060c73e4e187a58f52" />
                   <section title="containsElement" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#ad62a8fb8c83e9c8598e69480eafa3163" />
                   <section title="containsElement" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#af3c48d6c8efd73abd26693a4290c42db" />
@@ -1004,7 +1027,7 @@
                   <section title="~Rasterdata" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a60d084931c73acb12750932c7e2cfb38" />
                   <section title="close" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a46143fd6de3be9ab9951f140d3ae8c2f" />
                   <section title="coordinateToPixel" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#aaf257244832c7dba44aefc6aea09a5cc" />
-                  <section title="coordinateToPixel" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a9439e49dc3ac0cb7d87b144a2ac58b21" />
+                  <section title="coordinateToPixel" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a013764143b3600515840b60604b13480" />
                   <section title="dx" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a6d3cce16a37a386df6f7f100f36e02dc" />
                   <section title="dy" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a1f355fd23f22040fb553a21164da37e0" />
                   <section title="epsg" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a2fe36ee88237850f56d26023ac57e261" />
@@ -1130,6 +1153,14 @@
               <section title="m_data_u" ref="structm__DataPair.html#aecc569fa16e32b25a0bdcae2bd9b0fa8" />
               <section title="m_data_v" ref="structm__DataPair.html#a0983e342e0a39aa72449a82dab297b0a" />
               <section title="m_date" ref="structm__DataPair.html#ac4c3747a3bdc9207e75aa317d93d37c4" />
+            </section>
+            <section title="ProgressBar" ref="classProgressBar.html">
+              <section title="ProgressBar" ref="classProgressBar.html#a07f6f72ae794e1693e45e6ec5e0cd48f" />
+              <section title="~ProgressBar" ref="classProgressBar.html#a52cee408e83d2230908f8fbc8c7b7f1a" />
+              <section title="begin" ref="classProgressBar.html#ab0bdf5cca484fb2ba637c39384b27fb2" />
+              <section title="end" ref="classProgressBar.html#aaf81d3fdaf258088d7692fa70cece087" />
+              <section title="setPrefix" ref="classProgressBar.html#a9fdca633333f524e073f31d7674ab1a8" />
+              <section title="tick" ref="classProgressBar.html#a873dd91783f9efb4a590aded1f70d6b0" />
             </section>
             <section title="s_date" ref="structs__date.html">
               <section title="s_date" ref="structs__date.html#a6c5ea10cc0ad6e101ad4dfc9b1622aa6" />
@@ -1657,9 +1688,11 @@
             <section title="griddata.cpp" ref="griddata_8cpp.html" />
             <section title="griddata.h" ref="griddata_8h.html">
               <section title="Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html">
-                <section title="Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#af94a9cc41bb85a7ea3c896dd796090a4" />
-                <section title="Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a81372f8bd8cb66236bf33d27692fa576" />
+                <section title="Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#acbcf35f97ac888cf780e7feefee50374" />
+                <section title="Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a3e42ac98ff0940989c7ca25b388d1eb9" />
                 <section title="~Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a5444eb584eb8d73970123b69f8954bc3" />
+                <section title="backupInterpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a9e1d6b4cc3ecaa6bf09f2cf39fa3d122" />
+                <section title="backupInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a60b6be02b1bee9f775c113769271647b" />
                 <section title="computeDirectionalWindReduction" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a00f335f6098ab32130e41f51eea50813" />
                 <section title="computeValuesFromRaster" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#aa3df24eb71ae599907c0b36b6ba88ffe" />
                 <section title="datumShift" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a40504fb5f09ccc665f9cf82b327f0349" />
@@ -1668,21 +1701,24 @@
                 <section title="extents" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#abad38989601bc4adeeb7faff3989b190" />
                 <section title="filterSize" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a354a3b83056231148e3a2a5e2fe0c04f" />
                 <section title="filterSizes" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a4b2aa4a06be32df13dd51bb299c97698" />
-                <section title="interpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a47deb90b609751c911992bd4f8893399" />
-                <section title="interpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ad902b277acf919e0551372c5a63fa265" />
+                <section title="interpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a39660fab1bf011f2d341d00b30d1af7b" />
+                <section title="interpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a4ed9e9dae2c96be4d70c81c3b2485208" />
                 <section title="rasterFile" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#acb8d2e3026ba65b02af212c74ca39ed7" />
                 <section title="rasterInMemory" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a10a64ad4b6b950d27b05e654495b72e8" />
                 <section title="rasterMultiplier" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a5f8855ed3066516ffff4b19c2ac945ab" />
                 <section title="readLookupTable" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ab5cf3db546cb9a735bd63b082deaf962" />
+                <section title="setBackupInterpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a2197ba70ea7ae8b239a65bee7955b739" />
+                <section title="setBackupInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a2d0abee18bdf09b3db4c845a16c52616" />
+                <section title="setBackupInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ad58cc5156d44034fea8a0e29755951a0" />
                 <section title="setDatumShift" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a21def567ea95299c16f475906aa46d30" />
                 <section title="setDefaultValue" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a4505afa16445ac8fbab372a523b794f7" />
                 <section title="setEpsg" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a25fd6d02dfa33660a5d4580cac12514f" />
                 <section title="setFilterSize" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a823bc5d8642f927068127a62f211f5b8" />
                 <section title="setFilterSizes" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a3557b4e742a74c2ff9a5fb15f3a2b67f" />
                 <section title="setFilterSizes" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a577adf7551b34a91cb85af62ad2defb3" />
-                <section title="setInterpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#aa24ede62a9cc933a2176a3743611f6f2" />
-                <section title="setInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a64237f1c5cba2f984a167a8e36896197" />
-                <section title="setInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#acdbc56979865f9340bca4a03a9387b4e" />
+                <section title="setInterpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#afd3d6fadb506813b7bcf6417d9f44996" />
+                <section title="setInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ae5d28c11c8a4aeebd61e33c164210f4a" />
+                <section title="setInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a4ae77cf4da64738ed717e108d975350d" />
                 <section title="setRasterFile" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ac30f11e17d7aa109823b7b718c630c58" />
                 <section title="setRasterInMemory" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ad1355b376de31a187a949f41a2754dc2" />
                 <section title="setRasterMultiplier" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#af5daf30619549ba12723af89b2d900e5" />
@@ -1692,22 +1728,31 @@
                 <section title="showProgressBar" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ab1dc87d55edf7471387cbfcb692f1f68" />
                 <section title="thresholdMethod" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ad63a40882c97d86b97a674c96f395e87" />
                 <section title="thresholdValue" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#aca20f3138e27aa2beff28c28f5010cdc" />
+                <section title="windRadius" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a5389f3ab3bc9aec3cb668eab7699d2ac" />
               </section>
             </section>
             <section title="griddata_private.cpp" ref="griddata__private_8cpp.html">
+              <section title="griddata_exp" ref="griddata__private_8cpp.html#a91bc1c4f8d389ac8b15680e8cff89388" />
               <section title="Point" ref="griddata__private_8cpp.html#abd1dca17737b73180df12a2aacb067fb" />
+              <section title="__attribute__" ref="griddata__private_8cpp.html#a2b566f761068ecd46e81805de8ca1543" />
+              <section title="c_epsilonSquared" ref="griddata__private_8cpp.html#aed6a6c15f612dc1c59fc0586580e1ca3" />
+              <section title="c_oneOver2MinusRoot3" ref="griddata__private_8cpp.html#ac45e8041cd02bead8caaae0cfc25e6ff" />
+              <section title="c_oneOver2PlusRoot3" ref="griddata__private_8cpp.html#a8791ae00308c5a7854cb861ffa769d46" />
+              <section title="c_oneOverWindSigmaSquared" ref="griddata__private_8cpp.html#a2b3905edda6201c1b2f1c311f41f8fe2" />
+              <section title="c_rootTwoPi" ref="griddata__private_8cpp.html#a526d9f161fc00d436541ce961b2a0c26" />
+              <section title="c_windSigmaRootTwoPi" ref="griddata__private_8cpp.html#ad369ef9686166809c1d63ebfaf824cb2" />
+              <section title="gaussian" ref="griddata__private_8cpp.html#a16813cea7e67a22fd529ff686f4189f9" />
               <section title="sgn" ref="griddata__private_8cpp.html#a1ab31b90bc584c635ec159468ceed9b2" />
-              <section title="sortPointsByIncreasingDistance" ref="griddata__private_8cpp.html#a08fd6c6e1e17306899e5f0a3bf86a236" />
-              <section title="c_epsilonSquared" ref="griddata__private_8cpp.html#a42d10b36a94f0cfba59493f8e6e2698c" />
-              <section title="c_oneOver2MinusRoot3" ref="griddata__private_8cpp.html#a7e04e5a26f1d41a9c5e04f2f6229dca5" />
-              <section title="c_oneOver2PlusRoot3" ref="griddata__private_8cpp.html#aca9fc166829b72661f5f5f0d553fc2c4" />
-              <section title="c_oneOverWindSigmaSquared" ref="griddata__private_8cpp.html#a0919069de55cf2fb86be1bf50918107e" />
-              <section title="c_windDirectionLookup" ref="griddata__private_8cpp.html#a353c08037b96f309897d2f66e7152a00" />
+              <section title="sortPointsByIncreasingDistance" ref="griddata__private_8cpp.html#a1e18192037dcc8a35ab61e10b6890d89" />
+              <section title="c_windDirectionLookup" ref="griddata__private_8cpp.html#a096338f75545f5b905e16b0fc88eda6f" />
             </section>
             <section title="griddata_private.h" ref="griddata__private_8h.html">
               <section title="GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html">
                 <section title="GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a795a30c2cc91f014c7c5eb3b48b50545" />
-                <section title="GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ac02030dae3ceac8994a5d0e23b4580f1" />
+                <section title="GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a6cdc3e282c6e09b853ffa8249bc760f5" />
+                <section title="GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ac3ad967dc37abe633fa291b638dec8cf" />
+                <section title="backupInterpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a8ce0869653cd262a13b6a44537e2a006" />
+                <section title="backupInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a17898922fd05f48af470bc72c2341dce" />
                 <section title="computeDirectionalWindReduction" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a00f335f6098ab32130e41f51eea50813" />
                 <section title="computeValuesFromRaster" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#aa3df24eb71ae599907c0b36b6ba88ffe" />
                 <section title="datumShift" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a40504fb5f09ccc665f9cf82b327f0349" />
@@ -1716,21 +1761,24 @@
                 <section title="extents" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#abad38989601bc4adeeb7faff3989b190" />
                 <section title="filterSize" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a354a3b83056231148e3a2a5e2fe0c04f" />
                 <section title="filterSizes" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a4b2aa4a06be32df13dd51bb299c97698" />
-                <section title="interpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a47deb90b609751c911992bd4f8893399" />
-                <section title="interpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ad902b277acf919e0551372c5a63fa265" />
+                <section title="interpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ad3037ca2a593b3fef0c10d00884dcf40" />
+                <section title="interpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a8f2d02d98b42bddb8aff163e1a7ed917" />
                 <section title="rasterFile" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#acb8d2e3026ba65b02af212c74ca39ed7" />
                 <section title="rasterInMemory" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a10a64ad4b6b950d27b05e654495b72e8" />
                 <section title="rasterMultiplier" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a5f8855ed3066516ffff4b19c2ac945ab" />
                 <section title="readLookupTable" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ab5cf3db546cb9a735bd63b082deaf962" />
+                <section title="setBackupInterpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a90581ebf3310457f4be7068e53e3fd26" />
+                <section title="setBackupInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a74b6e425fa661547dfc4be3f0c8a9c02" />
+                <section title="setBackupInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a5ab23eadf74366dc35b805b3deecffca" />
                 <section title="setDatumShift" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a21def567ea95299c16f475906aa46d30" />
                 <section title="setDefaultValue" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a4505afa16445ac8fbab372a523b794f7" />
                 <section title="setEpsg" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a25fd6d02dfa33660a5d4580cac12514f" />
                 <section title="setFilterSize" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a823bc5d8642f927068127a62f211f5b8" />
                 <section title="setFilterSizes" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a3557b4e742a74c2ff9a5fb15f3a2b67f" />
                 <section title="setFilterSizes" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a9a7e01263a295ce6e38ece7c88c3079f" />
-                <section title="setInterpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#aa24ede62a9cc933a2176a3743611f6f2" />
-                <section title="setInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a64237f1c5cba2f984a167a8e36896197" />
-                <section title="setInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#acdbc56979865f9340bca4a03a9387b4e" />
+                <section title="setInterpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#af45564da2c4e30080fd355559b8d9f66" />
+                <section title="setInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a3716a3d7c16359a614cb9284a8c7c64c" />
+                <section title="setInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a499a60945a04cde9987b8f45089c256e" />
                 <section title="setRasterFile" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ac30f11e17d7aa109823b7b718c630c58" />
                 <section title="setRasterInMemory" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ad1355b376de31a187a949f41a2754dc2" />
                 <section title="setRasterMultiplier" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#af5daf30619549ba12723af89b2d900e5" />
@@ -2043,7 +2091,7 @@
                 <section title="boundaryNodes" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a66bdb1c415d453783e755a31fd572f1e" />
                 <section title="buildElementalSearchTree" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a76e76634991fe2ec7d6504760f7a6082" />
                 <section title="buildNodalSearchTree" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ab1710b55657f368bbebe1c9ad7c36f08" />
-                <section title="computeMeshSize" ref="classAdcirc_1_1Geometry_1_1Mesh.html#aeb87845ce7689f495e96a156caa41631" />
+                <section title="computeMeshSize" ref="classAdcirc_1_1Geometry_1_1Mesh.html#aa343c3186e3373913f4843f9ebfad8ee" />
                 <section title="connectivity" ref="classAdcirc_1_1Geometry_1_1Mesh.html#af741f0ed2f042d060c73e4e187a58f52" />
                 <section title="containsElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#aa9ab988af39078ff76a82f4f03910b47" />
                 <section title="containsElement" ref="classAdcirc_1_1Geometry_1_1Mesh.html#ab8724d56cfd9c89ab9a3230994483688" />
@@ -2146,7 +2194,7 @@
                 <section title="buildElementalSearchTree" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#a76e76634991fe2ec7d6504760f7a6082" />
                 <section title="buildNodalSearchTree" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#ab1710b55657f368bbebe1c9ad7c36f08" />
                 <section title="clone" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#a15579273d06a3b3f8b745ba6b6b5b450" />
-                <section title="computeMeshSize" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#aeb87845ce7689f495e96a156caa41631" />
+                <section title="computeMeshSize" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#aa343c3186e3373913f4843f9ebfad8ee" />
                 <section title="connectivity" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#af741f0ed2f042d060c73e4e187a58f52" />
                 <section title="containsElement" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#ad62a8fb8c83e9c8598e69480eafa3163" />
                 <section title="containsElement" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#af3c48d6c8efd73abd26693a4290c42db" />
@@ -2321,11 +2369,13 @@
                 <section title="Node" ref="classAdcirc_1_1Geometry_1_1Node.html#ac47bfe3149e37474301a46eacb95c2fa" />
                 <section title="hash" ref="classAdcirc_1_1Geometry_1_1Node.html#a224129399ea9da4f8f229517e6432ef5" />
                 <section title="id" ref="classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" />
+                <section title="isBoundaryNode" ref="classAdcirc_1_1Geometry_1_1Node.html#ada7698de21e82aa53ff6850a052dca02" />
                 <section title="operator=" ref="classAdcirc_1_1Geometry_1_1Node.html#a51eb21bff35eff0e1b5bb421b90ed846" />
                 <section title="operator==" ref="classAdcirc_1_1Geometry_1_1Node.html#ac1fe571ac56b60de571f0512234e5b81" />
                 <section title="operator==" ref="classAdcirc_1_1Geometry_1_1Node.html#a8de1c9d1baad14b3c4ce7c66919dd2ee" />
                 <section title="positionHash" ref="classAdcirc_1_1Geometry_1_1Node.html#aebe3ef8b25a51c3dea486c2be65c9da8" />
                 <section title="setId" ref="classAdcirc_1_1Geometry_1_1Node.html#ae83f8bf0246a70095cce1ba86523a6fe" />
+                <section title="setIsBoundaryNode" ref="classAdcirc_1_1Geometry_1_1Node.html#add242ea970834ed3dbe7a3c01ec9380f" />
                 <section title="setNode" ref="classAdcirc_1_1Geometry_1_1Node.html#ae75c04393d9b583587960be477a44168" />
                 <section title="setX" ref="classAdcirc_1_1Geometry_1_1Node.html#a9c18fcc579333bf9653d13ad2b372e39" />
                 <section title="setY" ref="classAdcirc_1_1Geometry_1_1Node.html#a7d57e2a5c35d27feb58fd498a3cf82b9" />
@@ -2447,6 +2497,17 @@
                 <section title="setInvalid" ref="classAdcirc_1_1Raster_1_1Pixel.html#a051bda95cf60584a1aa7aea3cb2d5215" />
               </section>
             </section>
+            <section title="progressbar.cpp" ref="progressbar_8cpp.html" />
+            <section title="progressbar.h" ref="progressbar_8h.html">
+              <section title="ProgressBar" ref="classProgressBar.html">
+                <section title="ProgressBar" ref="classProgressBar.html#a07f6f72ae794e1693e45e6ec5e0cd48f" />
+                <section title="~ProgressBar" ref="classProgressBar.html#a52cee408e83d2230908f8fbc8c7b7f1a" />
+                <section title="begin" ref="classProgressBar.html#ab0bdf5cca484fb2ba637c39384b27fb2" />
+                <section title="end" ref="classProgressBar.html#aaf81d3fdaf258088d7692fa70cece087" />
+                <section title="setPrefix" ref="classProgressBar.html#a9fdca633333f524e073f31d7674ab1a8" />
+                <section title="tick" ref="classProgressBar.html#a873dd91783f9efb4a590aded1f70d6b0" />
+              </section>
+            </section>
             <section title="projection.cpp" ref="projection_8cpp.html" />
             <section title="projection.h" ref="projection_8h.html">
               <section title="Projection" ref="classAdcirc_1_1Projection.html">
@@ -2473,7 +2534,7 @@
                 <section title="~Rasterdata" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a60d084931c73acb12750932c7e2cfb38" />
                 <section title="close" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a46143fd6de3be9ab9951f140d3ae8c2f" />
                 <section title="coordinateToPixel" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#aaf257244832c7dba44aefc6aea09a5cc" />
-                <section title="coordinateToPixel" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a9439e49dc3ac0cb7d87b144a2ac58b21" />
+                <section title="coordinateToPixel" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a013764143b3600515840b60604b13480" />
                 <section title="dx" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a6d3cce16a37a386df6f7f100f36e02dc" />
                 <section title="dy" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a1f355fd23f22040fb553a21164da37e0" />
                 <section title="epsg" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a2fe36ee88237850f56d26023ac57e261" />
@@ -2584,8 +2645,21 @@
             <section title="stationinterpolation.cpp" ref="stationinterpolation_8cpp.html" />
             <section title="stationinterpolation.h" ref="stationinterpolation_8h.html">
               <section title="StationInterpolation" ref="classAdcirc_1_1Output_1_1StationInterpolation.html">
+                <section title="Weight" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html">
+                  <section title="Weight" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#ab1c124e9ea34ad2e49e3091727ff3a3e" />
+                  <section title="found" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#a7141f237b2648c631ce5b73215683565" />
+                  <section title="node_index" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#afcfc60f3ed53d076d40e1664b7bdd37b" />
+                  <section title="weight" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#a69c46283630b535e423aeab3e12b3e82" />
+                </section>
                 <section title="StationInterpolation" ref="classAdcirc_1_1Output_1_1StationInterpolation.html#a83413f82d298c443dbe2c2e1d9a39ba9" />
+                <section title="interpScalar" ref="classAdcirc_1_1Output_1_1StationInterpolation.html#a727bc23f5aaff7791f359c7fbcc9199f" />
                 <section title="run" ref="classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" />
+              </section>
+              <section title="Weight" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html">
+                <section title="Weight" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#ab1c124e9ea34ad2e49e3091727ff3a3e" />
+                <section title="found" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#a7141f237b2648c631ce5b73215683565" />
+                <section title="node_index" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#afcfc60f3ed53d076d40e1664b7bdd37b" />
+                <section title="weight" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#a69c46283630b535e423aeab3e12b3e82" />
               </section>
             </section>
             <section title="stationinterpolationoptions.cpp" ref="stationinterpolationoptions_8cpp.html" />
@@ -2666,6 +2740,9 @@
             <section title="Typedefs" ref="globals_type.html" />
             <section title="Macros" ref="globals_defs.html" />
           </section>
+        </section>
+        <section title="Examples" ref="examples.html">
+          <section title="directional_wind_reduction.cpp" ref="directional_wind_reduction_8cpp-example.html" />
         </section>
       </section>
     </toc>
@@ -2776,14 +2853,19 @@
       <keyword name="inquireNetcdfFormat" id="filetypes.h::inquireNetcdfFormat" ref="filetypes_8h.html#af41dc2d15526c64a454d83c1b734cf2f" />
       <keyword name="equalTo" id="fpcompare.h::equalTo" ref="fpcompare_8h.html#ab97a79176601debc2265e3287f919116" />
       <keyword name="equalTo" id="fpcompare.h::equalTo" ref="fpcompare_8h.html#a52c16d2368edf8ad7e51cfb6af660122" />
+      <keyword name="griddata_exp" id="griddata_private.cpp::griddata_exp" ref="griddata__private_8cpp.html#a91bc1c4f8d389ac8b15680e8cff89388" />
       <keyword name="Point" id="griddata_private.cpp::Point" ref="griddata__private_8cpp.html#abd1dca17737b73180df12a2aacb067fb" />
+      <keyword name="c_rootTwoPi" id="griddata_private.cpp::c_rootTwoPi" ref="griddata__private_8cpp.html#a526d9f161fc00d436541ce961b2a0c26" />
+      <keyword name="c_oneOver2MinusRoot3" id="griddata_private.cpp::c_oneOver2MinusRoot3" ref="griddata__private_8cpp.html#ac45e8041cd02bead8caaae0cfc25e6ff" />
+      <keyword name="c_oneOver2PlusRoot3" id="griddata_private.cpp::c_oneOver2PlusRoot3" ref="griddata__private_8cpp.html#a8791ae00308c5a7854cb861ffa769d46" />
+      <keyword name="c_epsilonSquared" id="griddata_private.cpp::c_epsilonSquared" ref="griddata__private_8cpp.html#aed6a6c15f612dc1c59fc0586580e1ca3" />
+      <keyword name="c_oneOverWindSigmaSquared" id="griddata_private.cpp::c_oneOverWindSigmaSquared" ref="griddata__private_8cpp.html#a2b3905edda6201c1b2f1c311f41f8fe2" />
+      <keyword name="c_windSigmaRootTwoPi" id="griddata_private.cpp::c_windSigmaRootTwoPi" ref="griddata__private_8cpp.html#ad369ef9686166809c1d63ebfaf824cb2" />
       <keyword name="sgn" id="griddata_private.cpp::sgn" ref="griddata__private_8cpp.html#a1ab31b90bc584c635ec159468ceed9b2" />
-      <keyword name="sortPointsByIncreasingDistance" id="griddata_private.cpp::sortPointsByIncreasingDistance" ref="griddata__private_8cpp.html#a08fd6c6e1e17306899e5f0a3bf86a236" />
-      <keyword name="c_oneOver2MinusRoot3" id="griddata_private.cpp::c_oneOver2MinusRoot3" ref="griddata__private_8cpp.html#a7e04e5a26f1d41a9c5e04f2f6229dca5" />
-      <keyword name="c_oneOver2PlusRoot3" id="griddata_private.cpp::c_oneOver2PlusRoot3" ref="griddata__private_8cpp.html#aca9fc166829b72661f5f5f0d553fc2c4" />
-      <keyword name="c_epsilonSquared" id="griddata_private.cpp::c_epsilonSquared" ref="griddata__private_8cpp.html#a42d10b36a94f0cfba59493f8e6e2698c" />
-      <keyword name="c_oneOverWindSigmaSquared" id="griddata_private.cpp::c_oneOverWindSigmaSquared" ref="griddata__private_8cpp.html#a0919069de55cf2fb86be1bf50918107e" />
-      <keyword name="c_windDirectionLookup" id="griddata_private.cpp::c_windDirectionLookup" ref="griddata__private_8cpp.html#a353c08037b96f309897d2f66e7152a00" />
+      <keyword name="__attribute__" id="griddata_private.cpp::__attribute__" ref="griddata__private_8cpp.html#a2b566f761068ecd46e81805de8ca1543" />
+      <keyword name="sortPointsByIncreasingDistance" id="griddata_private.cpp::sortPointsByIncreasingDistance" ref="griddata__private_8cpp.html#a1e18192037dcc8a35ab61e10b6890d89" />
+      <keyword name="gaussian" id="griddata_private.cpp::gaussian" ref="griddata__private_8cpp.html#a16813cea7e67a22fd529ff686f4189f9" />
+      <keyword name="c_windDirectionLookup" id="griddata_private.cpp::c_windDirectionLookup" ref="griddata__private_8cpp.html#a096338f75545f5b905e16b0fc88eda6f" />
       <keyword name="Point" id="griddata_private.h::Point" ref="griddata__private_8h.html#abd1dca17737b73180df12a2aacb067fb" />
       <keyword name="AdcircDefaultHash" id="hashtype.h::AdcircDefaultHash" ref="hashtype_8h.html#a02540869e7e21a68f1002d33f66b7473" />
       <keyword name="NCCHECK" id="hmdf.cpp::NCCHECK" ref="hmdf_8cpp.html#a7fa0ff1a1485b1da98e073dfc662aea1" />
@@ -2807,6 +2889,13 @@
       <keyword name="m_date" id="m_DataPair::m_date" ref="structm__DataPair.html#ac4c3747a3bdc9207e75aa317d93d37c4" />
       <keyword name="m_data_u" id="m_DataPair::m_data_u" ref="structm__DataPair.html#aecc569fa16e32b25a0bdcae2bd9b0fa8" />
       <keyword name="m_data_v" id="m_DataPair::m_data_v" ref="structm__DataPair.html#a0983e342e0a39aa72449a82dab297b0a" />
+      <keyword name="ProgressBar" id="ProgressBar" ref="classProgressBar.html" />
+      <keyword name="ProgressBar" id="ProgressBar::ProgressBar" ref="classProgressBar.html#a07f6f72ae794e1693e45e6ec5e0cd48f" />
+      <keyword name="~ProgressBar" id="ProgressBar::~ProgressBar" ref="classProgressBar.html#a52cee408e83d2230908f8fbc8c7b7f1a" />
+      <keyword name="setPrefix" id="ProgressBar::setPrefix" ref="classProgressBar.html#a9fdca633333f524e073f31d7674ab1a8" />
+      <keyword name="begin" id="ProgressBar::begin" ref="classProgressBar.html#ab0bdf5cca484fb2ba637c39384b27fb2" />
+      <keyword name="tick" id="ProgressBar::tick" ref="classProgressBar.html#a873dd91783f9efb4a590aded1f70d6b0" />
+      <keyword name="end" id="ProgressBar::end" ref="classProgressBar.html#aaf81d3fdaf258088d7692fa70cece087" />
       <keyword name="s_date" id="s_date" ref="structs__date.html" />
       <keyword name="s_date" id="s_date::s_date" ref="structs__date.html#a6c5ea10cc0ad6e101ad4dfc9b1622aa6" />
       <keyword name="year" id="s_date::year" ref="structs__date.html#a1b5cb174b9b809888ca1cadfb32791f4" />
@@ -2909,8 +2998,8 @@
       <keyword name="toDegrees" id="Adcirc::Constants::toDegrees" ref="classAdcirc_1_1Constants.html#a743ea7ec7653fe3ee75df86682edbb04" />
       <keyword name="radiusEarth" id="Adcirc::Constants::radiusEarth" ref="classAdcirc_1_1Constants.html#aa13d2db888106c7772ff7d9336982fad" />
       <keyword name="distance" id="Adcirc::Constants::distance" ref="classAdcirc_1_1Constants.html#a67bb34165d68f1fe958b93511d5ede05" />
-      <keyword name="distance" id="Adcirc::Constants::distance" ref="classAdcirc_1_1Constants.html#af0a919e4f76feadc90b20fecb77d895e" />
-      <keyword name="distance" id="Adcirc::Constants::distance" ref="classAdcirc_1_1Constants.html#a86e2541d04e23b075b85d07c5b4d2bfc" />
+      <keyword name="distance" id="Adcirc::Constants::distance" ref="classAdcirc_1_1Constants.html#ae99d89e96d98fac49d9d260bde6b5728" />
+      <keyword name="distance" id="Adcirc::Constants::distance" ref="classAdcirc_1_1Constants.html#ad3f6448f722f4918b1fadf2d7b402a2a" />
       <keyword name="Adcirc::Kdtree" id="Adcirc::Kdtree" ref="classAdcirc_1_1Kdtree.html" />
       <keyword name="Kdtree" id="Adcirc::Kdtree::Kdtree" ref="classAdcirc_1_1Kdtree.html#a166012f6f966f907e915222d460fabc6" />
       <keyword name="~Kdtree" id="Adcirc::Kdtree::~Kdtree" ref="classAdcirc_1_1Kdtree.html#add678278a7840f419f783c7aae22dda4" />
@@ -2946,6 +3035,7 @@
       <keyword name="projDatabaseLocation" id="Adcirc::Projection::projDatabaseLocation" ref="classAdcirc_1_1Projection.html#afc761d8b099e74956922c423eef66a64" />
       <keyword name="transform" id="Adcirc::Projection::transform" ref="classAdcirc_1_1Projection.html#a7f2b834bb42018b6ded8da9547c3bab7" />
       <keyword name="transform" id="Adcirc::Projection::transform" ref="classAdcirc_1_1Projection.html#a9e763654e329940c6cdab684d03546af" />
+      <keyword name="transform" id="Adcirc::Projection::transform" ref="classAdcirc_1_1Projection.html#aad79f877ffb395e125771a5ed2359802" />
       <keyword name="cpp" id="Adcirc::Projection::cpp" ref="classAdcirc_1_1Projection.html#a95e1771d42f9912dcd9fc5810ab42508" />
       <keyword name="cpp" id="Adcirc::Projection::cpp" ref="classAdcirc_1_1Projection.html#a910a22eb30d4d79dc0cf6d16ed729168" />
       <keyword name="inverseCpp" id="Adcirc::Projection::inverseCpp" ref="classAdcirc_1_1Projection.html#ac49cc0741469ce9805967a07dbe683cd" />
@@ -3188,7 +3278,7 @@
       <keyword name="deleteOpenBoundary" id="Adcirc::Geometry::Mesh::deleteOpenBoundary" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a89d731dbde749752c2aefa9dc3d68954" />
       <keyword name="nodalSearchTree" id="Adcirc::Geometry::Mesh::nodalSearchTree" ref="classAdcirc_1_1Geometry_1_1Mesh.html#aa6bb9ba2d79fb124dfef3af639eb6395" />
       <keyword name="elementalSearchTree" id="Adcirc::Geometry::Mesh::elementalSearchTree" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a5d6a7986fa0fbbcfa87c3d083f2ce76d" />
-      <keyword name="computeMeshSize" id="Adcirc::Geometry::Mesh::computeMeshSize" ref="classAdcirc_1_1Geometry_1_1Mesh.html#aeb87845ce7689f495e96a156caa41631" />
+      <keyword name="computeMeshSize" id="Adcirc::Geometry::Mesh::computeMeshSize" ref="classAdcirc_1_1Geometry_1_1Mesh.html#aa343c3186e3373913f4843f9ebfad8ee" />
       <keyword name="boundaryNodes" id="Adcirc::Geometry::Mesh::boundaryNodes" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a66bdb1c415d453783e755a31fd572f1e" />
       <keyword name="hash" id="Adcirc::Geometry::Mesh::hash" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a4f2f826711deb6936af9f6175554a183" />
       <keyword name="hashType" id="Adcirc::Geometry::Mesh::hashType" ref="classAdcirc_1_1Geometry_1_1Mesh.html#a09752c7cc84a49c82752b3020a3fef0c" />
@@ -3223,6 +3313,8 @@
       <keyword name="setZ" id="Adcirc::Geometry::Node::setZ" ref="classAdcirc_1_1Geometry_1_1Node.html#a4e6bea7e742d99e9fdd7d08206cfbba0" />
       <keyword name="id" id="Adcirc::Geometry::Node::id" ref="classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" />
       <keyword name="setId" id="Adcirc::Geometry::Node::setId" ref="classAdcirc_1_1Geometry_1_1Node.html#ae83f8bf0246a70095cce1ba86523a6fe" />
+      <keyword name="isBoundaryNode" id="Adcirc::Geometry::Node::isBoundaryNode" ref="classAdcirc_1_1Geometry_1_1Node.html#ada7698de21e82aa53ff6850a052dca02" />
+      <keyword name="setIsBoundaryNode" id="Adcirc::Geometry::Node::setIsBoundaryNode" ref="classAdcirc_1_1Geometry_1_1Node.html#add242ea970834ed3dbe7a3c01ec9380f" />
       <keyword name="toAdcircString" id="Adcirc::Geometry::Node::toAdcircString" ref="classAdcirc_1_1Geometry_1_1Node.html#aa2643047b5fc60af3bac3d0e458c24d8" />
       <keyword name="to2dmString" id="Adcirc::Geometry::Node::to2dmString" ref="classAdcirc_1_1Geometry_1_1Node.html#a23d80ca14b4eb8fde2a399ebb291e826" />
       <keyword name="toPoint" id="Adcirc::Geometry::Node::toPoint" ref="classAdcirc_1_1Geometry_1_1Node.html#a629f895464564690cdb6604d4c594192" />
@@ -3305,17 +3397,22 @@
       <keyword name="ThresholdAbove" id="Adcirc::Interpolation::ThresholdAbove" ref="namespaceAdcirc_1_1Interpolation.html#a4a25793c4c2c1c850fbfb0ab682c35ddab63384a2374b94f7cd2d1c9083676ed5" />
       <keyword name="ThresholdBelow" id="Adcirc::Interpolation::ThresholdBelow" ref="namespaceAdcirc_1_1Interpolation.html#a4a25793c4c2c1c850fbfb0ab682c35dda8d06b2eaf3f1112c69daf65557a3e4d5" />
       <keyword name="Adcirc::Interpolation::Griddata" id="Adcirc::Interpolation::Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html" />
-      <keyword name="Griddata" id="Adcirc::Interpolation::Griddata::Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#af94a9cc41bb85a7ea3c896dd796090a4" />
-      <keyword name="Griddata" id="Adcirc::Interpolation::Griddata::Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a81372f8bd8cb66236bf33d27692fa576" />
+      <keyword name="Griddata" id="Adcirc::Interpolation::Griddata::Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#acbcf35f97ac888cf780e7feefee50374" />
+      <keyword name="Griddata" id="Adcirc::Interpolation::Griddata::Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a3e42ac98ff0940989c7ca25b388d1eb9" />
       <keyword name="~Griddata" id="Adcirc::Interpolation::Griddata::~Griddata" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a5444eb584eb8d73970123b69f8954bc3" />
       <keyword name="rasterFile" id="Adcirc::Interpolation::Griddata::rasterFile" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#acb8d2e3026ba65b02af212c74ca39ed7" />
       <keyword name="setRasterFile" id="Adcirc::Interpolation::Griddata::setRasterFile" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ac30f11e17d7aa109823b7b718c630c58" />
       <keyword name="readLookupTable" id="Adcirc::Interpolation::Griddata::readLookupTable" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ab5cf3db546cb9a735bd63b082deaf962" />
-      <keyword name="interpolationFlags" id="Adcirc::Interpolation::Griddata::interpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ad902b277acf919e0551372c5a63fa265" />
-      <keyword name="setInterpolationFlags" id="Adcirc::Interpolation::Griddata::setInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a64237f1c5cba2f984a167a8e36896197" />
-      <keyword name="setInterpolationFlags" id="Adcirc::Interpolation::Griddata::setInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#acdbc56979865f9340bca4a03a9387b4e" />
-      <keyword name="interpolationFlag" id="Adcirc::Interpolation::Griddata::interpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a47deb90b609751c911992bd4f8893399" />
-      <keyword name="setInterpolationFlag" id="Adcirc::Interpolation::Griddata::setInterpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#aa24ede62a9cc933a2176a3743611f6f2" />
+      <keyword name="interpolationFlags" id="Adcirc::Interpolation::Griddata::interpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a4ed9e9dae2c96be4d70c81c3b2485208" />
+      <keyword name="setInterpolationFlags" id="Adcirc::Interpolation::Griddata::setInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ae5d28c11c8a4aeebd61e33c164210f4a" />
+      <keyword name="setInterpolationFlags" id="Adcirc::Interpolation::Griddata::setInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a4ae77cf4da64738ed717e108d975350d" />
+      <keyword name="interpolationFlag" id="Adcirc::Interpolation::Griddata::interpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a39660fab1bf011f2d341d00b30d1af7b" />
+      <keyword name="setInterpolationFlag" id="Adcirc::Interpolation::Griddata::setInterpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#afd3d6fadb506813b7bcf6417d9f44996" />
+      <keyword name="backupInterpolationFlags" id="Adcirc::Interpolation::Griddata::backupInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a60b6be02b1bee9f775c113769271647b" />
+      <keyword name="setBackupInterpolationFlags" id="Adcirc::Interpolation::Griddata::setBackupInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a2d0abee18bdf09b3db4c845a16c52616" />
+      <keyword name="setBackupInterpolationFlags" id="Adcirc::Interpolation::Griddata::setBackupInterpolationFlags" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#ad58cc5156d44034fea8a0e29755951a0" />
+      <keyword name="backupInterpolationFlag" id="Adcirc::Interpolation::Griddata::backupInterpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a9e1d6b4cc3ecaa6bf09f2cf39fa3d122" />
+      <keyword name="setBackupInterpolationFlag" id="Adcirc::Interpolation::Griddata::setBackupInterpolationFlag" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a2197ba70ea7ae8b239a65bee7955b739" />
       <keyword name="filterSizes" id="Adcirc::Interpolation::Griddata::filterSizes" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a4b2aa4a06be32df13dd51bb299c97698" />
       <keyword name="setFilterSizes" id="Adcirc::Interpolation::Griddata::setFilterSizes" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a3557b4e742a74c2ff9a5fb15f3a2b67f" />
       <keyword name="setFilterSizes" id="Adcirc::Interpolation::Griddata::setFilterSizes" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a577adf7551b34a91cb85af62ad2defb3" />
@@ -3339,6 +3436,7 @@
       <keyword name="setThresholdMethod" id="Adcirc::Interpolation::Griddata::setThresholdMethod" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a082ddf8fd9a2e71b17a988b6c833ad34" />
       <keyword name="thresholdValue" id="Adcirc::Interpolation::Griddata::thresholdValue" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#aca20f3138e27aa2beff28c28f5010cdc" />
       <keyword name="setThresholdValue" id="Adcirc::Interpolation::Griddata::setThresholdValue" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a821c55b40763bf8330771826339722bc" />
+      <keyword name="windRadius" id="Adcirc::Interpolation::Griddata::windRadius" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#a5389f3ab3bc9aec3cb668eab7699d2ac" />
       <keyword name="extents" id="Adcirc::Interpolation::Griddata::extents" ref="classAdcirc_1_1Interpolation_1_1Griddata.html#abad38989601bc4adeeb7faff3989b190" />
       <keyword name="Adcirc::ModelParameters" id="Adcirc::ModelParameters" ref="namespaceAdcirc_1_1ModelParameters.html" />
       <keyword name="Adcirc::ModelParameters::Attribute" id="Adcirc::ModelParameters::Attribute" ref="classAdcirc_1_1ModelParameters_1_1Attribute.html" />
@@ -3638,6 +3736,13 @@
       <keyword name="Adcirc::Output::StationInterpolation" id="Adcirc::Output::StationInterpolation" ref="classAdcirc_1_1Output_1_1StationInterpolation.html" />
       <keyword name="StationInterpolation" id="Adcirc::Output::StationInterpolation::StationInterpolation" ref="classAdcirc_1_1Output_1_1StationInterpolation.html#a83413f82d298c443dbe2c2e1d9a39ba9" />
       <keyword name="run" id="Adcirc::Output::StationInterpolation::run" ref="classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" />
+      <keyword name="interpScalar" id="Adcirc::Output::StationInterpolation::interpScalar" ref="classAdcirc_1_1Output_1_1StationInterpolation.html#a727bc23f5aaff7791f359c7fbcc9199f" />
+      <keyword name="interpolateDryValues" id="Adcirc::Output::StationInterpolation::interpolateDryValues" ref="classAdcirc_1_1Output_1_1StationInterpolation.html#a23a6cbf4a0ed818ceb7f18963c954e68" />
+      <keyword name="Adcirc::Output::StationInterpolation::Weight" id="Adcirc::Output::StationInterpolation::Weight" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html" />
+      <keyword name="Weight" id="Adcirc::Output::StationInterpolation::Weight::Weight" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#ab1c124e9ea34ad2e49e3091727ff3a3e" />
+      <keyword name="found" id="Adcirc::Output::StationInterpolation::Weight::found" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#a7141f237b2648c631ce5b73215683565" />
+      <keyword name="node_index" id="Adcirc::Output::StationInterpolation::Weight::node_index" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#afcfc60f3ed53d076d40e1664b7bdd37b" />
+      <keyword name="weight" id="Adcirc::Output::StationInterpolation::Weight::weight" ref="structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#a69c46283630b535e423aeab3e12b3e82" />
       <keyword name="Adcirc::Output::StationInterpolationOptions" id="Adcirc::Output::StationInterpolationOptions" ref="classAdcirc_1_1Output_1_1StationInterpolationOptions.html" />
       <keyword name="StationInterpolationOptions" id="Adcirc::Output::StationInterpolationOptions::StationInterpolationOptions" ref="classAdcirc_1_1Output_1_1StationInterpolationOptions.html#a503bab3ed1d8b27f2af12b922b5188c1" />
       <keyword name="mesh" id="Adcirc::Output::StationInterpolationOptions::mesh" ref="classAdcirc_1_1Output_1_1StationInterpolationOptions.html#a3bd44310d5c694f9ccaf2305ab28d1fe" />
@@ -3691,15 +3796,21 @@
       <keyword name="Point" id="Adcirc::Private::Point" ref="namespaceAdcirc_1_1Private.html#abd1dca17737b73180df12a2aacb067fb" />
       <keyword name="Adcirc::Private::GriddataPrivate" id="Adcirc::Private::GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html" />
       <keyword name="GriddataPrivate" id="Adcirc::Private::GriddataPrivate::GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a795a30c2cc91f014c7c5eb3b48b50545" />
-      <keyword name="GriddataPrivate" id="Adcirc::Private::GriddataPrivate::GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ac02030dae3ceac8994a5d0e23b4580f1" />
+      <keyword name="GriddataPrivate" id="Adcirc::Private::GriddataPrivate::GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a6cdc3e282c6e09b853ffa8249bc760f5" />
+      <keyword name="GriddataPrivate" id="Adcirc::Private::GriddataPrivate::GriddataPrivate" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ac3ad967dc37abe633fa291b638dec8cf" />
       <keyword name="rasterFile" id="Adcirc::Private::GriddataPrivate::rasterFile" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#acb8d2e3026ba65b02af212c74ca39ed7" />
       <keyword name="setRasterFile" id="Adcirc::Private::GriddataPrivate::setRasterFile" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ac30f11e17d7aa109823b7b718c630c58" />
       <keyword name="readLookupTable" id="Adcirc::Private::GriddataPrivate::readLookupTable" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ab5cf3db546cb9a735bd63b082deaf962" />
-      <keyword name="interpolationFlags" id="Adcirc::Private::GriddataPrivate::interpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ad902b277acf919e0551372c5a63fa265" />
-      <keyword name="setInterpolationFlags" id="Adcirc::Private::GriddataPrivate::setInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a64237f1c5cba2f984a167a8e36896197" />
-      <keyword name="setInterpolationFlags" id="Adcirc::Private::GriddataPrivate::setInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#acdbc56979865f9340bca4a03a9387b4e" />
-      <keyword name="interpolationFlag" id="Adcirc::Private::GriddataPrivate::interpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a47deb90b609751c911992bd4f8893399" />
-      <keyword name="setInterpolationFlag" id="Adcirc::Private::GriddataPrivate::setInterpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#aa24ede62a9cc933a2176a3743611f6f2" />
+      <keyword name="interpolationFlags" id="Adcirc::Private::GriddataPrivate::interpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a8f2d02d98b42bddb8aff163e1a7ed917" />
+      <keyword name="setInterpolationFlags" id="Adcirc::Private::GriddataPrivate::setInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a3716a3d7c16359a614cb9284a8c7c64c" />
+      <keyword name="setInterpolationFlags" id="Adcirc::Private::GriddataPrivate::setInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a499a60945a04cde9987b8f45089c256e" />
+      <keyword name="interpolationFlag" id="Adcirc::Private::GriddataPrivate::interpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ad3037ca2a593b3fef0c10d00884dcf40" />
+      <keyword name="setInterpolationFlag" id="Adcirc::Private::GriddataPrivate::setInterpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#af45564da2c4e30080fd355559b8d9f66" />
+      <keyword name="backupInterpolationFlags" id="Adcirc::Private::GriddataPrivate::backupInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a17898922fd05f48af470bc72c2341dce" />
+      <keyword name="setBackupInterpolationFlags" id="Adcirc::Private::GriddataPrivate::setBackupInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a74b6e425fa661547dfc4be3f0c8a9c02" />
+      <keyword name="setBackupInterpolationFlags" id="Adcirc::Private::GriddataPrivate::setBackupInterpolationFlags" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a5ab23eadf74366dc35b805b3deecffca" />
+      <keyword name="backupInterpolationFlag" id="Adcirc::Private::GriddataPrivate::backupInterpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a8ce0869653cd262a13b6a44537e2a006" />
+      <keyword name="setBackupInterpolationFlag" id="Adcirc::Private::GriddataPrivate::setBackupInterpolationFlag" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a90581ebf3310457f4be7068e53e3fd26" />
       <keyword name="filterSizes" id="Adcirc::Private::GriddataPrivate::filterSizes" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a4b2aa4a06be32df13dd51bb299c97698" />
       <keyword name="setFilterSizes" id="Adcirc::Private::GriddataPrivate::setFilterSizes" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a3557b4e742a74c2ff9a5fb15f3a2b67f" />
       <keyword name="setFilterSizes" id="Adcirc::Private::GriddataPrivate::setFilterSizes" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a9a7e01263a295ce6e38ece7c88c3079f" />
@@ -3724,6 +3835,7 @@
       <keyword name="thresholdMethod" id="Adcirc::Private::GriddataPrivate::thresholdMethod" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#ad63a40882c97d86b97a674c96f395e87" />
       <keyword name="setThresholdMethod" id="Adcirc::Private::GriddataPrivate::setThresholdMethod" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a215d6687700cc9bd97e77de1da8b6561" />
       <keyword name="extents" id="Adcirc::Private::GriddataPrivate::extents" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#abad38989601bc4adeeb7faff3989b190" />
+      <keyword name="distanceFactor" id="Adcirc::Private::GriddataPrivate::distanceFactor" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a84150c30221a687253d2273d10b65946" />
       <keyword name="windRadius" id="Adcirc::Private::GriddataPrivate::windRadius" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#abf5edbd9ca281bda2826ca7ade226e38" />
       <keyword name="windSigma" id="Adcirc::Private::GriddataPrivate::windSigma" ref="classAdcirc_1_1Private_1_1GriddataPrivate.html#a1ce4d6eb89447a50e8159bd66fc331b3" />
       <keyword name="Adcirc::Private::HarmonicsOutputPrivate" id="Adcirc::Private::HarmonicsOutputPrivate" ref="classAdcirc_1_1Private_1_1HarmonicsOutputPrivate.html" />
@@ -3867,7 +3979,7 @@
       <keyword name="deleteLandBoundary" id="Adcirc::Private::MeshPrivate::deleteLandBoundary" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#a7c5d9febc17248e57e031b62274125fd" />
       <keyword name="nodalSearchTree" id="Adcirc::Private::MeshPrivate::nodalSearchTree" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#aa6bb9ba2d79fb124dfef3af639eb6395" />
       <keyword name="elementalSearchTree" id="Adcirc::Private::MeshPrivate::elementalSearchTree" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#a5d6a7986fa0fbbcfa87c3d083f2ce76d" />
-      <keyword name="computeMeshSize" id="Adcirc::Private::MeshPrivate::computeMeshSize" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#aeb87845ce7689f495e96a156caa41631" />
+      <keyword name="computeMeshSize" id="Adcirc::Private::MeshPrivate::computeMeshSize" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#aa343c3186e3373913f4843f9ebfad8ee" />
       <keyword name="hash" id="Adcirc::Private::MeshPrivate::hash" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#a4f2f826711deb6936af9f6175554a183" />
       <keyword name="hashType" id="Adcirc::Private::MeshPrivate::hashType" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#a09752c7cc84a49c82752b3020a3fef0c" />
       <keyword name="setHashType" id="Adcirc::Private::MeshPrivate::setHashType" ref="classAdcirc_1_1Private_1_1MeshPrivate.html#ada1164a4bd0e785a24f446d052edc112" />
@@ -3964,7 +4076,7 @@
       <keyword name="pixelToCoordinate" id="Adcirc::Raster::Rasterdata::pixelToCoordinate" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#acb64951c8bcd4cbe7e19eef01bb1e404" />
       <keyword name="pixelToCoordinate" id="Adcirc::Raster::Rasterdata::pixelToCoordinate" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#ad413324518b17ea5ce14d69e6dee7dea" />
       <keyword name="coordinateToPixel" id="Adcirc::Raster::Rasterdata::coordinateToPixel" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#aaf257244832c7dba44aefc6aea09a5cc" />
-      <keyword name="coordinateToPixel" id="Adcirc::Raster::Rasterdata::coordinateToPixel" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a9439e49dc3ac0cb7d87b144a2ac58b21" />
+      <keyword name="coordinateToPixel" id="Adcirc::Raster::Rasterdata::coordinateToPixel" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a013764143b3600515840b60604b13480" />
       <keyword name="projectionString" id="Adcirc::Raster::Rasterdata::projectionString" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a9da4766a4495da822804c83ce4d044ef" />
       <keyword name="searchBoxAroundPoint" id="Adcirc::Raster::Rasterdata::searchBoxAroundPoint" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a8d89771bfebb681e1094bb8dc6e54ac2" />
       <keyword name="filename" id="Adcirc::Raster::Rasterdata::filename" ref="classAdcirc_1_1Raster_1_1Rasterdata.html#a94c732bb0f167eab349228237a8fbe3c" />
@@ -3997,6 +4109,8 @@
       <keyword name="checkPipeHeights" id="Adcirc::Utility::MeshChecker::checkPipeHeights" ref="classAdcirc_1_1Utility_1_1MeshChecker.html#abe0ee479b6895d7945f6ed8c757529a0" />
       <keyword name="checkElementSizes" id="Adcirc::Utility::MeshChecker::checkElementSizes" ref="classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" />
       <keyword name="checkMissingBoundaryConditions" id="Adcirc::Utility::MeshChecker::checkMissingBoundaryConditions" ref="classAdcirc_1_1Utility_1_1MeshChecker.html#ad873c200f2f8160c206511d083f4ffd7" />
+      <keyword name="boost" id="boost" ref="namespaceboost.html" />
+      <keyword name="indicators" id="indicators" ref="namespaceindicators.html" />
     </keywords>
     <files>
       <file>tabs.css</file>
@@ -4023,6 +4137,9 @@
       <file>search/mag_sel.png</file>
       <file>search/search.css</file>
       <file>search/search.js</file>
+      <file>directional_wind_reduction_8cpp-example.html</file>
+      <file>sderl_01.png</file>
+      <file>sderl_02.png</file>
       <file>adchash_8h_source.html</file>
       <file>adchash__private_8h_source.html</file>
       <file>adcirc__outputfiles_8h_source.html</file>
@@ -4069,6 +4186,7 @@
       <file>outputmetadata_8h_source.html</file>
       <file>outputrecord_8h_source.html</file>
       <file>pixel_8h_source.html</file>
+      <file>progressbar_8h_source.html</file>
       <file>projection_8h_source.html</file>
       <file>rasterdata_8h_source.html</file>
       <file>rasterdata__private_8h_source.html</file>
@@ -4246,8 +4364,26 @@
       <file>griddata__private_8cpp.html</file>
       <file>griddata__private_8cpp__incl.png</file>
       <file>griddata__private_8cpp__incl.png</file>
-      <file>griddata__private_8cpp_a08fd6c6e1e17306899e5f0a3bf86a236_cgraph.png</file>
-      <file>griddata__private_8cpp_a08fd6c6e1e17306899e5f0a3bf86a236_cgraph.png</file>
+      <file>griddata__private_8cpp_aed6a6c15f612dc1c59fc0586580e1ca3_icgraph.png</file>
+      <file>griddata__private_8cpp_aed6a6c15f612dc1c59fc0586580e1ca3_icgraph.png</file>
+      <file>griddata__private_8cpp_ac45e8041cd02bead8caaae0cfc25e6ff_cgraph.png</file>
+      <file>griddata__private_8cpp_ac45e8041cd02bead8caaae0cfc25e6ff_cgraph.png</file>
+      <file>griddata__private_8cpp_ac45e8041cd02bead8caaae0cfc25e6ff_icgraph.png</file>
+      <file>griddata__private_8cpp_ac45e8041cd02bead8caaae0cfc25e6ff_icgraph.png</file>
+      <file>griddata__private_8cpp_a8791ae00308c5a7854cb861ffa769d46_cgraph.png</file>
+      <file>griddata__private_8cpp_a8791ae00308c5a7854cb861ffa769d46_cgraph.png</file>
+      <file>griddata__private_8cpp_a8791ae00308c5a7854cb861ffa769d46_icgraph.png</file>
+      <file>griddata__private_8cpp_a8791ae00308c5a7854cb861ffa769d46_icgraph.png</file>
+      <file>griddata__private_8cpp_a526d9f161fc00d436541ce961b2a0c26_icgraph.png</file>
+      <file>griddata__private_8cpp_a526d9f161fc00d436541ce961b2a0c26_icgraph.png</file>
+      <file>griddata__private_8cpp_ad369ef9686166809c1d63ebfaf824cb2_cgraph.png</file>
+      <file>griddata__private_8cpp_ad369ef9686166809c1d63ebfaf824cb2_cgraph.png</file>
+      <file>griddata__private_8cpp_a16813cea7e67a22fd529ff686f4189f9_cgraph.png</file>
+      <file>griddata__private_8cpp_a16813cea7e67a22fd529ff686f4189f9_cgraph.png</file>
+      <file>griddata__private_8cpp_a1ab31b90bc584c635ec159468ceed9b2_icgraph.png</file>
+      <file>griddata__private_8cpp_a1ab31b90bc584c635ec159468ceed9b2_icgraph.png</file>
+      <file>griddata__private_8cpp_a1e18192037dcc8a35ab61e10b6890d89_cgraph.png</file>
+      <file>griddata__private_8cpp_a1e18192037dcc8a35ab61e10b6890d89_cgraph.png</file>
       <file>griddata__private_8h.html</file>
       <file>griddata__private_8h__incl.png</file>
       <file>griddata__private_8h__incl.png</file>
@@ -4437,6 +4573,14 @@
       <file>pixel_8h__incl.png</file>
       <file>pixel_8h__dep__incl.png</file>
       <file>pixel_8h__dep__incl.png</file>
+      <file>progressbar_8cpp.html</file>
+      <file>progressbar_8cpp__incl.png</file>
+      <file>progressbar_8cpp__incl.png</file>
+      <file>progressbar_8h.html</file>
+      <file>progressbar_8h__incl.png</file>
+      <file>progressbar_8h__incl.png</file>
+      <file>progressbar_8h__dep__incl.png</file>
+      <file>progressbar_8h__dep__incl.png</file>
       <file>projection_8cpp.html</file>
       <file>projection_8cpp__incl.png</file>
       <file>projection_8cpp__incl.png</file>
@@ -4508,6 +4652,18 @@
       <file>structm__DataPair__coll__graph.png</file>
       <file>structm__DataPair__coll__graph.png</file>
       <file>structm__DataPair-members.html</file>
+      <file>classProgressBar.html</file>
+      <file>classProgressBar_a07f6f72ae794e1693e45e6ec5e0cd48f_cgraph.png</file>
+      <file>classProgressBar_a07f6f72ae794e1693e45e6ec5e0cd48f_cgraph.png</file>
+      <file>classProgressBar_a52cee408e83d2230908f8fbc8c7b7f1a_icgraph.png</file>
+      <file>classProgressBar_a52cee408e83d2230908f8fbc8c7b7f1a_icgraph.png</file>
+      <file>classProgressBar_ab0bdf5cca484fb2ba637c39384b27fb2_icgraph.png</file>
+      <file>classProgressBar_ab0bdf5cca484fb2ba637c39384b27fb2_icgraph.png</file>
+      <file>classProgressBar_aaf81d3fdaf258088d7692fa70cece087_icgraph.png</file>
+      <file>classProgressBar_aaf81d3fdaf258088d7692fa70cece087_icgraph.png</file>
+      <file>classProgressBar_a873dd91783f9efb4a590aded1f70d6b0_icgraph.png</file>
+      <file>classProgressBar_a873dd91783f9efb4a590aded1f70d6b0_icgraph.png</file>
+      <file>classProgressBar-members.html</file>
       <file>structs__date.html</file>
       <file>structs__date_a5a496ea2e6017fd4b43081f4317f96ce_icgraph.png</file>
       <file>structs__date_a5a496ea2e6017fd4b43081f4317f96ce_icgraph.png</file>
@@ -4664,8 +4820,8 @@
       <file>classAdcirc_1_1Constants_ae43063ac7bf556cb933a0206301b9748_icgraph.png</file>
       <file>classAdcirc_1_1Constants_a67bb34165d68f1fe958b93511d5ede05_icgraph.png</file>
       <file>classAdcirc_1_1Constants_a67bb34165d68f1fe958b93511d5ede05_icgraph.png</file>
-      <file>classAdcirc_1_1Constants_a86e2541d04e23b075b85d07c5b4d2bfc_cgraph.png</file>
-      <file>classAdcirc_1_1Constants_a86e2541d04e23b075b85d07c5b4d2bfc_cgraph.png</file>
+      <file>classAdcirc_1_1Constants_ad3f6448f722f4918b1fadf2d7b402a2a_cgraph.png</file>
+      <file>classAdcirc_1_1Constants_ad3f6448f722f4918b1fadf2d7b402a2a_cgraph.png</file>
       <file>classAdcirc_1_1Constants_ac4170b1989bcda498ea9ea95bf25d583_icgraph.png</file>
       <file>classAdcirc_1_1Constants_ac4170b1989bcda498ea9ea95bf25d583_icgraph.png</file>
       <file>classAdcirc_1_1Constants_a95a4ba06d4c9d035e3323436c9753b0d_cgraph.png</file>
@@ -4684,6 +4840,8 @@
       <file>classAdcirc_1_1Constants_aa13d2db888106c7772ff7d9336982fad_icgraph.png</file>
       <file>classAdcirc_1_1Constants_a62d050d6a06ff0262d04bd705e45c517_cgraph.png</file>
       <file>classAdcirc_1_1Constants_a62d050d6a06ff0262d04bd705e45c517_cgraph.png</file>
+      <file>classAdcirc_1_1Constants_a62d050d6a06ff0262d04bd705e45c517_icgraph.png</file>
+      <file>classAdcirc_1_1Constants_a62d050d6a06ff0262d04bd705e45c517_icgraph.png</file>
       <file>classAdcirc_1_1Constants_a743ea7ec7653fe3ee75df86682edbb04_cgraph.png</file>
       <file>classAdcirc_1_1Constants_a743ea7ec7653fe3ee75df86682edbb04_cgraph.png</file>
       <file>classAdcirc_1_1Constants_a743ea7ec7653fe3ee75df86682edbb04_icgraph.png</file>
@@ -5022,8 +5180,8 @@
       <file>classAdcirc_1_1Geometry_1_1Mesh_a66bdb1c415d453783e755a31fd572f1e_icgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Mesh_a76e76634991fe2ec7d6504760f7a6082_icgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Mesh_a76e76634991fe2ec7d6504760f7a6082_icgraph.png</file>
-      <file>classAdcirc_1_1Geometry_1_1Mesh_aeb87845ce7689f495e96a156caa41631_icgraph.png</file>
-      <file>classAdcirc_1_1Geometry_1_1Mesh_aeb87845ce7689f495e96a156caa41631_icgraph.png</file>
+      <file>classAdcirc_1_1Geometry_1_1Mesh_aa343c3186e3373913f4843f9ebfad8ee_icgraph.png</file>
+      <file>classAdcirc_1_1Geometry_1_1Mesh_aa343c3186e3373913f4843f9ebfad8ee_icgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Mesh_a3543bba752ce5bb6f2a4ce69c0f09c3d_icgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Mesh_a3543bba752ce5bb6f2a4ce69c0f09c3d_icgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Mesh_afc8a7071a350f0e47178c77e10323dcc_icgraph.png</file>
@@ -5060,6 +5218,8 @@
       <file>classAdcirc_1_1Geometry_1_1Node_a224129399ea9da4f8f229517e6432ef5_icgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Node_a5f63790137ee0057c96ce809f8f52ae7_icgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Node_a5f63790137ee0057c96ce809f8f52ae7_icgraph.png</file>
+      <file>classAdcirc_1_1Geometry_1_1Node_ada7698de21e82aa53ff6850a052dca02_icgraph.png</file>
+      <file>classAdcirc_1_1Geometry_1_1Node_ada7698de21e82aa53ff6850a052dca02_icgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Node_ac1fe571ac56b60de571f0512234e5b81_cgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Node_ac1fe571ac56b60de571f0512234e5b81_cgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Node_a8de1c9d1baad14b3c4ce7c66919dd2ee_cgraph.png</file>
@@ -5068,6 +5228,8 @@
       <file>classAdcirc_1_1Geometry_1_1Node_aebe3ef8b25a51c3dea486c2be65c9da8_cgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Node_ae83f8bf0246a70095cce1ba86523a6fe_cgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Node_ae83f8bf0246a70095cce1ba86523a6fe_cgraph.png</file>
+      <file>classAdcirc_1_1Geometry_1_1Node_add242ea970834ed3dbe7a3c01ec9380f_icgraph.png</file>
+      <file>classAdcirc_1_1Geometry_1_1Node_add242ea970834ed3dbe7a3c01ec9380f_icgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Node_ae75c04393d9b583587960be477a44168_cgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Node_ae75c04393d9b583587960be477a44168_cgraph.png</file>
       <file>classAdcirc_1_1Geometry_1_1Node_a9c18fcc579333bf9653d13ad2b372e39_cgraph.png</file>
@@ -5730,7 +5892,21 @@
       <file>classAdcirc_1_1Output_1_1ReadOutput_ae74762f360c62a60cf27cd0f66e7f017_icgraph.png</file>
       <file>classAdcirc_1_1Output_1_1ReadOutput-members.html</file>
       <file>classAdcirc_1_1Output_1_1StationInterpolation.html</file>
+      <file>classAdcirc_1_1Output_1_1StationInterpolation_a23a6cbf4a0ed818ceb7f18963c954e68_cgraph.png</file>
+      <file>classAdcirc_1_1Output_1_1StationInterpolation_a23a6cbf4a0ed818ceb7f18963c954e68_cgraph.png</file>
+      <file>classAdcirc_1_1Output_1_1StationInterpolation_a23a6cbf4a0ed818ceb7f18963c954e68_icgraph.png</file>
+      <file>classAdcirc_1_1Output_1_1StationInterpolation_a23a6cbf4a0ed818ceb7f18963c954e68_icgraph.png</file>
+      <file>classAdcirc_1_1Output_1_1StationInterpolation_a727bc23f5aaff7791f359c7fbcc9199f_cgraph.png</file>
+      <file>classAdcirc_1_1Output_1_1StationInterpolation_a727bc23f5aaff7791f359c7fbcc9199f_cgraph.png</file>
+      <file>classAdcirc_1_1Output_1_1StationInterpolation_a727bc23f5aaff7791f359c7fbcc9199f_icgraph.png</file>
+      <file>classAdcirc_1_1Output_1_1StationInterpolation_a727bc23f5aaff7791f359c7fbcc9199f_icgraph.png</file>
+      <file>classAdcirc_1_1Output_1_1StationInterpolation_a13a43e6d814de94978c515cb084873b1_cgraph.png</file>
+      <file>classAdcirc_1_1Output_1_1StationInterpolation_a13a43e6d814de94978c515cb084873b1_cgraph.png</file>
       <file>classAdcirc_1_1Output_1_1StationInterpolation-members.html</file>
+      <file>structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html</file>
+      <file>structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight_ab1c124e9ea34ad2e49e3091727ff3a3e_cgraph.png</file>
+      <file>structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight_ab1c124e9ea34ad2e49e3091727ff3a3e_cgraph.png</file>
+      <file>structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight-members.html</file>
       <file>classAdcirc_1_1Output_1_1StationInterpolationOptions.html</file>
       <file>classAdcirc_1_1Output_1_1StationInterpolationOptions_a649ea955703c7097674ed66fb4e6c918_icgraph.png</file>
       <file>classAdcirc_1_1Output_1_1StationInterpolationOptions_a649ea955703c7097674ed66fb4e6c918_icgraph.png</file>
@@ -5831,8 +6007,10 @@
       <file>classAdcirc_1_1Private_1_1GriddataPrivate.html</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a795a30c2cc91f014c7c5eb3b48b50545_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a795a30c2cc91f014c7c5eb3b48b50545_icgraph.png</file>
-      <file>classAdcirc_1_1Private_1_1GriddataPrivate_ac02030dae3ceac8994a5d0e23b4580f1_cgraph.png</file>
-      <file>classAdcirc_1_1Private_1_1GriddataPrivate_ac02030dae3ceac8994a5d0e23b4580f1_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a6cdc3e282c6e09b853ffa8249bc760f5_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a6cdc3e282c6e09b853ffa8249bc760f5_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_ac3ad967dc37abe633fa291b638dec8cf_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_ac3ad967dc37abe633fa291b638dec8cf_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a00f335f6098ab32130e41f51eea50813_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a00f335f6098ab32130e41f51eea50813_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_aa3df24eb71ae599907c0b36b6ba88ffe_cgraph.png</file>
@@ -5841,16 +6019,22 @@
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a40504fb5f09ccc665f9cf82b327f0349_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_af3c6e7460235c8bda8126219d3bcfef4_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_af3c6e7460235c8bda8126219d3bcfef4_icgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a84150c30221a687253d2273d10b65946_icgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a84150c30221a687253d2273d10b65946_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a2fe36ee88237850f56d26023ac57e261_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a2fe36ee88237850f56d26023ac57e261_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_abad38989601bc4adeeb7faff3989b190_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_abad38989601bc4adeeb7faff3989b190_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a354a3b83056231148e3a2a5e2fe0c04f_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a354a3b83056231148e3a2a5e2fe0c04f_icgraph.png</file>
-      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a47deb90b609751c911992bd4f8893399_icgraph.png</file>
-      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a47deb90b609751c911992bd4f8893399_icgraph.png</file>
-      <file>classAdcirc_1_1Private_1_1GriddataPrivate_ad902b277acf919e0551372c5a63fa265_icgraph.png</file>
-      <file>classAdcirc_1_1Private_1_1GriddataPrivate_ad902b277acf919e0551372c5a63fa265_icgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_ad3037ca2a593b3fef0c10d00884dcf40_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_ad3037ca2a593b3fef0c10d00884dcf40_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_ad3037ca2a593b3fef0c10d00884dcf40_icgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_ad3037ca2a593b3fef0c10d00884dcf40_icgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a8f2d02d98b42bddb8aff163e1a7ed917_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a8f2d02d98b42bddb8aff163e1a7ed917_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a8f2d02d98b42bddb8aff163e1a7ed917_icgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a8f2d02d98b42bddb8aff163e1a7ed917_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_acb8d2e3026ba65b02af212c74ca39ed7_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_acb8d2e3026ba65b02af212c74ca39ed7_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a10a64ad4b6b950d27b05e654495b72e8_icgraph.png</file>
@@ -5859,6 +6043,10 @@
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a5f8855ed3066516ffff4b19c2ac945ab_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_ab5cf3db546cb9a735bd63b082deaf962_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_ab5cf3db546cb9a735bd63b082deaf962_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a74b6e425fa661547dfc4be3f0c8a9c02_icgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a74b6e425fa661547dfc4be3f0c8a9c02_icgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a5ab23eadf74366dc35b805b3deecffca_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a5ab23eadf74366dc35b805b3deecffca_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a21def567ea95299c16f475906aa46d30_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a21def567ea95299c16f475906aa46d30_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a21def567ea95299c16f475906aa46d30_icgraph.png</file>
@@ -5873,10 +6061,10 @@
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a3557b4e742a74c2ff9a5fb15f3a2b67f_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a9a7e01263a295ce6e38ece7c88c3079f_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a9a7e01263a295ce6e38ece7c88c3079f_cgraph.png</file>
-      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a64237f1c5cba2f984a167a8e36896197_cgraph.png</file>
-      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a64237f1c5cba2f984a167a8e36896197_cgraph.png</file>
-      <file>classAdcirc_1_1Private_1_1GriddataPrivate_acdbc56979865f9340bca4a03a9387b4e_cgraph.png</file>
-      <file>classAdcirc_1_1Private_1_1GriddataPrivate_acdbc56979865f9340bca4a03a9387b4e_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a3716a3d7c16359a614cb9284a8c7c64c_icgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a3716a3d7c16359a614cb9284a8c7c64c_icgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a499a60945a04cde9987b8f45089c256e_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a499a60945a04cde9987b8f45089c256e_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_ac30f11e17d7aa109823b7b718c630c58_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_ac30f11e17d7aa109823b7b718c630c58_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_ad1355b376de31a187a949f41a2754dc2_cgraph.png</file>
@@ -5899,8 +6087,12 @@
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_ad63a40882c97d86b97a674c96f395e87_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_aca20f3138e27aa2beff28c28f5010cdc_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_aca20f3138e27aa2beff28c28f5010cdc_icgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_abf5edbd9ca281bda2826ca7ade226e38_icgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_abf5edbd9ca281bda2826ca7ade226e38_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a1ce4d6eb89447a50e8159bd66fc331b3_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate_a1ce4d6eb89447a50e8159bd66fc331b3_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a1ce4d6eb89447a50e8159bd66fc331b3_icgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1GriddataPrivate_a1ce4d6eb89447a50e8159bd66fc331b3_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1GriddataPrivate-members.html</file>
       <file>classAdcirc_1_1Private_1_1HarmonicsOutputPrivate.html</file>
       <file>classAdcirc_1_1Private_1_1HarmonicsOutputPrivate_a9c14a40adfbd52e4d621f3761910c482_cgraph.png</file>
@@ -6039,8 +6231,8 @@
       <file>classAdcirc_1_1Private_1_1MeshPrivate_ab1710b55657f368bbebe1c9ad7c36f08_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_ab1710b55657f368bbebe1c9ad7c36f08_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_ab1710b55657f368bbebe1c9ad7c36f08_icgraph.png</file>
-      <file>classAdcirc_1_1Private_1_1MeshPrivate_aeb87845ce7689f495e96a156caa41631_cgraph.png</file>
-      <file>classAdcirc_1_1Private_1_1MeshPrivate_aeb87845ce7689f495e96a156caa41631_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1MeshPrivate_aa343c3186e3373913f4843f9ebfad8ee_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1MeshPrivate_aa343c3186e3373913f4843f9ebfad8ee_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_af741f0ed2f042d060c73e4e187a58f52_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_af741f0ed2f042d060c73e4e187a58f52_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_a24b9f110edb020b8ebde81a23bfdabe0_cgraph.png</file>
@@ -6061,8 +6253,6 @@
       <file>classAdcirc_1_1Private_1_1MeshPrivate_a684cf2720fb4efb8e72184f52ad151cb_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_a89d731dbde749752c2aefa9dc3d68954_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_a89d731dbde749752c2aefa9dc3d68954_cgraph.png</file>
-      <file>classAdcirc_1_1Private_1_1MeshPrivate_a14aa75a7dd91534b6b886769e21e2c89_cgraph.png</file>
-      <file>classAdcirc_1_1Private_1_1MeshPrivate_a14aa75a7dd91534b6b886769e21e2c89_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_a14aa75a7dd91534b6b886769e21e2c89_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_a14aa75a7dd91534b6b886769e21e2c89_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_a5d6a7986fa0fbbcfa87c3d083f2ce76d_icgraph.png</file>
@@ -6153,6 +6343,8 @@
       <file>classAdcirc_1_1Private_1_1MeshPrivate_a730dc8fcf0da2d9a4ff0f7ac3c614d00_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_abaa0c62f37f1b32f8524ddc12f2f1a64_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_abaa0c62f37f1b32f8524ddc12f2f1a64_cgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1MeshPrivate_abaa0c62f37f1b32f8524ddc12f2f1a64_icgraph.png</file>
+      <file>classAdcirc_1_1Private_1_1MeshPrivate_abaa0c62f37f1b32f8524ddc12f2f1a64_icgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_a8f23e4e9fe3feb443c4fba061eda9450_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_a8f23e4e9fe3feb443c4fba061eda9450_cgraph.png</file>
       <file>classAdcirc_1_1Private_1_1MeshPrivate_a8f23e4e9fe3feb443c4fba061eda9450_icgraph.png</file>
@@ -6288,8 +6480,8 @@
       <file>classAdcirc_1_1Raster_1_1Rasterdata_aaf257244832c7dba44aefc6aea09a5cc_cgraph.png</file>
       <file>classAdcirc_1_1Raster_1_1Rasterdata_aaf257244832c7dba44aefc6aea09a5cc_icgraph.png</file>
       <file>classAdcirc_1_1Raster_1_1Rasterdata_aaf257244832c7dba44aefc6aea09a5cc_icgraph.png</file>
-      <file>classAdcirc_1_1Raster_1_1Rasterdata_a9439e49dc3ac0cb7d87b144a2ac58b21_cgraph.png</file>
-      <file>classAdcirc_1_1Raster_1_1Rasterdata_a9439e49dc3ac0cb7d87b144a2ac58b21_cgraph.png</file>
+      <file>classAdcirc_1_1Raster_1_1Rasterdata_a013764143b3600515840b60604b13480_cgraph.png</file>
+      <file>classAdcirc_1_1Raster_1_1Rasterdata_a013764143b3600515840b60604b13480_cgraph.png</file>
       <file>classAdcirc_1_1Raster_1_1Rasterdata_a2fe36ee88237850f56d26023ac57e261_icgraph.png</file>
       <file>classAdcirc_1_1Raster_1_1Rasterdata_a2fe36ee88237850f56d26023ac57e261_icgraph.png</file>
       <file>classAdcirc_1_1Raster_1_1Rasterdata_a94c732bb0f167eab349228237a8fbe3c_icgraph.png</file>
@@ -6362,6 +6554,8 @@
       <file>classAdcirc_1_1Utility_1_1MeshChecker_abe0ee479b6895d7945f6ed8c757529a0_icgraph.png</file>
       <file>classAdcirc_1_1Utility_1_1MeshChecker_abe0ee479b6895d7945f6ed8c757529a0_icgraph.png</file>
       <file>classAdcirc_1_1Utility_1_1MeshChecker-members.html</file>
+      <file>namespaceboost.html</file>
+      <file>namespaceindicators.html</file>
       <file>graph_legend.png</file>
       <file>graph_legend.html</file>
       <file>dir_68267d1309a1af8e8297ef4c3efbcdba.html</file>
@@ -6473,6 +6667,9 @@
       <file>functions_vars.html</file>
       <file>functions_vars.html</file>
       <file>functions_vars.html</file>
+      <file>functions_vars.html</file>
+      <file>functions_vars.html</file>
+      <file>functions_vars.html</file>
       <file>functions_type.html</file>
       <file>functions_type.html</file>
       <file>functions_type.html</file>
@@ -6510,6 +6707,9 @@
       <file>globals.html</file>
       <file>globals.html</file>
       <file>globals.html</file>
+      <file>globals.html</file>
+      <file>globals_func.html</file>
+      <file>globals_func.html</file>
       <file>globals_func.html</file>
       <file>globals_func.html</file>
       <file>globals_func.html</file>
@@ -6524,6 +6724,7 @@
       <file>globals_defs.html</file>
       <file>globals_defs.html</file>
       <file>globals_defs.html</file>
+      <file>examples.html</file>
     </files>
   </filterSection>
 </QtHelpProject>

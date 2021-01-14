@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['m_5fdata_5fu',['m_data_u',['../structm__DataPair.html#aecc569fa16e32b25a0bdcae2bd9b0fa8',1,'m_DataPair']]],
-  ['m_5fdata_5fv',['m_data_v',['../structm__DataPair.html#a0983e342e0a39aa72449a82dab297b0a',1,'m_DataPair']]],
-  ['m_5fdate',['m_date',['../structm__DataPair.html#ac4c3747a3bdc9207e75aa317d93d37c4',1,'m_DataPair']]]
+  ['latitude',['latitude',['../structAdcirc_1_1Output_1_1HmdfStation_1_1Coordinate.html#a76714bdbc5c536fa77dfb14533ff82a9',1,'Adcirc::Output::HmdfStation::Coordinate']]],
+  ['longitude',['longitude',['../structAdcirc_1_1Output_1_1HmdfStation_1_1Coordinate.html#ac155e35fdeebafc89723a51520fb9fe6',1,'Adcirc::Output::HmdfStation::Coordinate']]]
 ];

@@ -1,14 +1,16 @@
 <map id="defaultValue" name="defaultValue">
 <area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a4505afa16445ac8fbab372a523b794f7" title="setDefaultValue" alt="" coords="148,17,263,43"/>
 <area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1OutputRecord.html#abb12b201a4b60270facd9b7f084016c2" title="magnitude" alt="" coords="361,71,444,98"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a2751027834d9fad6448896c35f828ab9" title="direction" alt="" coords="367,122,438,149"/>
-<area shape="rect" id="node9" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a0c226f7d9faa8d67f90e890c05cae088" title="isDefault" alt="" coords="168,173,243,199"/>
-<area shape="rect" id="node11" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a94c732bb0f167eab349228237a8fbe3c" title="Adcirc::Output::WriteOutput\l::filename" alt="" coords="577,216,761,257"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a2751027834d9fad6448896c35f828ab9" title="direction" alt="" coords="367,122,438,149"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a0c226f7d9faa8d67f90e890c05cae088" title="isDefault" alt="" coords="168,173,243,199"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a94c732bb0f167eab349228237a8fbe3c" title="Adcirc::Output::WriteOutput\l::filename" alt="" coords="564,216,748,257"/>
 <area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a0fb6a8a6a59488c7c267eeae2afc3ed6" title="Adcirc::Output::ReadOutput\l::dataAt" alt="" coords="311,5,495,47"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1OutputRecord.html#aa58626ebb99011ee8e4e6ee4fbed9f69" title="magnitudes" alt="" coords="624,21,713,47"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="543,71,795,98"/>
-<area shape="rect" id="node8" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a2ff38e09941218dd1cb2a04ee60109f9" title="directions" alt="" coords="629,122,708,149"/>
-<area shape="rect" id="node10" href="$classAdcirc_1_1Output_1_1OutputRecord.html#ab8ff3563cb1a7a290e68e2e31ab10458" title="numNonDefault" alt="" coords="346,223,459,250"/>
-<area shape="rect" id="node12" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a1a79940e14d93b265d1c0ad6da79c4b6" title="Adcirc::Output::WriteOutput\l::write" alt="" coords="843,183,1027,224"/>
-<area shape="rect" id="node13" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a56171296cefcc0d92118f33a5b41e01e" title="Adcirc::Output::WriteOutput\l::setFilename" alt="" coords="843,248,1027,289"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1OutputRecord.html#aa58626ebb99011ee8e4e6ee4fbed9f69" title="magnitudes" alt="" coords="611,13,701,39"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Output_1_1StationInterpolation.html#a727bc23f5aaff7791f359c7fbcc9199f" title="Adcirc::Output::StationInterpolation\l::interpScalar" alt="" coords="543,64,769,105"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="817,39,1069,66"/>
+<area shape="rect" id="node8" href="$structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#ab1c124e9ea34ad2e49e3091727ff3a3e" title="Adcirc::Output::StationInterpolation\l::Weight::Weight" alt="" coords="830,91,1057,132"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a2ff38e09941218dd1cb2a04ee60109f9" title="directions" alt="" coords="617,130,695,157"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Output_1_1OutputRecord.html#ab8ff3563cb1a7a290e68e2e31ab10458" title="numNonDefault" alt="" coords="346,223,459,250"/>
+<area shape="rect" id="node14" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a1a79940e14d93b265d1c0ad6da79c4b6" title="Adcirc::Output::WriteOutput\l::write" alt="" coords="851,183,1035,224"/>
+<area shape="rect" id="node15" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a56171296cefcc0d92118f33a5b41e01e" title="Adcirc::Output::WriteOutput\l::setFilename" alt="" coords="851,248,1035,289"/>
 </map>

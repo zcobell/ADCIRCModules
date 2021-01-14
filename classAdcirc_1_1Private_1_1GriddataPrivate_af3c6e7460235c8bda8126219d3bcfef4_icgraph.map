@@ -1,9 +1,6 @@
 <map id="defaultValue" name="defaultValue">
 <area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#a4505afa16445ac8fbab372a523b794f7" title="setDefaultValue" alt="" coords="202,5,317,32"/>
 <area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#ad1355b376de31a187a949f41a2754dc2" title="setRasterInMemory" alt="" coords="191,56,328,83"/>
-<area shape="rect" id="node4" href="$griddata__private_8cpp.html#a08fd6c6e1e17306899e5f0a3bf86a236" title="sortPointsByIncreasingDistance" alt="" coords="155,107,364,133"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#a273871df8be2613b565e68cdbfb8ca43" title="setThresholdValue" alt="" coords="194,157,325,184"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#aa3df24eb71ae599907c0b36b6ba88ffe" title="computeValuesFromRaster" alt="" coords="169,208,350,235"/>
-<area shape="rect" id="node8" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#a00f335f6098ab32130e41f51eea50813" title="computeDirectionalWindReduction" alt="" coords="148,259,371,285"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#a1ce4d6eb89447a50e8159bd66fc331b3" title="windSigma" alt="" coords="419,157,505,184"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#aa3df24eb71ae599907c0b36b6ba88ffe" title="computeValuesFromRaster" alt="" coords="169,107,350,133"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#a00f335f6098ab32130e41f51eea50813" title="computeDirectionalWindReduction" alt="" coords="148,157,371,184"/>
 </map>

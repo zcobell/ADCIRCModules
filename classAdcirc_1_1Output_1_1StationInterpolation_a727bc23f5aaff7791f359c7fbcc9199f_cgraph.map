@@ -1,0 +1,20 @@
+<map id="interpScalar" name="interpScalar">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a9995f626ee99cb4f9ef44e38864d445b" title="Adcirc::Output::ReadOutput\l::metadata" alt="" coords="157,5,341,47"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a434d8fdd91756a54ea935ba21de4f4f6" title="Returns true if this represents a vector object. " alt="" coords="403,48,609,89"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a6c6923b4bc71c380ec6274a0787695ab" title="Adcirc::Output::ReadOutput\l::dataAt" alt="" coords="157,684,341,725"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a461f2fc1e767f810518f79f1e08f1a39" title="Adcirc::Output::OutputRecord::z" alt="" coords="144,223,355,250"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Output_1_1StationInterpolation.html#a23a6cbf4a0ed818ceb7f18963c954e68" title="interpolateDryValues" alt="" coords="435,633,577,659"/>
+<area shape="rect" id="node8" href="$namespaceAdcirc_1_1FpCompare.html#ab97a79176601debc2265e3287f919116" title="Adcirc::FpCompare::\lequalTo" alt="" coords="689,575,832,616"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Output_1_1ReadOutput.html#af3c6e7460235c8bda8126219d3bcfef4" title="Adcirc::Output::ReadOutput\l::defaultValue" alt="" coords="157,749,341,791"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a5ad19d13fda4c7af32cf2517e940cdc0" title="Adcirc::Output::OutputRecord::u" alt="" coords="144,71,355,98"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a85ef59d49f7f85dc10cb333cd6651e83" title="Adcirc::Output::OutputRecord::v" alt="" coords="144,173,355,199"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Constants.html#aa8f2ca4ad36dc6b5f53e25e9e746d008" title="Returns the factor to convert radians to degrees. " alt="" coords="439,516,573,557"/>
+<area shape="rect" id="node15" href="$classAdcirc_1_1Output_1_1OutputRecord.html#abb12b201a4b60270facd9b7f084016c2" title="Adcirc::Output::OutputRecord\l::magnitude" alt="" coords="152,275,347,316"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Output_1_1OutputRecord.html#ae8487e719ad1109f6db746e96a37c498" title="Adcirc::Output::OutputRecord\l::numNodes" alt="" coords="409,165,603,207"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a75aa79248b769329ed6b7d62280aa08c" title="Returns the dimension of the object. " alt="" coords="657,159,864,200"/>
+<area shape="rect" id="node14" href="$classAdcirc_1_1Constants.html#a8916e00cc71692658a0a355b2f142274" title="Returns the constant pi. " alt="" coords="688,465,833,491"/>
+<area shape="rect" id="node16" href="$classAdcirc_1_1Output_1_1OutputRecord.html#a0c226f7d9faa8d67f90e890c05cae088" title="Adcirc::Output::OutputRecord\l::isDefault" alt="" coords="409,333,603,375"/>
+<area shape="rect" id="node18" href="$classAdcirc_1_1Output_1_1OutputRecord.html#af3c6e7460235c8bda8126219d3bcfef4" title="Adcirc::Output::OutputRecord\l::defaultValue" alt="" coords="663,275,858,316"/>
+<area shape="rect" id="node19" href="$classAdcirc_1_1Constants.html#ace2ba48ef6d244fa44705aff5ba24974" title="Returns two times the constant pi. " alt="" coords="439,399,573,440"/>
+<area shape="rect" id="node17" href="$classAdcirc_1_1Output_1_1OutputMetadata.html#a989b823eb23ed6799ec17b7ac8ca060b" title="Checks if the object represents a maximum. " alt="" coords="657,340,864,381"/>
+</map>

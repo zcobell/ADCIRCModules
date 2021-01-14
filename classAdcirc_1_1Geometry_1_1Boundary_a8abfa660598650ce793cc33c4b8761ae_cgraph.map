@@ -1,4 +1,5 @@
 <map id="setNode1" name="setNode1">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary. " alt="" coords="237,5,352,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa7799ac01d283677f63d2d42fd1f0336" title="Returns a pointer to the node on the boundary. " alt="" coords="132,31,189,57"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#ad486fa37a336c577601ff6c10a35a57c" title="Returns the length of the boundary. " alt="" coords="343,5,457,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Boundary.html#aa7799ac01d283677f63d2d42fd1f0336" title="Returns a pointer to the node on the boundary. " alt="" coords="185,31,242,57"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Node.html#add242ea970834ed3dbe7a3c01ec9380f" title="Sets the boundary node status. " alt="" coords="132,82,295,123"/>
 </map>

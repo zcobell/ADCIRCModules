@@ -1,8 +1,5 @@
 <map id="computeDirectionalWindReduction" name="computeDirectionalWindReduction">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Mesh.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh. " alt="" coords="283,5,447,47"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#ab1dc87d55edf7471387cbfcb692f1f68" title="showProgressBar" alt="" coords="303,71,428,98"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1Mesh.html#a96bbda0a22e51f4ca5cf2364126956b9" title="Returns a pointer to the requested node in the internal node vector. " alt="" coords="283,123,447,164"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="276,189,455,215"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="276,239,455,266"/>
-<area shape="rect" id="node7" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#af3c6e7460235c8bda8126219d3bcfef4" title="defaultValue" alt="" coords="318,290,413,317"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#ab1dc87d55edf7471387cbfcb692f1f68" title="showProgressBar" alt="" coords="280,5,405,32"/>
+<area shape="rect" id="node3" href="$classProgressBar.html#ab0bdf5cca484fb2ba637c39384b27fb2" title="ProgressBar::begin" alt="" coords="276,56,409,83"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#af3c6e7460235c8bda8126219d3bcfef4" title="defaultValue" alt="" coords="295,107,390,133"/>
 </map>

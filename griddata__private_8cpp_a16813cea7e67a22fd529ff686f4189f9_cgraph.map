@@ -1,0 +1,28 @@
+<map id="gaussian" name="gaussian">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#a1ce4d6eb89447a50e8159bd66fc331b3" title="Adcirc::Private::Griddata\lPrivate::windSigma" alt="" coords="128,247,293,288"/>
+<area shape="rect" id="node12" href="$griddata__private_8cpp.html#a526d9f161fc00d436541ce961b2a0c26" title="c_rootTwoPi" alt="" coords="163,559,258,586"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#a84150c30221a687253d2273d10b65946" title="Adcirc::Private::Griddata\lPrivate::distanceFactor" alt="" coords="128,611,293,652"/>
+<area shape="rect" id="node14" href="$griddata__private_8cpp.html#aed6a6c15f612dc1c59fc0586580e1ca3" title="c_epsilonSquared" alt="" coords="148,677,273,703"/>
+<area shape="rect" id="node15" href="$griddata__private_8cpp.html#ac45e8041cd02bead8caaae0cfc25e6ff" title="c_oneOver2MinusRoot3" alt="" coords="129,458,292,485"/>
+<area shape="rect" id="node25" href="$griddata__private_8cpp.html#a8791ae00308c5a7854cb861ffa769d46" title="c_oneOver2PlusRoot3" alt="" coords="134,509,287,535"/>
+<area shape="rect" id="node26" href="$griddata__private_8cpp.html#a1ab31b90bc584c635ec159468ceed9b2" title="sgn" alt="" coords="189,727,232,754"/>
+<area shape="rect" id="node27" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#abf5edbd9ca281bda2826ca7ade226e38" title="Adcirc::Private::Griddata\lPrivate::windRadius" alt="" coords="128,779,293,820"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#a40504fb5f09ccc665f9cf82b327f0349" title="Adcirc::Private::Griddata\lPrivate::datumShift" alt="" coords="579,93,745,135"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#a21def567ea95299c16f475906aa46d30" title="Adcirc::Private::Griddata\lPrivate::setDatumShift" alt="" coords="353,123,519,164"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#aca20f3138e27aa2beff28c28f5010cdc" title="Adcirc::Private::Griddata\lPrivate::thresholdValue" alt="" coords="353,188,519,229"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#a273871df8be2613b565e68cdbfb8ca43" title="Adcirc::Private::Griddata\lPrivate::setThresholdValue" alt="" coords="347,371,525,412"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#ad63a40882c97d86b97a674c96f395e87" title="Adcirc::Private::Griddata\lPrivate::thresholdMethod" alt="" coords="579,276,745,317"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#a215d6687700cc9bd97e77de1da8b6561" title="Adcirc::Private::Griddata\lPrivate::setThresholdMethod" alt="" coords="341,305,531,347"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#abad38989601bc4adeeb7faff3989b190" title="Adcirc::Private::Griddata\lPrivate::extents" alt="" coords="353,436,519,477"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Private_1_1GriddataPrivate.html#a795a30c2cc91f014c7c5eb3b48b50545" title="Adcirc::Private::Griddata\lPrivate::GriddataPrivate" alt="" coords="353,5,519,47"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Constants.html#a67bb34165d68f1fe958b93511d5ede05" title="Calculates the distance between two points. " alt="" coords="595,373,729,415"/>
+<area shape="rect" id="node16" href="$classAdcirc_1_1Constants.html#a62d050d6a06ff0262d04bd705e45c517" title="Returns the square root of 3. " alt="" coords="369,501,503,543"/>
+<area shape="rect" id="node17" href="$classAdcirc_1_1Constants.html#a8e8b5d1633dfb57d0d6056850bdd710c" title="Converts a value from degrees to radians. " alt="" coords="793,567,928,608"/>
+<area shape="rect" id="node20" href="$classAdcirc_1_1Constants.html#a743ea7ec7653fe3ee75df86682edbb04" title="Converts a value from radians to degrees. " alt="" coords="793,371,928,412"/>
+<area shape="rect" id="node22" href="$classAdcirc_1_1Constants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude. " alt="" coords="595,501,729,543"/>
+<area shape="rect" id="node18" href="$classAdcirc_1_1Constants.html#ae43063ac7bf556cb933a0206301b9748" title="Returns the factor to convert degrees to radians. " alt="" coords="976,501,1111,543"/>
+<area shape="rect" id="node19" href="$classAdcirc_1_1Constants.html#a8916e00cc71692658a0a355b2f142274" title="Returns the constant pi. " alt="" coords="1159,477,1304,503"/>
+<area shape="rect" id="node21" href="$classAdcirc_1_1Constants.html#aa8f2ca4ad36dc6b5f53e25e9e746d008" title="Returns the factor to convert radians to degrees. " alt="" coords="976,404,1111,445"/>
+<area shape="rect" id="node23" href="$classAdcirc_1_1Constants.html#ac4170b1989bcda498ea9ea95bf25d583" title="Returns the equitorial radius of earth in meters. " alt="" coords="793,436,928,477"/>
+<area shape="rect" id="node24" href="$classAdcirc_1_1Constants.html#a1b684ff37a85f7e328c6b027ee95bc10" title="Returns the polar radius of earth in meters. " alt="" coords="793,501,928,543"/>
+</map>

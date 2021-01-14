@@ -1,3 +1,4 @@
 <map id="addNode" name="addNode">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a2ab46276cf626f2f3b7b821c47b28665" title="Returns true if the boundary is some type of single node boundary. " alt="" coords="128,5,283,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a2ab46276cf626f2f3b7b821c47b28665" title="Returns true if the boundary is some type of single node boundary. " alt="" coords="132,5,287,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Node.html#add242ea970834ed3dbe7a3c01ec9380f" title="Sets the boundary node status. " alt="" coords="128,57,291,98"/>
 </map>

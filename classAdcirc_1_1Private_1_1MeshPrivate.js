@@ -13,7 +13,7 @@ var classAdcirc_1_1Private_1_1MeshPrivate =
     [ "buildElementalSearchTree", "classAdcirc_1_1Private_1_1MeshPrivate.html#a76e76634991fe2ec7d6504760f7a6082", null ],
     [ "buildNodalSearchTree", "classAdcirc_1_1Private_1_1MeshPrivate.html#ab1710b55657f368bbebe1c9ad7c36f08", null ],
     [ "clone", "classAdcirc_1_1Private_1_1MeshPrivate.html#a15579273d06a3b3f8b745ba6b6b5b450", null ],
-    [ "computeMeshSize", "classAdcirc_1_1Private_1_1MeshPrivate.html#aeb87845ce7689f495e96a156caa41631", null ],
+    [ "computeMeshSize", "classAdcirc_1_1Private_1_1MeshPrivate.html#aa343c3186e3373913f4843f9ebfad8ee", null ],
     [ "connectivity", "classAdcirc_1_1Private_1_1MeshPrivate.html#af741f0ed2f042d060c73e4e187a58f52", null ],
     [ "containsElement", "classAdcirc_1_1Private_1_1MeshPrivate.html#ad62a8fb8c83e9c8598e69480eafa3163", null ],
     [ "containsElement", "classAdcirc_1_1Private_1_1MeshPrivate.html#af3c48d6c8efd73abd26693a4290c42db", null ],

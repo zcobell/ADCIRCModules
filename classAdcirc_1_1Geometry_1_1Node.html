@@ -137,6 +137,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae83f8bf0246a70095cce1ba86523a6fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Node.html#ae83f8bf0246a70095cce1ba86523a6fe">setId</a> (size_t <a class="el" href="classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7">id</a>)</td></tr>
 <tr class="memdesc:ae83f8bf0246a70095cce1ba86523a6fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the nodal id/label.  <a href="#ae83f8bf0246a70095cce1ba86523a6fe">More...</a><br /></td></tr>
 <tr class="separator:ae83f8bf0246a70095cce1ba86523a6fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada7698de21e82aa53ff6850a052dca02"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Node.html#ada7698de21e82aa53ff6850a052dca02">isBoundaryNode</a> () const</td></tr>
+<tr class="memdesc:ada7698de21e82aa53ff6850a052dca02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if a node lies on an imposed boundary condition in the mesh.  <a href="#ada7698de21e82aa53ff6850a052dca02">More...</a><br /></td></tr>
+<tr class="separator:ada7698de21e82aa53ff6850a052dca02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add242ea970834ed3dbe7a3c01ec9380f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Node.html#add242ea970834ed3dbe7a3c01ec9380f">setIsBoundaryNode</a> (bool b)</td></tr>
+<tr class="memdesc:add242ea970834ed3dbe7a3c01ec9380f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the boundary node status.  <a href="#add242ea970834ed3dbe7a3c01ec9380f">More...</a><br /></td></tr>
+<tr class="separator:add242ea970834ed3dbe7a3c01ec9380f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2643047b5fc60af3bac3d0e458c24d8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Geometry_1_1Node.html#aa2643047b5fc60af3bac3d0e458c24d8">toAdcircString</a> (bool geographicCoordinates)</td></tr>
 <tr class="memdesc:aa2643047b5fc60af3bac3d0e458c24d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Formats the node for writing into an <a class="el" href="namespaceAdcirc.html">Adcirc</a> ASCII mesh file.  <a href="#aa2643047b5fc60af3bac3d0e458c24d8">More...</a><br /></td></tr>
 <tr class="separator:aa2643047b5fc60af3bac3d0e458c24d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -230,10 +236,11 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Node_a39f0382b034242fad618eba00c551f9e_cgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Node_a39f0382b034242fad618eba00c551f9e_cgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Node_a39f0382b034242fad618eba00c551f9e_cgraph" id="classAdcirc_1_1Geometry_1_1Node_a39f0382b034242fad618eba00c551f9e_cgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="107,5,145,32"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="107,56,145,83"/>
-<area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the nodal id/label. " alt="" coords="107,107,145,133"/>
-<area shape="rect" id="node5" href="classAdcirc_1_1Geometry_1_1Node.html#ae7bc7213001e326be4d4eb2d8a035c34" title="Returns the z&#45;elevation of the node. " alt="" coords="107,157,145,184"/>
+<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="147,5,185,32"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="147,56,185,83"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the nodal id/label. " alt="" coords="147,107,185,133"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Geometry_1_1Node.html#ae7bc7213001e326be4d4eb2d8a035c34" title="Returns the z&#45;elevation of the node. " alt="" coords="147,157,185,184"/>
+<area shape="rect" id="node6" href="classAdcirc_1_1Geometry_1_1Node.html#ada7698de21e82aa53ff6850a052dca02" title="Returns true if a node lies on an imposed boundary condition in the mesh. " alt="" coords="107,208,225,235"/>
 </map>
 </div>
 
@@ -349,10 +356,38 @@ Here is the caller graph for this function:</div>
 <area shape="rect" id="node23" href="classAdcirc_1_1Geometry_1_1NodeTable.html#a7740c7ab195c03ac140f1f75f633470f" title="Adcirc::Geometry::NodeTable\l::build" alt="" coords="121,1058,315,1099"/>
 <area shape="rect" id="node24" href="classAdcirc_1_1Geometry_1_1NodeTable.html#aa07f63f9300e5469cb2ec123c2e53722" title="Adcirc::Geometry::NodeTable\l::nodeList" alt="" coords="121,1123,315,1164"/>
 <area shape="rect" id="node26" href="classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="92,1189,344,1216"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Private_1_1MeshPrivate.html#aeb87845ce7689f495e96a156caa41631" title="Computes average size of the element edges connected to each node. " alt="" coords="395,140,584,182"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Private_1_1MeshPrivate.html#aa343c3186e3373913f4843f9ebfad8ee" title="Computes average size of the element edges connected to each node. " alt="" coords="395,140,584,182"/>
 <area shape="rect" id="node4" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a4097c5a15fab21c86930a9f93303d8ef" title="Adcirc::Utility::MeshChecker\l::checkOverlappingElements" alt="" coords="394,206,585,247"/>
 <area shape="rect" id="node5" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="635,239,825,280"/>
 <area shape="rect" id="node25" href="classAdcirc_1_1Geometry_1_1NodeTable.html#ad4ba4562af0edc8e4dd50d4fe321fd6e" title="Adcirc::Geometry::NodeTable\l::node" alt="" coords="392,1123,587,1164"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ada7698de21e82aa53ff6850a052dca02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada7698de21e82aa53ff6850a052dca02">&#9670;&nbsp;</a></span>isBoundaryNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool isBoundaryNode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns true if a node lies on an imposed boundary condition in the mesh. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if boundary node </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Node_ada7698de21e82aa53ff6850a052dca02_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Node_ada7698de21e82aa53ff6850a052dca02_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Node_ada7698de21e82aa53ff6850a052dca02_icgraph" id="classAdcirc_1_1Geometry_1_1Node_ada7698de21e82aa53ff6850a052dca02_icgraph">
+<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Node.html#a39f0382b034242fad618eba00c551f9e" title="Constructor taking the id, x, y, and z for the node. " alt="" coords="172,5,225,32"/>
 </map>
 </div>
 
@@ -520,6 +555,42 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="add242ea970834ed3dbe7a3c01ec9380f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add242ea970834ed3dbe7a3c01ec9380f">&#9670;&nbsp;</a></span>setIsBoundaryNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setIsBoundaryNode </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the boundary node status. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>true if node is on the boundary </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classAdcirc_1_1Geometry_1_1Node_add242ea970834ed3dbe7a3c01ec9380f_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Node_add242ea970834ed3dbe7a3c01ec9380f_icgraph" alt=""/></div>
+<map name="classAdcirc_1_1Geometry_1_1Node_add242ea970834ed3dbe7a3c01ec9380f_icgraph" id="classAdcirc_1_1Geometry_1_1Node_add242ea970834ed3dbe7a3c01ec9380f_icgraph">
+<area shape="rect" id="node2" href="classAdcirc_1_1Geometry_1_1Boundary.html#a8abfa660598650ce793cc33c4b8761ae" title="Sets a pointer to a node. " alt="" coords="191,5,377,47"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Boundary.html#a24478b4546ce5c2cc46bffaef71a0367" title="Sets the node pair for type 4, 24, 5, and 25 boundaries. " alt="" coords="191,71,377,112"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Boundary.html#aa6a2f037e71c6a3846a0a4bc8c656ed3" title="Adds a single node type boundary node to the boundary string. " alt="" coords="191,136,377,177"/>
+</map>
+</div>
+
+</div>
+</div>
 <a id="ae75c04393d9b583587960be477a44168"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae75c04393d9b583587960be477a44168">&#9670;&nbsp;</a></span>setNode()</h2>
 
@@ -618,6 +689,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Node_a9c18fcc579333bf9653d13ad2b372e39_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Node_a9c18fcc579333bf9653d13ad2b372e39_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Node_a9c18fcc579333bf9653d13ad2b372e39_icgraph" id="classAdcirc_1_1Geometry_1_1Node_a9c18fcc579333bf9653d13ad2b372e39_icgraph">
 <area shape="rect" id="node2" href="classAdcirc_1_1Private_1_1MeshPrivate.html#abaa0c62f37f1b32f8524ddc12f2f1a64" title="Reprojects a mesh into the specified projection. " alt="" coords="103,5,292,47"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Private_1_1MeshPrivate.html#aa343c3186e3373913f4843f9ebfad8ee" title="Computes average size of the element edges connected to each node. " alt="" coords="340,5,529,47"/>
 </map>
 </div>
 
@@ -660,6 +732,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Node_a7d57e2a5c35d27feb58fd498a3cf82b9_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Node_a7d57e2a5c35d27feb58fd498a3cf82b9_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Node_a7d57e2a5c35d27feb58fd498a3cf82b9_icgraph" id="classAdcirc_1_1Geometry_1_1Node_a7d57e2a5c35d27feb58fd498a3cf82b9_icgraph">
 <area shape="rect" id="node2" href="classAdcirc_1_1Private_1_1MeshPrivate.html#abaa0c62f37f1b32f8524ddc12f2f1a64" title="Reprojects a mesh into the specified projection. " alt="" coords="103,5,292,47"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Private_1_1MeshPrivate.html#aa343c3186e3373913f4843f9ebfad8ee" title="Computes average size of the element edges connected to each node. " alt="" coords="340,5,529,47"/>
 </map>
 </div>
 
@@ -815,29 +888,29 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Node_a833e1cf314b7b7a5537b2b6a56fee6a5_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Node_a833e1cf314b7b7a5537b2b6a56fee6a5_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Node_a833e1cf314b7b7a5537b2b6a56fee6a5_icgraph" id="classAdcirc_1_1Geometry_1_1Node_a833e1cf314b7b7a5537b2b6a56fee6a5_icgraph">
-<area shape="rect" id="node2" href="boundary_8cpp.html#a821a7afb9f9118ed548755306943c934" title="boundary2polygon" alt="" coords="144,14,271,41"/>
-<area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Element.html#a77732c8f794e269e491c11d233bad7d7" title="Calculates the average size of the legs of an element. " alt="" coords="117,68,297,109"/>
-<area shape="rect" id="node7" href="classAdcirc_1_1Geometry_1_1Element.html#aedd19bdd665c0f11cee4ad33e1a5848f" title="Sorts the verticies in clockwise order around the element center. " alt="" coords="117,185,297,227"/>
-<area shape="rect" id="node8" href="classAdcirc_1_1Geometry_1_1Element.html#ab3b7fe527ab8c2138d5ad7a1585cd256" title="Returns a pointer to the internal array of node pointers. " alt="" coords="376,136,556,177"/>
-<area shape="rect" id="node10" href="classAdcirc_1_1Geometry_1_1FaceNode.html#a14fa85bcb492e0722d7c5fa2660f0ea1" title="Adcirc::Geometry::FaceNode\l::generateReference" alt="" coords="111,251,303,292"/>
-<area shape="rect" id="node11" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#aa3df24eb71ae599907c0b36b6ba88ffe" title="Adcirc::Private::Griddata\lPrivate::computeValuesFromRaster" alt="" coords="92,316,323,357"/>
-<area shape="rect" id="node12" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#a00f335f6098ab32130e41f51eea50813" title="Adcirc::Private::Griddata\lPrivate::computeDirectionalWind\lReduction" alt="" coords="101,382,314,438"/>
-<area shape="rect" id="node13" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a182da7d48bbb6738076aad026a55cb44" title="Adcirc::Private::MeshPrivate\l::addNode" alt="" coords="113,463,302,504"/>
-<area shape="rect" id="node14" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a40e8e6dfd5b76435fd5bbcac818105e7" title="Writes an Mesh object to disk in ASCII format. " alt="" coords="113,528,302,569"/>
-<area shape="rect" id="node15" href="classAdcirc_1_1Private_1_1MeshPrivate.html#aa4c1eb531285e29ff29c8923ef1e581f" title="Calculates the element orthogonality. " alt="" coords="113,593,302,635"/>
-<area shape="rect" id="node16" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a7903c655caf176412d92e4719559bd02" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="371,505,561,547"/>
-<area shape="rect" id="node17" href="classAdcirc_1_1Geometry_1_1Node.html#a39f0382b034242fad618eba00c551f9e" title="Constructor taking the id, x, y, and z for the node. " alt="" coords="181,710,234,737"/>
-<area shape="rect" id="node18" href="classAdcirc_1_1Geometry_1_1Node.html#ac1fe571ac56b60de571f0512234e5b81" title="operator==" alt="" coords="165,761,250,787"/>
-<area shape="rect" id="node19" href="classAdcirc_1_1Geometry_1_1Node.html#ae75c04393d9b583587960be477a44168" title="Function taking the id, x, y, and z for the node. " alt="" coords="172,811,243,838"/>
-<area shape="rect" id="node20" href="classAdcirc_1_1Geometry_1_1Node.html#a9c18fcc579333bf9653d13ad2b372e39" title="Sets the x&#45;location of the node. " alt="" coords="183,862,232,889"/>
-<area shape="rect" id="node22" href="classAdcirc_1_1Geometry_1_1Node.html#aa2643047b5fc60af3bac3d0e458c24d8" title="Formats the node for writing into an Adcirc ASCII mesh file. " alt="" coords="155,913,259,939"/>
-<area shape="rect" id="node23" href="classAdcirc_1_1Geometry_1_1Node.html#a23d80ca14b4eb8fde2a399ebb291e826" title="Formats the node for writing into an Aquaveo 2dm ASCII mesh file. " alt="" coords="161,963,253,990"/>
-<area shape="rect" id="node24" href="classAdcirc_1_1Geometry_1_1Node.html#aebe3ef8b25a51c3dea486c2be65c9da8" title="Returns the hash of this node based upon it&#39;s position. " alt="" coords="158,1014,257,1041"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Boundary.html#a016421c661c936a963720f6ed54c9b56" title="Returns the centroid of the boundary. " alt="" coords="373,5,559,47"/>
-<area shape="rect" id="node5" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="371,71,561,112"/>
-<area shape="rect" id="node6" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="609,217,800,259"/>
-<area shape="rect" id="node9" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a0a442be3a53f0b8998b80f1c953f9f56" title="Writes the mesh nodes into ESRI shapefile format. " alt="" coords="371,201,561,243"/>
-<area shape="rect" id="node21" href="classAdcirc_1_1Private_1_1MeshPrivate.html#abaa0c62f37f1b32f8524ddc12f2f1a64" title="Reprojects a mesh into the specified projection. " alt="" coords="371,855,561,896"/>
+<area shape="rect" id="node2" href="boundary_8cpp.html#a821a7afb9f9118ed548755306943c934" title="boundary2polygon" alt="" coords="125,14,251,41"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Element.html#a77732c8f794e269e491c11d233bad7d7" title="Calculates the average size of the legs of an element. " alt="" coords="98,68,278,109"/>
+<area shape="rect" id="node7" href="classAdcirc_1_1Geometry_1_1Element.html#aedd19bdd665c0f11cee4ad33e1a5848f" title="Sorts the verticies in clockwise order around the element center. " alt="" coords="98,185,278,227"/>
+<area shape="rect" id="node8" href="classAdcirc_1_1Geometry_1_1Element.html#ab3b7fe527ab8c2138d5ad7a1585cd256" title="Returns a pointer to the internal array of node pointers. " alt="" coords="337,136,517,177"/>
+<area shape="rect" id="node10" href="classAdcirc_1_1Geometry_1_1FaceNode.html#a14fa85bcb492e0722d7c5fa2660f0ea1" title="Adcirc::Geometry::FaceNode\l::generateReference" alt="" coords="92,251,284,292"/>
+<area shape="rect" id="node11" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#a6cdc3e282c6e09b853ffa8249bc760f5" title="Adcirc::Private::Griddata\lPrivate::GriddataPrivate" alt="" coords="105,316,271,357"/>
+<area shape="rect" id="node12" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a182da7d48bbb6738076aad026a55cb44" title="Adcirc::Private::MeshPrivate\l::addNode" alt="" coords="93,381,283,423"/>
+<area shape="rect" id="node13" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a40e8e6dfd5b76435fd5bbcac818105e7" title="Writes an Mesh object to disk in ASCII format. " alt="" coords="93,447,283,488"/>
+<area shape="rect" id="node14" href="classAdcirc_1_1Private_1_1MeshPrivate.html#aa4c1eb531285e29ff29c8923ef1e581f" title="Calculates the element orthogonality. " alt="" coords="93,512,283,553"/>
+<area shape="rect" id="node15" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a7903c655caf176412d92e4719559bd02" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="332,445,523,487"/>
+<area shape="rect" id="node16" href="classAdcirc_1_1Geometry_1_1Node.html#a39f0382b034242fad618eba00c551f9e" title="Constructor taking the id, x, y, and z for the node. " alt="" coords="161,629,215,655"/>
+<area shape="rect" id="node17" href="classAdcirc_1_1Geometry_1_1Node.html#ac1fe571ac56b60de571f0512234e5b81" title="operator==" alt="" coords="145,679,231,706"/>
+<area shape="rect" id="node18" href="classAdcirc_1_1Geometry_1_1Node.html#ae75c04393d9b583587960be477a44168" title="Function taking the id, x, y, and z for the node. " alt="" coords="153,730,223,757"/>
+<area shape="rect" id="node19" href="classAdcirc_1_1Geometry_1_1Node.html#a9c18fcc579333bf9653d13ad2b372e39" title="Sets the x&#45;location of the node. " alt="" coords="163,781,213,807"/>
+<area shape="rect" id="node22" href="classAdcirc_1_1Geometry_1_1Node.html#aa2643047b5fc60af3bac3d0e458c24d8" title="Formats the node for writing into an Adcirc ASCII mesh file. " alt="" coords="136,831,240,858"/>
+<area shape="rect" id="node23" href="classAdcirc_1_1Geometry_1_1Node.html#a23d80ca14b4eb8fde2a399ebb291e826" title="Formats the node for writing into an Aquaveo 2dm ASCII mesh file. " alt="" coords="142,882,234,909"/>
+<area shape="rect" id="node24" href="classAdcirc_1_1Geometry_1_1Node.html#aebe3ef8b25a51c3dea486c2be65c9da8" title="Returns the hash of this node based upon it&#39;s position. " alt="" coords="139,933,237,959"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Boundary.html#a016421c661c936a963720f6ed54c9b56" title="Returns the centroid of the boundary. " alt="" coords="334,5,521,47"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="332,71,523,112"/>
+<area shape="rect" id="node6" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="571,197,761,239"/>
+<area shape="rect" id="node9" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a0a442be3a53f0b8998b80f1c953f9f56" title="Writes the mesh nodes into ESRI shapefile format. " alt="" coords="333,201,522,243"/>
+<area shape="rect" id="node20" href="classAdcirc_1_1Private_1_1MeshPrivate.html#abaa0c62f37f1b32f8524ddc12f2f1a64" title="Reprojects a mesh into the specified projection. " alt="" coords="333,773,522,815"/>
+<area shape="rect" id="node21" href="classAdcirc_1_1Private_1_1MeshPrivate.html#aa343c3186e3373913f4843f9ebfad8ee" title="Computes average size of the element edges connected to each node. " alt="" coords="571,773,761,815"/>
 </map>
 </div>
 
@@ -865,29 +938,29 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdcirc_1_1Geometry_1_1Node_aca424ddaf2902c1cde483f37813d4278_icgraph.png" border="0" usemap="#classAdcirc_1_1Geometry_1_1Node_aca424ddaf2902c1cde483f37813d4278_icgraph" alt=""/></div>
 <map name="classAdcirc_1_1Geometry_1_1Node_aca424ddaf2902c1cde483f37813d4278_icgraph" id="classAdcirc_1_1Geometry_1_1Node_aca424ddaf2902c1cde483f37813d4278_icgraph">
-<area shape="rect" id="node2" href="boundary_8cpp.html#a821a7afb9f9118ed548755306943c934" title="boundary2polygon" alt="" coords="144,14,271,41"/>
-<area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Element.html#a77732c8f794e269e491c11d233bad7d7" title="Calculates the average size of the legs of an element. " alt="" coords="117,68,297,109"/>
-<area shape="rect" id="node7" href="classAdcirc_1_1Geometry_1_1Element.html#aedd19bdd665c0f11cee4ad33e1a5848f" title="Sorts the verticies in clockwise order around the element center. " alt="" coords="117,185,297,227"/>
-<area shape="rect" id="node8" href="classAdcirc_1_1Geometry_1_1Element.html#ab3b7fe527ab8c2138d5ad7a1585cd256" title="Returns a pointer to the internal array of node pointers. " alt="" coords="376,136,556,177"/>
-<area shape="rect" id="node10" href="classAdcirc_1_1Geometry_1_1FaceNode.html#a14fa85bcb492e0722d7c5fa2660f0ea1" title="Adcirc::Geometry::FaceNode\l::generateReference" alt="" coords="111,251,303,292"/>
-<area shape="rect" id="node11" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#aa3df24eb71ae599907c0b36b6ba88ffe" title="Adcirc::Private::Griddata\lPrivate::computeValuesFromRaster" alt="" coords="92,316,323,357"/>
-<area shape="rect" id="node12" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#a00f335f6098ab32130e41f51eea50813" title="Adcirc::Private::Griddata\lPrivate::computeDirectionalWind\lReduction" alt="" coords="101,382,314,438"/>
-<area shape="rect" id="node13" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a182da7d48bbb6738076aad026a55cb44" title="Adcirc::Private::MeshPrivate\l::addNode" alt="" coords="113,463,302,504"/>
-<area shape="rect" id="node14" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a40e8e6dfd5b76435fd5bbcac818105e7" title="Writes an Mesh object to disk in ASCII format. " alt="" coords="113,528,302,569"/>
-<area shape="rect" id="node15" href="classAdcirc_1_1Private_1_1MeshPrivate.html#aa4c1eb531285e29ff29c8923ef1e581f" title="Calculates the element orthogonality. " alt="" coords="113,593,302,635"/>
-<area shape="rect" id="node16" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a7903c655caf176412d92e4719559bd02" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="371,505,561,547"/>
-<area shape="rect" id="node17" href="classAdcirc_1_1Geometry_1_1Node.html#a39f0382b034242fad618eba00c551f9e" title="Constructor taking the id, x, y, and z for the node. " alt="" coords="181,710,234,737"/>
-<area shape="rect" id="node18" href="classAdcirc_1_1Geometry_1_1Node.html#ac1fe571ac56b60de571f0512234e5b81" title="operator==" alt="" coords="165,761,250,787"/>
-<area shape="rect" id="node19" href="classAdcirc_1_1Geometry_1_1Node.html#ae75c04393d9b583587960be477a44168" title="Function taking the id, x, y, and z for the node. " alt="" coords="172,811,243,838"/>
-<area shape="rect" id="node20" href="classAdcirc_1_1Geometry_1_1Node.html#a7d57e2a5c35d27feb58fd498a3cf82b9" title="Sets the y&#45;location of the node. " alt="" coords="183,862,232,889"/>
-<area shape="rect" id="node22" href="classAdcirc_1_1Geometry_1_1Node.html#aa2643047b5fc60af3bac3d0e458c24d8" title="Formats the node for writing into an Adcirc ASCII mesh file. " alt="" coords="155,913,259,939"/>
-<area shape="rect" id="node23" href="classAdcirc_1_1Geometry_1_1Node.html#a23d80ca14b4eb8fde2a399ebb291e826" title="Formats the node for writing into an Aquaveo 2dm ASCII mesh file. " alt="" coords="161,963,253,990"/>
-<area shape="rect" id="node24" href="classAdcirc_1_1Geometry_1_1Node.html#aebe3ef8b25a51c3dea486c2be65c9da8" title="Returns the hash of this node based upon it&#39;s position. " alt="" coords="158,1014,257,1041"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Boundary.html#a016421c661c936a963720f6ed54c9b56" title="Returns the centroid of the boundary. " alt="" coords="373,5,559,47"/>
-<area shape="rect" id="node5" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="371,71,561,112"/>
-<area shape="rect" id="node6" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="609,217,800,259"/>
-<area shape="rect" id="node9" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a0a442be3a53f0b8998b80f1c953f9f56" title="Writes the mesh nodes into ESRI shapefile format. " alt="" coords="371,201,561,243"/>
-<area shape="rect" id="node21" href="classAdcirc_1_1Private_1_1MeshPrivate.html#abaa0c62f37f1b32f8524ddc12f2f1a64" title="Reprojects a mesh into the specified projection. " alt="" coords="371,855,561,896"/>
+<area shape="rect" id="node2" href="boundary_8cpp.html#a821a7afb9f9118ed548755306943c934" title="boundary2polygon" alt="" coords="125,14,251,41"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Geometry_1_1Element.html#a77732c8f794e269e491c11d233bad7d7" title="Calculates the average size of the legs of an element. " alt="" coords="98,68,278,109"/>
+<area shape="rect" id="node7" href="classAdcirc_1_1Geometry_1_1Element.html#aedd19bdd665c0f11cee4ad33e1a5848f" title="Sorts the verticies in clockwise order around the element center. " alt="" coords="98,185,278,227"/>
+<area shape="rect" id="node8" href="classAdcirc_1_1Geometry_1_1Element.html#ab3b7fe527ab8c2138d5ad7a1585cd256" title="Returns a pointer to the internal array of node pointers. " alt="" coords="337,136,517,177"/>
+<area shape="rect" id="node10" href="classAdcirc_1_1Geometry_1_1FaceNode.html#a14fa85bcb492e0722d7c5fa2660f0ea1" title="Adcirc::Geometry::FaceNode\l::generateReference" alt="" coords="92,251,284,292"/>
+<area shape="rect" id="node11" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#a6cdc3e282c6e09b853ffa8249bc760f5" title="Adcirc::Private::Griddata\lPrivate::GriddataPrivate" alt="" coords="105,316,271,357"/>
+<area shape="rect" id="node12" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a182da7d48bbb6738076aad026a55cb44" title="Adcirc::Private::MeshPrivate\l::addNode" alt="" coords="93,381,283,423"/>
+<area shape="rect" id="node13" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a40e8e6dfd5b76435fd5bbcac818105e7" title="Writes an Mesh object to disk in ASCII format. " alt="" coords="93,447,283,488"/>
+<area shape="rect" id="node14" href="classAdcirc_1_1Private_1_1MeshPrivate.html#aa4c1eb531285e29ff29c8923ef1e581f" title="Calculates the element orthogonality. " alt="" coords="93,512,283,553"/>
+<area shape="rect" id="node15" href="classAdcirc_1_1Utility_1_1MeshChecker.html#a7903c655caf176412d92e4719559bd02" title="Adcirc::Utility::MeshChecker\l::checkDisjointNodes" alt="" coords="332,445,523,487"/>
+<area shape="rect" id="node16" href="classAdcirc_1_1Geometry_1_1Node.html#a39f0382b034242fad618eba00c551f9e" title="Constructor taking the id, x, y, and z for the node. " alt="" coords="161,629,215,655"/>
+<area shape="rect" id="node17" href="classAdcirc_1_1Geometry_1_1Node.html#ac1fe571ac56b60de571f0512234e5b81" title="operator==" alt="" coords="145,679,231,706"/>
+<area shape="rect" id="node18" href="classAdcirc_1_1Geometry_1_1Node.html#ae75c04393d9b583587960be477a44168" title="Function taking the id, x, y, and z for the node. " alt="" coords="153,730,223,757"/>
+<area shape="rect" id="node19" href="classAdcirc_1_1Geometry_1_1Node.html#a7d57e2a5c35d27feb58fd498a3cf82b9" title="Sets the y&#45;location of the node. " alt="" coords="163,781,213,807"/>
+<area shape="rect" id="node22" href="classAdcirc_1_1Geometry_1_1Node.html#aa2643047b5fc60af3bac3d0e458c24d8" title="Formats the node for writing into an Adcirc ASCII mesh file. " alt="" coords="136,831,240,858"/>
+<area shape="rect" id="node23" href="classAdcirc_1_1Geometry_1_1Node.html#a23d80ca14b4eb8fde2a399ebb291e826" title="Formats the node for writing into an Aquaveo 2dm ASCII mesh file. " alt="" coords="142,882,234,909"/>
+<area shape="rect" id="node24" href="classAdcirc_1_1Geometry_1_1Node.html#aebe3ef8b25a51c3dea486c2be65c9da8" title="Returns the hash of this node based upon it&#39;s position. " alt="" coords="139,933,237,959"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Geometry_1_1Boundary.html#a016421c661c936a963720f6ed54c9b56" title="Returns the centroid of the boundary. " alt="" coords="334,5,521,47"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ac949f5f54c573b080afda5bccc61452b" title="Adcirc::Utility::MeshChecker\l::checkElementSizes" alt="" coords="332,71,523,112"/>
+<area shape="rect" id="node6" href="classAdcirc_1_1Utility_1_1MeshChecker.html#ab95fd2de9023c39a20a1722f62a70e3e" title="Adcirc::Utility::MeshChecker\l::checkMesh" alt="" coords="571,197,761,239"/>
+<area shape="rect" id="node9" href="classAdcirc_1_1Private_1_1MeshPrivate.html#a0a442be3a53f0b8998b80f1c953f9f56" title="Writes the mesh nodes into ESRI shapefile format. " alt="" coords="333,201,522,243"/>
+<area shape="rect" id="node20" href="classAdcirc_1_1Private_1_1MeshPrivate.html#abaa0c62f37f1b32f8524ddc12f2f1a64" title="Reprojects a mesh into the specified projection. " alt="" coords="333,773,522,815"/>
+<area shape="rect" id="node21" href="classAdcirc_1_1Private_1_1MeshPrivate.html#aa343c3186e3373913f4843f9ebfad8ee" title="Computes average size of the element edges connected to each node. " alt="" coords="571,773,761,815"/>
 </map>
 </div>
 

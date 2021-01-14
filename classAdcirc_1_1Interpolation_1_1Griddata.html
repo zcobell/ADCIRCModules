@@ -94,12 +94,12 @@ $(document).ready(function(){initNavTree('classAdcirc_1_1Interpolation_1_1Gridda
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af94a9cc41bb85a7ea3c896dd796090a4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#af94a9cc41bb85a7ea3c896dd796090a4">Griddata</a> ()</td></tr>
-<tr class="memdesc:af94a9cc41bb85a7ea3c896dd796090a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#af94a9cc41bb85a7ea3c896dd796090a4">More...</a><br /></td></tr>
-<tr class="separator:af94a9cc41bb85a7ea3c896dd796090a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81372f8bd8cb66236bf33d27692fa576"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a81372f8bd8cb66236bf33d27692fa576">Griddata</a> (<a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html">Adcirc::Geometry::Mesh</a> *mesh, const std::string &amp;<a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#acb8d2e3026ba65b02af212c74ca39ed7">rasterFile</a>)</td></tr>
-<tr class="memdesc:a81372f8bd8cb66236bf33d27692fa576"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that takes mesh and raster file.  <a href="#a81372f8bd8cb66236bf33d27692fa576">More...</a><br /></td></tr>
-<tr class="separator:a81372f8bd8cb66236bf33d27692fa576"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbcf35f97ac888cf780e7feefee50374"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#acbcf35f97ac888cf780e7feefee50374">Griddata</a> (const std::vector&lt; double &gt; &amp;x, const std::vector&lt; double &gt; &amp;y, std::vector&lt; double &gt; resolution, const std::string &amp;<a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#acb8d2e3026ba65b02af212c74ca39ed7">rasterFile</a>, int epsgQuery, int epsgRaster)</td></tr>
+<tr class="memdesc:acbcf35f97ac888cf780e7feefee50374"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor which uses discrete point locations.  <a href="#acbcf35f97ac888cf780e7feefee50374">More...</a><br /></td></tr>
+<tr class="separator:acbcf35f97ac888cf780e7feefee50374"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e42ac98ff0940989c7ca25b388d1eb9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a3e42ac98ff0940989c7ca25b388d1eb9">Griddata</a> (<a class="el" href="classAdcirc_1_1Geometry_1_1Mesh.html">Adcirc::Geometry::Mesh</a> *mesh, const std::string &amp;<a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#acb8d2e3026ba65b02af212c74ca39ed7">rasterFile</a>, int epsgRaster)</td></tr>
+<tr class="memdesc:a3e42ac98ff0940989c7ca25b388d1eb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that takes mesh and raster file.  <a href="#a3e42ac98ff0940989c7ca25b388d1eb9">More...</a><br /></td></tr>
+<tr class="separator:a3e42ac98ff0940989c7ca25b388d1eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5444eb584eb8d73970123b69f8954bc3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a5444eb584eb8d73970123b69f8954bc3">~Griddata</a> ()</td></tr>
 <tr class="separator:a5444eb584eb8d73970123b69f8954bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb8d2e3026ba65b02af212c74ca39ed7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#acb8d2e3026ba65b02af212c74ca39ed7">rasterFile</a> () const</td></tr>
@@ -110,21 +110,33 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab5cf3db546cb9a735bd63b082deaf962"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#ab5cf3db546cb9a735bd63b082deaf962">readLookupTable</a> (const std::string &amp;lookupTableFile)</td></tr>
 <tr class="memdesc:ab5cf3db546cb9a735bd63b082deaf962"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a lookup table to be used with the interpolation.  <a href="#ab5cf3db546cb9a735bd63b082deaf962">More...</a><br /></td></tr>
 <tr class="separator:ab5cf3db546cb9a735bd63b082deaf962"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad902b277acf919e0551372c5a63fa265"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#ad902b277acf919e0551372c5a63fa265">interpolationFlags</a> () const</td></tr>
-<tr class="memdesc:ad902b277acf919e0551372c5a63fa265"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current interpolation flags for all nodes being used by the code. By default all interpolation flags are set to <a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0fab3c87ec2c47256239220b24e46acda7f" title="Mesh sized based averaging defined by the mesh size and any multipliers. ">Interpolation::Average</a>.  <a href="#ad902b277acf919e0551372c5a63fa265">More...</a><br /></td></tr>
-<tr class="separator:ad902b277acf919e0551372c5a63fa265"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64237f1c5cba2f984a167a8e36896197"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a64237f1c5cba2f984a167a8e36896197">setInterpolationFlags</a> (const std::vector&lt; int &gt; &amp;<a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#ad902b277acf919e0551372c5a63fa265">interpolationFlags</a>)</td></tr>
-<tr class="memdesc:a64237f1c5cba2f984a167a8e36896197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the interpolation flags to a vector. The vector must be equal length to the number of nodes in the mesh.  <a href="#a64237f1c5cba2f984a167a8e36896197">More...</a><br /></td></tr>
-<tr class="separator:a64237f1c5cba2f984a167a8e36896197"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdbc56979865f9340bca4a03a9387b4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#acdbc56979865f9340bca4a03a9387b4e">setInterpolationFlags</a> (int <a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a47deb90b609751c911992bd4f8893399">interpolationFlag</a>)</td></tr>
-<tr class="memdesc:acdbc56979865f9340bca4a03a9387b4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the interpolation flags to a uniform value.  <a href="#acdbc56979865f9340bca4a03a9387b4e">More...</a><br /></td></tr>
-<tr class="separator:acdbc56979865f9340bca4a03a9387b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47deb90b609751c911992bd4f8893399"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a47deb90b609751c911992bd4f8893399">interpolationFlag</a> (size_t index)</td></tr>
-<tr class="memdesc:a47deb90b609751c911992bd4f8893399"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the interpolation flag for a specified node.  <a href="#a47deb90b609751c911992bd4f8893399">More...</a><br /></td></tr>
-<tr class="separator:a47deb90b609751c911992bd4f8893399"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa24ede62a9cc933a2176a3743611f6f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#aa24ede62a9cc933a2176a3743611f6f2">setInterpolationFlag</a> (size_t index, int flag)</td></tr>
-<tr class="memdesc:aa24ede62a9cc933a2176a3743611f6f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the interpolation flag at a specified node.  <a href="#aa24ede62a9cc933a2176a3743611f6f2">More...</a><br /></td></tr>
-<tr class="separator:aa24ede62a9cc933a2176a3743611f6f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ed9e9dae2c96be4d70c81c3b2485208"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a4ed9e9dae2c96be4d70c81c3b2485208">interpolationFlags</a> () const</td></tr>
+<tr class="memdesc:a4ed9e9dae2c96be4d70c81c3b2485208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current interpolation flags for all nodes being used by the code. By default all interpolation flags are set to <a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0fab3c87ec2c47256239220b24e46acda7f" title="Mesh sized based averaging defined by the mesh size and any multipliers. ">Interpolation::Average</a>.  <a href="#a4ed9e9dae2c96be4d70c81c3b2485208">More...</a><br /></td></tr>
+<tr class="separator:a4ed9e9dae2c96be4d70c81c3b2485208"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5d28c11c8a4aeebd61e33c164210f4a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#ae5d28c11c8a4aeebd61e33c164210f4a">setInterpolationFlags</a> (const std::vector&lt; <a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a> &gt; &amp;<a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a4ed9e9dae2c96be4d70c81c3b2485208">interpolationFlags</a>)</td></tr>
+<tr class="memdesc:ae5d28c11c8a4aeebd61e33c164210f4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the interpolation flags to a vector. The vector must be equal length to the number of nodes in the mesh.  <a href="#ae5d28c11c8a4aeebd61e33c164210f4a">More...</a><br /></td></tr>
+<tr class="separator:ae5d28c11c8a4aeebd61e33c164210f4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ae77cf4da64738ed717e108d975350d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a4ae77cf4da64738ed717e108d975350d">setInterpolationFlags</a> (<a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a> <a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a39660fab1bf011f2d341d00b30d1af7b">interpolationFlag</a>)</td></tr>
+<tr class="memdesc:a4ae77cf4da64738ed717e108d975350d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the interpolation flags to a uniform value.  <a href="#a4ae77cf4da64738ed717e108d975350d">More...</a><br /></td></tr>
+<tr class="separator:a4ae77cf4da64738ed717e108d975350d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39660fab1bf011f2d341d00b30d1af7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a39660fab1bf011f2d341d00b30d1af7b">interpolationFlag</a> (size_t index)</td></tr>
+<tr class="memdesc:a39660fab1bf011f2d341d00b30d1af7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the interpolation flag for a specified node.  <a href="#a39660fab1bf011f2d341d00b30d1af7b">More...</a><br /></td></tr>
+<tr class="separator:a39660fab1bf011f2d341d00b30d1af7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd3d6fadb506813b7bcf6417d9f44996"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#afd3d6fadb506813b7bcf6417d9f44996">setInterpolationFlag</a> (size_t index, <a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a> flag)</td></tr>
+<tr class="memdesc:afd3d6fadb506813b7bcf6417d9f44996"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the interpolation flag at a specified node.  <a href="#afd3d6fadb506813b7bcf6417d9f44996">More...</a><br /></td></tr>
+<tr class="separator:afd3d6fadb506813b7bcf6417d9f44996"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60b6be02b1bee9f775c113769271647b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a60b6be02b1bee9f775c113769271647b">backupInterpolationFlags</a> () const</td></tr>
+<tr class="memdesc:a60b6be02b1bee9f775c113769271647b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the full set of backup interpolation flags.  <a href="#a60b6be02b1bee9f775c113769271647b">More...</a><br /></td></tr>
+<tr class="separator:a60b6be02b1bee9f775c113769271647b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d0abee18bdf09b3db4c845a16c52616"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a2d0abee18bdf09b3db4c845a16c52616">setBackupInterpolationFlags</a> (const std::vector&lt; <a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a> &gt; &amp;<a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a4ed9e9dae2c96be4d70c81c3b2485208">interpolationFlags</a>)</td></tr>
+<tr class="memdesc:a2d0abee18bdf09b3db4c845a16c52616"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a2d0abee18bdf09b3db4c845a16c52616" title="Griddata::setBackupInterpolationFlags. ">Griddata::setBackupInterpolationFlags</a>.  <a href="#a2d0abee18bdf09b3db4c845a16c52616">More...</a><br /></td></tr>
+<tr class="separator:a2d0abee18bdf09b3db4c845a16c52616"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad58cc5156d44034fea8a0e29755951a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#ad58cc5156d44034fea8a0e29755951a0">setBackupInterpolationFlags</a> (<a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a> <a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a39660fab1bf011f2d341d00b30d1af7b">interpolationFlag</a>)</td></tr>
+<tr class="separator:ad58cc5156d44034fea8a0e29755951a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e1d6b4cc3ecaa6bf09f2cf39fa3d122"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a9e1d6b4cc3ecaa6bf09f2cf39fa3d122">backupInterpolationFlag</a> (size_t index)</td></tr>
+<tr class="separator:a9e1d6b4cc3ecaa6bf09f2cf39fa3d122"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2197ba70ea7ae8b239a65bee7955b739"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a2197ba70ea7ae8b239a65bee7955b739">setBackupInterpolationFlag</a> (size_t index, <a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a> flag)</td></tr>
+<tr class="separator:a2197ba70ea7ae8b239a65bee7955b739"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b2aa4a06be32df13dd51bb299c97698"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a4b2aa4a06be32df13dd51bb299c97698">filterSizes</a> () const</td></tr>
 <tr class="memdesc:a4b2aa4a06be32df13dd51bb299c97698"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the sizes of the relative window (mean element size around node.  <a href="#a4b2aa4a06be32df13dd51bb299c97698">More...</a><br /></td></tr>
 <tr class="separator:a4b2aa4a06be32df13dd51bb299c97698"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,7 +159,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a4505afa16445ac8fbab372a523b794f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the default value that will be applied to the output arrays when no interpolation method is selected or the specified interpolation method fails.  <a href="#a4505afa16445ac8fbab372a523b794f7">More...</a><br /></td></tr>
 <tr class="separator:a4505afa16445ac8fbab372a523b794f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3df24eb71ae599907c0b36b6ba88ffe"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#aa3df24eb71ae599907c0b36b6ba88ffe">computeValuesFromRaster</a> (bool useLookupTable=false)</td></tr>
-<tr class="memdesc:aa3df24eb71ae599907c0b36b6ba88ffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the interpolation process provided a mesh and raster have been supplied. Returns the interpolated values in an array matching the node indidices. This process is recommended but not required to be carried out in planar (i.e. UTM) coordinates.  <a href="#aa3df24eb71ae599907c0b36b6ba88ffe">More...</a><br /></td></tr>
+<tr class="memdesc:aa3df24eb71ae599907c0b36b6ba88ffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the interpolation process provided a mesh and raster have been supplied. Returns the interpolated values in an array matching the node indices. This process is recommended but not required to be carried out in planar (i.e. UTM) coordinates.  <a href="#aa3df24eb71ae599907c0b36b6ba88ffe">More...</a><br /></td></tr>
 <tr class="separator:aa3df24eb71ae599907c0b36b6ba88ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00f335f6098ab32130e41f51eea50813"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a00f335f6098ab32130e41f51eea50813">computeDirectionalWindReduction</a> (bool useLookupTable=false)</td></tr>
 <tr class="memdesc:a00f335f6098ab32130e41f51eea50813"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the upwind directional wind roughness in 12 directions and returns a 2d array of values indexed [1:numNodes][1:12]. This process is required to be carried out in planar coordinates (i.e. UTM)  <a href="#a00f335f6098ab32130e41f51eea50813">More...</a><br /></td></tr>
@@ -194,6 +206,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a821c55b40763bf8330771826339722bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a821c55b40763bf8330771826339722bc">setThresholdValue</a> (const double &amp;value)</td></tr>
 <tr class="memdesc:a821c55b40763bf8330771826339722bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the value to use in conjunction with thresholdMethod.  <a href="#a821c55b40763bf8330771826339722bc">More...</a><br /></td></tr>
 <tr class="separator:a821c55b40763bf8330771826339722bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5389f3ab3bc9aec3cb668eab7699d2ac"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a5389f3ab3bc9aec3cb668eab7699d2ac">windRadius</a> () const</td></tr>
+<tr class="memdesc:a5389f3ab3bc9aec3cb668eab7699d2ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the wind radius used. 10km.  <a href="#a5389f3ab3bc9aec3cb668eab7699d2ac">More...</a><br /></td></tr>
+<tr class="separator:a5389f3ab3bc9aec3cb668eab7699d2ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abad38989601bc4adeeb7faff3989b190"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#abad38989601bc4adeeb7faff3989b190">extents</a> () const</td></tr>
 <tr class="memdesc:abad38989601bc4adeeb7faff3989b190"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the extents of the current raster as xmin,ymin,xmax,ymax.  <a href="#abad38989601bc4adeeb7faff3989b190">More...</a><br /></td></tr>
 <tr class="separator:abad38989601bc4adeeb7faff3989b190"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -206,8 +221,8 @@ Public Member Functions</h2></td></tr>
 <p>The interpolated values come from any raster format that can be accessed using the GDAL library. The raster data can either be values (floating point numbers) or classifications that require a lookup table. The lookup table is stored as a hashtable internally. For optimium performance, Google's Swiss Tables are used where available (Cygwin is not available and will use the stl unordered_map structure instead).</p>
 <p>This class uses the PIMPL idiom and the implementation of the class is contained in the MeshImpl class. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af94a9cc41bb85a7ea3c896dd796090a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af94a9cc41bb85a7ea3c896dd796090a4">&#9670;&nbsp;</a></span>Griddata() <span class="overload">[1/2]</span></h2>
+<a id="acbcf35f97ac888cf780e7feefee50374"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbcf35f97ac888cf780e7feefee50374">&#9670;&nbsp;</a></span>Griddata() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -215,18 +230,64 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html">Griddata</a> </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; double &gt;&#160;</td>
+          <td class="paramname"><em>resolution</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>rasterFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>epsgQuery</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>epsgRaster</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Default constructor. </p>
+<p>Constructor which uses discrete point locations. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>vector of query x locations </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>vector of query y locations </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">resolution</td><td>vector of representative sizes near these points. Used for various sizing functions </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rasterFile</td><td>gdal compatible raster file name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">epsgQuery</td><td>coordinate system for the input point data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">epsgRaster</td><td>coordinate system for the raster data </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="a81372f8bd8cb66236bf33d27692fa576"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81372f8bd8cb66236bf33d27692fa576">&#9670;&nbsp;</a></span>Griddata() <span class="overload">[2/2]</span></h2>
+<a id="a3e42ac98ff0940989c7ca25b388d1eb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e42ac98ff0940989c7ca25b388d1eb9">&#9670;&nbsp;</a></span>Griddata() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -241,7 +302,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>rasterFile</em>&#160;</td>
+          <td class="paramname"><em>rasterFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>epsgRaster</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -256,6 +323,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">mesh</td><td>pointer to mesh object </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">rasterFile</td><td>gdal compatible raster file name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">epsgRaster</td><td>coordinate system for the raster data </td></tr>
   </table>
   </dd>
 </dl>
@@ -288,6 +356,44 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9e1d6b4cc3ecaa6bf09f2cf39fa3d122"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e1d6b4cc3ecaa6bf09f2cf39fa3d122">&#9670;&nbsp;</a></span>backupInterpolationFlag()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a> backupInterpolationFlag </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a60b6be02b1bee9f775c113769271647b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60b6be02b1bee9f775c113769271647b">&#9670;&nbsp;</a></span>backupInterpolationFlags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a> &gt; backupInterpolationFlags </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the full set of backup interpolation flags. </p>
+<dl class="section return"><dt>Returns</dt><dd>vector of backup interpolation flags </dd></dl>
+
+</div>
+</div>
 <a id="a00f335f6098ab32130e41f51eea50813"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a00f335f6098ab32130e41f51eea50813">&#9670;&nbsp;</a></span>computeDirectionalWindReduction()</h2>
 
@@ -332,7 +438,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Runs the interpolation process provided a mesh and raster have been supplied. Returns the interpolated values in an array matching the node indidices. This process is recommended but not required to be carried out in planar (i.e. UTM) coordinates. </p>
+<p>Runs the interpolation process provided a mesh and raster have been supplied. Returns the interpolated values in an array matching the node indices. This process is recommended but not required to be carried out in planar (i.e. UTM) coordinates. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">useLookupTable</td><td>determines if the code uses a lookup table or the values from the raster directly. </td></tr>
@@ -474,14 +580,14 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a47deb90b609751c911992bd4f8893399"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47deb90b609751c911992bd4f8893399">&#9670;&nbsp;</a></span>interpolationFlag()</h2>
+<a id="a39660fab1bf011f2d341d00b30d1af7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39660fab1bf011f2d341d00b30d1af7b">&#9670;&nbsp;</a></span>interpolationFlag()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int interpolationFlag </td>
+          <td class="memname"><a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a> interpolationFlag </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
@@ -501,14 +607,14 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad902b277acf919e0551372c5a63fa265"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad902b277acf919e0551372c5a63fa265">&#9670;&nbsp;</a></span>interpolationFlags()</h2>
+<a id="a4ed9e9dae2c96be4d70c81c3b2485208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ed9e9dae2c96be4d70c81c3b2485208">&#9670;&nbsp;</a></span>interpolationFlags()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; int &gt; interpolationFlags </td>
+          <td class="memname">std::vector&lt; <a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a> &gt; interpolationFlags </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -608,6 +714,78 @@ Public Member Functions</h2></td></tr>
 <p>The format for the lookup table should be:</p>
 <p>[key_1] [value_1] [description](optional) [key_2] [value_2] [description](optional)[key_n] [value_3] [description](optional)</p>
 <p>The key and value fields are required. The description is not used by the code but does make the tables more understandable when being read by a human. The key value must be an integer and the value must be a floating point number. </p>
+
+</div>
+</div>
+<a id="a2197ba70ea7ae8b239a65bee7955b739"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2197ba70ea7ae8b239a65bee7955b739">&#9670;&nbsp;</a></span>setBackupInterpolationFlag()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setBackupInterpolationFlag </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a>&#160;</td>
+          <td class="paramname"><em>flag</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2d0abee18bdf09b3db4c845a16c52616"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d0abee18bdf09b3db4c845a16c52616">&#9670;&nbsp;</a></span>setBackupInterpolationFlags() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setBackupInterpolationFlags </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>interpolationFlags</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classAdcirc_1_1Interpolation_1_1Griddata.html#a2d0abee18bdf09b3db4c845a16c52616" title="Griddata::setBackupInterpolationFlags. ">Griddata::setBackupInterpolationFlags</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">interpolationFlags</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad58cc5156d44034fea8a0e29755951a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad58cc5156d44034fea8a0e29755951a0">&#9670;&nbsp;</a></span>setBackupInterpolationFlags() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setBackupInterpolationFlags </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a>&#160;</td>
+          <td class="paramname"><em>interpolationFlag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -778,8 +956,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aa24ede62a9cc933a2176a3743611f6f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa24ede62a9cc933a2176a3743611f6f2">&#9670;&nbsp;</a></span>setInterpolationFlag()</h2>
+<a id="afd3d6fadb506813b7bcf6417d9f44996"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd3d6fadb506813b7bcf6417d9f44996">&#9670;&nbsp;</a></span>setInterpolationFlag()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -793,7 +971,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a>&#160;</td>
           <td class="paramname"><em>flag</em>&#160;</td>
         </tr>
         <tr>
@@ -815,8 +993,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a64237f1c5cba2f984a167a8e36896197"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64237f1c5cba2f984a167a8e36896197">&#9670;&nbsp;</a></span>setInterpolationFlags() <span class="overload">[1/2]</span></h2>
+<a id="ae5d28c11c8a4aeebd61e33c164210f4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5d28c11c8a4aeebd61e33c164210f4a">&#9670;&nbsp;</a></span>setInterpolationFlags() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -824,7 +1002,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void setInterpolationFlags </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>interpolationFlags</em></td><td>)</td>
           <td></td>
         </tr>
@@ -841,8 +1019,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="acdbc56979865f9340bca4a03a9387b4e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acdbc56979865f9340bca4a03a9387b4e">&#9670;&nbsp;</a></span>setInterpolationFlags() <span class="overload">[2/2]</span></h2>
+<a id="a4ae77cf4da64738ed717e108d975350d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ae77cf4da64738ed717e108d975350d">&#9670;&nbsp;</a></span>setInterpolationFlags() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -850,7 +1028,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void setInterpolationFlags </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceAdcirc_1_1Interpolation.html#a2a3c0067e44c5ef3210a256d06c16b0f">Adcirc::Interpolation::Method</a>&#160;</td>
           <td class="paramname"><em>interpolationFlag</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1073,6 +1251,25 @@ Public Member Functions</h2></td></tr>
 
 <p>Returns the value that is being used for thresholding. </p>
 <dl class="section return"><dt>Returns</dt><dd>thresholding value </dd></dl>
+
+</div>
+</div>
+<a id="a5389f3ab3bc9aec3cb668eab7699d2ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5389f3ab3bc9aec3cb668eab7699d2ac">&#9670;&nbsp;</a></span>windRadius()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double windRadius </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the wind radius used. 10km. </p>
 
 </div>
 </div>

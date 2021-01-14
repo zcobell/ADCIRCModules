@@ -34,7 +34,8 @@ var NAVTREE =
         [ "Typedefs", "globals_type.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
-    ] ]
+    ] ],
+    [ "Examples", "examples.html", "examples" ]
   ] ]
 ];
 
@@ -42,10 +43,11 @@ var NAVTREEINDEX =
 [
 "adchash_8cpp.html",
 "classAdcirc_1_1Geometry_1_1Face.html#aac5711b3d5521d64cba4a892acc1e3b4",
-"classAdcirc_1_1ModelParameters_1_1Attribute.html#ae83f8bf0246a70095cce1ba86523a6fe",
-"classAdcirc_1_1Output_1_1ReadOutput.html#ae8487e719ad1109f6db746e96a37c498",
-"classAdcirc_1_1Private_1_1NodalAttributesPrivate.html#a3fe0b4793bf5d9716babb91276f5ee5a",
-"functions_t.html"
+"classAdcirc_1_1ModelParameters_1_1Attribute.html#a259cb5a711406a8c3e5d937eb9350cca",
+"classAdcirc_1_1Output_1_1ReadOutput.html#ace4721cf48b8c58f0760bc1274d5816a",
+"classAdcirc_1_1Private_1_1MeshPrivate.html#adf4c00afd4b17e5ab3acccf6a3a71f9c",
+"functions_func_o.html",
+"structs__datetime.html#ab3e2c2758ee6821c2df8cc56b41d6b55"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

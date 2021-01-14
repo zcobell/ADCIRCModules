@@ -1,7 +1,10 @@
 <map id="equitoralRadius" name="equitoralRadius">
 <area shape="rect" id="node2" href="$classAdcirc_1_1Constants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude. " alt="" coords="165,81,253,108"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Constants.html#a86e2541d04e23b075b85d07c5b4d2bfc" title="Calculates the distance between two points. " alt="" coords="343,5,414,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Constants.html#ad3f6448f722f4918b1fadf2d7b402a2a" title="Calculates the distance between two points. " alt="" coords="343,5,414,32"/>
 <area shape="rect" id="node4" href="$classAdcirc_1_1Constants.html#a62d050d6a06ff0262d04bd705e45c517" title="Returns the square root of 3. " alt="" coords="353,56,404,83"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Projection.html#a910a22eb30d4d79dc0cf6d16ed729168" title="Adcirc::Projection::cpp" alt="" coords="301,107,456,133"/>
-<area shape="rect" id="node6" href="$classAdcirc_1_1Projection.html#adec99b516192b367b670f9d5da73fc64" title="Adcirc::Projection\l::inverseCpp" alt="" coords="316,158,441,199"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Projection.html#a910a22eb30d4d79dc0cf6d16ed729168" title="Adcirc::Projection::cpp" alt="" coords="301,107,456,133"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Projection.html#adec99b516192b367b670f9d5da73fc64" title="Adcirc::Projection\l::inverseCpp" alt="" coords="316,158,441,199"/>
+<area shape="rect" id="node5" href="$griddata__private_8cpp.html#ac45e8041cd02bead8caaae0cfc25e6ff" title="c_oneOver2MinusRoot3" alt="" coords="504,31,667,57"/>
+<area shape="rect" id="node7" href="$griddata__private_8cpp.html#a8791ae00308c5a7854cb861ffa769d46" title="c_oneOver2PlusRoot3" alt="" coords="509,81,662,108"/>
+<area shape="rect" id="node6" href="$griddata__private_8cpp.html#a16813cea7e67a22fd529ff686f4189f9" title="gaussian" alt="" coords="715,56,789,83"/>
 </map>

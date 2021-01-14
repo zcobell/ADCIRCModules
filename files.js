@@ -138,6 +138,10 @@ var files =
     [ "pixel.h", "pixel_8h.html", [
       [ "Pixel", "classAdcirc_1_1Raster_1_1Pixel.html", "classAdcirc_1_1Raster_1_1Pixel" ]
     ] ],
+    [ "progressbar.cpp", "progressbar_8cpp.html", null ],
+    [ "progressbar.h", "progressbar_8h.html", [
+      [ "ProgressBar", "classProgressBar.html", "classProgressBar" ]
+    ] ],
     [ "projection.cpp", "projection_8cpp.html", null ],
     [ "projection.h", "projection_8h.html", [
       [ "Projection", "classAdcirc_1_1Projection.html", "classAdcirc_1_1Projection" ]
@@ -151,7 +155,8 @@ var files =
     ] ],
     [ "stationinterpolation.cpp", "stationinterpolation_8cpp.html", null ],
     [ "stationinterpolation.h", "stationinterpolation_8h.html", [
-      [ "StationInterpolation", "classAdcirc_1_1Output_1_1StationInterpolation.html", "classAdcirc_1_1Output_1_1StationInterpolation" ]
+      [ "StationInterpolation", "classAdcirc_1_1Output_1_1StationInterpolation.html", "classAdcirc_1_1Output_1_1StationInterpolation" ],
+      [ "Weight", "structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html", "structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight" ]
     ] ],
     [ "stationinterpolationoptions.cpp", "stationinterpolationoptions_8cpp.html", null ],
     [ "stationinterpolationoptions.h", "stationinterpolationoptions_8h.html", [

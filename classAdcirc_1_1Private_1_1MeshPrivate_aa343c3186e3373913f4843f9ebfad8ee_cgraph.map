@@ -1,0 +1,23 @@
+<map id="computeMeshSize" name="computeMeshSize">
+<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a144d52d816558c4ae51e64a87607a6bd" title="topology" alt="" coords="241,115,312,141"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Topology.html#a6b9e517f1d409f5c23ad3c85e295ceea" title="Returns pointer to the element table. " alt="" coords="184,166,369,207"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#a7740c7ab195c03ac140f1f75f633470f" title="Begin building the table. " alt="" coords="187,231,367,273"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ae8487e719ad1109f6db746e96a37c498" title="Returns the number of nodes currently in the mesh. " alt="" coords="701,427,787,453"/>
+<area shape="rect" id="node12" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a559e1425143b68b7092668c9a6c66ed7" title="Returns the EPSG code for the current mesh projection. " alt="" coords="469,427,547,453"/>
+<area shape="rect" id="node13" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#abaa0c62f37f1b32f8524ddc12f2f1a64" title="Reprojects a mesh into the specified projection. " alt="" coords="241,579,313,605"/>
+<area shape="rect" id="node16" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a83611a572514d6b2f73e9ee6431744c8" title="Returns a pointer to the requested node in the internal node vector. " alt="" coords="483,477,533,504"/>
+<area shape="rect" id="node22" href="$classAdcirc_1_1Geometry_1_1ElementTable.html#a6c53ee0098af426c62c1af0694320ce0" title="Returns the list of elements around a specified node. " alt="" coords="187,310,367,351"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#afdfd28c4c1db0086eee0969cdc0409db" title="Returns the number of elements in the mesh. " alt="" coords="457,224,559,251"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a14aa75a7dd91534b6b886769e21e2c89" title="Returns a pointer to the requested element in the internal element vector. " alt="" coords="474,5,542,32"/>
+<area shape="rect" id="node8" href="$classAdcirc_1_1Geometry_1_1Element.html#ac88f0961aa7ed7c7415550ab2cad49c8" title="Number of verticies in this element. " alt="" coords="647,93,841,120"/>
+<area shape="rect" id="node9" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#aeac6d5abd113c708a752ffd4a6735f1a" title="Returns the position in the array by node id. " alt="" coords="453,275,563,301"/>
+<area shape="rect" id="node10" href="$classAdcirc_1_1Geometry_1_1Element.html#ab4269a9b2524d2180c5340bd2de2207c" title="returns a pointer to the node at the specified position " alt="" coords="418,57,598,98"/>
+<area shape="rect" id="node11" href="$classAdcirc_1_1Geometry_1_1Node.html#a5f63790137ee0057c96ce809f8f52ae7" title="Returns the nodal id/label. " alt="" coords="417,325,599,352"/>
+<area shape="rect" id="node14" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#ac6a3ad791b160ae157182192807bb6f3" title="Returns true if the mesh is in a geographic projection. " alt="" coords="709,604,779,631"/>
+<area shape="rect" id="node15" href="$classAdcirc_1_1Projection.html#a7f2b834bb42018b6ded8da9547c3bab7" title="Adcirc::Projection\l::transform" alt="" coords="445,681,571,722"/>
+<area shape="rect" id="node17" href="$classAdcirc_1_1Geometry_1_1Node.html#a9c18fcc579333bf9653d13ad2b372e39" title="Sets the x&#45;location of the node. " alt="" coords="427,811,589,853"/>
+<area shape="rect" id="node19" href="$classAdcirc_1_1Geometry_1_1Node.html#a7d57e2a5c35d27feb58fd498a3cf82b9" title="Sets the y&#45;location of the node. " alt="" coords="427,746,589,787"/>
+<area shape="rect" id="node21" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a81fff47915e2a197506df1ed4bae2492" title="Sets the mesh projection using an EPSG code. Note this does not reproject the mesh. " alt="" coords="451,579,565,605"/>
+<area shape="rect" id="node18" href="$classAdcirc_1_1Geometry_1_1Node.html#a833e1cf314b7b7a5537b2b6a56fee6a5" title="Returns the x&#45;location of the node. " alt="" coords="655,819,833,845"/>
+<area shape="rect" id="node20" href="$classAdcirc_1_1Geometry_1_1Node.html#aca424ddaf2902c1cde483f37813d4278" title="Returns the y&#45;location of the node. " alt="" coords="655,753,833,780"/>
+</map>

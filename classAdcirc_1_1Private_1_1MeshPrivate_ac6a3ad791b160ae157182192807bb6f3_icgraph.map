@@ -1,6 +1,7 @@
 <map id="isLatLon" name="isLatLon">
 <area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a81fff47915e2a197506df1ed4bae2492" title="Sets the mesh projection using an EPSG code. Note this does not reproject the mesh. " alt="" coords="124,5,239,32"/>
 <area shape="rect" id="node4" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#abaa0c62f37f1b32f8524ddc12f2f1a64" title="Reprojects a mesh into the specified projection. " alt="" coords="298,56,370,83"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a40e8e6dfd5b76435fd5bbcac818105e7" title="Writes an Mesh object to disk in ASCII format. " alt="" coords="156,107,207,133"/>
+<area shape="rect" id="node6" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a40e8e6dfd5b76435fd5bbcac818105e7" title="Writes an Mesh object to disk in ASCII format. " alt="" coords="156,107,207,133"/>
 <area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a63b8018bbc6c1bbd42b8495c4dc55a85" title="MeshPrivate" alt="" coords="287,5,381,32"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#aa343c3186e3373913f4843f9ebfad8ee" title="Computes average size of the element edges connected to each node. " alt="" coords="429,56,560,83"/>
 </map>

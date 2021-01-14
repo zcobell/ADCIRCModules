@@ -1,3 +1,4 @@
 <map id="addNode" name="addNode">
 <area shape="rect" id="node2" href="$classAdcirc_1_1Geometry_1_1Boundary.html#a08eef1f389f6fedce9c6b5b5ea907335" title="Returns true if boundary condition is internal weir without cross barrier pipes. " alt="" coords="128,5,308,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Geometry_1_1Node.html#add242ea970834ed3dbe7a3c01ec9380f" title="Sets the boundary node status. " alt="" coords="137,57,299,98"/>
 </map>

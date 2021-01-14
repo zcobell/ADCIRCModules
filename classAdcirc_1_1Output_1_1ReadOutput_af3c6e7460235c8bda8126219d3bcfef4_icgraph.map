@@ -1,6 +1,8 @@
 <map id="defaultValue" name="defaultValue">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a4505afa16445ac8fbab372a523b794f7" title="setDefaultValue" alt="" coords="217,5,331,32"/>
-<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="148,56,400,83"/>
-<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a1a79940e14d93b265d1c0ad6da79c4b6" title="Adcirc::Output::WriteOutput\l::write" alt="" coords="182,107,366,149"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a0fb6a8a6a59488c7c267eeae2afc3ed6" title="dataAt" alt="" coords="448,5,508,32"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a4505afa16445ac8fbab372a523b794f7" title="setDefaultValue" alt="" coords="204,5,319,32"/>
+<area shape="rect" id="node4" href="$classAdcirc_1_1Output_1_1StationInterpolation.html#a13a43e6d814de94978c515cb084873b1" title="Adcirc::Output::StationInterpolation::run" alt="" coords="423,56,675,83"/>
+<area shape="rect" id="node5" href="$classAdcirc_1_1Output_1_1StationInterpolation.html#a727bc23f5aaff7791f359c7fbcc9199f" title="Adcirc::Output::StationInterpolation\l::interpScalar" alt="" coords="148,107,375,149"/>
+<area shape="rect" id="node7" href="$classAdcirc_1_1Output_1_1WriteOutput.html#a1a79940e14d93b265d1c0ad6da79c4b6" title="Adcirc::Output::WriteOutput\l::write" alt="" coords="169,173,353,214"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Output_1_1ReadOutput.html#a0fb6a8a6a59488c7c267eeae2afc3ed6" title="dataAt" alt="" coords="519,5,579,32"/>
+<area shape="rect" id="node6" href="$structAdcirc_1_1Output_1_1StationInterpolation_1_1Weight.html#ab1c124e9ea34ad2e49e3091727ff3a3e" title="Adcirc::Output::StationInterpolation\l::Weight::Weight" alt="" coords="435,107,662,149"/>
 </map>

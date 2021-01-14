@@ -1,4 +1,4 @@
 <map id="addElement" name="addElement">
-<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#afdfd28c4c1db0086eee0969cdc0409db" title="Returns the number of elements in the mesh. " alt="" coords="260,5,363,32"/>
-<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a14aa75a7dd91534b6b886769e21e2c89" title="Returns a pointer to the requested element in the internal element vector. " alt="" coords="144,31,212,57"/>
+<area shape="rect" id="node2" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#afdfd28c4c1db0086eee0969cdc0409db" title="Returns the number of elements in the mesh. " alt="" coords="144,5,247,32"/>
+<area shape="rect" id="node3" href="$classAdcirc_1_1Private_1_1MeshPrivate.html#a14aa75a7dd91534b6b886769e21e2c89" title="Returns a pointer to the requested element in the internal element vector. " alt="" coords="161,56,229,83"/>
 </map>

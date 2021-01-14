@@ -80,6 +80,7 @@ $(document).ready(function(){initNavTree('griddata__private_8cpp.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
@@ -91,47 +92,56 @@ $(document).ready(function(){initNavTree('griddata__private_8cpp.html','');});
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;array&gt;</code><br />
 <code>#include &lt;fstream&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;numeric&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
-<code>#include &quot;boost/progress.hpp&quot;</code><br />
 <code>#include &quot;<a class="el" href="constants_8h_source.html">constants.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="default__values_8h_source.html">default_values.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="elementtable_8h_source.html">elementtable.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="fileio_8h_source.html">fileio.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="griddata_8h_source.html">griddata.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="logging_8h_source.html">logging.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="progressbar_8h_source.html">progressbar.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="projection_8h_source.html">projection.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="stringconversion_8h_source.html">stringconversion.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for griddata_private.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="griddata__private_8cpp__incl.png" border="0" usemap="#griddata__private_8cpp" alt=""/></div>
 <map name="griddata__private_8cpp" id="griddata__private_8cpp">
-<area shape="rect" id="node2" href="griddata__private_8h.html" title="griddata_private.h" alt="" coords="793,80,919,107"/>
-<area shape="rect" id="node10" href="constants_8h.html" title="constants.h" alt="" coords="43,453,133,480"/>
-<area shape="rect" id="node20" href="default__values_8h.html" title="default_values.h" alt="" coords="1045,229,1163,256"/>
-<area shape="rect" id="node27" href="elementtable_8h.html" title="elementtable.h" alt="" coords="1259,379,1365,405"/>
-<area shape="rect" id="node41" href="fileio_8h.html" title="fileio.h" alt="" coords="2118,453,2178,480"/>
-<area shape="rect" id="node42" href="griddata_8h.html" title="griddata.h" alt="" coords="1615,80,1694,107"/>
-<area shape="rect" id="node43" href="logging_8h.html" title="logging.h" alt="" coords="2459,528,2533,555"/>
-<area shape="rect" id="node45" href="stringconversion_8h.html" title="stringconversion.h" alt="" coords="2408,155,2536,181"/>
-<area shape="rect" id="node7" href="adcmap_8h.html" title="adcmap.h" alt="" coords="661,155,739,181"/>
-<area shape="rect" id="node11" href="interpolationmethods_8h.html" title="interpolationmethods.h" alt="" coords="1175,155,1329,181"/>
-<area shape="rect" id="node12" href="mesh_8h.html" title="mesh.h" alt="" coords="1579,155,1645,181"/>
-<area shape="rect" id="node31" href="rasterdata_8h.html" title="rasterdata.h" alt="" coords="639,453,729,480"/>
-<area shape="rect" id="node16" href="boundary_8h.html" title="boundary.h" alt="" coords="2003,453,2090,480"/>
-<area shape="rect" id="node17" href="node_8h.html" title="node.h" alt="" coords="1243,528,1304,555"/>
-<area shape="rect" id="node22" href="element_8h.html" title="element.h" alt="" coords="1193,453,1271,480"/>
-<area shape="rect" id="node23" href="filetypes_8h.html" title="filetypes.h" alt="" coords="2076,379,2159,405"/>
-<area shape="rect" id="node24" href="kdtree_8h.html" title="kdtree.h" alt="" coords="1541,453,1611,480"/>
-<area shape="rect" id="node26" href="topology_8h.html" title="topology.h" alt="" coords="1465,229,1548,256"/>
-<area shape="rect" id="node19" href="hashtype_8h.html" title="hashtype.h" alt="" coords="1230,603,1317,629"/>
-<area shape="rect" id="node28" href="facetable_8h.html" title="facetable.h" alt="" coords="1310,304,1397,331"/>
-<area shape="rect" id="node30" href="nodetable_8h.html" title="nodetable.h" alt="" coords="1635,453,1725,480"/>
-<area shape="rect" id="node29" href="face_8h.html" title="face.h" alt="" coords="1125,379,1184,405"/>
-<area shape="rect" id="node36" href="pixel_8h.html" title="pixel.h" alt="" coords="1379,528,1439,555"/>
+<area shape="rect" id="node2" href="griddata__private_8h.html" title="griddata_private.h" alt="" coords="1879,80,2004,107"/>
+<area shape="rect" id="node11" href="constants_8h.html" title="constants.h" alt="" coords="2669,453,2760,480"/>
+<area shape="rect" id="node20" href="default__values_8h.html" title="default_values.h" alt="" coords="1301,229,1419,256"/>
+<area shape="rect" id="node27" href="elementtable_8h.html" title="elementtable.h" alt="" coords="581,379,688,405"/>
+<area shape="rect" id="node40" href="fileio_8h.html" title="fileio.h" alt="" coords="1415,453,1475,480"/>
+<area shape="rect" id="node41" href="griddata_8h.html" title="griddata.h" alt="" coords="1005,80,1083,107"/>
+<area shape="rect" id="node42" href="logging_8h.html" title="logging.h" alt="" coords="2608,528,2683,555"/>
+<area shape="rect" id="node44" href="progressbar_8h.html" title="progressbar.h" alt="" coords="5,528,107,555"/>
+<area shape="rect" id="node46" href="projection_8h.html" title="projection.h" alt="" coords="2451,453,2541,480"/>
+<area shape="rect" id="node48" href="stringconversion_8h.html" title="stringconversion.h" alt="" coords="1777,155,1905,181"/>
+<area shape="rect" id="node8" href="adcmap_8h.html" title="adcmap.h" alt="" coords="1930,155,2009,181"/>
+<area shape="rect" id="node12" href="interpolationmethods_8h.html" title="interpolationmethods.h" alt="" coords="850,155,1003,181"/>
+<area shape="rect" id="node13" href="mesh_8h.html" title="mesh.h" alt="" coords="1130,155,1195,181"/>
+<area shape="rect" id="node31" href="rasterdata_8h.html" title="rasterdata.h" alt="" coords="2036,453,2127,480"/>
+<area shape="rect" id="node17" href="boundary_8h.html" title="boundary.h" alt="" coords="1099,453,1186,480"/>
+<area shape="rect" id="node18" href="node_8h.html" title="node.h" alt="" coords="840,528,901,555"/>
+<area shape="rect" id="node22" href="element_8h.html" title="element.h" alt="" coords="1210,453,1289,480"/>
+<area shape="rect" id="node23" href="filetypes_8h.html" title="filetypes.h" alt="" coords="1627,379,1709,405"/>
+<area shape="rect" id="node24" href="kdtree_8h.html" title="kdtree.h" alt="" coords="536,453,605,480"/>
+<area shape="rect" id="node26" href="topology_8h.html" title="topology.h" alt="" coords="793,229,876,256"/>
+<area shape="rect" id="node19" href="hashtype_8h.html" title="hashtype.h" alt="" coords="827,603,914,629"/>
+<area shape="rect" id="node28" href="facetable_8h.html" title="facetable.h" alt="" coords="1430,304,1517,331"/>
+<area shape="rect" id="node30" href="nodetable_8h.html" title="nodetable.h" alt="" coords="833,453,922,480"/>
+<area shape="rect" id="node29" href="face_8h.html" title="face.h" alt="" coords="1493,379,1552,405"/>
+<area shape="rect" id="node36" href="pixel_8h.html" title="pixel.h" alt="" coords="1294,528,1354,555"/>
 </map>
 </div>
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a91bc1c4f8d389ac8b15680e8cff89388"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#a91bc1c4f8d389ac8b15680e8cff89388">griddata_exp</a>&#160;&#160;&#160;std::exp</td></tr>
+<tr class="separator:a91bc1c4f8d389ac8b15680e8cff89388"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:abd1dca17737b73180df12a2aacb067fb"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#abd1dca17737b73180df12a2aacb067fb">Point</a> = std::pair&lt; double, double &gt;</td></tr>
@@ -139,25 +149,49 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a526d9f161fc00d436541ce961b2a0c26"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#a526d9f161fc00d436541ce961b2a0c26">c_rootTwoPi</a> ()</td></tr>
+<tr class="separator:a526d9f161fc00d436541ce961b2a0c26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac45e8041cd02bead8caaae0cfc25e6ff"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#ac45e8041cd02bead8caaae0cfc25e6ff">c_oneOver2MinusRoot3</a> ()</td></tr>
+<tr class="separator:ac45e8041cd02bead8caaae0cfc25e6ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8791ae00308c5a7854cb861ffa769d46"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#a8791ae00308c5a7854cb861ffa769d46">c_oneOver2PlusRoot3</a> ()</td></tr>
+<tr class="separator:a8791ae00308c5a7854cb861ffa769d46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed6a6c15f612dc1c59fc0586580e1ca3"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#aed6a6c15f612dc1c59fc0586580e1ca3">c_epsilonSquared</a> ()</td></tr>
+<tr class="separator:aed6a6c15f612dc1c59fc0586580e1ca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b3905edda6201c1b2f1c311f41f8fe2"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#a2b3905edda6201c1b2f1c311f41f8fe2">c_oneOverWindSigmaSquared</a> ()</td></tr>
+<tr class="separator:a2b3905edda6201c1b2f1c311f41f8fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad369ef9686166809c1d63ebfaf824cb2"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#ad369ef9686166809c1d63ebfaf824cb2">c_windSigmaRootTwoPi</a> ()</td></tr>
+<tr class="separator:ad369ef9686166809c1d63ebfaf824cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ab31b90bc584c635ec159468ceed9b2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a1ab31b90bc584c635ec159468ceed9b2"><td class="memTemplItemLeft" align="right" valign="top">int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#a1ab31b90bc584c635ec159468ceed9b2">sgn</a> (T val)</td></tr>
 <tr class="separator:a1ab31b90bc584c635ec159468ceed9b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08fd6c6e1e17306899e5f0a3bf86a236"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#a08fd6c6e1e17306899e5f0a3bf86a236">sortPointsByIncreasingDistance</a> (<a class="el" href="constants_8h.html#abd1dca17737b73180df12a2aacb067fb">Point</a> &amp;a, <a class="el" href="constants_8h.html#abd1dca17737b73180df12a2aacb067fb">Point</a> &amp;b)</td></tr>
-<tr class="separator:a08fd6c6e1e17306899e5f0a3bf86a236"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b566f761068ecd46e81805de8ca1543"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a2b566f761068ecd46e81805de8ca1543"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#a2b566f761068ecd46e81805de8ca1543">__attribute__</a> ((always_inline)) T fast_exp(const T x) noexcept</td></tr>
+<tr class="separator:a2b566f761068ecd46e81805de8ca1543"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e18192037dcc8a35ab61e10b6890d89"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#a1e18192037dcc8a35ab61e10b6890d89">sortPointsByIncreasingDistance</a> (const <a class="el" href="constants_8h.html#abd1dca17737b73180df12a2aacb067fb">Point</a> &amp;a, const <a class="el" href="constants_8h.html#abd1dca17737b73180df12a2aacb067fb">Point</a> &amp;b)</td></tr>
+<tr class="separator:a1e18192037dcc8a35ab61e10b6890d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16813cea7e67a22fd529ff686f4189f9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#a16813cea7e67a22fd529ff686f4189f9">gaussian</a> (const double distance)</td></tr>
+<tr class="separator:a16813cea7e67a22fd529ff686f4189f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a7e04e5a26f1d41a9c5e04f2f6229dca5"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#a7e04e5a26f1d41a9c5e04f2f6229dca5">c_oneOver2MinusRoot3</a> = 1.0 / (2.0 - Constants::root3())</td></tr>
-<tr class="separator:a7e04e5a26f1d41a9c5e04f2f6229dca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca9fc166829b72661f5f5f0d553fc2c4"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#aca9fc166829b72661f5f5f0d553fc2c4">c_oneOver2PlusRoot3</a> = 1.0 / (2.0 + Constants::root3())</td></tr>
-<tr class="separator:aca9fc166829b72661f5f5f0d553fc2c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42d10b36a94f0cfba59493f8e6e2698c"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#a42d10b36a94f0cfba59493f8e6e2698c">c_epsilonSquared</a></td></tr>
-<tr class="separator:a42d10b36a94f0cfba59493f8e6e2698c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0919069de55cf2fb86be1bf50918107e"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#a0919069de55cf2fb86be1bf50918107e">c_oneOverWindSigmaSquared</a></td></tr>
-<tr class="separator:a0919069de55cf2fb86be1bf50918107e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a353c08037b96f309897d2f66e7152a00"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; std::array&lt; short, 7 &gt;, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#a353c08037b96f309897d2f66e7152a00">c_windDirectionLookup</a></td></tr>
-<tr class="separator:a353c08037b96f309897d2f66e7152a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a096338f75545f5b905e16b0fc88eda6f"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; std::array&lt; char, 7 &gt;, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="griddata__private_8cpp.html#a096338f75545f5b905e16b0fc88eda6f">c_windDirectionLookup</a></td></tr>
+<tr class="separator:a096338f75545f5b905e16b0fc88eda6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a91bc1c4f8d389ac8b15680e8cff89388"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91bc1c4f8d389ac8b15680e8cff89388">&#9670;&nbsp;</a></span>griddata_exp</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define griddata_exp&#160;&#160;&#160;std::exp</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="abd1dca17737b73180df12a2aacb067fb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abd1dca17737b73180df12a2aacb067fb">&#9670;&nbsp;</a></span>Point</h2>
@@ -174,6 +208,260 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a2b566f761068ecd46e81805de8ca1543"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b566f761068ecd46e81805de8ca1543">&#9670;&nbsp;</a></span>__attribute__()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">__attribute__ </td>
+          <td>(</td>
+          <td class="paramtype">(always_inline)&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aed6a6c15f612dc1c59fc0586580e1ca3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed6a6c15f612dc1c59fc0586580e1ca3">&#9670;&nbsp;</a></span>c_epsilonSquared()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr double c_epsilonSquared </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="griddata__private_8cpp_aed6a6c15f612dc1c59fc0586580e1ca3_icgraph.png" border="0" usemap="#griddata__private_8cpp_aed6a6c15f612dc1c59fc0586580e1ca3_icgraph" alt=""/></div>
+<map name="griddata__private_8cpp_aed6a6c15f612dc1c59fc0586580e1ca3_icgraph" id="griddata__private_8cpp_aed6a6c15f612dc1c59fc0586580e1ca3_icgraph">
+<area shape="rect" id="node2" href="griddata__private_8cpp.html#a16813cea7e67a22fd529ff686f4189f9" title="gaussian" alt="" coords="179,5,253,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ac45e8041cd02bead8caaae0cfc25e6ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac45e8041cd02bead8caaae0cfc25e6ff">&#9670;&nbsp;</a></span>c_oneOver2MinusRoot3()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr double c_oneOver2MinusRoot3 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="griddata__private_8cpp_ac45e8041cd02bead8caaae0cfc25e6ff_cgraph.png" border="0" usemap="#griddata__private_8cpp_ac45e8041cd02bead8caaae0cfc25e6ff_cgraph" alt=""/></div>
+<map name="griddata__private_8cpp_ac45e8041cd02bead8caaae0cfc25e6ff_cgraph" id="griddata__private_8cpp_ac45e8041cd02bead8caaae0cfc25e6ff_cgraph">
+<area shape="rect" id="node2" href="classAdcirc_1_1Constants.html#a62d050d6a06ff0262d04bd705e45c517" title="Returns the square root of 3. " alt="" coords="216,100,351,141"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Constants.html#a8e8b5d1633dfb57d0d6056850bdd710c" title="Converts a value from degrees to radians. " alt="" coords="581,8,716,49"/>
+<area shape="rect" id="node6" href="classAdcirc_1_1Constants.html#a743ea7ec7653fe3ee75df86682edbb04" title="Converts a value from radians to degrees. " alt="" coords="399,67,533,108"/>
+<area shape="rect" id="node8" href="classAdcirc_1_1Constants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude. " alt="" coords="399,132,533,173"/>
+<area shape="rect" id="node11" href="classAdcirc_1_1Constants.html#a67bb34165d68f1fe958b93511d5ede05" title="Calculates the distance between two points. " alt="" coords="399,197,533,239"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Constants.html#ae43063ac7bf556cb933a0206301b9748" title="Returns the factor to convert degrees to radians. " alt="" coords="764,5,899,47"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Constants.html#a8916e00cc71692658a0a355b2f142274" title="Returns the constant pi. " alt="" coords="947,46,1092,73"/>
+<area shape="rect" id="node7" href="classAdcirc_1_1Constants.html#aa8f2ca4ad36dc6b5f53e25e9e746d008" title="Returns the factor to convert radians to degrees. " alt="" coords="764,71,899,112"/>
+<area shape="rect" id="node9" href="classAdcirc_1_1Constants.html#ac4170b1989bcda498ea9ea95bf25d583" title="Returns the equitorial radius of earth in meters. " alt="" coords="581,129,716,171"/>
+<area shape="rect" id="node10" href="classAdcirc_1_1Constants.html#a1b684ff37a85f7e328c6b027ee95bc10" title="Returns the polar radius of earth in meters. " alt="" coords="581,195,716,236"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="griddata__private_8cpp_ac45e8041cd02bead8caaae0cfc25e6ff_icgraph.png" border="0" usemap="#griddata__private_8cpp_ac45e8041cd02bead8caaae0cfc25e6ff_icgraph" alt=""/></div>
+<map name="griddata__private_8cpp_ac45e8041cd02bead8caaae0cfc25e6ff_icgraph" id="griddata__private_8cpp_ac45e8041cd02bead8caaae0cfc25e6ff_icgraph">
+<area shape="rect" id="node2" href="griddata__private_8cpp.html#a16813cea7e67a22fd529ff686f4189f9" title="gaussian" alt="" coords="216,5,291,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a8791ae00308c5a7854cb861ffa769d46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8791ae00308c5a7854cb861ffa769d46">&#9670;&nbsp;</a></span>c_oneOver2PlusRoot3()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr double c_oneOver2PlusRoot3 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="griddata__private_8cpp_a8791ae00308c5a7854cb861ffa769d46_cgraph.png" border="0" usemap="#griddata__private_8cpp_a8791ae00308c5a7854cb861ffa769d46_cgraph" alt=""/></div>
+<map name="griddata__private_8cpp_a8791ae00308c5a7854cb861ffa769d46_cgraph" id="griddata__private_8cpp_a8791ae00308c5a7854cb861ffa769d46_cgraph">
+<area shape="rect" id="node2" href="classAdcirc_1_1Constants.html#a62d050d6a06ff0262d04bd705e45c517" title="Returns the square root of 3. " alt="" coords="207,100,341,141"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Constants.html#a8e8b5d1633dfb57d0d6056850bdd710c" title="Converts a value from degrees to radians. " alt="" coords="572,8,707,49"/>
+<area shape="rect" id="node6" href="classAdcirc_1_1Constants.html#a743ea7ec7653fe3ee75df86682edbb04" title="Converts a value from radians to degrees. " alt="" coords="389,67,524,108"/>
+<area shape="rect" id="node8" href="classAdcirc_1_1Constants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude. " alt="" coords="389,132,524,173"/>
+<area shape="rect" id="node11" href="classAdcirc_1_1Constants.html#a67bb34165d68f1fe958b93511d5ede05" title="Calculates the distance between two points. " alt="" coords="389,197,524,239"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Constants.html#ae43063ac7bf556cb933a0206301b9748" title="Returns the factor to convert degrees to radians. " alt="" coords="755,5,889,47"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Constants.html#a8916e00cc71692658a0a355b2f142274" title="Returns the constant pi. " alt="" coords="937,46,1083,73"/>
+<area shape="rect" id="node7" href="classAdcirc_1_1Constants.html#aa8f2ca4ad36dc6b5f53e25e9e746d008" title="Returns the factor to convert radians to degrees. " alt="" coords="755,71,889,112"/>
+<area shape="rect" id="node9" href="classAdcirc_1_1Constants.html#ac4170b1989bcda498ea9ea95bf25d583" title="Returns the equitorial radius of earth in meters. " alt="" coords="572,129,707,171"/>
+<area shape="rect" id="node10" href="classAdcirc_1_1Constants.html#a1b684ff37a85f7e328c6b027ee95bc10" title="Returns the polar radius of earth in meters. " alt="" coords="572,195,707,236"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="griddata__private_8cpp_a8791ae00308c5a7854cb861ffa769d46_icgraph.png" border="0" usemap="#griddata__private_8cpp_a8791ae00308c5a7854cb861ffa769d46_icgraph" alt=""/></div>
+<map name="griddata__private_8cpp_a8791ae00308c5a7854cb861ffa769d46_icgraph" id="griddata__private_8cpp_a8791ae00308c5a7854cb861ffa769d46_icgraph">
+<area shape="rect" id="node2" href="griddata__private_8cpp.html#a16813cea7e67a22fd529ff686f4189f9" title="gaussian" alt="" coords="207,5,281,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a2b3905edda6201c1b2f1c311f41f8fe2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b3905edda6201c1b2f1c311f41f8fe2">&#9670;&nbsp;</a></span>c_oneOverWindSigmaSquared()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr double c_oneOverWindSigmaSquared </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a526d9f161fc00d436541ce961b2a0c26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a526d9f161fc00d436541ce961b2a0c26">&#9670;&nbsp;</a></span>c_rootTwoPi()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr double c_rootTwoPi </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="griddata__private_8cpp_a526d9f161fc00d436541ce961b2a0c26_icgraph.png" border="0" usemap="#griddata__private_8cpp_a526d9f161fc00d436541ce961b2a0c26_icgraph" alt=""/></div>
+<map name="griddata__private_8cpp_a526d9f161fc00d436541ce961b2a0c26_icgraph" id="griddata__private_8cpp_a526d9f161fc00d436541ce961b2a0c26_icgraph">
+<area shape="rect" id="node2" href="griddata__private_8cpp.html#ad369ef9686166809c1d63ebfaf824cb2" title="c_windSigmaRootTwoPi" alt="" coords="148,5,313,32"/>
+<area shape="rect" id="node3" href="griddata__private_8cpp.html#a16813cea7e67a22fd529ff686f4189f9" title="gaussian" alt="" coords="193,56,268,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ad369ef9686166809c1d63ebfaf824cb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad369ef9686166809c1d63ebfaf824cb2">&#9670;&nbsp;</a></span>c_windSigmaRootTwoPi()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr double c_windSigmaRootTwoPi </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="griddata__private_8cpp_ad369ef9686166809c1d63ebfaf824cb2_cgraph.png" border="0" usemap="#griddata__private_8cpp_ad369ef9686166809c1d63ebfaf824cb2_cgraph" alt=""/></div>
+<map name="griddata__private_8cpp_ad369ef9686166809c1d63ebfaf824cb2_cgraph" id="griddata__private_8cpp_ad369ef9686166809c1d63ebfaf824cb2_cgraph">
+<area shape="rect" id="node2" href="griddata__private_8cpp.html#a526d9f161fc00d436541ce961b2a0c26" title="c_rootTwoPi" alt="" coords="219,5,313,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a16813cea7e67a22fd529ff686f4189f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16813cea7e67a22fd529ff686f4189f9">&#9670;&nbsp;</a></span>gaussian()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double gaussian </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>distance</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="griddata__private_8cpp_a16813cea7e67a22fd529ff686f4189f9_cgraph.png" border="0" usemap="#griddata__private_8cpp_a16813cea7e67a22fd529ff686f4189f9_cgraph" alt=""/></div>
+<map name="griddata__private_8cpp_a16813cea7e67a22fd529ff686f4189f9_cgraph" id="griddata__private_8cpp_a16813cea7e67a22fd529ff686f4189f9_cgraph">
+<area shape="rect" id="node2" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#a1ce4d6eb89447a50e8159bd66fc331b3" title="Adcirc::Private::Griddata\lPrivate::windSigma" alt="" coords="128,247,293,288"/>
+<area shape="rect" id="node12" href="griddata__private_8cpp.html#a526d9f161fc00d436541ce961b2a0c26" title="c_rootTwoPi" alt="" coords="163,559,258,586"/>
+<area shape="rect" id="node13" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#a84150c30221a687253d2273d10b65946" title="Adcirc::Private::Griddata\lPrivate::distanceFactor" alt="" coords="128,611,293,652"/>
+<area shape="rect" id="node14" href="griddata__private_8cpp.html#aed6a6c15f612dc1c59fc0586580e1ca3" title="c_epsilonSquared" alt="" coords="148,677,273,703"/>
+<area shape="rect" id="node15" href="griddata__private_8cpp.html#ac45e8041cd02bead8caaae0cfc25e6ff" title="c_oneOver2MinusRoot3" alt="" coords="129,458,292,485"/>
+<area shape="rect" id="node25" href="griddata__private_8cpp.html#a8791ae00308c5a7854cb861ffa769d46" title="c_oneOver2PlusRoot3" alt="" coords="134,509,287,535"/>
+<area shape="rect" id="node26" href="griddata__private_8cpp.html#a1ab31b90bc584c635ec159468ceed9b2" title="sgn" alt="" coords="189,727,232,754"/>
+<area shape="rect" id="node27" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#abf5edbd9ca281bda2826ca7ade226e38" title="Adcirc::Private::Griddata\lPrivate::windRadius" alt="" coords="128,779,293,820"/>
+<area shape="rect" id="node3" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#a40504fb5f09ccc665f9cf82b327f0349" title="Adcirc::Private::Griddata\lPrivate::datumShift" alt="" coords="579,93,745,135"/>
+<area shape="rect" id="node4" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#a21def567ea95299c16f475906aa46d30" title="Adcirc::Private::Griddata\lPrivate::setDatumShift" alt="" coords="353,123,519,164"/>
+<area shape="rect" id="node5" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#aca20f3138e27aa2beff28c28f5010cdc" title="Adcirc::Private::Griddata\lPrivate::thresholdValue" alt="" coords="353,188,519,229"/>
+<area shape="rect" id="node6" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#a273871df8be2613b565e68cdbfb8ca43" title="Adcirc::Private::Griddata\lPrivate::setThresholdValue" alt="" coords="347,371,525,412"/>
+<area shape="rect" id="node8" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#ad63a40882c97d86b97a674c96f395e87" title="Adcirc::Private::Griddata\lPrivate::thresholdMethod" alt="" coords="579,276,745,317"/>
+<area shape="rect" id="node9" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#a215d6687700cc9bd97e77de1da8b6561" title="Adcirc::Private::Griddata\lPrivate::setThresholdMethod" alt="" coords="341,305,531,347"/>
+<area shape="rect" id="node10" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#abad38989601bc4adeeb7faff3989b190" title="Adcirc::Private::Griddata\lPrivate::extents" alt="" coords="353,436,519,477"/>
+<area shape="rect" id="node11" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#a795a30c2cc91f014c7c5eb3b48b50545" title="Adcirc::Private::Griddata\lPrivate::GriddataPrivate" alt="" coords="353,5,519,47"/>
+<area shape="rect" id="node7" href="classAdcirc_1_1Constants.html#a67bb34165d68f1fe958b93511d5ede05" title="Calculates the distance between two points. " alt="" coords="595,373,729,415"/>
+<area shape="rect" id="node16" href="classAdcirc_1_1Constants.html#a62d050d6a06ff0262d04bd705e45c517" title="Returns the square root of 3. " alt="" coords="369,501,503,543"/>
+<area shape="rect" id="node17" href="classAdcirc_1_1Constants.html#a8e8b5d1633dfb57d0d6056850bdd710c" title="Converts a value from degrees to radians. " alt="" coords="793,567,928,608"/>
+<area shape="rect" id="node20" href="classAdcirc_1_1Constants.html#a743ea7ec7653fe3ee75df86682edbb04" title="Converts a value from radians to degrees. " alt="" coords="793,371,928,412"/>
+<area shape="rect" id="node22" href="classAdcirc_1_1Constants.html#aa13d2db888106c7772ff7d9336982fad" title="Returns the radius of Earth at a given latitude. " alt="" coords="595,501,729,543"/>
+<area shape="rect" id="node18" href="classAdcirc_1_1Constants.html#ae43063ac7bf556cb933a0206301b9748" title="Returns the factor to convert degrees to radians. " alt="" coords="976,501,1111,543"/>
+<area shape="rect" id="node19" href="classAdcirc_1_1Constants.html#a8916e00cc71692658a0a355b2f142274" title="Returns the constant pi. " alt="" coords="1159,477,1304,503"/>
+<area shape="rect" id="node21" href="classAdcirc_1_1Constants.html#aa8f2ca4ad36dc6b5f53e25e9e746d008" title="Returns the factor to convert radians to degrees. " alt="" coords="976,404,1111,445"/>
+<area shape="rect" id="node23" href="classAdcirc_1_1Constants.html#ac4170b1989bcda498ea9ea95bf25d583" title="Returns the equitorial radius of earth in meters. " alt="" coords="793,436,928,477"/>
+<area shape="rect" id="node24" href="classAdcirc_1_1Constants.html#a1b684ff37a85f7e328c6b027ee95bc10" title="Returns the polar radius of earth in meters. " alt="" coords="793,501,928,543"/>
+</map>
+</div>
+
+</div>
+</div>
 <a id="a1ab31b90bc584c635ec159468ceed9b2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1ab31b90bc584c635ec159468ceed9b2">&#9670;&nbsp;</a></span>sgn()</h2>
 
@@ -189,11 +477,19 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="griddata__private_8cpp_a1ab31b90bc584c635ec159468ceed9b2_icgraph.png" border="0" usemap="#griddata__private_8cpp_a1ab31b90bc584c635ec159468ceed9b2_icgraph" alt=""/></div>
+<map name="griddata__private_8cpp_a1ab31b90bc584c635ec159468ceed9b2_icgraph" id="griddata__private_8cpp_a1ab31b90bc584c635ec159468ceed9b2_icgraph">
+<area shape="rect" id="node2" href="griddata__private_8cpp.html#a16813cea7e67a22fd529ff686f4189f9" title="gaussian" alt="" coords="96,5,171,32"/>
+</map>
+</div>
 
 </div>
 </div>
-<a id="a08fd6c6e1e17306899e5f0a3bf86a236"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08fd6c6e1e17306899e5f0a3bf86a236">&#9670;&nbsp;</a></span>sortPointsByIncreasingDistance()</h2>
+<a id="a1e18192037dcc8a35ab61e10b6890d89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e18192037dcc8a35ab61e10b6890d89">&#9670;&nbsp;</a></span>sortPointsByIncreasingDistance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,13 +497,13 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">bool sortPointsByIncreasingDistance </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="constants_8h.html#abd1dca17737b73180df12a2aacb067fb">Point</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="constants_8h.html#abd1dca17737b73180df12a2aacb067fb">Point</a> &amp;&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="constants_8h.html#abd1dca17737b73180df12a2aacb067fb">Point</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="constants_8h.html#abd1dca17737b73180df12a2aacb067fb">Point</a> &amp;&#160;</td>
           <td class="paramname"><em>b</em>&#160;</td>
         </tr>
         <tr>
@@ -220,84 +516,27 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="griddata__private_8cpp_a08fd6c6e1e17306899e5f0a3bf86a236_cgraph.png" border="0" usemap="#griddata__private_8cpp_a08fd6c6e1e17306899e5f0a3bf86a236_cgraph" alt=""/></div>
-<map name="griddata__private_8cpp_a08fd6c6e1e17306899e5f0a3bf86a236_cgraph" id="griddata__private_8cpp_a08fd6c6e1e17306899e5f0a3bf86a236_cgraph">
-<area shape="rect" id="node2" href="classAdcirc_1_1Constants.html#a67bb34165d68f1fe958b93511d5ede05" title="Calculates the distance between two points. " alt="" coords="278,5,413,47"/>
-<area shape="rect" id="node3" href="classAdcirc_1_1Private_1_1GriddataPrivate.html#af3c6e7460235c8bda8126219d3bcfef4" title="Adcirc::Private::Griddata\lPrivate::defaultValue" alt="" coords="263,71,428,112"/>
+<div class="center"><img src="griddata__private_8cpp_a1e18192037dcc8a35ab61e10b6890d89_cgraph.png" border="0" usemap="#griddata__private_8cpp_a1e18192037dcc8a35ab61e10b6890d89_cgraph" alt=""/></div>
+<map name="griddata__private_8cpp_a1e18192037dcc8a35ab61e10b6890d89_cgraph" id="griddata__private_8cpp_a1e18192037dcc8a35ab61e10b6890d89_cgraph">
+<area shape="rect" id="node2" href="classAdcirc_1_1Constants.html#a67bb34165d68f1fe958b93511d5ede05" title="Calculates the distance between two points. " alt="" coords="263,5,397,47"/>
 </map>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a42d10b36a94f0cfba59493f8e6e2698c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42d10b36a94f0cfba59493f8e6e2698c">&#9670;&nbsp;</a></span>c_epsilonSquared</h2>
+<a id="a096338f75545f5b905e16b0fc88eda6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a096338f75545f5b905e16b0fc88eda6f">&#9670;&nbsp;</a></span>c_windDirectionLookup</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr double c_epsilonSquared</td>
+          <td class="memname">constexpr std::array&lt;std::array&lt;char, 7&gt;, 3&gt; c_windDirectionLookup</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= std::numeric_limits&lt;double&gt;::epsilon() *</div><div class="line">                                    std::numeric_limits&lt;double&gt;::epsilon()</div></div><!-- fragment -->
-</div>
-</div>
-<a id="a7e04e5a26f1d41a9c5e04f2f6229dca5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e04e5a26f1d41a9c5e04f2f6229dca5">&#9670;&nbsp;</a></span>c_oneOver2MinusRoot3</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr double c_oneOver2MinusRoot3 = 1.0 / (2.0 - Constants::root3())</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aca9fc166829b72661f5f5f0d553fc2c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca9fc166829b72661f5f5f0d553fc2c4">&#9670;&nbsp;</a></span>c_oneOver2PlusRoot3</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr double c_oneOver2PlusRoot3 = 1.0 / (2.0 + Constants::root3())</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a0919069de55cf2fb86be1bf50918107e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0919069de55cf2fb86be1bf50918107e">&#9670;&nbsp;</a></span>c_oneOverWindSigmaSquared</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr double c_oneOverWindSigmaSquared</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">    1.0 / (GriddataPrivate::windSigma() * GriddataPrivate::windSigma())</div></div><!-- fragment -->
-</div>
-</div>
-<a id="a353c08037b96f309897d2f66e7152a00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a353c08037b96f309897d2f66e7152a00">&#9670;&nbsp;</a></span>c_windDirectionLookup</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr std::array&lt;std::array&lt;short, 7&gt;, 3&gt; c_windDirectionLookup</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    {{{4, 3, 2, 1, 12, 11, 10}},</div><div class="line">     {{4, 0, 0, 0, 0, 0, 10}},</div><div class="line">     {{4, 5, 6, 7, 8, 9, 10}}}}</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    {{{3, 2, 1, 0, 11, 10, 9}},</div><div class="line">     {{3, -1, -1, -1, -1, -1, 9}},</div><div class="line">     {{3, 4, 5, 6, 7, 8, 9}}}}</div></div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->
