@@ -26,7 +26,7 @@ using namespace Adcirc::Interpolation;
  * @brief Constructor which uses discrete point locations
  * @param[in] x vector of query x locations
  * @param[in] y vector of query y locations
- * @param[in] resolution vector of representitive sizes near these points. Used
+ * @param[in] resolution vector of representative sizes near these points. Used
  * for various sizing functions
  * @param[in] rasterFile gdal compatible raster file name
  * @param[in] epsgQuery coordinate system for the input point data
@@ -235,7 +235,7 @@ void Griddata::setDefaultValue(double defaultValue) {
 /**
  * @brief Runs the interpolation process provided a mesh and raster have been
  * supplied. Returns the interpolated values in an array matching the node
- * indidices. This process is recommended but not required to be carried out in
+ * indices. This process is recommended but not required to be carried out in
  * planar (i.e. UTM) coordinates
  * @param[in] useLookupTable determines if the code uses a lookup table or the
  * values from the raster directly.
@@ -266,6 +266,96 @@ std::vector<std::vector<double>> Griddata::computeDirectionalWindReduction(
     bool useLookupTable) {
   return this->m_impl->computeDirectionalWindReduction(useLookupTable);
 }
+/**
+* Example usage provided by Keith Roberts
+* 
+* @section Prerequisites
+*   -# Land use data, example: <a href='https://coast.noaa.gov/digitalcoast/data/ccapregional.html'>CCAP</a>
+*   -# mesh file
+*   -# fort13 file which contains the nodal attribute
+*        @code
+*        surface_directional_effective_roughness_length 
+*        m
+*        12
+*        0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+*        surface_directional_effective_roughness_length
+*        0
+*        @endcode
+*   -# Lookup Table (optional) - This is a table mapping land use class integers to values. If your raster already has values embedded, you can skip this
+*        @code
+*        2    0.500     :High Intensity Developed
+*        3    0.390     :Medium Intensity Developed
+*        4    0.500     :Low Intensity Developed
+*        5    0.330     :Developed Open Space
+*        6    0.060     :Cultivated Land
+*        7    0.060     :Pasture/Hay
+*        8    0.040     :Grassland
+*        9    0.650     :Deciduous Forest
+*       10    0.720     :Evergreen Forest
+*       11    0.710     :Mixed Forest
+*       12    0.120     :Scrub/Shrub
+*       13    0.550     :Palustrine Forested Wetland
+*       14    0.110     :Palustrine Scrub/Shrub Wetland
+*       15    0.110     :Palustrine Emergent Wetland
+*       16    0.550     :Estuarine Forested Wetland
+*       17    0.120     :Estuarine Scrub/Shrub Wetland
+*       18    0.110     :Estuarine Emergent Wetland
+*       19    0.090     :Unconsolidated Shore
+*       20    0.090     :Bare Land
+*       21    0.001     :Open Water
+*       22    0.040     :Palustrine Aquatic Bed
+*       23    0.040     :Estuarine Aquatic Bed
+*       @endcode
+* @endsection
+*
+* @section build Building and Setup 
+* 
+* The code can be compiled to use the ADCIRCModules library using the following:
+* @code
+* g++ -I /usr/local/include/adcircmodules/  -ladcircmodules -std=c++14 directional_wind_reduction.cpp -o directional_wind_reduction
+* @endcode
+* Note that the actual location of your include files may vary depending on your installation
+*
+* You may want to test the code using only a few nodes at first. This can be done by turning of the interpolation flags as shown
+* in the below c++ example. Because this calculation is time intensive, it is better to discover errors in your setup earlier than
+* later. Note that this calculation can be performed using parallel processing (OpenMP) if it was enabled at compile time.
+*
+* The land use raster data should be in a meters based coordinate system. While many other processes in ADCIRCModules are agnostic,
+* this process requires the use of a meters based coordinate system. I typically use UTM. You can convert data to the coordinate 
+* system using GDAL.
+*
+* @code
+* gdalwarp -t_srs ESPG:21918 source.tif output.tif
+* @endcode
+* 
+* With these steps complete, you can run your executable. A progress bar will show the progress and (if using a terminal) estimated
+* time remaining.
+* 
+* @endsection
+*
+* @section Output
+*
+* When complete, you can use the <a href="https://github.com/CHLNDDEV/OceanMesh2D">OceanMesh</a> project scripts to visualize your data.
+* 
+* @code
+* m = msh('fname','fort.14','aux',{'myfort.13'}); 
+* plot(m,'type','dir','proj','lamb'); 
+* @endcode
+* 
+* The output will look something like:
+* Note that by default it plots the infinity norm at each point (the largest directional wind stress reduction at each node of the grid).
+*
+* @image html sderl_01.png width=800px
+* @image html sderl_02.png width=800px
+*
+* @endsection
+* 
+* @example directional_wind_reduction.cpp
+*
+* There is an equivalent python example provided here
+* @include directional_wind_reduction.py
+*
+*/ 
 
 /**
  * @brief Returns the epsg code used for the current raster. Note that this MUST
