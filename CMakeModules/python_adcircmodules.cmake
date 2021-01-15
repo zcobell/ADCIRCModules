@@ -2,18 +2,13 @@
 # Python ADCIRCModules Library
 # ##############################################################################
 if(SWIG_FOUND
-   AND PythonLibs_FOUND
-   AND PythonInterp_FOUND)
+   AND Python3_FOUND)
 
   if(GDAL_FOUND)
     set(SWIG_GDAL_FLAG "-D_USE_GDAL")
   endif(GDAL_FOUND)
 
-  if(PYTHONTYPE EQUAL 2)
-    set(PYTHONFLAG "")
-  else()
-    set(PYTHONFLAG "-py3")
-  endif()
+  set(PYTHONFLAG "-py3")
 
   if(WIN32)
 
@@ -34,7 +29,7 @@ if(SWIG_FOUND
       COMMAND
         ${SWIG_EXECUTABLE} -outdir ${CMAKE_CURRENT_BINARY_DIR} -c++ -python
         ${PYTHONFLAG} -I${CMAKE_CURRENT_SOURCE_DIR}/src
-        -I${PYTHON_INCLUDE_PATH}
+        -I${Python3_INCLUDE_DIRS}
         ${SWIG_GDAL_FLAG} -o
         ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx.1
         ${CMAKE_CURRENT_SOURCE_DIR}/swig/adcirc.i
@@ -63,10 +58,10 @@ if(SWIG_FOUND
   add_library(pyadcircmodules SHARED
               ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx)
   target_include_directories(
-    pyadcircmodules PRIVATE ${PYTHON_INCLUDE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/src)
+    pyadcircmodules PRIVATE ${Python3_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/src)
   target_link_libraries(pyadcircmodules adcircmodules_static )
   if(APPLE)
-      target_link_libraries(pyadcircmodules ${PYTHON_LIBRARY})
+      target_link_libraries(pyadcircmodules Python3::Module)
   endif(APPLE)
   if(OpenSSL_FOUND)
     target_include_directories(pyadcircmodules PRIVATE ${OPENSSL_INCLUDE_DIR})
@@ -119,8 +114,5 @@ if(SWIG_FOUND
   elseif(APPLE)
     set_target_properties(pyadcircmodules PROPERTIES SUFFIX ".so")
   endif(WIN32)
-endif(
-  SWIG_FOUND
-  AND PythonLibs_FOUND
-  AND PythonInterp_FOUND)
+endif()
 # ##############################################################################
