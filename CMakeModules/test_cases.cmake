@@ -80,7 +80,7 @@ if(UNIX OR CYGWIN)
         add_test(
           NAME ${PYTHON_TESTNAME}
           COMMAND
-            ${PYTHON_EXECUTABLE}
+            ${Python3_EXECUTABLE}
             ${CMAKE_SOURCE_DIR}/testing/python_tests/pyadcirc_python2_testcase.py
           WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
       else()
@@ -88,7 +88,7 @@ if(UNIX OR CYGWIN)
         add_test(
           NAME ${PYTHON_TESTNAME}
           COMMAND
-            ${PYTHON_EXECUTABLE}
+            ${Python3_EXECUTABLE}
             ${CMAKE_SOURCE_DIR}/testing/python_tests/pyadcirc_python3_testcase.py
           WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
       endif()
