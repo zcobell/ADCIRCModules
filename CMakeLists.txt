@@ -36,7 +36,11 @@ endif()
 # ##############################################################################
 # GENERAL OPTIONS
 # ##############################################################################
-cmake_minimum_required(VERSION 3.0.0)
+IF(APPLE)
+    cmake_minimum_required(VERSION 3.12.0)
+ELSE()
+    cmake_minimum_required(VERSION 3.0.0)
+ENDIF()
 project(ADCIRCModules)
 enable_language(C)
 enable_language(CXX)
