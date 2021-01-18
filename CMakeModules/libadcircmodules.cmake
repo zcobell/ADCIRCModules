@@ -2,95 +2,106 @@
 # ADCIRCModules Sources
 # ##############################################################################
 set(ADCIRCMODULES_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/config.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/logging.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/filetypes.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/formatting.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/mesh.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/node.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/element.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/adchash.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/hmdf.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/hmdfstation.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/stationinterpolationoptions.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/stationinterpolation.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/netcdftimeseries.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/adchash_private.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/cdate.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/boundary.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/fileio.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/stringconversion.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/nodalattributes.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/attribute.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/attributemetadata.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/outputmetadata.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/outputrecord.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/readoutput.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/writeoutput.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/harmonicsrecord.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/harmonicsoutput.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/elementtable.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/nodetable.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/meshchecker.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/multithreading.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/constants.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/mesh_private.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/projection.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/kdtree.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/kdtree_private.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/topology.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/facetable.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/progressbar.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/harmonicsoutput_private.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/harmonicsrecord_private.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/nodalattributes_private.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Config.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Logging.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/FileTypes.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Formatting.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Mesh.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Node.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Element.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/AdcHash.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Hmdf.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/HmdfStation.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/StationInterpolationOptions.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/StationInterpolation.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/NetcdfTimeseries.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/AdcHashPrivate.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CDate.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Boundary.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/FileIO.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/StringConversion.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/NodalAttributes.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Attribute.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/AttributeMetadata.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/OutputMetadata.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/OutputRecord.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ReadOutput.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/WriteOutput.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/HarmonicsRecord.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/HarmonicsOutput.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ElementTable.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/NodeTable.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Meshchecker.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Multithreading.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Constants.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/MeshPrivate.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Projection.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/KDTree.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/KDTreePrivate.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Topology.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/FaceTable.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ProgressBar.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/HarmonicsOutputPrivate.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/HarmonicsRecordPrivate.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/NodalAttributesPrivate.cpp)
 if(GDAL_FOUND)
   set(ADCIRCMODULES_SOURCES
-      ${ADCIRCMODULES_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/griddata.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/src/griddata_private.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/src/pixel.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/rasterdata.cpp)
+      ${ADCIRCMODULES_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/Griddata.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataPrivate.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/Pixel.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/RasterData.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataAverage.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataNearest.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataHighest.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataStandardDeviation.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataBilskie.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataInverseDistanceWeighted.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataInverseDistanceWeightedNPoints.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataAverageNearestNPoints.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataWindRoughness.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataMethod.cpp)
 endif(GDAL_FOUND)
 
 set(HEADER_LIST
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/adcircmodules.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/adcircmodules_global.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/attribute.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/attributemetadata.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/boundary.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/config.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/element.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/adchash.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/hashtype.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/hmdf.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/hmdfstation.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/stationinterpolationoptions.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/stationinterpolation.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/logging.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/filetypes.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/harmonicsoutput.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/harmonicsrecord.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolationmethods.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/fileio.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/projection.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/mesh.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/nodalattributes.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/node.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/readoutput.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/writeoutput.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/outputrecord.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/outputmetadata.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/meshchecker.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/elementtable.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/nodetable.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/facetable.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/topology.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/face.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/multithreading.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/constants.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/kdtree.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/default_values.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/progressbar.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/cdate.h)
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/AdcircModules.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/AdcircModules_global.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Attribute.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/AttributeMetadata.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Boundary.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Config.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Element.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/AdcHash.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/HashType.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Hmdf.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/HmdfStation.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/StationInterpolationOptions.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/StationInterpolation.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Logging.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/FileTypes.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/HarmonicsOutput.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/HarmonicsRecord.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/InterpolationMethods.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/FileIO.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Projection.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Mesh.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/NodalAttributes.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Node.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ReadOutput.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/WriteOutput.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/OutputRecord.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/OutputMetadata.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Meshchecker.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ElementTable.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/NodeTable.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/FaceTable.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Topology.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Face.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Multithreading.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Constants.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/KDTree.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/DefaultValues.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ProgressBar.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CDate.h)
 # ##############################################################################
 
 add_library(adcircmodules_interface INTERFACE )
@@ -122,9 +133,9 @@ set( adcircmodules_include_list
             ${CMAKE_SOURCE_DIR}/thirdparty/nanoflann/include
             ${CMAKE_SOURCE_DIR}/thirdparty/cxxopts
             ${CMAKE_SOURCE_DIR}/thirdparty/indicators
+            ${Boost_INCLUDE_DIRS}
 			${PROJ_INCLUDE_DIR}
             ${SQLite3_INCLUDE_DIR}
-            ${Boost_INCLUDE_DIRS}
             ${NETCDF_INCLUDE_DIR})
 
 target_include_directories(adcircmodules_objectlib PRIVATE ${adcircmodules_include_list})

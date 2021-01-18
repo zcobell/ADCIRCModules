@@ -17,8 +17,10 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
 #include "location.h"
+
 #include <cassert>
-#include "fpcompare.h"
+
+#include "FPCompare.h"
 
 Location::Location() : m_x(0), m_y(0), m_measured(0), m_modeled(0) {}
 

@@ -27,45 +27,48 @@
 
 %{
 #define SWIG_FILE_WITH_INIT
-#include "adcircmodules_global.h"
-#include "config.h"
-#include "logging.h"
-#include "filetypes.h"
-#include "adchash.h"
-#include "hashtype.h"
-#include "mesh.h"
-#include "cdate.h"
-#include "hmdf.h"
-#include "hmdfstation.h"
-#include "stationinterpolationoptions.h"
-#include "stationinterpolation.h"
-#include "node.h"
-#include "element.h"
-#include "boundary.h"
-#include "topology.h"
-#include "elementtable.h"
-#include "nodetable.h"
-#include "facetable.h"
-#include "attribute.h"
-#include "attributemetadata.h"
-#include "nodalattributes.h"
-#include "outputmetadata.h"
-#include "readoutput.h"
-#include "writeoutput.h"
-#include "outputrecord.h"
-#include "harmonicsrecord.h"
-#include "harmonicsoutput.h"
-#include "kdtree.h"
-#include "projection.h"
-#include "meshchecker.h"
-#include "multithreading.h"
-#include "constants.h"
+#include "AdcircModules_Global.h"
+#include "Config.h"
+#include "Logging.h"
+#include "FileTypes.h"
+#include "AdcHash.h"
+#include "HashType.h"
+#include "Mesh.h"
+#include "CDate.h"
+#include "Hmdf.h"
+#include "HmdfStation.h"
+#include "StationInterpolationOptions.h"
+#include "StationInterpolation.h"
+#include "Node.h"
+#include "Element.h"
+#include "Boundary.h"
+#include "Topology.h"
+#include "ElementTable.h"
+#include "NodeTable.h"
+#include "FaceTable.h"
+#include "Attribute.h"
+#include "AttributeMetadata.h"
+#include "NodalAttributes.h"
+#include "OutputMetadata.h"
+#include "ReadOutput.h"
+#include "WriteOutput.h"
+#include "OutputRecord.h"
+#include "HarmonicsRecord.h"
+#include "HarmonicsOutput.h"
+#include "KDTree.h"
+#include "Projection.h"
+#include "Meshchecker.h"
+#include "Multithreading.h"
+#include "Constants.h"
+#include "Point.h"
+#include "PixelValue.h"
+#include "PixelValueVector.h"
 %}
 
 #ifdef _USE_GDAL
 %{
-#include "griddata.h"
-#include "interpolationmethods.h"
+#include "Griddata.h"
+#include "InterpolationMethods.h"
 %}
 #endif
 
@@ -74,15 +77,15 @@
 %include <std_vector.i>
 %include <windows.i>
 
-%exception { 
-  try { 
-    $action 
-  } catch (const std::exception& e) { 
-    SWIG_exception(SWIG_RuntimeError, e.what()); 
-  } catch (const std::string& e) { 
-    SWIG_exception(SWIG_RuntimeError, e.c_str()); 
-  } 
-} 
+%exception {
+  try {
+    $action
+  } catch (const std::exception& e) {
+    SWIG_exception(SWIG_RuntimeError, e.what());
+  } catch (const std::string& e) {
+    SWIG_exception(SWIG_RuntimeError, e.c_str());
+  }
+}
 
 namespace std {
     %template(IntVector) vector<int>;
@@ -94,41 +97,45 @@ namespace std {
     %template(DateVector) vector<Adcirc::CDate>;
 }
 
-%include "adcircmodules_global.h"
-%include "config.h"
-%include "logging.h"
-%include "filetypes.h"
-%include "adchash.h"
-%include "hashtype.h"
-%include "mesh.h"
-%include "cdate.h"
-%include "hmdf.h"
-%include "hmdfstation.h"
-%include "stationinterpolationoptions.h"
-%include "stationinterpolation.h"
-%include "node.h"
-%include "element.h"
-%include "boundary.h"
-%include "topology.h"
-%include "elementtable.h"
-%include "facetable.h"
-%include "nodetable.h"
-%include "attribute.h"
-%include "attributemetadata.h"
-%include "nodalattributes.h"
-%include "readoutput.h"
-%include "writeoutput.h"
-%include "outputrecord.h"
-%include "outputmetadata.h"
-%include "harmonicsrecord.h"
-%include "harmonicsoutput.h"
-%include "kdtree.h"
-%include "projection.h"
-%include "meshchecker.h"
-%include "multithreading.h"
-%include "constants.h"
+%include "AdcircModules_Global.h"
+%include "Config.h"
+%include "Logging.h"
+%include "FileTypes.h"
+%include "AdcHash.h"
+%include "HashType.h"
+%include "Mesh.h"
+%include "CDate.h"
+%include "Hmdf.h"
+%include "HmdfStation.h"
+%include "StationInterpolationOptions.h"
+%include "StationInterpolation.h"
+%include "Node.h"
+%include "Element.h"
+%include "Boundary.h"
+%include "Topology.h"
+%include "ElementTable.h"
+%include "NodeTable.h"
+%include "FaceTable.h"
+%include "Attribute.h"
+%include "AttributeMetadata.h"
+%include "NodalAttributes.h"
+%include "OutputMetadata.h"
+%include "ReadOutput.h"
+%include "WriteOutput.h"
+%include "OutputRecord.h"
+%include "HarmonicsRecord.h"
+%include "HarmonicsOutput.h"
+%include "KDTree.h"
+%include "Projection.h"
+%include "Meshchecker.h"
+%include "Multithreading.h"
+%include "Constants.h"
+%include "Point.h"
+%include "PixelValue.h"
+%include "PixelValueVector.h"
+
 #ifdef _USE_GDAL
-%include "griddata.h"
-%include "interpolationmethods.h"
+%include "Griddata.h"
+%include "InterpolationMethods.h"
 #endif
 

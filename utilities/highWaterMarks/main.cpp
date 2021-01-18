@@ -16,10 +16,10 @@
 // You should have received a copy of the GNU General Public License
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------*/
-#include "adcircmodules.h"
+#include "AdcircModules.h"
+#include "FPCompare.h"
 #include "boost/format.hpp"
 #include "cxxopts.hpp"
-#include "fpcompare.h"
 #include "highwatermarkoptions.h"
 #include "hwmstats.h"
 #include "locations.h"

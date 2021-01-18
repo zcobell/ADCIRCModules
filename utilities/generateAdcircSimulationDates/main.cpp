@@ -18,11 +18,12 @@
 //------------------------------------------------------------------------*/
 #include <iostream>
 #include <tuple>
-#include "adcircmodules.h"
+
+#include "AdcircModules.h"
+#include "CDate.h"
+#include "Logging.h"
 #include "boost/format.hpp"
-#include "cdate.h"
 #include "cxxopts.hpp"
-#include "logging.h"
 
 std::string toTidefacString(Adcirc::CDate &d);
 std::string toSwanString(Adcirc::CDate &d);

@@ -20,7 +20,8 @@
 
 #include <cassert>
 #include <fstream>
-#include "adcircmodules.h"
+
+#include "AdcircModules.h"
 #include "shapefil.h"
 
 Locations::Locations(const std::string &filename,

@@ -18,7 +18,8 @@
 //------------------------------------------------------------------------//
 #include <iostream>
 #include <memory>
-#include "adcircmodules.h"
+
+#include "AdcircModules.h"
 
 int main(int argc, char *argv[]) {
   using namespace Adcirc::ModelParameters;

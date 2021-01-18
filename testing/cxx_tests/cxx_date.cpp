@@ -19,7 +19,8 @@
 #include <iostream>
 #include <memory>
 #include <vector>
-#include "adcircmodules.h"
+
+#include "AdcircModules.h"
 
 int main() {
   Adcirc::CDate d(2019, 1, 1, 0, 0, 0);

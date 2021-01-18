@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
-#include "adcircmodules.h"
+
+#include "AdcircModules.h"
 
 int main() {
   using namespace Adcirc::Geometry;

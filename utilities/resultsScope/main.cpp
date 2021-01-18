@@ -2,10 +2,11 @@
 #include <iostream>
 #include <memory>
 #include <set>
-#include "adcircmodules.h"
+
+#include "AdcircModules.h"
+#include "ProgressBar.h"
 #include "boost/format.hpp"
 #include "cxxopts.hpp"
-#include "progressbar.h"
 
 struct _inputOptions {
   std::string mesh;

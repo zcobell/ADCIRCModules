@@ -17,7 +17,8 @@
 // along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
 //------------------------------------------------------------------------//
 #include <iostream>
-#include "adcircmodules.h"
+
+#include "AdcircModules.h"
 
 int main(int argc, char* argv[]) {
   using namespace Adcirc::Cryptography;

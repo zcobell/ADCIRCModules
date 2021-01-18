@@ -18,14 +18,15 @@
 //------------------------------------------------------------------------//
 #include <iostream>
 #include <memory>
-#include "adcircmodules.h"
+
+#include "AdcircModules.h"
 
 int main() {
   using namespace Adcirc::Geometry;
   using namespace Adcirc::Interpolation;
 
   std::vector<double> control = {
-      -9999.0,   -0.117294, -0.142737, std::numeric_limits<double>::max(),
+      -9999.0,   -0.117294, -0.142737, -0.124505,
       -0.370975, -0.477835, -0.475127, -0.397994,
       -0.607414};
 

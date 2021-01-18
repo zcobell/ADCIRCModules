@@ -19,13 +19,13 @@
 #include <iostream>
 #include <string>
 
-#include "adcircmodules.h"
+#include "AdcircModules.h"
+#include "Hmdf.h"
+#include "Logging.h"
+#include "StationInterpolation.h"
+#include "StringConversion.h"
 #include "boost/format.hpp"
 #include "cxxopts.hpp"
-#include "hmdf.h"
-#include "logging.h"
-#include "stationinterpolation.h"
-#include "stringconversion.h"
 
 Adcirc::Output::StationInterpolationOptions parseCommandLineOptions(
     cxxopts::ParseResult &parser);

@@ -21,7 +21,8 @@
 
 #include <cstddef>
 #include <vector>
-#include "stationinterpolation.h"
+
+#include "StationInterpolation.h"
 
 class Location {
  public:
