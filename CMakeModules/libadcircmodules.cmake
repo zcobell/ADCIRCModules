@@ -50,21 +50,21 @@ if(GDAL_FOUND)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataPrivate.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/Pixel.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/RasterData.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataAverage.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataNearest.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataHighest.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataStandardDeviation.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataBilskie.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataInverseDistanceWeighted.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataInverseDistanceWeightedNPoints.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataAverageNearestNPoints.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataWindRoughness.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataMethod.cpp)
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataAverage.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataNearest.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataHighest.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataStandardDeviation.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataBilskie.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataInverseDistanceWeighted.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataInverseDistanceWeightedNPoints.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataAverageNearestNPoints.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataWindRoughness.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataMethod.cpp)
 endif(GDAL_FOUND)
 
 set(HEADER_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/AdcircModules.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/AdcircModules_global.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/AdcircModules_Global.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Attribute.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/AttributeMetadata.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Boundary.h
@@ -127,6 +127,7 @@ endif()
 
 set( adcircmodules_include_list 
             ${CMAKE_SOURCE_DIR}/src
+            ${CMAKE_SOURCE_DIR}/src/interpolation
             ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
             ${CMAKE_SOURCE_DIR}/thirdparty/abseil
             ${CMAKE_SOURCE_DIR}/thirdparty/date/include/date
@@ -147,8 +148,8 @@ if(GDAL_FOUND)
   target_include_directories(adcircmodules_objectlib PRIVATE ${GDAL_INCLUDE_DIR})
   link_directories(${GDAL_LIBPATH})
   target_link_libraries(adcircmodules_interface INTERFACE ${GDAL_LIBRARY})
-  set(HEADER_LIST ${HEADER_LIST} ${CMAKE_SOURCE_DIR}/src/rasterdata.h
-                  ${CMAKE_SOURCE_DIR}/src/griddata.h)
+  set(HEADER_LIST ${HEADER_LIST} ${CMAKE_SOURCE_DIR}/src/RasterData.h
+                  ${CMAKE_SOURCE_DIR}/src/Griddata.h)
 endif(GDAL_FOUND)
 
 set_target_properties(
