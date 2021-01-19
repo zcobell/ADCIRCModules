@@ -2858,7 +2858,7 @@ MeshPrivate::computeRasterInterpolationWeights(
   }
 
 #pragma omp parallel for shared(weight, elements, xmin, ymax) \
-    schedule(dynamic) default(none)
+    schedule(dynamic) collapse(2) 
   for (size_t j = 0; j < ny; ++j) {
     for (size_t i = 0; i < nx; ++i) {
       size_t k = j * nx + i;
