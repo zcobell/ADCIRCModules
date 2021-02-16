@@ -7,15 +7,23 @@ Implementation of routines used to manipulate ADCIRC model files in C++. The cod
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Python
-When the python interface is compiled, you will have an ADCIRCModules python library file, or pyadcircmodules. For windows, this will by `pyadcircmodules.dll`, `_pyadcircmodules.dylib` on Mac systems, and Linux type systems this will be `_pyadcircmodules.so`. In addition to the library, you will see `pyadcircmodules.py`. CMake will attempt to install these files to the appropriate directory, however, the user can change this. 
+When the python interface is compiled, you will have an ADCIRCModules python library file, or `pyadcircmodules`. For Windows, this will by `pyadcircmodules.dll`, `_pyadcircmodules.dylib` on Mac systems, and Linux type systems this will be `_pyadcircmodules.so`. In addition to the library, you will see `pyadcircmodules.py`. CMake will attempt to install these files to the appropriate directory, however, the user can change this.
 
 ```
 import pyadcircmodules
 m = pyadcircmodules.Mesh("mymesh.grd")
 m.read()
 ```
+
+## Docker
+With the latest versions of the library, there is now a Docker image that can be used for interested parties to sidestep the need to build. One day, there will likely be a python pip package, but for now, this is a good way to remove the entry barrier to use. The Docker image is: `zcobell/adcircmodules:v0.5.0-beta.1`. It can be retrieved using:
+```
+docker pull zcobell/adcircmodules:v0.5.0-beta.1
+docker run -it zcobell/adcircmodules:v0.5.0-beta.1
+```
+
 ## Documentation
-There is a Doxygen site available [here](http://zcobell.github.io/ADCIRCModules/). The documentation is not yet complete, however, it is slowly progressing. The Python interface is not explicitly documentated, however, the Python interaction is generated using SWIG, so the function calls are identical. 
+There is a Doxygen site available [here](http://zcobell.github.io/ADCIRCModules/). The documentation is not yet complete, however, it is slowly progressing. The Python interface is not explicitly documented, however, the Python interaction is generated using SWIG, so the function calls are identical.
 
 ## Compiling
 The build system for this project is CMake
@@ -47,11 +55,11 @@ Suggested citation:
 |----------|----------|--------|----------|
 | Abseil   | Abseil is an open-source collection of C++ code (compliant to C++11) designed to augment the C++ standard library. | [Visit Website](https://abseil.io/) | yes, as submodule |
 | Boost    | Used for fast file I/O | [Visit Website](http://www.boost.org/) | yes |
-| cxxopts  | Lightweight command line parsing for c++ | [Visit Website](https://github.com/jarro2783/cxxopts) | yes | 
+| cxxopts  | Lightweight command line parsing for c++ | [Visit Website](https://github.com/jarro2783/cxxopts) | yes |
 | Date     | Howard Hinnant's date library for c++ | [Visit Website](https://github.com/HowardHinnant/date) | yes, as submodule |
 | gdal     | Used to read raster data to interpolate to meshes | [Visit Website](https://www.gdal.org/) | no |
 | HDF5     | High-performance data management and storage suite | [Visit Website](https://www.hdfgroup.org/solutions/hdf5/) | no |
-| nanoflann | Used for kd-tree searches | [Visit Website](https://github.com/jlblancoc/nanoflann) | yes, as submodule | 
+| nanoflann | Used for kd-tree searches | [Visit Website](https://github.com/jlblancoc/nanoflann) | yes, as submodule |
 | netCDF   | Used to read ADCIRC files formatted with this library | [Visit Website](http://www.unidata.ucar.edu/software/netcdf/) | no |
 | proj     | PROJ is a generic coordinate transformation software that transforms geospatial coordinates from one coordinate reference system (CRS) to another | [Visit Website](https://proj.org/) | yes, but can use external |
 | shapelib | Used to convert meshes to shapefile format | [Visit Website](http://shapelib.maptools.org/) | yes |
