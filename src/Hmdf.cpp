@@ -484,9 +484,13 @@ int Hmdf::writeAdcirc(const std::string &filename) {
     out << this->header1() << std::endl;
   }
 
-  double dt = this->station(0)->date(1).toSeconds() -
+  double dt = 0;
+  double dit = 0;
+  if(!this->station(0)->numSnaps()==1){
+    dt = this->station(0)->date(1).toSeconds() -
               this->station(0)->date(0).toSeconds();
-  int dit = static_cast<int>(std::floor(dt));
+    dit = static_cast<int>(std::floor(dt));
+  }
 
   int nv = this->isVector() ? 2 : 1;
   out << Adcirc::Output::Formatting::adcircFileHeader(
