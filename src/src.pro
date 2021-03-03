@@ -164,7 +164,10 @@ SOURCES += \
     hmdf.cpp \
     hmdfstation.cpp \
     netcdftimeseries.cpp \
-    projection.cpp
+    projection.cpp \
+    oceanweather.cpp \
+    oceanweatherheader.cpp \
+    oceanweatherrecord.cpp
 
 HEADERS += \
     adcirc_outputfiles.h \
@@ -223,7 +226,10 @@ HEADERS += \
     hmdf.h \
     hmdfstation.h \
     netcdftimeseries.h \
-    projection.h
+    projection.h \
+    oceanweather.h \
+    oceanweatherheader.h \
+    oceanweatherrecord.h
 
 INCLUDEPATH += $$BOOSTPATH $$ABSEILPATH $$NANOFLANNPATH $$DATEPATH $$INDICATORPATH
 INCLUDEPATH += $$PWD/../thirdparty/shapelib
