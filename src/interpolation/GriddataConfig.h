@@ -19,6 +19,7 @@
 #ifndef ADCIRCMODULES_SRC_GRIDDATACONFIG_H_
 #define ADCIRCMODULES_SRC_GRIDDATACONFIG_H_
 
+#include <cassert>
 #include <iostream>
 #include <vector>
 

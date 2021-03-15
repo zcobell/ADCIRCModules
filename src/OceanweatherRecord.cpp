@@ -1,10 +1,33 @@
-#include "oceanweatherrecord.h"
+/*------------------------------GPL---------------------------------------//
+// This file is part of ADCIRCModules.
+//
+// (c) 2015-2019 Zachary Cobell
+//
+// ADCIRCModules is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// ADCIRCModules is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with ADCIRCModules.  If not, see <http://www.gnu.org/licenses/>.
+//------------------------------------------------------------------------*/
+
+#include "OceanweatherRecord.h"
+
 #include <cassert>
-#include "boost/config/warning_disable.hpp"
+
+#include "Constants.h"
+#include "Logging.h"
 #include "boost/format.hpp"
 #include "boost/spirit/include/phoenix.hpp"
 #include "boost/spirit/include/qi.hpp"
-#include "logging.h"
+
+using namespace Adcirc;
 
 namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
@@ -22,17 +45,20 @@ void OceanweatherRecord::addDomain(std::fstream *fid_pressure,
 }
 
 int OceanweatherRecord::read() {
-  bool haserror = false;
+  int has_error = 0;
   for (auto &d : m_domains) {
     if (d.fid_pressure->peek() && d.fid_wind->peek()) {
       std::string header_pressure, header_wind;
       std::getline(*(d.fid_pressure), header_pressure);
       std::getline(*(d.fid_wind), header_wind);
 
+      if (header_pressure.length() < 68) return 1;
+      if (header_wind.length() < 68) return 1;
+
       Grid p = parseOwiGridLine(header_pressure);
       Grid w = parseOwiGridLine(header_wind);
       if (p != w) {
-        oceanweather_throw_exception(
+        adcircmodules_throw_exception(
             "Grids between pressure and wind fields are not identical");
       }
 
@@ -43,27 +69,29 @@ int OceanweatherRecord::read() {
         m_gridchanged = false;
       }
 
-      int ierr = this->readData(d, d.fid_pressure, d.data_pressure);
-      ierr = this->readData(d, d.fid_wind, d.data_u);
-      ierr = this->readData(d, d.fid_wind, d.data_v);
+      int ierr =
+          OceanweatherRecord::readData(d, d.fid_pressure, d.data_pressure);
+      ierr += OceanweatherRecord::readData(d, d.fid_wind, d.data_u);
+      ierr += OceanweatherRecord::readData(d, d.fid_wind, d.data_v);
+      if (ierr != 0) has_error = 1;
     } else {
       Logging::warning("Reached end of file");
-      haserror = true;
+      has_error = 1;
     }
   }
-  return haserror;
+  return has_error;
 }
 
 size_t OceanweatherRecord::ndomain() const { return this->m_domains.size(); }
 
 OceanweatherRecord::Domain *OceanweatherRecord::domain(size_t index) {
-  assert(index < ndomains());
+  assert(index < ndomain());
   return &m_domains[index];
 }
 
 std::tuple<double, double, double, size_t> OceanweatherRecord::get(
     const size_t i, const size_t j, const size_t domain) const {
-  const size_t idx = m_domains[domain].grid.nx * j + i;
+  const auto idx = m_domains[domain].grid.index2DtoIndex1D(i, j);
   return idx < m_domains[domain].data_pressure.size()
              ? std::make_tuple(m_domains[domain].data_pressure[idx],
                                m_domains[domain].data_u[idx],
@@ -139,7 +167,7 @@ bool OceanweatherRecord::inDomain(size_t domain, const double x,
 }
 
 size_t OceanweatherRecord::findDomain(const double x, const double y) const {
-  for (int i = ndomain() - 1; i >= 0; --i) {
+  for (auto i = ndomain() - 1; i >= 0; --i) {
     if (this->inDomain(i, x, y)) {
       return i;
     }
@@ -169,7 +197,7 @@ int OceanweatherRecord::readData(const OceanweatherRecord::Domain &d,
   for (size_t i = 0; i < nv; i += rpl) {
     std::string line;
     std::getline(*(fid), line);
-    qi::phrase_parse(
+    auto err = qi::phrase_parse(
         line.begin(), line.end(),
         (*(qi::double_[phoenix::push_back(phoenix::ref(array), qi::_1)])),
         ascii::space);
@@ -198,8 +226,41 @@ OceanweatherRecord::Grid OceanweatherRecord::parseOwiGridLine(
   g.xmax = g.x(g.nx - 1);
   g.ymax = g.y(g.ny - 1);
   g.time =
-      Date(stoi(dt.substr(0, 4)), stoi(dt.substr(4, 2)), stoi(dt.substr(6, 2)),
-           stoi(dt.substr(8, 2)), stoi(dt.substr(10, 2)), 0);
+      CDate(stoi(dt.substr(0, 4)), stoi(dt.substr(4, 2)), stoi(dt.substr(6, 2)),
+            stoi(dt.substr(8, 2)), stoi(dt.substr(10, 2)), 0);
 
   return g;
+}
+
+Adcirc::OceanweatherTrackInfo OceanweatherRecord::get_current_storm_info()
+    const {
+  OceanweatherTrackInfo info;
+
+  for (const auto &d : m_domains) {
+    for (auto i = 0; i < d.grid.nx * d.grid.ny; ++i) {
+      size_t ii, jj;
+      std::tie(ii, jj) = d.grid.index1DtoIndex2D(i);
+      double vel = Constants::magnitude(d.data_u[i], d.data_v[i]);
+      double cp = d.data_pressure[i];
+      if (cp < info.min_central_pressure()) {
+        info.set_min_central_pressure(cp);
+        info.set_storm_center(Point(d.grid.x(ii), d.grid.y(jj)));
+      }
+      if (vel > info.maximum_wind_velocity()) {
+        info.set_maximum_wind_velocity(vel);
+        info.set_max_velocity_location(Point(d.grid.x(ii), d.grid.y(jj)));
+      }
+    }
+  }
+
+  info.set_radius_to_max_winds(
+      Constants::distance(info.storm_center().x(), info.storm_center().y(),
+                          info.max_velocity_location().x(),
+                          info.max_velocity_location().y(), true));
+
+  return info;
+}
+
+Adcirc::CDate OceanweatherRecord::current_time() const {
+  return m_domains[0].grid.time;
 }

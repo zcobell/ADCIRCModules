@@ -43,7 +43,10 @@ set(ADCIRCMODULES_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ProgressBar.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/HarmonicsOutputPrivate.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/HarmonicsRecordPrivate.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/NodalAttributesPrivate.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/NodalAttributesPrivate.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/OceanweatherHeader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/OceanweatherRecord.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Oceanweather.cpp)
 if(GDAL_FOUND)
   set(ADCIRCMODULES_SOURCES
       ${ADCIRCMODULES_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/Griddata.cpp
@@ -59,7 +62,7 @@ if(GDAL_FOUND)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataInverseDistanceWeightedNPoints.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataAverageNearestNPoints.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataWindRoughness.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataMethod.cpp)
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataMethod.cpp ../src/OceanweatherTrackInfo.h)
 endif(GDAL_FOUND)
 
 set(HEADER_LIST
@@ -101,7 +104,11 @@ set(HEADER_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/KDTree.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/DefaultValues.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ProgressBar.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CDate.h)
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CDate.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Point.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Oceanweather.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/OceanweatherHeader.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/OceanweatherRecord.h)
 # ##############################################################################
 
 add_library(adcircmodules_interface INTERFACE )
@@ -129,7 +136,6 @@ set( adcircmodules_include_list
             ${CMAKE_SOURCE_DIR}/src
             ${CMAKE_SOURCE_DIR}/src/interpolation
             ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
-            ${CMAKE_SOURCE_DIR}/thirdparty/abseil
             ${CMAKE_SOURCE_DIR}/thirdparty/date/include/date
             ${CMAKE_SOURCE_DIR}/thirdparty/nanoflann/include
             ${CMAKE_SOURCE_DIR}/thirdparty/cxxopts
@@ -207,12 +213,6 @@ if(APPLE)
                                                  "adcircmodules")
   set_target_properties(adcircmodules PROPERTIES MACOSX_RPATH "adcircmodules")
 endif(APPLE)
-
-if(USE_GOOGLE_FLAT_MAP)
-  target_link_libraries(adcircmodules_interface INTERFACE absl::flat_hash_map)
-  add_dependencies(adcircmodules_interface absl::flat_hash_map)
-  target_compile_definitions(adcircmodules_objectlib PRIVATE USE_GOOGLE_FLAT_MAP)
-endif(USE_GOOGLE_FLAT_MAP)
 
 if(OPENMP_FOUND)
   target_compile_options(adcircmodules_objectlib PRIVATE ${OpenMP_CXX_FLAGS})

@@ -20,9 +20,9 @@
 #define ADCMOD_NODALATTRIBUTESPRIVATE_H
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 
-#include "AdcMap.h"
 #include "Attribute.h"
 #include "AttributeMetadata.h"
 #include "Mesh.h"
@@ -83,7 +83,7 @@ class NodalAttributesPrivate {
 
   /// Mapping function between the name of a nodal parameter and its position in
   /// the nodalParameters vector
-  Adcirc::adcmap<std::string, size_t> m_attributeLocations;
+  std::unordered_map<std::string, size_t> m_attributeLocations;
 
   /// Filename of the file that will be read or was read
   std::string m_filename;

@@ -128,6 +128,8 @@ class Constants {
                          bool geodesic = false);
   // static double azimuth(double x1, double y1, double  x2, double y2);
 
+  static double magnitude(double u, double v);
+
  private:
   static double geodesic_distance(double x1, double y1, double x2, double y2);
   static double cartesian_distance(double x1, double y1, double x2, double y2);

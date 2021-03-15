@@ -20,9 +20,9 @@
 #define ADCMOD_HARMONICSOUTPUTPRIVATE_H
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 
-#include "AdcMap.h"
 #include "FileTypes.h"
 #include "HarmonicsRecord.h"
 
@@ -91,9 +91,9 @@ class HarmonicsOutputPrivate {
   std::vector<Adcirc::Harmonics::HarmonicsRecord> m_uphase;
   std::vector<Adcirc::Harmonics::HarmonicsRecord> m_vphase;
 
-  Adcirc::adcmap<size_t, size_t> m_nodeIndex;
-  Adcirc::adcmap<std::string, size_t> m_index;
-  Adcirc::adcmap<size_t, std::string> m_reverseIndex;
+  std::unordered_map<size_t, size_t> m_nodeIndex;
+  std::unordered_map<std::string, size_t> m_index;
+  std::unordered_map<size_t, std::string> m_reverseIndex;
 
   void getFiletype();
   Adcirc::Harmonics::HarmonicsFormat getHarmonicsFormatFromExtension(
