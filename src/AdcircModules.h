@@ -44,5 +44,8 @@
 #include "ReadOutput.h"
 #include "Topology.h"
 #include "WriteOutput.h"
+#include "Oceanweather.h"
+#include "OceanweatherHeader.h"
+#include "OceanweatherRecord.h"
 
 #endif  // ADCMOD_ADCIRCMODULES_H

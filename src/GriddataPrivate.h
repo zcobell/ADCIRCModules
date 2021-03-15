@@ -25,7 +25,6 @@
 #include <string>
 #include <utility>
 
-#include "AdcMap.h"
 #include "Constants.h"
 #include "GriddataAttribute.h"
 #include "GriddataConfig.h"

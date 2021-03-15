@@ -48,11 +48,11 @@ class CDate {
                             std::ratio_divide<years::period, std::ratio<12>>>;
 
   CDate();
-  CDate(const std::chrono::system_clock::time_point &t);
-  CDate(const std::vector<int> &v);
+  explicit CDate(const std::chrono::system_clock::time_point &t);
+  explicit CDate(const std::vector<int> &v);
   CDate(const CDate &d);
-  CDate(int year, int month = 1, int day = 1, int hour = 0, int minute = 0,
-        int second = 0, int millisecond = 0);
+  explicit CDate(int year, int month = 1, int day = 1, int hour = 0,
+                 int minute = 0, int second = 0, int millisecond = 0);
 
 #ifndef SWIG
   //...operator overloads

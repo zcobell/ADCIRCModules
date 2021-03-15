@@ -1,9 +1,6 @@
 [submodule "thirdparty/nanoflann"]
 	path = thirdparty/nanoflann
 	url = https://github.com/jlblancoc/nanoflann.git
-[submodule "thirdparty/abseil"]
-	path = thirdparty/abseil
-	url = https://github.com/abseil/abseil-cpp.git
 [submodule "thirdparty/date"]
 	path = thirdparty/date
 	url = https://github.com/HowardHinnant/date.git

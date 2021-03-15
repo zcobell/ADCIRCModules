@@ -36,6 +36,7 @@
 #include "Projection.h"
 #include "StringConversion.h"
 #include "boost/format.hpp"
+#include "boost/functional/hash.hpp"
 #include "netcdf.h"
 #include "shapefil.h"
 
@@ -2561,7 +2562,10 @@ std::vector<Adcirc::Geometry::Node *> MeshPrivate::boundaryNodes() {
   std::vector<std::pair<Node *, Node *>> links = this->generateLinkTable();
   std::vector<size_t> count(links.size());
   std::fill(count.begin(), count.end(), 0);
-  Adcirc::adcmap<std::pair<Node *, Node *>, size_t> lookup;
+
+  std::unordered_map<std::pair<Node *, Node *>, size_t,
+                     boost::hash<std::pair<Node *, Node *>>>
+      lookup;
 
   lookup.reserve(links.size());
   for (size_t i = 0; i < links.size(); ++i) {

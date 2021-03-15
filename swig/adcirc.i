@@ -63,6 +63,10 @@
 #include "Point.h"
 #include "PixelValue.h"
 #include "PixelValueVector.h"
+#include "Oceanweather.h"
+#include "OceanweatherHeader.h"
+#include "OceanweatherRecord.h"
+#include "OceanweatherTrackInfo.h"
 %}
 
 #ifdef _USE_GDAL
@@ -133,6 +137,10 @@ namespace std {
 %include "Point.h"
 %include "PixelValue.h"
 %include "PixelValueVector.h"
+%include "Oceanweather.h"
+%include "OceanweatherHeader.h"
+%include "OceanweatherRecord.h"
+%include "OceanweatherTrackInfo.h"
 
 #ifdef _USE_GDAL
 %include "Griddata.h"

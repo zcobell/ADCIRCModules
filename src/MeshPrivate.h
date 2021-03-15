@@ -22,10 +22,10 @@
 #include <fstream>
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
-#include "AdcMap.h"
 #include "AdcircModules_Global.h"
 #include "Boundary.h"
 #include "Element.h"
@@ -228,8 +228,8 @@ class MeshPrivate {
 
   void writePrjFile(const std::string &outputFile) const;
 
-  Adcirc::adcmap<size_t, size_t> m_nodeLookup;
-  Adcirc::adcmap<size_t, size_t> m_elementLookup;
+  std::unordered_map<size_t, size_t> m_nodeLookup;
+  std::unordered_map<size_t, size_t> m_elementLookup;
 
   Adcirc::Cryptography::HashType m_hashType;
 

@@ -24,6 +24,7 @@
 #include <fstream>
 #include <memory>
 #include <numeric>
+#include <unordered_map>
 #include <utility>
 
 #include "Constants.h"
@@ -160,7 +161,7 @@ void GriddataPrivate::readLookupTable(const std::string &lookupTableFile) {
 
   std::fstream fid(lookupTableFile);
 
-  adcmap<unsigned, double> temp_lookup;
+  std::unordered_map<unsigned, double> temp_lookup;
   unsigned c_max = 0;
 
   std::string l;

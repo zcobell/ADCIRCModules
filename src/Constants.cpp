@@ -143,3 +143,13 @@ double Constants::toDegrees(double radians) {
 double Constants::toRadians(double degrees) {
   return degrees * Constants::deg2rad();
 }
+
+/**
+ * Returns the vector magnitude in 2D
+ * @param u u-component
+ * @param v v-component
+ * @return magnitude
+ */
+double Constants::magnitude(double u, double v) {
+  return std::sqrt(u * u + v * v);
+}

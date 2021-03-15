@@ -19,6 +19,7 @@
 #include "FaceTable.h"
 
 #include <algorithm>
+#include <cassert>
 
 #include "Logging.h"
 #include "Mesh.h"
