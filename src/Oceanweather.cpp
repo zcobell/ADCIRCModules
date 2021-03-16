@@ -48,7 +48,7 @@ size_t Oceanweather::currentSnap() const { return m_currentSnap; }
 
 int Oceanweather::open() {
   for (size_t i = 0; i < nDomains(); ++i) {
-    m_fid_pressure.emplace_back(new std::fstream(m_pressureFiles[i]));
+    m_fid_pressure.emplace_back(new std::ifstream(m_pressureFiles[i]));
     if (!m_fid_pressure.back()->good()) {
       adcircmodules_throw_exception("Could not find file " +
                                     m_pressureFiles[i]);
@@ -56,7 +56,7 @@ int Oceanweather::open() {
     OceanweatherHeader preheader;
     preheader.read(m_fid_pressure.back().get());
 
-    m_fid_wind.emplace_back(new std::fstream(m_windFiles[i]));
+    m_fid_wind.emplace_back(new std::ifstream(m_windFiles[i]));
     if (!m_fid_wind.back()->good()) {
       adcircmodules_throw_exception("Could not find file " + m_windFiles[i]);
     }

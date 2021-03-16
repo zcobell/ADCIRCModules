@@ -27,7 +27,7 @@ class OceanweatherHeader {
  public:
   OceanweatherHeader();
 
-  void read(std::fstream *fid);
+  void read(std::ifstream *fid);
 
   Adcirc::CDate startDate() const;
 

@@ -55,8 +55,8 @@ class Oceanweather {
   std::vector<std::string> m_windFiles;
   size_t m_currentSnap;
   bool m_isOpen;
-  std::vector<std::unique_ptr<std::fstream>> m_fid_pressure;
-  std::vector<std::unique_ptr<std::fstream>> m_fid_wind;
+  std::vector<std::unique_ptr<std::ifstream>> m_fid_pressure;
+  std::vector<std::unique_ptr<std::ifstream>> m_fid_wind;
   std::vector<OceanweatherHeader> m_headers;
   Adcirc::OceanweatherRecord m_record;
 };
