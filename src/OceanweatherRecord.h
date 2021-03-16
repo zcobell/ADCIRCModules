@@ -32,7 +32,7 @@ class OceanweatherRecord {
  public:
   OceanweatherRecord();
 
-  void addDomain(std::fstream *fid_pressure, std::fstream *fid_wind);
+  void addDomain(std::ifstream *fid_pressure, std::ifstream *fid_wind);
 
   int read();
 
@@ -73,8 +73,8 @@ class OceanweatherRecord {
   };
 
   struct Domain {
-    std::fstream *fid_pressure;
-    std::fstream *fid_wind;
+    std::ifstream *fid_pressure;
+    std::ifstream *fid_wind;
     std::vector<double> data_pressure;
     std::vector<double> data_u;
     std::vector<double> data_v;
@@ -107,7 +107,7 @@ class OceanweatherRecord {
 
  private:
   static OceanweatherRecord::Grid parseOwiGridLine(const std::string &gridline);
-  static int readData(const Domain &d, std::fstream *fid,
+  static int readData(const Domain &d, std::ifstream *fid,
                       std::vector<double> &array);
   bool inDomain(size_t domain, double x, double y) const;
   size_t findDomain(double x, double y) const;

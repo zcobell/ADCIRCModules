@@ -36,8 +36,8 @@ namespace phoenix = boost::phoenix;
 OceanweatherRecord::OceanweatherRecord()
     : m_backgroundPressure(1013.0), m_gridchanged(true) {}
 
-void OceanweatherRecord::addDomain(std::fstream *fid_pressure,
-                                   std::fstream *fid_wind) {
+void OceanweatherRecord::addDomain(std::ifstream *fid_pressure,
+                                   std::ifstream *fid_wind) {
   Domain d;
   d.fid_pressure = fid_pressure;
   d.fid_wind = fid_wind;
@@ -186,7 +186,7 @@ void OceanweatherRecord::setBackgroundPressure(double backgroundPressure) {
 }
 
 int OceanweatherRecord::readData(const OceanweatherRecord::Domain &d,
-                                 std::fstream *fid,
+                                 std::ifstream *fid,
                                  std::vector<double> &array) {
   constexpr size_t rpl = 8;  // 8 records per line for OWI format
   const size_t nv = d.grid.nx * d.grid.ny;

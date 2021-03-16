@@ -24,7 +24,7 @@ using namespace Adcirc;
 
 OceanweatherHeader::OceanweatherHeader() = default;
 
-void OceanweatherHeader::read(std::fstream *fid) {
+void OceanweatherHeader::read(std::ifstream *fid) {
   std::string line;
   std::getline(*(fid), line);
   auto sdate1 = std::string(line.begin() + 55, line.begin() + 65);
