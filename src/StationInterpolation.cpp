@@ -217,14 +217,42 @@ void StationInterpolation::interpolateTimeSnapToStations(
 double StationInterpolation::interpScalar(Adcirc::Output::ReadOutput &data,
                                           Weight &w,
                                           const double positive_direction) {
-  if (data.metadata()->isVector()) {
+  if (this->m_options.angle()) {
+    if (data.metadata()->isVector()) {
+      adcircmodules_throw_exception(
+          "Vector data supplied when a scalar angle was expected");
+    }
+    return this->interpAngle(data, w);
+  } else if (data.metadata()->isVector()) {
     return this->interpScalarFromVector(data, w, positive_direction);
   } else {
-    double v1 = data.dataAt(0)->z(w.node_index[0]);
-    double v2 = data.dataAt(0)->z(w.node_index[1]);
-    double v3 = data.dataAt(0)->z(w.node_index[2]);
-    return this->interpolateDryValues(v1, w.weight[0], v2, w.weight[1], v3,
-                                      w.weight[2], data.defaultValue());
+    return this->interpolateDryValues(
+        data.dataAt(0)->z(w.node_index[0]), w.weight[0],
+        data.dataAt(0)->z(w.node_index[1]), w.weight[1],
+        data.dataAt(0)->z(w.node_index[2]), w.weight[2], data.defaultValue());
+  }
+}
+
+double StationInterpolation::interpAngle(Adcirc::Output::ReadOutput &data,
+                                         Weight &w) {
+  using namespace Adcirc::FpCompare;
+  std::array<double, 3> vx;
+  std::array<double, 3> vy;
+  for (size_t i = 0; i < 3; ++i) {
+    auto v = data.dataAt(0)->z(w.node_index[i]) * Constants::deg2rad();
+    vx[i] = std::cos(v);
+    vy[i] = std::sin(v);
+  }
+  auto vvx =
+      this->interpolateDryValues(vx[0], w.weight[0], vx[1], w.weight[1], vx[2],
+                                 w.weight[2], data.defaultValue());
+  auto vvy =
+      this->interpolateDryValues(vy[0], w.weight[0], vy[1], w.weight[1], vy[2],
+                                 w.weight[2], data.defaultValue());
+  if (equalTo(vvx, data.defaultValue()) || equalTo(vvy, data.defaultValue())) {
+    return data.defaultValue();
+  } else {
+    return std::atan2(vvy, vvx) * Constants::rad2deg();
   }
 }
 
