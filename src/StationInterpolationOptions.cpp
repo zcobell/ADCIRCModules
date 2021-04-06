@@ -25,8 +25,9 @@ StationInterpolationOptions::StationInterpolationOptions()
       m_epsgGlobal(4326),
       m_epsgStation(4326),
       m_epsgOutput(4326),
+      m_hasPositiveDirection(false),
       m_multiplier(1.0),
-      m_hasPositiveDirection(false) {}
+      m_angle(false) {}
 
 std::string StationInterpolationOptions::mesh() const { return this->m_mesh; }
 
@@ -252,3 +253,7 @@ void StationInterpolationOptions::setPositiveDirections(
   }
   this->m_hasPositiveDirection = true;
 }
+
+bool StationInterpolationOptions::angle() const { return m_angle; }
+
+void StationInterpolationOptions::setAngle(bool b) { m_angle = b; }

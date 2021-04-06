@@ -72,6 +72,9 @@ class StationInterpolationOptions {
                                                  double positiveDirection);
   void ADCIRCMODULES_EXPORT setPositiveDirections(double positiveDirection);
 
+  bool ADCIRCMODULES_EXPORT angle() const;
+  void ADCIRCMODULES_EXPORT setAngle(bool b);
+
  private:
   Adcirc::Output::Hmdf readStationList(const std::string &station);
 
@@ -86,6 +89,7 @@ class StationInterpolationOptions {
   bool m_direction;
   bool m_readasciimesh;
   bool m_hasPositiveDirection;
+  bool m_angle;
 
   size_t m_startsnap;
   size_t m_endsnap;

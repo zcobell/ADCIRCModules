@@ -74,6 +74,7 @@ class StationInterpolation {
       Adcirc::Output::ReadOutput &data, Weight &w,
       const double positive_direction);
   double interpDirectionFromVector(Adcirc::Output::ReadOutput &data, Weight &w);
+  double interpAngle(Adcirc::Output::ReadOutput &data,Weight &w);
 
   static std::tuple<double, double> interpVector(
       Adcirc::Output::ReadOutput &data, Weight &w);

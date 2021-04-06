@@ -55,7 +55,8 @@ int main(int argc, char *argv[]) {
                      ("readAsciiMesh", "Force the code to read an ascii meshfile instead of defaulting to the NetCDF ADCIRC output file data")
                      ("epsg_global","Specify the coordinate system of the global time series file (default: 4326)",cxxopts::value<int>())
                      ("epsg_station","Specify the coordinate system of the input station locations (default: 4326)",cxxopts::value<int>())
-                     ("epsg_output","Specify the coordinate system of the output data file (default: 4326)",cxxopts::value<int>());
+                     ("epsg_output","Specify the coordinate system of the output data file (default: 4326)",cxxopts::value<int>())
+                     ("angle","Treat values as an angle in degrees rather than a scalar for interpolation");
   // clang-format on
 
   if (argc == 1) {
@@ -129,6 +130,11 @@ Adcirc::Output::StationInterpolationOptions parseCommandLineOptions(
     } else {
       input.readPositiveDirection(positive_direction_string);
     }
+  }
+  if (parser["angle"].count() > 0) {
+    input.setAngle(true);
+  } else {
+    input.setAngle(false);
   }
   return input;
 }
