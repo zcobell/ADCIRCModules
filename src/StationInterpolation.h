@@ -68,13 +68,13 @@ class StationInterpolation {
                                      Adcirc::Output::ReadOutput &globalFile);
   double interpScalarFromVector(Adcirc::Output::ReadOutput &data, Weight &w,
                                 const double positive_direction = -9999.0);
-  double interpScalarFromVectorWithoutFlowDirection(
+  static double interpScalarFromVectorWithoutFlowDirection(
       Adcirc::Output::ReadOutput &data, Weight &w);
-  double interpScalarFromVectorWithFlowDirection(
+  static double interpScalarFromVectorWithFlowDirection(
       Adcirc::Output::ReadOutput &data, Weight &w,
       const double positive_direction);
-  double interpDirectionFromVector(Adcirc::Output::ReadOutput &data, Weight &w);
-  double interpAngle(Adcirc::Output::ReadOutput &data,Weight &w);
+  static double interpDirectionFromVector(Adcirc::Output::ReadOutput &data, Weight &w);
+  static double interpAngle(Adcirc::Output::ReadOutput &data,Weight &w);
 
   static std::tuple<double, double> interpVector(
       Adcirc::Output::ReadOutput &data, Weight &w);
