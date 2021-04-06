@@ -2,7 +2,11 @@
 # PROJ Library
 # ##############################################################################
 find_package(SQLite3 REQUIRED)
-find_package(PROJ)
+IF(USE_INTERNAL_PROJ)
+    set(PROJ_FOUND FALSE)
+ELSE()
+    find_package(PROJ)
+ENDIF()
 IF(PROJ_FOUND)
 	IF(${PROJ_VERSION} VERSION_LESS 6.0)
 		message(WARNING "System PROJ version not compatible. Attempting to use internal proj.")
