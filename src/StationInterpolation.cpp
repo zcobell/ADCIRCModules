@@ -239,20 +239,27 @@ double StationInterpolation::interpAngle(Adcirc::Output::ReadOutput &data,
   std::array<double, 3> vx;
   std::array<double, 3> vy;
   for (size_t i = 0; i < 3; ++i) {
-    auto v = data.dataAt(0)->z(w.node_index[i]) * Constants::deg2rad();
-    vx[i] = std::cos(v);
-    vy[i] = std::sin(v);
+    auto v = data.dataAt(0)->z(w.node_index[i]);
+    if (equalTo(v, data.defaultValue())) {
+      vx[i] = data.defaultValue();
+      vy[i] = data.defaultValue();
+    } else {
+      v *= Constants::deg2rad();
+      vx[i] = std::cos(v);
+      vy[i] = std::sin(v);
+    }
   }
   auto vvx =
-      this->interpolateDryValues(vx[0], w.weight[0], vx[1], w.weight[1], vx[2],
+      StationInterpolation::interpolateDryValues(vx[0], w.weight[0], vx[1], w.weight[1], vx[2],
                                  w.weight[2], data.defaultValue());
   auto vvy =
-      this->interpolateDryValues(vy[0], w.weight[0], vy[1], w.weight[1], vy[2],
+      StationInterpolation::interpolateDryValues(vy[0], w.weight[0], vy[1], w.weight[1], vy[2],
                                  w.weight[2], data.defaultValue());
   if (equalTo(vvx, data.defaultValue()) || equalTo(vvy, data.defaultValue())) {
     return data.defaultValue();
   } else {
-    return std::atan2(vvy, vvx) * Constants::rad2deg();
+    auto angle = std::atan2(vvy, vvx) * Constants::rad2deg();
+    return angle < 0.0 ? angle += 360.0 : angle;
   }
 }
 
@@ -293,9 +300,9 @@ double StationInterpolation::interpScalarFromVectorWithFlowDirection(
   double v2y = data.dataAt(0)->v(n2);
   double v3x = data.dataAt(0)->u(n3);
   double v3y = data.dataAt(0)->v(n3);
-  double vx = this->interpolateDryValues(v1x, w1, v2x, w2, v3x, w3,
+  double vx = StationInterpolation::interpolateDryValues(v1x, w1, v2x, w2, v3x, w3,
                                          data.defaultValue());
-  double vy = this->interpolateDryValues(v1y, w1, v2y, w2, v3y, w3,
+  double vy = StationInterpolation::interpolateDryValues(v1y, w1, v2y, w2, v3y, w3,
                                          data.defaultValue());
   if (equalTo(vx, data.defaultValue()) || equalTo(vy, data.defaultValue())) {
     return data.defaultValue();
@@ -317,7 +324,7 @@ double StationInterpolation::interpScalarFromVectorWithoutFlowDirection(
   double v1 = data.dataAt(0)->magnitude(w.node_index[0]);
   double v2 = data.dataAt(0)->magnitude(w.node_index[1]);
   double v3 = data.dataAt(0)->magnitude(w.node_index[2]);
-  return this->interpolateDryValues(v1, w.weight[0], v2, w.weight[1], v3,
+  return StationInterpolation::interpolateDryValues(v1, w.weight[0], v2, w.weight[1], v3,
                                     w.weight[2], data.defaultValue());
 }
 
@@ -336,9 +343,9 @@ double StationInterpolation::interpDirectionFromVector(
   double v2y = data.dataAt(0)->v(n2);
   double v3x = data.dataAt(0)->u(n3);
   double v3y = data.dataAt(0)->v(n3);
-  double vx = this->interpolateDryValues(v1x, w1, v2x, w2, v3x, w3,
+  double vx = StationInterpolation::interpolateDryValues(v1x, w1, v2x, w2, v3x, w3,
                                          data.defaultValue());
-  double vy = this->interpolateDryValues(v1y, w1, v2y, w2, v3y, w3,
+  double vy = StationInterpolation::interpolateDryValues(v1y, w1, v2y, w2, v3y, w3,
                                          data.defaultValue());
   if (equalTo(vx, data.defaultValue()) || equalTo(vy, data.defaultValue())) {
     return data.defaultValue();
@@ -352,13 +359,13 @@ double StationInterpolation::interpScalarFromVector(
     const double positive_direction) {
   using namespace Adcirc::FpCompare;
   if (this->m_options.magnitude() && equalTo(positive_direction, -9999.0)) {
-    return this->interpScalarFromVectorWithoutFlowDirection(data, w);
+    return StationInterpolation::interpScalarFromVectorWithoutFlowDirection(data, w);
   } else if (this->m_options.magnitude() &&
              !equalTo(positive_direction, -9999.0)) {
-    return this->interpScalarFromVectorWithFlowDirection(data, w,
+    return StationInterpolation::interpScalarFromVectorWithFlowDirection(data, w,
                                                          positive_direction);
   } else if (this->m_options.direction()) {
-    return this->interpDirectionFromVector(data, w);
+    return StationInterpolation::interpDirectionFromVector(data, w);
   } else {
     adcircmodules_throw_exception(
         "Cannot write vector data. Select --magnitude or --direction");
