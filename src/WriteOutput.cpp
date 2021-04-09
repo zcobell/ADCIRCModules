@@ -26,6 +26,7 @@
 
 #include "WriteOutput.h"
 
+#include <array>
 #include <cstring>
 
 #include "AdcircOutputfiles.h"
@@ -573,7 +574,9 @@ void WriteOutput::writeRecordNetCDF(const OutputRecord *record) {
   nc_put_var1(this->m_ncid, this->m_varid_time, &this->m_recordsWritten, &t);
 
   const size_t start[2] = {this->m_recordsWritten, 0};
-  const size_t count[2] = {1, record->numNodes()};
+  const size_t count[2] = {
+      m_dataContainer->metadata()->isMax() ? record->numNodes() : 1,
+      m_dataContainer->metadata()->isMax() ? 1 : record->numNodes()};
 
   if (this->m_dataContainer->metadata()->dimension() == 1) {
     nc_put_vara(this->m_ncid, this->m_varid[0], start, count,
