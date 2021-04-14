@@ -178,7 +178,7 @@ void WriteOutput::openFileNetCDF() {
 
   ierr += nc_def_dim(this->m_ncid, "time", NC_UNLIMITED, &dimid_time);
   ierr += nc_def_dim(this->m_ncid, "node", nn, &dimid_node);
-  ierr += nc_def_dim(this->m_ncid, "ele", ne, &dimid_ele);
+  ierr += nc_def_dim(this->m_ncid, "nele", ne, &dimid_ele);
   ierr += nc_def_dim(this->m_ncid, "nvertex", 3, &dimid_nvertex);
   ierr += nc_def_dim(this->m_ncid, "mesh", 1, &dimid_mesh);
 
@@ -261,6 +261,25 @@ void WriteOutput::openFileNetCDF() {
     ierr += nc_put_var(this->m_ncid, varid_x, &this->m_mesh->x()[0]);
     ierr += nc_put_var(this->m_ncid, varid_y, &this->m_mesh->y()[0]);
     ierr += nc_put_var(this->m_ncid, varid_depth, &this->m_mesh->z()[0]);
+
+    auto connectivity = this->m_mesh->connectivity();
+    std::vector<int> n1,n2,n3;
+    n1.reserve(m_mesh->numElements());
+    n2.reserve(m_mesh->numElements());
+    n3.reserve(m_mesh->numElements());
+    for(auto i=0;i<m_mesh->numElements();++i){
+        n1.push_back(connectivity[i][0]);
+        n2.push_back(connectivity[i][1]);
+        n3.push_back(connectivity[i][2]);
+    }
+    size_t start[] = {0, 0};
+    size_t count[] = {m_mesh->numElements(), 1};
+
+    ierr += nc_put_vara_int(m_ncid, varid_element, start, count, n1.data());
+    start[1] = 1;
+    ierr += nc_put_vara_int(m_ncid, varid_element, start, count, n2.data());
+    start[1] = 2;
+    ierr += nc_put_vara_int(m_ncid, varid_element, start, count, n3.data());
   }
 
   return;
