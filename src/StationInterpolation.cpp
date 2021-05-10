@@ -102,8 +102,8 @@ void StationInterpolation::generateInterpolationWeights(
     std::vector<double> wt;
     double x1 = stn->station(i)->longitude();
     double y1 = stn->station(i)->latitude();
-    double x2 = 0;
-    double y2 = 0;
+    double x2 = 0.0;
+    double y2 = 0.0;
 
     if (this->m_options.epsgStation() != this->m_options.epsgGlobal()) {
       bool isLatLon;
@@ -249,12 +249,12 @@ double StationInterpolation::interpAngle(Adcirc::Output::ReadOutput &data,
       vy[i] = std::sin(v);
     }
   }
-  auto vvx =
-      StationInterpolation::interpolateDryValues(vx[0], w.weight[0], vx[1], w.weight[1], vx[2],
-                                 w.weight[2], data.defaultValue());
-  auto vvy =
-      StationInterpolation::interpolateDryValues(vy[0], w.weight[0], vy[1], w.weight[1], vy[2],
-                                 w.weight[2], data.defaultValue());
+  auto vvx = StationInterpolation::interpolateDryValues(
+      vx[0], w.weight[0], vx[1], w.weight[1], vx[2], w.weight[2],
+      data.defaultValue());
+  auto vvy = StationInterpolation::interpolateDryValues(
+      vy[0], w.weight[0], vy[1], w.weight[1], vy[2], w.weight[2],
+      data.defaultValue());
   if (equalTo(vvx, data.defaultValue()) || equalTo(vvy, data.defaultValue())) {
     return data.defaultValue();
   } else {
@@ -265,45 +265,27 @@ double StationInterpolation::interpAngle(Adcirc::Output::ReadOutput &data,
 
 std::tuple<double, double> StationInterpolation::interpVector(
     Adcirc::Output::ReadOutput &data, Weight &w) {
-  size_t n1 = w.node_index[0];
-  size_t n2 = w.node_index[1];
-  size_t n3 = w.node_index[2];
-  double w1 = w.weight[0];
-  double w2 = w.weight[1];
-  double w3 = w.weight[2];
-  double v1x = data.dataAt(0)->u(n1);
-  double v1y = data.dataAt(0)->v(n1);
-  double v2x = data.dataAt(0)->u(n2);
-  double v2y = data.dataAt(0)->v(n2);
-  double v3x = data.dataAt(0)->u(n3);
-  double v3y = data.dataAt(0)->v(n3);
-  double vx = StationInterpolation::interpolateDryValues(
-      v1x, w1, v2x, w2, v3x, w3, data.defaultValue());
-  double vy = StationInterpolation::interpolateDryValues(
-      v1y, w1, v2y, w2, v3y, w3, data.defaultValue());
-  return std::make_tuple(vx, vy);
+  std::array<double, 3> vx;
+  std::array<double, 3> vy;
+  for (auto i = 0; i < 3; ++i) {
+    vx[i] = data.dataAt(0)->u(w.node_index[i]);
+    vy[i] = data.dataAt(0)->v(w.node_index[i]);
+  }
+  double vxx = StationInterpolation::interpolateDryValues(
+      vx[0], w.weight[0], vx[1], w.weight[1], vx[2], w.weight[2],
+      data.defaultValue());
+  double vyy = StationInterpolation::interpolateDryValues(
+      vy[0], w.weight[0], vy[1], w.weight[1], vy[2], w.weight[2],
+      data.defaultValue());
+  return std::make_tuple(vxx, vyy);
 }
 
 double StationInterpolation::interpScalarFromVectorWithFlowDirection(
     Adcirc::Output::ReadOutput &data, Weight &w,
     const double positive_direction) {
   using namespace Adcirc::FpCompare;
-  size_t n1 = w.node_index[0];
-  size_t n2 = w.node_index[1];
-  size_t n3 = w.node_index[2];
-  double w1 = w.weight[0];
-  double w2 = w.weight[1];
-  double w3 = w.weight[2];
-  double v1x = data.dataAt(0)->u(n1);
-  double v1y = data.dataAt(0)->v(n1);
-  double v2x = data.dataAt(0)->u(n2);
-  double v2y = data.dataAt(0)->v(n2);
-  double v3x = data.dataAt(0)->u(n3);
-  double v3y = data.dataAt(0)->v(n3);
-  double vx = StationInterpolation::interpolateDryValues(v1x, w1, v2x, w2, v3x, w3,
-                                         data.defaultValue());
-  double vy = StationInterpolation::interpolateDryValues(v1y, w1, v2y, w2, v3y, w3,
-                                         data.defaultValue());
+  double vx, vy;
+  std::tie(vx, vy) = StationInterpolation::interpVector(data, w);
   if (equalTo(vx, data.defaultValue()) || equalTo(vy, data.defaultValue())) {
     return data.defaultValue();
   }
@@ -311,42 +293,29 @@ double StationInterpolation::interpScalarFromVectorWithFlowDirection(
   double direction =
       std::atan2(vy, vx) * Adcirc::Constants::rad2deg() - positive_direction;
 
-  if (direction < -180.0)
+  if (direction < -180.0) {
     direction += 360.0;
-  else if (direction > 180.0)
+  } else if (direction > 180.0) {
     direction -= 360.0;
+  }
 
   return direction < 90.0 && direction > -90.0 ? magnitude : -magnitude;
 }
 
 double StationInterpolation::interpScalarFromVectorWithoutFlowDirection(
     Adcirc::Output::ReadOutput &data, Weight &w) {
-  double v1 = data.dataAt(0)->magnitude(w.node_index[0]);
-  double v2 = data.dataAt(0)->magnitude(w.node_index[1]);
-  double v3 = data.dataAt(0)->magnitude(w.node_index[2]);
-  return StationInterpolation::interpolateDryValues(v1, w.weight[0], v2, w.weight[1], v3,
-                                    w.weight[2], data.defaultValue());
+  return StationInterpolation::interpolateDryValues(
+      data.dataAt(0)->magnitude(w.node_index[0]), w.weight[0],
+      data.dataAt(0)->magnitude(w.node_index[1]), w.weight[1],
+      data.dataAt(0)->magnitude(w.node_index[2]), w.weight[2],
+      data.defaultValue());
 }
 
 double StationInterpolation::interpDirectionFromVector(
     Adcirc::Output::ReadOutput &data, Weight &w) {
   using namespace Adcirc::FpCompare;
-  size_t n1 = w.node_index[0];
-  size_t n2 = w.node_index[1];
-  size_t n3 = w.node_index[2];
-  double w1 = w.weight[0];
-  double w2 = w.weight[1];
-  double w3 = w.weight[2];
-  double v1x = data.dataAt(0)->u(n1);
-  double v1y = data.dataAt(0)->v(n1);
-  double v2x = data.dataAt(0)->u(n2);
-  double v2y = data.dataAt(0)->v(n2);
-  double v3x = data.dataAt(0)->u(n3);
-  double v3y = data.dataAt(0)->v(n3);
-  double vx = StationInterpolation::interpolateDryValues(v1x, w1, v2x, w2, v3x, w3,
-                                         data.defaultValue());
-  double vy = StationInterpolation::interpolateDryValues(v1y, w1, v2y, w2, v3y, w3,
-                                         data.defaultValue());
+  double vx, vy;
+  std::tie(vx, vy) = StationInterpolation::interpVector(data, w);
   if (equalTo(vx, data.defaultValue()) || equalTo(vy, data.defaultValue())) {
     return data.defaultValue();
   } else {
@@ -359,11 +328,12 @@ double StationInterpolation::interpScalarFromVector(
     const double positive_direction) {
   using namespace Adcirc::FpCompare;
   if (this->m_options.magnitude() && equalTo(positive_direction, -9999.0)) {
-    return StationInterpolation::interpScalarFromVectorWithoutFlowDirection(data, w);
+    return StationInterpolation::interpScalarFromVectorWithoutFlowDirection(
+        data, w);
   } else if (this->m_options.magnitude() &&
              !equalTo(positive_direction, -9999.0)) {
-    return StationInterpolation::interpScalarFromVectorWithFlowDirection(data, w,
-                                                         positive_direction);
+    return StationInterpolation::interpScalarFromVectorWithFlowDirection(
+        data, w, positive_direction);
   } else if (this->m_options.direction()) {
     return StationInterpolation::interpDirectionFromVector(data, w);
   } else {
