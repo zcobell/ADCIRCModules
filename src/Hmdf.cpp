@@ -320,8 +320,20 @@ int Hmdf::writeNetcdf(const std::string &filename) {
   NCCHECK(nc_def_dim(ncid, "numStations", this->nstations(), &dimid_nstations))
   NCCHECK(nc_def_dim(ncid, "stationNameLen", 200, &dimid_stationNameLength))
   for (size_t i = 0; i < this->nstations(); i++) {
-    std::string dimname =
-        boost::str(boost::format("stationLength_%04.4i") % (i + 1));
+    std::string dimname;
+    if (this->nstations() > 9999) {
+      std::string ncVersion = std::string(nc_inq_libvers());
+      int ncVersionMajor = stoi(ncVersion.substr(0, 1));
+      int ncVersionMinor = stoi(ncVersion.substr(2, 1));
+      if (ncVersionMajor < 4 || (ncVersionMajor == 4 && ncVersionMinor < 5)) {
+        adcircmodules_throw_exception(
+            "The netCDF version you are using is too old for this operation. "
+            "Please upgrade to at least 4.5.0");
+      }
+      dimname = boost::str(boost::format("stationLength_%07.7i") % (i + 1));
+    } else {
+      dimname = boost::str(boost::format("stationLength_%04.4i") % (i + 1));
+    }
     int d;
     NCCHECK(nc_def_dim(ncid, dimname.c_str(), this->station(i)->numSnaps(), &d))
     dimid_stationLength.push_back(d);
@@ -357,8 +369,12 @@ int Hmdf::writeNetcdf(const std::string &filename) {
     const char timeunit[27] = "second since referenceDate";
     int v;
 
-    std::string stationName =
-        boost::str(boost::format("station_%04.4i") % (i + 1));
+    std::string stationName;
+    if (this->nstations() > 9999) {
+      stationName = boost::str(boost::format("station_%07.7i") % (i + 1));
+    } else {
+      stationName = boost::str(boost::format("station_%04.4i") % (i + 1));
+    }
     std::string timeVarName = "time_" + stationName;
     std::string dataVarName = "data_" + stationName;
 
@@ -486,9 +502,9 @@ int Hmdf::writeAdcirc(const std::string &filename) {
 
   double dt = 0;
   double dit = 0;
-  if(!this->station(0)->numSnaps()==1){
+  if (!this->station(0)->numSnaps() == 1) {
     dt = this->station(0)->date(1).toSeconds() -
-              this->station(0)->date(0).toSeconds();
+         this->station(0)->date(0).toSeconds();
     dit = static_cast<int>(std::floor(dt));
   }
 
