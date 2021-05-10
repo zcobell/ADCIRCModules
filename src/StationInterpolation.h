@@ -81,7 +81,7 @@ class StationInterpolation {
   void allocateStationArrays();
   void generateInterpolationWeights(Adcirc::Geometry::Mesh &m);
 
-  CDate dateFromString(const std::string &dateString);
+  static CDate dateFromString(const std::string &dateString);
 
   std::vector<Weight> m_weights;
   Adcirc::Output::StationInterpolationOptions m_options;
