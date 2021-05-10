@@ -202,7 +202,12 @@ Adcirc::Output::Hmdf StationInterpolationOptions::readStationList(
     std::vector<std::string> templist;
     Adcirc::FileIO::Generic::splitString(templine, templist);
     Adcirc::Output::HmdfStation s;
-    std::string name = boost::str(boost::format("Station_%04.4i") % (i + 1));
+    std::string name;
+    if (nStations > 9999) {
+      name = boost::str(boost::format("Station_%07.7i") % (i + 1));
+    } else {
+      name = boost::str(boost::format("Station_%04.4i") % (i + 1));
+    }
     s.setId(name);
     s.setName(name);
     s.setLongitude(std::stod(templist[0]));

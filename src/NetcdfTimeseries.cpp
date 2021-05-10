@@ -104,12 +104,31 @@ int NetcdfTimeseries::read(bool stationsOnly = false) {
   }
 
   for (size_t i = 0; i < this->m_numStations; i++) {
-    std::string station_dim_string =
-        boost::str(boost::format("stationLength_%04.4i") % (i + 1));
-    std::string station_time_var_string =
-        boost::str(boost::format("time_station_%04.4i") % (i + 1));
-    std::string station_data_var_string =
-        boost::str(boost::format("data_station_%04.4i") % (i + 1));
+    std::string station_dim_string, station_time_var_string,
+        station_data_var_string;
+    if (this->m_numStations > 9999) {
+      std::string ncVersion = std::string(nc_inq_libvers());
+      int ncVersionMajor = stoi(ncVersion.substr(0, 1));
+      int ncVersionMinor = stoi(ncVersion.substr(2, 1));
+      if (ncVersionMajor < 4 || (ncVersionMajor == 4 && ncVersionMinor < 5)) {
+        adcircmodules_throw_exception(
+            "The netCDF version you are using is too old for this operation. "
+            "Please upgrade to at least 4.5.0");
+      }
+      station_dim_string =
+          boost::str(boost::format("stationLength_%07.7i") % (i + 1));
+      station_time_var_string =
+          boost::str(boost::format("time_station_%07.7i") % (i + 1));
+      station_data_var_string =
+          boost::str(boost::format("data_station_%07.7i") % (i + 1));
+    } else {
+      station_dim_string =
+          boost::str(boost::format("stationLength_%04.4i") % (i + 1));
+      station_time_var_string =
+          boost::str(boost::format("time_station_%04.4i") % (i + 1));
+      station_data_var_string =
+          boost::str(boost::format("data_station_%04.4i") % (i + 1));
+    }
 
     NCCHECK(nc_inq_dimid(ncid, station_dim_string.c_str(), &dimidStationLength))
     NCCHECK(nc_inq_dimlen(ncid, dimidStationLength, &length))
