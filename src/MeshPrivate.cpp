@@ -2761,6 +2761,9 @@ void MeshPrivate::toRaster(const std::string &filename,
   int nx = std::floor(std::abs(xmax - xmin) / resolution) + 1;
   int ny = std::floor(std::abs(ymax - ymin) / resolution) + 1;
 
+  //...Make sure to fix the extents vector
+  std::vector<double> extent_ordered = {xmin, ymin, xmax, ymax};
+
   if (nx < 3 || ny < 3) {
     adcircmodules_throw_exception("Invalid resolution specified.");
   }
@@ -2788,7 +2791,7 @@ void MeshPrivate::toRaster(const std::string &filename,
   std::vector<std::vector<double>> weight;
   std::vector<size_t> elements;
   std::tie(weight, elements) =
-      this->computeRasterInterpolationWeights(extent, nx, ny, resolution);
+      this->computeRasterInterpolationWeights(extent_ordered, nx, ny, resolution);
   std::vector<float> zr =
       this->getRasterValues(z, nullvalue, elements, weight, partialWetting);
 
