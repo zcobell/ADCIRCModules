@@ -1,6 +1,7 @@
 #ifndef ADCMOD_STATIONINTERPOLATIONOPTIONS_H
 #define ADCMOD_STATIONINTERPOLATIONOPTIONS_H
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -13,6 +14,12 @@ namespace Output {
 class StationInterpolationOptions {
  public:
   ADCIRCMODULES_EXPORT StationInterpolationOptions();
+
+  ADCIRCMODULES_EXPORT StationInterpolationOptions(
+      const StationInterpolationOptions &s);
+
+  ADCIRCMODULES_EXPORT StationInterpolationOptions &operator=(
+      const StationInterpolationOptions &s);
 
   std::string ADCIRCMODULES_EXPORT mesh() const;
   void ADCIRCMODULES_EXPORT setMesh(const std::string &mesh);
@@ -63,6 +70,7 @@ class StationInterpolationOptions {
   readStations(const std::string &stationFile = std::string());
   Adcirc::Output::HmdfStation ADCIRCMODULES_EXPORT *station(size_t index);
   Adcirc::Output::Hmdf ADCIRCMODULES_EXPORT *stations();
+  void ADCIRCMODULES_EXPORT createStationObject(size_t dimension);
 
   void ADCIRCMODULES_EXPORT usePositiveDirection(bool usePositiveDirection);
   bool ADCIRCMODULES_EXPORT hasPositiveDirection() const;
@@ -76,7 +84,7 @@ class StationInterpolationOptions {
   void ADCIRCMODULES_EXPORT setAngle(bool b);
 
  private:
-  Adcirc::Output::Hmdf readStationList(const std::string &station);
+  static Adcirc::Output::Hmdf readStationList(const std::string &station);
 
   std::string m_mesh;
   std::string m_globalfile;
@@ -100,7 +108,7 @@ class StationInterpolationOptions {
 
   double m_multiplier;
 
-  Adcirc::Output::Hmdf m_hmdf;
+  std::unique_ptr<Adcirc::Output::Hmdf> m_hmdf;
 };
 }  // namespace Output
 }  // namespace Adcirc

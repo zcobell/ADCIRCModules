@@ -12,6 +12,7 @@ set(ADCIRCMODULES_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/AdcHash.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Hmdf.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/HmdfStation.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/HmdfDataContainer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/StationInterpolationOptions.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/StationInterpolation.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/NetcdfTimeseries.cpp
@@ -49,7 +50,8 @@ set(ADCIRCMODULES_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Oceanweather.cpp)
 if(GDAL_FOUND)
   set(ADCIRCMODULES_SOURCES
-      ${ADCIRCMODULES_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/Griddata.cpp
+      ${ADCIRCMODULES_SOURCES}
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/Griddata.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/GriddataPrivate.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/Pixel.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/RasterData.cpp
@@ -62,7 +64,8 @@ if(GDAL_FOUND)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataInverseDistanceWeightedNPoints.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataAverageNearestNPoints.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataWindRoughness.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataMethod.cpp ../src/OceanweatherTrackInfo.h)
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataMethod.cpp
+      ../src/OceanweatherTrackInfo.h)
 endif(GDAL_FOUND)
 
 set(HEADER_LIST
@@ -77,6 +80,7 @@ set(HEADER_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/HashType.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Hmdf.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/HmdfStation.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/HmdfDataContainer.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/StationInterpolationOptions.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/StationInterpolation.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Logging.h
@@ -111,47 +115,60 @@ set(HEADER_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/src/OceanweatherRecord.h)
 # ##############################################################################
 
-add_library(adcircmodules_interface INTERFACE )
+add_library(adcircmodules_interface INTERFACE)
 add_library(adcircmodules_objectlib OBJECT ${ADCIRCMODULES_SOURCES})
-add_library(adcircmodules_static STATIC $<TARGET_OBJECTS:adcircmodules_objectlib>)
+add_library(adcircmodules_static STATIC
+            $<TARGET_OBJECTS:adcircmodules_objectlib>)
 add_library(adcircmodules SHARED $<TARGET_OBJECTS:adcircmodules_objectlib>)
 
-set_property(TARGET adcircmodules_objectlib PROPERTY POSITION_INDEPENDENT_CODE 1)
+set_property(TARGET adcircmodules_objectlib PROPERTY POSITION_INDEPENDENT_CODE
+                                                     1)
 target_link_libraries(adcircmodules_static adcircmodules_interface)
 target_link_libraries(adcircmodules adcircmodules_interface)
 
 if(ADCIRCMODULES_USE_FAST_MATH)
-    message(STATUS "ADCIRCModules will be built with math approximations")
-    target_compile_definitions(adcircmodules_objectlib PRIVATE ADCMOD_USE_FAST_MATH)
+  message(STATUS "ADCIRCModules will be built with math approximations")
+  target_compile_definitions(adcircmodules_objectlib
+                             PRIVATE ADCMOD_USE_FAST_MATH)
 endif()
 
 if(NOT PROJ_FOUND)
-	add_dependencies(adcircmodules_interface shapelib adcmod_proj generate_proj_db)
-	target_compile_definitions(adcircmodules_objectlib PRIVATE USE_INTERNAL_PROJ)
+  add_dependencies(adcircmodules_interface shapelib adcmod_proj
+                   generate_proj_db)
+  target_compile_definitions(adcircmodules_objectlib PRIVATE USE_INTERNAL_PROJ)
 else()
-	add_dependencies(adcircmodules_interface shapelib)
+  add_dependencies(adcircmodules_interface shapelib)
 endif()
 
-set( adcircmodules_include_list 
-            ${CMAKE_SOURCE_DIR}/src
-            ${CMAKE_SOURCE_DIR}/src/interpolation
-            ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
-            ${CMAKE_SOURCE_DIR}/thirdparty/date/include/date
-            ${CMAKE_SOURCE_DIR}/thirdparty/nanoflann/include
-            ${CMAKE_SOURCE_DIR}/thirdparty/cxxopts
-            ${CMAKE_SOURCE_DIR}/thirdparty/indicators
-            ${Boost_INCLUDE_DIRS}
-			${PROJ_INCLUDE_DIR}
-            ${SQLite3_INCLUDE_DIR}
-            ${NETCDF_INCLUDE_DIR})
+set(adcircmodules_include_list
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/interpolation
+    ${CMAKE_SOURCE_DIR}/thirdparty/shapelib
+    ${CMAKE_SOURCE_DIR}/thirdparty/date/include/date
+    ${CMAKE_SOURCE_DIR}/thirdparty/nanoflann/include
+    ${CMAKE_SOURCE_DIR}/thirdparty/cxxopts
+    ${CMAKE_SOURCE_DIR}/thirdparty/indicators
+    ${Boost_INCLUDE_DIRS}
+    ${PROJ_INCLUDE_DIR}
+    ${SQLite3_INCLUDE_DIR}
+    ${NETCDF_INCLUDE_DIR})
 
-target_include_directories(adcircmodules_objectlib PRIVATE ${adcircmodules_include_list})
-target_compile_definitions(adcircmodules_objectlib PRIVATE GIT_VERSION="${GIT_VERSION}")
-target_compile_definitions(adcircmodules_objectlib PRIVATE ADCIRCMODULES_LIBRARY)
+target_include_directories(adcircmodules_objectlib
+                           PRIVATE ${adcircmodules_include_list})
+target_compile_definitions(adcircmodules_objectlib
+                           PRIVATE GIT_VERSION="${GIT_VERSION}")
+target_compile_definitions(adcircmodules_objectlib
+                           PRIVATE ADCIRCMODULES_LIBRARY)
+
+if(ADCIRCMODULES_ENABLE_STACK_TRACE)
+  target_compile_definitions(adcircmodules_objectlib
+                             PRIVATE ADCIRCMODULES_FORCE_SANITIZER_STACK_TRACE)
+endif()
 
 if(GDAL_FOUND)
   target_compile_definitions(adcircmodules_objectlib PRIVATE "USE_GDAL")
-  target_include_directories(adcircmodules_objectlib PRIVATE ${GDAL_INCLUDE_DIR})
+  target_include_directories(adcircmodules_objectlib
+                             PRIVATE ${GDAL_INCLUDE_DIR})
   link_directories(${GDAL_LIBPATH})
   target_link_libraries(adcircmodules_interface INTERFACE ${GDAL_LIBRARY})
   set(HEADER_LIST ${HEADER_LIST} ${CMAKE_SOURCE_DIR}/src/RasterData.h
@@ -187,24 +204,30 @@ install(
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/adcircmodulesConfigVersion.cmake
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
 
-set_target_properties(adcircmodules_objectlib PROPERTIES CMAKE_CXX_VISIBILITY_PRESET
-                                               hidden)
-set_target_properties(adcircmodules_objectlib PROPERTIES CMAKE_CXX_INLINES_HIDDEN YES)
+set_target_properties(adcircmodules_objectlib
+                      PROPERTIES CMAKE_CXX_VISIBILITY_PRESET hidden)
+set_target_properties(adcircmodules_objectlib
+                      PROPERTIES CMAKE_CXX_INLINES_HIDDEN YES)
 
-target_link_libraries(adcircmodules_interface INTERFACE shapelib ${SQLite3_LIBRARY})
+target_link_libraries(adcircmodules_interface INTERFACE shapelib
+                                                        ${SQLite3_LIBRARY})
 
 if(WIN32)
   link_directories(${CMAKE_SOURCE_DIR}/thirdparty/netcdf/libs_vc64)
   target_link_libraries(adcircmodules_interface INTERFACE netcdf hdf5 hdf5_hl)
 else(WIN32)
-  target_link_libraries(adcircmodules_interface INTERFACE ${NETCDF_LIBRARIES} ${PROJ_LIBRARY})
+  target_link_libraries(adcircmodules_interface INTERFACE ${NETCDF_LIBRARIES}
+                                                          ${PROJ_LIBRARY})
 endif(WIN32)
 
 if(OpenSSL_FOUND)
-  target_compile_definitions(adcircmodules_objectlib PRIVATE ADCMOD_HAVE_OPENSSL)
-  target_include_directories(adcircmodules_objectlib PRIVATE ${OPENSSL_INCLUDE_DIR})
-  target_link_libraries(adcircmodules_interface INTERFACE ${OPENSSL_CRYPTO_LIBRARY}
-                        ${OPENSSL_SSL_LIBRARY})
+  target_compile_definitions(adcircmodules_objectlib
+                             PRIVATE ADCMOD_HAVE_OPENSSL)
+  target_include_directories(adcircmodules_objectlib
+                             PRIVATE ${OPENSSL_INCLUDE_DIR})
+  target_link_libraries(
+    adcircmodules_interface INTERFACE ${OPENSSL_CRYPTO_LIBRARY}
+                                      ${OPENSSL_SSL_LIBRARY})
 endif(OpenSSL_FOUND)
 
 if(APPLE)
@@ -216,13 +239,14 @@ endif(APPLE)
 
 if(OPENMP_FOUND)
   target_compile_options(adcircmodules_objectlib PRIVATE ${OpenMP_CXX_FLAGS})
-  target_link_libraries(adcircmodules_interface INTERFACE ${OpenMP_CXX_LIB_NAMES}
-                        ${OpenMP_CXX_FLAGS})
+  target_link_libraries(adcircmodules_interface
+                        INTERFACE ${OpenMP_CXX_LIB_NAMES} ${OpenMP_CXX_FLAGS})
 endif(OPENMP_FOUND)
 
 if(HDF5_FOUND)
-  target_compile_definitions(adcircmodules_objectlib PRIVATE HAVE_HDF5
-                                                   ${HDF5_DEFINITIONS})
-  target_include_directories(adcircmodules_objectlib PRIVATE ${HDF5_INCLUDE_DIRS})
+  target_compile_definitions(adcircmodules_objectlib
+                             PRIVATE HAVE_HDF5 ${HDF5_DEFINITIONS})
+  target_include_directories(adcircmodules_objectlib
+                             PRIVATE ${HDF5_INCLUDE_DIRS})
   target_link_libraries(adcircmodules_interface INTERFACE ${HDF5_LIBRARIES})
 endif(HDF5_FOUND)

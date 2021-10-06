@@ -24,7 +24,6 @@
 #include "Logging.h"
 #include "StationInterpolation.h"
 #include "StringConversion.h"
-#include "boost/format.hpp"
 #include "cxxopts.hpp"
 
 Adcirc::Output::StationInterpolationOptions parseCommandLineOptions(
@@ -142,20 +141,20 @@ Adcirc::Output::StationInterpolationOptions parseCommandLineOptions(
 void validateOptionsList(Adcirc::Output::StationInterpolationOptions &input) {
   if (input.readasciimesh() ||
       Adcirc::FileIO::Generic::getFileExtension(input.globalfile()) != ".nc") {
-    if (input.mesh() == std::string()) {
+    if (input.mesh().empty()) {
       Adcirc::Logging::logError("No mesh supplied", "[ERROR]: ");
       exit(1);
     }
   }
-  if (input.globalfile() == std::string()) {
+  if (input.globalfile().empty()) {
     Adcirc::Logging::logError("No global data supplied", "[ERROR]: ");
     exit(1);
   }
-  if (input.outputfile() == std::string()) {
+  if (input.outputfile().empty()) {
     Adcirc::Logging::logError("No output file specified", "[ERROR]: ");
     exit(1);
   }
-  if (input.stationfile() == std::string()) {
+  if (input.stationfile().empty()) {
     Adcirc::Logging::logError("No station file supplied", "[ERROR]: ");
     exit(1);
   }
@@ -165,7 +164,7 @@ void validateOptionsList(Adcirc::Output::StationInterpolationOptions &input) {
   bool needsDate = ft == Adcirc::Output::Hmdf::HmdfImeds ||
                    ft == Adcirc::Output::Hmdf::HmdfCsv ||
                    ft == Adcirc::Output::Hmdf::HmdfNetCdf;
-  if (needsDate && input.coldstart() == std::string()) {
+  if (needsDate && input.coldstart().empty()) {
     Adcirc::Logging::logError(
         "Must supply cold start date to write the specified file format.",
         "[ERROR]: ");
@@ -173,12 +172,15 @@ void validateOptionsList(Adcirc::Output::StationInterpolationOptions &input) {
   }
 
   if (!Adcirc::FileIO::Generic::fileExists(input.globalfile())) {
-    Adcirc::Logging::logError("Global file does not exist.", "[ERROR]: ");
+    Adcirc::Logging::logError(
+        "Global file '" + input.globalfile() + "' does not exist.",
+        "[ERROR]: ");
     exit(1);
   }
-  if (input.mesh() != std::string()) {
+  if (!input.mesh().empty()) {
     if (!Adcirc::FileIO::Generic::fileExists(input.mesh())) {
-      Adcirc::Logging::logError("Mesh file does not exist.", "[ERROR]: ");
+      Adcirc::Logging::logError(
+          "Mesh file '" + input.mesh() + "'does not exist.", "[ERROR]: ");
       exit(1);
     }
   }
@@ -225,6 +227,4 @@ void validateOptionsList(Adcirc::Output::StationInterpolationOptions &input) {
                               "[ERROR]: ");
     exit(1);
   }
-
-  return;
 }

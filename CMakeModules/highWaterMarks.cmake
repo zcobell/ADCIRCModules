@@ -9,5 +9,9 @@ target_include_directories(
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/cxxopts 
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/shapelib )
 add_dependencies( highWaterMarks adcircmodules shapelib )
+if(ADCIRCMODULES_ENABLE_STACK_TRACE)
+  target_compile_definitions( highWaterMarks
+                             PRIVATE ADCIRCMODULES_FORCE_SANITIZER_STACK_TRACE)
+endif()
 target_link_libraries( highWaterMarks PRIVATE adcircmodules shapelib)
 install(TARGETS highWaterMarks RUNTIME DESTINATION bin)

@@ -40,24 +40,25 @@
 
 using namespace Adcirc::Output;
 
-#define NCCHECK(ierr)     \
-  if (ierr != NC_NOERR) { \
-    nc_close(ncid);       \
-    return ierr;          \
+#define NCCHECK(ierr)       \
+  if ((ierr) != NC_NOERR) { \
+    nc_close(ncid);         \
+    return ierr;            \
   }
 
-Hmdf::Hmdf(bool isVector) : m_isVector(isVector) { this->init(); }
+Hmdf::Hmdf(size_t dimension)
+    : m_dimension(dimension), m_success(false), m_null(true), m_epsg(-1) {}
 
-void Hmdf::init() {
-  this->setHeader1("");
-  this->setHeader2("");
-  this->setHeader3("");
-  this->setDatum("");
-  this->setSuccess(false);
-  this->setUnits("");
-  this->setNull(true);
-  this->setEpsg(-1);
-  return;
+Hmdf::Hmdf(size_t dimension, const Adcirc::Output::Hmdf *stations)
+    : m_dimension(dimension), m_success(false), m_null(true), m_epsg(-1) {
+  for (auto i = 0; i < stations->nstations(); ++i) {
+    HmdfStation s(dimension);
+    s.setLongitude(stations->station(i)->longitude());
+    s.setLatitude(stations->station(i)->latitude());
+    s.setName(stations->station(i)->name());
+    s.setId(stations->station(i)->id());
+    this->addStation(s);
+  }
 }
 
 int Hmdf::getEpsg() const { return this->m_epsg; }
@@ -81,15 +82,18 @@ void Hmdf::reproject(int epsg) {
     m.setLatitude(outy);
   }
   this->setEpsg(epsg);
-  return;
 }
-
-bool Hmdf::isVector() const { return this->m_isVector; }
 
 void Hmdf::clear() {
   this->m_station.clear();
-  this->init();
-  return;
+  m_header1 = "";
+  m_header2 = "";
+  m_header3 = "";
+  m_datum = "";
+  m_success = false;
+  m_units = "";
+  m_null = true;
+  m_epsg = -1;
 }
 
 size_t Hmdf::nstations() const { return this->m_station.size(); }
@@ -128,15 +132,29 @@ HmdfStation *Hmdf::station(size_t index) {
   }
 }
 
+const Adcirc::Output::HmdfStation *Hmdf::station(size_t index) const {
+  assert(index < this->m_station.size());
+  if (index < this->m_station.size()) {
+    return &this->m_station[index];
+  } else {
+    std::string error = boost::str(
+        boost::format(
+            "Index %i greater than number of stations in hmdf object (%i)") %
+        index % this->m_station.size());
+    adcircmodules_throw_exception(error);
+    return nullptr;
+  }
+}
+
 void Hmdf::setStation(size_t index, HmdfStation &station) {
   assert(index < this->m_station.size());
   this->m_station[index] = station;
 }
 
 void Hmdf::addStation(const HmdfStation &station) {
-  if (station.isVector() != this->m_isVector) {
+  if (station.dimension() != this->dimension()) {
     adcircmodules_throw_exception(
-        "Cannot mix vector and scalar station types.");
+        "Cannot mix station types of different dimensions.");
   }
   this->m_station.push_back(station);
 }
@@ -150,7 +168,7 @@ bool Hmdf::null() const { return this->m_null; }
 void Hmdf::setNull(bool null) { this->m_null = null; }
 
 int Hmdf::readImeds(const std::string &filename) {
-  if (this->m_isVector) {
+  if (this->m_dimension > 1) {
     adcircmodules_throw_exception(
         "imeds format files cannot contain vector data.");
   }
@@ -170,7 +188,7 @@ int Hmdf::readImeds(const std::string &filename) {
   std::getline(fid, templine);
 
   while (!fid.eof()) {
-    HmdfStation station(false);
+    HmdfStation station(1);
 
     templine = Adcirc::FileIO::Generic::sanitizeString(templine);
 
@@ -210,7 +228,7 @@ int Hmdf::readImeds(const std::string &filename) {
 }
 
 int Hmdf::readNetcdf(const std::string &filename, bool stationsOnly) {
-  if (this->m_isVector) {
+  if (this->m_dimension > 1) {
     adcircmodules_throw_exception(
         "generic netcdf format files cannot contain vector data.");
   }
@@ -253,9 +271,9 @@ int Hmdf::writeCsv(const std::string &filename) {
     out << boost::str(boost::format("Units: %s\n") % this->units());
 
     for (size_t i = 0; i < this->station(s)->numSnaps(); i++) {
-      if (this->isVector()) {
-        double value1 = this->station(s)->data_u(i);
-        double value2 = this->station(s)->data_v(i);
+      if (this->m_dimension == 2) {
+        double value1 = this->station(s)->data(i, 0);
+        double value2 = this->station(s)->data(i, 1);
         out << boost::str(boost::format("%s,%10.4e,%10.4e\n") %
                           this->station(s)->date(i).toString() % value1 %
                           value2);
@@ -508,18 +526,29 @@ int Hmdf::writeAdcirc(const std::string &filename) {
     dit = static_cast<int>(std::floor(dt));
   }
 
-  int nv = this->isVector() ? 2 : 1;
   out << Adcirc::Output::Formatting::adcircFileHeader(
-      this->station(0)->numSnaps(), this->nstations(), dt, dit, nv);
+      this->station(0)->numSnaps(), this->nstations(), dt, dit, m_dimension);
+
+  double time = 0.0;
+  size_t it = 0;
   for (size_t i = 0; i < this->station(0)->numSnaps(); ++i) {
-    double t = this->station(0)->date(i).toSeconds() -
-               this->station(0)->date(0).toSeconds() + dt;
-    int it = static_cast<int>(std::floor(t));
-    out << Adcirc::Output::Formatting::adcircFullFormatRecordHeader(t, it);
+
+    if (station(0)->adcircIteration(i) ==
+            HmdfStation::defaultAdcircIteration() ||
+        station(0)->adcircTime(i) == HmdfStation::defaultAdcircTime()) {
+      time = this->station(0)->date(i).toSeconds() -
+             this->station(0)->date(0).toSeconds() + dt;
+      it = static_cast<int>(std::floor(time));
+    } else {
+      time = station(0)->adcircTime(i);
+      it = station(0)->adcircIteration(i);
+    }
+
+    out << Adcirc::Output::Formatting::adcircFullFormatRecordHeader(time, it);
     for (size_t j = 0; j < this->nstations(); ++j) {
-      if (this->isVector()) {
+      if (this->m_dimension == 2) {
         out << Adcirc::Output::Formatting::adcircVectorLineFormat(
-            j + 1, this->station(j)->data_u(i), this->station(j)->data_v(i));
+            j + 1, this->station(j)->data(i, 0), this->station(j)->data(i, 1));
       } else {
         out << Adcirc::Output::Formatting::adcircScalarLineFormat(
             j + 1, this->station(j)->data(i));
@@ -585,12 +614,6 @@ void Hmdf::dataBounds(CDate &dateMin, CDate &dateMax, double &minValue,
       maxValue = std::max(tempMaxValue, maxValue);
     }
   }
-  return;
 }
 
-void Hmdf::setVector(bool vector) {
-  this->m_isVector = vector;
-  for (auto &s : this->m_station) {
-    s.setVector(vector);
-  }
-}
+size_t Hmdf::dimension() const { return m_dimension; }

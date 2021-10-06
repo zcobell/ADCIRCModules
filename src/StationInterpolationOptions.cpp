@@ -27,7 +27,59 @@ StationInterpolationOptions::StationInterpolationOptions()
       m_epsgOutput(4326),
       m_hasPositiveDirection(false),
       m_multiplier(1.0),
-      m_angle(false) {}
+      m_angle(false),
+      m_hmdf(nullptr) {}
+
+StationInterpolationOptions::StationInterpolationOptions(
+    const StationInterpolationOptions &s)
+    : m_mesh(s.m_mesh),
+      m_globalfile(s.m_globalfile),
+      m_stationfile(s.m_stationfile),
+      m_outputfile(s.m_outputfile),
+      m_coldstart(s.m_coldstart),
+      m_refdate(s.m_refdate),
+      m_magnitude(s.m_magnitude),
+      m_direction(s.m_direction),
+      m_readasciimesh(s.m_readasciimesh),
+      m_startsnap(s.m_startsnap),
+      m_endsnap(s.m_endsnap),
+      m_epsgGlobal(s.m_epsgGlobal),
+      m_epsgStation(s.m_epsgStation),
+      m_epsgOutput(s.m_epsgOutput),
+      m_hasPositiveDirection(s.m_hasPositiveDirection),
+      m_multiplier(s.m_multiplier),
+      m_angle(s.m_angle),
+      m_hmdf(std::make_unique<Hmdf>(s.m_hmdf->dimension())) {
+  for (auto i = 0; i < s.m_hmdf->nstations(); ++i) {
+    m_hmdf->addStation(*(s.m_hmdf->station(i)));
+  }
+}
+
+StationInterpolationOptions &StationInterpolationOptions::operator=(
+    const StationInterpolationOptions &s) {
+  m_mesh = s.m_mesh;
+  m_globalfile = s.m_globalfile;
+  m_stationfile = s.m_stationfile;
+  m_outputfile = s.m_outputfile;
+  m_coldstart = s.m_coldstart;
+  m_refdate = s.m_refdate;
+  m_magnitude = s.m_magnitude;
+  m_direction = s.m_direction;
+  m_readasciimesh = s.m_readasciimesh;
+  m_startsnap = s.m_startsnap;
+  m_endsnap = s.m_endsnap;
+  m_epsgGlobal = s.m_epsgGlobal;
+  m_epsgStation = s.m_epsgStation;
+  m_epsgOutput = s.m_epsgOutput;
+  m_hasPositiveDirection = s.m_hasPositiveDirection;
+  m_multiplier = s.m_multiplier;
+  m_angle = s.m_angle;
+  m_hmdf = std::make_unique<Hmdf>(s.m_hmdf->dimension());
+  for (auto i = 0; i < s.m_hmdf->nstations(); ++i) {
+    m_hmdf->addStation(*(s.m_hmdf->station(i)));
+  }
+  return *this;
+}
 
 std::string StationInterpolationOptions::mesh() const { return this->m_mesh; }
 
@@ -148,7 +200,7 @@ void StationInterpolationOptions::setMultiplier(double multiplier) {
 
 void StationInterpolationOptions::readStations(const std::string &stationFile) {
   std::string stn;
-  if (stationFile != std::string()) {
+  if (!stationFile.empty()) {
     stn = stationFile;
   } else {
     stn = this->m_stationfile;
@@ -156,34 +208,40 @@ void StationInterpolationOptions::readStations(const std::string &stationFile) {
 
   std::string ext = Adcirc::FileIO::Generic::getFileExtension(stn);
   if (!Adcirc::FileIO::Generic::fileExists(stn)) {
-    adcircmodules_throw_exception("Station file does not exist.");
+    adcircmodules_throw_exception("Station file '" + stn + "' does not exist.");
   }
 
   boost::algorithm::to_lower(ext);
 
+  this->m_hmdf = std::make_unique<Adcirc::Output::Hmdf>(1);
+
   if (ext == ".nc") {
-    this->m_hmdf.readNetcdf(stn, true);
+    this->m_hmdf->readNetcdf(stn, true);
   } else if (ext == ".imeds") {
     Adcirc::Output::Hmdf tmpSta;
     tmpSta.readImeds(stn);
-    this->m_hmdf.copyStationList(tmpSta);
+    this->m_hmdf->copyStationList(tmpSta);
   } else {
-    this->m_hmdf = this->readStationList(stn);
+    auto temp_hmdf =
+        Adcirc::Output::StationInterpolationOptions::readStationList(stn);
+    for (auto i = 0; i < temp_hmdf.nstations(); ++i) {
+      this->m_hmdf->addStation(*(temp_hmdf.station(i)));
+    }
   }
 }
 
 Adcirc::Output::HmdfStation *StationInterpolationOptions::station(
     size_t index) {
-  assert(index < this->m_hmdf.nstations());
-  if (index < this->m_hmdf.nstations()) {
-    return this->m_hmdf.station(index);
+  assert(index < this->m_hmdf->nstations());
+  if (index < this->m_hmdf->nstations()) {
+    return this->m_hmdf->station(index);
   } else {
     adcircmodules_throw_exception("Station index out of bounds");
     return nullptr;
   }
 }
 
-Hmdf *StationInterpolationOptions::stations() { return &this->m_hmdf; }
+Hmdf *StationInterpolationOptions::stations() { return this->m_hmdf.get(); }
 
 void StationInterpolationOptions::usePositiveDirection(
     bool usePositiveDirection) {
@@ -227,7 +285,7 @@ void StationInterpolationOptions::readPositiveDirection(
     const std::string &positiveDirections) {
   std::ifstream file(positiveDirections);
   std::vector<double> v;
-  for (size_t i = 0; i < this->m_hmdf.nstations(); ++i) {
+  for (size_t i = 0; i < this->m_hmdf->nstations(); ++i) {
     std::string line;
     bool ok;
     std::getline(file, line);
@@ -237,24 +295,23 @@ void StationInterpolationOptions::readPositiveDirection(
       Adcirc::Logging::logError("Could not read the positive directions file",
                                 "[ERROR]: ");
     } else {
-      this->m_hmdf.station(i)->setPositiveDirection(pd);
+      this->m_hmdf->station(i)->setPositiveDirection(pd);
     }
   }
   this->m_hasPositiveDirection = true;
-  return;
 }
 
 void StationInterpolationOptions::setPositiveDirection(
     size_t index, double positiveDirection) {
-  assert(index < this->m_hmdf.nstations());
-  this->m_hmdf.station(index)->setPositiveDirection(positiveDirection);
+  assert(index < this->m_hmdf->nstations());
+  this->m_hmdf->station(index)->setPositiveDirection(positiveDirection);
   this->m_hasPositiveDirection = true;
 }
 
 void StationInterpolationOptions::setPositiveDirections(
     double positiveDirection) {
-  for (size_t i = 0; i < this->m_hmdf.nstations(); ++i) {
-    this->m_hmdf.station(i)->setPositiveDirection(positiveDirection);
+  for (size_t i = 0; i < this->m_hmdf->nstations(); ++i) {
+    this->m_hmdf->station(i)->setPositiveDirection(positiveDirection);
   }
   this->m_hasPositiveDirection = true;
 }
@@ -262,3 +319,8 @@ void StationInterpolationOptions::setPositiveDirections(
 bool StationInterpolationOptions::angle() const { return m_angle; }
 
 void StationInterpolationOptions::setAngle(bool b) { m_angle = b; }
+
+void ADCIRCMODULES_EXPORT
+StationInterpolationOptions::createStationObject(size_t dimension) {
+  m_hmdf = std::make_unique<Adcirc::Output::Hmdf>(dimension, stations());
+}

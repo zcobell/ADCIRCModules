@@ -37,7 +37,7 @@ namespace Output {
 class StationInterpolation {
  public:
   ADCIRCMODULES_EXPORT StationInterpolation(
-      const Adcirc::Output::StationInterpolationOptions &options);
+      const Adcirc::Output::StationInterpolationOptions& options);
 
   void ADCIRCMODULES_EXPORT run();
 

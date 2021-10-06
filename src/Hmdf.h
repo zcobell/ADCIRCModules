@@ -32,7 +32,10 @@ namespace Output {
 
 class Hmdf {
  public:
-  ADCIRCMODULES_EXPORT Hmdf(bool isVector = false);
+  ADCIRCMODULES_EXPORT explicit Hmdf(size_t dimension = 1);
+
+  ADCIRCMODULES_EXPORT Hmdf(size_t dimension,
+                            const Adcirc::Output::Hmdf *stations);
 
   void ADCIRCMODULES_EXPORT clear();
 
@@ -54,7 +57,6 @@ class Hmdf {
   copyStationList(Adcirc::Output::Hmdf &templateStations);
 
   size_t ADCIRCMODULES_EXPORT nstations() const;
-  // void setNstations(size_t nstations);
 
   std::string ADCIRCMODULES_EXPORT header1() const;
   void ADCIRCMODULES_EXPORT setHeader1(const std::string &header1);
@@ -72,6 +74,9 @@ class Hmdf {
   void ADCIRCMODULES_EXPORT setDatum(const std::string &datum);
 
   Adcirc::Output::HmdfStation ADCIRCMODULES_EXPORT *station(size_t index);
+  const Adcirc::Output::HmdfStation ADCIRCMODULES_EXPORT *station(
+      size_t index) const;
+
   void ADCIRCMODULES_EXPORT setStation(size_t index,
                                        Adcirc::Output::HmdfStation &station);
   void ADCIRCMODULES_EXPORT
@@ -87,8 +92,7 @@ class Hmdf {
                                        Adcirc::CDate &dateMax, double &minValue,
                                        double &maxValue);
 
-  void ADCIRCMODULES_EXPORT setVector(bool vector);
-  bool ADCIRCMODULES_EXPORT isVector() const;
+  size_t ADCIRCMODULES_EXPORT dimension() const;
 
   static Adcirc::Output::Hmdf::HmdfFileType ADCIRCMODULES_EXPORT
   getFiletype(const std::string &filename);
@@ -99,12 +103,11 @@ class Hmdf {
   void ADCIRCMODULES_EXPORT reproject(int epsg);
 
  private:
-  void init();
-
   //...Variables
-  bool m_success, m_null, m_isVector;
+  bool m_success, m_null;
 
   int m_epsg;
+  const size_t m_dimension;
 
   std::string m_header1;
   std::string m_header2;

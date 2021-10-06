@@ -40,7 +40,9 @@ void StationInterpolation::run() {
   if (globalFile.metadata()->isVector() && !this->m_options.magnitude() &&
       !this->m_options.direction()) {
     writeVector = true;
-    this->m_options.stations()->setVector(true);
+    this->m_options.createStationObject(2);
+  } else {
+    this->m_options.createStationObject(1);
   }
 
   Adcirc::Output::OutputFormat filetype = globalFile.filetype();
@@ -64,8 +66,6 @@ void StationInterpolation::run() {
 
   this->reprojectStationOutput();
   this->m_options.stations()->write(this->m_options.outputfile());
-
-  return;
 }
 
 Adcirc::Geometry::Mesh StationInterpolation::readMesh(
@@ -76,7 +76,7 @@ Adcirc::Geometry::Mesh StationInterpolation::readMesh(
     if (this->m_options.readasciimesh()) {
       mesh.setFilename(this->m_options.mesh());
     } else {
-      if (this->m_options.mesh() != std::string()) {
+      if (!this->m_options.mesh().empty()) {
         Adcirc::Logging::warning(
             "Ignoring provided mesh file in favor of netCDF data",
             "[WARNING]: ");
@@ -117,7 +117,7 @@ void StationInterpolation::generateInterpolationWeights(
 
     size_t eidx = m.findElement(x2, y2, wt);
 
-    if (eidx == m.ELEMENT_NOT_FOUND) {
+    if (eidx == Adcirc::Geometry::Mesh::ELEMENT_NOT_FOUND) {
       this->m_weights[i].found = false;
     } else {
       nFound++;
@@ -139,7 +139,6 @@ void StationInterpolation::generateInterpolationWeights(
         "No stations found within mesh for interpolation.", "[ERROR]: ");
     exit(1);
   }
-  return;
 }
 
 void StationInterpolation::allocateStationArrays() {
@@ -165,7 +164,6 @@ void StationInterpolation::reprojectStationOutput() {
       output->station(i)->setLatitude(y2);
     }
   }
-  return;
 }
 
 Adcirc::CDate StationInterpolation::getColdstartDate() {
@@ -174,7 +172,8 @@ Adcirc::CDate StationInterpolation::getColdstartDate() {
   if (ft == Adcirc::Output::Hmdf::HmdfImeds ||
       ft == Adcirc::Output::Hmdf::HmdfCsv ||
       ft == Adcirc::Output::Hmdf::HmdfNetCdf) {
-    return this->dateFromString(this->m_options.coldstart());
+    return Adcirc::Output::StationInterpolation::dateFromString(
+        this->m_options.coldstart());
   }
   return Adcirc::CDate(1970, 1, 1, 0, 0, 0);
 }
@@ -183,14 +182,17 @@ void StationInterpolation::interpolateTimeSnapToStations(
     const size_t snap, const bool writeVector, const Adcirc::CDate &coldstart,
     Adcirc::Output::ReadOutput &globalFile) {
   globalFile.read(snap - 1);
-  Adcirc::CDate d = coldstart + globalFile.dataAt(0)->time();
+  auto adcircTime = globalFile.dataAt(0)->time();
+  auto adcircIt = globalFile.dataAt(0)->iteration();
+  Adcirc::CDate d = coldstart + adcircTime;
   Hmdf *stationData = this->m_options.stations();
 
   for (size_t j = 0; j < stationData->nstations(); ++j) {
     if (this->m_weights[j].found) {
       if (writeVector) {
         stationData->station(j)->setNext(
-            d, this->interpVector(globalFile, this->m_weights[j]));
+            d, Adcirc::Output::StationInterpolation::interpVector(
+                   globalFile, this->m_weights[j]));
       } else {
         if (this->m_options.hasPositiveDirection()) {
           stationData->station(j)->setNext(
@@ -210,8 +212,10 @@ void StationInterpolation::interpolateTimeSnapToStations(
         stationData->station(j)->setNext(d, globalFile.defaultValue());
       }
     }
+    auto file_position = stationData->station(j)->numSnaps() - 1;
+    stationData->station(j)->setAdcircTime(file_position, adcircTime);
+    stationData->station(j)->setAdcircIteration(file_position, adcircIt);
   }
-  return;
 }
 
 double StationInterpolation::interpScalar(Adcirc::Output::ReadOutput &data,
@@ -222,11 +226,11 @@ double StationInterpolation::interpScalar(Adcirc::Output::ReadOutput &data,
       adcircmodules_throw_exception(
           "Vector data supplied when a scalar angle was expected");
     }
-    return this->interpAngle(data, w);
+    return Adcirc::Output::StationInterpolation::interpAngle(data, w);
   } else if (data.metadata()->isVector()) {
     return this->interpScalarFromVector(data, w, positive_direction);
   } else {
-    return this->interpolateDryValues(
+    return Adcirc::Output::StationInterpolation::interpolateDryValues(
         data.dataAt(0)->z(w.node_index[0]), w.weight[0],
         data.dataAt(0)->z(w.node_index[1]), w.weight[1],
         data.dataAt(0)->z(w.node_index[2]), w.weight[2], data.defaultValue());
@@ -236,8 +240,8 @@ double StationInterpolation::interpScalar(Adcirc::Output::ReadOutput &data,
 double StationInterpolation::interpAngle(Adcirc::Output::ReadOutput &data,
                                          Weight &w) {
   using namespace Adcirc::FpCompare;
-  std::array<double, 3> vx;
-  std::array<double, 3> vy;
+  std::array<double, 3> vx{0, 0, 0};
+  std::array<double, 3> vy{0, 0, 0};
   for (size_t i = 0; i < 3; ++i) {
     auto v = data.dataAt(0)->z(w.node_index[i]);
     if (equalTo(v, data.defaultValue())) {
@@ -265,8 +269,8 @@ double StationInterpolation::interpAngle(Adcirc::Output::ReadOutput &data,
 
 std::tuple<double, double> StationInterpolation::interpVector(
     Adcirc::Output::ReadOutput &data, Weight &w) {
-  std::array<double, 3> vx;
-  std::array<double, 3> vy;
+  std::array<double, 3> vx{0, 0, 0};
+  std::array<double, 3> vy{0, 0, 0};
   for (auto i = 0; i < 3; ++i) {
     vx[i] = data.dataAt(0)->u(w.node_index[i]);
     vy[i] = data.dataAt(0)->v(w.node_index[i]);

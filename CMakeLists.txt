@@ -36,11 +36,11 @@ endif()
 # ##############################################################################
 # GENERAL OPTIONS
 # ##############################################################################
-IF(APPLE)
-    cmake_minimum_required(VERSION 3.12.0)
-ELSE()
-    cmake_minimum_required(VERSION 3.0.0)
-ENDIF()
+if(APPLE)
+  cmake_minimum_required(VERSION 3.12.0)
+else()
+  cmake_minimum_required(VERSION 3.0.0)
+endif()
 project(ADCIRCModules)
 enable_language(C)
 enable_language(CXX)
@@ -63,7 +63,8 @@ endif(UNIX OR CYGWIN)
 # ##############################################################################
 # Fast math option
 # ##############################################################################
-option(ADCIRCMODULES_USE_FAST_MATH "Use approximations to slow math ops where appropriate" OFF)
+option(ADCIRCMODULES_USE_FAST_MATH
+       "Use approximations to slow math ops where appropriate" OFF)
 # ##############################################################################
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -77,7 +78,6 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/hdf5.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/openmp.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/openssl.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/gdal.cmake)
-
 
 # ##############################################################################
 # Compiler flags
@@ -94,6 +94,14 @@ mark_as_advanced(CLEAR CMAKE_C_COMPILER)
 # TESTING
 # ##############################################################################
 option(BUILD_TESTS "Build test cases" OFF)
+# ##############################################################################
+
+# ##############################################################################
+# DEBUGGING
+# ##############################################################################
+option(ADCIRCMODULES_ENABLE_STACK_TRACE
+       "Enable a stack trace when used with address sanitizer" OFF)
+mark_as_advanced(ADCIRCMODULES_ENABLE_STACK_TRACE)
 # ##############################################################################
 
 # ##############################################################################
@@ -114,17 +122,18 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/python_adcircmodules.cmake)
 # ##############################################################################
 # UTILITIES
 # ##############################################################################
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/generateAdcircSimulationDates.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/interpolateAdcircStations.cmake)
+include(
+  ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/generateAdcircSimulationDates.cmake)
+include(
+  ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/interpolateAdcircStations.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/resultsScope.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/highWaterMarks.cmake)
 # ##############################################################################
 
-
 # ##############################################################################
 # TESTING
 # ##############################################################################
-IF(BUILD_TESTS)
+if(BUILD_TESTS)
   include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/test_cases.cmake)
-ENDIF()
+endif()
 # ##############################################################################

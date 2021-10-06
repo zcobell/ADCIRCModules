@@ -38,12 +38,20 @@ void Logging::throwError(const std::string &s) {
 /**
  * @brief Throws an error with file name and line number
  * @param[in] s error description
- * @param[in] file file name where error occured
- * @param[in] line line number where error occured
+ * @param[in] file file name where error occurred
+ * @param[in] line line number where error occurred
  */
 void Logging::throwError(const std::string &s, const char *file, int line) {
+#if ADCIRCMODULES_FORCE_SANITIZER_STACK_TRACE
+  std::cout << c_errorHeading + s + " at " + file + ", line " +
+                   std::to_string(line)
+            << std::endl;
+  int crash_you[1];
+  int bye_bye = crash_you[2];
+#else
   throw std::runtime_error(c_errorHeading + s + " at " + file + ", line " +
                            std::to_string(line));
+#endif
 }
 
 /**
@@ -52,7 +60,7 @@ void Logging::throwError(const std::string &s, const char *file, int line) {
  */
 void Logging::logError(const std::string &s, const std::string &heading) {
   std::string header = c_errorHeading;
-  if (heading != std::string()) {
+  if (!heading.empty()) {
     header = heading;
   }
   Logging::printErrorMessage(heading, s);
@@ -64,7 +72,7 @@ void Logging::logError(const std::string &s, const std::string &heading) {
  */
 void Logging::warning(const std::string &s, const std::string &heading) {
   std::string header = c_warningHeading;
-  if (heading != std::string()) {
+  if (!heading.empty()) {
     header = heading;
   }
   Logging::printMessage(header, s);
@@ -76,7 +84,7 @@ void Logging::warning(const std::string &s, const std::string &heading) {
  */
 void Logging::log(const std::string &s, const std::string &heading) {
   std::string header = c_logHeading;
-  if (heading != std::string()) {
+  if (!heading.empty()) {
     header = heading;
   }
   Logging::printMessage(header, s);
