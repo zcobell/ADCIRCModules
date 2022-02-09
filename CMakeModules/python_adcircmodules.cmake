@@ -59,7 +59,7 @@ if(SWIG_FOUND
               ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/python_adcirc_wrap.cxx)
   target_include_directories(
     pyadcircmodules PRIVATE ${Python3_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/src)
-  target_link_libraries(pyadcircmodules adcircmodules_static )
+  target_link_libraries(pyadcircmodules adcircmodules_static ${SQLITE3_LIBRARY} ${NETCDF_LIBRARY} HDF5::HDF5 hdf5::hdf5_hl expat pcre dl)
   if(APPLE)
       target_link_libraries(pyadcircmodules Python3::Module)
   endif(APPLE)

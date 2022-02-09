@@ -13,7 +13,7 @@ elseif(NOT $ENV{HDF5HOME} STREQUAL "")
       $ENV{HDF5HOME}
       CACHE STRING "Location of HDF5 Library")
 endif(NOT "${HDF5HOME}" STREQUAL "")
-find_package(HDF5)
+find_package(HDF5 COMPONENTS C HL REQUIRED)
 mark_as_advanced(HDF5_C_LIBRARY_dl      ) 
 mark_as_advanced(HDF5_C_LIBRARY_hdf5    ) 
 mark_as_advanced(HDF5_C_LIBRARY_m       ) 

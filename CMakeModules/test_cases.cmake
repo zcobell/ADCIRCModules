@@ -55,7 +55,7 @@ if(UNIX OR CYGWIN)
       add_executable(${TESTNAME}
                      ${CMAKE_SOURCE_DIR}/testing/cxx_tests/${TESTFILE})
       add_dependencies(${TESTNAME} adcircmodules_static)
-      target_link_libraries(${TESTNAME} adcircmodules_static adcircmodules_interface)
+      target_link_libraries(${TESTNAME} adcircmodules_static ${SQLITE3_LIBRARY} adcircmodules_interface ${NETCDF_LIBRARIES} HDF5::HDF5 hdf5::hdf5_hl expat pcre dl)
       target_include_directories(${TESTNAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src) 
       set_target_properties(
         ${TESTNAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY

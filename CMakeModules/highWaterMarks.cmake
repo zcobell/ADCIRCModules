@@ -9,5 +9,5 @@ target_include_directories(
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/cxxopts 
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/shapelib )
 add_dependencies( highWaterMarks adcircmodules shapelib )
-target_link_libraries( highWaterMarks PRIVATE adcircmodules shapelib)
+target_link_libraries( highWaterMarks PRIVATE adcircmodules_static ${SQLITE3_LIBRARY} ${NETCDF_LIBRARIES} HDF5::HDF5 hdf5::hdf5_hl expat pcre dl)
 install(TARGETS highWaterMarks RUNTIME DESTINATION bin)

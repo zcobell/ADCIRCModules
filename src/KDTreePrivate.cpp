@@ -76,7 +76,7 @@ std::vector<size_t> KdtreePrivate::findWithinRadius(double x, double y,
 
   const double query_pt[2] = {x, y};
 
-  std::vector<std::pair<size_t, double>> matches;
+  std::vector<std::pair<unsigned, double>> matches;
   nanoflann::SearchParams params;
 
   //...This is the default, but making it explicit for futureproofing

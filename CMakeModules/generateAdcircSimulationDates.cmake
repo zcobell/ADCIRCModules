@@ -7,5 +7,5 @@ target_include_directories(
           ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/cxxopts)
 add_dependencies(generateAdcircSimulationDates adcircmodules )
 target_link_libraries(generateAdcircSimulationDates
-	PRIVATE adcircmodules adcircmodules_static)
+	PRIVATE adcircmodules_static ${SQLITE3_LIBRARY} HDF5::HDF5 hdf5::hdf5_hl ${NETCDF_LIBS} expat pcre dl)
 install(TARGETS generateAdcircSimulationDates RUNTIME DESTINATION bin)

@@ -20,9 +20,9 @@
 //...Hack for multiple definition
 //   This seems to be an issue with the
 //   build on some versions of windows
-#if H5_SIZEOF_SSIZE_T == 0
-#define H5_SIZEOF_SSIZE_T H5_SIZEOF_LONG_LONG
-#endif
+//#if H5_SIZEOF_SSIZE_T == 0
+//#define H5_SIZEOF_SSIZE_T H5_SIZEOF_LONG_LONG
+//#endif
 
 #include "WriteOutput.h"
 
@@ -32,6 +32,7 @@
 #include "AdcircOutputfiles.h"
 #include "Formatting.h"
 #include "Logging.h"
+#include "H5pubconf.h"
 #include "hdf5.h"
 #include "netcdf.h"
 

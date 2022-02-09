@@ -191,7 +191,7 @@ set_target_properties(adcircmodules_objectlib PROPERTIES CMAKE_CXX_VISIBILITY_PR
                                                hidden)
 set_target_properties(adcircmodules_objectlib PROPERTIES CMAKE_CXX_INLINES_HIDDEN YES)
 
-target_link_libraries(adcircmodules_interface INTERFACE shapelib ${SQLite3_LIBRARY})
+target_link_libraries(adcircmodules_interface INTERFACE shapelib ${SQLITE3_LIBRARY})
 
 if(WIN32)
   link_directories(${CMAKE_SOURCE_DIR}/thirdparty/netcdf/libs_vc64)

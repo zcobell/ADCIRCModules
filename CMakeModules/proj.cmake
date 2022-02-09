@@ -1,7 +1,7 @@
 # ##############################################################################
 # PROJ Library
 # ##############################################################################
-find_package(SQLite3 REQUIRED)
+find_package(SQLITE3 REQUIRED)
 IF(USE_INTERNAL_PROJ)
     set(PROJ_FOUND FALSE)
 ELSE()
