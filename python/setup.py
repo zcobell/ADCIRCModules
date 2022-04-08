@@ -22,7 +22,7 @@ setup(
     packages=['pyadcircmodules'],
 
     # make sure the shared library is included
-    package_data={'pyadcircmodules': ['_pyadcircmodules.so', 'proj.db']},
+    package_data={'pyadcircmodules': ['_pyadcircmodules.so', 'proj.db', "interpolateAdcircStations"]},
     include_package_data=True,
 
     description="A package for manipulating ADCIRC model data inputs and outputs",
@@ -34,7 +34,7 @@ setup(
     # See class BinaryDistribution that was defined earlier
     distclass=BinaryDistribution,
 
-    version='0.0.1',
+    version='0.5.1',
     url='http://github.com/zcobell/ADCIRCModules',
     author='Zachary Cobell',
     author_email='zcobell@thewaterinstitute.org'
