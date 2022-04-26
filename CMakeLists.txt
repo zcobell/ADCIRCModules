@@ -49,7 +49,7 @@ include(CheckLibraryExists)
 include(CheckFunctionExists)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 # ##############################################################################
 
 # ##############################################################################
@@ -68,16 +68,16 @@ option(ADCIRCMODULES_USE_FAST_MATH
 # ##############################################################################
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/coverage.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/cxxstandard.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/version.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/boost.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/python.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/netcdf.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/hdf5.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/openmp.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/openssl.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/gdal.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/coverage.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/cxxstandard.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/boost.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/python.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/netcdf.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/hdf5.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/openmp.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/openssl.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/gdal.cmake)
 
 # ##############################################################################
 # Compiler flags
@@ -113,27 +113,27 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles)
 # ##############################################################################
 # LIBRARIES
 # ##############################################################################
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/proj.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/shapelib.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/libadcircmodules.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/python_adcircmodules.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/proj.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/shapelib.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/libadcircmodules.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/python_adcircmodules.cmake)
 # ##############################################################################
 
 # ##############################################################################
 # UTILITIES
 # ##############################################################################
 include(
-  ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/generateAdcircSimulationDates.cmake)
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/generateAdcircSimulationDates.cmake)
 include(
-  ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/interpolateAdcircStations.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/resultsScope.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/highWaterMarks.cmake)
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/interpolateAdcircStations.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/resultsScope.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/highWaterMarks.cmake)
 # ##############################################################################
 
 # ##############################################################################
 # TESTING
 # ##############################################################################
 if(BUILD_TESTS)
-  include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/test_cases.cmake)
+  include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/test_cases.cmake)
 endif()
 # ##############################################################################

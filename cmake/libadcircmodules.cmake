@@ -65,7 +65,7 @@ if(GDAL_FOUND)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataAverageNearestNPoints.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataWindRoughness.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/interpolation/GriddataMethod.cpp
-      ../src/OceanweatherTrackInfo.h)
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/OceanweatherTrackInfo.h)
 endif(GDAL_FOUND)
 
 set(HEADER_LIST
