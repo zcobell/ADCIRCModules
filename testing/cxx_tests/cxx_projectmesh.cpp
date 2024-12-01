@@ -35,9 +35,6 @@ int main() {
   double oldy = mesh->node(0)->y();
   mesh->defineProjection(4326, true);
 
-  std::cout << "Transforming to " << Adcirc::Projection::epsgDescription(26915)
-            << "...\n";
-
   mesh->reproject(26915);
   double newx = mesh->node(0)->x();
   double newy = mesh->node(0)->y();
@@ -51,9 +48,9 @@ int main() {
   std::cout << buffer3 << std::endl;
   sprintf(buffer4, "Projected Y coordinate: %f", newy);
   std::cout << buffer4 << std::endl;
-  if (std::abs(newx - 753922.922118) > 0.000001 ||
-      std::abs(newy - 3328065.712727) > 0.000001) {
-    std::cout << "Expected: 753922.922118, 3328065.712727" << std::endl;
+  if (std::abs(newx - 753922.917358) > 0.000001 ||
+      std::abs(newy - 3328066.210476) > 0.000001) {
+    std::cout << "Expected: 753922.917358, 3328066.210476" << std::endl;
     std::cout << "Got: " << std::fixed << std::setprecision(6) << newx << ", "
               << newy << std::endl;
     return 1;

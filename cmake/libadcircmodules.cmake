@@ -132,13 +132,7 @@ if(ADCIRCMODULES_USE_FAST_MATH)
                              PRIVATE ADCMOD_USE_FAST_MATH)
 endif()
 
-if(NOT PROJ_FOUND)
-  add_dependencies(adcircmodules_interface shapelib adcmod_proj
-                   generate_proj_db)
-  target_compile_definitions(adcircmodules_objectlib PRIVATE USE_INTERNAL_PROJ)
-else()
-  add_dependencies(adcircmodules_interface shapelib)
-endif()
+add_dependencies(adcircmodules_interface shapelib)
 
 set(adcircmodules_include_list
     ${CMAKE_SOURCE_DIR}/src
@@ -149,7 +143,6 @@ set(adcircmodules_include_list
     ${CMAKE_SOURCE_DIR}/thirdparty/cxxopts
     ${CMAKE_SOURCE_DIR}/thirdparty/indicators
     ${Boost_INCLUDE_DIRS}
-    ${PROJ_INCLUDE_DIR}
     ${SQLite3_INCLUDE_DIR}
     ${NETCDF_INCLUDE_DIR})
 
@@ -216,8 +209,7 @@ if(WIN32)
   link_directories(${CMAKE_SOURCE_DIR}/thirdparty/netcdf/libs_vc64)
   target_link_libraries(adcircmodules_interface INTERFACE netcdf hdf5 hdf5_hl)
 else(WIN32)
-  target_link_libraries(adcircmodules_interface INTERFACE ${NETCDF_LIBRARIES}
-                                                          ${PROJ_LIBRARY})
+  target_link_libraries(adcircmodules_interface INTERFACE ${NETCDF_LIBRARIES} PROJ::proj)
 endif(WIN32)
 
 if(OpenSSL_FOUND)

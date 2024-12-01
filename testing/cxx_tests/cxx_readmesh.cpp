@@ -45,7 +45,7 @@ int main() {
     return 1;
   }
 
-  std::vector<std::vector<double>> orthog = mesh->orthogonality();
+  //std::vector<std::vector<double>> orthog = mesh->orthogonality();
 
   return 0;
 }

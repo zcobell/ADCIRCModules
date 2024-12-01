@@ -50,8 +50,7 @@ size_t KdtreePrivate::findNearest(double x, double y) {
   nanoflann::KNNResultSet<double> resultSet(1);
   resultSet.init(&index, &out_dist_sqr);
   const double query_pt[2] = {x, y};
-  this->m_tree->findNeighbors(resultSet, &query_pt[0],
-                              nanoflann::SearchParams(10));
+  this->m_tree->findNeighbors(resultSet, &query_pt[0]);
   return index;
 }
 
@@ -64,8 +63,7 @@ std::vector<size_t> KdtreePrivate::findXNearest(double x, double y, size_t n) {
   resultSet.init(index.data(), out_dist_sqr.data());
   const double query_pt[2] = {x, y};
 
-  this->m_tree->findNeighbors(resultSet, &query_pt[0],
-                              nanoflann::SearchParams(10));
+  this->m_tree->findNeighbors(resultSet, &query_pt[0]);
   return index;
 }
 
@@ -76,8 +74,8 @@ std::vector<size_t> KdtreePrivate::findWithinRadius(double x, double y,
 
   const double query_pt[2] = {x, y};
 
-  std::vector<std::pair<size_t, double>> matches;
-  nanoflann::SearchParams params;
+  std::vector<nanoflann::ResultItem<unsigned, double>> matches;
+  nanoflann::SearchParameters params;
 
   //...This is the default, but making it explicit for futureproofing
   params.sorted = true;

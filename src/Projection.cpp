@@ -21,64 +21,14 @@
 #include <cassert>
 #include <cmath>
 #include <string>
+#include <tuple>
 
 #include "Constants.h"
 #include "Logging.h"
 #include "sqlite3.h"
-
-#ifdef USE_INTERNAL_PROJ
-#define PROJ_RENAME_SYMBOLS
-#endif
-#include <tuple>
-
-#include "Adcmod_proj_rename.h"
 #include "proj.h"
 
 using namespace Adcirc;
-
-bool Projection::containsEpsg(int epsg) {
-  projection_epsg_result result = {false, 0, ""};
-  return Projection::queryProjDatabase(epsg, result) == 0;
-}
-
-std::string Projection::epsgDescription(int epsg) {
-  projection_epsg_result result = {false, 0, ""};
-  int ierr = Projection::queryProjDatabase(epsg, result);
-  if (ierr == 0) {
-    return std::get<2>(result);
-  } else {
-    return std::string();
-  }
-}
-
-static int projection_sqlite_callback(void *data, int argc, char **argv,
-                                      char **azColName) {
-  (void)(azColName);  //...Silence warning, unused
-  auto *v = static_cast<Projection::projection_epsg_result *>(data);
-  if (argc < 1) {
-    std::get<0>(*(v)) = false;
-    return 1;
-  }
-  std::get<0>(*(v)) = true;
-  std::get<1>(*(v)) = std::stoi(argv[1]);
-  std::get<2>(*(v)) = argv[2];
-  return 0;
-}
-
-int Projection::queryProjDatabase(int epsg, projection_epsg_result &result) {
-  sqlite3 *db;
-  sqlite3_open(adcmod_proj_context_get_database_path(PJ_DEFAULT_CTX), &db);
-  std::string queryString =
-      "select distinct auth_name,code,name from crs_view where auth_name == "
-      "'EPSG' and code == " +
-      std::to_string(epsg) + ";";
-  char *errString;
-  sqlite3_exec(db, queryString.c_str(), projection_sqlite_callback, &result,
-               &errString);
-  sqlite3_close(db);
-  if (std::get<0>(result)) return 0;
-  return 1;
-}
 
 int Projection::transform(int epsgInput, int epsgOutput, double x, double y,
                           double &outx, double &outy, bool &isLatLon) {
@@ -103,17 +53,14 @@ int Projection::transform(int epsgInput, int epsgOutput,
   if (x.size() != y.size()) return 1;
   if (x.empty()) return 2;
 
-  if (!Projection::containsEpsg(epsgInput)) return 3;
-  if (!Projection::containsEpsg(epsgOutput)) return 4;
-
   std::string p1 = "EPSG:" + std::to_string(epsgInput);
   std::string p2 = "EPSG:" + std::to_string(epsgOutput);
-  PJ *pj1 = adcmod_proj_create_crs_to_crs(PJ_DEFAULT_CTX, p1.c_str(),
+  PJ *pj1 = proj_create_crs_to_crs(PJ_DEFAULT_CTX, p1.c_str(),
                                           p2.c_str(), NULL);
   if (pj1 == nullptr) return 5;
-  PJ *pj2 = adcmod_proj_normalize_for_visualization(PJ_DEFAULT_CTX, pj1);
+  PJ *pj2 = proj_normalize_for_visualization(PJ_DEFAULT_CTX, pj1);
   if (pj2 == nullptr) return 6;
-  adcmod_proj_destroy(pj1);
+  proj_destroy(pj1);
 
   outx.clear();
   outy.clear();
@@ -122,19 +69,19 @@ int Projection::transform(int epsgInput, int epsgOutput,
 
   for (size_t i = 0; i < x.size(); ++i) {
     PJ_COORD cin;
-    if (adcmod_proj_angular_input(pj2, PJ_INV)) {
-      cin.lp.lam = adcmod_proj_torad(x[i]);
-      cin.lp.phi = adcmod_proj_torad(y[i]);
+    if (proj_angular_input(pj2, PJ_INV)) {
+      cin.lp.lam = proj_torad(x[i]);
+      cin.lp.phi = proj_torad(y[i]);
     } else {
       cin.xy.x = x[i];
       cin.xy.y = y[i];
     }
 
-    PJ_COORD cout = adcmod_proj_trans(pj2, PJ_FWD, cin);
+    PJ_COORD cout = proj_trans(pj2, PJ_FWD, cin);
 
-    if (adcmod_proj_angular_output(pj2, PJ_FWD)) {
-      outx.push_back(adcmod_proj_todeg(cout.lp.lam));
-      outy.push_back(adcmod_proj_todeg(cout.lp.phi));
+    if (proj_angular_output(pj2, PJ_FWD)) {
+      outx.push_back(proj_todeg(cout.lp.lam));
+      outy.push_back(proj_todeg(cout.lp.phi));
       isLatLon = true;
     } else {
       outx.push_back(cout.xy.x);
@@ -142,7 +89,7 @@ int Projection::transform(int epsgInput, int epsgOutput,
       isLatLon = false;
     }
   }
-  adcmod_proj_destroy(pj2);
+  proj_destroy(pj2);
   return 0;
 }
 
@@ -253,9 +200,9 @@ int Projection::inverseCpp(double lambda0, double phi0,
 }
 
 void Projection::setProjDatabaseLocation(const std::string &dblocation) {
-  adcmod_proj_context_set_database_path(PJ_DEFAULT_CTX, dblocation.c_str(),
+  proj_context_set_database_path(PJ_DEFAULT_CTX, dblocation.c_str(),
                                         nullptr, nullptr);
 }
 std::string Projection::projDatabaseLocation() {
-  return adcmod_proj_context_get_database_path(PJ_DEFAULT_CTX);
+  return proj_context_get_database_path(PJ_DEFAULT_CTX);
 }
